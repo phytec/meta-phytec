@@ -1,0 +1,16 @@
+*.pyc
+*.pyo
+/*.patch
+build*/
+pyshtables.py
+pstage/
+sources/
+meta-*/
+*.swp
+*.orig
+*.rej
+*~
+documentation/user-manual/user-manual.html
+documentation/user-manual/user-manual.pdf
+documentation/user-manual/user-manual.tgz
+pull-*/
