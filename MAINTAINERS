@@ -17,8 +17,8 @@ Descriptions of section entries:
 	M: Mail patches to: FullName <address@domain>
 	F: Files and directories with wildcard patterns.
 		A trailing slash includes all files and subdirectory files.
-		F:	meta-phyAM335x/		all files in and below meta-phyAM335x
-		F:	meta-phyAM335x/*	all files in meta-phyAM335x, but not below
+		F:	meta-phyam335x/		all files in and below meta-phyam335x
+		F:	meta-phyam335x/*	all files in meta-phyam335x, but not below
 		One pattern per line.  Multiple F: lines acceptable.
 
 Please keep this list in alphabetical order.
@@ -32,5 +32,5 @@ F:	meta-phyiMX6/
 
 M:	Stefan Müller-Klieser <s.mueller-klieser@phytec.de>
 F:	common/
-F:	meta-phyAM335x/
+F:	meta-phyam335x/
 
