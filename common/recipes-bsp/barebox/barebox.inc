@@ -1,6 +1,6 @@
-# Copyright (C) 2014 Stefan Mueller-Klieser <s.mueller-klieser@phytec.de> \
+# Copyright (C) 2014 Stefan Mueller-Klieser <s.mueller-klieser@phytec.de>
 # PHYTEC Messtechnik GmbH
-# Released under the GPL-3.0 license
+# Recipe released under the GPL-3.0 license
 SUMMARY = "The Barebox Bootloader"
 DESCRIPTION = "Barebox (formerly known as u-boot-v2) is a bootloader that \
                inherits the best of U-Boot and the Linux kernel: The size and \
@@ -13,7 +13,7 @@ SECTION = "bootloaders"
 PROVIDES = "virtual/bootloader barebox"
 LICENSE = "GPL-2.0"
 LIC_FILES_CHKSUM = "file://COPYING;md5=057bf9e50e1ca857d0eb97bfe4ba8e5d"
-SRC_URI = "http://barebox.org/download/${PN}-${PV}.tar.bz2"
+SRC_URI ?= "http://barebox.org/download/${PN}-${PV}.tar.bz2"
 
 inherit kernel-arch cml1 deploy
 DEPENDS += "kern-tools-native"
@@ -70,7 +70,7 @@ python do_prepare_configure() {
     subprocess.call(cmd,shell=True)
 }
 do_configure[prefuncs] += "do_prepare_configure"
-do_configure[deptask] = "do_prepare_configure"
+do_configure[deptask] += "do_prepare_configure"
 
 do_compile () {
 	if [ "${@bb.utils.contains('DISTRO_FEATURES', 'ld-is-gold', 'ld-is-gold', '', d)}" = "ld-is-gold" ]; then
