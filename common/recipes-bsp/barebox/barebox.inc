@@ -1,6 +1,12 @@
 # Copyright (C) 2014 Stefan Mueller-Klieser <s.mueller-klieser@phytec.de>
 # PHYTEC Messtechnik GmbH
 # Recipe released under the GPL-3.0 license
+#
+# TODO: see if there is some development towards moving all kconfig
+#       funcionality into the kconfig-frontends package and adjust
+#       the recipe accordingly.
+#
+
 SUMMARY = "The Barebox Bootloader"
 DESCRIPTION = "Barebox (formerly known as u-boot-v2) is a bootloader that \
                inherits the best of U-Boot and the Linux kernel: The size and \
@@ -13,27 +19,30 @@ SECTION = "bootloaders"
 PROVIDES = "virtual/bootloader barebox"
 LICENSE = "GPL-2.0"
 LIC_FILES_CHKSUM = "file://COPYING;md5=057bf9e50e1ca857d0eb97bfe4ba8e5d"
-SRC_URI ?= "http://barebox.org/download/${PN}-${PV}.tar.bz2"
+SRC_URI = "http://barebox.org/download/barebox-${PV}.tar.bz2"
 
 inherit kernel-arch cml1 deploy
 DEPENDS += "kern-tools-native"
 PACKAGE_ARCH = "${MACHINE_ARCH}"
-EXTRA_OEMAKE = "CROSS_COMPILE=${TARGET_PREFIX}"
+# verbose build 0/1
+VERBOSE_BUILD ?= "0"
+EXTRA_OEMAKE = 'V=${VERBOSE_BUILD} CROSS_COMPILE=${TARGET_PREFIX} CC="${TARGET_PREFIX}gcc ${TOOLCHAIN_OPTIONS}"'
+# target rootfs boot directory
+base_bootdir = "/boot"
 
-# recipes implementing this include need to override these variables
-# barebox uses .bin and .img for output files
-BAREBOX_SUFFIX ?= "bin"
-# name of the binary created by barebox Makefile
-BAREBOX_IMG ?= "barebox.${BAREBOX_SUFFIX}"
-# filename of binary deploy
-BAREBOX_IMG_DEPLOY ?= "barebox-${MACHINE}-${PV}-${PR}.${BAREBOX_SUFFIX}"
-BAREBOX_IMG_SYMLINK ?= "barebox.${BAREBOX_SUFFIX}"
+# these variables need to be assigned in the machine.conf 
+# name of the image created by barebox Makefile
+BAREBOX_BIN ?= "barebox.bin"
+# filename of file to be deployed by this recipe
+BAREBOX_BIN_DEPLOY ?= "barebox-${MACHINE}-${PV}-${PR}.bin"
+BAREBOX_BIN_SYMLINK ?= "barebox.bin"
+BAREBOX_DEFAULT_DEFCONFIG ?= ""
 # barebox environment
 BAREBOX_ENV ?= "defaultenv/barebox_default_env"
 BAREBOX_ENV_DEPLOY ?= "bareboxenv-${MACHINE}-${PV}-${PR}"
 BAREBOX_ENV_SYMLINK ?= "barebox.env"
 
-# returns .scc and .cfg files from SRC_URI
+# returns .scc and .cfg filenames from SRC_URI
 def find_sccs(d):
     sources=src_patches(d, True)
     sources_list=[]
@@ -45,67 +54,110 @@ def find_sccs(d):
             sources_list.append(s)
     return sources_list
 
-# uses kconfig-frontends to combine the config fragments
+# uses kern-tools-native to merge the config fragments
 python do_prepare_configure() {
     import shutil, subprocess
-    workdir = d.getVar('WORKDIR',True)
+    workdir = d.getVar('WORKDIR', True)
+    S = d.getVar('S', True)
     defconfig = os.path.join(workdir , 'defconfig')
-    S = d.getVar('S',True)
-    if not os.path.isfile(defconfig):
-        bb.note("No defconfig file provided for the barebox recipe. \
-                using default config file provided by barebox.")
-        #TODO implement default config call
-    os.chdir(workdir)
-    fragments = find_sccs(d)
-    if not fragments:
-        bb.note("no config fragments will be merged")
+    if os.path.isfile(defconfig):
+        os.chdir(workdir)
+        fragments = find_sccs(d)
+        if not fragments:
+            bb.note("no config fragments will be merged")
+        else:
+            bb.note("combining kconfig fragments for barebox")
+            for f in fragments:
+                cmd = 'merge_config.sh -m -O %s %s %s' % (S, defconfig, f)
+                bb.note(cmd)
+                subprocess.call(cmd, shell=True)
     else:
-        bb.note("combining kconfig fragments for barebox")
-        for f in fragments:
-            cmd = 'merge_config.sh -m -O %s %s %s' % (S, defconfig, f)
-            subprocess.call(cmd, shell=True)
+        bb.note("No defconfig file provided for the barebox recipe")
+        bb.build.exec_func("do_default_defconfig",d)
+    localversion = "-${DISTRO}-${DISTRO_VERSION}"
+    bb.note("Setting LOCALVERSION in .config to %s" % localversion)
     bareboxconfig = os.path.join(S, '.config')
-    #TODO implement version string handling
-    cmd = 'kconfig-tweak --file %s --set-str LOCALVERSION %s' % (bareboxconfig, "-PD14.1.0")
+    cmd = 'kconfig-tweak --file %s --set-str LOCALVERSION %s' % (bareboxconfig, localversion)
     subprocess.call(cmd,shell=True)
 }
 do_configure[prefuncs] += "do_prepare_configure"
-do_configure[deptask] += "do_prepare_configure"
+
+do_default_defconfig () {
+	bbnote "generating .config for target ${BAREBOX_DEFAULT_DEFCONFIG}"
+	unset CFLAGS LDFLAGS
+	oe_runmake ${BAREBOX_DEFAULT_DEFCONFIG}
+}
+
+do_savedefconfig() {
+	bbplain "saving defconfig to ${WORKDIR}/defconfig.saved"
+	oe_runmake savedefconfig
+	install -m 644 ${S}/defconfig ${WORKDIR}/defconfig.saved
+}
+addtask savedefconfig after do_configure
 
 do_compile () {
 	if [ "${@bb.utils.contains('DISTRO_FEATURES', 'ld-is-gold', 'ld-is-gold', '', d)}" = "ld-is-gold" ]; then
 		sed -i 's/$(CROSS_COMPILE)ld$/$(CROSS_COMPILE)ld.bfd/g' config.mk
 	fi
-	unset CFLAGS CPPFLAGS LDFLAGS
+	unset CFLAGS LDFLAGS
 	oe_runmake all
 }
+
+do_install () {
+	bbnote "Installing barebox image on target rootfs"
+	install -d ${D}${base_bootdir}
+	install ${S}/${BAREBOX_BIN} ${D}${base_bootdir}/${BAREBOX_BIN_DEPLOY}
+	ln -sf ${BAREBOX_BIN_DEPLOY} ${D}${base_bootdir}/${BAREBOX_BIN_SYMLINK}
+
+	if [ -e ${S}/${BAREBOX_ENV} ] ; then
+		bbnote "Installing barebox-env on target rootfs"
+		install ${S}/${BAREBOX_ENV} ${D}${base_bootdir}/${BAREBOX_ENV_DEPLOY}
+		ln -sf ${BAREBOX_ENV_DEPLOY} ${D}${base_bootdir}/${BAREBOX_ENV_SYMLINK}
+	fi
+
+	if [ -e ${S}/scripts/bareboxenv-target ] ; then
+		bbnote "Installing target env tool"
+		install -d ${D}${base_sbindir}
+		install -m 744 ${S}/scripts/bareboxenv-target ${D}${base_sbindir}/bareboxenv
+	fi
+
+	if [ -e ${S}/scripts/bareboxcrc32-target ] ; then
+		bbnote "Installing target crc32 tool"
+		install -d ${D}${base_sbindir}
+		install -m 744 ${S}/scripts/bareboxcrc32-target ${D}${base_sbindir}/bareboxcrc32
+	fi
+
+	if [ -e ${S}/scripts/kernel-install-target ] ; then
+		bbnote "Installing target kernel-install tool"
+		install -d ${D}${base_sbindir}
+		install -m 744 ${S}/scripts/kernel-install-target ${D}${base_sbindir}/barebox-kernel-install
+	fi
+}
+FILES_${PN} = ""
+FILES_${PN} += "${base_bootdir}"
+FILES_${PN}-dev = ""
+FILES_${PN}-dev += "${base_sbindir}"
+
 
 do_deploy () {
 	bbnote "Deploying barebox"
 	install -d ${DEPLOYDIR}
-	install ${S}/${BAREBOX_IMG} ${DEPLOYDIR}/${BAREBOX_IMG_DEPLOY}
-	install ${S}/${BAREBOX_ENV} ${DEPLOYDIR}/${BAREBOX_ENV_DEPLOY}
-
-	bbnote "Creating symlinks"
+	install ${S}/${BAREBOX_BIN} ${DEPLOYDIR}/${BAREBOX_BIN_DEPLOY}
 	cd ${DEPLOYDIR}
-	rm -f ${BAREBOX_IMG_SYMLINK} ${BAERBOX_ENV_SYMLINK}
-	ln -sf ${BAREBOX_IMG_DEPLOY} ${BAREBOX_IMG_SYMLINK}
-	ln -sf ${BAREBOX_ENV_DEPLOY} ${BAREBOX_ENV_SYMLINK}
-	
+	rm -f ${BAREBOX_BIN_SYMLINK} 
+	ln -sf ${BAREBOX_BIN_DEPLOY} ${BAREBOX_BIN_SYMLINK}
+
+	if [ -e ${S}/${BAREBOX_ENV} ] ; then
+		bbnote "Deploying barebox env"
+		install ${S}/${BAREBOX_ENV} ${DEPLOYDIR}/${BAREBOX_ENV_DEPLOY}
+		cd ${DEPLOYDIR}
+		rm -f ${BAERBOX_ENV_SYMLINK}
+		ln -sf ${BAREBOX_ENV_DEPLOY} ${BAREBOX_ENV_SYMLINK}
+	fi
+
 	bbnote "Installing host barebox toolset"
 	install -d ${STAGING_BINDIR_NATIVE}
 	cd ${S}
 	install -m 755 scripts/bareboxenv ${STAGING_BINDIR_NATIVE}/
 }
 addtask deploy before do_build after do_compile
-
-# as soon as this gets moved from kernel-yocto.bbclass into cml1.bbclass
-# or some kconfig handling class, remove it here
-# savedefconfig saves a minimal config from the current confige removing
-# entries matching the default values
-do_savedefconfig() {
-	oe_runmake savedefconfig
-}
-addtask savedefconfig after do_configure
-
-
