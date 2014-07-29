@@ -1,1 +1,2 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}-config:"
+COMPATIBLE_MACHINE = "am335x"
