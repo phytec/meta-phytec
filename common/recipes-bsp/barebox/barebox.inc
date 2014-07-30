@@ -11,9 +11,9 @@ SUMMARY = "The Barebox Bootloader"
 DESCRIPTION = "Barebox (formerly known as u-boot-v2) is a bootloader that \
                inherits the best of U-Boot and the Linux kernel: The size and \
 	       look-and-feel of u-boot, with driver model and lots of design \
-	       concepts from the kernel.\
+	       concepts from the kernel. \
 	       The bb recipe adds config fragment support and kconfig \
-	       command handling using the yocto kern-tools-native." 
+	       command handling using the yocto kern-tools-native."
 HOMEPAGE = "http://www.barebox.org"
 SECTION = "bootloaders"
 PROVIDES = "virtual/bootloader barebox"
