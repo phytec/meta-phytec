@@ -60,20 +60,23 @@ python do_prepare_configure() {
     workdir = d.getVar('WORKDIR', True)
     S = d.getVar('S', True)
     defconfig = os.path.join(workdir , 'defconfig')
-    if os.path.isfile(defconfig):
-        os.chdir(workdir)
-        fragments = find_sccs(d)
-        if not fragments:
-            bb.note("no config fragments will be merged")
-        else:
-            bb.note("combining kconfig fragments for barebox")
-            for f in fragments:
-                cmd = 'merge_config.sh -m -O %s %s %s' % (S, defconfig, f)
-                bb.note(cmd)
-                subprocess.call(cmd, shell=True)
-    else:
+    if not os.path.isfile(defconfig):
         bb.note("No defconfig file provided for the barebox recipe")
-        bb.build.exec_func("do_default_defconfig",d)
+        config = os.path.join(S, '.config')
+        if not os.path.isfile(config):
+            bb.note("barebox is not configured")
+            bb.build.exec_func("do_default_defconfig",d)
+        bb.build.exec_func("do_savedefconfig",d)
+        defconfig = os.path.join(workdir , 'defconfig.saved') 
+    os.chdir(workdir)
+    fragments = find_sccs(d)
+    if not fragments:
+        bb.note("no config fragments will be merged")
+    else:
+        bb.note("combining kconfig fragments for barebox")
+        for f in fragments:
+            cmd = 'merge_config.sh -m -O %s %s %s' % (S, defconfig, f)
+            subprocess.call(cmd, shell=True)
     localversion = "-${DISTRO}-${DISTRO_VERSION}"
     bb.note("Setting LOCALVERSION in .config to %s" % localversion)
     bareboxconfig = os.path.join(S, '.config')
@@ -96,9 +99,6 @@ do_savedefconfig() {
 addtask savedefconfig after do_configure
 
 do_compile () {
-	if [ "${@bb.utils.contains('DISTRO_FEATURES', 'ld-is-gold', 'ld-is-gold', '', d)}" = "ld-is-gold" ]; then
-		sed -i 's/$(CROSS_COMPILE)ld$/$(CROSS_COMPILE)ld.bfd/g' config.mk
-	fi
 	unset CFLAGS LDFLAGS
 	oe_runmake all
 }
