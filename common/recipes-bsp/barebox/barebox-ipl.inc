@@ -13,7 +13,7 @@ S = "${WORKDIR}/barebox-${PV}"
 BAREBOX_IPL_BIN ?= "barebox.bin"
 BAREBOX_IPL_BIN_DEPLOY ?= "IPL-${MACHINE}-${PV}-${PR}.bin"
 BAREBOX_IPL_BIN_SYMLINK ?= "IPL"
-BAREBOX_IPL_DEFAULT_DEFCONFIG ?= "am335x_mlo_defconfig"
+BAREBOX_IPL_DEFAULT_DEFCONFIG ?= ""
 
 do_default_defconfig () {
 	bbnote "generating .config for target ${BAREBOX_IPL_DEFAULT_DEFCONFIG}"
