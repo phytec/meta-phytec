@@ -65,16 +65,15 @@ python do_prepare_configure() {
             bb.note("barebox is not configured")
             bb.build.exec_func("do_default_defconfig",d)
         bb.build.exec_func("do_savedefconfig",d)
-        defconfig = os.path.join(workdir , 'defconfig.saved') 
+        defconfig = os.path.join(workdir , 'defconfig.temp') 
     os.chdir(workdir)
     fragments = find_sccs(d)
     if not fragments:
         bb.note("no config fragments will be merged")
     else:
-        bb.note("combining kconfig fragments for barebox")
-        for f in fragments:
-            cmd = 'merge_config.sh -m -O %s %s %s' % (S, defconfig, f)
-            subprocess.call(cmd, shell=True)
+        bb.note("combining kconfig fragments into .config for barebox")
+        cmd = 'merge_config.sh -m -O %s %s %s' % (S, defconfig, ' '.join(map(str,fragments)))
+        subprocess.call(cmd, shell=True)
     localversion = "-${DISTRO}-${DISTRO_VERSION}"
     bb.note("Setting LOCALVERSION in .config to %s" % localversion)
     bareboxconfig = os.path.join(S, '.config')
@@ -90,9 +89,9 @@ do_default_defconfig () {
 }
 
 do_savedefconfig() {
-	bbplain "saving defconfig to ${WORKDIR}/defconfig.saved"
+	bbplain "saving defconfig to ${WORKDIR}/defconfig.temp"
 	oe_runmake savedefconfig
-	install -m 644 ${S}/defconfig ${WORKDIR}/defconfig.saved
+	install -m 644 ${S}/defconfig ${WORKDIR}/defconfig.temp
 }
 addtask savedefconfig after do_configure
 
