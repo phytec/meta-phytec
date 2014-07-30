@@ -46,9 +46,7 @@ BAREBOX_ENV_SYMLINK ?= "barebox.env"
 def find_sccs(d):
     sources=src_patches(d, True)
     sources_list=[]
-    bb.debug(2,"source variables:")
     for s in sources:
-        bb.debug(2," -- " + s)
         base, ext = os.path.splitext(os.path.basename(s))
         if ext and ext in [".scc", ".cfg"]:
             sources_list.append(s)
