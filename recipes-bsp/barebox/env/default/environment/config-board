@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# board defaults, do not change in running system. Change /env/config
+# instead
+global linux.bootargs.dyn.display
+
+global.hostname=pfla03
+global.linux.bootargs.base="console=ttyO0,115200"

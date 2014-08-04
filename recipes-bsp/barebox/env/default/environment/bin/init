@@ -1,0 +1,24 @@
+#!/bin/sh
+
+export PATH=/env/bin
+
+global hostname=generic
+global user=none
+global autoboot_timeout=3
+global boot.default=net
+global allow_color=true
+global linux.bootargs.base
+#linux.bootargs.dyn.* will be cleared at the beginning of boot
+global linux.bootargs.dyn.ip
+global linux.bootargs.dyn.root
+global editcmd=sedit
+
+[ -e /env/config-board ] && /env/config-board
+/env/config
+
+# allow to stop the boot before execute the /env/init/*
+# but without waiting
+timeout -s -a -v key 0
+
+if [ "${key}" = "q" ]; then
+        exit

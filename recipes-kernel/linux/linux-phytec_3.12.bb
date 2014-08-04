@@ -25,7 +25,7 @@ COMPATIBLE_MACHINE = "(am335x)"
 #KERNEL_FEATURES_append = " ${@bb.utils.contains("TUNE_FEATURES", "mx32", " cfg/x32.scc", "" ,d)}"
 
 # config for phyflex_am335x_2013_01 
-#SRC_URI_append_phyflex-am335x-2013-01 = " file://defconfig \
+SRC_URI_append_phyflex-am335x-2013-01 = " file://defconfig"
 #    features/noswap.cfg \
 #"
 KBRANCH_phyflex-am335x-2013-01 = "Unified-AM335x-PD14.1.0_3"
