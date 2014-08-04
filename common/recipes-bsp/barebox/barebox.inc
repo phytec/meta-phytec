@@ -82,6 +82,22 @@ python do_prepare_configure() {
 }
 do_configure[prefuncs] += "do_prepare_configure"
 
+# if an environment directory is provided, use it
+python do_prepare_env() {
+    import shutil, subprocess
+    workdir = d.getVar('WORKDIR', True)
+    S = d.getVar('S', True)
+    bareboxconfig = os.path.join(S, '.config')
+    env_dir = oe.path.join(workdir , 'environment')
+    if not os.path.exists(env_dir):
+        bb.note("No environment directory provided, using the default env")
+    else:
+        bb.note("Adding custom environment")
+        cmd = 'kconfig-tweak --file %s --set-str DEFAULT_ENVIRONMENT_PATH %s' % (bareboxconfig, env_dir)
+        subprocess.call(cmd,shell=True)
+}
+do_configure[prefuncs] += "do_prepare_env"
+
 do_default_defconfig () {
 	bbnote "generating .config for target ${BAREBOX_DEFAULT_DEFCONFIG}"
 	unset CFLAGS LDFLAGS
