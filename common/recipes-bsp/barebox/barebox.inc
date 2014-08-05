@@ -42,13 +42,13 @@ BAREBOX_ENV ?= "defaultenv/barebox_default_env"
 BAREBOX_ENV_DEPLOY ?= "bareboxenv-${MACHINE}-${PV}-${PR}"
 BAREBOX_ENV_SYMLINK ?= "barebox.env"
 
-# returns .scc and .cfg filenames from SRC_URI
+# returns and .cfg filenames from SRC_URI
 def find_sccs(d):
     sources=src_patches(d, True)
     sources_list=[]
     for s in sources:
         base, ext = os.path.splitext(os.path.basename(s))
-        if ext and ext in [".scc", ".cfg"]:
+        if ext and ext in [".cfg"]:
             sources_list.append(s)
     return sources_list
 
