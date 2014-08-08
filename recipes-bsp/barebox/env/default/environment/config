@@ -7,17 +7,14 @@
 global.allow_color=true
 
 # user (used for network filenames)
-global.user=smk
+# global.user=none
 
 # timeout in seconds before the default boot entry is started
-global.autoboot_timeout=5
+global.autoboot_timeout=3
 
 # list of boot entries. These are executed in order until one
 # succeeds. An entry can be:
 # - a filename in /env/boot/
 # - a full path to a directory. All files in this directory are
 #   treated as boot files and executed in alphabetical order
-# - setting the global.boot.default to $bootsource loads kernel/rootfs
-#   from where the board boots
-#global.boot.default=net
 global.boot.default=$bootsource

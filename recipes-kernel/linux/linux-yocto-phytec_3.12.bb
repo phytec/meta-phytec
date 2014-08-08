@@ -3,30 +3,31 @@
 DESCRIPTION =   "Linux Kernel provided and supported by PHYTEC based on TIs \
                 Kernel for AM335x Family Boards. It includes support for \
                 many IPs such as GPU, VPU and IPU."
-SECTION = "kernel"
-LICENSE = "GPLv2"
-LIC_FILES_CHKSUM = "file://COPYING;md5=d7810fab7487fb0aad327b76f1be7cd7"
 
-inherit kernel
-require recipes-kernel/linux/linux-dtb.inc
-
-DEPENDS += "lzop-native bc-native"
+require recipes-kernel/linux/linux-yocto.inc
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/defconfigs:${THISDIR}/defconfigs/features:"
 
 LINUX_VERSION ?= "3.12.0-tiphy"
-LOCALVERSION ?= "${DISTRO}"
-SRCBRANCH_am335x = "master"
+LOCALVERSION ?= "+poky"
+KBRANCH_am335x = "master"
 
-SRC_URI_am335x = "git://${HOME}/linux-am335x;branch=${SRCBRANCH}"
+SRC_URI_am335x = "git://${HOME}/linux-am335x;branch=${KBRANCH}"
 SRCREV = "${AUTOREV}"
 PV = "${LINUX_VERSION}-git${SRCPV}"
 S = "${WORKDIR}/git"
 COMPATIBLE_MACHINE = "(am335x)"
 
-#phyflex am335x
+# Functionality flags
+#KERNEL_EXTRA_FEATURES ?= "features/netfilter/netfilter.scc"
+#KERNEL_FEATURES_append = " ${KERNEL_EXTRA_FEATURES}"
+#KERNEL_FEATURES_append = " ${@bb.utils.contains("TUNE_FEATURES", "mx32", " cfg/x32.scc", "" ,d)}"
+
+# config for phyflex_am335x_2013_01 
 SRC_URI_append_phyflex-am335x-2013-01 = " file://defconfig"
 #    features/noswap.cfg \
 #"
-SRCBRANCH_phyflex-am335x-2013-01 = "WIP/smk/Unified-AM335x-PD14.1.0_3_1"
+KBRANCH_phyflex-am335x-2013-01 = "WIP/smk/Unified-AM335x-PD14.1.0_3_1"
+#SRCREV = "c2c147d5e665e50496b604d8fc969edddc484ebe"
+#KERNEL_FEATURES_append_phyflex-am335x-2013-01 = " features/noswap.cfg"
 COMPATIBLE_MACHINE_phyflex-am335x-2013-01 = "(phyflex-am335x-2013-01)"

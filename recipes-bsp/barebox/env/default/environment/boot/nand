@@ -9,5 +9,5 @@ bootargs-ip
 bootargs-display
 
 global.bootm.image="/dev/nand0.kernel.bb"
-#global.bootm.oftree="/env/oftree"
+global.bootm.oftree="/env/oftree"
 global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=nand0.root,2048 rootfstype=ubifs"

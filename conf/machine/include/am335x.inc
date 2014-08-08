@@ -19,8 +19,9 @@ GUI_MACHINE_CLASS = "bigscreen"
 # Default providers, may need to override for specific machines
 PREFERRED_PROVIDER_virtual/kernel ?= "linux-phytec"
 PREFERRED_PROVIDER_virtual/bootloader ?= "barebox"
-
-KERNEL_IMAGETYPE = "zImage"
+KERNEL_IMAGETYPE ?= "zImage"
+PACKAGE_INSTALL_append = " kernel-devicetree kernel-modules"
+SERIAL_CONSOLES ?= "115200;ttyO0"
 
 #UBOOT_ARCH = "arm"
 #UBOOT_MACHINE = "am335x_evm_config"
@@ -32,7 +33,11 @@ KERNEL_IMAGETYPE = "zImage"
 # and u-boot.
 #UBI_VOLNAME = "rootfs"
 
-EXTRA_IMAGEDEPENDS += "barebox"
+EXTRA_IMAGEDEPENDS += "barebox barebox-ipl"
+BAREBOX_DEFAULT_DEFCONFIG = "am335x_defconfig"
+BAREBOX_IPL_DEFAULT_DEFCONFIG = "am335x_mlo_defconfig"
+BAREBOX_IPL_BIN_DEPLOY = "MLO-${MACHINE}-${PV}-${PR}.img"
+BAREBOX_IPL_BIN_SYMLINK = "MLO"
 
 # List common SoC features, may need to add touchscreen for specific machines
 # MACHINE_FEATURES = "kernel26 apm usbgadget usbhost vfat ext2 screen alsa ethernet sgx"
