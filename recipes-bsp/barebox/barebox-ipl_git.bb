@@ -5,8 +5,11 @@ FILESEXTRAPATHS_prepend_am335x := "${THISDIR}/ipl-defconfigs:${THISDIR}/defconfi
 
 # phyflex-am335x-2013-01
 BRANCH_phyflex-am335x-2013-01 = "WIP/2014.08.0/smk/phyflex"
-#SRC_URI_append_phyflex-am335x-2013-01 = " \
-#    file://defconfig \
-#"
+#using default config
+#SRC_URI_append_phyflex-am335x-2013-01 = " file://defconfig"
 #    file://build-spi-image.cfg \
 #"
+
+# phyflex-am335x-2013-01
+BRANCH_phycore-am335x-2012-01 = "WIP/2014.08.0/smk/phyflex"
+

@@ -26,7 +26,10 @@ COMPATIBLE_MACHINE = "(am335x)"
 
 #phyflex am335x
 SRC_URI_append_phyflex-am335x-2013-01 = " file://defconfig"
-#    features/noswap.cfg \
-#"
 SRCBRANCH_phyflex-am335x-2013-01 = "WIP/smk/Unified-AM335x-PD14.1.0_3_1"
 COMPATIBLE_MACHINE_phyflex-am335x-2013-01 = "(phyflex-am335x-2013-01)"
+
+#phycore am335x
+SRC_URI_append_phycore-am335x-2012-01 = " file://defconfig"
+SRCBRANCH_phycore-am335x-2012-01 = "WIP/smk/Unified-AM335x-PD14.1.0_3_1"
+COMPATIBLE_MACHINE_phycore-am335x-2012-01 = "(phycore-am335x-2012-01)"
