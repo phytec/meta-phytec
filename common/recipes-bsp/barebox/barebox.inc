@@ -1,12 +1,10 @@
 # Copyright (C) 2014 Stefan Mueller-Klieser <s.mueller-klieser@phytec.de>
 # PHYTEC Messtechnik GmbH
-# Recipe released under the GPL-3.0 license
 #
 # TODO: see if there is some development towards moving all kconfig
 #       funcionality into the kconfig-frontends package and adjust
 #       the recipe accordingly.
 #
-
 SUMMARY = "The Barebox Bootloader"
 DESCRIPTION = "Barebox (formerly known as u-boot-v2) is a bootloader that \
                inherits the best of U-Boot and the Linux kernel: The size and \
@@ -38,9 +36,10 @@ BAREBOX_BIN_DEPLOY ?= "barebox-${MACHINE}-${PV}-${PR}.bin"
 BAREBOX_BIN_SYMLINK ?= "barebox.bin"
 BAREBOX_DEFAULT_DEFCONFIG ?= ""
 # barebox environment
-BAREBOX_ENV ?= "defaultenv/barebox_default_env"
-BAREBOX_ENV_DEPLOY ?= "bareboxenv-${MACHINE}-${PV}-${PR}"
-BAREBOX_ENV_SYMLINK ?= "barebox.env"
+BAREBOX_DEFAULT_ENV ?= ""
+BAREBOX_ENVDIR = "${WORKDIR}/environment"
+# kernel boot cmd line
+BAREBOX_BOOT_DISPLAY = ""
 
 # returns and .cfg filenames from SRC_URI
 def find_sccs(d):
@@ -58,9 +57,9 @@ python do_prepare_configure() {
     workdir = d.getVar('WORKDIR', True)
     S = d.getVar('S', True)
     defconfig = os.path.join(workdir , 'defconfig')
+    config = os.path.join(S, '.config')
     if not os.path.isfile(defconfig):
         bb.note("No defconfig file provided for the barebox recipe")
-        config = os.path.join(S, '.config')
         if not os.path.isfile(config):
             bb.note("barebox is not configured")
             bb.build.exec_func("do_default_defconfig",d)
@@ -70,33 +69,60 @@ python do_prepare_configure() {
     fragments = find_sccs(d)
     if not fragments:
         bb.note("no config fragments will be merged")
+        shutil.copyfile(defconfig, config)
     else:
         bb.note("combining kconfig fragments into .config for barebox")
         cmd = 'merge_config.sh -m -O %s %s %s' % (S, defconfig, ' '.join(map(str,fragments)))
         subprocess.call(cmd, shell=True)
     localversion = "-${DISTRO}-${DISTRO_VERSION}"
     bb.note("Setting LOCALVERSION in .config to %s" % localversion)
-    bareboxconfig = os.path.join(S, '.config')
-    cmd = 'kconfig-tweak --file %s --set-str LOCALVERSION %s' % (bareboxconfig, localversion)
+    cmd = 'kconfig-tweak --file %s --set-str LOCALVERSION %s' % (config, localversion)
     subprocess.call(cmd,shell=True)
 }
-do_configure[prefuncs] += "do_prepare_configure"
+addtask do_prepare_configure after do_patch before do_configure
 
 # if an environment directory is provided, use it
 python do_prepare_env() {
     import shutil, subprocess
-    workdir = d.getVar('WORKDIR', True)
+    machine = d.getVar('MACHINE')
     S = d.getVar('S', True)
     bareboxconfig = os.path.join(S, '.config')
-    env_dir = oe.path.join(workdir , 'environment')
-    if not os.path.exists(env_dir):
-        bb.note("No environment directory provided, using the default env")
-    else:
-        bb.note("Adding custom environment")
-        cmd = 'kconfig-tweak --file %s --set-str DEFAULT_ENVIRONMENT_PATH %s' % (bareboxconfig, env_dir)
-        subprocess.call(cmd,shell=True)
+    env_dir = d.getVar('BAREBOX_ENVDIR', True)
+    if not os.path.isdir(env_dir):
+        bb.note("No environment directory provided, using BAREBOX_DEFAULT_ENV")
+        env_dir = d.getVar('BAREBOX_DEFAULT_ENV', True)
+        if not env_dir:
+            bb.note("no BAREBOX_DEFAULT_ENV provided, creating empty default")
+            bb.utils.mkdirhier(os.path.join(S, '.environment'))
+    if os.path.isdir(env_dir):
+        bb.note("copying custom environment to source directory")
+        oe.path.copytree(env_dir, oe.path.join(S, '.environment'))
+    cmd = 'kconfig-tweak --file %s --set-str DEFAULT_ENVIRONMENT_PATH %s' % (bareboxconfig, '.environment')
+    subprocess.call(cmd,shell=True)
 }
-do_configure[prefuncs] += "do_prepare_env"
+addtask prepare_env after do_prepare_configure before do_configure
+
+# create config-board environment file
+do_create_config_board () {
+    if [ -e ${S}/.environment/config-board ]; then
+        bbnote "config-board file already provided, not doing anything"
+    else
+        #tty boot serial variables
+        B_TTY0=`echo "${SERIAL_CONSOLES}" | sed 's/\ .*//'`
+        B_TTY0_B=`echo "${B_TTY0}" | sed 's/\;.*//'`
+        B_TTY0_N=`echo "${B_TTY0}" | sed 's/.*\;//'`
+        #create config-board file
+        cat > ${S}/.environment/config-board <<EOF
+#!/bin/sh
+# board defaults, do not change in running system.
+# Change /env/config file instead.
+global.hostname=${MACHINE}
+global.linux.bootargs.base="console=${B_TTY0_N},${B_TTY0_B}"
+global linux.bootargs.dyn.display="${BAREBOX_BOOT_DISPLAY}"
+EOF
+    fi
+}
+addtask create_config_board after do_prepare_env before do_configure
 
 do_default_defconfig () {
 	bbnote "generating .config for target ${BAREBOX_DEFAULT_DEFCONFIG}"
@@ -122,12 +148,6 @@ do_install () {
 	install ${S}/${BAREBOX_BIN} ${D}${base_bootdir}/${BAREBOX_BIN_DEPLOY}
 	ln -sf ${BAREBOX_BIN_DEPLOY} ${D}${base_bootdir}/${BAREBOX_BIN_SYMLINK}
 
-	if [ -e ${S}/${BAREBOX_ENV} ] ; then
-		bbnote "Installing barebox-env on target rootfs"
-		install ${S}/${BAREBOX_ENV} ${D}${base_bootdir}/${BAREBOX_ENV_DEPLOY}
-		ln -sf ${BAREBOX_ENV_DEPLOY} ${D}${base_bootdir}/${BAREBOX_ENV_SYMLINK}
-	fi
-
 	if [ -e ${S}/scripts/bareboxenv-target ] ; then
 		bbnote "Installing target env tool"
 		install -d ${D}${base_sbindir}
@@ -152,7 +172,6 @@ FILES_${PN}-dev = ""
 RDEPENDS_${PN}-dev = ""
 FILES_${PN}-dev += "${base_sbindir}"
 
-
 do_deploy () {
 	bbnote "Deploying barebox"
 	install -d ${DEPLOYDIR}
@@ -160,14 +179,6 @@ do_deploy () {
 	cd ${DEPLOYDIR}
 	rm -f ${BAREBOX_BIN_SYMLINK} 
 	ln -sf ${BAREBOX_BIN_DEPLOY} ${BAREBOX_BIN_SYMLINK}
-
-	if [ -e ${S}/${BAREBOX_ENV} ] ; then
-		bbnote "Deploying barebox env"
-		install ${S}/${BAREBOX_ENV} ${DEPLOYDIR}/${BAREBOX_ENV_DEPLOY}
-		cd ${DEPLOYDIR}
-		rm -f ${BAERBOX_ENV_SYMLINK}
-		ln -sf ${BAREBOX_ENV_DEPLOY} ${BAREBOX_ENV_SYMLINK}
-	fi
 
 	bbnote "Installing host barebox toolset"
 	install -d ${STAGING_BINDIR_NATIVE}

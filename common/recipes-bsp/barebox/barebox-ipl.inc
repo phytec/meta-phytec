@@ -15,6 +15,15 @@ BAREBOX_IPL_BIN_DEPLOY ?= "IPL-${MACHINE}-${PV}-${PR}.bin"
 BAREBOX_IPL_BIN_SYMLINK ?= "IPL"
 BAREBOX_IPL_DEFAULT_DEFCONFIG ?= ""
 
+# dont use the environment prepare function from barebox
+python do_prepare_env() {
+    return
+} 
+
+# dont edit config-board env file
+do_create_config_board() {
+}
+
 do_default_defconfig () {
 	bbnote "generating .config for target ${BAREBOX_IPL_DEFAULT_DEFCONFIG}"
 	unset CFLAGS LDFLAGS
