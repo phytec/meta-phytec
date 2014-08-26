@@ -37,9 +37,11 @@ BAREBOX_BIN_SYMLINK ?= "barebox.bin"
 BAREBOX_DEFAULT_DEFCONFIG ?= ""
 # barebox environment
 BAREBOX_DEFAULT_ENV ?= ""
-BAREBOX_ENVDIR = "${WORKDIR}/environment"
 # kernel boot cmd line
-BAREBOX_BOOT_DISPLAY = ""
+BAREBOX_BOOT_DISPLAY ?= ""
+
+# recipe private variables
+BAREBOX_ENVDIR = "${WORKDIR}/environment"
 
 # returns and .cfg filenames from SRC_URI
 def find_sccs(d):
@@ -116,9 +118,9 @@ do_create_config_board () {
 #!/bin/sh
 # board defaults, do not change in running system.
 # Change /env/config file instead.
+global linux.bootargs.dyn.display
 global.hostname=${MACHINE}
 global.linux.bootargs.base="console=${B_TTY0_N},${B_TTY0_B}"
-global linux.bootargs.dyn.display="${BAREBOX_BOOT_DISPLAY}"
 EOF
     fi
 }
