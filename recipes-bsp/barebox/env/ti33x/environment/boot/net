@@ -16,4 +16,5 @@ fi
 
 nfsroot="/nfsroot/${global.hostname}"
 bootargs-ip
+bootargs-display
 global.linux.bootargs.dyn.root="root=/dev/nfs nfsroot=$nfsroot,vers=3,udp"
