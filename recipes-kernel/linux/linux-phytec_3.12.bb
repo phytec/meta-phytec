@@ -16,13 +16,13 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/defconfigs:${THISDIR}/defconfigs/features
 
 LINUX_VERSION ?= "3.12.0-tiphy"
 LOCALVERSION ?= "${DISTRO}"
-SRCBRANCH_am335x = "master"
+SRCBRANCH_ti33x = "master"
 
-SRC_URI_am335x = "git://${HOME}/linux-am335x;branch=${SRCBRANCH}"
+SRC_URI_ti33x = "git://${HOME}/linux-am335x;branch=${SRCBRANCH}"
 SRCREV = "${AUTOREV}"
 PV = "${LINUX_VERSION}-git${SRCPV}"
 S = "${WORKDIR}/git"
-COMPATIBLE_MACHINE = "(am335x)"
+COMPATIBLE_MACHINE = "(ti33x)"
 
 #phyflex am335x
 SRC_URI_append_phyflex-am335x-2013-01 = " file://defconfig"

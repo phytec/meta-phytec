@@ -1,5 +1,5 @@
 #Taken from TI yocto BSP Layer Version 05-2014, original name:ti33xx.inc
-SOC_FAMILY = "am335x"
+SOC_FAMILY = "ti33x"
 
 require conf/machine/include/soc-family.inc
 require conf/machine/include/tune-cortexa8.inc
@@ -14,9 +14,9 @@ XSERVER = "xserver-xorg \
            xf86-input-keyboard"
 
 # Default to external video, change to smallscreen for built-in LCD
-GUI_MACHINE_CLASS = "bigscreen"
+GUI_MACHINE_CLASS = "smallscreen"
 
-# Default providers, may need to override for specific machines
+# Default providers
 PREFERRED_PROVIDER_virtual/kernel ?= "linux-phytec"
 PREFERRED_PROVIDER_virtual/bootloader ?= "barebox"
 KERNEL_IMAGETYPE ?= "zImage"
@@ -40,4 +40,4 @@ BAREBOX_IPL_BIN_DEPLOY = "MLO-${MACHINE}-${PV}-${PR}.img"
 BAREBOX_IPL_BIN_SYMLINK = "MLO"
 
 # List common SoC features, may need to add touchscreen for specific machines
-# MACHINE_FEATURES = "kernel26 apm usbgadget usbhost vfat ext2 screen alsa ethernet sgx"
+MACHINE_FEATURES = "kernel26 apm usbgadget usbhost vfat ext2 screen alsa ethernet sgx"
