@@ -23,6 +23,8 @@ The meta-phytec layer handles entities on cooperation level. That is:
 
   - licens files
   - logo and graphic design files
+  - patches for yocto
+  - software recipes not found in yocto
 
 It servers as an integration level for all BSPs developed by PHYTEC.
 Sublayers should be designed not to create interdependencies.
