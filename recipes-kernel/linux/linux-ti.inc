@@ -6,7 +6,7 @@ DESCRIPTION =   "Linux Kernel provided and supported by PHYTEC based on TIs \
 
 require common/recipes-kernel/linux/linux.inc
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/defconfigs-ti:${THISDIR}/defconfigs-ti/features"
+FILESEXTRAPATHS_prepend := "${THISDIR}/defconfigs-ti:${THISDIR}/defconfigs-ti/features:"
 
 SRCBRANCH_ti33x ?= "master"
 SRC_URI_ti33x = "git://${HOME}/linux-ti;branch=${SRCBRANCH}"
