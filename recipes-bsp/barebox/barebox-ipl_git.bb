@@ -1,7 +1,7 @@
 require common/recipes-bsp/barebox/barebox-ipl.inc
-require barebox-git.inc
+require server.inc
 
-FILESEXTRAPATHS_prepend_ti33x := "${THISDIR}/ipl-defconfigs:"
+FILESEXTRAPATHS_prepend_ti33x := "${THISDIR}/ipl-defconfigs:${THISDIR}/defconfigs/features:"
 
 # phyflex-am335x-1
 BRANCH_phyflex-am335x-1 = "WIP/2014.08.0/smk/phyflex"

@@ -1,7 +1,7 @@
 require common/recipes-bsp/barebox/barebox.inc
-require barebox-git.inc
+require server.inc
 
-FILESEXTRAPATHS_prepend_ti33x := "${THISDIR}/defconfigs:${THISDIR}/env:"
+FILESEXTRAPATHS_prepend_ti33x := "${THISDIR}/defconfigs:${THISDIR}/defconfigs/features:${THISDIR}/env:"
 
 SRC_URI += "file://defconfig"
 
