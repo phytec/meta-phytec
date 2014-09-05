@@ -18,7 +18,7 @@ GUI_MACHINE_CLASS = "smallscreen"
 
 # Default providers
 PREFERRED_PROVIDER_virtual/kernel ?= "linux-ti"
-PREFERRED_PROVIDER_virtual/bootloader ?= "barebox-phy"
+PREFERRED_PROVIDER_virtual/bootloader ?= "barebox"
 KERNEL_IMAGETYPE ?= "zImage"
 PACKAGE_INSTALL_append = " kernel-modules"
 SERIAL_CONSOLES ?= "115200;ttyO0"
@@ -33,7 +33,6 @@ SERIAL_CONSOLES ?= "115200;ttyO0"
 # and u-boot.
 #UBI_VOLNAME = "rootfs"
 
-#EXTRA_IMAGEDEPENDS += "barebox-phy barebox-ipl-phy"
 BAREBOX_DEFAULT_DEFCONFIG = "am335x_defconfig"
 BAREBOX_IPL_DEFAULT_DEFCONFIG = "am335x_mlo_defconfig"
 BAREBOX_IPL_BIN_DEPLOY = "MLO-${MACHINE}-${PV}-${PR}.img"
