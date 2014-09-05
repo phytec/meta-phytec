@@ -1,0 +1,8 @@
+*.inc
+repositories hosted by PHYTEC
+
+linux-ti-phy
+phytec build system for phytec hosted kernel build ontop of ti staging
+
+#linux-ti-staging_...bbappend
+#uses the meta-ti kernel build system and just drops in the phytec kernel branch
