@@ -11,5 +11,5 @@ SRCBRANCH_phyflex-am335x-1 = "v3.12.24-phy"
 COMPATIBLE_MACHINE_phyflex-am335x-1 = "(phyflex-am335x-1)"
 
 #phycore am335x
-SRCBRANCH_phycore-am335x-1 = "WIP/smk/Unified-AM335x-PD14.1.0_3_1"
+SRCBRANCH_phycore-am335x-1 = "v3.12.24-phy"
 COMPATIBLE_MACHINE_phycore-am335x-1 = "(phycore-am335x-1)"
