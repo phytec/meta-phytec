@@ -2,7 +2,10 @@
 # PHYTEC Messtechnik GmbH
 require recipes-kernel/linux/linux-ti.inc
 
-SRC_URI_append_ti33x = " file://defconfig"
+SRC_URI_append_ti33x = " \
+    file://defconfig \
+    file://systemd.cfg \
+"
 LINUX_VERSION ?= "3.12.24-phy"
 SRCBRANCH_ti33x ??= "3.12.y-phy"
 
