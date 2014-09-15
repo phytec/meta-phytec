@@ -32,6 +32,7 @@ IMAGE_INSTALL = " \
     tslib-conf \
     tslib-calibrate \
     tslib-tests \
+    memedit \
 "
 
 export IMAGE_BASENAME = "phytec-hwbringup"
