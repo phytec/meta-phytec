@@ -29,7 +29,9 @@ IMAGE_INSTALL = " \
     rt-tests \
     evtest \
     bc \
-    tslib \
+    tslib-conf \
+    tslib-calibrate \
+    tslib-tests \
 "
 
 export IMAGE_BASENAME = "phytec-hwbringup"
