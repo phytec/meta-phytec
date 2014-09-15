@@ -22,8 +22,9 @@ PREFERRED_PROVIDER_virtual/bootloader ?= "barebox"
 KERNEL_IMAGETYPE ?= "zImage"
 PACKAGE_INSTALL_append = " kernel-modules"
 SERIAL_CONSOLES ?= "115200;ttyO0"
-#IMAGE_CLASSES += "sdcard_image-phy"
-#IMAGE_FSTYPES += "sdimg-phy"
+IMAGE_CLASSES += "sdcard_image-phy"
+# dont install kernelimage to rootfs
+RDEPENDS_kernel-base = ""
 
 #UBOOT_ARCH = "arm"
 #UBOOT_MACHINE = "am335x_evm_config"
