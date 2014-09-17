@@ -28,7 +28,7 @@ Maintainers List:
 		-----------------------------------
 COMMON
 M:	Christian Hemp <s.hemp@phytec.de>
-F:	meta-phyiMX6/
+F:	meta-phyimx6/
 
 M:	Stefan Müller-Klieser <s.mueller-klieser@phytec.de>
 F:	common/
