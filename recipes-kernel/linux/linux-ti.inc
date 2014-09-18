@@ -8,7 +8,7 @@ require common/recipes-kernel/linux/linux.inc
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/defconfigs-ti:${THISDIR}/defconfigs-ti/features:"
 
-SRCBRANCH_ti33x ?= "master"
+SRCBRANCH_ti33x ??= "master"
 SRC_URI_ti33x = "git://${HOME}/linux-ti;branch=${SRCBRANCH}"
 SRCREV = "${AUTOREV}"
 PV = "${LINUX_VERSION}-git${SRCPV}"

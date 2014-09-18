@@ -6,13 +6,11 @@ SRC_URI_append_ti33x = " \
     file://defconfig \
     file://systemd.cfg \
 "
-LINUX_VERSION ?= "3.12.24-phy"
-SRCBRANCH_ti33x ??= "3.12.y-phy"
+LINUX_VERSION_ti33x ?= "3.12.24-phy"
+SRCBRANCH_ti33x ?= "3.12.24-phy"
 
 #phyflex am335x
-SRCBRANCH_phyflex-am335x-1 = "v3.12.24-phy"
 COMPATIBLE_MACHINE_phyflex-am335x-1 = "(phyflex-am335x-1)"
 
 #phycore am335x
-SRCBRANCH_phycore-am335x-1 = "v3.12.24-phy"
 COMPATIBLE_MACHINE_phycore-am335x-1 = "(phycore-am335x-1)"
