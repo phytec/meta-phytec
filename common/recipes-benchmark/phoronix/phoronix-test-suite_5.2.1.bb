@@ -10,23 +10,22 @@ LICENSE = "GPL-3.0"
 LIC_FILES_CHKSUM = "file://COPYING;md5=d32239bcb673463ab874e80d47fae504"
 
 RDEPENDS_${PN} = "php"
-FILES_${PN} = " \
-    bin \
-    share \
-    /etc \
-"
-SRC_URI =  "http://www.phoronix-test-suite.com/releases/phoronix-test-suite-5.2.1.tar.gz"
-#"http://www.phoronix-test-suite.com/download.php?file=phoronix-test-suite-5.2.1;downloadfilename=${BP}.tar.gz"
+SRC_URI =  "http://www.phoronix-test-suite.com/releases/{BP}.tar.gz"
 SRC_URI[md5sum] = "51e52d883710dc516c5494bd1c377219"
 SRC_URI[sha256sum] = "1186f460691e2fe7a07df5edb8d8ed1ac0c65327512e646da2b2e3a60dda6cd9"
-
-S = "${WORKDIR}/${PN}"
-DESTDIR="${D}"
 
 do_configure () {
 }
 do_compile () {
 }
 do_install () {
-    ./install-sh
+    DESTDIR=${D} ./install-sh ${exec_prefix}
 }
+
+FILES_${PN} += " \
+${datadir}/phoronix-test-suite \
+${datadir}/appdata/phoronix-test-suite.appdata.xml \
+${datadir}/icons/hicolor/48x48/apps/phoronix-test-suite.png \
+${datadir}/icons/hicolor/64x64/mimetypes/application-x-openbenchmarking.png \
+${datadir}/mime/packages/openbenchmarking-mime.xml \
+"
