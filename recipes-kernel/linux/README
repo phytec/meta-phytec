@@ -1,7 +1,7 @@
 *.inc
 repositories hosted by PHYTEC
 
-linux-ti-phy
+linux-ti
 phytec build system for phytec hosted kernel build ontop of ti staging
 
 #linux-ti-staging_...bbappend

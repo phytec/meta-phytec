@@ -8,8 +8,9 @@ require common/recipes-kernel/linux/linux.inc
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/defconfigs-ti:${THISDIR}/defconfigs-ti/features:"
 
-SRCBRANCH_ti33x ??= "master"
-SRC_URI_ti33x = "git://${HOME}/linux-ti;branch=${SRCBRANCH}"
+BRANCH ??= "master"
+SRC_URI = "${GITSERVER}/linux-ti;branch=${BRANCH}"
 SRCREV = "${AUTOREV}"
+LINUX_VERION ??= "UNASSIGNED"
 PV = "${LINUX_VERSION}-git${SRCPV}"
-COMPATIBLE_MACHINE = "(ti33x)"
+COMPATIBLE_MACHINE_ti33x = "(ti33x)"
