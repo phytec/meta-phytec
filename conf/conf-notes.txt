@@ -1,0 +1,3 @@
+Tested build targets for the yocto bsp are:
+	phytec-hwbringup-image
+	phytec-qt4demo-image

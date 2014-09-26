@@ -1,0 +1,22 @@
+# LAYER_CONF_VERSION is increased each time build/conf/bblayers.conf
+# changes incompatibly
+LCONF_VERSION = "6"
+
+BBPATH = "${TOPDIR}"
+BBFILES ?= ""
+
+BBLAYERS ?= " \
+  ${TOPDIR}/../sources/poky/meta-yocto \
+  ${TOPDIR}/../sources/poky/meta-yocto-bsp \
+  ${TOPDIR}/../sources/poky/meta \
+  ${TOPDIR}/../sources/meta-phytec/meta-phyam335x \
+  ${TOPDIR}/../sources/meta-phytec \
+  ${TOPDIR}/../sources/meta-yogurt \
+  ${TOPDIR}/../sources/meta-openembedded/meta-oe \
+  ${TOPDIR}/../sources/meta-qt5 \
+"
+
+BBLAYERS_NON_REMOVABLE ?= " \
+  ${TOPDIR}/../sources/poky/meta \
+  ${TOPDIR}/../sources/poky/meta-yocto \
+"

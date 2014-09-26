@@ -1,0 +1,25 @@
+DISTRO ?= "poky"
+MACHINE ?= "UNASSIGNED"
+IMAGE_FSTYPES += "sdimg-phy"
+IMAGE_FSTYPES += "tar.gz"
+DEPLOY_DIR = "${TOPDIR}/deploy"
+PACKAGE_CLASSES ?= "package_rpm"
+#SDKMACHINE ?= "x86_64"
+EXTRA_IMAGE_FEATURES = "debug-tweaks"
+USER_CLASSES ?= "buildstats image-mklibs image-prelink"
+#TEST_IMAGE = "1"
+OE_TERMINAL = "auto"
+PATCHRESOLVE = "noop"
+BB_DISKMON_DIRS = "\
+    STOPTASKS,${TMPDIR},1G,100K \
+    STOPTASKS,${DL_DIR},1G,100K \
+    STOPTASKS,${SSTATE_DIR},1G,100K \
+    ABORT,${TMPDIR},100M,1K \
+    ABORT,${DL_DIR},100M,1K \
+    ABORT,${SSTATE_DIR},100M,1K" 
+INHERIT += "phytec-mirrors
+#Qemu config
+#PACKAGECONFIG_append_pn-qemu-native = " sdl"
+#PACKAGECONFIG_append_pn-nativesdk-qemu = " sdl"
+#ASSUME_PROVIDED += "libsdl-native"
+CONF_VERSION = "1"
