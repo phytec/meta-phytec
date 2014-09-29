@@ -1,6 +1,6 @@
 DISTRO ?= "poky"
 MACHINE ?= "UNASSIGNED"
-IMAGE_FSTYPES += "sdimg-phy"
+IMAGE_FSTYPES += "sdimg-phy ext3"
 IMAGE_FSTYPES += "tar.gz"
 DEPLOY_DIR = "${TOPDIR}/deploy"
 PACKAGE_CLASSES ?= "package_rpm"
@@ -17,7 +17,7 @@ BB_DISKMON_DIRS = "\
     ABORT,${TMPDIR},100M,1K \
     ABORT,${DL_DIR},100M,1K \
     ABORT,${SSTATE_DIR},100M,1K" 
-INHERIT += "phytec-mirrors
+INHERIT += "phytec-mirrors"
 #Qemu config
 #PACKAGECONFIG_append_pn-qemu-native = " sdl"
 #PACKAGECONFIG_append_pn-nativesdk-qemu = " sdl"
