@@ -4,7 +4,6 @@ require recipes-kernel/linux/linux-ti.inc
 
 SRC_URI_append = " \
 file://defconfig \
-file://systemd.cfg \
 "
 LINUX_VERSION ?= "3.12.24-phy"
 BRANCH ?= "3.12.24-phy"

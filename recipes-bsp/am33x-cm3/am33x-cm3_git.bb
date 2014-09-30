@@ -5,11 +5,11 @@ DESCRIPTION = "Cortex-M3 binary blob for suspend-resume"
 LICENSE = "BSD-3-Clause"
 LIC_FILES_CHKSUM = "file://License.txt;md5=7bdc54a749ab7a7dea999d25d99a41b8"
 
-PV = "1.8.7"
+PV = "1.8.9"
 PR = "r1"
 PE = "1"
 
-SRCREV = "fffeab4236d4129ab046bb7081a8ac244134ad89"
+SRCREV = "4e219d5053ee41b8fa8f85b48b1529ae4c6feb48"
 BRANCH ?= "next"
 
 SRC_URI = "git://git.ti.com/ti-cm3-pm-firmware/amx3-cm3.git;protocol=git;branch=${BRANCH}"
