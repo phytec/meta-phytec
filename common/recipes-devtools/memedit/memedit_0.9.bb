@@ -9,7 +9,7 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=94d55d512a9ba36caa9b7df079bae19f"
 
 inherit autotools 
 
-DEPENDS = "readline genparse libtool"
+DEPENDS = "readline genparse-native libtool"
 
 SRC_URI = "http://www.pengutronix.de/software/memedit/downloads/memedit-0.9.tar.gz"
 SRC_URI[md5sum] = "fd8eb827c3072baf8678d9d33e5d6458"
