@@ -28,7 +28,9 @@ RDEPENDS_kernel-base = ""
 # dont create legacy tarball of modules
 MODULE_TARBALL_DEPLOY = "0"
 # powermanagement firmware for the on-die Cortex M3
-RDEPENDS_kernel-modules_append = " am33x-cm3"
+# the newer version makes a lot of problems dont include
+# per default
+# RDEPENDS_kernel-modules_append = " am33x-cm3"
 
 # rootfs images
 # register image class for usage
