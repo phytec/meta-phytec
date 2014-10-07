@@ -11,7 +11,7 @@ S = "${WORKDIR}/barebox-${PV}"
 
 # Pre Bootloader 
 BAREBOX_IPL_BIN ?= "barebox.bin"
-BAREBOX_IPL_BIN_DEPLOY ?= "IPL-${MACHINE}-${PV}-${PR}.bin"
+BAREBOX_IPL_BIN_DEPLOY ?= "IPL-${MACHINE}-${PKGV}-${PKGR}.bin"
 BAREBOX_IPL_BIN_SYMLINK ?= "IPL"
 BAREBOX_IPL_DEFAULT_DEFCONFIG ?= ""
 
