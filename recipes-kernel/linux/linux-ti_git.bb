@@ -6,7 +6,7 @@ SRC_URI_append = " \
 file://defconfig \
 "
 LINUX_VERSION ?= "3.12.24-phy"
-BRANCH ?= "3.12.24-phy"
+BRANCH ?= "v3.12.24-phy"
 
 #phyflex am335x
 COMPATIBLE_MACHINE_phyflex-am335x-1 = "(phyflex-am335x-1)"
