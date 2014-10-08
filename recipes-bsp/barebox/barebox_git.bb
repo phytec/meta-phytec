@@ -5,5 +5,5 @@ FILESEXTRAPATHS_prepend_ti33x := "${THISDIR}/defconfigs:${THISDIR}/defconfigs/fe
 
 SRC_URI_append = " file://defconfig file://environment"
 
-BRANCH = "v2014.08.0-phy"
-PV = "v2014.08.0-phy-git${SRCPV}"
+BRANCH = "v2014.10.0-phy"
+PV = "v2014.10.0-phy-git${SRCPV}"
