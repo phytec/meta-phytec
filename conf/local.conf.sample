@@ -1,5 +1,6 @@
-DISTRO ?= "poky"
+BSP_VERSION = "UNASSIGNED"
 MACHINE ?= "UNASSIGNED"
+DISTRO ?= "poky"
 IMAGE_FSTYPES += "sdimg-phy ext3"
 IMAGE_FSTYPES += "tar.gz"
 DEPLOY_DIR = "${TOPDIR}/deploy"
