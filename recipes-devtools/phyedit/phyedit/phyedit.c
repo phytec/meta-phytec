@@ -7,6 +7,7 @@
  */
 
 #include <stdio.h>
+#include <errno.h>
 #include <unistd.h>
 #include <sys/mman.h>
 #include <fcntl.h>
@@ -14,9 +15,6 @@
 #define MDIO                    0x4A101000
 #define MDIOUSERACCESS0         0x80
  
-#define MDIO_PREAMBLE (1 << 20)
-#define MDCLK_DIVIDER (0x255)
-#define MDIO_ENABLE (1 << 30)
 #define MDIO_GO (1 << 31)
 #define MDIO_WRITE (1 << 30)
 #define MDIO_ACK (1 << 29)
@@ -61,25 +59,20 @@ unsigned int phy_read(unsigned char *mdio, unsigned int phy, unsigned int reg)
         return val;
 }
  
- 
-#define MII_KSZ9031RN_MMD_CTRL_REG      0x0d
-#define MII_KSZ9031RN_MMD_REGDATA_REG   0x0e
-#define OP_DATA                         1
-#define KSZ9031_PS_TO_REG               60
- 
-/* Extended registers */
-#define MII_KSZ9031RN_CONTROL_PAD_SKEW  4
-#define MII_KSZ9031RN_RX_DATA_PAD_SKEW  5
-#define MII_KSZ9031RN_TX_DATA_PAD_SKEW  6
-#define MII_KSZ9031RN_CLK_PAD_SKEW      8
- 
-unsigned int ksz9031_extended_read(unsigned char *mdio, unsigned int mode,
-        unsigned int phy, unsigned int reg)
+unsigned int phy_read_mmd(unsigned char *mdio, unsigned int devad,
+        unsigned int phyad, unsigned int reg)
 {
-        phy_write(mdio, phy, MII_KSZ9031RN_MMD_CTRL_REG, phy);
-        phy_write(mdio, phy, MII_KSZ9031RN_MMD_REGDATA_REG, reg);
-        phy_write(mdio, phy, MII_KSZ9031RN_MMD_CTRL_REG, (mode << 14) | phy);
-        return phy_read(mdio, phy, MII_KSZ9031RN_MMD_REGDATA_REG);
+        phy_write(mdio, phyad, 0x0D, devad);
+        phy_write(mdio, phyad, 0x0E, reg);
+        phy_write(mdio, phyad, 0x0D, (1 << 14) | devad);
+        return phy_read(mdio, phyad, 0x0E);
+}
+ 
+unsigned int phy_read_ext(unsigned char *mdio, unsigned int phyad,
+        unsigned int reg)
+{
+        phy_write(mdio, phyad, 0x0B, reg);
+        return phy_read(mdio, phyad, 0x0D);
 }
  
 int main(int argc, char *argv[])
@@ -87,6 +80,11 @@ int main(int argc, char *argv[])
         int fd;
         unsigned char *mem;
         unsigned int r;
+        int phyad = 0;
+        unsigned int phy_id1, phy_id2;
+ 
+        if (argc > 1)
+                phyad = atoi(argv[1]);
  
         fd = open("/dev/mem", O_RDWR);
         if (fd < 0) {
@@ -96,15 +94,35 @@ int main(int argc, char *argv[])
  
         mem = (unsigned char*)mmap(0, 0x1000, PROT_READ | PROT_WRITE,
                 MAP_FILE | MAP_SHARED, fd, MDIO);
+        if (mem == MAP_FAILED) {
+                perror("mmap");
+                return errno;
+        }
  
-        printf("MMD Address 2h, Register 4h \t 0x%X\n",
-                ksz9031_extended_read(mem, OP_DATA, 0x2, 4));
-        printf("MMD Address 2h, Register 5h \t 0x%X\n",
-                ksz9031_extended_read(mem, OP_DATA, 0x2, 5));
-        printf("MMD Address 2h, Register 6h \t 0x%X\n",
-                ksz9031_extended_read(mem, OP_DATA, 0x2, 6));
-        printf("MMD Address 2h, Register 8h \t 0x%X\n",
-                ksz9031_extended_read(mem, OP_DATA, 0x2, 8));
+        phy_id1 = phy_read(mem, phyad, 2);
+        phy_id2 = phy_read(mem, phyad, 3);
+        printf("Register 0x2 =\t 0x%X\n", phy_id1);
+        printf("Register 0x3 =\t 0x%X\n", phy_id2);
+ 
+        if (phy_id1 == 0x22 && phy_id2 == 0x1622) {
+                printf("### KSZ9031\n");
+                printf("MMD Address 2h, Register 4h =\t 0x%X\n",
+                        phy_read_mmd(mem, 2, phyad, 4));
+                printf("MMD Address 2h, Register 5h =\t 0x%X\n",
+                        phy_read_mmd(mem, 2, phyad, 5));
+                printf("MMD Address 2h, Register 6h =\t 0x%X\n",
+                        phy_read_mmd(mem, 2, phyad, 6));
+                printf("MMD Address 2h, Register 8h =\t 0x%X\n",
+                        phy_read_mmd(mem, 2, phyad, 8));
+        } else if (phy_id1 == 0x22 && phy_id2 == 0x1611) {
+                printf("### KSZ9021\n");
+                printf("Register 0x104 =\t 0x%X\n",
+                        phy_read_ext(mem, phyad, 0x104));
+                printf("Register 0x105 =\t 0x%X\n",
+                        phy_read_ext(mem, phyad, 0x105));
+                printf("Register 0x106 =\t 0x%X\n",
+                        phy_read_ext(mem, phyad, 0x106));
+        }
  
         munmap(mem, 0x1000);
  
