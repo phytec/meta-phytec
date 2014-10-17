@@ -34,7 +34,6 @@ IMAGE_INSTALL = " \
     tslib-tests \
     memedit \
     fb-test \
-    phyedit \
 "
 
 export IMAGE_BASENAME = "phytec-hwbringup"
