@@ -33,7 +33,7 @@ python do_prepare_configure() {
     if not os.path.isfile(defconfig):
         bb.note("No defconfig file provided for the recipe")
         if not os.path.isfile(config):
-            bb.note("barebox is not configured")
+            bb.note("kernel is not configured")
             bb.build.exec_func("do_default_defconfig",d)
         bb.build.exec_func("do_savedefconfig",d)
         defconfig = os.path.join(workdir , 'defconfig.temp') 
@@ -52,3 +52,10 @@ python do_prepare_configure() {
     subprocess.call(cmd,shell=True)
 }
 addtask do_prepare_configure after do_patch before do_configure
+
+do_default_defconfig () {
+    bbnote "generating .config for target ${KERNEL_DEFAULT_DEFCONFIG}"
+    unset CFLAGS LDFLAGS
+    oe_runmake ${KERNEL_DEFAULT_DEFCONFIG}
+}
+
