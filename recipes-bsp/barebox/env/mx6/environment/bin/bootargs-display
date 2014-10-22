@@ -1,0 +1,7 @@
+#!/bin/sh
+
+. /env/video/display
+
+if [ -n $display ]; then
+	global.linux.bootargs.dyn.display="da8xx_fb.panel_name=$display"
+fi

@@ -1,0 +1,60 @@
+This README file contains information on building the meta-phyimx6
+BSP layer, and booting the images contained in the /binary directory.
+Please see the corresponding sections below for details.
+
+This BSP is made specifically for all PHYTEC boards using a 
+Freescale i.MX 6 Series Processor
+
+Further information on the hardware can be found here:
+
+  http://www.phytec.de
+
+
+Yocto Project Compatible
+========================
+
+This BSP is compatible with the Yocto Project as per the requirements
+listed here:
+
+  https://www.yoctoproject.org/webform/yocto-project-compatible-registration
+
+
+Dependencies
+============
+
+This layer depends on:
+
+  URI: git://git.openembedded.org/bitbake
+  branch: master
+
+  URI: git://git.openembedded.org/openembedded-core
+  layers: meta
+  branch: master
+
+  URI: git://git.phytec.de/meta-phytec
+  layers: phytec
+  branch: master
+
+
+Patches
+=======
+
+Please submit any patches against this BSP to the PHYTEC maintainer:
+
+Maintainer: Christian Hemp <c.hemp@phytec.de>
+
+Please see the meta-phytec/MAINTAINERS file for more details.
+
+
+Table of Contents
+=================
+
+  I. Building the meta-phyimx6 BSP layer
+ II. Booting the images in /binary
+
+
+I. Building the meta-phyimx6 BSP layer
+=========================================
+
+II. Booting the images in /binary
+=================================
