@@ -12,7 +12,6 @@ BAREBOX_DEFAULT_DEFCONFIG = "freescale-mx6-arm2_defconfig"
 
 # Kernel 
 PREFERRED_PROVIDER_virtual/kernel ?= "linux-mainline"
-PREFERRED_VERSION_linux-mainline ?= "3.17-phy"
 KERNEL_IMAGETYPE ?= "zImage"
 # install modules in initramfs
 PACKAGE_INSTALL_append = " kernel-modules"
