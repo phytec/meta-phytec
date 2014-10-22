@@ -59,3 +59,9 @@ do_default_defconfig () {
     oe_runmake ${KERNEL_DEFAULT_DEFCONFIG}
 }
 
+do_savedefconfig() {
+    bbplain "saving defconfig to ${WORKDIR}/defconfig.temp"
+    oe_runmake savedefconfig
+    install -m 644 ${S}/defconfig ${WORKDIR}/defconfig.temp
+}
+addtask savedefconfig after do_configure
