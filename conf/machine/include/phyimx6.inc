@@ -17,7 +17,7 @@ KERNEL_IMAGETYPE ?= "zImage"
 PACKAGE_INSTALL_append = " kernel-modules"
 # install modules into rootfs
 IMAGE_INSTALL_append = " kernel-modules"
-SERIAL_CONSOLES ?= "115200;ttymxc0"
+SERIAL_CONSOLES ?= "115200;ttymxc3"
 # dont install kernelimage to rootfs
 RDEPENDS_kernel-base = ""
 # dont create legacy tarball of modules
