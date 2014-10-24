@@ -18,9 +18,9 @@ BBLAYERS = " \
   ${BSPDIR}/sources/meta-phytec \
   ${BSPDIR}/sources/meta-phytec/meta-phyimx6 \
   \
-  ${BSPDIR}/sources/meta-fsl-arm"
-  ${BSPDIR}/sources/meta-fsl-arm-extra"
-  ${BSPDIR}/sources/meta-fsl-demos"
+  ${BSPDIR}/sources/meta-fsl-arm \
+  ${BSPDIR}/sources/meta-fsl-arm-extra \
+  ${BSPDIR}/sources/meta-fsl-demos \
   \
   ${BSPDIR}/sources/meta-openembedded/meta-oe \
   ${BSPDIR}/sources/meta-openembedded/meta-networking \
