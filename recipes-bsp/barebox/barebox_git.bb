@@ -9,6 +9,7 @@ SRC_URI = " \
 
 S = "${WORKDIR}/git"
 
+BAREBOX_BIN_SYMLINK = "barebox-${MACHINE}.bin"
 
 # floating revision
 SRCREV = "${AUTOREV}"
