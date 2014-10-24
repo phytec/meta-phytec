@@ -35,6 +35,7 @@ IMAGE_INSTALL = " \
     memedit \
     fb-test \
     perf \
+    sshd \
 "
 
 export IMAGE_BASENAME = "phytec-hwbringup"
