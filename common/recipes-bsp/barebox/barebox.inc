@@ -11,7 +11,8 @@ DESCRIPTION = "Barebox (formerly known as u-boot-v2) is a bootloader that \
 	       look-and-feel of u-boot, with driver model and lots of design \
 	       concepts from the kernel. \
 	       The bb recipe adds config fragment support and kconfig \
-	       command handling using the yocto kern-tools-native."
+	       command handling using the yocto kern-tools-native and \
+	       kconfig-frontends-native."
 HOMEPAGE = "http://www.barebox.org"
 SECTION = "bootloaders"
 PROVIDES = "virtual/bootloader barebox"
@@ -20,7 +21,7 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=057bf9e50e1ca857d0eb97bfe4ba8e5d"
 SRC_URI = "http://barebox.org/download/barebox-${PV}.tar.bz2"
 
 inherit kernel-arch cml1 deploy
-DEPENDS += "kern-tools-native"
+DEPENDS += "kern-tools-native kconfig-frontends-native"
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 # verbose build 0/1
 VERBOSE_BUILD ?= "0"
