@@ -1,0 +1,22 @@
+Tested build targets for the yocto bsp are:
+	bitbake phytec-hwbringup-image
+	bitbake phytec-qt4demo-image
+
+
+██████╗ ██╗  ██╗██╗   ██╗████████╗███████╗ ██████╗
+██╔══██╗██║  ██║╚██╗ ██╔╝╚══██╔══╝██╔════╝██╔════╝
+██████╔╝███████║ ╚████╔╝    ██║   █████╗  ██║     
+██╔═══╝ ██╔══██║  ╚██╔╝     ██║   ██╔══╝  ██║     
+██║     ██║  ██║   ██║      ██║   ███████╗╚██████╗
+╚═╝     ╚═╝  ╚═╝   ╚═╝      ╚═╝   ╚══════╝ ╚═════╝
+
+
+################################################
+## WARNING!! Dev build                        ##
+## You are running a phytec developer build   ##
+## if you are not working inside phytecs      ##
+## company network, thats probably not what   ##
+## you want!                                  ##
+################################################
+
+

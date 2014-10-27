@@ -1,0 +1,39 @@
+From d24b7bc01fcc47301d174c2beed6ea122d930ec8 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Stefan=20M=C3=BCller-Klieser?= <s.mueller-klieser@phytec.de>
+Date: Mon, 22 Sep 2014 11:02:25 +0200
+Subject: [PATCH] phyflex: try without fixups
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Stefan Müller-Klieser <s.mueller-klieser@phytec.de>
+---
+ arch/arm/boot/dts/am335x-phyflex-som.dtsi | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/arch/arm/boot/dts/am335x-phyflex-som.dtsi b/arch/arm/boot/dts/am335x-phyflex-som.dtsi
+index 3263f47..bc97761 100644
+--- a/arch/arm/boot/dts/am335x-phyflex-som.dtsi
++++ b/arch/arm/boot/dts/am335x-phyflex-som.dtsi
+@@ -103,14 +103,15 @@
+ 
+ 	/* clock skew correction, maximum possible on KSZ9031 is
+ 	2^5 - 1 * 0,06ns = 1860ps, micrel datasheet M9999-081712-0.11 p.58*/
+-	rxc-skew-ps = <1860>;
++/*	rxc-skew-ps = <1860>;
+ 	txc-skew-ps = <1860>;
+-
++*/
+ 	/* align tx signals to zero, leave rx to default */
+-	txd0-skew-ps = <0>;
++/*	txd0-skew-ps = <0>;
+ 	txd1-skew-ps = <0>;
+ 	txd2-skew-ps = <0>;
+ 	txd3-skew-ps = <0>;
++*/
+ };
+ 
+ &cpsw_emac1 {
+-- 
+1.9.1
+

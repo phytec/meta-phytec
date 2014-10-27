@@ -20,7 +20,7 @@ BBLAYERS = " \
 
 BBLAYERS += "${BSPDIR}/sources/meta-phytec"
 BBLAYERS += "${BSPDIR}/sources/meta-phytec/meta-phyam335x"
-#BBLAYERS += "${BSPDIR}/sources/meta-phytec/meta-phyam335x/meta-phyintern"
+BBLAYERS += "${BSPDIR}/sources/meta-phytec/meta-phyam335x/meta-phyintern"
 #BBLAYERS += "${BSPDIR}/sources/meta-phytec/meta-phyimx6"
 #BBLAYERS += "${BSPDIR}/sources/meta-phytec/meta-phyimx6/meta-phyintern"
 #BBLAYERS += "${BSPDIR}/sources/meta-yogurt"

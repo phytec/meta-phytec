@@ -1,6 +1,6 @@
 state.audio {
 }
-state.SoundcardTLV320 {
+state.OnboardTLV320AI {
 	control.1 {
 		iface MIXER
 		name 'PCM Playback Volume'

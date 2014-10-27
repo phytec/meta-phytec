@@ -1,9 +1,14 @@
 require common/recipes-bsp/barebox/barebox-ipl.inc
-require server.inc
 
-FILESEXTRAPATHS_prepend_ti33x := "${THISDIR}/ipl-defconfigs:${THISDIR}/defconfigs/features:"
+FILESEXTRAPATHS_prepend := "${THISDIR}/ipl-defconfigs:${THISDIR}/defconfigs/features:"
 
+SRC_URI = "git://git.phytec.de/barebox;branch=${BRANCH}"
 SRC_URI_append = " file://defconfig"
+
+# floating revision
+SRCREV = "${AUTOREV}"
+S = "${WORKDIR}/git"
+COMPATIBLE_MACHINE_ti33x = "(ti33x)"
 
 BRANCH = "v2014.10.0-phy"
 PV = "v2014.10.0-phy-git${SRCPV}"

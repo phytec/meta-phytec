@@ -1,0 +1,66 @@
+BSP_VERSION = "PD14.1-rc1"
+DISTRO = "poky"
+#DISTRO = "yogurt"
+MACHINE = "phyflex-am335x-1"
+#MACHINE = "phyboard-wega-1"
+#MACHINE = "phycore-am335x-1"
+#IMAGE_INSTALL_append = " fb-test"
+PREFERRED_PROVIDER_jpeg = "jpeg"
+
+#INHERIT += "externalsrc"
+#EXTERNALSRC_pn-linux-ti = "${HOME}/linux-ti"
+#EXTERNALSRC_BUILD_pn-linux-ti = "${HOME}/linux-ti"
+#SRCTREECOVEREDTASKS = "do_prepare_configure do_patch do_unpack do_fetch"
+#PV_pn-linux-ti = "${LINUX_VERSION}"
+
+IMAGE_FSTYPES += "sdimg-phy ext3"
+IMAGE_FSTYPES += "tar.gz"
+#IMAGE_INSTALL += "scummvm"
+#LICENSE_FLAGS_WHITELIST = "commercial"
+#DISTRO_FEATURES_append = " directfb"
+BB_NUMBER_THREADS ?= "${@oe.utils.cpu_count()}"
+PARALLEL_MAKE ?= "-j ${@oe.utils.cpu_count()}"
+
+#angstrom/yogurt options
+#PREFERRED_PROVIDER_virtual/mesa = "mesa-gl"
+#PREFERRED_PROVIDER_virtual/libgl = "mesa-gl"
+#PREFERRED_PROVIDER_virtual/libgles1 = "libgles-omap3"
+#PREFERRED_PROVIDER_virtual/libgles2 = "libgles-omap3"
+#PREFERRED_PROVIDER_virtual/egl = "libgles-omap3"
+#IMAGE_INSTALL_append = " omap3-sgx-modules libgles-omap3 libgles-omap3-linuxfbwsegl"
+#MULTI_PROVIDER_WHITELIST += "virtual/mesa virtual/libgl"
+#IMAGE_INSTALL_remove = "packagegroup-gnome-apps"
+#TCLIBC = "glibc"
+
+#DL_DIR ?= "/home/yocto_downloads"
+#SSTATE_DIR ?= "/home/yocto_sstate/1.7"
+DEPLOY_DIR = "${TOPDIR}/deploy"
+TMPDIR = "${TOPDIR}/tmp"
+PACKAGE_CLASSES ?= "package_ipk"
+SDKMACHINE ?= "x86_64"
+EXTRA_IMAGE_FEATURES = "debug-tweaks ssh-server-openssh"
+USER_CLASSES ?= "buildstats image-mklibs image-prelink"
+#TEST_IMAGE = "1"
+OE_TERMINAL = "auto"
+PATCHRESOLVE = "noop"
+BB_DISKMON_DIRS = "\
+    STOPTASKS,${TMPDIR},1G,100K \
+    STOPTASKS,${DL_DIR},1G,100K \
+    STOPTASKS,${SSTATE_DIR},1G,100K \
+    ABORT,${TMPDIR},100M,1K \
+    ABORT,${DL_DIR},100M,1K \
+    ABORT,${SSTATE_DIR},100M,1K" 
+#SSTATE_MIRRORS ?= "\
+#file://.* http://someserver.tld/share/sstate/PATH;downloadfilename=PATH \n \
+#file://.* file:///some/local/dir/sstate/PATH"
+
+#PACKAGECONFIG_append_pn-qemu-native = " sdl"
+#PACKAGECONFIG_append_pn-nativesdk-qemu = " sdl"
+#ASSUME_PROVIDED += "libsdl-native"
+
+CONF_VERSION = "1"
+#CCACHE = "ccache"
+#INHERIT += "ccache"
+#CCACHE_DIR = "/home/mueller-klieser/.ccache"
+#CCACHE_DISABLE = "0"
+

@@ -1,0 +1,34 @@
+diff --git a/arch/arm/boot/dts/am335x-phyflex-rdk.dts b/arch/arm/boot/dts/am335x-phyflex-rdk.dts
+index 66e9d46..a03a36e 100644
+--- a/arch/arm/boot/dts/am335x-phyflex-rdk.dts
++++ b/arch/arm/boot/dts/am335x-phyflex-rdk.dts
+@@ -114,3 +114,29 @@
+ 		reg = <0xe0000 0x0>;
+ 	};
+ };
++
++/*enable display*/
++&lcdc {
++      status = "okay";
++};
++
++&panel {
++      status = "okay";
++};
++
++&epwmss2 {
++      status = "okay";
++};
++
++&ecap2 {
++      status = "okay";
++};
++
++&backlight {
++      status = "okay";
++};
++
++&i2c_ts {
++      status = "okay";
++};
++
