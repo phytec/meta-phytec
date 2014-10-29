@@ -9,6 +9,7 @@ IMAGE_INSTALL += "\
     ${CORE_IMAGE_BASE_INSTALL} \
     packagegroup-core-qt4e \
     icu \
+    packagegroup-userland \
 "
 
 inherit core-image

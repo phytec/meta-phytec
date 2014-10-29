@@ -10,28 +10,8 @@ IMAGE_ROOTFS_SIZE ?= "8192"
 
 IMAGE_INSTALL = " \
     packagegroup-core-boot \
-    ${ROOTFS_PKGMANAGE_BOOTSTRAP} \
-    ${CORE_IMAGE_EXTRA_INSTALL} \
-    usbutils \
-    ethtool \
-    i2c-tools \
-    alsa-utils \
-    devmem2 \
-    iw \
-    bonnie++ \
-    hdparm \
-    iozone3 \
-    iperf \
-    lmbench \
-    rt-tests \
-    evtest \
-    bc \
-    tslib-conf \
-    tslib-calibrate \
-    tslib-tests \
-    memedit \
-    fb-test \
-    perf \
+    packagegroup-hwtools \
+    packagegroup-benchmark \
 "
 
 export IMAGE_BASENAME = "phytec-hwbringup"
