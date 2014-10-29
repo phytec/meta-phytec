@@ -8,9 +8,6 @@ inherit core-image
 
 IMAGE_ROOTFS_SIZE ?= "8192"
 
-#build barebox too
-IMAGE_RDEPENDS += "barebox barebox-ipl"
-
 IMAGE_INSTALL = " \
     packagegroup-core-boot \
     ${ROOTFS_PKGMANAGE_BOOTSTRAP} \
@@ -35,7 +32,6 @@ IMAGE_INSTALL = " \
     memedit \
     fb-test \
     perf \
-    sshd \
 "
 
 export IMAGE_BASENAME = "phytec-hwbringup"
