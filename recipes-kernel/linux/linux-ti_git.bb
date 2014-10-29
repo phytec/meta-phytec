@@ -6,7 +6,7 @@ DESCRIPTION =   "Linux Kernel provided and supported by PHYTEC based on TIs \
 
 require common/recipes-kernel/linux/linux.inc
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/linux-ti-git/defconfigs:${THISDIR}/linux-ti-git/features:"
+FILESEXTRAPATHS_prepend := "${THISDIR}/linux-ti/defconfigs:${THISDIR}/linux-ti/features:"
 
 SRC_URI = "git://git.phytec.de/linux-ti;branch=${BRANCH}"
 SRC_URI_append = " \
