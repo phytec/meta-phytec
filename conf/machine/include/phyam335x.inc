@@ -13,8 +13,8 @@ BAREBOX_IPL_BIN_DEPLOY = "MLO-${MACHINE}-${PV}-${PR}.img"
 BAREBOX_IPL_BIN_SYMLINK = "MLO"
 # all am335x need an mlo, whenever we need a bootloader
 # we need to have a dependency to build the mlo too
-# TODO: add virtual/prebootloader
-DEPENDS_virtual/bootloader_append = " barebox-ipl"
+# TODO: add virtual/prebootloader and dependency
+DEPENDS_pn-barebox_append = " barebox-ipl"
 
 # Kernel 
 PREFERRED_PROVIDER_virtual/kernel ?= "linux-ti"
