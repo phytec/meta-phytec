@@ -1,12 +1,10 @@
 require common/recipes-bsp/barebox/barebox.inc
 FILESEXTRAPATHS_prepend := "${THISDIR}/defconfigs:${THISDIR}/defconfigs/features:${THISDIR}/env:"
 
-SRC_URI = " \
-  git://git.phytec.de/barebox;branch=${BRANCH} \
+SRC_URI = "git://git.phytec.de/barebox;branch=${BRANCH}"
+SRC_URI_append = " \
+    file://environment \
 "
-#SRC_URI += "file://defconfig"
-#SRC_URI += "file://environment"
-
 S = "${WORKDIR}/git"
 
 BAREBOX_BIN_SYMLINK = "barebox-${MACHINE}.bin"

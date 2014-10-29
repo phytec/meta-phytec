@@ -1,12 +1,18 @@
 # Copyright (C) 2014 Stefan Mueller-Klieser <s.mueller-klieser@phytec.de>
 # PHYTEC Messtechnik GmbH
+require common/recipes-kernel/linux/linux.inc
 
-require common/recipes-kernel/linux/linux-mainline.inc
+FILESEXTRAPATHS_prepend := "${THISDIR}/linux-mainline:${THISDIR}/linux-mainline/features:"
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/defconfigs-mainline:${THISDIR}/defconfigs-mainline/features:"
+SRC_URI = "git://git.phytec.de/linux-mainline;branch=${BRANCH}"
+SRC_URI_append = " \
+    file://defconfig \
+"
+
+SRCREV = "${AUTOREV}"
+PV = "${LINUX_VERSION}-git${SRCPV}"
 
 LINUX_VERSION ?= "3.17.1-phy"
 BRANCH ?= "v3.17.1-phy"
 
-#phyflex imx6
-COMPATIBLE_MACHINE_phyflex-imx6-1 = "(phyflex-imx6-1)"
+COMPATIBLE_MACHINE_mx6 = "(mx6)"
