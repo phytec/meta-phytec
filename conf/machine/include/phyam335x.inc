@@ -4,7 +4,7 @@ require conf/machine/include/soc-family.inc
 DEFAULTTUNE ?= "cortexa8thf-neon"
 require conf/machine/include/tune-cortexa8.inc
 # List common SoC features
-MACHINE_FEATURES = "kernel26 apm usbgadget usbhost vfat ext2 screen alsa ethernet"
+MACHINE_FEATURES = "kernel26 usbgadget usbhost vfat ext2 screen alsa ethernet sgx"
 
 # Bootloader
 PREFERRED_PROVIDER_virtual/bootloader ?= "barebox"
@@ -51,5 +51,3 @@ XSERVER = "xserver-xorg \
            xf86-input-keyboard"
 # Default to external video, change to smallscreen for built-in LCD
 GUI_MACHINE_CLASS = "smallscreen"
-#directfb is activated per default
-DISTRO_FEATURES_append = " directfb"
