@@ -1,6 +1,7 @@
 #Taken from TI yocto BSP Layer Version 05-2014, original name:ti33xx.inc
 SOC_FAMILY = "ti33x"
 require conf/machine/include/soc-family.inc
+DEFAULTTUNE ?= "cortexa8thf-neon"
 require conf/machine/include/tune-cortexa8.inc
 # List common SoC features
 MACHINE_FEATURES = "kernel26 apm usbgadget usbhost vfat ext2 screen alsa ethernet"
@@ -19,6 +20,7 @@ DEPENDS_pn-barebox_append = " barebox-ipl"
 # Kernel 
 PREFERRED_PROVIDER_virtual/kernel ?= "linux-ti"
 KERNEL_IMAGETYPE ?= "zImage"
+KERNEL_DEFAULT_DEFCONFIG = "am335x_phytec_defconfig"
 # install modules in initramfs
 PACKAGE_INSTALL_append = " kernel-modules"
 # install modules into rootfs
