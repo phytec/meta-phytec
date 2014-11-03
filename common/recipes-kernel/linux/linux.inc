@@ -13,6 +13,9 @@ LOCALVERSION ?= "${DISTRO}-${DISTRO_VERSION}"
 GITSERVER = "git://git.phytec.de"
 S = "${WORKDIR}/git"
 
+# these variables need to be assigned in the machine.conf 
+KERNEL_DEFAULT_DEFCONFIG ?= ""
+
 # returns and .cfg filenames from SRC_URI
 def find_sccs(d):
     sources=src_patches(d, True)
@@ -55,7 +58,6 @@ addtask do_prepare_configure after do_patch before do_configure
 
 do_default_defconfig () {
     bbnote "generating .config for target ${KERNEL_DEFAULT_DEFCONFIG}"
-    unset CFLAGS LDFLAGS
     oe_runmake ${KERNEL_DEFAULT_DEFCONFIG}
 }
 
