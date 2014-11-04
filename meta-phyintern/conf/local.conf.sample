@@ -32,24 +32,3 @@ BB_DISKMON_DIRS = "\
 CONF_VERSION = "1"
 
 ACCEPT_FSL_EULA = ""
-
-#IMAGE_INSTALL_append = " fb-test"
-#IMAGE_FSTYPES += "tar.gz"
-#LICENSE_FLAGS_WHITELIST = "commercial"
-#DISTRO_FEATURES_append = " directfb"
-#angstrom/yogurt options
-#PREFERRED_PROVIDER_virtual/mesa = "mesa-gl"
-#PREFERRED_PROVIDER_virtual/libgl = "mesa-gl"
-#PREFERRED_PROVIDER_virtual/libgles1 = "libgles-omap3"
-#PREFERRED_PROVIDER_virtual/libgles2 = "libgles-omap3"
-#PREFERRED_PROVIDER_virtual/egl = "libgles-omap3"
-#IMAGE_INSTALL_append = " omap3-sgx-modules libgles-omap3 libgles-omap3-linuxfbwsegl"
-#MULTI_PROVIDER_WHITELIST += "virtual/mesa virtual/libgl"
-#IMAGE_INSTALL_remove = "packagegroup-gnome-apps"
-#TCLIBC = "glibc"
-
-#CCACHE = "ccache"
-#INHERIT += "ccache"
-#CCACHE_DIR = "/home/mueller-klieser/.ccache"
-#CCACHE_DISABLE = "0"
-
