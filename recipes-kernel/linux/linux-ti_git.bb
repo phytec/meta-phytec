@@ -15,8 +15,3 @@ LINUX_VERSION ?= "3.12.24-phy"
 BRANCH ?= "v3.12.24-phy"
 SRCREV = "${AUTOREV}"
 PV = "${LINUX_VERSION}-git${SRCPV}"
-
-#SRCREV_phyflex-am335x-1 = ""
-#PV = "${LINUX_VERSION}"
-#SRCREV_phycore-am335x-1 = ""
-#SRCREV_phyboard-wega-1
