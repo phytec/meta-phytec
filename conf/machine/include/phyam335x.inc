@@ -1,6 +1,7 @@
 #Taken from TI yocto BSP Layer Version 05-2014, original name:ti33xx.inc
 SOC_FAMILY = "ti33x"
 require conf/machine/include/soc-family.inc
+DEFAULTTUNE ?= "cortexa8thf-neon"
 require conf/machine/include/tune-cortexa8.inc
 # List common SoC features
 MACHINE_FEATURES = "kernel26 usbgadget usbhost vfat ext2 screen alsa ethernet sgx"
