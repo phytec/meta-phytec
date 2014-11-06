@@ -15,6 +15,7 @@ PREFERRED_PROVIDER_jpeg = "jpeg"
 
 IMAGE_FSTYPES += "sdimg-phy ext3"
 IMAGE_FSTYPES += "tar.gz"
+IMAGE_FSTYPES += "ubi ubifs"
 #IMAGE_INSTALL += "scummvm"
 #LICENSE_FLAGS_WHITELIST = "commercial"
 #DISTRO_FEATURES_append = " directfb"

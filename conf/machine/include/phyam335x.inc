@@ -1,7 +1,6 @@
 #Taken from TI yocto BSP Layer Version 05-2014, original name:ti33xx.inc
 SOC_FAMILY = "ti33x"
 require conf/machine/include/soc-family.inc
-DEFAULTTUNE ?= "cortexa8thf-neon"
 require conf/machine/include/tune-cortexa8.inc
 # List common SoC features
 MACHINE_FEATURES = "kernel26 usbgadget usbhost vfat ext2 screen alsa ethernet sgx"
@@ -40,6 +39,10 @@ MODULE_TARBALL_DEPLOY = "0"
 IMAGE_CLASSES += "sdcard_image-phy"
 # Use the expected value of the ubifs filesystem's volume name in the kernel
 UBI_VOLNAME = "rootfs"
+# The biggest NANDs on current modules are 1GB. With current partition layout,
+# this sums up to 7943 LEBs available for the ubifs
+MKUBIFS_ARGS = "-F -m 2048 -e 129024 -c 7943"
+UBINIZE_ARGS = "-m 2048 -p 128KiB -s 2048"
 
 # xserver
 PREFERRED_PROVIDER_virtual/xserver = "xserver-xorg"
