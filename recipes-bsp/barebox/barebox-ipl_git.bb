@@ -3,7 +3,10 @@ require common/recipes-bsp/barebox/barebox-ipl.inc
 FILESEXTRAPATHS_prepend := "${THISDIR}/ipl-defconfigs:${THISDIR}/defconfigs/features:"
 
 SRC_URI = "git://git.phytec.de/barebox;branch=${BRANCH}"
-SRC_URI_append = " file://defconfig"
+SRC_URI_append = " \
+    file://defconfig \
+    file://0002-ARM-Makefile-remove-hardcoded-softfloat-dependency.patch \
+"
 
 # floating revision
 SRCREV = "${AUTOREV}"

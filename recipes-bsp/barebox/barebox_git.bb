@@ -6,6 +6,7 @@ SRC_URI = "git://git.phytec.de/barebox;branch=${BRANCH}"
 SRC_URI_append = " \
     file://defconfig \
     file://environment \
+    file://0002-ARM-Makefile-remove-hardcoded-softfloat-dependency.patch \
 "
 # floating revision
 SRCREV = "${AUTOREV}"

@@ -1,0 +1,31 @@
+From c124807360e57ac25c211a2e51945f448ff8cf82 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Stefan=20M=C3=BCller-Klieser?= <s.mueller-klieser@phytec.de>
+Date: Tue, 4 Nov 2014 17:56:46 +0100
+Subject: [PATCH 2/2] ARM: Makefile: remove hardcoded softfloat dependency
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Stefan Müller-Klieser <s.mueller-klieser@phytec.de>
+---
+ arch/arm/Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 337aef1..794cd4d 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -46,8 +46,8 @@ CFLAGS_THUMB2	:=-mthumb $(AFLAGS_AUTOIT) $(AFLAGS_NOWARN)
+ AFLAGS_THUMB2	:=$(CFLAGS_THUMB2) -Wa$(comma)-mthumb
+ endif
+ 
+-CPPFLAGS += $(CFLAGS_ABI) $(arch-y) $(tune-y) -msoft-float $(CFLAGS_THUMB2)
+-AFLAGS   += -include asm/unified.h -msoft-float $(AFLAGS_THUMB2)
++CPPFLAGS += $(CFLAGS_ABI) $(arch-y) $(tune-y) $(CFLAGS_THUMB2)
++AFLAGS   += -include asm/unified.h $(AFLAGS_THUMB2)
+ 
+ # Machine directory name.  This list is sorted alphanumerically
+ # by CONFIG_* macro name.
+-- 
+1.9.1
+
