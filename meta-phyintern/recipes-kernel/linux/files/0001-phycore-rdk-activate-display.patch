@@ -1,0 +1,49 @@
+From 927184f3197149628474ce9431aeac98251b7333 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Stefan=20M=C3=BCller-Klieser?= <s.mueller-klieser@phytec.de>
+Date: Thu, 6 Nov 2014 13:39:07 +0100
+Subject: [PATCH] phycore-rdk: activate display
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Stefan Müller-Klieser <s.mueller-klieser@phytec.de>
+---
+ arch/arm/boot/dts/am335x-phycore-rdk.dts | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
+
+diff --git a/arch/arm/boot/dts/am335x-phycore-rdk.dts b/arch/arm/boot/dts/am335x-phycore-rdk.dts
+index 5975f06..03a383c 100644
+--- a/arch/arm/boot/dts/am335x-phycore-rdk.dts
++++ b/arch/arm/boot/dts/am335x-phycore-rdk.dts
+@@ -133,3 +133,28 @@
+ &uart3 {
+ 	status = "okay";
+ };
++
++/*enable display*/
++&lcdc {
++      status = "okay";
++};
++
++&panel {
++      status = "okay";
++};
++
++&epwmss2 {
++      status = "okay";
++};
++
++&ecap2 {
++      status = "okay";
++};
++
++&backlight {
++      status = "okay";
++};
++
++&i2c_ts {
++      status = "okay";
++};
+-- 
+1.9.1
+
