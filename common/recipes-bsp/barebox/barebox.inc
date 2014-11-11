@@ -19,13 +19,15 @@ PROVIDES = "virtual/bootloader barebox"
 LICENSE = "GPL-2.0"
 LIC_FILES_CHKSUM = "file://COPYING;md5=057bf9e50e1ca857d0eb97bfe4ba8e5d"
 SRC_URI = "http://barebox.org/download/barebox-${PV}.tar.bz2"
+SRC_URI_append = " file://0001-Makefile-add-TARGETCC.patch"
+FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
 inherit kernel-arch cml1 deploy
 DEPENDS += "kern-tools-native kconfig-frontends-native"
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 # verbose build 0/1
 VERBOSE_BUILD ?= "0"
-EXTRA_OEMAKE = 'V=${VERBOSE_BUILD} CROSS_COMPILE=${TARGET_PREFIX} CC="${TARGET_PREFIX}gcc ${TOOLCHAIN_OPTIONS}"'
+EXTRA_OEMAKE = 'TARGETCC="${CC}" V=${VERBOSE_BUILD} CROSS_COMPILE=${TARGET_PREFIX} CC="${TARGET_PREFIX}gcc ${TOOLCHAIN_OPTIONS}"'
 # target rootfs boot directory
 base_bootdir = "/boot"
 
