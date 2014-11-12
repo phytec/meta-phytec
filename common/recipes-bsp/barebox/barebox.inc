@@ -42,6 +42,7 @@ BAREBOX_DEFAULT_DEFCONFIG ?= ""
 BAREBOX_DEFAULT_ENV ?= ""
 
 # recipe private variables
+BAREBOX_COMMON_ENVDIR = "${WORKDIR}/commonenv"
 BAREBOX_ENVDIR = "${WORKDIR}/environment"
 
 # returns and .cfg filenames from SRC_URI
@@ -84,30 +85,38 @@ python do_prepare_configure() {
 }
 addtask do_prepare_configure after do_patch before do_configure
 
-# if an environment directory is provided, use it
+# its possible to give two environment folders to barebox: commonenv and
+# environment, if an environment directory is provided, use it
 python do_prepare_env() {
     import shutil, subprocess
     machine = d.getVar('MACHINE')
     S = d.getVar('S', True)
     bareboxconfig = os.path.join(S, '.config')
     env_dir = d.getVar('BAREBOX_ENVDIR', True)
-    if not os.path.isdir(env_dir):
+    common_env_dir = d.getVar('BAREBOX_COMMON_ENVDIR', True)
+    env_path_string = ""
+    if not (os.path.isdir(common_env_dir) or os.path.isdir(env_dir)):
         bb.note("No environment directory provided, using BAREBOX_DEFAULT_ENV")
-        env_dir = d.getVar('BAREBOX_DEFAULT_ENV', True)
-        if not env_dir:
+        common_env_dir = d.getVar('BAREBOX_DEFAULT_ENV', True)
+        if not common_env_dir:
             bb.note("no BAREBOX_DEFAULT_ENV provided, creating empty default")
-            bb.utils.mkdirhier(os.path.join(S, '.environment'))
+            bb.utils.mkdirhier(os.path.join(S, '.commonenv'))
+    if os.path.isdir(common_env_dir):
+        bb.note("copying common environment to source directory")
+        oe.path.copytree(common_env_dir, oe.path.join(S, '.commonenv'))
+        env_path_string += ".commonenv"
     if os.path.isdir(env_dir):
-        bb.note("copying custom environment to source directory")
+        bb.note("copying environment to source directory")
         oe.path.copytree(env_dir, oe.path.join(S, '.environment'))
-    cmd = 'kconfig-tweak --file %s --set-str DEFAULT_ENVIRONMENT_PATH %s' % (bareboxconfig, '.environment')
+        env_path_string += " .environment"
+    cmd = 'kconfig-tweak --file %s --set-str DEFAULT_ENVIRONMENT_PATH "%s"' % (bareboxconfig, env_path_string)
     subprocess.call(cmd,shell=True)
 }
 addtask prepare_env after do_prepare_configure before do_configure
 
 # create config-board environment file
 do_create_config_board () {
-    if [ -e ${S}/.environment/config-board ]; then
+    if [ -e ${S}/.commonenv/config-board ]; then
         bbnote "config-board file already provided, not doing anything"
     else
         #tty boot serial variables
@@ -115,7 +124,7 @@ do_create_config_board () {
         B_TTY0_B=`echo "${B_TTY0}" | sed 's/\;.*//'`
         B_TTY0_N=`echo "${B_TTY0}" | sed 's/.*\;//'`
         #create config-board file
-        cat > ${S}/.environment/config-board <<EOF
+        cat > ${S}/.commonenv/config-board <<EOF
 #!/bin/sh
 # board defaults, do not change in running system.
 # Change /env/config file instead.
