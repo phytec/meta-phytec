@@ -8,6 +8,7 @@ inherit packagegroup
 
 RDEPENDS_${PN} = " \
     gdbserver \
+    perf \
     openssh \
     openssh-sftp-server \
 "
