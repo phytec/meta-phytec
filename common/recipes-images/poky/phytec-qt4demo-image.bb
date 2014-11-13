@@ -1,16 +1,11 @@
-DESCRIPTION = "An image that will launch into the demo application for the embedded (not based on X11) version of Qt."
+DESCRIPTION = "An image that will launch into the demo application for the embedded version of Qt 4"
 LICENSE = "MIT"
-PR = "r3"
+inherit core-image
+IMAGE_FEATURES = "splash"
 
-LIC_FILES_CHKSUM = "file://${COREBASE}/LICENSE;md5=4d92cd373abda3937c2bc47fbc49d690 \
-                    file://${COREBASE}/meta/COPYING.MIT;md5=3da9cfbcb788c80a0384361b4de20420"
-
-IMAGE_INSTALL += "\
+IMAGE_INSTALL = "\
     ${CORE_IMAGE_BASE_INSTALL} \
     packagegroup-core-qt4e \
     icu \
     packagegroup-userland \
 "
-
-inherit core-image
-
