@@ -6,27 +6,25 @@ SRC_URI = "git://git@git.phytec.de/linux-ti;protocol=ssh;branch=${BRANCH}"
 #SRCREV = "${AUTOREV}"
 #PV = "${LINUX_VERSION}-git${SRCPV}"
 
-SRC_URI_append = " \
-    file://ipv6.cfg \
-    file://systemd.cfg \
-    file://resetdriver.cfg \
-"
+SRC_URI_append = " file://ipv6.cfg"
+SRC_URI_append = " file://systemd.cfg"
+#necessary for opengl sgx driver
+#SRC_URI_append = " file://da8xx-fb.cfg"
 
-SRC_URI_append_phycore-am335x-1 = " \
-    file://0001-phycore-rdk-activate-display.patch \
-"
-SRC_URI_append_phycore-am335x-2 = " \
-    file://0001-phycore-rdk-activate-display.patch \
-"
-SRC_URI_append_phyflex-am335x-1 = " \
-    file://0001-phyflex-try-without-fixups.patch \
-    file://0002-phyflex-enable-display.patch \
-    file://smtpe.cfg \
-"
+#SRC_URI_append_phycore-am335x-1 = " \
+#    file://0001-phycore-rdk-activate-display.patch \
+#"
+#SRC_URI_append_phycore-am335x-2 = " \
+#    file://0001-phycore-rdk-activate-display.patch \
+#"
+#SRC_URI_append_phyflex-am335x-1 = " \
+#    file://0002-phyflex-enable-display.patch
+#    file://smtpe.cfg 
+#    file://0001-phyflex-try-without-fixups.patch 
 
-SRC_URI_append_phyboard-wega-1 = " \
-    file://0001-wega-activate-hdmi-and-leds.patch \
-"
+#SRC_URI_append_phyboard-wega-1 = " \
+#    file://0001-wega-activate-hdmi-and-leds.patch \
+#"
 
 do_deploy_append () {
     if [ ${DEV_BUILD} == "True" ]; then
@@ -35,5 +33,3 @@ do_deploy_append () {
         install -m 777 ${DTB_PATH} ${TFTP_ROOT}/${DEV_USER}-oftree-${MACHINE}
     fi
 }
-
-
