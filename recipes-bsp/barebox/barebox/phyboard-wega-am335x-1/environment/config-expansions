@@ -1,0 +1,3 @@
+#!/bin/sh
+. /env/expansions/am335x-wega-peb-av-01
+. /env/expansions/am335x-wega-peb-eval-01

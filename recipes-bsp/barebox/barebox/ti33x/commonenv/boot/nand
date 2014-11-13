@@ -6,7 +6,7 @@ if [ "$1" = menu ]; then
 fi
 
 bootargs-ip
-bootargs-display
+/env/config-expansions
 
 global.bootm.image="/dev/nand0.kernel.bb"
 global.bootm.oftree="/dev/nand0.oftree.bb"
