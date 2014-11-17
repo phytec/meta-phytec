@@ -10,4 +10,5 @@ IMAGE_INSTALL = " \
     packagegroup-core-boot \
     packagegroup-hwtools \
     packagegroup-benchmark \
+    packagegroup-userland \
 "
