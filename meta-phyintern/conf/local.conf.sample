@@ -4,7 +4,7 @@ DISTRO = "poky"
 MACHINE = "phyflex-am335x-1"
 #MACHINE = "phyboard-wega-1"
 #MACHINE = "phycore-am335x-1"
-PREFERRED_PROVIDER_jpeg = "jpeg"
+PREFERRED_PROVIDER_jpeg = "jpeg-turbo"
 #IMAGE_INSTALL_append = " task-native-sdk"
 
 #INHERIT += "externalsrc"
