@@ -1,7 +1,7 @@
 BSP_VERSION = "UNASSIGNED"
 MACHINE ?= "UNASSIGNED"
 DISTRO ?= "poky"
-IMAGE_FSTYPES += "sdimg-phy ext3"
+IMAGE_FSTYPES += "sdimg-phy"
 IMAGE_FSTYPES += "tar.gz"
 IMAGE_FSTYPES += "ubifs"
 DEPLOY_DIR = "${TOPDIR}/deploy"

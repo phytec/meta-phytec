@@ -13,7 +13,7 @@ PREFERRED_PROVIDER_jpeg = "jpeg"
 #SRCTREECOVEREDTASKS = "do_prepare_configure do_patch do_unpack do_fetch"
 #PV_pn-linux-ti = "${LINUX_VERSION}"
 
-IMAGE_FSTYPES += "sdimg-phy ext3"
+IMAGE_FSTYPES += "sdimg-phy"
 IMAGE_FSTYPES += "tar.gz"
 IMAGE_FSTYPES += "ubi ubifs"
 #IMAGE_INSTALL += "scummvm"
