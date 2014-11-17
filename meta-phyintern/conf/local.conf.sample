@@ -4,6 +4,7 @@ DISTRO ?= "poky"
 #DISTRO = "yogurt"
 PREFERRED_PROVIDER_jpeg = "jpeg"
 #IMAGE_INSTALL_append = " task-native-sdk"
+IMAGE_FSTYPES += "ubi ubifs"
 
 #INHERIT += "externalsrc"
 #EXTERNALSRC_pn-linux-mainline = "${HOME}/linux-mainline"
