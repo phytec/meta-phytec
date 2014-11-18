@@ -44,11 +44,11 @@ IMAGE_INSTALL_append = " cryptodev-module"
 # register image class for usage
 IMAGE_CLASSES += "sdcard_image-phy"
 # Use the expected value of the ubifs filesystem's volume name in the kernel
-UBI_VOLNAME = "rootfs"
+UBI_VOLNAME = "root"
 # The biggest NANDs on current modules are 1GB. With current partition layout,
 # this sums up to 7943 LEBs available for the ubifs
 MKUBIFS_ARGS = "-F -m 2048 -e 129024 -c 7943"
-UBINIZE_ARGS = "-m 2048 -p 128KiB -s 2048"
+UBINIZE_ARGS = "-m 2048 -p 128KiB -s 512"
 
 # xserver
 PREFERRED_PROVIDER_virtual/xserver = "xserver-xorg"
