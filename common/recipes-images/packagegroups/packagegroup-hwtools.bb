@@ -22,5 +22,6 @@ RDEPENDS_${PN} = " \
     mtd-utils \
     mtd-utils-ubifs \
     mtd-utils-misc \
+    iproute2 \
 "
 
