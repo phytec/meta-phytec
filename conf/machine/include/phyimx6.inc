@@ -3,12 +3,12 @@
 include conf/machine/include/imx-base.inc
 include conf/machine/include/tune-cortexa9.inc
 
-SOC_FAMILY = "mx6:mx6q"
+SOC_FAMILY = "mx6"
 
 #Bootloader
 PREFERRED_PROVIDER_virtual/bootloader ?= "barebox"
 IMAGE_BOOTLOADER ?= "barebox"
-BAREBOX_DEFAULT_DEFCONFIG = "freescale-mx6-arm2_defconfig"
+BAREBOX_DEFAULT_DEFCONFIG = "imx_v7_defconfig"
 
 # Kernel 
 PREFERRED_PROVIDER_virtual/kernel ?= "linux-mainline"
@@ -23,7 +23,7 @@ RDEPENDS_kernel-base = ""
 # dont create legacy tarball of modules
 MODULE_TARBALL_DEPLOY = "0"
 
-MACHINE_FEATURES += "pci"
+MACHINE_EXTRA_RRECOMMENDS_remove = "imx-audio fsl-alsa-plugins"
 
 # Use the expected value of the ubifs filesystem's volume name in the kernel
 UBI_VOLNAME = "rootfs"
