@@ -11,6 +11,7 @@ RDEPENDS_${PN} = " \
     ethtool \
     i2c-tools \
     alsa-utils \
+    alsa-state \
     devmem2 \
     iw \
     bc \
