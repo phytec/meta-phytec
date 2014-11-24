@@ -14,3 +14,19 @@ COMPATIBLE_MACHINE_ti33x = "(ti33x)"
 
 BRANCH = "v2014.10.0-phy"
 PV = "v2014.10.0-phy-git${SRCPV}"
+
+do_appendbootconfig_to_configboard () {
+    bbnote "config-board: append bootconfig"
+    cat >>  ${S}/.commonenv/config-board <<EOF
+if [ \$bootsource = mmc ]; then
+        global.boot.default="mmc nand spi net"
+elif [ \$boosource = nand ]; then
+        global.boot.default="nand spi mmc net"
+elif [ \$boosource = spi ]; then
+        global.boot.default="spi nand mmc net"
+elif [ \$boosource = net ]; then
+        global.boot.default="net nand spi mmc"
+fi
+EOF
+}
+addtask appendbootconfig_to_configboard after do_create_config_board before do_configure
