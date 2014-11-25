@@ -1,8 +1,9 @@
 require common/recipes-bsp/barebox/barebox-ipl.inc
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:${THISDIR}/barebox/features:"
+FILESEXTRAPATHS_prepend := "${THISDIR}:${THISDIR}/barebox/features:"
 
 SRC_URI = "git://git.phytec.de/barebox;branch=${BRANCH}"
+SRC_URI_append = " file://defconfig"
 
 # floating revision
 SRCREV = "${AUTOREV}"
