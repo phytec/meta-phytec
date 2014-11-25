@@ -16,31 +16,30 @@ def is_dir(dirname):
     else:
         return dirname
 
-if __name__ == "__main__":
+def main():
     # parse command line options
     parser = argparse.ArgumentParser(description='Converts the output files from TI AM335x pinmux tool to lines'
                                                  'actual usable in device tree source files. Information is'
                                                  'taken from mux.h and pinmux.h and printed to stdout')
-    parser.add_argument('data-directory', help='input files must exist in this directory.')
+    parser.add_argument('datadirectory', help='input files must exist in this directory.')
     args = parser.parse_args()
 
-    if args.data_directory == "":
-        # print "No directory givin. Using local dir"
-        dir = "./"
-    else:
-        dir = is_dir(args.data_directory)
+    if args.datadirectory:
+		dir = is_dir(args.datadirectory)
 
     # get pinctrl register offset from mux.h
     offset = re.compile(r"(CONTROL_PADCONF_.*?)\s+(0x\w+)")
     offsets = {}
-    for line in open(dir+'mux.h').readlines():
+    muxfile = open(os.path.join(dir,'mux.h'), 'r')
+    for line in muxfile.readlines():
         m = offset.search(line)
         if m:
            offsets[m.group(1)] = int(m.group(2), 16) - 0x800
 
     # get pinctrl register values from pinmux.h
     mux = re.compile(r"(CONTROL_PADCONF_.*?), \((\w+) \| (\w+) \| (\w+) \)\) /\* ([\w\[\]]+) \*/")
-    for line in open(dir+'pinmux.h').readlines():
+    pinmuxfile = open(os.path.join(dir,'pinmux.h'),'r')
+    for line in pinmuxfile.readlines():
         m = mux.search(line)
         if m:
             off = offsets[m.group(1)]
@@ -84,3 +83,6 @@ if __name__ == "__main__":
 
             # print dts line to stdout
             print(3*'\t' + '0x%03x' % (off) + ' (%s)' % reg_define + tabspaces*'\t' + '/* %s */' % comment)
+
+if __name__ == "__main__":
+	main()
