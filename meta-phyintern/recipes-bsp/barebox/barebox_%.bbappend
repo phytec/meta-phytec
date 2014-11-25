@@ -7,11 +7,14 @@ VERBOSE_BUILD = "1"
 
 # write username and filenames in barebox environment
 python do_prepare_env_append() {
-    cmd='sed -i.bak "s/.*global\.user.*/global\.user=${DEV_USER}/g" ${S}/.commonenv/config'
-    subprocess.call(cmd,shell=True)
-    cmd='sed -i.bak "s/.*global\.boot\.default=.*/global\.boot\.default=${BAREBOX_BOOTSRC}/g" ${S}/.commonenv/config'
-    subprocess.call(cmd,shell=True)
-    oe.path.remove(os.path.join(S,'.commonenv/config.bak'))
+    if d.getVar('DEV_USER', True):
+        cmd='sed -i.bak "s/.*global\.user.*/global\.user=${DEV_USER}/g" ${S}/.commonenv/config'
+        subprocess.call(cmd,shell=True)
+    if d.getVar('BAREBOX_BOOTSRC', True):
+        cmd='sed -i.bak "s/.*global\.boot\.default=.*/global\.boot\.default=${BAREBOX_BOOTSRC}/g" ${S}/.commonenv/config'
+        subprocess.call(cmd,shell=True)
+    if os.path.exists(os.path.join(S,'.commonenv/config.bak')):
+        oe.path.remove(os.path.join(S,'.commonenv/config.bak'))
 }
 
 #reboot env script
