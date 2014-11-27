@@ -4,6 +4,8 @@ DISTRO ?= "poky"
 #DISTRO = "yogurt"
 PREFERRED_PROVIDER_jpeg = "jpeg"
 #IMAGE_INSTALL_append = " task-native-sdk"
+IMAGE_FSTYPES += "sdcard ext3"
+IMAGE_FSTYPES += "tar.gz"
 IMAGE_FSTYPES += "ubi ubifs"
 
 #INHERIT += "externalsrc"
