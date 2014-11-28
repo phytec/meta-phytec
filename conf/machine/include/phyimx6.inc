@@ -23,8 +23,6 @@ RDEPENDS_kernel-base = ""
 # dont create legacy tarball of modules
 MODULE_TARBALL_DEPLOY = "0"
 
-MACHINE_EXTRA_RRECOMMENDS_remove = "imx-audio fsl-alsa-plugins"
-
 # Use the expected value of the ubifs filesystem's volume name in the kernel
 UBI_VOLNAME = "root"
 # The biggest NANDs on current modules are 1GB. With current partition layout,
