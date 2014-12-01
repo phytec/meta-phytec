@@ -11,5 +11,11 @@ RDEPENDS_${PN} = " \
     perf \
     openssh \
     openssh-sftp-server \
+    gstreamer \
+    gst-plugins-base-videoscale \
+    gst-plugins-base-ffmpegcolorspace \
+    gst-plugins-good-video4linux2 \
+    gst-plugins-bad-bayer \
+    gst-plugins-bad-fbdevsink \
 "
 
