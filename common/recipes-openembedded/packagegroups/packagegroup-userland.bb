@@ -17,5 +17,6 @@ RDEPENDS_${PN} = " \
     gst-plugins-good-video4linux2 \
     gst-plugins-bad-bayer \
     gst-plugins-bad-fbdevsink \
+    v4l-utils \
 "
 
