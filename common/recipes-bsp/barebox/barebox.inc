@@ -32,6 +32,7 @@ EXTRA_OEMAKE = 'TARGETCC="${CC}" V=${VERBOSE_BUILD} CROSS_COMPILE=${TARGET_PREFI
 base_bootdir = "/boot"
 
 # these variables need to be assigned in the machine.conf 
+BAREBOX_LOCALVERSION ?= "-${DISTRO}-${DISTRO_VERSION}"
 # name of the image created by barebox Makefile
 BAREBOX_BIN ?= "barebox.bin"
 # filename of file to be deployed by this recipe
@@ -78,7 +79,7 @@ python do_prepare_configure() {
         bb.note("combining kconfig fragments into .config for barebox")
         cmd = 'merge_config.sh -m -O %s %s %s' % (S, defconfig, ' '.join(map(str,fragments)))
         subprocess.call(cmd, shell=True)
-    localversion = "-${DISTRO}-${DISTRO_VERSION}"
+    localversion = d.getVar('BAREBOX_LOCALVERSION', True)
     bb.note("Setting LOCALVERSION in .config to %s" % localversion)
     cmd = 'kconfig-tweak --file %s --set-str LOCALVERSION %s' % (config, localversion)
     subprocess.call(cmd,shell=True)
