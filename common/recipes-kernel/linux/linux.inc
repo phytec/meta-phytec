@@ -9,7 +9,7 @@ inherit kernel
 require recipes-kernel/linux/linux-dtb.inc
 
 DEPENDS += "lzop-native bc-native"
-LOCALVERSION ?= "${DISTRO}-${DISTRO_VERSION}"
+KERNEL_LOCALVERSION ?= "-${DISTRO}-${DISTRO_VERSION}"
 GITSERVER = "git://git.phytec.de"
 S = "${WORKDIR}/git"
 
@@ -49,7 +49,7 @@ python do_prepare_configure() {
         bb.note("combining kconfig fragments into .config")
         cmd = 'merge_config.sh -m -O %s %s %s' % (S, defconfig, ' '.join(map(str,fragments)))
         subprocess.call(cmd, shell=True)
-    localversion = "-${LOCALVERSION}"
+    localversion = d.getVar('KERNEL_LOCALVERSION', True)
     bb.note("Setting LOCALVERSION in .config to %s" % localversion)
     cmd = 'kconfig-tweak --file %s --set-str LOCALVERSION %s' % (config, localversion)
     subprocess.call(cmd,shell=True)
