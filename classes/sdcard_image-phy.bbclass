@@ -28,7 +28,10 @@ inherit image_types
 IMAGE_TYPEDEP_sdimg-phy = "${SDIMG_ROOTFS_TYPE}"
 
 # Boot partition volume id
-BOOTDD_VOLUME_ID ?= "${MACHINE}"
+BOOTDD_VOLUME_ID ?= "boot"
+
+# Root partition volume id
+ROOT_VOLUME_ID ?="root"
 
 # Boot partition size [in KiB] (will be rounded up to IMAGE_ROOTFS_ALIGNMENT)
 BOOT_SPACE ?= "20480"
@@ -46,6 +49,7 @@ IMAGE_DEPENDS_sdimg-phy = " \
 			parted-native \
 			mtools-native \
 			dosfstools-native \
+			e2fsprogs-native \
 			virtual/kernel \
 			virtual/bootloader \
 			"
@@ -118,6 +122,13 @@ IMAGE_CMD_sdimg-phy () {
 
 	# Burn Partitions
 	dd if=${WORKDIR}/boot.img of=${SDIMG} conv=notrunc seek=1 bs=$(expr ${IMAGE_ROOTFS_ALIGNMENT} \* 1024) && sync && sync
+
+	# If SDIMG_ROOTFS_TYPE is ext2/3/4 set root volume id
+	if echo "${SDIMG_ROOTFS_TYPE}" | egrep "ext[2|3|4]"
+	then
+		tune2fs -L ${ROOT_VOLUME_ID} ${SDIMG_ROOTFS}
+	fi
+
 	# If SDIMG_ROOTFS_TYPE is a .xz file use xzcat
 	if echo "${SDIMG_ROOTFS_TYPE}" | egrep -q "*\.xz"
 	then
