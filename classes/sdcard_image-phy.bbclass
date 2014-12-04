@@ -66,12 +66,22 @@ SDIMG = "${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.rootfs.sdimg-phy"
 # Additional files and/or directories to be copied into the vfat partition from the IMAGE_ROOTFS.
 FATPAYLOAD ?= ""
 
+# Copy additional images to the vfat partition
+FATPAYLOAD_IMG ?= "${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.rootfs.ubifs"
+
 IMAGEDATESTAMP = "${@time.strftime('%Y.%m.%d',time.gmtime())}"
 
 IMAGE_CMD_sdimg-phy () {
 
+	if [ -n ${FATPAYLOAD_IMG} ] ; then
+		# Caclulate size of aditional image in KiB
+		FATPAYLOAD_IMG_SIZE=$(expr $(stat -L -c%s "${FATPAYLOAD_IMG}") / 1024)
+	else
+		FATPAYLOAD_IMG_SIZE=0
+	fi
+
 	# Align partitions
-	BOOT_SPACE_ALIGNED=$(expr ${BOOT_SPACE} + ${IMAGE_ROOTFS_ALIGNMENT} - 1)
+	BOOT_SPACE_ALIGNED=$(expr ${BOOT_SPACE} + ${FATPAYLOAD_IMG_SIZE} + ${IMAGE_ROOTFS_ALIGNMENT} - 1)
 	BOOT_SPACE_ALIGNED=$(expr ${BOOT_SPACE_ALIGNED} - ${BOOT_SPACE_ALIGNED} % ${IMAGE_ROOTFS_ALIGNMENT})
 	ROOTFS_SIZE=`du -bks ${SDIMG_ROOTFS} | awk '{print $1}'`
         # Round up RootFS size to the alignment size as well
@@ -113,6 +123,14 @@ IMAGE_CMD_sdimg-phy () {
 		for entry in ${FATPAYLOAD} ; do
 				# add the || true to stop aborting on vfat issues like not supporting .~lock files
 				mcopy -i ${WORKDIR}/boot.img -s -v ${IMAGE_ROOTFS}$entry :: || true
+		done
+	fi
+
+	if [ -n ${FATPAYLOAD_IMG} ] ; then
+		echo "Copying payload image into VFAT"
+		for entry in ${FATPAYLOAD_IMG} ; do
+				# add the || true to stop aborting on vfat issues like not supporting .~lock files
+				mcopy -i ${WORKDIR}/boot.img -s -v $entry :: || true
 		done
 	fi
 
