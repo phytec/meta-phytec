@@ -67,7 +67,7 @@ SDIMG = "${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.rootfs.sdimg-phy"
 FATPAYLOAD ?= ""
 
 # Copy additional images to the vfat partition
-FATPAYLOAD_IMG ?= "${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.rootfs.ubifs"
+FATPAYLOAD_IMG ?= "${DEPLOY_DIR_IMAGE}/${IMAGE_LINK_NAME}.ubifs"
 
 IMAGEDATESTAMP = "${@time.strftime('%Y.%m.%d',time.gmtime())}"
 
