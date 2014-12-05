@@ -1,0 +1,30 @@
+PHYTEC Yocto Linux BSP: phy²octo
+===============================
+Download the phyLinux tool from phytec to your yocto build folder
+
+$: ./phyLinux init
+
+or you can use repo manually.
+
+Yocto Common Tasks
+===============================
+Put these lines in you local.conf to make it work just for your
+local build. 
+
+# install barebox tools into rootfs
+IMAGE_INSTALL_append = " barebox-dev"
+
+# install something in the initramfs
+PACKAGE_INSTALL_append = " xyz"
+
+# build sd card image
+IMAGE_FSTYPES += "sdimg-phy"
+
+# build commercial software packages
+LICENSE_FLAGS_WHITELIST = "commercial"
+
+# use CCACHE
+CCACHE = "ccache"
+INHERIT += "ccache"
+CCACHE_DIR = "${HOME}/.ccache"
+CCACHE_DISABLE = "0"
