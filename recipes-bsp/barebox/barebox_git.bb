@@ -4,6 +4,7 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/defconfigs:${THISDIR}/defconfigs/features
 SRC_URI = "git://git.phytec.de/barebox;branch=${BRANCH}"
 SRC_URI_append = " \
     file://commonenv \
+    file://environment \
 "
 S = "${WORKDIR}/git"
 

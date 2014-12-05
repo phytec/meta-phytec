@@ -18,3 +18,5 @@ global.autoboot_timeout=3
 # - a full path to a directory. All files in this directory are
 #   treated as boot files and executed in alphabetical order
 global.boot.default=$bootsource
+
+global.linux.bootargs.base="consoleblank=0"

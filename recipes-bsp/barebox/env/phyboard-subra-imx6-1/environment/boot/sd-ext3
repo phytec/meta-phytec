@@ -1,0 +1,5 @@
+#!/bin/sh
+
+global.bootm.image="/mnt/mmc/zImage"
+global.bootm.oftree="/mnt/mmc/imx6dl-phytec-phyboard-subra.dtb"
+global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootfstype=ext3 rootwait rw"
