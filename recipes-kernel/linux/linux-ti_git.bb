@@ -9,7 +9,10 @@ require common/recipes-kernel/linux/linux.inc
 FILESEXTRAPATHS_prepend := "${THISDIR}/linux-ti/defconfigs:${THISDIR}/linux-ti/features:"
 
 SRC_URI = "git://git.phytec.de/linux-ti;branch=${BRANCH}"
-SRC_URI_append = " file://defconfig"
+SRC_URI_append = " \
+    file://defconfig \
+    file://legacy-ptys.cfg \
+"
 
 COMPATIBLE_MACHINE_ti33x = "(ti33x)" 
 
