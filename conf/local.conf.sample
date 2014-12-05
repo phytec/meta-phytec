@@ -3,6 +3,7 @@ MACHINE ?= "UNASSIGNED"
 KERNEL_LOCALVERSION = "-${BSP_VERSION}"
 BAREBOX_LOCALVERSION = "-${BSP_VERSION}"
 DISTRO ?= "poky"
+#this is ordering dependend
 IMAGE_FSTYPES += "sdimg-phy"
 IMAGE_FSTYPES += "tar.gz"
 IMAGE_FSTYPES += "ubifs"

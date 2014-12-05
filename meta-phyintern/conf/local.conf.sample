@@ -31,6 +31,7 @@ PREFERRED_PROVIDER_jpeg-native = "libjpeg-turbo-native"
 #SRCTREECOVEREDTASKS_pn-barebox = "do_prepare_configure do_prepare_env do_configure do_patch do_unpack do_fetch"
 #PV_pn-barebox = "${BRANCH}"
 
+#this is ordering dependend
 IMAGE_FSTYPES += "sdimg-phy"
 IMAGE_FSTYPES += "tar.gz"
 IMAGE_FSTYPES += "ubifs"
