@@ -12,7 +12,7 @@ SRC_URI_append = " \
 SRCREV = "${AUTOREV}"
 PV = "${LINUX_VERSION}-git${SRCPV}"
 
-LINUX_VERSION ?= "3.17.1-phy"
-BRANCH ?= "v3.17.1-phy"
+LINUX_VERSION ?= "3.17.6-phy"
+BRANCH ?= "v3.17.6-phy"
 
 COMPATIBLE_MACHINE_mx6 = "(mx6)"

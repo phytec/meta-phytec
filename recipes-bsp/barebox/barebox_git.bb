@@ -12,7 +12,7 @@ BAREBOX_BIN_SYMLINK = "barebox-${MACHINE}.bin"
 
 # floating revision
 SRCREV = "${AUTOREV}"
-BRANCH = "v2014.09.0-phy"
-PV = "v2014.09.0-phy-git${SRCPV}"
+BRANCH = "v2014.11.0-phy"
+PV = "v2014.11.0-phy-git${SRCPV}"
 
 COMPATIBLE_MACHINE_mx6 = "(mx6)"
