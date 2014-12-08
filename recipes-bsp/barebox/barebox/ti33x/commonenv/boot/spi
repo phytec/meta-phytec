@@ -3,6 +3,6 @@
 /env/config-expansions
 
 global.bootm.image="/dev/m25p0.kernel"
-global.bootm.oftree="/dev/m25p0.oftree.bb"
-# Use rootfs form NAND for now as rootfs partition < 4MB
+global.bootm.oftree="/dev/m25p0.oftree"
+# Use rootfs from NAND
 global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=root rootfstype=ubifs rw consoleblank=0"
