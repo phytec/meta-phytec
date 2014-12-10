@@ -1,4 +1,4 @@
-SRC_URI = "git://git@git.phytec.de/barebox;protocol=ssh;branch=${BRANCH}"
+SRC_URI = "git://git@git.phytec.de/barebox-dev;protocol=ssh;branch=${BRANCH}"
 
 do_deploy_append () {
     if [ ${DEV_BUILD} == "True" ]; then

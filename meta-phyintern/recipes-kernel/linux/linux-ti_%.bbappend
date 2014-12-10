@@ -1,6 +1,6 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
-SRC_URI = "git://git@git.phytec.de/linux-ti;protocol=ssh;branch=${BRANCH}"
+SRC_URI = "git://git@git.phytec.de/linux-ti-dev;protocol=ssh;branch=${BRANCH}"
 #SRC_URI = "git://${HOME}/linux-ti;protocol=file;branch=${BRANCH} file://defconfig"
 #BRANCH = ""
 #SRCREV = "${AUTOREV}"
