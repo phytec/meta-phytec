@@ -15,6 +15,7 @@ COMPATIBLE_MACHINE_ti33x = "(ti33x)"
 
 BRANCH = "v2014.10.0-phy"
 PV = "v2014.10.0-phy-git${SRCPV}"
+BAREBOX_LOCALVERSION = "-${BSP_VERSION}"
 
 do_appendbootconfig_to_configboard () {
     bbnote "config-board: append bootconfig"
