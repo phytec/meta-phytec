@@ -40,6 +40,8 @@ BAREBOX_BIN_SYMLINK ?= "barebox.bin"
 BAREBOX_DEFAULT_DEFCONFIG ?= ""
 # barebox environment
 BAREBOX_DEFAULT_ENV ?= ""
+# linux bootargs
+BAREBOX_BOOTARGS_BASE_EXTRA ?= ""
 
 # recipe private variables
 BAREBOX_COMMON_ENVDIR = "${WORKDIR}/commonenv"
@@ -130,7 +132,7 @@ do_create_config_board () {
 # board defaults, do not change in running system.
 # Change /env/config file instead.
 global.hostname=${MACHINE}
-global.linux.bootargs.base="console=${B_TTY0_N},${B_TTY0_B}"
+global.linux.bootargs.base="console=${B_TTY0_N},${B_TTY0_B} ${BAREBOX_BOOTARGS_BASE_EXTRA}"
 EOF
     fi
 }
