@@ -602,123 +602,21 @@ state.OnboardTLV320AI {
 	}
 	control.43 {
 		iface MIXER
-		name 'Mono Line2 Bypass Volume'
-		value.0 71
-		value.1 71
+		name 'Class-D Playback Volume'
+		value.0 0
+		value.1 0
 		comment {
 			access 'read write'
 			type INTEGER
 			count 2
-			range '0 - 118'
-			dbmin -9999999
-			dbmax 0
-			dbvalue.0 -2350
-			dbvalue.1 -2350
+			range '0 - 3'
+			dbmin 0
+			dbmax 1800
+			dbvalue.0 0
+			dbvalue.1 0
 		}
 	}
 	control.44 {
-		iface MIXER
-		name 'Mono PGA Bypass Volume'
-		value.0 71
-		value.1 71
-		comment {
-			access 'read write'
-			type INTEGER
-			count 2
-			range '0 - 118'
-			dbmin -9999999
-			dbmax 0
-			dbvalue.0 -2350
-			dbvalue.1 -2350
-		}
-	}
-	control.45 {
-		iface MIXER
-		name 'Mono DAC Playback Volume'
-		value.0 71
-		value.1 71
-		comment {
-			access 'read write'
-			type INTEGER
-			count 2
-			range '0 - 118'
-			dbmin -9999999
-			dbmax 0
-			dbvalue.0 -2350
-			dbvalue.1 -2350
-		}
-	}
-	control.46 {
-		iface MIXER
-		name 'Mono Playback Switch'
-		value true
-		comment {
-			access 'read write'
-			type BOOLEAN
-			count 1
-		}
-	}
-	control.47 {
-		iface MIXER
-		name 'Mono Mixer Line2L Bypass Switch'
-		value false
-		comment {
-			access 'read write'
-			type BOOLEAN
-			count 1
-		}
-	}
-	control.48 {
-		iface MIXER
-		name 'Mono Mixer PGAL Bypass Switch'
-		value false
-		comment {
-			access 'read write'
-			type BOOLEAN
-			count 1
-		}
-	}
-	control.49 {
-		iface MIXER
-		name 'Mono Mixer DACL1 Switch'
-		value true
-		comment {
-			access 'read write'
-			type BOOLEAN
-			count 1
-		}
-	}
-	control.50 {
-		iface MIXER
-		name 'Mono Mixer Line2R Bypass Switch'
-		value false
-		comment {
-			access 'read write'
-			type BOOLEAN
-			count 1
-		}
-	}
-	control.51 {
-		iface MIXER
-		name 'Mono Mixer PGAR Bypass Switch'
-		value false
-		comment {
-			access 'read write'
-			type BOOLEAN
-			count 1
-		}
-	}
-	control.52 {
-		iface MIXER
-		name 'Mono Mixer DACR1 Switch'
-		value true
-		comment {
-			access 'read write'
-			type BOOLEAN
-			count 1
-		}
-	}
-	control.53 {
 		iface MIXER
 		name 'Right HPCOM Mixer Line2L Bypass Switch'
 		value false
@@ -728,7 +626,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.54 {
+	control.45 {
 		iface MIXER
 		name 'Right HPCOM Mixer PGAL Bypass Switch'
 		value false
@@ -738,7 +636,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.55 {
+	control.46 {
 		iface MIXER
 		name 'Right HPCOM Mixer DACL1 Switch'
 		value false
@@ -748,7 +646,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.56 {
+	control.47 {
 		iface MIXER
 		name 'Right HPCOM Mixer Line2R Bypass Switch'
 		value false
@@ -758,7 +656,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.57 {
+	control.48 {
 		iface MIXER
 		name 'Right HPCOM Mixer PGAR Bypass Switch'
 		value false
@@ -768,7 +666,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.58 {
+	control.49 {
 		iface MIXER
 		name 'Right HPCOM Mixer DACR1 Switch'
 		value true
@@ -778,7 +676,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.59 {
+	control.50 {
 		iface MIXER
 		name 'Left HPCOM Mixer Line2L Bypass Switch'
 		value false
@@ -788,7 +686,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.60 {
+	control.51 {
 		iface MIXER
 		name 'Left HPCOM Mixer PGAL Bypass Switch'
 		value false
@@ -798,7 +696,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.61 {
+	control.52 {
 		iface MIXER
 		name 'Left HPCOM Mixer DACL1 Switch'
 		value true
@@ -808,7 +706,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.62 {
+	control.53 {
 		iface MIXER
 		name 'Left HPCOM Mixer Line2R Bypass Switch'
 		value false
@@ -818,7 +716,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.63 {
+	control.54 {
 		iface MIXER
 		name 'Left HPCOM Mixer PGAR Bypass Switch'
 		value false
@@ -828,7 +726,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.64 {
+	control.55 {
 		iface MIXER
 		name 'Left HPCOM Mixer DACR1 Switch'
 		value false
@@ -838,7 +736,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.65 {
+	control.56 {
 		iface MIXER
 		name 'Right HP Mixer Line2L Bypass Switch'
 		value false
@@ -848,7 +746,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.66 {
+	control.57 {
 		iface MIXER
 		name 'Right HP Mixer PGAL Bypass Switch'
 		value false
@@ -858,7 +756,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.67 {
+	control.58 {
 		iface MIXER
 		name 'Right HP Mixer DACL1 Switch'
 		value false
@@ -868,7 +766,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.68 {
+	control.59 {
 		iface MIXER
 		name 'Right HP Mixer Line2R Bypass Switch'
 		value false
@@ -878,7 +776,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.69 {
+	control.60 {
 		iface MIXER
 		name 'Right HP Mixer PGAR Bypass Switch'
 		value false
@@ -888,7 +786,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.70 {
+	control.61 {
 		iface MIXER
 		name 'Right HP Mixer DACR1 Switch'
 		value true
@@ -898,7 +796,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.71 {
+	control.62 {
 		iface MIXER
 		name 'Left HP Mixer Line2L Bypass Switch'
 		value false
@@ -908,7 +806,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.72 {
+	control.63 {
 		iface MIXER
 		name 'Left HP Mixer PGAL Bypass Switch'
 		value false
@@ -918,7 +816,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.73 {
+	control.64 {
 		iface MIXER
 		name 'Left HP Mixer DACL1 Switch'
 		value true
@@ -928,7 +826,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.74 {
+	control.65 {
 		iface MIXER
 		name 'Left HP Mixer Line2R Bypass Switch'
 		value false
@@ -938,7 +836,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.75 {
+	control.66 {
 		iface MIXER
 		name 'Left HP Mixer PGAR Bypass Switch'
 		value false
@@ -948,7 +846,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.76 {
+	control.67 {
 		iface MIXER
 		name 'Left HP Mixer DACR1 Switch'
 		value false
@@ -958,7 +856,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.77 {
+	control.68 {
 		iface MIXER
 		name 'Right Line Mixer Line2L Bypass Switch'
 		value false
@@ -968,7 +866,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.78 {
+	control.69 {
 		iface MIXER
 		name 'Right Line Mixer PGAL Bypass Switch'
 		value false
@@ -978,7 +876,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.79 {
+	control.70 {
 		iface MIXER
 		name 'Right Line Mixer DACL1 Switch'
 		value false
@@ -988,7 +886,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.80 {
+	control.71 {
 		iface MIXER
 		name 'Right Line Mixer Line2R Bypass Switch'
 		value false
@@ -998,7 +896,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.81 {
+	control.72 {
 		iface MIXER
 		name 'Right Line Mixer PGAR Bypass Switch'
 		value false
@@ -1008,7 +906,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.82 {
+	control.73 {
 		iface MIXER
 		name 'Right Line Mixer DACR1 Switch'
 		value true
@@ -1018,7 +916,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.83 {
+	control.74 {
 		iface MIXER
 		name 'Left Line Mixer Line2L Bypass Switch'
 		value false
@@ -1028,7 +926,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.84 {
+	control.75 {
 		iface MIXER
 		name 'Left Line Mixer PGAL Bypass Switch'
 		value false
@@ -1038,7 +936,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.85 {
+	control.76 {
 		iface MIXER
 		name 'Left Line Mixer DACL1 Switch'
 		value true
@@ -1048,7 +946,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.86 {
+	control.77 {
 		iface MIXER
 		name 'Left Line Mixer Line2R Bypass Switch'
 		value false
@@ -1058,7 +956,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.87 {
+	control.78 {
 		iface MIXER
 		name 'Left Line Mixer PGAR Bypass Switch'
 		value false
@@ -1068,7 +966,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.88 {
+	control.79 {
 		iface MIXER
 		name 'Left Line Mixer DACR1 Switch'
 		value false
@@ -1078,7 +976,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.89 {
+	control.80 {
 		iface MIXER
 		name 'Right Line2R Mux'
 		value single-ended
@@ -1090,7 +988,7 @@ state.OnboardTLV320AI {
 			item.1 differential
 		}
 	}
-	control.90 {
+	control.81 {
 		iface MIXER
 		name 'Right Line1R Mux'
 		value single-ended
@@ -1102,7 +1000,7 @@ state.OnboardTLV320AI {
 			item.1 differential
 		}
 	}
-	control.91 {
+	control.82 {
 		iface MIXER
 		name 'Right Line1L Mux'
 		value single-ended
@@ -1114,7 +1012,7 @@ state.OnboardTLV320AI {
 			item.1 differential
 		}
 	}
-	control.92 {
+	control.83 {
 		iface MIXER
 		name 'Right PGA Mixer Line1R Switch'
 		value true
@@ -1124,7 +1022,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.93 {
+	control.84 {
 		iface MIXER
 		name 'Right PGA Mixer Line1L Switch'
 		value false
@@ -1134,7 +1032,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.94 {
+	control.85 {
 		iface MIXER
 		name 'Right PGA Mixer Line2R Switch'
 		value false
@@ -1144,7 +1042,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.95 {
+	control.86 {
 		iface MIXER
 		name 'Right PGA Mixer Mic3L Switch'
 		value false
@@ -1154,7 +1052,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.96 {
+	control.87 {
 		iface MIXER
 		name 'Right PGA Mixer Mic3R Switch'
 		value false
@@ -1164,7 +1062,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.97 {
+	control.88 {
 		iface MIXER
 		name 'Left Line2L Mux'
 		value single-ended
@@ -1176,7 +1074,7 @@ state.OnboardTLV320AI {
 			item.1 differential
 		}
 	}
-	control.98 {
+	control.89 {
 		iface MIXER
 		name 'Left Line1R Mux'
 		value single-ended
@@ -1188,7 +1086,7 @@ state.OnboardTLV320AI {
 			item.1 differential
 		}
 	}
-	control.99 {
+	control.90 {
 		iface MIXER
 		name 'Left Line1L Mux'
 		value single-ended
@@ -1200,7 +1098,7 @@ state.OnboardTLV320AI {
 			item.1 differential
 		}
 	}
-	control.100 {
+	control.91 {
 		iface MIXER
 		name 'Left PGA Mixer Line1L Switch'
 		value true
@@ -1210,7 +1108,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.101 {
+	control.92 {
 		iface MIXER
 		name 'Left PGA Mixer Line1R Switch'
 		value false
@@ -1220,7 +1118,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.102 {
+	control.93 {
 		iface MIXER
 		name 'Left PGA Mixer Line2L Switch'
 		value false
@@ -1230,7 +1128,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.103 {
+	control.94 {
 		iface MIXER
 		name 'Left PGA Mixer Mic3L Switch'
 		value false
@@ -1240,7 +1138,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.104 {
+	control.95 {
 		iface MIXER
 		name 'Left PGA Mixer Mic3R Switch'
 		value false
@@ -1250,7 +1148,7 @@ state.OnboardTLV320AI {
 			count 1
 		}
 	}
-	control.105 {
+	control.96 {
 		iface MIXER
 		name 'Right HPCOM Mux'
 		value 'differential of HPROUT'
@@ -1265,7 +1163,7 @@ state.OnboardTLV320AI {
 			item.4 'external feedback'
 		}
 	}
-	control.106 {
+	control.97 {
 		iface MIXER
 		name 'Right DAC Mux'
 		value DAC_R1
@@ -1278,7 +1176,7 @@ state.OnboardTLV320AI {
 			item.2 DAC_R2
 		}
 	}
-	control.107 {
+	control.98 {
 		iface MIXER
 		name 'Left HPCOM Mux'
 		value 'differential of HPLOUT'
@@ -1291,7 +1189,7 @@ state.OnboardTLV320AI {
 			item.2 single-ended
 		}
 	}
-	control.108 {
+	control.99 {
 		iface MIXER
 		name 'Left DAC Mux'
 		value DAC_L1
