@@ -12,4 +12,4 @@ fi
 nfsroot="/nfsroot/${global.hostname}"
 bootargs-ip
 /env/config-expansions
-global.linux.bootargs.dyn.root="root=/dev/nfs nfsroot=$nfsroot,vers=3,udp rw consoleblank=0"
+global.linux.bootargs.dyn.root="root=/dev/nfs nfsroot=$nfsroot,vers=3,udp rw"

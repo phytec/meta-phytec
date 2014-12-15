@@ -16,6 +16,7 @@ BAREBOX_IPL_BIN_SYMLINK = "MLO"
 # we need to have a dependency to build the mlo too
 # TODO: add virtual/prebootloader and dependency
 DEPENDS_pn-barebox_append = " barebox-ipl"
+BAREBOX_BOOTARGS_BASE_EXTRA = "${@bb.utils.contains("MACHINE_FEATURES", "screen", "consoleblank=0", "",d)}"
 
 # Kernel 
 PREFERRED_PROVIDER_virtual/kernel ?= "linux-ti"
