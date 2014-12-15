@@ -286,8 +286,8 @@ state.OnboardTLV320AI {
 	control.21 {
 		iface MIXER
 		name 'Line Line2 Bypass Volume'
-		value.0 72
-		value.1 72
+		value.0 71
+		value.1 71
 		comment {
 			access 'read write'
 			type INTEGER
@@ -295,15 +295,15 @@ state.OnboardTLV320AI {
 			range '0 - 118'
 			dbmin -9999999
 			dbmax 0
-			dbvalue.0 -2300
-			dbvalue.1 -2300
+			dbvalue.0 -2350
+			dbvalue.1 -2350
 		}
 	}
 	control.22 {
 		iface MIXER
 		name 'Line PGA Bypass Volume'
-		value.0 85
-		value.1 85
+		value.0 71
+		value.1 71
 		comment {
 			access 'read write'
 			type INTEGER
@@ -311,15 +311,15 @@ state.OnboardTLV320AI {
 			range '0 - 118'
 			dbmin -9999999
 			dbmax 0
-			dbvalue.0 -1650
-			dbvalue.1 -1650
+			dbvalue.0 -2350
+			dbvalue.1 -2350
 		}
 	}
 	control.23 {
 		iface MIXER
 		name 'Line DAC Playback Volume'
-		value.0 82
-		value.1 82
+		value.0 118
+		value.1 118
 		comment {
 			access 'read write'
 			type INTEGER
@@ -327,8 +327,8 @@ state.OnboardTLV320AI {
 			range '0 - 118'
 			dbmin -9999999
 			dbmax 0
-			dbvalue.0 -1800
-			dbvalue.1 -1800
+			dbvalue.0 0
+			dbvalue.1 0
 		}
 	}
 	control.24 {
@@ -749,7 +749,7 @@ state.OnboardTLV320AI {
 	control.57 {
 		iface MIXER
 		name 'Right HP Mixer PGAL Bypass Switch'
-		value true
+		value false
 		comment {
 			access 'read write'
 			type BOOLEAN
@@ -839,7 +839,7 @@ state.OnboardTLV320AI {
 	control.66 {
 		iface MIXER
 		name 'Left HP Mixer PGAR Bypass Switch'
-		value true
+		value false
 		comment {
 			access 'read write'
 			type BOOLEAN
