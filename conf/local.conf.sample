@@ -1,7 +1,10 @@
 BSP_VERSION = "UNASSIGNED"
 MACHINE ?= "UNASSIGNED"
 DISTRO ?= "poky"
-#this is ordering dependend
+# adapt this to your workspace
+#DL_DIR ?= "/home/share/yocto_downloads"
+#SSTATE_DIR ?= "/home/share/yocto_sstate/1.7"
+# this is ordering dependend
 IMAGE_FSTYPES += "sdimg-phy"
 IMAGE_FSTYPES += "tar.gz"
 IMAGE_FSTYPES += "ubifs"
@@ -22,7 +25,7 @@ BB_DISKMON_DIRS = "\
     ABORT,${TMPDIR},100M,1K \
     ABORT,${DL_DIR},100M,1K \
     ABORT,${SSTATE_DIR},100M,1K" 
-INHERIT += "phytec-mirrors"
+#INHERIT += "phytec-mirrors"
 #Qemu config
 #PACKAGECONFIG_append_pn-qemu-native = " sdl"
 #PACKAGECONFIG_append_pn-nativesdk-qemu = " sdl"
