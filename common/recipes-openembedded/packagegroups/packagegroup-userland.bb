@@ -18,5 +18,7 @@ RDEPENDS_${PN} = " \
     gst-plugins-bad-bayer \
     gst-plugins-bad-fbdevsink \
     v4l-utils \
+    inetutils-telnetd \
+    vsftpd \
 "
 
