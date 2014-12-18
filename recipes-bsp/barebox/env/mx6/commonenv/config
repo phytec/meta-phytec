@@ -17,6 +17,14 @@ global.autoboot_timeout=3
 # - a filename in /env/boot/
 # - a full path to a directory. All files in this directory are
 #   treated as boot files and executed in alphabetical order
-global.boot.default=$bootsource
+if [ $bootsource = mmc ]; then
+	global.boot.default="sd-ext3 nand spi net"
+elif [ $bootsource = nand ]; then
+	global.boot.default="nand spi sd-ext3 net"
+elif [ $bootsource = spi ]; then
+	global.boot.default="spi nand sd-ext3 net"
+elif [ $bootsource = net ]; then
+	global.boot.default="net nand spi sd-ext3"
+fi
 
 global.linux.bootargs.base="consoleblank=0"
