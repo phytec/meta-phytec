@@ -6,8 +6,8 @@ SRC_URI = "git://git@git.phytec.de/linux-ti-dev;protocol=ssh;branch=${BRANCH}"
 #SRCREV = "${AUTOREV}"
 #PV = "${LINUX_VERSION}-git${SRCPV}"
 
-SRC_URI_append = " file://ipv6.cfg"
-SRC_URI_append = " file://systemd.cfg"
+#SRC_URI_append = " file://ipv6.cfg"
+#SRC_URI_append = " file://systemd.cfg"
 #necessary for opengl sgx driver
 #SRC_URI_append = " file://da8xx-fb.cfg"
 
