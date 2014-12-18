@@ -8,7 +8,7 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=d7810fab7487fb0aad327b76f1be7cd7"
 inherit kernel
 require recipes-kernel/linux/linux-dtb.inc
 
-DEPENDS += "lzop-native bc-native"
+DEPENDS += "lzop-native bc-native kern-tools-native kconfig-frontends-native"
 KERNEL_LOCALVERSION ?= "-${DISTRO}-${DISTRO_VERSION}"
 GITSERVER = "git://git.phytec.de"
 S = "${WORKDIR}/git"
