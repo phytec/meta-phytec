@@ -36,7 +36,7 @@ Create a fresh project folder, e.g.
 Download and run the init script
 
  cd ~/yocto
- wget ftp://ftp.phytec.de/FIXME
+ wget ftp://ftp.phytec.de/pub/Software/Linux/Yocto/Tools/phyLinux
  chmod +x phyLinux
  ./phyLinux init
 
