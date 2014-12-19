@@ -9,8 +9,12 @@ SRC_URI_append = " \
     file://defconfig \
 "
 
-SRCREV = "${AUTOREV}"
-PV = "${LINUX_VERSION}-git${SRCPV}"
+#SRCREV = "${AUTOREV}"
+#PV = "${LINUX_VERSION}-git${SRCPV}"
+
+PV = "v3.17.6-phy1"
+# TAG = ${PV}
+SRCREV = "b866874890884ddf526b8225e706f46c5856c698"
 
 LINUX_VERSION ?= "3.17.6-phy"
 BRANCH ?= "v3.17.6-phy"
