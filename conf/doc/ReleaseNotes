@@ -1,0 +1,111 @@
+Release Notes unified i.MX6 Linux BSP:
+======================================
+
+PD14.2-rc1				19/12/2014
+--------------------------------------------------
+
+WARNING!! This is a release candidate version of Phytecs
+Linux BSP, aka ALPHA Version. It shall not be used for series
+production.
+
+- Linux Kernel 3.17.6
+- barebox 2014.11.0
+- Yocto 1.7 (dizzy)
+
+Tested Boards:
+--------------
+ - phyflex-imx6-1
+ - phyflex-imx6-2
+ - phycard-imx6-1
+ - phyboard-alcor-imx6-1
+ - phyboard-subra-imx6-1
+
+Tested Yoto Images:
+-------------------
+ - phytec-hwbringup-image
+
+Build Environment:
+------------------
+ - Ubuntu 14.04 64Bit
+
+Features:
+---------
+ - phyflex-imx6-1 and phyflex-imx6-2:
+	* PCIe
+	* USB Host
+	* USB OTG device
+	* SD (SD0 and SD1)
+	* EDT FocalTech FT5x06 I2C Touchscreen
+	* Display ET-M0700G0DH6
+	* Backlight control
+	* SATA
+	* RTC (i.MX6 RTC, PMIC RTC, I2C RTC)
+	* I2C EEPROM
+	* GPIOs
+	* ADC
+	* CAN
+	* DVFS
+	* Audio (Line Out, Mic, Line In, Speaker out)
+	* 1Gbit Ethernet
+	* NAND
+	* SPI-NOR
+	* PMIC
+	* 2x UART
+
+ - phycard-imx6-1
+	* USB Host
+	* USB OTG device and host
+	* SD
+	* EDT FocalTech FT5x06 I2C Touchscreen
+	* Display ET-M0700G0DH6
+	* RTC (i.MX6 RTC, PMIC RTC, I2C RTC)
+	* I2C EEPROM
+	* DVFS
+	* Audio (Line Out, Mic, Line In)
+	* 10/100Mbit Ethernet
+	* NAND
+	* PMIC
+	* UART
+
+ - phyboard-alcor-imx6-1
+	* USB Host
+	* µSD
+	* EDT FocalTech FT5x06 I2C Touchscreen
+	* Display ET-M0700G0DH6
+	* RTC (i.MX6 RTC, PMIC RTC, I2C RTC)
+	* CAN
+	* 10/100Mbit Ethernet
+	* NAND
+	* SPI-NOR
+	* PMIC
+	* UART
+
+ - phyboard-subra-imx6-1
+	* USB Host
+	* µSD
+	* RTC (i.MX6 RTC, PMIC RTC, I2C RTC)
+	* HDMI
+	* CAN
+	* 1Gbit Ethernet
+	* NAND
+	* PMIC
+	* UART
+
+Known issues:
+-------------
+ - phyflex-imx6-1 and phyflex-imx6-2:
+	* USB OTG host mode doesn't work
+	* USB OTG device is not working if USB OTG cable is not connected
+	  before booting
+	* Sound Hset_OUT shows faults 
+
+ - phycard-imx6-1
+	* Backlight control is not working
+
+ - phyboard-alcor-imx6-1
+	* Booting barebox from NAND resulting in sd card failures
+
+ - phyboard-subra-imx6-1
+	* Booting barebox from NAND resulting in sd card failures
+	* USB OTG device is not working if USB OTG cable is not connected
+	  before booting
