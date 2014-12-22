@@ -23,7 +23,6 @@ SRC_URI_append = " file://0001-Makefile-add-TARGETCC.patch"
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
 inherit kernel-arch cml1 deploy
-DEPENDS += "kern-tools-native kconfig-frontends-native"
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 # verbose build 0/1
 VERBOSE_BUILD ?= "0"
@@ -85,6 +84,8 @@ python do_prepare_configure() {
     subprocess.call(cmd,shell=True)
 }
 addtask do_prepare_configure after do_patch before do_configure
+do_prepare_configure[depends] += "kern-tools-native:do_populate_sysroot"
+do_prepare_configure[depends] += "kconfig-frontends-native:do_populate_sysroot"
 
 # its possible to give two environment folders to barebox: commonenv and
 # environment, if an environment directory is provided, use it
@@ -114,6 +115,8 @@ python do_prepare_env() {
     subprocess.call(cmd,shell=True)
 }
 addtask prepare_env after do_prepare_configure before do_configure
+do_prepare_env[depends] += "kern-tools-native:do_populate_sysroot"
+do_prepare_env[depends] += "kconfig-frontends-native:do_populate_sysroot"
 
 # create config-board environment file
 do_create_config_board () {

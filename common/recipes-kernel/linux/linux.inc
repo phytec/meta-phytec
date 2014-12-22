@@ -55,6 +55,8 @@ python do_prepare_configure() {
     subprocess.call(cmd,shell=True)
 }
 addtask do_prepare_configure after do_patch before do_configure
+do_prepare_configure[depends] += "kern-tools-native:do_populate_sysroot"
+do_prepare_configure[depends] += "kconfig-frontends-native:do_populate_sysroot"
 
 do_default_defconfig () {
     bbnote "generating .config for target ${KERNEL_DEFAULT_DEFCONFIG}"
