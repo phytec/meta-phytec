@@ -8,7 +8,7 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=d7810fab7487fb0aad327b76f1be7cd7"
 inherit kernel
 require recipes-kernel/linux/linux-dtb.inc
 
-DEPENDS += "lzop-native bc-native kern-tools-native kconfig-frontends-native"
+DEPENDS += "lzop-native bc-native"
 KERNEL_LOCALVERSION ?= "-${DISTRO}-${DISTRO_VERSION}"
 GITSERVER = "git://git.phytec.de"
 S = "${WORKDIR}/git"
@@ -46,7 +46,7 @@ python do_prepare_configure() {
         bb.utils.copyfile(defconfig, config)
     else:
         bb.note("combining kconfig fragments into .config")
-        cmd = 'merge_config.sh -m -O %s %s %s' % (S, defconfig, ' '.join(map(str,fragments)))
+        cmd = 'scripts/kconfig/merge_config.sh -m -O %s %s %s' % (S, defconfig, ' '.join(map(str,fragments)))
         subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
     localversion = d.getVar('KERNEL_LOCALVERSION', True)
     bb.note("Setting LOCALVERSION in .config to %s" % localversion)
@@ -54,7 +54,6 @@ python do_prepare_configure() {
     subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
 }
 addtask do_prepare_configure after do_patch before do_configure
-do_prepare_configure[depends] += "kern-tools-native:do_populate_sysroot"
 do_prepare_configure[depends] += "kconfig-frontends-native:do_populate_sysroot"
 
 do_default_defconfig () {

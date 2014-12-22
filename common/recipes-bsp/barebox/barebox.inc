@@ -75,7 +75,7 @@ python do_prepare_configure() {
         bb.utils.copyfile(defconfig, config)
     else:
         bb.note("combining kconfig fragments into .config for barebox")
-        cmd = 'merge_config.sh -m -O %s %s %s' % (S, defconfig, ' '.join(map(str,fragments)))
+        cmd = 'scripts/kconfig/merge_config.sh -m -O %s %s %s' % (S, defconfig, ' '.join(map(str,fragments)))
         subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
     localversion = d.getVar('BAREBOX_LOCALVERSION', True)
     bb.note("Setting LOCALVERSION in .config to %s" % localversion)
@@ -83,7 +83,6 @@ python do_prepare_configure() {
     subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
 }
 addtask do_prepare_configure after do_patch before do_configure
-do_prepare_configure[depends] += "kern-tools-native:do_populate_sysroot"
 do_prepare_configure[depends] += "kconfig-frontends-native:do_populate_sysroot"
 
 # its possible to give two environment folders to barebox: commonenv and
@@ -114,7 +113,6 @@ python do_prepare_env() {
     subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
 }
 addtask prepare_env after do_prepare_configure before do_configure
-do_prepare_env[depends] += "kern-tools-native:do_populate_sysroot"
 do_prepare_env[depends] += "kconfig-frontends-native:do_populate_sysroot"
 
 # create config-board environment file
