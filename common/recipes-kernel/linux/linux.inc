@@ -28,7 +28,7 @@ def find_sccs(d):
 
 # uses kern-tools-native to merge the config fragments
 python do_prepare_configure() {
-    import shutil, subprocess
+    import subprocess
     workdir = d.getVar('WORKDIR', True)
     S = d.getVar('S', True)
     defconfig = os.path.join(workdir , 'defconfig')
@@ -40,19 +40,18 @@ python do_prepare_configure() {
             bb.build.exec_func("do_default_defconfig",d)
         bb.build.exec_func("do_savedefconfig",d)
         defconfig = os.path.join(workdir , 'defconfig.temp') 
-    os.chdir(workdir)
     fragments = find_sccs(d)
     if not fragments:
         bb.note("no config fragments will be merged")
-        shutil.copyfile(defconfig, config)
+        bb.utils.copyfile(defconfig, config)
     else:
         bb.note("combining kconfig fragments into .config")
         cmd = 'merge_config.sh -m -O %s %s %s' % (S, defconfig, ' '.join(map(str,fragments)))
-        subprocess.call(cmd, shell=True)
+        subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
     localversion = d.getVar('KERNEL_LOCALVERSION', True)
     bb.note("Setting LOCALVERSION in .config to %s" % localversion)
     cmd = 'kconfig-tweak --file %s --set-str LOCALVERSION %s' % (config, localversion)
-    subprocess.call(cmd,shell=True)
+    subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
 }
 addtask do_prepare_configure after do_patch before do_configure
 do_prepare_configure[depends] += "kern-tools-native:do_populate_sysroot"
