@@ -157,25 +157,25 @@ do_compile () {
 do_install () {
 	bbnote "Installing barebox image on target rootfs"
 	install -d ${D}${base_bootdir}
-	install ${S}/${BAREBOX_BIN} ${D}${base_bootdir}/${BAREBOX_BIN_DEPLOY}
+	install ${B}/${BAREBOX_BIN} ${D}${base_bootdir}/${BAREBOX_BIN_DEPLOY}
 	ln -sf ${BAREBOX_BIN_DEPLOY} ${D}${base_bootdir}/${BAREBOX_BIN_SYMLINK}
 
-	if [ -e ${S}/scripts/bareboxenv-target ] ; then
+	if [ -e ${B}/scripts/bareboxenv-target ] ; then
 		bbnote "Installing target env tool"
 		install -d ${D}${base_sbindir}
-		install -m 744 ${S}/scripts/bareboxenv-target ${D}${base_sbindir}/bareboxenv
+		install -m 744 ${B}/scripts/bareboxenv-target ${D}${base_sbindir}/bareboxenv
 	fi
 
-	if [ -e ${S}/scripts/bareboxcrc32-target ] ; then
+	if [ -e ${B}/scripts/bareboxcrc32-target ] ; then
 		bbnote "Installing target crc32 tool"
 		install -d ${D}${base_sbindir}
-		install -m 744 ${S}/scripts/bareboxcrc32-target ${D}${base_sbindir}/bareboxcrc32
+		install -m 744 ${B}/scripts/bareboxcrc32-target ${D}${base_sbindir}/bareboxcrc32
 	fi
 
-	if [ -e ${S}/scripts/kernel-install-target ] ; then
+	if [ -e ${B}/scripts/kernel-install-target ] ; then
 		bbnote "Installing target kernel-install tool"
 		install -d ${D}${base_sbindir}
-		install -m 744 ${S}/scripts/kernel-install-target ${D}${base_sbindir}/barebox-kernel-install
+		install -m 744 ${B}/scripts/kernel-install-target ${D}${base_sbindir}/barebox-kernel-install
 	fi
 }
 FILES_${PN} = ""
@@ -187,14 +187,14 @@ FILES_${PN}-dev += "${base_sbindir}"
 do_deploy () {
 	bbnote "Deploying barebox"
 	install -d ${DEPLOYDIR}
-	install ${S}/${BAREBOX_BIN} ${DEPLOYDIR}/${BAREBOX_BIN_DEPLOY}
+	install ${B}/${BAREBOX_BIN} ${DEPLOYDIR}/${BAREBOX_BIN_DEPLOY}
 	cd ${DEPLOYDIR}
 	rm -f ${BAREBOX_BIN_SYMLINK} 
 	ln -sf ${BAREBOX_BIN_DEPLOY} ${BAREBOX_BIN_SYMLINK}
 
 	bbnote "Installing host barebox toolset"
 	install -d ${STAGING_BINDIR_NATIVE}
-	cd ${S}
+	cd ${B}
 	install -m 755 scripts/bareboxenv ${STAGING_BINDIR_NATIVE}/
 }
 addtask deploy before do_build after do_compile
