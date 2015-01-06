@@ -7,6 +7,7 @@ SRC_URI_append = " \
     file://defconfig \
     file://commonenv \
     file://environment \
+    file://ext4.cfg \
 "
 # floating revision
 #SRCREV = "${AUTOREV}"
