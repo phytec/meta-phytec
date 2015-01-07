@@ -18,7 +18,7 @@ python do_prepare_env_append() {
 }
 
 #reboot env script
-SRC_URI += "file://reboot.env.bin"
+SRC_URI_append = " file://reboot.env.bin"
 python do_prepare_env_append() {
     workdir = d.getVar('WORKDIR', True)
     envbindir = os.path.join(S,'.commonenv/bin')
