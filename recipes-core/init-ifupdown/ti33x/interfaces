@@ -15,3 +15,9 @@ iface eth1 inet static
 	address 192.168.4.11
 	netmask 255.255.255.0
 	network 192.168.4.0
+
+# onboard CAN
+iface can0 inet static
+	address 127.42.23.180
+	netmask 255.255.255.0
+	pre-up /etc/network/can-pre-up
