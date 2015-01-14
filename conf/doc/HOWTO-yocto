@@ -82,7 +82,7 @@ directory, as all builds can access this cache directory, called shared state
 cache.
 
 Create the two directories on a drive where you have approximately 50GB of
- space and assign the two Variables in your build/local.conf.
+ space and assign the two Variables in your build/conf/local.conf.
 
  DL_DIR ?= "<your_directory>/yocto_downloads"
  SSTATE_DIR ?= "<your_directory>/yocto_sstate/1.7"
