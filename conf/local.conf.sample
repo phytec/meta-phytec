@@ -9,12 +9,8 @@ IMAGE_FSTYPES += "sdimg-phy"
 IMAGE_FSTYPES += "tar.gz"
 IMAGE_FSTYPES += "ubifs"
 DEPLOY_DIR = "${TOPDIR}/deploy"
-PACKAGE_CLASSES ?= "package_rpm"
 #SDKMACHINE ?= "x86_64"
 EXTRA_IMAGE_FEATURES = "debug-tweaks"
-PREFERRED_PROVIDER_jpeg = "libjpeg-turbo"
-PREFERRED_PROVIDER_jpeg-native = "libjpeg-turbo-native"
-USER_CLASSES ?= "buildstats image-mklibs image-prelink"
 #TEST_IMAGE = "1"
 OE_TERMINAL = "auto"
 PATCHRESOLVE = "noop"
@@ -25,7 +21,6 @@ BB_DISKMON_DIRS = "\
     ABORT,${TMPDIR},100M,1K \
     ABORT,${DL_DIR},100M,1K \
     ABORT,${SSTATE_DIR},100M,1K" 
-#INHERIT += "phytec-mirrors"
 #Qemu config
 #PACKAGECONFIG_append_pn-qemu-native = " sdl"
 #PACKAGECONFIG_append_pn-nativesdk-qemu = " sdl"
