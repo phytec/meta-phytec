@@ -1,0 +1,40 @@
+Index: barebox-2014.07.0/arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/sd
+===================================================================
+--- barebox-2014.07.0.orig/arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/sd	2014-07-04 16:58:13.000000000 +0200
++++ /dev/null	1970-01-01 00:00:00.000000000 +0000
+@@ -1,11 +0,0 @@
+-#!/bin/sh
+-
+-if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "kernel & rootfs on SD card"
+-	exit
+-fi
+-
+-global.bootm.image=/boot/uImage
+-global.bootm.oftree=/boot/oftree
+-#global.bootm.initrd=<path to initrd>
+-global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootfstype=ext4 rootwait"
+Index: barebox-2014.07.0/arch/arm/boards/beaglebone/defaultenv-beaglebone/config
+===================================================================
+--- barebox-2014.07.0.orig/arch/arm/boards/beaglebone/defaultenv-beaglebone/config	2014-07-04 16:58:13.000000000 +0200
++++ /dev/null	1970-01-01 00:00:00.000000000 +0000
+@@ -1,19 +0,0 @@
+-#!/bin/sh
+-
+-# change network settings in /env/network/eth0
+-# change mtd partition settings and automountpoints in /env/init/*
+-
+-# set to false if you do not want to have colors
+-global.allow_color=true
+-
+-# user (used for network filenames)
+-global.user=none
+-
+-# timeout in seconds before the default boot entry is started
+-global.autoboot_timeout=3
+-
+-# default boot entry (one of /env/boot/*)
+-global.boot.default=sd
+-
+-# base bootargs
+-global.linux.bootargs.base="console=ttyO0,115200n8"
