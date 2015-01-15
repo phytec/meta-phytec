@@ -1,7 +1,7 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
 SRC_URI = "git://git@git.phytec.de/barebox-dev;protocol=ssh;branch=${BRANCH}"
-#SRC_URI += "file://no-default-env-compiled-in.cfg"
+#SRC_URI_append = " file://no-default-env-compiled-in.cfg"
 
 VERBOSE_BUILD = "1"
 
