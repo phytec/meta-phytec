@@ -25,7 +25,7 @@
 void phy_write(unsigned char *mdio, unsigned int phy, unsigned int reg,
         unsigned int value)
 {
-        unsigned int ua0 = (unsigned int)mdio + MDIOUSERACCESS0;
+        volatile unsigned int ua0 = (unsigned int)mdio + MDIOUSERACCESS0;
         if ( !(*(unsigned int*)ua0 & MDIO_GO) ) {
                 *(unsigned int*)ua0 = 0;
                 *(unsigned int*)ua0 = *(unsigned int*)ua0 | MDIO_WRITE;
@@ -42,7 +42,7 @@ void phy_write(unsigned char *mdio, unsigned int phy, unsigned int reg,
 unsigned int phy_read(unsigned char *mdio, unsigned int phy, unsigned int reg)
 {
         unsigned int val = 0xFFFFFFFF;
-        unsigned int ua0 = (unsigned int)mdio + MDIOUSERACCESS0;
+        volatile unsigned int ua0 = (unsigned int)mdio + MDIOUSERACCESS0;
  
         if ( !(*(unsigned int*)ua0 & MDIO_GO) ) {
                 *(unsigned int*)ua0 = 0;
