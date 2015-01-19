@@ -1,6 +1,6 @@
 BSP_VERSION = "UNASSIGNED"
 MACHINE ?= "UNASSIGNED"
-DISTRO ?= "poky"
+DISTRO ?= "yogurt"
 # adapt this to your workspace
 #DL_DIR ?= "/home/share/yocto_downloads"
 #SSTATE_DIR ?= "/home/share/yocto_sstate/1.7"
