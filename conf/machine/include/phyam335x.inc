@@ -4,7 +4,7 @@ require conf/machine/include/soc-family.inc
 DEFAULTTUNE ?= "cortexa8thf-neon"
 require conf/machine/include/tune-cortexa8.inc
 # List common SoC features
-MACHINE_FEATURES = "kernel26 usbgadget usbhost vfat ext2 screen alsa ethernet sgx"
+MACHINE_FEATURES = "kernel26 usbgadget usbhost vfat ext2 screen alsa ethernet sgx can"
 
 # Bootloader
 PREFERRED_PROVIDER_virtual/bootloader ?= "barebox"
