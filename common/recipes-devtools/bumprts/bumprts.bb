@@ -13,12 +13,11 @@ SRC_URI = "\
 S = "${WORKDIR}"
 
 do_compile() {
-	${CC} ${CFLAGS} ${LDFLAGS} -o bumpRTS bumpRTS.c
+    ${CC} ${CFLAGS} ${LDFLAGS} -o bumpRTS bumpRTS.c
 }
 
 do_install() {
-	install -d ${D}${bindir}
-	install -m 0755 bumpRTS ${D}${bindir}
+    install -d ${D}${bindir}
+    install -m 0755 bumpRTS ${D}${bindir}
 }
-PACKAGES = "${PN}"
-FILES_${PN} = "${bindir}"
+FILES_${PN} = "${bindir}/bumpRTS"
