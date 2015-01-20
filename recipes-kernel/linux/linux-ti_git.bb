@@ -10,7 +10,6 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/linux-ti/defconfigs:${THISDIR}/linux-ti/f
 
 SRC_URI = "git://git.phytec.de/linux-ti;branch=${BRANCH}"
 SRC_URI_append = " \
-    file://defconfig \
     file://legacy-ptys.cfg \
     file://ipv6.cfg \
     file://systemd.cfg \
