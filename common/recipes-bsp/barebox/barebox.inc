@@ -182,9 +182,8 @@ do_install () {
 }
 FILES_${PN} = ""
 FILES_${PN} += "${base_bootdir}"
-FILES_${PN}-dev = ""
-RDEPENDS_${PN}-dev = ""
-FILES_${PN}-dev += "${base_sbindir}"
+PACKAGES =+ "${PN}-targettools"
+FILES_${PN}-targettools += "${base_sbindir}/barebox*"
 
 do_deploy () {
 	bbnote "Deploying barebox"
