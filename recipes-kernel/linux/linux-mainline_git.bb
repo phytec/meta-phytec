@@ -7,6 +7,9 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/linux-mainline:${THISDIR}/linux-mainline/
 SRC_URI = "git://git.phytec.de/linux-mainline;branch=${BRANCH}"
 SRC_URI_append = " \
     file://defconfig \
+    file://ipv6.cfg \
+    file://systemd.cfg \
+    file://resetdriver.cfg \
 "
 
 #SRCREV = "${AUTOREV}"
