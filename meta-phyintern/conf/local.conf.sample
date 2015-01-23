@@ -29,7 +29,7 @@ DISTRO = "yogurt"
 #PV_pn-barebox = "${BRANCH}"
 
 #this is ordering dependend
-IMAGE_FSTYPES += "sdimg-phy"
+IMAGE_FSTYPES += "sdcard"
 IMAGE_FSTYPES += "tar.gz"
 IMAGE_FSTYPES += "ubifs"
 

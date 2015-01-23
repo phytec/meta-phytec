@@ -5,7 +5,7 @@ DISTRO ?= "yogurt"
 #DL_DIR ?= "/home/share/yocto_downloads"
 #SSTATE_DIR ?= "/home/share/yocto_sstate/1.7"
 # this is ordering dependend
-IMAGE_FSTYPES += "sdimg-phy"
+IMAGE_FSTYPES += "sdcard"
 IMAGE_FSTYPES += "tar.gz"
 IMAGE_FSTYPES += "ubifs"
 DEPLOY_DIR = "${TOPDIR}/deploy"
