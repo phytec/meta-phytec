@@ -131,7 +131,7 @@ If everything went fine, the images can be found under:
 The easiest way to test your image is to jumper your board for sdcard boot and
 flash the build image to sdcard:
 
- sudo dd if=phytec-hwbringup-image-<MACHINE>.sdimg-phy of=/dev/<your_device> bs=1MB
+ sudo dd if=phytec-hwbringup-image-<MACHINE>.sdcard of=/dev/<your_device> bs=1MB
 
 where <your_device> could be "sde" for example, depending on your system. Be
 very careful when selecting the right drive! You have been warned.

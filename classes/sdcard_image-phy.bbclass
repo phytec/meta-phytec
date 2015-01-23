@@ -25,7 +25,7 @@ inherit image_types
 # 0                      4MiB     4MiB + 20MiB       4MiB + 20Mib + SDIMG_ROOTFS
 
 # This image depends on the rootfs image
-IMAGE_TYPEDEP_sdimg-phy = "${SDIMG_ROOTFS_TYPE}"
+IMAGE_TYPEDEP_sdcard = "${SDIMG_ROOTFS_TYPE}"
 
 # Boot partition volume id
 BOOTDD_VOLUME_ID ?= "boot"
@@ -43,9 +43,9 @@ IMAGE_ROOTFS_ALIGNMENT = "4096"
 SDIMG_ROOTFS_TYPE ?= "ext4"
 SDIMG_ROOTFS = "${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.rootfs.${SDIMG_ROOTFS_TYPE}"
 # this is necessary because of the missing build depency of the ext rootfs
-IMAGE_DEPENDS_sdimg-phy += "e2fsprogs-native"
+IMAGE_DEPENDS_sdcard += "e2fsprogs-native"
 
-IMAGE_DEPENDS_sdimg-phy = " \
+IMAGE_DEPENDS_sdcard = " \
 			parted-native \
 			mtools-native \
 			dosfstools-native \
@@ -54,10 +54,10 @@ IMAGE_DEPENDS_sdimg-phy = " \
 			virtual/bootloader \
 			"
 # SD card image name
-SDIMG = "${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.rootfs.sdimg-phy"
+SDIMG = "${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.rootfs.sdcard"
 
 # Compression method to apply to SDIMG after it has been created. Supported
-# compression formats are "gzip", "bzip2" or "xz". The original .sdimg-phy file
+# compression formats are "gzip", "bzip2" or "xz". The original .sdcard file
 # is kept and a new compressed file is created if one of these compression
 # formats is chosen. If SDIMG_COMPRESSION is set to any other value it is
 # silently ignored.
@@ -71,7 +71,7 @@ FATPAYLOAD_IMG ?= "${DEPLOY_DIR_IMAGE}/${IMAGE_LINK_NAME}.ubifs"
 
 IMAGEDATESTAMP = "${@time.strftime('%Y.%m.%d',time.gmtime())}"
 
-IMAGE_CMD_sdimg-phy () {
+IMAGE_CMD_sdcard () {
 
 	if [ -n ${FATPAYLOAD_IMG} ] ; then
 		# Caclulate size of aditional image in KiB
