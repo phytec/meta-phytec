@@ -10,12 +10,13 @@ BBLAYERS = " \
   ${BSPDIR}/sources/poky/meta \
   ${BSPDIR}/sources/poky/meta-yocto \
 "
-#BBLAYERS += "${BSPDIR}/sources/meta-phytec/meta-phyam335x/meta-phyintern"
-#BBLAYERS += "${BSPDIR}/sources/meta-phytec/meta-phyam335x"
-BBLAYERS += "${BSPDIR}/sources/meta-phytec/meta-phyimx6/meta-phyintern"
-BBLAYERS += "${BSPDIR}/sources/meta-phytec/meta-phyimx6"
+
 BBLAYERS += "${BSPDIR}/sources/meta-phytec"
-#BBLAYERS += "${BSPDIR}/sources/meta-yogurt"
+#BBLAYERS += "${BSPDIR}/sources/meta-phytec/meta-phyam335x"
+#BBLAYERS += "${BSPDIR}/sources/meta-phytec/meta-phyam335x/meta-phyintern"
+BBLAYERS += "${BSPDIR}/sources/meta-phytec/meta-phyimx6"
+BBLAYERS += "${BSPDIR}/sources/meta-phytec/meta-phyimx6/meta-phyintern"
+BBLAYERS += "${BSPDIR}/sources/meta-yogurt"
 BBLAYERS += "${BSPDIR}/sources/meta-openembedded/meta-oe"
 BBLAYERS += "${BSPDIR}/sources/meta-openembedded/meta-networking"
 BBLAYERS += "${BSPDIR}/sources/meta-openembedded/meta-python"

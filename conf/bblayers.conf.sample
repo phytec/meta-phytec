@@ -4,25 +4,29 @@ LCONF_VERSION = "6"
 
 BBPATH = "${TOPDIR}"
 BSPDIR := "${@os.path.abspath(os.path.dirname(d.getVar('FILE', True)) + '/../..')}"
+
 BBFILES ?= ""
-
-BBLAYERS_NON_REMOVABLE ?= " \
-  ${BSPDIR}/sources/poky/meta \
-  ${BSPDIR}/sources/poky/meta-yocto \
-"
-
 BBLAYERS = " \
   ${BSPDIR}/sources/poky/meta \
   ${BSPDIR}/sources/poky/meta-yocto \
-  \
-  ${BSPDIR}/sources/meta-phytec \
-  ${BSPDIR}/sources/meta-phytec/meta-phyimx6 \
-  \
-  ${BSPDIR}/sources/meta-openembedded/meta-oe \
-  ${BSPDIR}/sources/meta-openembedded/meta-networking \
-  ${BSPDIR}/sources/meta-openembedded/meta-python \
-  \
-  ${BSPDIR}/sources/meta-qt5 \
-  ${BSPDIR}/sources/meta-openembedded/meta-ruby \
 "
 
+BBLAYERS += "${BSPDIR}/sources/meta-phytec"
+#BBLAYERS += "${BSPDIR}/sources/meta-phytec/meta-phyam335x"
+#BBLAYERS += "${BSPDIR}/sources/meta-phytec/meta-phyam335x/meta-phyintern"
+BBLAYERS += "${BSPDIR}/sources/meta-phytec/meta-phyimx6"
+#BBLAYERS += "${BSPDIR}/sources/meta-phytec/meta-phyimx6/meta-phyintern"
+BBLAYERS += "${BSPDIR}/sources/meta-yogurt"
+BBLAYERS += "${BSPDIR}/sources/meta-openembedded/meta-oe"
+BBLAYERS += "${BSPDIR}/sources/meta-openembedded/meta-networking"
+BBLAYERS += "${BSPDIR}/sources/meta-openembedded/meta-python"
+BBLAYERS += "${BSPDIR}/sources/meta-openembedded/meta-multimedia"
+#BBLAYERS += "${BSPDIR}/sources/meta-openembedded/meta-systemd"
+#BBLAYERS += "${BSPDIR}/sources/meta-openembedded/meta-gpe"
+#BBLAYERS += "${BSPDIR}/sources/meta-openembedded/meta-gnome"
+#BBLAYERS += "${BSPDIR}/sources/meta-angstrom"
+#BBLAYERS += "${BSPDIR}/sources/meta-fsl-arm"
+#BBLAYERS += "${BSPDIR}/sources/meta-fsl-arm-extra"
+#BBLAYERS += "${BSPDIR}/sources/meta-fsl-demos"
+BBLAYERS += "${BSPDIR}/sources/meta-qt5"
+BBLAYERS += "${BSPDIR}/sources/meta-openembedded/meta-ruby"
