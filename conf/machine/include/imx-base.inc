@@ -113,4 +113,4 @@ SERIAL_CONSOLE = "115200 ttymxc0"
 
 KERNEL_IMAGETYPE = "zImage"
 
-MACHINE_FEATURES = "apm usbgadget usbhost vfat alsa touchscreen"
+MACHINE_FEATURES = "apm usbgadget usbhost vfat"
