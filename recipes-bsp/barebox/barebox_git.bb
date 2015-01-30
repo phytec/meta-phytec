@@ -8,8 +8,6 @@ SRC_URI_append = " \
 "
 S = "${WORKDIR}/git"
 
-BAREBOX_BIN_SYMLINK = "barebox-${MACHINE}.bin"
-
 BRANCH = "v2014.11.0-phy"
 PV = "v2014.11.0-phy2"
 # TAG = ${PV}

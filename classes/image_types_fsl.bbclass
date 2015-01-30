@@ -139,8 +139,8 @@ generate_imx_sdcard () {
 		fi
 		;;
 		barebox)
-		dd if=${DEPLOY_DIR_IMAGE}/barebox-${MACHINE}.bin of=${SDCARD} conv=notrunc seek=1 skip=1 bs=512
-#		dd if=${DEPLOY_DIR_IMAGE}/bareboxenv-${MACHINE}.bin of=${SDCARD} conv=notrunc seek=1 bs=512k
+		dd if=${DEPLOY_DIR_IMAGE}/barebox.bin of=${SDCARD} conv=notrunc seek=1 skip=1 bs=512
+#		dd if=${DEPLOY_DIR_IMAGE}/bareboxenv.bin of=${SDCARD} conv=notrunc seek=1 bs=512k
 		;;
 		"")
 		;;
