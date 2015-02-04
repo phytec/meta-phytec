@@ -1,7 +1,11 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
-SRC_URI = "git://git@git.phytec.de/barebox;protocol=ssh;branch=${BRANCH}"
-#SRC_URI += "file://no-default-env-compiled-in.cfg"
+# Overwrite GIT_URL and SRC_URI from recipe
+# NOTE: GIT_URL is used in the task buildinfo and should be useable for git
+# clone. Sadly yocto needs a different format of the url to checkout out the
+# git repository over the ssh protocol. Therefore we have to specify both formats.
+GIT_URL = "ssh://git@git.phytec.de/${PN}-dev"
+SRC_URI = "git://git@git.phytec.de/${PN}-dev;protocol=ssh;branch=${BRANCH}"
 
 VERBOSE_BUILD = "1"
 
