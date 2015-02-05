@@ -1,5 +1,3 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
-
 SRC_URI = "git://git@git.phytec.de/barebox-dev;protocol=ssh;branch=${BRANCH}"
 #SRC_URI_append = " file://no-default-env-compiled-in.cfg"
 
@@ -15,15 +13,6 @@ python do_prepare_env_append() {
         subprocess.call(cmd,shell=True)
     if os.path.exists(os.path.join(S,'.commonenv/config.bak')):
         oe.path.remove(os.path.join(S,'.commonenv/config.bak'))
-}
-
-#reboot env script
-SRC_URI_append = " file://reboot.env.bin"
-python do_prepare_env_append() {
-    workdir = d.getVar('WORKDIR', True)
-    envbindir = os.path.join(S,'.commonenv/bin')
-    bb.utils.mkdirhier(envbindir)
-    shutil.copyfile(os.path.join(workdir,'reboot.env.bin'), os.path.join(envbindir,'reboot'))
 }
 
 do_deploy_append () {
