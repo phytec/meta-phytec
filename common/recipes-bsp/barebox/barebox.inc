@@ -19,7 +19,10 @@ PROVIDES = "virtual/bootloader barebox"
 LICENSE = "GPL-2.0"
 LIC_FILES_CHKSUM = "file://COPYING;md5=057bf9e50e1ca857d0eb97bfe4ba8e5d"
 SRC_URI = "http://barebox.org/download/barebox-${PV}.tar.bz2"
-SRC_URI_append = " file://0001-Makefile-add-TARGETCC.patch"
+SRC_URI_append = " \
+    file://0001-Makefile-add-TARGETCC.patch \
+    ${@bb.utils.contains("EXTRA_IMAGE_FEATURES", "debug-tweaks", "file://far.env.bin", "", d)} \
+"
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
 inherit kernel-arch cml1 deploy
@@ -113,6 +116,15 @@ python do_prepare_env() {
         env_path_string += " .environment"
     cmd = 'kconfig-tweak --file %s --set-str DEFAULT_ENVIRONMENT_PATH "%s"' % (bareboxconfig, env_path_string)
     subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
+
+    # Install the script far into the barebox environment. It will only be
+    # added, if you enable "debug-tweaks" in EXTRA_IMAGE_FEATURES in your
+    # local.conf.
+    workdir_far_env_bin = os.path.join("${WORKDIR}", "far.env.bin")
+    if os.path.isfile(workdir_far_env_bin):
+        bb.utils.mkdirhier(os.path.join(S, ".environment/bin"))
+        shutil.copyfile(workdir_far_env_bin,
+                        os.path.join(S, ".environment/bin", "far"))
 }
 addtask prepare_env after do_prepare_configure before do_configure
 do_prepare_env[depends] += "kconfig-frontends-native:do_populate_sysroot"
