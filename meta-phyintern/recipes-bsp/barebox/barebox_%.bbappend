@@ -1,5 +1,3 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
-
 # Overwrite GIT_URL and SRC_URI from recipe
 # NOTE: GIT_URL is used in the task buildinfo and should be useable for git
 # clone. Sadly yocto needs a different format of the url to checkout out the
@@ -16,15 +14,6 @@ python do_prepare_env_append() {
     cmd='sed -i.bak "s/.*global\.boot\.default=.*/global\.boot\.default=${BAREBOX_BOOTSRC}/g" ${S}/.environment/config'
     subprocess.call(cmd,shell=True)
     oe.path.remove(os.path.join(S,'.environment/config.bak'))
-}
-
-#reboot env script
-SRC_URI_append = " file://reboot.env.bin"
-python do_prepare_env_append() {
-    workdir = d.getVar('WORKDIR', True)
-    envbindir = os.path.join(S,'.environment/bin')
-    bb.utils.mkdirhier(envbindir)
-    shutil.copyfile(os.path.join(workdir,'reboot.env.bin'), os.path.join(envbindir,'reboot'))
 }
 
 do_deploy_append () {
