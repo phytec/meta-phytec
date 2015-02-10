@@ -1,0 +1,8 @@
+#!/bin/sh
+
+IP_CONFIG_PROG=/sbin/ip
+
+# baudrate to be used when running the interface
+BITRATE=500000
+
+$IP_CONFIG_PROG link set $IFACE up type can bitrate $BITRATE
