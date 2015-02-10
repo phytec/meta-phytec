@@ -40,6 +40,8 @@ MODULE_TARBALL_DEPLOY = "0"
 # implementation, but it will reduce cpu load and power consumption.
 KERNEL_MODULE_AUTOLOAD += "cryptodev"
 IMAGE_INSTALL_append = " cryptodev-module"
+# SGX GPL Kernel Modules
+IMAGE_INSTALL_append = " omap3-sgx-modules"
 
 # rootfs images
 # register image class for usage
@@ -61,3 +63,8 @@ XSERVER = "xserver-xorg \
            xf86-input-keyboard"
 # Default to external video, change to smallscreen for built-in LCD
 GUI_MACHINE_CLASS = "smallscreen"
+
+# OpenGLES support TI SDK 5xx, doesnt supports x11 nor wayland as of now
+PREFERRED_PROVIDER_virtual/libgles1 = "libgles-omap3"
+PREFERRED_PROVIDER_virtual/libgles2 = "libgles-omap3"
+PREFERRED_PROVIDER_virtual/egl = "libgles-omap3"
