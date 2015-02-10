@@ -9,6 +9,8 @@
 #  TI_BIN_UNPK_WDEXT  - This variable extends workdir path, if user wants to put
 #                       the output in some internal directory
 
+DEPENDS = "fakeroot-native32bit"
+
 python do_unpack () {
     bb.build.exec_func('base_do_unpack', d)
     bb.build.exec_func('ti_bin_do_unpack', d)
@@ -46,7 +48,7 @@ python ti_bin_do_unpack() {
     os.chmod(binfile, 0755)
 
     # Run the InstallJammer binary and accept the EULA
-    filename = "HOME=%s ./%s --mode console" % (workdir, binfile)
+    filename = "HOME=%s fakeroot ./%s --mode console" % (workdir, binfile)
     
     # Test executable by printing installer version or help screen (--version currently broken for some installers) 
     # - this is currently broken in some IJ installers - comment out for now
