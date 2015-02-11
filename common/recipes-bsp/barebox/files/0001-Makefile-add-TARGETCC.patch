@@ -15,31 +15,19 @@ Signed-off-by: Stefan Müller-Klieser <s.mueller-klieser@phytec.de>
  scripts/Makefile | 2 +-
  2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/Makefile b/Makefile
-index 151579c..cd0c7b0 100644
---- a/Makefile
-+++ b/Makefile
-@@ -168,6 +168,7 @@ export srctree objtree VPATH
- 
- ARCH            ?= sandbox
- CROSS_COMPILE   ?=
-+TARGETCC        ?= 
- 
- # Architecture as present in compile.h
- UTS_MACHINE := $(ARCH)
-diff --git a/scripts/Makefile b/scripts/Makefile
-index 2050ec4..fe38966 100644
---- a/scripts/Makefile
-+++ b/scripts/Makefile
-@@ -36,7 +36,7 @@ targetprogs-$(CONFIG_IMD_TARGET) += bareboximd-target
+Index: barebox-dev/scripts/Makefile
+===================================================================
+--- barebox-dev.orig/scripts/Makefile	2015-02-05 15:34:24.587933752 +0100
++++ barebox-dev/scripts/Makefile	2015-02-05 15:42:58.491938027 +0100
+@@ -35,8 +35,10 @@
+ # Let clean descend into subdirs
  subdir-	+= basic kconfig setupmbr
  
++TARGETCC ?= $(CC)
++
  quiet_cmd_csingle	= CC      $@
 -      cmd_csingle	= $(CC) -Wp,-MD,$(depfile) $(CFLAGS) -o $@ $<
 +      cmd_csingle	= $(TARGETCC) -Wp,-MD,$(depfile) $(CFLAGS) -o $@ $<
  
  __targetprogs	:= $(sort $(targetprogs-y) $(targetprogs-m))
  target-csingle	:= $(foreach m,$(__targetprogs),$(if $($(m)-objs),,$(m)))
--- 
-1.9.1
-
