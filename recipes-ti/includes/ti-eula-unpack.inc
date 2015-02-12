@@ -65,6 +65,13 @@ python ti_bin_do_unpack() {
         f.write(cmd+'\n');
     f.close()
 
+    # as we don't know if the installer really did his work, check manually if some extracted
+    # files can be found
+    S  = bb.data.getVar('S', localdata, True)
+    files = os.listdir(S)
+    if len(files) < 4:
+        bb.fatal("It seems the TI installer did not work for some reason. Check for it manually at: %s." % S)
+
     # Expand the tarball that was created if required
     tarfile  = bb.data.getVar('TARFILE', localdata)    
     if bool(tarfile) == True:
