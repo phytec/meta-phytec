@@ -46,13 +46,14 @@ SDIMG_ROOTFS = "${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.rootfs.${SDIMG_ROOTFS_TYPE}"
 IMAGE_DEPENDS_sdcard += "e2fsprogs-native"
 
 IMAGE_DEPENDS_sdcard = " \
-			parted-native \
-			mtools-native \
-			dosfstools-native \
-			e2fsprogs-native \
-			virtual/kernel \
-			virtual/bootloader \
-			"
+    parted-native \
+    mtools-native \
+    dosfstools-native \
+    e2fsprogs-native \
+    virtual/kernel:do_deploy \
+    virtual/bootloader:do_deploy \
+"
+
 # SD card image name
 SDIMG = "${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.rootfs.sdcard"
 
