@@ -10,7 +10,7 @@ MACHINE_FEATURES = "kernel26 usbgadget usbhost vfat ext2 screen alsa ethernet sg
 PREFERRED_PROVIDER_virtual/bootloader ?= "barebox"
 BAREBOX_DEFAULT_DEFCONFIG = "am335x_defconfig"
 BAREBOX_IPL_DEFAULT_DEFCONFIG = "am335x_mlo_defconfig"
-BAREBOX_IPL_BIN_DEPLOY = "MLO-${MACHINE}-${PV}-${PR}.img"
+BAREBOX_IPL_BIN_DEPLOY = "MLO-${MACHINE}-${PKGV}-${PKGR}-${DATETIME}.img"
 BAREBOX_IPL_BIN_SYMLINK = "MLO"
 # all am335x need an mlo, whenever we need a bootloader
 # we need to have a dependency to build the mlo too
