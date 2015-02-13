@@ -192,6 +192,7 @@ do_install () {
 		install -m 744 ${B}/scripts/kernel-install-target ${D}${base_sbindir}/barebox-kernel-install
 	fi
 }
+do_install[prefuncs] += "package_get_auto_pr"
 FILES_${PN} = ""
 FILES_${PN} += "${base_bootdir}"
 PACKAGES =+ "${PN}-targettools"
@@ -210,4 +211,5 @@ do_deploy () {
 	cd ${B}
 	install -m 755 scripts/bareboxenv ${STAGING_BINDIR_NATIVE}/
 }
+do_deploy[prefuncs] += "package_get_auto_pr"
 addtask deploy before do_build after do_compile
