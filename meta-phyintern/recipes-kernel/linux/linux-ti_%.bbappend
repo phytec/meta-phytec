@@ -1,15 +1,15 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
-SRC_URI = "git://git@git.phytec.de/linux-ti-dev;protocol=ssh;branch=${BRANCH}"
+# Overwrite GIT_URL and SRC_URI from recipe
+# NOTE: GIT_URL is used in the task buildinfo and should be useable for git
+# clone. Sadly yocto needs a different format of the url to checkout out the
+# git repository over the ssh protocol. Therefore we have to specify both formats.
+GIT_URL = "ssh://git@git.phytec.de/${PN}-dev"
+SRC_URI = "git://git@git.phytec.de/${PN}-dev;protocol=ssh;branch=${BRANCH}"
 #SRC_URI = "git://${HOME}/linux-ti;protocol=file;branch=${BRANCH} file://defconfig"
 #BRANCH = ""
 #SRCREV = "${AUTOREV}"
 #PV = "${LINUX_VERSION}-git${SRCPV}"
-
-#SRC_URI_append = " file://ipv6.cfg"
-#SRC_URI_append = " file://systemd.cfg"
-#necessary for opengl sgx driver
-#SRC_URI_append = " file://da8xx-fb.cfg"
 
 #SRC_URI_append_phycore-am335x-1 = " \
 #    file://0001-phycore-rdk-activate-display.patch \
