@@ -10,8 +10,8 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/linux-ti/defconfigs:${THISDIR}/linux-ti/f
 
 SRC_URI = "git://git.phytec.de/linux-ti;branch=${BRANCH}"
 SRC_URI_append = " \
-    file://ipv6.cfg \
-    file://systemd.cfg \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'ipv6', 'file://ipv6.cfg', '', d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'file://systemd.cfg', '', d)} \
 "
 
 COMPATIBLE_MACHINE_ti33x = "(ti33x)" 
