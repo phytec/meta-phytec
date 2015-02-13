@@ -1,21 +1,28 @@
+inherit buildinfo
 require common/recipes-bsp/barebox/barebox.inc
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}/features:${THISDIR}:"
 
-SRC_URI = "git://git.phytec.de/barebox;branch=${BRANCH}"
+GIT_URL = "git://git.phytec.de/${PN}"
+SRC_URI = "${GIT_URL};branch=${BRANCH}"
 SRC_URI_append = " \
     file://commonenv \
     file://environment \
+    file://envtool-target.cfg \
 "
-# floating revision
-#SRCREV = "${AUTOREV}"
-S = "${WORKDIR}/git"
 
+# tag revision (NOTE: Keep TAG, PV and SRCREV in sync!)
 BRANCH = "v2014.10.0-phy"
-#PV = "v2014.10.0-phy-git${SRCPV}"
-PV = "v2014.10.0-phy1"
-# TAG = ${PV}
+TAG = "v2014.10.0-phy1"
 SRCREV = "8b015cd0815904b5c20ea5130884fdcea3344439"
+#SRCREV = "${TAG}"
+PV = "${TAG}"
+
+# use this for building the HEAD of the git branch 
+#SRCREV = "${AUTOREV}"
+#PV = "v2014.10.0-phy-git${SRCPV}"
+
+S = "${WORKDIR}/git"
 
 do_appendbootconfig_to_configboard () {
     bbnote "config-board: append bootconfig"
