@@ -13,6 +13,9 @@ SRC_URI_append = " \
     ${@bb.utils.contains('DISTRO_FEATURES', 'ipv6', 'file://ipv6.cfg', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'file://systemd.cfg', '', d)} \
 "
+# As of Version 5 of the TI sgx graphic stack, the opengl modules need all of the
+# TI kernel Graphics drivers even the legacy da8xx driver
+SRC_URI_append += "${@bb.utils.contains('DISTRO_FEATURES', 'opengl', 'file://da8xx-fb.cfg', '', d)}"
 
 COMPATIBLE_MACHINE_ti33x = "(ti33x)" 
 
