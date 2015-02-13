@@ -33,7 +33,7 @@ do_default_defconfig () {
 do_install () {
 	bbnote "Installing barebox-ipl image on target rootfs"
 	install -d ${D}${base_bootdir}
-	install ${S}/${BAREBOX_IPL_BIN} ${D}${base_bootdir}/${BAREBOX_IPL_BIN_DEPLOY}
+	install ${B}/${BAREBOX_IPL_BIN} ${D}${base_bootdir}/${BAREBOX_IPL_BIN_DEPLOY}
 	ln -sf ${BAREBOX_IPL_BIN_DEPLOY} ${D}${base_bootdir}/${BAREBOX_IPL_BIN_SYMLINK}
 }
 FILES_${PN} = ""
@@ -41,6 +41,6 @@ FILES_${PN} = "${base_bootdir}"
 
 do_deploy () {
 	bbnote "Deploying barebox ipl"
-	install ${S}/${BAREBOX_IPL_BIN} ${DEPLOYDIR}/${BAREBOX_IPL_BIN_DEPLOY}
+	install ${B}/${BAREBOX_IPL_BIN} ${DEPLOYDIR}/${BAREBOX_IPL_BIN_DEPLOY}
 	ln -sf ${BAREBOX_IPL_BIN_DEPLOY} ${DEPLOYDIR}/${BAREBOX_IPL_BIN_SYMLINK}
 }

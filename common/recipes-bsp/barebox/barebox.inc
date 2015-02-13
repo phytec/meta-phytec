@@ -159,7 +159,7 @@ do_default_defconfig () {
 do_savedefconfig() {
 	bbplain "saving defconfig to ${WORKDIR}/defconfig.temp"
 	oe_runmake savedefconfig
-	install -m 644 ${S}/defconfig ${WORKDIR}/defconfig.temp
+	install -m 644 ${B}/defconfig ${WORKDIR}/defconfig.temp
 }
 addtask savedefconfig after do_configure
 
