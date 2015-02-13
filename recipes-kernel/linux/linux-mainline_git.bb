@@ -12,14 +12,19 @@ SRC_URI_append = " \
     file://resetdriver.cfg \
 "
 
-#SRCREV = "${AUTOREV}"
-#PV = "${LINUX_VERSION}-git${SRCPV}"
-
 LINUX_VERSION ?= "3.17.6-phy1"
-PV = "${LINUX_VERSION}"
 SRCREV = "b866874890884ddf526b8225e706f46c5856c698"
-
 BRANCH ?= "v3.17.6-phy"
+
+BRANCH_phyboard-mira-imx6-1 = "v3.17.6-phy"
+LINUX_VERSION_phyboard-mira-imx6-1 = "3.17.6-phy2"
+SRCREV_phyboard-mira-imx6-1 = "173838e5818b081c7601e9ba73a5785126013c13"
+
+BRANCH_phyboard-mira-imx6-2 = "v3.17.6-phy"
+LINUX_VERSION_phyboard-mira-imx6-2 = "3.17.6-phy2"
+SRCREV_phyboard-mira-imx6-2 = "173838e5818b081c7601e9ba73a5785126013c13"
+
+PV = "${LINUX_VERSION}"
 KERNEL_LOCALVERSION = "-${BSP_VERSION}"
 
 COMPATIBLE_MACHINE_mx6 = "(mx6)"

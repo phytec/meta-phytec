@@ -10,13 +10,11 @@ S = "${WORKDIR}/git"
 
 BAREBOX_BIN_SYMLINK = "barebox-${MACHINE}.bin"
 
-# floating revision
-#SRCREV = "${AUTOREV}"
 BRANCH = "v2014.11.0-phy"
-#PV = "v2014.11.0-phy-git${SRCPV}"
-PV = "v2014.11.0-phy1"
+PV = "v2014.11.0-phy2"
 # TAG = ${PV}
-SRCREV = "d0ad2e2a1a714b20fe13f52cabb099199432f505"
+SRCREV = "57b87aedbf0b6ae0eb0b858dd0c83411097c777a"
+
 BAREBOX_LOCALVERSION = "-${BSP_VERSION}"
 
 COMPATIBLE_MACHINE_mx6 = "(mx6)"
