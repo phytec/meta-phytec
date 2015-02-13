@@ -17,7 +17,7 @@ SRC_URI_append = " \
 # TI kernel Graphics drivers even the legacy da8xx driver
 SRC_URI_append += "${@bb.utils.contains('DISTRO_FEATURES', 'opengl', 'file://da8xx-fb.cfg', '', d)}"
 
-COMPATIBLE_MACHINE_ti33x = "(ti33x)" 
+COMPATIBLE_MACHINE = "(ti33x)" 
 
 LINUX_VERSION ?= "3.12.24-phy1"
 BRANCH ?= "v3.12.24-phy"
