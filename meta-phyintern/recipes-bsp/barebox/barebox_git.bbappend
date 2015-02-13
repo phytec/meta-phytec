@@ -17,13 +17,13 @@ python do_prepare_env_append() {
 do_deploy_append () {
 	if [ ${DEV_BUILD} == "True" ]; then
 		bbnote "Deploying barebox to ${TFTP_ROOT}"
-		install -m 777 ${S}/${BAREBOX_BIN} ${TFTP_ROOT}/${DEV_USER}-barebox-${MACHINE}
+		install -m 777 ${B}/${BAREBOX_BIN} ${TFTP_ROOT}/${DEV_USER}-barebox-${MACHINE}
 	fi
 }
 
 do_copysd () {
 	if [ -e ${SDCARD_MOUNT}${SDCARD_BOOTPART} ]; then
-		install -m 777 ${S}/${BAREBOX_BIN} ${SDCARD_MOUNT}${SDCARD_BOOTPART}/barebox.bin
+		install -m 777 ${B}/${BAREBOX_BIN} ${SDCARD_MOUNT}${SDCARD_BOOTPART}/barebox.bin
 	fi
 }
 do_copysd[nostamp] = "1"
