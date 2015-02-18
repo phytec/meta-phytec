@@ -135,7 +135,10 @@ $ cd ~/git/${PN}
 $ git checkout -b %s %s
 """ % (local_branch_name, checkout_rev))
 
-    bb.plain("""Then copy and paste the following snippet to your 'local.conf':
+    bb.plain("""You now have two possible workflows for your changes.
+
+1. Work inside the git repository:
+Copy and paste the following snippet to your 'local.conf':
 
 BRANCH_pn-${PN} = \"%s\"
 SRC_URI_pn-${PN} = "git:///\x24{HOME}/git/${PN};branch=\x24{BRANCH}\"
@@ -148,8 +151,19 @@ $ bitbake ${PN} -c compile
 $ bitbake ${PN} -c deploy
 
 Note: You have to commit all your changes. Otherwise yocto doesn't pick them up!
-See the manual for further information.
-""" % (local_branch_name, pv_value))
+
+2. Work and compile from the local working directory
+To work and compile in an external source directoy we provide the
+phyexternalsrc.bbclass. To use it copy and paste the following snippet to your
+"local.conf":
+
+INHERIT += "phyexternalsrc"
+EXTERNALSRC_pn-${PN} = "\x24{HOME}/git/${PN}"
+PV_pn-${PN} = "%s"
+
+Note: All the compiling is done in the EXTERNALSRC directory. Everytime
+you build an Image, the package will be recompiled and build.
+""" % (local_branch_name, pv_value, local_branch_name))
 }
 do_buildinfo[nostamp] = "1"
 addtask buildinfo
