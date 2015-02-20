@@ -8,7 +8,7 @@ SRC_URI = "${GIT_URL};branch=${BRANCH}"
 SRC_URI_append = " \
     file://commonenv \
     file://environment \
-    file://envtool-target.cfg \
+    file://targettools.cfg \
 "
 
 # tag revision (NOTE: Keep TAG, PV and SRCREV in sync!)
