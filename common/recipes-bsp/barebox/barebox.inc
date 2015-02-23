@@ -40,6 +40,8 @@ BAREBOX_BIN ?= "barebox.bin"
 # filename of file to be deployed by this recipe
 BAREBOX_BIN_DEPLOY ?= "barebox-${MACHINE}-${PKGV}-${PKGR}-${DATETIME}.bin"
 BAREBOX_BIN_DEPLOY[vardepsexclude] += "DATETIME"
+BAREBOX_DEFCONFIG_DEPLOY ?= "barebox-defconfig-${MACHINE}-${PKGV}-${PKGR}-${DATETIME}"
+BAREBOX_DEFCONFIG_DEPLOY[vardepsexclude] += "DATETIME"
 BAREBOX_BIN_SYMLINK ?= "barebox.bin"
 BAREBOX_DEFAULT_DEFCONFIG ?= ""
 # barebox environment
@@ -211,6 +213,11 @@ do_deploy () {
 	install -d ${STAGING_BINDIR_NATIVE}
 	cd ${B}
 	install -m 755 scripts/bareboxenv ${STAGING_BINDIR_NATIVE}/
+
+        install -m 644 ${B}/defconfig ${DEPLOYDIR}/${BAREBOX_DEFCONFIG_DEPLOY}
+        rm -rf ${DEPLOYDIR}/${PN}-defconfig
+        ln -sf ${BAREBOX_DEFCONFIG_DEPLOY} ${DEPLOYDIR}/${PN}-defconfig
 }
 do_deploy[prefuncs] += "package_get_auto_pr"
+do_deploy[depends] += "${PN}:do_savedefconfig"
 addtask deploy before do_build after do_compile

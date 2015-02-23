@@ -69,3 +69,11 @@ do_savedefconfig() {
 addtask savedefconfig after do_configure
 
 KERNEL_IMAGE_BASE_NAME = "${KERNEL_IMAGETYPE}-${PN}-${PKGV}-${PKGR}-${MACHINE}-${DATETIME}"
+KERNEL_DEFCONFIG_NAME = "${KERNEL_IMAGE_BASE_NAME}-defconfig"
+KERNEL_DEFCONFIG_NAME[vardepsexclude] = "DATETIME"
+do_deploy_append() {
+    install -m 644 ${B}/defconfig ${DEPLOYDIR}/${KERNEL_DEFCONFIG_NAME}
+    rm -rf ${DEPLOYDIR}/${KERNEL_IMAGETYPE}-defconfig
+    ln -sf ${KERNEL_DEFCONFIG_NAME} ${DEPLOYDIR}/${KERNEL_IMAGETYPE}-defconfig
+}
+do_deploy[depends] += "${PN}:do_savedefconfig"
