@@ -38,7 +38,8 @@ BAREBOX_LOCALVERSION ?= "-${DISTRO}-${DISTRO_VERSION}"
 # name of the image created by barebox Makefile
 BAREBOX_BIN ?= "barebox.bin"
 # filename of file to be deployed by this recipe
-BAREBOX_BIN_DEPLOY ?= "barebox-${MACHINE}-${PKGV}-${PKGR}.bin"
+BAREBOX_BIN_DEPLOY ?= "barebox-${MACHINE}-${PKGV}-${PKGR}-${DATETIME}.bin"
+BAREBOX_BIN_DEPLOY[vardepsexclude] += "DATETIME"
 BAREBOX_BIN_SYMLINK ?= "barebox.bin"
 BAREBOX_DEFAULT_DEFCONFIG ?= ""
 # barebox environment

@@ -67,3 +67,5 @@ do_savedefconfig() {
     install -m 644 ${B}/defconfig ${WORKDIR}/defconfig.temp
 }
 addtask savedefconfig after do_configure
+
+KERNEL_IMAGE_BASE_NAME = "${KERNEL_IMAGETYPE}-${PN}-${PKGV}-${PKGR}-${MACHINE}-${DATETIME}"
