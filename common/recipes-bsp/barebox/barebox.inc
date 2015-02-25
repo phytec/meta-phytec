@@ -132,29 +132,6 @@ python do_prepare_env() {
 addtask prepare_env after do_prepare_configure before do_configure
 do_prepare_env[depends] += "kconfig-frontends-native:do_populate_sysroot"
 
-# create config-board environment file, this task is disabled per default
-# to activate it, put this line into your barebox....bb recipe.
-# addtask create_config_board after do_prepare_env before do_configure
-do_create_config_board () {
-    if [ -e ${S}/.commonenv/config-board ]; then
-        bbnote "config-board file already provided, not doing anything"
-    else
-        #tty boot serial variables
-        B_TTY0=`echo "${SERIAL_CONSOLES}" | sed 's/\ .*//'`
-        B_TTY0_B=`echo "${B_TTY0}" | sed 's/\;.*//'`
-        B_TTY0_N=`echo "${B_TTY0}" | sed 's/.*\;//'`
-        #create config-board file
-        cat > ${S}/.commonenv/config-board <<EOF
-#!/bin/sh
-# board defaults, do not change in running system.
-# Change /env/config file instead.
-global.hostname=${MACHINE}
-global.linux.bootargs.base="console=${B_TTY0_N},${B_TTY0_B} ${BAREBOX_BOOTARGS_BASE_EXTRA}"
-EOF
-    fi
-}
-addtask create_config_board
-
 do_default_defconfig () {
 	bbnote "generating .config for target ${BAREBOX_DEFAULT_DEFCONFIG}"
 	unset CFLAGS LDFLAGS
