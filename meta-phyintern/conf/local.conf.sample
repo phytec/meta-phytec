@@ -1,26 +1,29 @@
 BSP_VERSION = "UNASSIGNED"
-MACHINE ?= "UNASSIGNED"
-DISTRO ?= "poky"
-#DISTRO = "yogurt"
-PREFERRED_PROVIDER_jpeg = "jpeg"
-#IMAGE_INSTALL_append = " task-native-sdk"
+MACHINE = "UNASSIGNED"
+
+DISTRO = "yogurt"
+
+# You can disable and enable FSTYPES as you wish. e.g. 'ext4'.
 IMAGE_FSTYPES += "sdcard"
 IMAGE_FSTYPES += "tar.gz"
 IMAGE_FSTYPES += "ubifs"
 
-#INHERIT += "externalsrc"
-#EXTERNALSRC_pn-linux-mainline = "${HOME}/linux-mainline"
-#EXTERNALSRC_BUILD_pn-linux-mainline = "${HOME}/linux-mainline"
-#SRCTREECOVEREDTASKS = "do_prepare_configure do_patch do_unpack do_fetch"
-#PV_pn-linux-mainline = "${LINUX_VERSION}"
+# That are the default values of bitbake.  Adapt these to your workspace and
+# host preferences.
+#DL_DIR = "${TOPDIR}/downloads"
+#SSTATE_DIR = "${TOPDIR}/sstate-cache"
 
-BB_NUMBER_THREADS ?= "${@oe.utils.cpu_count()}"
-PARALLEL_MAKE ?= "-j ${@oe.utils.cpu_count()}"
-DEPLOY_DIR = "${TOPDIR}/deploy"
+
+PACKAGE_CLASSES = "package_rpm"
 #SDKMACHINE ?= "x86_64"
-PACKAGE_CLASSES ?= "package_rpm"
 EXTRA_IMAGE_FEATURES = "debug-tweaks ssh-server-openssh"
+
 USER_CLASSES ?= "buildstats image-mklibs image-prelink"
+
+# Define preferred provider for jpeg to avoid warning.
+PREFERRED_PROVIDER_jpeg = "jpeg"
+
+OE_TERMINAL = "auto"
 PATCHRESOLVE = "noop"
 BB_DISKMON_DIRS = "\
     STOPTASKS,${TMPDIR},1G,100K \
@@ -29,9 +32,7 @@ BB_DISKMON_DIRS = "\
     ABORT,${TMPDIR},100M,1K \
     ABORT,${DL_DIR},100M,1K \
     ABORT,${SSTATE_DIR},100M,1K"
-#PACKAGECONFIG_append_pn-qemu-native = " sdl"
-#PACKAGECONFIG_append_pn-nativesdk-qemu = " sdl"
-#ASSUME_PROVIDED += "libsdl-native"
-CONF_VERSION = "1"
 
-ACCEPT_FSL_EULA = ""
+INHERIT += "phytec-mirrors"
+
+CONF_VERSION = "1"
