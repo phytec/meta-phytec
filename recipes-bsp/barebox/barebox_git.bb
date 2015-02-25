@@ -38,7 +38,7 @@ elif [ \$bootsource = net ]; then
 fi
 EOF
 }
-addtask appendbootconfig_to_configboard after do_create_config_board before do_configure
+addtask appendbootconfig_to_configboard after do_prepare_env before do_configure
 
 BAREBOX_LOCALVERSION = "-${BSP_VERSION}"
 
