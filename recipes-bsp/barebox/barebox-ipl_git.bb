@@ -7,15 +7,10 @@ GIT_URL = "git://git.phytec.de/barebox"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
 # tag revision (NOTE: Keep TAG, PV and SRCREV in sync!)
-BRANCH = "v2014.10.0-phy"
-TAG = "v2014.10.0-phy1"
-SRCREV = "8b015cd0815904b5c20ea5130884fdcea3344439"
-#SRCREV = "${TAG}"
-PV = "${TAG}"
-
-# use this for building the HEAD of the git branch 
-#SRCREV = "${AUTOREV}"
-#PV = "v2014.10.0-phy-git${SRCPV}"
+BRANCH = "v2015.02.0-phy"
+TAG = "v2015.02.0-phy-git${SRCPV}"
+# Still using HEAD of branch
+SRCREV = "${AUTOREV}"
 
 S = "${WORKDIR}/git"
 
