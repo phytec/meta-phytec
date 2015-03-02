@@ -7,14 +7,8 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/linux-mainline:${THISDIR}/linux-mainline/
 
 # tag revision (NOTE: Keep TAG, PV and SRCREV in sync!)
 BRANCH = "v3.17.6-phy"
-TAG = "v3.17.6-phy1"
-SRCREV = "b866874890884ddf526b8225e706f46c5856c698"
-
-TAG_phyboard-mira-imx6-1 = "v3.17.6-phy2"
-SRCREV_phyboard-mira-imx6-1 = "173838e5818b081c7601e9ba73a5785126013c13"
-
-TAG_phyboard-mira-imx6-2 = "v3.17.6-phy2"
-SRCREV_phyboard-mira-imx6-2 = "173838e5818b081c7601e9ba73a5785126013c13"
+TAG = "v3.17.6-phy2"
+SRCREV = "173838e5818b081c7601e9ba73a5785126013c13"
 
 #SRCREV = "${TAG}"
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
