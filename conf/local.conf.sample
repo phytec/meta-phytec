@@ -1,0 +1,28 @@
+BSP_VERSION = "UNASSIGNED"
+MACHINE ?= "UNASSIGNED"
+DISTRO ?= "yogurt"
+# adapt this to your workspace
+#DL_DIR ?= "/home/share/yocto_downloads"
+#SSTATE_DIR ?= "/home/share/yocto_sstate/1.7"
+# this is ordering dependend
+IMAGE_FSTYPES += "sdcard"
+IMAGE_FSTYPES += "tar.gz"
+IMAGE_FSTYPES += "ubifs"
+DEPLOY_DIR = "${TOPDIR}/deploy"
+#SDKMACHINE ?= "x86_64"
+EXTRA_IMAGE_FEATURES = "debug-tweaks"
+#TEST_IMAGE = "1"
+OE_TERMINAL = "auto"
+PATCHRESOLVE = "noop"
+BB_DISKMON_DIRS = "\
+    STOPTASKS,${TMPDIR},1G,100K \
+    STOPTASKS,${DL_DIR},1G,100K \
+    STOPTASKS,${SSTATE_DIR},1G,100K \
+    ABORT,${TMPDIR},100M,1K \
+    ABORT,${DL_DIR},100M,1K \
+    ABORT,${SSTATE_DIR},100M,1K" 
+#Qemu config
+#PACKAGECONFIG_append_pn-qemu-native = " sdl"
+#PACKAGECONFIG_append_pn-nativesdk-qemu = " sdl"
+#ASSUME_PROVIDED += "libsdl-native"
+CONF_VERSION = "1"
