@@ -25,3 +25,5 @@ do_install() {
 }
 
 FILES_${PN} = "${bindir}"
+
+COMPATIBLE_MACHINE = "ti33x"
