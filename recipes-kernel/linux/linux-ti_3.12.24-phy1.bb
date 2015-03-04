@@ -4,6 +4,7 @@ DESCRIPTION =   "Linux Kernel provided and supported by PHYTEC based on TIs \
                 Kernel for AM335x Family Boards. It includes support for \
                 many IPs such as GPU, VPU and IPU."
 
+inherit phygittag
 inherit buildinfo
 require common/recipes-kernel/linux/linux.inc
 
@@ -19,19 +20,16 @@ SRC_URI_append = " \
 # TI kernel Graphics drivers even the legacy da8xx driver
 SRC_URI_append += "${@bb.utils.contains('DISTRO_FEATURES', 'opengl', 'file://da8xx-fb.cfg', '', d)}"
 
-# tag revision (NOTE: Keep TAG, PV and SRCREV in sync!)
-BRANCH = "v3.12.24-phy"
-TAG = "v3.12.24-phy1"
-SRCREV = "1a233b846375fe6d6b1aa521dec2973c5058d9f0"
-#SRCREV = "${TAG}", this will check the online repo for the commit id of the TAG
-# NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
-PV = "${@d.getVar('TAG').lstrip('v')}"
-LINUX_VERSION ?= "${PV}"
-
-# use this to build the HEAD of the git branch
-#SRCREV = "${AUTOREV}"
-#PV = "${LINUX_VERSION}-git${SRCPV}"
-
 KERNEL_LOCALVERSION = "-${BSP_VERSION}"
+LINUX_VERSION = "${PV}"
 
-COMPATIBLE_MACHINE = "(ti33x)" 
+# NOTE: Keep version in filename in sync with commit id!
+SRCREV = "1a233b846375fe6d6b1aa521dec2973c5058d9f0"
+
+COMPATIBLE_MACHINE = "beagleboneblack-1"
+COMPATIBLE_MACHINE .= "|phyboard-maia-am335x-1"
+COMPATIBLE_MACHINE .= "|phyboard-wega-am335x-1"
+COMPATIBLE_MACHINE .= "|phyboard-wega-am335x-2"
+COMPATIBLE_MACHINE .= "|phycore-am335x-1"
+COMPATIBLE_MACHINE .= "|phycore-am335x-2"
+COMPATIBLE_MACHINE .= "|phyflex-am335x-1"
