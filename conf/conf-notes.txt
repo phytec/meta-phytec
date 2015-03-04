@@ -1,6 +1,6 @@
 Tested build targets for the yocto bsp are:
 	bitbake phytec-hwbringup-image
-	bitbake phytec-qt4demo-image
+	bitbake phytec-qt5demo-image
 
 
 ██████╗ ██╗  ██╗██╗   ██╗████████╗███████╗ ██████╗
