@@ -24,7 +24,7 @@ KERNEL_LOCALVERSION = "-${BSP_VERSION}"
 LINUX_VERSION = "${PV}"
 
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "1a233b846375fe6d6b1aa521dec2973c5058d9f0"
+SRCREV = "b9a39a7f04268813032a5580198901f3e15cf0dc"
 
 COMPATIBLE_MACHINE = "beagleboneblack-1"
 COMPATIBLE_MACHINE .= "|phyboard-maia-am335x-1"
