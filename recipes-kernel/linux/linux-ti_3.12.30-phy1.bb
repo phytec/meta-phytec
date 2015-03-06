@@ -27,6 +27,7 @@ LINUX_VERSION = "${PV}"
 SRCREV = "b9a39a7f04268813032a5580198901f3e15cf0dc"
 
 COMPATIBLE_MACHINE = "beagleboneblack-1"
+SRC_URI_append_beagleboneblack-1 = " file://beagleboneblack-1.cfg"
 COMPATIBLE_MACHINE .= "|phyboard-maia-am335x-1"
 COMPATIBLE_MACHINE .= "|phyboard-wega-am335x-1"
 COMPATIBLE_MACHINE .= "|phyboard-wega-am335x-2"
