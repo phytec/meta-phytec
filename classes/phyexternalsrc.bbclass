@@ -15,7 +15,6 @@
 #
 # INHERIT += "phyexternalsrc"
 # EXTERNALSRC_pn-linux-ti = "${HOME}/yocto/sources/linux-ti"
-# PV_pn-linux-ti = "3.12.24-phy1-externalmod"
 #
 # The last line sets the version of the package manually, which is
 # advisable, as any kind of version auto detection will fail.
