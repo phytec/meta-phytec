@@ -1,8 +1,12 @@
+# Copyright (C) 2015 PHYTEC Messtechnik GmbH,
+# Author: Stefan Christ <s.christ@phytec.de>
+
 inherit phygittag
 inherit buildinfo
 require common/recipes-bsp/barebox/barebox.inc
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/defconfigs:${THISDIR}/defconfigs/features:${THISDIR}/env:"
+FILESEXTRAPATHS_prepend = "${THISDIR}/defconfigs:${THISDIR}/defconfigs/features:"
+FILESEXTRAPATHS_prepend = "${THISDIR}/env-2014.11.0-phy:"
 
 GIT_URL = "git://git.phytec.de/${PN}"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
