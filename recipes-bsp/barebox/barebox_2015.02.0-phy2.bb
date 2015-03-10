@@ -6,7 +6,7 @@ inherit buildinfo
 require common/recipes-bsp/barebox/barebox.inc
 
 FILESEXTRAPATHS_prepend = "${THISDIR}/defconfigs:${THISDIR}/defconfigs/features:"
-FILESEXTRAPATHS_prepend = "${THISDIR}/env-2014.11.0-phy:"
+FILESEXTRAPATHS_prepend = "${THISDIR}/env-2015.02.0-phy:"
 
 GIT_URL = "git://git.phytec.de/${PN}"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
@@ -16,8 +16,10 @@ SRC_URI_append = " \
 "
 S = "${WORKDIR}/git"
 
+PR = "r0"
+
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "57b87aedbf0b6ae0eb0b858dd0c83411097c777a"
+SRCREV = "b07f85c089be1e01184047e29a75529851d817da"
 
 BAREBOX_LOCALVERSION = "-${BSP_VERSION}"
 

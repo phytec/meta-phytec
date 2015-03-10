@@ -1,3 +1,0 @@
-#!/bin/sh
-# Replace the file bootsource in the barebox default environment with an empty
-# file. The variable boot.default is set in the file config, not here.
