@@ -1,0 +1,83 @@
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Date: Sun, 30 Oct 2011 22:18:39 +0100
+Subject: [PATCH] remove asm/page.h, use sysconf
+
+remove include asm/page.h, use susconf instead of hard coded PAGE_MASK and PAGE_SIZE
+
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ fb.c   |   11 +++++------
+ main.c |    3 +++
+ 2 files changed, 8 insertions(+), 6 deletions(-)
+
+diff --git a/fb.c b/fb.c
+index f0bef27..db576d2 100644
+--- a/fb.c
++++ b/fb.c
+@@ -19,8 +19,6 @@
+ #include <sys/stat.h>
+ #include <unistd.h>
+ 
+-#include <asm/page.h>
+-
+ #include "types.h"
+ #include "fb.h"
+ #include "util.h"
+@@ -37,6 +35,7 @@ static unsigned long fb_start;
+ static u32 fb_len, fb_offset;
+ u8 *fb;
+ 
++extern unsigned long page_mask;
+ 
+     /*
+      *   Saved frame buffer device state
+@@ -181,9 +180,9 @@ void fb_map(void)
+     caddr_t addr;
+ 
+     Debug("fb_map()\n");
+-    fb_start = (unsigned long)fb_fix.smem_start & PAGE_MASK;
+-    fb_offset = (unsigned long)fb_fix.smem_start & ~PAGE_MASK;
+-    fb_len = (fb_offset+fb_fix.smem_len+~PAGE_MASK) & PAGE_MASK;
++    fb_start = (unsigned long)fb_fix.smem_start & page_mask;
++    fb_offset = (unsigned long)fb_fix.smem_start & ~page_mask;
++    fb_len = (fb_offset+fb_fix.smem_len+~page_mask) & page_mask;
+     Debug("fb_start = %lx, fb_offset = %x, fb_len = %x\n", fb_start, fb_offset,
+ 	  fb_len);
+     addr = mmap(NULL, fb_len, PROT_READ | PROT_WRITE, MAP_SHARED, fb_fd, 0);
+@@ -200,7 +199,7 @@ void fb_map(void)
+ void fb_unmap(void)
+ {
+     Debug("fb_unmap()\n");
+-    if (munmap((caddr_t)((unsigned long)fb & PAGE_MASK), fb_len) == -1)
++    if (munmap((caddr_t)((unsigned long)fb & page_mask), fb_len) == -1)
+ 	Fatal("munmap smem: %s\n", strerror(errno));
+ }
+ 
+diff --git a/main.c b/main.c
+index a13c800..6c646a1 100644
+--- a/main.c
++++ b/main.c
+@@ -13,6 +13,7 @@
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
++#include <unistd.h>
+ 
+ #include "types.h"
+ #include "util.h"
+@@ -28,6 +29,7 @@
+ const char *ProgramName;
+ 
+ const char *Opt_Fbdev = DEFAULT_FBDEV;
++unsigned long page_mask;
+ int Opt_Debug = 0;
+ int Opt_List = 0;
+ int Opt_Quiet = 0;
+@@ -73,6 +75,7 @@ static void SigHandler(int signo)
+ 
+ int main(int argc, char *argv[])
+ {
++    page_mask = ~(sysconf(_SC_PAGE_SIZE)-1);
+     ProgramName = argv[0];
+ 
+     while (argc > 1 && argv[1][0] == '-') {
