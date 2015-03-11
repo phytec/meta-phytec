@@ -2,4 +2,4 @@
 
 global.bootm.image="/mnt/mmc/zImage"
 global.bootm.oftree="/mnt/mmc/imx6q-phytec-phycard-imx6-rdk.dtb"
-global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootfstype=ext3 rootwait rw"
+global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootwait rw"

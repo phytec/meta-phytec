@@ -16,7 +16,7 @@ SRC_URI_append = " \
 "
 S = "${WORKDIR}/git"
 
-PR = "r0"
+PR = "r1"
 
 # NOTE: Keep version in filename in sync with commit id!
 SRCREV = "b07f85c089be1e01184047e29a75529851d817da"
