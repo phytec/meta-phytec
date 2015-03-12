@@ -34,8 +34,6 @@ INHERIT += "fsl-dynamic-packagearch"
 
 # Firmware
 MACHINE_FIRMWARE ?= ""
-MACHINE_FIRMWARE_append_mx6q = " firmware-imx-vpu-imx6q"
-MACHINE_FIRMWARE_append_mx6dl = " firmware-imx-vpu-imx6d"
 
 # FIXME: Needs addition of firmware-imx of official BSPs
 #MACHINE_FIRMWARE_append_mx35 = " firmware-imx-sdma-imx35"
@@ -44,10 +42,6 @@ MACHINE_FIRMWARE_append_mx6dl = " firmware-imx-vpu-imx6d"
 #MACHINE_FIRMWARE_append_mx25 = " firmware-imx-sdma-imx25"
 
 MACHINE_EXTRA_RRECOMMENDS += "${MACHINE_FIRMWARE}"
-
-# Extra audio support
-# FIXME: Add support for ALL SoC families
-MACHINE_EXTRA_RRECOMMENDS_append_mx6 = " fsl-alsa-plugins"
 
 # Extra udev rules
 MACHINE_EXTRA_RRECOMMENDS += "udev-extraconf"
