@@ -15,6 +15,7 @@ SRC_URI = "${GIT_URL};branch=${BRANCH}"
 SRC_URI_append = " \
     ${@bb.utils.contains('DISTRO_FEATURES', 'ipv6', 'file://ipv6.cfg', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'file://systemd.cfg', '', d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'mtd-tests', 'file://mtd-tests.cfg', '', d)} \
 "
 # As of Version 5 of the TI sgx graphic stack, the opengl modules need all of the
 # TI kernel Graphics drivers even the legacy da8xx driver
