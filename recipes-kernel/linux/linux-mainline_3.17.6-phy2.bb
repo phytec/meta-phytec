@@ -4,17 +4,20 @@ inherit phygittag
 inherit buildinfo
 require common/recipes-kernel/linux/linux.inc
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/linux-mainline:${THISDIR}/linux-mainline/features:"
+FILESEXTRAPATHS_prepend := "${THISDIR}/linux-mainline/features:"
 
 GIT_URL = "git://git.phytec.de/${PN}"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
+# TODO: remove disable_input_evbug after the next version bump
 SRC_URI_append = " \
-    file://defconfig \
     file://ipv6.cfg \
     file://systemd.cfg \
     file://resetdriver.cfg \
+    file://disable_input_evbug.cfg \
 "
 S = "${WORKDIR}/git"
+
+PR = "r1"
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
 # NOTE: Keep version in filename in sync with commit id!
