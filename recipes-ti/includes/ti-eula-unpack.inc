@@ -26,7 +26,7 @@ python ti_bin_do_unpack() {
     if os.path.exists('/lib64') and (os.path.islink('/lib64') or os.path.islink('/lib') or os.path.exists('/lib32')):
         lib32path = '/lib32'
     if not os.path.exists('%s/libc.so.6' % lib32path):
-        bb.warn("TI installer requires 32bit glibc libraries for proper operation\nrun 'yum install glibc.i686' on Fedora or 'apt-get install ia32-libs' on Ubuntu/Debian")
+        bb.warn("TI installer requires 32bit glibc libraries for proper operation\nrun 'yum install glibc.i686' on Fedora or 'apt-get install libglib2.0-0:i386' on Ubuntu/Debian")
 
     localdata = bb.data.createCopy(d)
     bb.data.update_data(localdata)
