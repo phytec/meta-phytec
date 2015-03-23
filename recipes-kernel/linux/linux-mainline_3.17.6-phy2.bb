@@ -14,10 +14,11 @@ SRC_URI_append = " \
     file://systemd.cfg \
     file://resetdriver.cfg \
     file://disable_input_evbug.cfg \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'mtd-tests', 'file://mtd-tests.cfg', '', d)} \
 "
 S = "${WORKDIR}/git"
 
-PR = "r1"
+PR = "r2"
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
 # NOTE: Keep version in filename in sync with commit id!
