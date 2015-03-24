@@ -1,28 +1,27 @@
-# Copyright (C) 2014 Stefan Mueller-Klieser <s.mueller-klieser@phytec.de>
-# PHYTEC Messtechnik GmbH
+# Copyright (C) 2015 PHYTEC Messtechnik GmbH,
+# Author: Stefan Christ <s.christ@phytec.de>
+
 inherit phygittag
 inherit buildinfo
 require common/recipes-kernel/linux/linux.inc
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/linux-mainline/features:"
+FILESEXTRAPATHS_prepend = "${THISDIR}/linux-mainline/features:"
 
-GIT_URL = "git://git.phytec.de/${PN}"
-SRC_URI = "${GIT_URL};branch=${BRANCH}"
-# TODO: remove disable_input_evbug after the next version bump
+#GIT_URL = "git://git.phytec.de/${PN}"
+SRC_URI = "git://git@git.phytec.de/${PN}-dev;protocol=ssh;branch=${BRANCH}"
 SRC_URI_append = " \
     file://ipv6.cfg \
     file://systemd.cfg \
     file://resetdriver.cfg \
-    file://disable_input_evbug.cfg \
     ${@bb.utils.contains('DISTRO_FEATURES', 'mtd-tests', 'file://mtd-tests.cfg', '', d)} \
 "
 S = "${WORKDIR}/git"
 
-PR = "r2"
+PR = "r0"
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "173838e5818b081c7601e9ba73a5785126013c13"
+SRCREV = "94075d844ed70a1611b0f905c2d1799ad2551b65"
 
 LINUX_VERSION = "${PV}"
 
