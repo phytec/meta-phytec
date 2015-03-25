@@ -15,7 +15,7 @@ S = "${WORKDIR}/git"
 BAREBOX_LOCALVERSION = "-${BSP_VERSION}"
 
 # NOTE: Keep version in filename in sync with commit id and barebox-ipl!
-SRCREV = "c836eb8da28c8c088c61736c75e85947f8217987"
+SRCREV = "93343dbe0556e6d126bbb6dbbd0236815fe2a9e7"
 
 COMPATIBLE_MACHINE = "beagleboneblack-1"
 COMPATIBLE_MACHINE .= "|phyboard-maia-am335x-1"
