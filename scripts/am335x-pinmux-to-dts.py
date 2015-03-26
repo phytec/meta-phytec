@@ -8,6 +8,7 @@ import re
 import argparse
 import os
 
+
 def is_dir(dirname):
     """Checks if a path is an actual directory"""
     if not os.path.isdir(dirname):
@@ -15,6 +16,7 @@ def is_dir(dirname):
         raise argparse.ArgumentTypeError(msg)
     else:
         return dirname
+
 
 def main():
     # parse command line options
@@ -25,20 +27,20 @@ def main():
     args = parser.parse_args()
 
     if args.datadirectory:
-		dir = is_dir(args.datadirectory)
+        dir = is_dir(args.datadirectory)
 
     # get pinctrl register offset from mux.h
     offset = re.compile(r"(CONTROL_PADCONF_.*?)\s+(0x\w+)")
     offsets = {}
-    muxfile = open(os.path.join(dir,'mux.h'), 'r')
+    muxfile = open(os.path.join(dir, 'mux.h'), 'r')
     for line in muxfile.readlines():
         m = offset.search(line)
         if m:
-           offsets[m.group(1)] = int(m.group(2), 16) - 0x800
+            offsets[m.group(1)] = int(m.group(2), 16) - 0x800
 
     # get pinctrl register values from pinmux.h
     mux = re.compile(r"(CONTROL_PADCONF_.*?), \((\w+) \| (\w+) \| (\w+) \)\) /\* ([\w\[\]]+) \*/")
-    pinmuxfile = open(os.path.join(dir,'pinmux.h'),'r')
+    pinmuxfile = open(os.path.join(dir, 'pinmux.h'), 'r')
     for line in pinmuxfile.readlines():
         m = mux.search(line)
         if m:
@@ -50,11 +52,11 @@ def main():
 
             # put pinname in comment
             if comment != m.group(5).lower():
-                comment += '.'+m.group(5).lower()
+                comment += '.' + m.group(5).lower()
 
             # INPUT OUTPUT defines
             if m.group(2) == 'IEN':
-                reg |= (1<<5)
+                reg |= (1 << 5)
                 reg_define += 'INPUT'
             elif m.group(2) == 'IDIS':
                 reg_define += 'OUTPUT'
@@ -65,10 +67,10 @@ def main():
             if m.group(3) == 'PD':
                 reg_define += '_PULLDOWN'
             elif m.group(3) == 'PU':
-                reg |= (2<<3)
+                reg |= (2 << 3)
                 reg_define += '_PULLUP'
             elif m.group(3) == 'OFF':
-                reg |= (1<<3)
+                reg |= (1 << 3)
                 reg_define += ''
                 tabspaces += 1
             else:
@@ -82,7 +84,7 @@ def main():
                 sys.exit("bad field 4: %s" % m.group(4))
 
             # print dts line to stdout
-            print(3*'\t' + '0x%03x' % (off) + ' (%s)' % reg_define + tabspaces*'\t' + '/* %s */' % comment)
+            print(3 * '\t' + '0x%03x' % (off) + ' (%s)' % reg_define + tabspaces * '\t' + '/* %s */' % comment)
 
 if __name__ == "__main__":
-	main()
+    main()
