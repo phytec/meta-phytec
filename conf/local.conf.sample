@@ -2,6 +2,7 @@ BSP_VERSION = "UNASSIGNED"
 MACHINE ?= "UNASSIGNED"
 
 DISTRO ?= "yogurt"
+DISTRO_FEATURES_append = " autostart-demo"
 
 # That are the default values of bitbake.  Adapt these to your workspace and
 # host preferences.
