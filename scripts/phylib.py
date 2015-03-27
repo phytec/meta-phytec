@@ -52,23 +52,23 @@ class Vividict(dict):
 # Main Classes
 class Sourcecode(object):
     def __init__(self):
-        try:
-            # Interface
-            self.soc = []
-            self.phylinux_api = 0
-            self.init_script = ""
-            self.machines = Vividict()
-            self.bsp_dir = ""
-            self.meta_phytec_dir = ""
-            self.soc_layers_top_dir = ""
+        # Interface
+        self.soc = []
+        self.phylinux_api = 0
+        self.init_script = ""
+        self.machines = Vividict()
+        self.bsp_dir = ""
+        self.meta_phytec_dir = ""
+        self.soc_layers_top_dir = ""
 
+        try:
             #v2 Implementation
             cwd = self.search_for_bsp_dir()
             self.bsp_dir = cwd
             self.meta_phytec_dir = os.path.join(cwd, "sources/meta-phytec")
             self.soc_layers_top_dir = self.meta_phytec_dir
             self.init_machines()
-        except IOError, e:
+        except (IOError, OSError), e:
             print "Could not find necessary file: ", e
             raise SystemExit
 
@@ -82,9 +82,8 @@ class Sourcecode(object):
             path, tail = os.path.split(path)
         raise IOError('No .repo directory found. Are you inside a BSP folder?')
 
-    def search_for_repo_dir(self):
-        path = self.search_for_bsp_dir()
-        return os.path.join(path, '.repo')
+    def get_repo_dir(self):
+        return os.path.join(self.bsp_dir, '.repo')
 
     def init_machines(self):
         soc_bsp_folders = []
@@ -132,21 +131,21 @@ class Sourcecode(object):
 
 class BoardSupportPackage(object):
     def __init__(self):
-        try:
-            #Interface
-            self.src = Sourcecode()
-            self.init_script = "tools/init"
-            self.xml = ""
-            self.uid = ""
-            self.pdn = ""
-            self.soc = ""
-            self.selected_machine = ""
-            self.local_conf = ""
-            self.build_dir = ""
-            self.image_base_dir = ""
-            self.image_dir_deploy_N_lw = ""
-            self.image_dir_ftp = ""
+        #Interface
+        self.src = Sourcecode()
+        self.init_script = "tools/init"
+        self.xml = ""
+        self.uid = ""
+        self.pdn = ""
+        self.soc = ""
+        self.selected_machine = ""
+        self.local_conf = ""
+        self.build_dir = ""
+        self.image_base_dir = ""
+        self.image_dir_deploy_N_lw = ""
+        self.image_dir_ftp = ""
 
+        try:
             #v2 Implementation
             self.local_conf = os.path.join(self.src.bsp_dir, "build/conf/local.conf")
             self.build_dir = os.path.join(self.src.bsp_dir, "build")
@@ -154,7 +153,7 @@ class BoardSupportPackage(object):
             self.image_dir_deploy_N_lw = ""
             self.image_dir_ftp = "ftp://ftp.phytec.de"
             self.probe_selected_release()
-        except IOError, e:
+        except (IOError, OSError) as e:
             print "Could not find necessary file: ", e
             raise SystemExit
 
@@ -179,7 +178,7 @@ class BoardSupportPackage(object):
             pass
 
     def probe_selected_release(self):
-        repo_dir = self.src.search_for_repo_dir()
+        repo_dir = self.src.get_repo_dir()
         f = os.readlink(os.path.join(repo_dir, 'manifest.xml'))
         f = os.path.join(repo_dir, f)
         self.set_manifest(f)
