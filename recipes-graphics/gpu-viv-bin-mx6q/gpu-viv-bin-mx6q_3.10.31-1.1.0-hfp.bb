@@ -7,6 +7,7 @@
 #   Released under the MIT license (see COPYING.MIT for the terms)
 
 inherit fsl-eula-unpack
+FSL_EULA_FILE = "${@os.path.join("${THISDIR}", "EULA")}"
 
 DESCRIPTION = "GPU driver and apps for imx6"
 SECTION = "libs"
