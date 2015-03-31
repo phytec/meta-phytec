@@ -1,0 +1,33 @@
+#!/bin/bash
+# This script is a init script for our bsp. It resides in the bsp release specific folder
+# this is the soc specific init script. It assumes that you have only one soc layer
+# which holds all your machines
+PHYLINUX_API_VERSION="2"
+SOC_DIR="sources/meta-phytec/meta-phyimx6"
+PHYTEC_DIR="sources/meta-phytec"
+TEMPLATECONF="tools/templateconf"
+install -d ${TEMPLATECONF}
+install -m 0644 ${SOC_DIR}/conf/bblayers.conf.sample ${TEMPLATECONF}
+install -m 0644 ${SOC_DIR}/conf/doc/HOWTO-imx6 HOWTO-imx6
+install -m 0644 ${SOC_DIR}/conf/doc/ReleaseNotes ReleaseNotes
+install -m 0644 ${PHYTEC_DIR}/conf/local.conf.sample ${TEMPLATECONF}
+install -m 0644 ${PHYTEC_DIR}/conf/conf-notes.txt ${TEMPLATECONF}
+install -m 0644 ${PHYTEC_DIR}/conf/doc/HOWTO-yocto HOWTO-yocto
+
+# init a build directory if we dont have one
+bash -c "TEMPLATECONF=../../${TEMPLATECONF} source sources/poky/oe-init-build-env" > /dev/null
+${PHYTEC_DIR}/scripts/copy_site_conf.py
+${PHYTEC_DIR}/scripts/init_machine.py
+${PHYTEC_DIR}/scripts/write_bsp_version_to_lconf.py
+
+echo ""
+echo "Before you start your work, please check your build/conf/local.conf for"
+echo "host specific configuration. Check the documentation especially for:"
+echo "   - proxy settings"
+echo "   - DL_DIR"
+echo "   - SSTATE_DIR"
+echo ""
+echo "To set up your shell environment for some Yocto work, you have to type:"
+echo "$ source sources/poky/oe-init-build-env"
+echo ""
+echo ""
