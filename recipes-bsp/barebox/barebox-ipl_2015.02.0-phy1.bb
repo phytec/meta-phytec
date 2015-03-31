@@ -9,7 +9,7 @@ SRC_URI = "${GIT_URL};branch=${BRANCH}"
 S = "${WORKDIR}/git"
 BAREBOX_LOCALVERSION = "-${BSP_VERSION}"
 
-SRCREV = "93343dbe0556e6d126bbb6dbbd0236815fe2a9e7"
+SRCREV = "eb699b609649147f2706b2c86a9599275bdecbdf"
 
 COMPATIBLE_MACHINE = "beagleboneblack-1"
 COMPATIBLE_MACHINE .= "|phyboard-maia-am335x-1"
