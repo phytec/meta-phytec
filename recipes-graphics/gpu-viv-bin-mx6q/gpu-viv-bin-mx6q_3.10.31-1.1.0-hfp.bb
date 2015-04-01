@@ -26,25 +26,25 @@ LIC_FILES_CHKSUM = "file://usr/include/gc_vdk.h;endline=11;md5=c4713c78d7f52bf2f
 # Require the same distro feature as the mesa recipe
 REQUIRED_DISTRO_FEATURES = "opengl"
 
-# We don't provide virtual/libgles1 and virtual/libgl yet.
-PROVIDES += "virtual/libgles2 virtual/egl"
+# We don't provide virtual/libgl yet.
+PROVIDES += "virtual/libgles2 virtual/egl virtual/libgles1"
 
-PR = "r0"
+PR = "r1"
 
 _PV_beta = "${@'${PV}'.replace('1.1.0', '1.1.0-beta')}"
 SRC_URI = "http://www.freescale.com/lgfiles/NMG/MAD/YOCTO/${PN}-${_PV_beta}.bin;fsl-eula=true \
     file://egl.pc \
+    file://glesv1_cm.pc \
     file://glesv2.pc \
     file://vg.pc \
+    file://Vivante.icd \
 "
 S = "${WORKDIR}/${PN}-${_PV_beta}"
 
 SRC_URI[md5sum] = "8aa5c16021ce38762e7e3c07a57146eb"
 SRC_URI[sha256sum] = "c132de60b28c73e8d6ea12219151ca9a0a0bb4f73d62ca1bdd0feac6db0d964e"
 
-# The package doesn't create a 'gpu-viv-bin-mx6q' package. So overwrite
-# PACKAGES with an empty string.
-PACKAGES = ""
+PACKAGES = "${PN} ${PN}-dev"
 PACKAGES += " \
     libegl-mx6 libegl-mx6-dev libegl-mx6-dbg \
     libgles2-mx6 libgles2-mx6-dev libgles2-mx6-dbg \
@@ -54,6 +54,9 @@ PACKAGES += " \
     libopenvg-mx6 libopenvg-mx6-dev libopenvg-mx6-dbg \
     libglslc-mx6 libglslc-mx6-dev libglslc-mx6-dbg \
     libvsc-mx6 libvsc-mx6-dev libvsc-mx6-dbg \
+    libvdk-mx6 libvdk-mx6-dev libvdk-mx6-dbg \
+    libclc-mx6 libclc-mx6-dev libclc-mx6-dbg \
+    libopencl-mx6 libopencl-mx6-dev libopencl-mx6-dbg \
 "
 
 # Skip package if it does not match the machine float-point type in use
@@ -187,20 +190,47 @@ do_install () {
         install -m 0644 "$name"  ${D}${includedir}/CL/
     done
 
+    # Package libopencl-mx6
+    install -m 0644 ${S}/usr/lib/libOpenCL.so ${D}${libdir}/libOpenCL.so
+    install -m 0644 ${S}/usr/lib/libVivanteOpenCL.so ${D}${libdir}/libVivanteOpenCL.so
+    install -d ${D}${sysconfdir}/OpenCL/vendors/
+    install -m 0644 ${WORKDIR}/Vivante.icd ${D}${sysconfdir}/OpenCL/vendors/Vivante.icd
+
 
     # Package libvsc-mx6
     install -m 0644 ${S}/usr/lib/libVSC.so ${D}${libdir}/libVSC.so
 
 
-    #hacky
-    find ${D}${libdir} -type f -exec chmod 644 {} \;
-    find ${D}${includedir} -type f -exec chmod 644 {} \;
+    # Package libvdk-mx6
+    install -m 0644 ${S}/usr/lib/libVDK.so ${D}${libdir}/libVDK.so
+    install -m 0644 ${S}/usr/include/*vdk.h ${D}${includedir}/
+
+
+    # Package libcsc-mx6
+    install -m 0644 ${S}/usr/lib/libCLC.so ${D}${libdir}/libCLC.so
+
+
+    # Package gpu-viv-bin-mx6q
+    install -d ${D}/opt/viv_samples/
+    # Permissions should be correct.
+    cp -r ${S}/opt/viv_samples ${D}/opt/
 }
 
 # THE YOCTO PACKAGEING MECHANISM IS A CRAZY SHIT!!!! INCOMPREHENSIBLE!!!
 # Some notes:
 # - Package dependencies should mostly be correct.
 
+# debug-files avoids warning for "/opt/viv_samples/hal/unit_test/.debug/libgal2DColorKey.so"
+INSANE_SKIP_${PN} += "rpaths already-stripped debug-files"
+FILES_${PN} = "/opt/viv_samples/"
+FILES_${PN}-dev = ""
+FILES_${PN}-dbg = "/opt/viv_samples/*/*/.debug"
+RDEPENDS_${PN} += "libvdk-mx6 libegl-mx6 libgal-mx6 libgles2-mx6 libvsc-mx6 libopencl-mx6"
+
+FILES_libclc-mx6 = "${libdir}/libCLC.so"
+FILES_libclc-mx6-dev = "${includedir}/CL ${libdir}/libCLC.so"
+FILES_libclc-mx6-dbg = "${libdir}/.debug/libCLC.so"
+RDEPENDS_libclc-mx6 += "libvsc-mx6"
 
 FILES_libvsc-mx6 = "${libdir}/libVSC.so"
 FILES_libvsc-mx6-dev = ""
@@ -241,6 +271,15 @@ FILES_libglslc-mx6-dev = "${includedir}/CL ${libdir}/libGLSLC.so*"
 FILES_libglslc-mx6-dbg = "${libdir}/.debug/libGLSLC.so*"
 RDEPENDS_libglslc-mx6 += "libvivante-mx6 libvsc-mx6 libgal-mx6"
 
+FILES_libopencl-mx6 = " \
+	${libdir}/libOpenCL.so \
+	${libdir}/libVivanteOpenCL.so \
+	${sysconfdir}/OpenCL/vendors/ \
+"
+FILES_libopencl-mx6-dev = "${includedir}/CL ${libdir}/libOpenCL.so ${libdir}/libVivanteOpenCL.so"
+FILES_libopencl-mx6-dbg = "${libdir}/.debug/libOpenCL.so ${libdir}/.debug/libVivanteOpenCL.so"
+RDEPENDS_libopencl-mx6 = "libclc-mx6 libvsc-mx6"
+
 
 INSANE_SKIP_libegl-mx6 += "dev-so"
 FILES_libegl-mx6 = " \
@@ -273,6 +312,11 @@ FILES_libopenvg-mx6 = "${libdir}/libOpenVG.* "
 FILES_libopenvg-mx6-dev = "${includedir}/VG ${libdir}/libOpenVG.* ${libdir}/pkgconfig/vg.pc"
 FILES_libopenvg-mx6-dbg = "${libdir}/.debug/libOpenVG.*"
 RDEPENDS_libopenvg-mx6 += "libgal-mx6 libegl-mx6"
+
+FILES_libvdk-mx6 = "${libdir}/libVDK.so"
+FILES_libvdk-mx6-dev = "${includedir}/*vdk.h ${libdir}/libVDK.so"
+FILES_libvdk-mx6-dbg = "${libdir}/.debug/libVDK.so"
+RDEPENDS_libvdk-mx6 += "libegl-mx6"
 
 
 COMPATIBLE_MACHINE = "(mx6)"
