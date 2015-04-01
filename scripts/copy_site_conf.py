@@ -29,9 +29,9 @@ class BSP_SiteConfLoader(BoardSupportPackage):
         return True
 
     def probe_for_siteconf(self):
-        locations = ["/etc/yocto/site.conf",
+        locations = ["~/.site.conf",
                      "/home/share/tools/yocto/site.conf",
-                     "~/.site.conf"]
+                     "/etc/yocto/site.conf"]
         for l in locations:
             if os.path.isfile(os.path.expanduser(l)):
                 return os.path.expanduser(l)
