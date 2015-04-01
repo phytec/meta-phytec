@@ -34,7 +34,7 @@ class BSP_SiteConfLoader(BoardSupportPackage):
                      "~/.site.conf"]
         for l in locations:
             if os.path.isfile(os.path.expanduser(l)):
-                return l
+                return os.path.expanduser(l)
         return None
 
 
