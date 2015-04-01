@@ -23,8 +23,10 @@ class BSP_Switcher(BoardSupportPackage):
         print '* Please choose one of the available Machines:'
         print '*'
         machines = sorted(self.src.machines)
-        for line in machines:
-            print '*   ', self.src.machines[line]['bsp_id'], ': ', line, ': ', self.src.machines[line]['description']
+        max_len_machines = max(len(machine) for machine in machines)
+        for i, line in enumerate(machines, 1):
+            machine = line.rjust(max_len_machines)
+            print '*   %2d : %s : %s' % (i, machine, self.src.machines[line]['description'])
         while True:
             try:
                 user_input = int(raw_input('$ '))
@@ -33,7 +35,9 @@ class BSP_Switcher(BoardSupportPackage):
                 break
             except ValueError:
                 print 'No valid input.  Try again...'
-        self.selected_machine = self.src.get_machine_by_bsp_id(user_input)
+
+        # User index starts with 1, list index starts with 0.
+        self.selected_machine = machines[user_input - 1]
         return True
 
 
