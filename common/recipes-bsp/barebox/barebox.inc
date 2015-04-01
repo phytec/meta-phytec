@@ -183,7 +183,7 @@ FILES_${PN}-targettools += "${base_sbindir}/barebox*"
 do_deploy () {
 	bbnote "Deploying barebox"
 	install -d ${DEPLOYDIR}
-	install ${B}/${BAREBOX_BIN} ${DEPLOYDIR}/${BAREBOX_BIN_DEPLOY}
+	install -m 644 ${B}/${BAREBOX_BIN} ${DEPLOYDIR}/${BAREBOX_BIN_DEPLOY}
 	cd ${DEPLOYDIR}
 	rm -f ${BAREBOX_BIN_SYMLINK} 
 	ln -sf ${BAREBOX_BIN_DEPLOY} ${BAREBOX_BIN_SYMLINK}
