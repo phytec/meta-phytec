@@ -23,7 +23,7 @@ class BSP_SiteConfLoader(BoardSupportPackage):
         if arg is None:
             print 'No site.conf found on host.'
             return False
-        target = os.path.join(self.build_dir, 'conf', os.path.basename(arg))
+        target = os.path.join(self.build_dir, 'conf/site.conf')
         print "site.conf setup: Copying " + arg + " to " + target
         shutil.copyfile(arg, target)
         return True
