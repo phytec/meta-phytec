@@ -3,6 +3,7 @@
 # Copyright 2015, PHYTEC Messtechnik GmbH
 # Author: Stefan Müller-Klieser <s.mueller-klieser@phytec.de>
 
+import sys
 import argparse
 import os
 import shutil
@@ -52,7 +53,9 @@ def main():
     args = parser.parse_args()
 
     bsp = BSP_SiteConfLoader()
-    bsp.copy_site_conf(args.filename)
+    if not bsp.copy_site_conf(args.filename):
+        # An error has happened. Report it back to calling program.
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()

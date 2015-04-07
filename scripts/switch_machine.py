@@ -3,6 +3,7 @@
 # Copyright 2015, PHYTEC Messtechnik GmbH
 # Author: Stefan Müller-Klieser <s.mueller-klieser@phytec.de>
 
+import sys
 import argparse
 from phylib import *
 
@@ -55,7 +56,9 @@ def main():
     args = parser.parse_args()
 
     bsp = BSP_Switcher()
-    bsp.switch_machine(args.machine)
+    if not bsp.switch_machine(args.machine):
+        # An error has happened. Report it back to calling program.
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()
