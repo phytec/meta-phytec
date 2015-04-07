@@ -198,6 +198,10 @@ class BoardSupportPackage(object):
         self.set_manifest(f)
 
     def write_bsp_version_to_localconf(self):
+        if self.uid is None or self.uid == "":
+            print 'BSP_VERSION is empty. Cannot set it in local.conf.'
+            return False
+
         lconf = self.local_conf
         lconftmp = lconf + '~'
         shutil.copyfile(lconf, lconftmp)
