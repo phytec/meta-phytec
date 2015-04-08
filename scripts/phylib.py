@@ -28,7 +28,32 @@ import os
 import pprint
 import collections
 import shutil
+import subprocess
 import xml.etree.ElementTree as ET
+
+
+def call(cmd):
+    print '$', cmd
+    returncode = subprocess.call(cmd,shell=True)
+    print ''
+    return returncode
+
+def userquery_yes_no(default=True):
+    print '[yes/no]:'
+    yes = set(['y', 'ye', 'yes'])
+    no = set(['n', 'no'])
+    if default:
+        yes.add('')
+    else:
+        no.add('')
+    while True:
+        user_input = raw_input('$ ').lower()
+        if user_input in yes:
+            return True
+        elif user_input in no:
+            return False
+        else:
+            print 'Please type y or n'
 
 
 # Stack overflow helper Classes
