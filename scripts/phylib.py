@@ -259,3 +259,9 @@ class BoardSupportPackage(object):
             print 'There is a misconfiguration in your Release!'
             print 'The manifest.xml target:', self.xml
             print 'does not have the PD number:', self.pdn, 'as filename.'
+
+    def add_distro_feature(self, feature):
+        with open(self.local_conf, 'ab') as f: f.write('DISTRO_FEATURES_append = " %s"' % feature )
+        self.pdn = self.pdn + "-" + feature
+        self.uid = self.uid + "-" + feature
+        self.write_bsp_version_to_localconf()
