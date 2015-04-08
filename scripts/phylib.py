@@ -122,14 +122,10 @@ class Sourcecode(object):
             d.sort()
             for j in d:
                 if j.endswith('.conf'):
-                    bsp_id = len(self.machines) + 1
                     machname = os.path.splitext(j)[0]
                     path = os.path.join(self.soc_layers_top_dir, i, 'conf/machine', j)
                     self.machines[machname]['abs_path'] = path
-                    self.machines[machname]['bsp_id'] = bsp_id
                     self.machine_parse_description(machname)
-        #print "Added Machines: "
-        #pprint.pprint(self.machines)
         return True
 
     def machine_parse_description(self, machine):
@@ -142,12 +138,6 @@ class Sourcecode(object):
                 desc = line.split(":", 1)[1][:-1]
                 break
         self.machines[machine]['description'] = desc
-
-    def get_machine_by_bsp_id(self, bsp_id):
-        for machine in self.machines:
-            if self.machines[machine]['bsp_id'] == bsp_id:
-                return machine
-        return -1
 
     def get_machines_by_property(self, prop, value):
         machines = sorted(self.machines)
@@ -194,7 +184,6 @@ class BoardSupportPackage(object):
             self.uid = release_info["release_uid"]
             self.pdn = release_info["pdn"]
             self.soc = release_info["soc"]
-            self.src.phylinux_api = release_info["phylinux_api"]
             # BSP settings
             self.selected_machine = release_info["machine"]
         except KeyError, e:
