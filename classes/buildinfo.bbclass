@@ -153,6 +153,7 @@ phyexternalsrc.bbclass. To use it copy and paste the following snippet to your
 
 INHERIT += "phyexternalsrc"
 EXTERNALSRC_pn-${PN} = "\x24{HOME}/git/${PN}"
+EXTERNALSRC_BUILD_pn-${PN} = "\x24{HOME}/git/${PN}"
 
 Note: All the compiling is done in the EXTERNALSRC directory. Everytime
 you build an Image, the package will be recompiled and build.

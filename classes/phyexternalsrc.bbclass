@@ -1,62 +1,89 @@
-# Copyright (C) 2015 PHYTEC Messtechnik GmbH,
-# Author: Stefan Müller-Klieser <s.mueller-klieser@phytec.de>
+# Copyright (C) 2012 Linux Foundation
+# Author: Richard Purdie
+# Some code and influence taken from srctree.bbclass:
+# Copyright (C) 2009 Chris Larson <clarson@kergoth.com>
+# Released under the MIT license (see COPYING.MIT for the terms)
 #
-# phyexternalsrc.bbclass faciliates development of linux kernel and
-# barebox with Yocto.
+# externalsrc.bbclass enables use of an existing source tree, usually external to 
+# the build system to build a piece of software rather than the usual fetch/unpack/patch
+# process.
 #
-# This is a fork of the externalsrc.bbclass of poky. It behaves quite
-# differently than the poky class. It will execute all tasks, but filters
-# all remote sources from the SRC_URI. Any patches found locally will
-# still apply.
-# To use this class, you have to check out the sourcecode of the kernel
-# or barebox manually, see the buildinfo class for more details. After
-# having the source code in a local directory, add the following lines
-# to your local.conf, e.g. for the linux-ti kernel:
+# To use, add externalsrc to the global inherit and set EXTERNALSRC to point at the
+# directory you want to use containing the sources e.g. from local.conf for a recipe
+# called "myrecipe" you would do:
 #
-# INHERIT += "phyexternalsrc"
-# EXTERNALSRC_pn-linux-ti = "${HOME}/yocto/sources/linux-ti"
+# INHERIT += "externalsrc"
+# EXTERNALSRC_pn-myrecipe = "/path/to/my/source/tree"
 #
-# The last line sets the version of the package manually, which is
-# advisable, as any kind of version auto detection will fail.
+# In order to make this class work for both target and native versions (or with
+# multilibs/cross or other BBCLASSEXTEND variants), B is set to point to a separate
+# directory under the work directory (split source and build directories). This is
+# the default, but the build directory can be set to the source directory if
+# circumstances dictate by setting EXTERNALSRC_BUILD to the same value, e.g.:
 #
-# Note:
-# S and B are the same per default, so if you want to use this class for
-# userspace multilib packages, you need to set EXTERNALSRC_BUILD to
-# something under $WORKDIR,  e.g. the default from poky:
+# EXTERNALSRC_BUILD_pn-myrecipe = "/path/to/my/source/tree"
 #
-# EXTERNALSRC_BUILD_pn-linux-ti = "${WORKDIR}/${BPN}-${PV}/"
+
+SRCTREECOVEREDTASKS ?= "do_patch do_unpack do_fetch"
 
 python () {
-    import re
     externalsrc = d.getVar('EXTERNALSRC', True)
     if externalsrc:
         d.setVar('S', externalsrc)
-
-        # We don't separate B and S per default
         externalsrcbuild = d.getVar('EXTERNALSRC_BUILD', True)
         if externalsrcbuild:
             d.setVar('B', externalsrcbuild)
         else:
-            d.setVar('B', externalsrc)
+            d.setVar('B', '${WORKDIR}/${BPN}-${PV}/')
 
-        # Filter all remote access URIs
-        filtered_SRC_URI = ''
-        for uri in d.getVar('SRC_URI', True).split():
-            m = re.compile('(?P<type>[^:]*)').match(uri)
-            if not m:
-                    raise MalformedUrl(uri)
-            elif m.group('type') in ('http', 'https', 'ftp', 'cvs', 'svn', 'git', 'ssh'):
-                    pass
-            elif m.group('type') in ('file'):
-                filtered_SRC_URI += uri + ' '
-        d.setVar('SRC_URI', filtered_SRC_URI.strip())
+        srcuri = (d.getVar('SRC_URI', True) or '').split()
+        local_srcuri = []
+        for uri in srcuri:
+            if uri.startswith('file://'):
+                local_srcuri.append(uri)
+        d.setVar('SRC_URI', ' '.join(local_srcuri))
+
+        if '{SRCPV}' in d.getVar('PV', False):
+            # Dummy value because the default function can't be called with blank SRC_URI
+            d.setVar('SRCPV', '999')
+
+        tasks = filter(lambda k: d.getVarFlag(k, "task"), d.keys())
+
+        for task in tasks:
+            if task.endswith("_setscene"):
+                # sstate is never going to work for external source trees, disable it
+                bb.build.deltask(task, d)
+
+            # We do not want our source to be wiped out, ever (kernel.bbclass does this for do_clean)
+            cleandirs = d.getVarFlag(task, 'cleandirs', False)
+            if cleandirs:
+                cleandirs = cleandirs.split()
+                setvalue = False
+                if '${S}' in cleandirs:
+                    cleandirs.remove('${S}')
+                    setvalue = True
+                if externalsrcbuild == externalsrc and '${B}' in cleandirs:
+                    cleandirs.remove('${B}')
+                    setvalue = True
+                if setvalue:
+                    d.setVarFlag(task, 'cleandirs', ' '.join(cleandirs))
+
+        fetch_tasks = ['do_fetch', 'do_unpack']
+        # If we deltask do_patch, there's no dependency to ensure do_unpack gets run, so add one
+        d.appendVarFlag('do_configure', 'deps', ['do_unpack'])
+
+        for task in d.getVar("SRCTREECOVEREDTASKS", True).split():
+            if local_srcuri and task in fetch_tasks:
+                continue
+            bb.build.deltask(task, d)
+
+        d.prependVarFlag('do_compile', 'prefuncs', "externalsrc_compile_prefunc ")
 
         # Ensure compilation happens every time
         d.setVarFlag('do_compile', 'nostamp', '1')
+}
 
-        # sstate is never going to work for external source trees, disable it
-        tasks = filter(lambda k: d.getVarFlag(k, "task"), d.keys())
-        for task in tasks:
-            if task.endswith("_setscene"):
-                bb.build.deltask(task, d)
+python externalsrc_compile_prefunc() {
+    # Make it obvious that this is happening, since forgetting about it could lead to much confusion
+    bb.warn('Compiling %s from external source %s' % (d.getVar('PN', True), d.getVar('EXTERNALSRC', True)))
 }
