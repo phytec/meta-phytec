@@ -17,7 +17,7 @@ class BSP_Switcher(BoardSupportPackage):
     def switch_machine(self, arg=None):
         if arg is not None:
             self.selected_machine = arg
-            return True
+            return self.write_machine_to_localconf()
 
         print '***************************************************'
         print '* Please choose one of the available Machines:'
@@ -38,7 +38,7 @@ class BSP_Switcher(BoardSupportPackage):
 
         # User index starts with 1, list index starts with 0.
         self.selected_machine = machines[user_input - 1]
-        return True
+        return self.write_machine_to_localconf()
 
 
 ##############
@@ -56,7 +56,6 @@ def main():
 
     bsp = BSP_Switcher()
     bsp.switch_machine(args.machine)
-    bsp.write_machine_to_localconf()
 
 if __name__ == "__main__":
     main()
