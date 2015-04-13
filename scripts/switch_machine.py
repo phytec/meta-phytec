@@ -36,6 +36,10 @@ class BSP_Switcher(BoardSupportPackage):
                 break
             except ValueError:
                 print 'No valid input.  Try again...'
+            except KeyboardInterrupt:
+                # If the user presses CTRL+C, exit the application nicely.
+                print ''  # print newline, so prompt doesn't start after '$ '
+                return False
 
         # User index starts with 1, list index starts with 0.
         self.selected_machine = machines[user_input - 1]
