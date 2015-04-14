@@ -182,7 +182,7 @@ generate_imx_sdcard () {
 				kernel_bin="`readlink ${KERNEL_IMAGETYPE}-${MACHINE}.bin`"
 				kernel_bin_for_dtb="`readlink ${KERNEL_IMAGETYPE}-${DTS_BASE_NAME}.dtb | sed "s,$DTS_BASE_NAME,${MACHINE},g;s,\.dtb$,.bin,g"`"
 				if [ $kernel_bin = $kernel_bin_for_dtb ]; then
-					mcopy -i ${WORKDIR}/boot.img -s ${DEPLOY_DIR_IMAGE}/${KERNEL_IMAGETYPE}-${DTS_BASE_NAME}.dtb ::/${DTS_BASE_NAME}.dtb
+					mcopy -i ${WORKDIR}/boot.img -s ${DEPLOY_DIR_IMAGE}/${KERNEL_IMAGETYPE}-${DTS_BASE_NAME}.dtb ::/oftree
 				fi
 			fi
 		done
@@ -275,7 +275,7 @@ generate_mxs_sdcard () {
 					kernel_bin="`readlink ${KERNEL_IMAGETYPE}-${MACHINE}.bin`"
 					kernel_bin_for_dtb="`readlink ${KERNEL_IMAGETYPE}-${DTS_BASE_NAME}.dtb | sed "s,$DTS_BASE_NAME,${MACHINE},g;s,\.dtb$,.bin,g"`"
 					if [ $kernel_bin = $kernel_bin_for_dtb ]; then
-						mcopy -i ${WORKDIR}/boot.img -s ${DEPLOY_DIR_IMAGE}/${KERNEL_IMAGETYPE}-${DTS_BASE_NAME}.dtb ::/${DTS_BASE_NAME}.dtb
+						mcopy -i ${WORKDIR}/boot.img -s ${DEPLOY_DIR_IMAGE}/${KERNEL_IMAGETYPE}-${DTS_BASE_NAME}.dtb ::/oftree
 					fi
 				fi
 			done

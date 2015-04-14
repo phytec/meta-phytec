@@ -12,11 +12,10 @@ GIT_URL = "git://git.phytec.de/${PN}"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 SRC_URI_append = " \
     file://commonenv \
-    file://environment \
 "
 S = "${WORKDIR}/git"
 
-PR = "r1"
+PR = "r2"
 
 # NOTE: Keep version in filename in sync with commit id!
 SRCREV = "b07f85c089be1e01184047e29a75529851d817da"
