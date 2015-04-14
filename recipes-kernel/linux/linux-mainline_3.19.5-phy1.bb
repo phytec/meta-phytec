@@ -29,7 +29,18 @@ KERNEL_LOCALVERSION = "-${BSP_VERSION}"
 
 COMPATIBLE_MACHINE  =  "phyflex-imx6-1"
 COMPATIBLE_MACHINE .= "|phyflex-imx6-2"
+COMPATIBLE_MACHINE .= "|phyflex-imx6-3"
+COMPATIBLE_MACHINE .= "|phyflex-imx6-4"
+COMPATIBLE_MACHINE .= "|phyflex-imx6-5"
+COMPATIBLE_MACHINE .= "|phyflex-imx6-6"
+COMPATIBLE_MACHINE .= "|phyflex-imx6-7"
+COMPATIBLE_MACHINE .= "|phyflex-imx6-8"
+COMPATIBLE_MACHINE .= "|phyflex-imx6-9"
+COMPATIBLE_MACHINE .= "|phyflex-imx6-10"
+
 COMPATIBLE_MACHINE .= "|phycard-imx6-1"
+COMPATIBLE_MACHINE .= "|phycard-imx6-2"
+
 COMPATIBLE_MACHINE .= "|phyboard-alcor-imx6-1"
 COMPATIBLE_MACHINE .= "|phyboard-subra-imx6-1"
 COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-1"
