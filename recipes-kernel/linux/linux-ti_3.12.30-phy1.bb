@@ -20,6 +20,7 @@ SRC_URI_append = " \
 # As of Version 5 of the TI sgx graphic stack, the opengl modules need all of the
 # TI kernel Graphics drivers even the legacy da8xx driver
 SRC_URI_append += "${@bb.utils.contains('DISTRO_FEATURES', 'opengl', 'file://da8xx-fb.cfg', '', d)}"
+SRC_URI[vardeps] += "DISTRO_FEATURES"
 
 KERNEL_LOCALVERSION = "-${BSP_VERSION}"
 LINUX_VERSION = "${PV}"
