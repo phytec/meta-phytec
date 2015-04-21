@@ -26,7 +26,7 @@ KERNEL_LOCALVERSION = "-${BSP_VERSION}"
 LINUX_VERSION = "${PV}"
 
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "b9a39a7f04268813032a5580198901f3e15cf0dc"
+SRCREV = "5a452d89e08c9f00b556915a9c667c50947fa8a1"
 
 COMPATIBLE_MACHINE = "beagleboneblack-1"
 SRC_URI_append_beagleboneblack-1 = " file://beagleboneblack-1.cfg"
