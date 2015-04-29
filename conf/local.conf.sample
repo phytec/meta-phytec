@@ -21,6 +21,13 @@ DEPLOY_DIR = "${TOPDIR}/deploy"
 # also tar packages use
 #PACKAGE_CLASSES = "package_ipk package_tar"
 
+# Variable IMAGE_ROOTFS_EXTRA_SPACE from poky/meta/conf/documentation.conf:
+#   Defines additional free disk space created in the image in Kbytes. By
+#   default, this variable is set to '0'.
+# This example line adds an additional 512 MiB of free space to the root
+# filesystem:
+#IMAGE_ROOTFS_EXTRA_SPACE = "524288"
+
 #SDKMACHINE ?= "x86_64"
 EXTRA_IMAGE_FEATURES = "debug-tweaks"
 
