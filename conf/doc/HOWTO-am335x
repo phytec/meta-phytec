@@ -17,8 +17,8 @@ can find all git repositories on
 The barebox and kernel git repositories for this BSP are called "barebox" and
 "linux-ti". To find out which tag is used for a specific board, have a look at:
 
- meta-phytec/meta-phyam335x/recipes-bsp/barebox/barebox_git.bb
- meta-phytec/meta-phyam335x/recipes-kernel/linux/linux-ti_git.bb
+ meta-phytec/meta-phyam335x/recipes-bsp/barebox/barebox_*.bb
+ meta-phytec/meta-phyam335x/recipes-kernel/linux/linux-ti_*.bb
 
 If you need to figure out the Machine name of your board, have a look at the
 files in:
