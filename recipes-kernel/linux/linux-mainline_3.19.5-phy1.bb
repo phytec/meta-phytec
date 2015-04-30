@@ -7,8 +7,8 @@ require common/recipes-kernel/linux/linux.inc
 
 FILESEXTRAPATHS_prepend = "${THISDIR}/linux-mainline/features:"
 
-#GIT_URL = "git://git.phytec.de/${PN}"
-SRC_URI = "git://git@git.phytec.de/${PN}-dev;protocol=ssh;branch=${BRANCH}"
+GIT_URL = "git://git.phytec.de/${PN}"
+SRC_URI = "${GIT_URL};branch=${BRANCH}"
 SRC_URI_append = " \
     file://ipv6.cfg \
     file://systemd.cfg \
@@ -17,7 +17,7 @@ SRC_URI_append = " \
 "
 S = "${WORKDIR}/git"
 
-PR = "r0"
+PR = "r1"
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
 # NOTE: Keep version in filename in sync with commit id!
