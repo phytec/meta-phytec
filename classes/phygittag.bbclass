@@ -62,7 +62,7 @@
 #     removing needed sources files in the variable SRC_URI. A correct example,
 #     but not useful example:
 #
-#          SRC_URI = "git://git.phytec.de/${PN}-dev;protocol=ssh;branch=${BRANCH}"
+#          SRC_URI = "git://git.phytec.de/${PN};branch=${BRANCH}"
 #          SRC_URI_append = " \
 #              file://commonenv \
 #              file://environment \
