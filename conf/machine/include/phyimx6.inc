@@ -13,10 +13,9 @@ BAREBOX_DEFAULT_DEFCONFIG = "imx_v7_defconfig"
 # Kernel 
 PREFERRED_PROVIDER_virtual/kernel ?= "linux-mainline"
 KERNEL_IMAGETYPE ?= "zImage"
-# install modules in initramfs
+# Install modules in initramfs and roofs
 PACKAGE_INSTALL_append = " kernel-modules"
-# install modules into rootfs
-IMAGE_INSTALL_append = " kernel-modules"
+
 SERIAL_CONSOLES ?= "115200;ttymxc3"
 # dont install kernelimage to rootfs
 RDEPENDS_kernel-base = ""
