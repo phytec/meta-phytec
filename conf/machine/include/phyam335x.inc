@@ -19,16 +19,14 @@ DEPENDS_pn-barebox_append = " barebox-ipl"
 # image creation needs this dependency and barebox-ipl cannot take care of it
 # by itself, so a
 IMAGE_DEPENDS_sdcard_append = " barebox-ipl:do_deploy"
-BAREBOX_BOOTARGS_BASE_EXTRA = "${@bb.utils.contains("MACHINE_FEATURES", "screen", "consoleblank=0", "",d)}"
 
 # Kernel 
 PREFERRED_PROVIDER_virtual/kernel ?= "linux-ti"
 KERNEL_IMAGETYPE ?= "zImage"
 KERNEL_DEFAULT_DEFCONFIG = "am335x_phytec_defconfig"
-# install modules in initramfs
+# Install modules in initramfs and rootfs
 PACKAGE_INSTALL_append = " kernel-modules"
-# install modules into rootfs
-IMAGE_INSTALL_append = " kernel-modules"
+
 SERIAL_CONSOLES ?= "115200;ttyO0"
 # dont install kernelimage to rootfs
 RDEPENDS_kernel-base = ""
