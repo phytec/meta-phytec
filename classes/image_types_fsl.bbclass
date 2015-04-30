@@ -1,3 +1,20 @@
+#
+# Documentation:
+#
+# This bbclass uses some public variables to create a sdcard image including
+# bootloader, device trees, kernel and rootfs. The variables are (still
+# incomplete):
+#
+# - KERNEL_DEVICETREE
+#   It's defined in the machine configuration and contains a list of device
+#   trees with suffix ".dtb". For example:
+#       "imx6q-phytec-pbab01.dtb imx6q-phytec-pbab01-cam0.dtb".
+#   The first device tree is special, because it's written to the file 'oftree'
+#   on the sdcard which is used as the default device tree by the bootloader.
+#   NOTE: The variable may be empty if the kernel doesn't use device trees.
+#   See also poky/meta/recipes-kernel/linux/linux-dtb.inc
+
+
 inherit image_types
 
 IMAGE_BOOTLOADER ?= "u-boot"
@@ -102,21 +119,50 @@ SDCARD_GENERATION_COMMAND_mx5 = "generate_imx_sdcard"
 SDCARD_GENERATION_COMMAND_mx6 = "generate_imx_sdcard"
 SDCARD_GENERATION_COMMAND_vf60 = "generate_imx_sdcard"
 
-# Helper function for generate_imx_sdcard and generate_mxs_sdcard
+# Copy a dtb file onto a sdcard image and optionally use a new name for it.
+copy_device_tree_file () {
+	BOOT_IMAGE=$1
+	DTS_FILE=$2
+	FILENAME=$3
+
+	DTS_BASE_NAME=`basename ${DTS_FILE} | awk -F "." '{print $1}'`
+
+	# Set default filename if not provided
+	[ -z "${FILENAME}" ] && FILENAME="${DTS_BASE_NAME}.dtb"
+
+	if [ -e "${KERNEL_IMAGETYPE}-${DTS_BASE_NAME}.dtb" ]; then
+		kernel_bin="`readlink ${KERNEL_IMAGETYPE}-${MACHINE}.bin`"
+		kernel_bin_for_dtb="`readlink ${KERNEL_IMAGETYPE}-${DTS_BASE_NAME}.dtb | sed "s,$DTS_BASE_NAME,${MACHINE},g;s,\.dtb$,.bin,g"`"
+		if [ $kernel_bin = $kernel_bin_for_dtb ]; then
+			mcopy -i ${BOOT_IMAGE} -s ${DEPLOY_DIR_IMAGE}/${KERNEL_IMAGETYPE}-${DTS_BASE_NAME}.dtb ::/${FILENAME}
+		fi
+	fi
+}
+
+# Copy all dtb files in KERNEL_DEVICETREE onto the sdcard image and use the
+# first device tree in KERNEL_DEVICETREE as the 'oftree' file which will be
+# used as the default device tree by the bootloader.
 copy_kernel_device_trees () {
 	BOOT_IMAGE=$1
 
 	if test -n "${KERNEL_DEVICETREE}"; then
+		DEVICETREE_DEFAULT=""
 		for DTS_FILE in ${KERNEL_DEVICETREE}; do
-			DTS_BASE_NAME=`basename ${DTS_FILE} | awk -F "." '{print $1}'`
-			if [ -e "${KERNEL_IMAGETYPE}-${DTS_BASE_NAME}.dtb" ]; then
-				kernel_bin="`readlink ${KERNEL_IMAGETYPE}-${MACHINE}.bin`"
-				kernel_bin_for_dtb="`readlink ${KERNEL_IMAGETYPE}-${DTS_BASE_NAME}.dtb | sed "s,$DTS_BASE_NAME,${MACHINE},g;s,\.dtb$,.bin,g"`"
-				if [ $kernel_bin = $kernel_bin_for_dtb ]; then
-					mcopy -i ${BOOT_IMAGE} -s ${DEPLOY_DIR_IMAGE}/${KERNEL_IMAGETYPE}-${DTS_BASE_NAME}.dtb ::/oftree
-				fi
-			fi
+			[ -n "${DEVICETREE_DEFAULT}"] && DEVICETREE_DEFAULT="${DTS_FILE}"
+			copy_device_tree_file ${BOOT_IMAGE} ${DTS_FILE}
 		done
+
+		copy_device_tree_file ${BOOT_IMAGE} ${DEVICETREE_DEFAULT} "oftree"
+
+		# Create README
+		README=${WORKDIR}/README.sdcard.txt
+		cat > ${README} <<EOF
+The file oftree contains the device tree '${DEVICETREE_DEFAULT}',
+because it was the first element in yocto variable KERNEL_DEVICETREE. To change
+the default device tree, reorder the device trees in variable KERNEL_DEVICETREE
+in your yocto machine configuration.
+EOF
+		mcopy -i ${BOOT_IMAGE} -s ${README} ::/README.txt
 	fi
 }
 
