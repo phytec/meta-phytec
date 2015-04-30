@@ -10,12 +10,14 @@ SECTION = "multimedia"
 
 S = "${WORKDIR}/gstreamer_examples"
 
+PR = "r1"
+
 SRC_URI = "ftp://ftp.phytec.de/pub/ImageProcessing/phyCAM_Software/i.MX6-gstreamer_examples/${@"${PN}".replace('-', '_')}-${PV}.tar.gz"
 
 SRC_URI[md5sum] = "d73ace073e1cbcabdd275f652439b6d8"
 SRC_URI[sha256sum] = "eeec3659a9b84045c2c19ccae5afdf2ee66167ed295c77ac8754914e34d645d9"
 
-GSTREAMER_EXAMPLES_DIR = "/home/root/gstreamer-examples"
+GSTREAMER_EXAMPLES_DIR = "/home/root/gstreamer_examples"
 
 do_compile() {
 	${CC} ${CFLAGS} ${LDFLAGS} -o tools/i2c tools/i2c.c
