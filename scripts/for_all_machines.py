@@ -16,8 +16,8 @@ from phylib import Sourcecode
 # TODO Maybe read machines from stdin. Useful for releasing only a subset of
 # machines.
 
-# Name of program. Used for prefix stderr output
-name = "for_each_machine"
+# Name of program. Used for prefix stderr output.
+name = "for_all_machines"
 
 
 # TODO Is there a python library function for this mapping?
@@ -78,7 +78,7 @@ def call_bitbake(env, machine, prefix, cmd):
     return ret
 
 
-def for_each_machine(machines, cmd):
+def for_all_machines(machines, cmd):
     global exit_app
 
     # Make a copy of current process enviroment to modify it for subprocess
@@ -103,7 +103,7 @@ def for_each_machine(machines, cmd):
         non_build_machines.remove(machine)
 
         if exit_app:
-            # A signal was received. Abort for_each_machine!
+            # A signal was received. Abort for_all_machines!
             break
 
     return ret, non_build_machines
@@ -201,7 +201,7 @@ def main():
 
     # Execute command
     print >>sys.stderr, "%s: cmd is \"%s\"" % (name, cmd)
-    ret, non_build_machines = for_each_machine(machines, cmd)
+    ret, non_build_machines = for_all_machines(machines, cmd)
 
     if len(non_build_machines):
         # Usability feature: Print commandline to reexecute for_all_machines call
