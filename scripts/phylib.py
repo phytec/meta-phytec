@@ -111,12 +111,9 @@ class Sourcecode(object):
         return os.path.join(self.bsp_dir, '.repo')
 
     def init_machines(self):
-        soc_bsp_folders = []
-        machines = []
         d = os.listdir(self.soc_layers_top_dir)
-        for i in d:
-            if 'meta-phy' in i:
-                soc_bsp_folders.append(i)
+        soc_bsp_folders = [name for name in d if name.startswith("meta-phy")]
+
         for i in soc_bsp_folders:
             d = os.listdir(os.path.join(self.soc_layers_top_dir, i, 'conf/machine'))
             d.sort()
