@@ -12,6 +12,7 @@ DEPENDS += "lzop-native"
 KERNEL_LOCALVERSION ?= "-${DISTRO}-${DISTRO_VERSION}"
 GITSERVER = "git://git.phytec.de"
 S = "${WORKDIR}/git"
+PATCHTOOL = "git"
 
 # these variables need to be assigned in the machine.conf 
 KERNEL_DEFAULT_DEFCONFIG ?= ""
