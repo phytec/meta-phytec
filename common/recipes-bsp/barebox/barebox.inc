@@ -32,6 +32,7 @@ VERBOSE_BUILD ?= "0"
 EXTRA_OEMAKE = 'TARGETCC="${CC}" V=${VERBOSE_BUILD} CROSS_COMPILE=${TARGET_PREFIX} CC="${TARGET_PREFIX}gcc ${TOOLCHAIN_OPTIONS}"'
 # target rootfs boot directory
 base_bootdir = "/boot"
+PATCHTOOL = "git"
 
 # these variables need to be assigned in the machine.conf 
 BAREBOX_LOCALVERSION ?= "-${DISTRO}-${DISTRO_VERSION}"
