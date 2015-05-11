@@ -7,7 +7,9 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=ea5bed2f60d357618ca161ad539f7c0a"
 
 #inherit autotools 
 
-DEPENDS = "virtual/kernel"
+PR = "r1"
+
+DEPENDS += "linux-libc-headers"
 #readline genparse-native libtool
 
 SRC_URI = "http://www.pengutronix.de/software/ptxdist/temporary-src/${BPN}-${PV}.tar.gz \
