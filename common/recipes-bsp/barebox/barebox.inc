@@ -88,7 +88,7 @@ python do_prepare_configure() {
         subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
     localversion = d.getVar('BAREBOX_LOCALVERSION', True)
     bb.note("Setting LOCALVERSION in .config to %s" % localversion)
-    cmd = 'kconfig-tweak --file %s --set-str LOCALVERSION %s' % (config, localversion)
+    cmd = 'kconfig-tweak --file %s --set-str LOCALVERSION "%s"' % (config, localversion)
     subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
 }
 addtask do_prepare_configure after do_patch before do_configure
