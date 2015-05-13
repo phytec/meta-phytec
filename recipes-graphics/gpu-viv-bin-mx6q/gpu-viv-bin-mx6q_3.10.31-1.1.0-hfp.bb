@@ -29,7 +29,7 @@ REQUIRED_DISTRO_FEATURES = "opengl"
 # We don't provide virtual/libgl yet.
 PROVIDES += "virtual/libgles2 virtual/egl virtual/libgles1"
 
-PR = "r1"
+PR = "r2"
 
 _PV_beta = "${@'${PV}'.replace('1.1.0', '1.1.0-beta')}"
 SRC_URI = "http://www.freescale.com/lgfiles/NMG/MAD/YOCTO/${PN}-${_PV_beta}.bin;fsl-eula=true \
@@ -228,7 +228,7 @@ FILES_${PN}-dbg = "/opt/viv_samples/*/*/.debug"
 RDEPENDS_${PN} += "libvdk-mx6 libegl-mx6 libgal-mx6 libgles2-mx6 libvsc-mx6 libopencl-mx6"
 
 FILES_libclc-mx6 = "${libdir}/libCLC.so"
-FILES_libclc-mx6-dev = "${includedir}/CL ${libdir}/libCLC.so"
+FILES_libclc-mx6-dev = "${libdir}/libCLC.so"
 FILES_libclc-mx6-dbg = "${libdir}/.debug/libCLC.so"
 RDEPENDS_libclc-mx6 += "libvsc-mx6"
 
@@ -267,7 +267,7 @@ RDEPENDS_libgles1-mx6 += "libgal-mx6"
 
 
 FILES_libglslc-mx6 = "${libdir}/libGLSLC.so*"
-FILES_libglslc-mx6-dev = "${includedir}/CL ${libdir}/libGLSLC.so*"
+FILES_libglslc-mx6-dev = "${libdir}/libGLSLC.so*"
 FILES_libglslc-mx6-dbg = "${libdir}/.debug/libGLSLC.so*"
 RDEPENDS_libglslc-mx6 += "libvivante-mx6 libvsc-mx6 libgal-mx6"
 
