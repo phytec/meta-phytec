@@ -28,7 +28,7 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 inherit kernel-arch cml1 deploy
 
 # Increase INC_PR everytime the include file is changed.
-INC_PR = "r0"
+INC_PR = "r1"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 # verbose build 0/1
@@ -92,8 +92,20 @@ python do_prepare_configure() {
     bb.note("Setting LOCALVERSION in .config to %s" % localversion)
     cmd = 'kconfig-tweak --file %s --set-str LOCALVERSION "%s"' % (config, localversion)
     subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
+
+    # Add environment directories to .config if they exist
+    env_dirs = ""
+    for env_dir in [".commonenv", ".environment"]:   # order is important!
+       if os.path.isdir(os.path.join(S, env_dir)):
+           env_dirs += " " + env_dir
+
+    if env_dirs.strip() != "":
+        ret = subprocess.call(["kconfig-tweak", "--file", config,
+                               "--set-str", "DEFAULT_ENVIRONMENT_PATH", env_dirs])
+        if ret != 0:
+            bb.error("Cannot set DEFAULT_ENVIRONMENT_PATH. kconfig-tweak exit code is %d." % (ret))
 }
-addtask do_prepare_configure after do_patch before do_configure
+addtask prepare_configure after do_prepare_env before do_configure
 do_prepare_configure[depends] += "kconfig-frontends-native:do_populate_sysroot"
 
 # its possible to give two environment folders to barebox: commonenv and
@@ -101,10 +113,8 @@ do_prepare_configure[depends] += "kconfig-frontends-native:do_populate_sysroot"
 python do_prepare_env() {
     import shutil, subprocess
     S = d.getVar('S', True)
-    bareboxconfig = os.path.join(S, '.config')
     env_dir = d.getVar('BAREBOX_ENVDIR', True)
     common_env_dir = d.getVar('BAREBOX_COMMON_ENVDIR', True)
-    env_path_string = ""
     if not (os.path.isdir(common_env_dir) or os.path.isdir(env_dir)):
         bb.note("No environment directory provided, using BAREBOX_DEFAULT_ENV")
         common_env_dir = d.getVar('BAREBOX_DEFAULT_ENV', True)
@@ -114,13 +124,9 @@ python do_prepare_env() {
     if os.path.isdir(common_env_dir):
         bb.note("copying common environment to source directory")
         oe.path.copytree(common_env_dir, oe.path.join(S, '.commonenv'))
-        env_path_string += ".commonenv"
     if os.path.isdir(env_dir):
         bb.note("copying environment to source directory")
         oe.path.copytree(env_dir, oe.path.join(S, '.environment'))
-        env_path_string += " .environment"
-    cmd = 'kconfig-tweak --file %s --set-str DEFAULT_ENVIRONMENT_PATH "%s"' % (bareboxconfig, env_path_string)
-    subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
 
     # Install the script far into the barebox environment. It will only be
     # added, if you enable "debug-tweaks" in EXTRA_IMAGE_FEATURES in your
@@ -131,8 +137,7 @@ python do_prepare_env() {
         shutil.copyfile(workdir_far_env_bin,
                         os.path.join(S, ".environment/bin", "far"))
 }
-addtask prepare_env after do_prepare_configure before do_configure
-do_prepare_env[depends] += "kconfig-frontends-native:do_populate_sysroot"
+addtask prepare_env after do_patch before do_prepare_configure
 
 do_default_defconfig () {
 	bbnote "generating .config for target ${BAREBOX_DEFAULT_DEFCONFIG}"
