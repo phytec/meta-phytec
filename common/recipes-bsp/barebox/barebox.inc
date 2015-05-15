@@ -26,6 +26,10 @@ SRC_URI_append = " \
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
 inherit kernel-arch cml1 deploy
+
+# Increase INC_PR everytime the include file is changed.
+INC_PR = "r0"
+
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 # verbose build 0/1
 VERBOSE_BUILD ?= "0"

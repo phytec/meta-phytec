@@ -8,6 +8,9 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=d7810fab7487fb0aad327b76f1be7cd7"
 inherit kernel
 require recipes-kernel/linux/linux-dtb.inc
 
+# Increase INC_PR everytime the include file is changed.
+INC_PR = "r0"
+
 DEPENDS += "lzop-native"
 KERNEL_LOCALVERSION ?= "-${DISTRO}-${DISTRO_VERSION}"
 GITSERVER = "git://git.phytec.de"
