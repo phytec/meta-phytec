@@ -17,7 +17,7 @@ SRC_URI_append = " \
 "
 S = "${WORKDIR}/git"
 
-PR = "r0"
+PR = "${INC_PR}.0"
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
 # NOTE: Keep version in filename in sync with commit id!
