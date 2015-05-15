@@ -9,6 +9,8 @@ SRC_URI = "${GIT_URL};branch=${BRANCH}"
 S = "${WORKDIR}/git"
 BAREBOX_LOCALVERSION = "-${BSP_VERSION}"
 
+PR = "${INC_PR}.0"
+
 SRCREV = "eb699b609649147f2706b2c86a9599275bdecbdf"
 
 COMPATIBLE_MACHINE = "beagleboneblack-1"
