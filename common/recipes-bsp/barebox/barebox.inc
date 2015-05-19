@@ -15,7 +15,7 @@ DESCRIPTION = "Barebox (formerly known as u-boot-v2) is a bootloader that \
 	       kconfig-frontends-native."
 HOMEPAGE = "http://www.barebox.org"
 SECTION = "bootloaders"
-PROVIDES = "virtual/bootloader barebox"
+PROVIDES = "virtual/bootloader"
 LICENSE = "GPL-2.0"
 LIC_FILES_CHKSUM = "file://COPYING;md5=057bf9e50e1ca857d0eb97bfe4ba8e5d"
 SRC_URI = "http://barebox.org/download/barebox-${PV}.tar.bz2"
@@ -51,8 +51,6 @@ BAREBOX_BIN_SYMLINK ?= "barebox.bin"
 BAREBOX_DEFAULT_DEFCONFIG ?= ""
 # barebox environment
 BAREBOX_DEFAULT_ENV ?= ""
-# linux bootargs
-BAREBOX_BOOTARGS_BASE_EXTRA ?= ""
 
 # recipe private variables
 BAREBOX_COMMON_ENVDIR = "${WORKDIR}/commonenv"
@@ -102,7 +100,6 @@ do_prepare_configure[depends] += "kconfig-frontends-native:do_populate_sysroot"
 # environment, if an environment directory is provided, use it
 python do_prepare_env() {
     import shutil, subprocess
-    machine = d.getVar('MACHINE')
     S = d.getVar('S', True)
     bareboxconfig = os.path.join(S, '.config')
     env_dir = d.getVar('BAREBOX_ENVDIR', True)
