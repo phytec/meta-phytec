@@ -13,7 +13,6 @@ INC_PR = "r0"
 
 DEPENDS += "lzop-native"
 KERNEL_LOCALVERSION ?= "-${DISTRO}-${DISTRO_VERSION}"
-GITSERVER = "git://git.phytec.de"
 S = "${WORKDIR}/git"
 PATCHTOOL = "git"
 
