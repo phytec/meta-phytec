@@ -2,7 +2,11 @@ BSP_VERSION = "UNASSIGNED"
 MACHINE ?= "UNASSIGNED"
 
 DISTRO ?= "yogurt"
-DISTRO_FEATURES_append = " autostart-demo"
+
+# The following line disables the autostart of the qt5everywere demo by
+# default, but you can start the demo anytime using
+#  $ systemctl start qt5demo.service
+#SYSTEMD_AUTO_ENABLE_pn-qt5demo-autostarter = "disable"
 
 # That are the default values of bitbake.  Adapt these to your workspace and
 # host preferences.
