@@ -11,17 +11,17 @@
 #include <unistd.h>
 #include <sys/mman.h>
 #include <fcntl.h>
- 
+
 #define MDIO                    0x4A101000
 #define MDIOUSERACCESS0         0x80
- 
+
 #define MDIO_GO (1 << 31)
 #define MDIO_WRITE (1 << 30)
 #define MDIO_ACK (1 << 29)
 #define MDIO_REGADR (21)
 #define MDIO_PHYADR (16)
 #define MDIO_DATA (0)
- 
+
 void phy_write(unsigned char *mdio, unsigned int phy, unsigned int reg,
         unsigned int value)
 {
@@ -34,31 +34,31 @@ void phy_write(unsigned char *mdio, unsigned int phy, unsigned int reg,
                 *(unsigned int*)ua0 = *(unsigned int*)ua0 |
                         (value & 0xFFFF) << MDIO_DATA;
                 *(unsigned int*)ua0 = *(unsigned int*)ua0 | MDIO_GO;
- 
+
                 while ( (*(unsigned int*)ua0 & MDIO_GO) );
         }
 }
- 
+
 unsigned int phy_read(unsigned char *mdio, unsigned int phy, unsigned int reg)
 {
         unsigned int val = 0xFFFFFFFF;
         volatile unsigned int ua0 = (unsigned int)mdio + MDIOUSERACCESS0;
- 
+
         if ( !(*(unsigned int*)ua0 & MDIO_GO) ) {
                 *(unsigned int*)ua0 = 0;
                 *(unsigned int*)ua0 = *(unsigned int*)ua0 & ~MDIO_WRITE;
                 *(unsigned int*)ua0 = *(unsigned int*)ua0 | (reg & 0x1F) << MDIO_REGADR;
                 *(unsigned int*)ua0 = *(unsigned int*)ua0 | (phy & 0x1F) << MDIO_PHYADR;
                 *(unsigned int*)ua0 = *(unsigned int*)ua0 | MDIO_GO;
- 
+
                 while ( (*(unsigned int*)ua0 & MDIO_GO) &&
                         !(*(unsigned int*)ua0 & MDIO_ACK) );
                 return *(unsigned int*)ua0 & 0xFFFF;
         }
- 
+
         return val;
 }
- 
+
 unsigned int phy_read_mmd(unsigned char *mdio, unsigned int devad,
         unsigned int phyad, unsigned int reg)
 {
@@ -67,14 +67,14 @@ unsigned int phy_read_mmd(unsigned char *mdio, unsigned int devad,
         phy_write(mdio, phyad, 0x0D, (1 << 14) | devad);
         return phy_read(mdio, phyad, 0x0E);
 }
- 
+
 unsigned int phy_read_ext(unsigned char *mdio, unsigned int phyad,
         unsigned int reg)
 {
         phy_write(mdio, phyad, 0x0B, reg);
         return phy_read(mdio, phyad, 0x0D);
 }
- 
+
 int main(int argc, char *argv[])
 {
         int fd;
@@ -82,28 +82,28 @@ int main(int argc, char *argv[])
         unsigned int r;
         int phyad = 0;
         unsigned int phy_id1, phy_id2;
- 
+
         if (argc > 1)
                 phyad = atoi(argv[1]);
- 
+
         fd = open("/dev/mem", O_RDWR);
         if (fd < 0) {
                 perror("open");
                 return fd;
         }
- 
+
         mem = (unsigned char*)mmap(0, 0x1000, PROT_READ | PROT_WRITE,
                 MAP_FILE | MAP_SHARED, fd, MDIO);
         if (mem == MAP_FAILED) {
                 perror("mmap");
                 return errno;
         }
- 
+
         phy_id1 = phy_read(mem, phyad, 2);
         phy_id2 = phy_read(mem, phyad, 3);
         printf("Register 0x2 =\t 0x%X\n", phy_id1);
         printf("Register 0x3 =\t 0x%X\n", phy_id2);
- 
+
         if (phy_id1 == 0x22 && phy_id2 == 0x1622) {
                 printf("### KSZ9031\n");
                 printf("MMD Address 2h, Register 4h =\t 0x%X\n",
@@ -123,8 +123,8 @@ int main(int argc, char *argv[])
                 printf("Register 0x106 =\t 0x%X\n",
                         phy_read_ext(mem, phyad, 0x106));
         }
- 
+
         munmap(mem, 0x1000);
- 
+
         return 0;
 }
