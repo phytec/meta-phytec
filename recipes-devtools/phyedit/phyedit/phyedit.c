@@ -122,6 +122,20 @@ int main(int argc, char *argv[])
                         phy_read_ext(mem, phyad, 0x105));
                 printf("Register 0x106 =\t 0x%X\n",
                         phy_read_ext(mem, phyad, 0x106));
+        } else if (phy_id1 == 0x7 && phy_id2 == 0xC0F1) {
+                printf("### LAN8710A\n");
+                printf("Reg  0 =\t 0x%X\n", phy_read(mem, phyad, 0));
+                printf("Reg  1 =\t 0x%X\n", phy_read(mem, phyad, 1));
+                printf("Reg  4 =\t 0x%X\n", phy_read(mem, phyad, 4));
+                printf("Reg  5 =\t 0x%X\n", phy_read(mem, phyad, 5));
+                printf("Reg  6 =\t 0x%X\n", phy_read(mem, phyad, 6));
+                printf("Reg 17 =\t 0x%X\n", phy_read(mem, phyad, 17));
+                printf("Reg 18 =\t 0x%X\n", phy_read(mem, phyad, 18));
+                printf("Reg 26 =\t 0x%X\n", phy_read(mem, phyad, 26));
+                printf("Reg 27 =\t 0x%X\n", phy_read(mem, phyad, 27));
+                printf("Reg 29 =\t 0x%X\n", phy_read(mem, phyad, 29));
+                printf("Reg 30 =\t 0x%X\n", phy_read(mem, phyad, 30));
+                printf("Reg 31 =\t 0x%X\n", phy_read(mem, phyad, 31));
         }
 
         munmap(mem, 0x1000);
