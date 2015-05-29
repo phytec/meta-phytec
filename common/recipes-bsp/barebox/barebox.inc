@@ -38,6 +38,8 @@ EXTRA_OEMAKE = 'TARGETCC="${CC}" V=${VERBOSE_BUILD} CROSS_COMPILE=${TARGET_PREFI
 base_bootdir = "/boot"
 PATCHTOOL = "git"
 
+DEPENDS += "lzop-native"
+
 # these variables need to be assigned in the machine.conf 
 BAREBOX_LOCALVERSION ?= "-${DISTRO}-${DISTRO_VERSION}"
 # name of the image created by barebox Makefile
