@@ -42,6 +42,6 @@ FILES_${PN} = "${base_bootdir}"
 
 do_deploy () {
 	bbnote "Deploying barebox ipl"
-	install ${B}/${BAREBOX_IPL_BIN} ${DEPLOYDIR}/${BAREBOX_IPL_BIN_DEPLOY}
+	install -m 644 ${B}/${BAREBOX_IPL_BIN} ${DEPLOYDIR}/${BAREBOX_IPL_BIN_DEPLOY}
 	ln -sf ${BAREBOX_IPL_BIN_DEPLOY} ${DEPLOYDIR}/${BAREBOX_IPL_BIN_SYMLINK}
 }
