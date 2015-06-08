@@ -6,15 +6,21 @@ LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://COPYING;md5=d7810fab7487fb0aad327b76f1be7cd7"
 
 inherit kernel
+inherit kernel-module-split-blacklist
 require recipes-kernel/linux/linux-dtb.inc
 
 # Increase INC_PR everytime the include file is changed.
-INC_PR = "r0"
+INC_PR = "r1"
 
 DEPENDS += "lzop-native"
 KERNEL_LOCALVERSION ?= "-${DISTRO}-${DISTRO_VERSION}"
 S = "${WORKDIR}/git"
 PATCHTOOL = "git"
+
+# FIXME Move to meta-yogurt when socs are unified.
+FILESEXTRAPATHS_prepend = "${THISDIR}/features:"
+SRC_URI_append = " file://mtd-tests.cfg"
+KERNEL_MODULES_RDEPENDS_BLACKLIST += "${MTD_TEST_PACKAGES}"
 
 # these variables need to be assigned in the machine.conf 
 KERNEL_DEFAULT_DEFCONFIG ?= ""
