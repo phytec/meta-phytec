@@ -9,7 +9,6 @@ TEMPLATECONF="tools/templateconf"
 install -d ${TEMPLATECONF}
 install -m 0644 ${SOC_DIR}/conf/bblayers.conf.sample ${TEMPLATECONF}
 install -m 0644 ${SOC_DIR}/conf/doc/HOWTO-imx6 HOWTO-imx6
-install -m 0644 ${SOC_DIR}/conf/doc/ReleaseNotes ReleaseNotes
 install -m 0644 ${PHYTEC_DIR}/conf/local.conf.sample ${TEMPLATECONF}
 install -m 0644 ${PHYTEC_DIR}/conf/conf-notes.txt ${TEMPLATECONF}
 install -m 0644 ${PHYTEC_DIR}/conf/doc/HOWTO-yocto HOWTO-yocto
