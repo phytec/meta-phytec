@@ -47,7 +47,6 @@ TEMPLATECONF="${ROOTDIR}/tools/templateconf"
 install -d ${TEMPLATECONF}
 install -m 0644 ${SOC_DIR}/conf/bblayers.conf.sample ${TEMPLATECONF}
 install -m 0644 ${SOC_DIR}/conf/doc/HOWTO-am335x ${ROOTDIR}
-install -m 0644 ${SOC_DIR}/conf/doc/ReleaseNotes ${ROOTDIR}
 install -m 0644 ${PHYTEC_DIR}/conf/local.conf.sample ${TEMPLATECONF}
 install -m 0644 ${PHYTEC_DIR}/conf/conf-notes.txt ${TEMPLATECONF}
 install -m 0644 ${PHYTEC_DIR}/conf/doc/HOWTO-yocto ${ROOTDIR}
