@@ -2,8 +2,8 @@
 # Author: Stefan Christ <s.christ@phytec.de>
 # Released under the MIT license (see COPYING.MIT for the terms)
 
-# FIXME Recipes, which use the bbclass, must define the tasks
-# 'do_default_defconfig' and 'do_savedefconfig' by themselfs.
+# FIXME Recipes, which use the bbclass, must define the task
+# 'do_default_defconfig' by themselfs.
 
 # returns and .cfg filenames from SRC_URI
 def find_sccs(d):
