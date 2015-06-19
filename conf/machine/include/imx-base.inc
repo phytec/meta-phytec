@@ -27,11 +27,6 @@ MACHINE_SOCARCH_mx6q = "${TUNE_PKGARCH}-mx6qdl"
 MACHINE_SOCARCH_mx6dl = "${TUNE_PKGARCH}-mx6qdl"
 PACKAGE_EXTRA_ARCHS_append = " ${MACHINE_SOCARCH}"
 
-MACHINE_ARCH_FILTER = "virtual/kernel"
-MACHINE_SOCARCH_FILTER = "libfslcodec libfslvpuwrap libfslparser gst-fsl-plugins"
-
-INHERIT += "fsl-dynamic-packagearch"
-
 # Firmware
 MACHINE_FIRMWARE ?= ""
 
