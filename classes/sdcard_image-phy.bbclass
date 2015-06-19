@@ -42,8 +42,6 @@ IMAGE_ROOTFS_ALIGNMENT = "4096"
 # Use an uncompressed ext4 by default as rootfs
 SDIMG_ROOTFS_TYPE ?= "ext4"
 SDIMG_ROOTFS = "${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.rootfs.${SDIMG_ROOTFS_TYPE}"
-# this is necessary because of the missing build depency of the ext rootfs
-IMAGE_DEPENDS_sdcard += "e2fsprogs-native"
 
 IMAGE_DEPENDS_sdcard = " \
     parted-native \
