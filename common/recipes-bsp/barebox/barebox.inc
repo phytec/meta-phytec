@@ -162,17 +162,13 @@ FILES_${PN}-targettools += "${base_sbindir}/barebox*"
 do_deploy () {
 	bbnote "Deploying barebox"
 	install -m 644 ${B}/${BAREBOX_BIN} ${DEPLOYDIR}/${BAREBOX_BIN_DEPLOY}
-	cd ${DEPLOYDIR}
-	rm -f ${BAREBOX_BIN_SYMLINK} 
-	ln -sf ${BAREBOX_BIN_DEPLOY} ${BAREBOX_BIN_SYMLINK}
+	ln -sf ${BAREBOX_BIN_DEPLOY} ${DEPLOYDIR}/${BAREBOX_BIN_SYMLINK}
 
 	bbnote "Installing host barebox toolset"
 	install -d ${STAGING_BINDIR_NATIVE}
-	cd ${B}
-	install -m 755 scripts/bareboxenv ${STAGING_BINDIR_NATIVE}/
+	install -m 755 ${B}/scripts/bareboxenv ${STAGING_BINDIR_NATIVE}/
 
         install -m 644 ${B}/defconfig ${DEPLOYDIR}/${BAREBOX_DEFCONFIG_DEPLOY}
-        rm -rf ${DEPLOYDIR}/${PN}-defconfig
         ln -sf ${BAREBOX_DEFCONFIG_DEPLOY} ${DEPLOYDIR}/${PN}-defconfig
 }
 do_deploy[prefuncs] += "package_get_auto_pr"
