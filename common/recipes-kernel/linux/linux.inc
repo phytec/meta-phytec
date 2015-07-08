@@ -13,7 +13,7 @@ require recipes-kernel/linux/linux-dtb.inc
 # Increase INC_PR everytime the include file is changed.
 INC_PR = "r1"
 
-DEPENDS += "lzop-native"
+DEPENDS += "lzop-native lz4-native"
 KERNEL_LOCALVERSION ?= "-${DISTRO}-${DISTRO_VERSION}"
 S = "${WORKDIR}/git"
 PATCHTOOL = "git"
