@@ -8,6 +8,7 @@ INC_PR = "r38"
 EXCLUDE_FROM_WORLD = "1"
 
 COMPATIBLE_MACHINE = "(omap3|ti814x|ti816x|ti33x|ti43x)"
+PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 PVR_INIT ?= "pvrsrvinit"
 
@@ -194,7 +195,7 @@ PACKAGES =+ "${PN}-rawdemos ${PN}-rawtrainingcourses ${PN}-tests"
 # Package the base libraries per silicon revision
 PACKAGES =+ "${PN}-es3 ${PN}-es5 ${PN}-es6 ${PN}-es8 ${PN}-es9"
 #RRECOMMENDS_${PN} += "${PN}-es3 ${PN}-es5 ${PN}-es6 ${PN}-es8 ${PN}-es9"
-RRECOMMENDS_${PN}_ti33x = "${PN}-es8 ${PN}-tests"
+RDEPENDS_${PN} = "${PN}-tests ${PN}-blitwsegl ${PN}-flipwsegl ${PN}-frontwsegl ${PN}-linuxfbwsegl"
 FILES_${PN}-es3 = "${libdir}/ES3*/* ${bindir}/ES3*/*"
 FILES_${PN}-es5 = "${libdir}/ES5*/* ${bindir}/ES5*/*"
 FILES_${PN}-es6 = "${libdir}/ES6*/* ${bindir}/ES6*/*"
@@ -224,28 +225,28 @@ FILES_${PN}-blitwsegl-es5 = "${libdir}/ES5*/libpvrPVR2D_BLITWSEGL.so.*"
 FILES_${PN}-blitwsegl-es6 = "${libdir}/ES6*/libpvrPVR2D_BLITWSEGL.so.*"
 FILES_${PN}-blitwsegl-es8 = "${libdir}/ES8*/libpvrPVR2D_BLITWSEGL.so.*"
 FILES_${PN}-blitwsegl-es9 = "${libdir}/ES9*/libpvrPVR2D_BLITWSEGL.so.*"
-RRECOMMENDS_${PN}-blitwsegl = " ${PN}-blitwsegl-es3 ${PN}-blitwsegl-es5 ${PN}-blitwsegl-es6 ${PN}-blitwsegl-es8 ${PN}-blitwsegl-es9"
+#RRECOMMENDS_${PN}-blitwsegl = " ${PN}-blitwsegl-es3 ${PN}-blitwsegl-es5 ${PN}-blitwsegl-es6 ${PN}-blitwsegl-es8 ${PN}-blitwsegl-es9"
 
 FILES_${PN}-flipwsegl-es3 = "${libdir}/ES3*/libpvrPVR2D_FLIPWSEGL.so.*"
 FILES_${PN}-flipwsegl-es5 = "${libdir}/ES5*/libpvrPVR2D_FLIPWSEGL.so.*"
 FILES_${PN}-flipwsegl-es6 = "${libdir}/ES6*/libpvrPVR2D_FLIPWSEGL.so.*"
 FILES_${PN}-flipwsegl-es8 = "${libdir}/ES8*/libpvrPVR2D_FLIPWSEGL.so.*"
 FILES_${PN}-flipwsegl-es9 = "${libdir}/ES9*/libpvrPVR2D_FLIPWSEGL.so.*"
-RRECOMMENDS_${PN}-flipwsegl = " ${PN}-flipwsegl-es3 ${PN}-flipwsegl-es5 ${PN}-flipwsegl-es6 ${PN}-flipwsegl-es8 ${PN}-flipwsegl-es9"
+#RRECOMMENDS_${PN}-flipwsegl = " ${PN}-flipwsegl-es3 ${PN}-flipwsegl-es5 ${PN}-flipwsegl-es6 ${PN}-flipwsegl-es8 ${PN}-flipwsegl-es9"
 
 FILES_${PN}-frontwsegl-es3 = "${libdir}/ES3*/libpvrPVR2D_FRONTWSEGL.so.*"
 FILES_${PN}-frontwsegl-es5 = "${libdir}/ES5*/libpvrPVR2D_FRONTWSEGL.so.*"
 FILES_${PN}-frontwsegl-es6 = "${libdir}/ES6*/libpvrPVR2D_FRONTWSEGL.so.*"
 FILES_${PN}-frontwsegl-es8 = "${libdir}/ES8*/libpvrPVR2D_FRONTWSEGL.so.*"
 FILES_${PN}-frontwsegl-es9 = "${libdir}/ES9*/libpvrPVR2D_FRONTWSEGL.so.*"
-RRECOMMENDS_${PN}-frontwsegl = " ${PN}-frontwsegl-es3 ${PN}-frontwsegl-es5 ${PN}-frontwsegl-es6 ${PN}-frontwsegl-es8 ${PN}-frontwsegl-es9"
+#RRECOMMENDS_${PN}-frontwsegl = " ${PN}-frontwsegl-es3 ${PN}-frontwsegl-es5 ${PN}-frontwsegl-es6 ${PN}-frontwsegl-es8 ${PN}-frontwsegl-es9"
 
 FILES_${PN}-linuxfbwsegl-es3 = "${libdir}/ES3*/libpvrPVR2D_LINUXFBWSEGL.so.*"
 FILES_${PN}-linuxfbwsegl-es5 = "${libdir}/ES5*/libpvrPVR2D_LINUXFBWSEGL.so.*"
 FILES_${PN}-linuxfbwsegl-es6 = "${libdir}/ES6*/libpvrPVR2D_LINUXFBWSEGL.so.*"
 FILES_${PN}-linuxfbwsegl-es8 = "${libdir}/ES8*/libpvrPVR2D_LINUXFBWSEGL.so.*"
 FILES_${PN}-linuxfbwsegl-es9 = "${libdir}/ES9*/libpvrPVR2D_LINUXFBWSEGL.so.*"
-RRECOMMENDS_${PN}-linuxfbwsegl = " ${PN}-linuxfbwsegl-es3 ${PN}-linuxfbwsegl-es5 ${PN}-linuxfbwsegl-es6 ${PN}-linuxfbwsegl-es8 ${PN}-linuxfbwsegl-es9"
+#RRECOMMENDS_${PN}-linuxfbwsegl = " ${PN}-linuxfbwsegl-es3 ${PN}-linuxfbwsegl-es5 ${PN}-linuxfbwsegl-es6 ${PN}-linuxfbwsegl-es8 ${PN}-linuxfbwsegl-es9"
 
 CONFFILES_${PN} = "${sysconfdir}/powervr.ini"
 
@@ -303,7 +304,7 @@ INSANE_SKIP_${PN}-linuxfbwsegl-es9 = "ldflags already-stripped"
 INSANE_SKIP_${PN}-tests = "ldflags already-stripped"
 
 # Quality control is really poor on these SDKs, so hack around the latest madness:
-FILES_${PN} += "${libdir}/*.so "
+#FILES_${PN} += "${libdir}/*.so "
 FILES_${PN}-dev = "${includedir}"
 
 inherit update-rc.d
