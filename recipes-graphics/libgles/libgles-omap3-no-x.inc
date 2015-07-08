@@ -27,8 +27,6 @@ RCONFLICTS_${PN}-dev = "libegl-dev libgles1-dev libgles2-dev"
 RCONFLICTS_${PN}-dbg = "libegl-dbg libgles1-dbg libgles2-dbg"
 
 SRC_URI = "http://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/gfxsdk/${SGXPV}/exports/${BINFILE} \
-		   file://cputype \
-		   file://rc.pvr \
 		   file://99-bufferclass.rules  \
 "
 
@@ -135,8 +133,6 @@ do_install () {
 	install -m 0644 ${BINLOCATION}/*.a ${D}${libdir}
 
 	install -d ${D}${bindir}/
-	install -m 0755 ${WORKDIR}/cputype ${D}${bindir}/
-
 	install -m 0755 ${BINLOCATION}/*_test ${D}${bindir}/
 	install -m 0755 ${BINLOCATION}/gl* ${D}${bindir}/
 	install -m 0755 ${BINLOCATION}/${PVR_INIT} ${D}${bindir}/
@@ -150,7 +146,9 @@ do_install () {
 	cp -pPr ${S}/include/wsegl/*.h ${D}${includedir}/
 	
 	install -d ${D}${sysconfdir}/init.d/
-	cp -pP ${WORKDIR}/rc.pvr ${D}${sysconfdir}/init.d/pvr-init
+	cp -pP ${BINLOCATION}/rc.pvr ${D}${sysconfdir}/init.d/pvr-init
+	sed -i 's#/usr/local/bin#${bindir}#' ${D}${sysconfdir}/init.d/pvr-init
+	sed -i '/^#!\/bin\/sh/a # description: powervr module loader' ${D}${sysconfdir}/init.d/pvr-init
 	chmod +x ${D}${sysconfdir}/init.d/pvr-init
 
 	install -d ${D}${sysconfdir}
@@ -250,7 +248,7 @@ FILES_${PN}-linuxfbwsegl-es9 = "${libdir}/ES9*/libpvrPVR2D_LINUXFBWSEGL.so.*"
 
 CONFFILES_${PN} = "${sysconfdir}/powervr.ini"
 
-FILES_${PN} = "${sysconfdir} ${libdir}/*.so* ${bindir}/${PVR_INIT} ${bindir}/cputype ${bindir}/*"
+FILES_${PN} = "${sysconfdir} ${libdir}/*.so* ${bindir}/${PVR_INIT} ${bindir}/*"
 
 FILES_${PN}-tests = "${bindir}/*test*"
 FILES_${PN}-dbg = "${libdir}/.debug/* ${bindir}/.debug/* \
@@ -266,16 +264,13 @@ FILES_${PN}-rawtrainingcourses = "${bindir}/SGX/trainingcourses/Raw/*"
 # The libs need the kernel-modules
 RRECOMMENDS_${PN} += "omap3-sgx-modules"
 
-# The initscript calls fbset, cputype calls devmem2
-RDEPENDS_${PN} += "fbset devmem2"
-
 #HACK! These are binaries, so we can't guarantee that LDFLAGS match :(
 INSANE_SKIP_${PN} = "ldflags dev-so already-stripped"
-INSANE_SKIP_${PN}-es3 = "ldflags dev-so staticdev already-stripped"
-INSANE_SKIP_${PN}-es5 = "ldflags dev-so staticdev already-stripped"
-INSANE_SKIP_${PN}-es6 = "ldflags dev-so staticdev already-stripped"
-INSANE_SKIP_${PN}-es8 = "ldflags dev-so staticdev already-stripped"
-INSANE_SKIP_${PN}-es9 = "ldflags dev-so staticdev already-stripped"
+INSANE_SKIP_${PN}-es3 = "ldflags dev-so staticdev already-stripped build-deps"
+INSANE_SKIP_${PN}-es5 = "ldflags dev-so staticdev already-stripped build-deps"
+INSANE_SKIP_${PN}-es6 = "ldflags dev-so staticdev already-stripped build-deps"
+INSANE_SKIP_${PN}-es8 = "ldflags dev-so staticdev already-stripped build-deps"
+INSANE_SKIP_${PN}-es9 = "ldflags dev-so staticdev already-stripped build-deps"
 INSANE_SKIP_${PN}-rawdemos = "ldflags dev-so useless-rpaths already-stripped"
 INSANE_SKIP_${PN}-blitwsegl = "ldflags already-stripped"
 INSANE_SKIP_${PN}-blitwsegl-es3 = "ldflags already-stripped"
