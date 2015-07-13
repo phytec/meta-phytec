@@ -9,7 +9,7 @@ SRC_URI = "${GIT_URL};branch=${BRANCH}"
 S = "${WORKDIR}/git"
 BAREBOX_LOCALVERSION = "-${BSP_VERSION}"
 
-PR = "${INC_PR}.0"
+PR = "${INC_PR}.1"
 
 SRCREV = "eb699b609649147f2706b2c86a9599275bdecbdf"
 
@@ -18,7 +18,9 @@ COMPATIBLE_MACHINE .= "|phyboard-maia-am335x-1"
 COMPATIBLE_MACHINE .= "|phyboard-wega-am335x-1"
 COMPATIBLE_MACHINE .= "|phyboard-wega-am335x-2"
 COMPATIBLE_MACHINE .= "|phycore-am335x-1"
+SRC_URI_append_phycore-am335x-1 = " file://netboot.cfg"
 COMPATIBLE_MACHINE .= "|phycore-am335x-2"
+SRC_URI_append_phycore-am335x-2 = " file://netboot.cfg"
 COMPATIBLE_MACHINE .= "|phyflex-am335x-1"
 
 do_deploy_append () {
