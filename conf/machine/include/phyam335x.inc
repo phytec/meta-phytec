@@ -36,11 +36,6 @@ MODULE_TARBALL_DEPLOY = "0"
 # the newer version makes a lot of problems dont include
 # per default
 # RDEPENDS_kernel-modules_append = " am33x-cm3"
-# Support for the crypto hardware acceleration. In some cases it
-# could slow down things, e.g. comparing raw scp speeds to the openssl neon
-# implementation, but it will reduce cpu load and power consumption.
-KERNEL_MODULE_AUTOLOAD += "cryptodev"
-IMAGE_INSTALL_append = " cryptodev-module"
 # SGX GPL Kernel Modules
 IMAGE_INSTALL_append = " omap3-sgx-modules"
 
