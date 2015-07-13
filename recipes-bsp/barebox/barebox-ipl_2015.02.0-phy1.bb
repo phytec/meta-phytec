@@ -13,6 +13,8 @@ PR = "${INC_PR}.1"
 
 SRCREV = "eb699b609649147f2706b2c86a9599275bdecbdf"
 
+SRC_URI_append = " file://noafiboard.cfg"
+
 COMPATIBLE_MACHINE = "beagleboneblack-1"
 COMPATIBLE_MACHINE .= "|phyboard-maia-am335x-1"
 COMPATIBLE_MACHINE .= "|phyboard-wega-am335x-1"
