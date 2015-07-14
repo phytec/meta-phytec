@@ -26,6 +26,12 @@ For the other distributions you can find infos in the Yocto Quickstart:
 
 http://www.yoctoproject.org/docs/latest/yocto-project-qs/yocto-project-qs.html
 
+Furthermore you should set your name and e-mail address for git. Otherwise
+bitbake will complain on the first build.
+
+ git config --global user.email "your_email@example.com"
+ git config --global user.name "name surname"
+
 Phytec Linux Script
 ===================
 
