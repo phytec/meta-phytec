@@ -6,7 +6,8 @@ require barebox.inc
 
 DESCRIPTION = "Barebox IPL Inintial Program Loader: some machines need \
                a pre-bootloader. This one gets build by the barebox."
-PROVIDES = "barebox-ipl"
+# Overwrite PROVIDES in barebox.inc
+PROVIDES = "virtual/prebootloader"
 S = "${WORKDIR}/barebox-${PV}"
 
 # Pre Bootloader 
