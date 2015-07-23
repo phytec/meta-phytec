@@ -9,11 +9,12 @@ include conf/machine/include/soc-family.inc
 # Disable perf features as 2.6.35.3 fail to build otherwise
 PERF_FEATURES_ENABLE = ""
 
-XSERVER_DRIVER = "xf86-video-fbdev"
-XSERVER_DRIVER_mx6 = "xf86-video-imxfb-vivante"
-XSERVER = "xserver-xorg \
-           xf86-input-evdev \
-           ${XSERVER_DRIVER}"
+# We don't support a Xserver yet.
+#XSERVER_DRIVER = "xf86-video-fbdev"
+#XSERVER_DRIVER_mx6 = "xf86-video-imxfb-vivante"
+#XSERVER = "xserver-xorg \
+#           xf86-input-evdev \
+#           ${XSERVER_DRIVER}"
 
 # Ship kernel modules
 MACHINE_EXTRA_RRECOMMENDS = "kernel-modules"
