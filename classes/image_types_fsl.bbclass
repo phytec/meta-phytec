@@ -20,7 +20,7 @@ inherit image_types
 IMAGE_BOOTLOADER ?= "u-boot"
 
 # Default type of rootfs filesystem.
-SDCARD_ROOTFS_TYPE ?= "ext3"
+SDCARD_ROOTFS_TYPE ?= "ext4"
 
 # Location of root filesystem which is written to the sdcard.
 SDCARD_ROOTFS = "${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.rootfs.${SDCARD_ROOTFS_TYPE}"
