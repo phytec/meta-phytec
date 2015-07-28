@@ -46,10 +46,8 @@ BAREBOX_LOCALVERSION ?= "-${DISTRO}-${DISTRO_VERSION}"
 # name of the image created by barebox Makefile
 BAREBOX_BIN ?= "barebox.bin"
 # filename of file to be deployed by this recipe
-BAREBOX_BIN_DEPLOY ?= "barebox-${MACHINE}-${PKGV}-${PKGR}-${DATETIME}.bin"
-BAREBOX_BIN_DEPLOY[vardepsexclude] += "DATETIME"
-BAREBOX_DEFCONFIG_DEPLOY ?= "barebox-defconfig-${MACHINE}-${PKGV}-${PKGR}-${DATETIME}"
-BAREBOX_DEFCONFIG_DEPLOY[vardepsexclude] += "DATETIME"
+BAREBOX_IMAGE_BASE_NAME ?= "barebox-${MACHINE}-${PKGV}-${PKGR}-${DATETIME}"
+BAREBOX_IMAGE_BASE_NAME[vardepsexclude] += "DATETIME"
 BAREBOX_BIN_SYMLINK ?= "barebox.bin"
 BAREBOX_DEFAULT_DEFCONFIG ?= ""
 # barebox environment
@@ -132,8 +130,8 @@ do_compile () {
 do_install () {
 	bbnote "Installing barebox image on target rootfs"
 	install -d ${D}${base_bootdir}
-	install ${B}/${BAREBOX_BIN} ${D}${base_bootdir}/${BAREBOX_BIN_DEPLOY}
-	ln -sf ${BAREBOX_BIN_DEPLOY} ${D}${base_bootdir}/${BAREBOX_BIN_SYMLINK}
+	install ${B}/${BAREBOX_BIN} ${D}${base_bootdir}/${BAREBOX_IMAGE_BASE_NAME}.bin
+	ln -sf ${BAREBOX_IMAGE_BASE_NAME}.bin ${D}${base_bootdir}/${BAREBOX_BIN_SYMLINK}
 
 	if [ -e ${B}/scripts/bareboxenv-target ] ; then
 		bbnote "Installing target env tool"
@@ -161,15 +159,15 @@ FILES_${PN}-targettools += "${base_sbindir}/barebox*"
 
 do_deploy () {
 	bbnote "Deploying barebox"
-	install -m 644 ${B}/${BAREBOX_BIN} ${DEPLOYDIR}/${BAREBOX_BIN_DEPLOY}
-	ln -sf ${BAREBOX_BIN_DEPLOY} ${DEPLOYDIR}/${BAREBOX_BIN_SYMLINK}
+	install -m 644 ${B}/${BAREBOX_BIN} ${DEPLOYDIR}/${BAREBOX_IMAGE_BASE_NAME}.bin
+	ln -sf ${BAREBOX_IMAGE_BASE_NAME}.bin ${DEPLOYDIR}/${BAREBOX_BIN_SYMLINK}
 
 	bbnote "Installing host barebox toolset"
 	install -d ${STAGING_BINDIR_NATIVE}
 	install -m 755 ${B}/scripts/bareboxenv ${STAGING_BINDIR_NATIVE}/
 
-        install -m 644 ${B}/defconfig ${DEPLOYDIR}/${BAREBOX_DEFCONFIG_DEPLOY}
-        ln -sf ${BAREBOX_DEFCONFIG_DEPLOY} ${DEPLOYDIR}/${PN}-defconfig
+        install -m 644 ${B}/defconfig ${DEPLOYDIR}/${BAREBOX_IMAGE_BASE_NAME}-defconfig
+        ln -sf ${BAREBOX_IMAGE_BASE_NAME}-defconfig ${DEPLOYDIR}/${PN}-defconfig
 }
 do_deploy[prefuncs] += "package_get_auto_pr"
 do_deploy[depends] += "${PN}:do_savedefconfig"
