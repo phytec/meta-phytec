@@ -29,7 +29,7 @@ inherit kernel-arch cml1 deploy
 inherit kconfig-prepare-configure
 
 # Increase INC_PR everytime the include file is changed.
-INC_PR = "r1"
+INC_PR = "r2"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 # verbose build 0/1
@@ -166,9 +166,8 @@ do_deploy () {
 	install -d ${STAGING_BINDIR_NATIVE}
 	install -m 755 ${B}/scripts/bareboxenv ${STAGING_BINDIR_NATIVE}/
 
-        install -m 644 ${B}/defconfig ${DEPLOYDIR}/${BAREBOX_IMAGE_BASE_NAME}-defconfig
-        ln -sf ${BAREBOX_IMAGE_BASE_NAME}-defconfig ${DEPLOYDIR}/${PN}-defconfig
+	install -m 644 ${B}/.config ${DEPLOYDIR}/${BAREBOX_IMAGE_BASE_NAME}.config
+	ln -sf ${BAREBOX_IMAGE_BASE_NAME}.config ${DEPLOYDIR}/${PN}.config
 }
 do_deploy[prefuncs] += "package_get_auto_pr"
-do_deploy[depends] += "${PN}:do_savedefconfig"
 addtask deploy before do_build after do_compile

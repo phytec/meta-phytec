@@ -46,4 +46,7 @@ do_deploy () {
 	bbnote "Deploying barebox ipl"
 	install -m 644 ${B}/${BAREBOX_IPL_BIN} ${DEPLOYDIR}/${BAREBOX_IPL_IMAGE_BASE_NAME}.img
 	ln -sf ${BAREBOX_IPL_IMAGE_BASE_NAME}.img ${DEPLOYDIR}/${BAREBOX_IPL_BIN_SYMLINK}
+
+	install -m 644 ${B}/.config ${DEPLOYDIR}/${BAREBOX_IPL_IMAGE_BASE_NAME}.config
+	ln -sf ${BAREBOX_IPL_IMAGE_BASE_NAME}.config ${DEPLOYDIR}/${BAREBOX_IPL_BIN_SYMLINK}.config
 }

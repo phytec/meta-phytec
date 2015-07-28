@@ -11,7 +11,7 @@ inherit kconfig-prepare-configure
 require recipes-kernel/linux/linux-dtb.inc
 
 # Increase INC_PR everytime the include file is changed.
-INC_PR = "r1"
+INC_PR = "r2"
 
 DEPENDS += "lzop-native lz4-native"
 KERNEL_LOCALVERSION ?= "-${DISTRO}-${DISTRO_VERSION}"
@@ -50,8 +50,6 @@ addtask savedefconfig after do_configure
 KERNEL_IMAGE_BASE_NAME = "${KERNEL_IMAGETYPE}-${PN}-${PKGV}-${PKGR}-${MACHINE}-${DATETIME}"
 KERNEL_IMAGE_BASE_NAME[vardepsexclude] = "DATETIME"
 do_deploy_append() {
-    install -m 644 ${B}/defconfig ${DEPLOYDIR}/${KERNEL_IMAGE_BASE_NAME}-defconfig
-    rm -rf ${DEPLOYDIR}/${KERNEL_IMAGETYPE}-defconfig
-    ln -sf ${KERNEL_IMAGE_BASE_NAME}-defconfig ${DEPLOYDIR}/${KERNEL_IMAGETYPE}-defconfig
+    install -m 644 ${B}/.config ${DEPLOYDIR}/${KERNEL_IMAGE_BASE_NAME}.config
+    ln -sf ${KERNEL_IMAGE_BASE_NAME}.config ${DEPLOYDIR}/${KERNEL_IMAGETYPE}.config
 }
-do_deploy[depends] += "${PN}:do_savedefconfig"
