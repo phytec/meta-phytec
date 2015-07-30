@@ -5,10 +5,7 @@ LIC_FILES_CHKSUM = "file://TSPA.txt;md5=c0d5d9c1e38b41677144c4e24d6ddee1"
 
 INC_PR = "r38"
 
-EXCLUDE_FROM_WORLD = "1"
-
-COMPATIBLE_MACHINE = "(omap3|ti814x|ti816x|ti33x|ti43x)"
-PACKAGE_ARCH = "${MACHINE_ARCH}"
+COMPATIBLE_MACHINE = "ti33x"
 
 PVR_INIT ?= "pvrsrvinit"
 
