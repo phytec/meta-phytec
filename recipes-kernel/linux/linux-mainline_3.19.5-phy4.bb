@@ -21,7 +21,7 @@ PR = "${INC_PR}.0"
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "76cf8e48b88eff49ec98b569c0489e7cb61d3d9c"
+SRCREV = "f45b10e27adc3294646e4e5ca2ff13c4b423762f"
 
 LINUX_VERSION = "${PV}"
 
