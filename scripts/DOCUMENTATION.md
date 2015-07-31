@@ -69,3 +69,20 @@ continue the build in case of errors use:
    $ ./for_all_machines.py "bitbake phytec-hwbringup-image; exit 0"
 
 TODO: Add commandline argument "--ignore-errors"
+
+
+Script copy-deploy-images
+-------------------------
+
+The script copies the latest images files from the deploy/images directory.
+It's useful for deploying images for a Release or KSP projects, because also it
+creates checksums.  To deploy a release images execute
+
+    $ ./for_all_machines.py bitbake phytec-qt5demo-image   # or
+    $ MACHINE=ksp-machine-1  bitbake phytec-qt5demo-image  # and execute
+    $ ./copy-deploy-images deploy/images ~/deploy/folder/images/
+
+To check the files against the checksum after deployment, execute
+
+    $ find ~/deploy/folder/images -name sha1sum.txt -execdir sha1sum -c sha1sum.txt ";" \
+      | grep -v OK
