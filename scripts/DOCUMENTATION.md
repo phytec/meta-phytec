@@ -40,22 +40,22 @@ local.conf, but the script will warn you about that.
 
 For example: To build the pyhtec-hwbringup-image for all machines execute:
 
-   $ ./for_all_machines.py bitbake phytec-hwbringup-image
+    $ ./for_all_machines.py bitbake phytec-hwbringup-image
 
 All commandline arguments are contacted with a space and executed in a
 subshell. So you can accomplish the same as above with the command
 
-   $ ./for_all_machines.py "bitbake phytec-hwbringup-image"
+    $ ./for_all_machines.py "bitbake phytec-hwbringup-image"
 
 Any shell command is allowed. For example to find out the barebox version which
 is used by all machines, execute
 
-   $ ./for_all_machines.py "bitbake -s | grep barebox"
+    $ ./for_all_machines.py "bitbake -s | grep barebox"
 
 To execute a command only for a subset of the machines seperate the machine and
 the command by "--". An Example:
 
-   $ ./for_all_machines phyflex-imx6-1 phyboard-wega-am335x-1 -- bitbake barebox
+    $ ./for_all_machines phyflex-imx6-1 phyboard-wega-am335x-1 -- bitbake barebox
 
 You can abort the execution by sending the SIGINT (CTRL+C) or SIGTERM signal to
 the for_all_machines script. It will forward the signal to the subshell process
@@ -66,7 +66,7 @@ To suspend the execution use the shell feature CTRL+Z and 'fg'.
 NOTE: The script aborts on the first unsuccessful execution of the command. To
 continue the build in case of errors use:
 
-   $ ./for_all_machines.py "bitbake phytec-hwbringup-image; exit 0"
+    $ ./for_all_machines.py "bitbake phytec-hwbringup-image; exit 0"
 
 TODO: Add commandline argument "--ignore-errors"
 
