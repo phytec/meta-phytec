@@ -45,6 +45,4 @@ BB_DISKMON_DIRS = "\
     ABORT,${DL_DIR},100M,1K \
     ABORT,${SSTATE_DIR},100M,1K"
 
-INHERIT += "phytec-mirrors"
-
 CONF_VERSION = "1"
