@@ -3,10 +3,10 @@ MACHINE ?= "UNASSIGNED"
 
 DISTRO ?= "yogurt"
 
-# The following line disables the autostart of the phytec-qtdemo by
+# The following line disables the autostart of the qt5everywere demo by
 # default, but you can start the demo anytime using
-#  $ systemctl start phytec-qtdemo.service
-#SYSTEMD_AUTO_ENABLE_pn-phytec-qtdemo = "disable"
+#  $ systemctl start qt5demo.service
+#SYSTEMD_AUTO_ENABLE_pn-qt5demo-autostarter = "disable"
 
 # That are the default values of bitbake.  Adapt these to your workspace and
 # host preferences.
