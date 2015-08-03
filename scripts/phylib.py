@@ -147,7 +147,6 @@ class BoardSupportPackage(object):
         self.src = Sourcecode()
         self.init_script = "tools/init"
         self.xml = ""
-        self.uid = "UNASSIGNED"
         self.pdn = "UNASSIGNED"
         self.soc = "UNASSIGNED"
         self.selected_machine = "UNASSIGNED"
@@ -178,7 +177,6 @@ class BoardSupportPackage(object):
                 release_info = child.attrib
         # source settings
         try:
-            self.uid = release_info["release_uid"]
             self.pdn = release_info["pdn"]
             self.soc = release_info["soc"]
             # BSP settings
@@ -193,33 +191,6 @@ class BoardSupportPackage(object):
         f = os.readlink(os.path.join(repo_dir, 'manifest.xml'))
         f = os.path.join(repo_dir, f)
         self.set_manifest(f)
-
-    def write_bsp_version_to_localconf(self):
-        if self.uid is None or self.uid == "":
-            print 'BSP_VERSION is empty. Cannot set it in local.conf.'
-            return False
-
-        lconf = self.local_conf
-        lconftmp = lconf + '~'
-        shutil.copyfile(lconf, lconftmp)
-        fw = open(lconf, 'w')
-        fr = open(lconftmp, 'r')
-        frl = fr.readlines()
-        set_already = False
-        for line in frl:
-            if "BSP_VERSION" in line and not line.strip().startswith("#") and not set_already:
-                print 'set BSP_VERSION in local.conf to ', self.uid
-                fw.write('BSP_VERSION = "' + self.uid + '"\n')
-                set_already = True
-            else:
-                fw.write(line)
-        fr.close()
-        fw.close()
-        os.remove(lconftmp)
-        if not set_already:
-            print 'Could not set BSP_VERSION in local.conf'
-            return False
-        return True
 
     def write_machine_to_localconf(self):
         lconf = self.local_conf
