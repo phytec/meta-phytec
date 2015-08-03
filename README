@@ -1,14 +1,21 @@
 meta-phytec
 ==========
 
-This is the location for PHYTEC maintained BSPs.
+This is the BSP layer for all PHYTEC Boards.
 
-Please see the README files contained in the individual BSP layers for
-BSP-specific information.
+Meta-phytec is our upstream layer which is distribution independent
+an delivers bootloader and kernel to our customers.
+If you are interested in a fully tested and configures Yocto linux,
+consider installing meta-yogurt too, which is a test distribution
+maintained by PHYTEC.
 
-If you have problems with or questions about a particular BSP, please
-contact the maintainer listed in the MAINTAINERS file directly. Please
-try to do the following first:
+Further information about the hardware can be found on our webpage:
+
+  http://www.phytec.de
+
+If you have problems with or questions, please contact the maintainer
+listed in the MAINTAINERS file directly. Please try to do the following
+first:
 
   - look in the Yocto Project Bugzilla
     (http://bugzilla.yoctoproject.org/) to see if a problem has
@@ -19,12 +26,7 @@ try to do the following first:
     archives to see if other people have run into similar problems or
     had similar questions answered.
 
-The meta-phytec layer handles entities on cooperation level. That is:
+Dependencies
+============
 
-  - license files
-  - logo and graphic design files
-  - patches for yocto
-  - software recipes not found in yocto
-
-It servers as an integration level for all BSPs developed by PHYTEC.
-Sublayers should be designed not to create interdependencies.
+This layer depends on OpenembeddedCore, included in Poky.

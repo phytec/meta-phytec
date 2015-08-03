@@ -1,0 +1,3 @@
+#!/bin/sh
+. /env/expansions/am335x-phytec-lcd-018-peb-av-02
+. /env/expansions/am335x-wega-peb-eval-01
