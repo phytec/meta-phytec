@@ -1,6 +1,6 @@
 inherit phygittag
 inherit buildinfo
-require common/recipes-bsp/barebox/barebox.inc
+require barebox.inc
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}/features:${THISDIR}:"
 

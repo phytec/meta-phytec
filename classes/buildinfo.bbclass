@@ -15,7 +15,7 @@
 # configurations is
 #
 #     inherit buildinfo
-#     require common/recipes-bsp/barebox/barebox.inc
+#     require barebox.inc
 #
 #     FILESEXTRAPATHS_prepend := "${THISDIR}/defconfigs:${THISDIR}/[...]"
 #
@@ -33,7 +33,7 @@
 #
 #     inherit phygittag
 #     inherit buildinfo
-#     require common/recipes-bsp/barebox/barebox.inc
+#     require barebox.inc
 #
 #     FILESEXTRAPATHS_prepend := "${THISDIR}/defconfigs:${THISDIR}/[...]"
 #

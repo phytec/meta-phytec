@@ -3,7 +3,7 @@
 
 inherit phygittag
 inherit buildinfo
-require common/recipes-kernel/linux/linux.inc
+require linux.inc
 
 FILESEXTRAPATHS_prepend = "${THISDIR}/linux-mainline/features:"
 

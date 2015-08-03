@@ -3,7 +3,7 @@
 
 inherit phygittag
 inherit buildinfo
-require common/recipes-bsp/barebox/barebox.inc
+require barebox.inc
 
 FILESEXTRAPATHS_prepend = "${THISDIR}/defconfigs:${THISDIR}/defconfigs/features:"
 FILESEXTRAPATHS_prepend = "${THISDIR}/env-2015.02.0-phy:"

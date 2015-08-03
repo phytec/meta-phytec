@@ -6,7 +6,7 @@ DESCRIPTION =   "Linux Kernel provided and supported by PHYTEC based on TIs \
 
 inherit phygittag
 inherit buildinfo
-require common/recipes-kernel/linux/linux.inc
+require linux.inc
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/linux-ti/defconfigs:${THISDIR}/linux-ti/features:"
 
