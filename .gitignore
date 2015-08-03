@@ -5,7 +5,6 @@ build*/
 pyshtables.py
 pstage/
 sources/
-meta-*/
 *.swp
 *.orig
 *.rej
