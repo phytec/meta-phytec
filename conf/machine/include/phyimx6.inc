@@ -13,6 +13,7 @@ BAREBOX_DEFAULT_DEFCONFIG = "imx_v7_defconfig"
 # Kernel 
 PREFERRED_PROVIDER_virtual/kernel ?= "linux-mainline"
 KERNEL_IMAGETYPE ?= "zImage"
+KCONFIG_MODE = "--alldefconfig"
 # Install modules in initramfs and roofs
 PACKAGE_INSTALL_append = " kernel-modules"
 

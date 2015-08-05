@@ -6,12 +6,13 @@ DESCRIPTION =   "Linux Kernel provided and supported by PHYTEC based on TIs \
 
 inherit phygittag
 inherit buildinfo
-require linux.inc
+#require linux.inc
+require recipes-kernel/linux/linux-yocto.inc
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/linux-ti/defconfigs:${THISDIR}/linux-ti/features:"
+FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}/features:"
 
 GIT_URL = "git://git.phytec.de/${PN}"
-SRC_URI = "${GIT_URL};branch=${BRANCH}"
+SRC_URI = "${GIT_URL};branch=${BRANCH};protocol=git;nocheckout=1"
 SRC_URI_append = " \
     ${@bb.utils.contains('DISTRO_FEATURES', 'ipv6', 'file://ipv6.cfg', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'file://systemd.cfg', '', d)} \
@@ -22,8 +23,8 @@ SRC_URI_append = " \
 SRC_URI_append += "${@bb.utils.contains('DISTRO_FEATURES', 'opengl', 'file://da8xx-fb.cfg', '', d)}"
 SRC_URI[vardeps] += "DISTRO_FEATURES"
 
-KERNEL_LOCALVERSION = "-${BSP_VERSION}"
 LINUX_VERSION = "${PV}"
+LINUX_VERSION_EXTENSION = "-${BSP_VERSION}"
 
 PR = "${INC_PR}.0"
 

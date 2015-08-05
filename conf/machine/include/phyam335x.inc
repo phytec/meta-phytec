@@ -23,7 +23,8 @@ IMAGE_DEPENDS_sdcard_append = " barebox-ipl:do_deploy"
 # Kernel 
 PREFERRED_PROVIDER_virtual/kernel ?= "linux-ti"
 KERNEL_IMAGETYPE ?= "zImage"
-KERNEL_DEFAULT_DEFCONFIG = "am335x_phytec_defconfig"
+KBUILD_DEFCONFIG = "am335x_phytec_defconfig"
+KCONFIG_MODE = "--alldefconfig"
 # Install modules in initramfs and rootfs
 PACKAGE_INSTALL_append = " kernel-modules"
 
