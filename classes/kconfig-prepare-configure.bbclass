@@ -20,9 +20,9 @@ def find_sccs(d):
 python do_prepare_configure() {
     import subprocess
     workdir = d.getVar('WORKDIR', True)
-    S = d.getVar('S', True)
+    B = d.getVar('B', True)
     defconfig = os.path.join(workdir , 'defconfig')
-    config = os.path.join(S, '.config')
+    config = os.path.join(B, '.config')
 
     # Setup .config from various sources
     if os.path.isfile(defconfig):
@@ -39,7 +39,7 @@ python do_prepare_configure() {
     if len(fragments) > 0:
         bb.note("combining kconfig fragments into .config")
         cmd = 'scripts/kconfig/merge_config.sh -m -O %s %s %s' % \
-              (S, config, ' '.join(map(str, fragments)))
+              (B, config, ' '.join(map(str, fragments)))
         subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
 
 }
