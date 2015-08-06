@@ -1,0 +1,4 @@
+#!/bin/sh
+
+. /env/expansions/imx6qdl-mira-peb-eval-01
+
