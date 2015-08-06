@@ -19,7 +19,7 @@ S = "${WORKDIR}/git"
 PATCHTOOL = "git"
 
 # FIXME Move to meta-yogurt when socs are unified.
-FILESEXTRAPATHS_prepend = "${THISDIR}/features:"
+FILESEXTRAPATHS_prepend := "${THISDIR}/features:"
 SRC_URI_append = " file://mtd-tests.cfg"
 KERNEL_MODULES_RDEPENDS_BLACKLIST += "${MTD_TEST_PACKAGES}"
 
