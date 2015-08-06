@@ -42,5 +42,3 @@ COMPATIBLE_MACHINE .= "|phycard-imx6-2"
 
 COMPATIBLE_MACHINE .= "|phyboard-alcor-imx6-1"
 COMPATIBLE_MACHINE .= "|phyboard-subra-imx6-1"
-COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-1"
-COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-2"
