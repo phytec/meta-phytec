@@ -13,7 +13,6 @@ SRC_URI_append = " \
     file://ipv6.cfg \
     file://systemd.cfg \
     file://resetdriver.cfg \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'mtd-tests', 'file://mtd-tests.cfg', '', d)} \
 "
 S = "${WORKDIR}/git"
 
