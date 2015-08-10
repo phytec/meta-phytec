@@ -22,3 +22,9 @@ python do_nconfig() {
 do_nconfig[depends] += "ncurses-native:do_populate_sysroot"
 do_nconfig[nostamp] = "1"
 addtask nconfig
+
+KERNEL_IMAGE_BASE_NAME = "${KERNEL_IMAGETYPE}-${PN}-${PKGV}-${PKGR}-${MACHINE}-${DATETIME}"
+do_deploy_append() {
+    install -m 644 ${B}/.config ${DEPLOYDIR}/${KERNEL_IMAGE_BASE_NAME}.config
+    ln -sf ${KERNEL_IMAGE_BASE_NAME}.config ${DEPLOYDIR}/${KERNEL_IMAGETYPE}.config
+}
