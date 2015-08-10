@@ -6,8 +6,8 @@ DESCRIPTION =   "Linux Kernel provided and supported by PHYTEC based on TIs \
 
 inherit phygittag
 inherit buildinfo
-#require linux.inc
 require recipes-kernel/linux/linux-yocto.inc
+include linux-common.inc
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}/features:"
 

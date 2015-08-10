@@ -3,8 +3,8 @@
 
 inherit phygittag
 inherit buildinfo
-#require linux.inc
 require recipes-kernel/linux/linux-yocto.inc
+include linux-common.inc
 
 FILESEXTRAPATHS_prepend = "${THISDIR}/${PN}/features:"
 
