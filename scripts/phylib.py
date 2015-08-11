@@ -84,14 +84,12 @@ class Sourcecode(object):
         self.machines = Vividict()
         self.bsp_dir = ""
         self.meta_phytec_dir = ""
-        self.soc_layers_top_dir = ""
 
         try:
             #v2 Implementation
             cwd = self.search_for_bsp_dir()
             self.bsp_dir = cwd
             self.meta_phytec_dir = os.path.join(cwd, "sources/meta-phytec")
-            self.soc_layers_top_dir = self.meta_phytec_dir
             self.init_machines()
         except (IOError, OSError), e:
             print "Could not find necessary file: ", e
@@ -111,18 +109,14 @@ class Sourcecode(object):
         return os.path.join(self.bsp_dir, '.repo')
 
     def init_machines(self):
-        d = os.listdir(self.soc_layers_top_dir)
-        soc_bsp_folders = [name for name in d if name.startswith("meta-phy")]
-
-        for i in soc_bsp_folders:
-            d = os.listdir(os.path.join(self.soc_layers_top_dir, i, 'conf/machine'))
-            d.sort()
-            for j in d:
-                if j.endswith('.conf'):
-                    machname = os.path.splitext(j)[0]
-                    path = os.path.join(self.soc_layers_top_dir, i, 'conf/machine', j)
-                    self.machines[machname]['abs_path'] = path
-                    self.machine_parse_description(machname)
+        d = os.listdir(os.path.join(self.meta_phytec_dir, 'conf/machine'))
+        d.sort()
+        for j in d:
+            if j.endswith('.conf'):
+                machname = os.path.splitext(j)[0]
+                path = os.path.join(self.meta_phytec_dir, 'conf/machine', j)
+                self.machines[machname]['abs_path'] = path
+                self.machine_parse_description(machname)
         return True
 
     def machine_parse_description(self, machine):

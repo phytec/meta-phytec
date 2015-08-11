@@ -39,17 +39,15 @@ fi
 
 
 # Folders
-SOC_DIR="${ROOTDIR}/sources/meta-phytec/meta-phyam335x"
 PHYTEC_DIR="${ROOTDIR}/sources/meta-phytec"
 TEMPLATECONF="${ROOTDIR}/tools/templateconf"
 
 # Setup template directory and Readmes
 install -d ${TEMPLATECONF}
-install -m 0644 ${SOC_DIR}/conf/bblayers.conf.sample ${TEMPLATECONF}
-install -m 0644 ${SOC_DIR}/conf/doc/HOWTO-am335x ${ROOTDIR}
+install -m 0644 ${PHYTEC_DIR}/conf/bblayers.conf.sample ${TEMPLATECONF}
 install -m 0644 ${PHYTEC_DIR}/conf/local.conf.sample ${TEMPLATECONF}
 install -m 0644 ${PHYTEC_DIR}/conf/conf-notes.txt ${TEMPLATECONF}
-install -m 0644 ${PHYTEC_DIR}/conf/doc/HOWTO-yocto ${ROOTDIR}
+install -m 0644 ${PHYTEC_DIR}/conf/doc/HOWTO ${ROOTDIR}
 
 # Init a build directory if we dont have one.
 # NOTE: Since the script 'oe-buildenv-internal' will use the current working
@@ -60,7 +58,6 @@ bash -c "TEMPLATECONF=\"${TEMPLATECONF}\" source ${ROOTDIR}/sources/poky/oe-init
 
 ${PHYTEC_DIR}/scripts/copy_site_conf.py
 ${PHYTEC_DIR}/scripts/init_machine.py
-${PHYTEC_DIR}/scripts/write_bsp_version_to_lconf.py
 
 echo ""
 echo "Before you start your work, please check your build/conf/local.conf for"
