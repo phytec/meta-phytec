@@ -41,8 +41,7 @@ PATCHTOOL = "git"
 
 DEPENDS += "lzop-native"
 
-# these variables need to be assigned in the machine.conf 
-BAREBOX_LOCALVERSION ?= "-${DISTRO}-${DISTRO_VERSION}"
+BAREBOX_LOCALVERSION ??= ""
 # name of the image created by barebox Makefile
 BAREBOX_BIN ?= "barebox.bin"
 # filename of file to be deployed by this recipe

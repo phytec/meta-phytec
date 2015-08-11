@@ -23,7 +23,6 @@ SRC_URI_append += "${@bb.utils.contains('DISTRO_FEATURES', 'opengl', 'file://da8
 SRC_URI[vardeps] += "DISTRO_FEATURES"
 
 LINUX_VERSION = "${PV}"
-LINUX_VERSION_EXTENSION = "-${BSP_VERSION}"
 
 PR = "${INC_PR}.0"
 

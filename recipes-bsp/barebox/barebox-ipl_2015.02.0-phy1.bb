@@ -7,7 +7,6 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/barebox/features:"
 GIT_URL = "git://git.phytec.de/barebox"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 S = "${WORKDIR}/git"
-BAREBOX_LOCALVERSION = "-${BSP_VERSION}"
 
 PR = "${INC_PR}.1"
 

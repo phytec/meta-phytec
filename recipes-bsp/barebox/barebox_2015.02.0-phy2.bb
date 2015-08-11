@@ -24,8 +24,6 @@ PR = "${INC_PR}.4"
 # NOTE: Keep version in filename in sync with commit id!
 SRCREV = "b07f85c089be1e01184047e29a75529851d817da"
 
-BAREBOX_LOCALVERSION = "-${BSP_VERSION}"
-
 COMPATIBLE_MACHINE  =  "phyflex-imx6-1"
 COMPATIBLE_MACHINE .= "|phyflex-imx6-2"
 COMPATIBLE_MACHINE .= "|phyflex-imx6-3"

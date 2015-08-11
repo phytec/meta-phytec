@@ -12,7 +12,6 @@ SRC_URI_append = " \
     file://targettools.cfg \
 "
 S = "${WORKDIR}/git"
-BAREBOX_LOCALVERSION = "-${BSP_VERSION}"
 
 PR = "${INC_PR}.0"
 
