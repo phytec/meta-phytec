@@ -20,7 +20,7 @@ PR = "${INC_PR}.0"
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "f45b10e27adc3294646e4e5ca2ff13c4b423762f"
+SRCREV = "08b082bbf8ea8c125e205cb20683f53f3bfa34cc"
 
 LINUX_VERSION = "${PV}"
 
@@ -40,3 +40,5 @@ COMPATIBLE_MACHINE .= "|phycard-imx6-2"
 
 COMPATIBLE_MACHINE .= "|phyboard-alcor-imx6-1"
 COMPATIBLE_MACHINE .= "|phyboard-subra-imx6-1"
+COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-3"
+COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-4"
