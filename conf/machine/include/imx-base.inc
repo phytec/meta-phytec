@@ -47,13 +47,10 @@ MACHINE_GSTREAMER_1_0_PLUGIN ?= ""
 MACHINE_GSTREAMER_1_0_PLUGIN_mx6 ?= "gstreamer1.0-plugins-imx-meta"
 
 # mx6 GPU libraries
-PREFERRED_PROVIDER_virtual/egl_mx6 ?= "gpu-viv-bin-mx6q"
-PREFERRED_PROVIDER_virtual/libgles1_mx6q ?= "gpu-viv-bin-mx6q"
-PREFERRED_PROVIDER_virtual/libgles1_mx6dl ?= "gpu-viv-bin-mx6q"
-PREFERRED_PROVIDER_virtual/libgles2_mx6q ?= "gpu-viv-bin-mx6q"
-PREFERRED_PROVIDER_virtual/libgles2_mx6dl ?= "gpu-viv-bin-mx6q"
-PREFERRED_PROVIDER_virtual/libgl_mx6q ?= "gpu-viv-bin-mx6q"
-PREFERRED_PROVIDER_virtual/libgl_mx6dl ?= "gpu-viv-bin-mx6q"
+PREFERRED_PROVIDER_virtual/egl ?= "gpu-viv-bin-mx6q"
+PREFERRED_PROVIDER_virtual/libgles1 ?= "gpu-viv-bin-mx6q"
+PREFERRED_PROVIDER_virtual/libgles2 ?= "gpu-viv-bin-mx6q"
+PREFERRED_PROVIDER_virtual/libgl ?= "gpu-viv-bin-mx6q"
 
 
 SERIAL_CONSOLE = "115200 ttymxc0"
