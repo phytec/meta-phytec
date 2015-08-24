@@ -2,7 +2,8 @@ inherit phygittag
 inherit buildinfo
 require barebox.inc
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}/features:${THISDIR}:"
+FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}/features:"
+FILESEXTRAPATHS_prepend := "${THISDIR}/env-2015.02.0-phy1:"
 
 GIT_URL = "git://git.phytec.de/${PN}"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
@@ -13,7 +14,7 @@ SRC_URI_append = " \
 "
 S = "${WORKDIR}/git"
 
-PR = "${INC_PR}.0"
+PR = "${INC_PR}.1"
 
 # NOTE: Keep version in filename in sync with commit id and barebox-ipl!
 SRCREV = "eb699b609649147f2706b2c86a9599275bdecbdf"
