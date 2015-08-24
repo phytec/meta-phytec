@@ -78,9 +78,6 @@ class Vividict(dict):
 class Sourcecode(object):
     def __init__(self):
         # Interface
-        self.soc = []
-        self.phylinux_api = 0
-        self.init_script = ""
         self.machines = Vividict()
         self.bsp_dir = ""
         self.meta_phytec_dir = ""
@@ -139,7 +136,6 @@ class BoardSupportPackage(object):
     def __init__(self):
         #Interface
         self.src = Sourcecode()
-        self.init_script = "tools/init"
         self.xml = ""
         self.pdn = "UNASSIGNED"
         self.soc = "UNASSIGNED"
@@ -147,16 +143,12 @@ class BoardSupportPackage(object):
         self.local_conf = ""
         self.build_dir = ""
         self.image_base_dir = ""
-        self.image_dir_deploy_N_lw = ""
-        self.image_dir_ftp = ""
 
         try:
             #v2 Implementation
             self.local_conf = os.path.join(self.src.bsp_dir, "build/conf/local.conf")
             self.build_dir = os.path.join(self.src.bsp_dir, "build")
             self.image_base_dir = os.path.join(self.src.bsp_dir, "build/deploy/images")
-            self.image_dir_deploy_N_lw = ""
-            self.image_dir_ftp = "ftp://ftp.phytec.de"
             self.probe_selected_release()
         except (IOError, OSError) as e:
             print "Could not find necessary file: ", e

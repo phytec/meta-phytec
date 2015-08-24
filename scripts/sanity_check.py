@@ -20,7 +20,7 @@ class BSP_Sanity(BoardSupportPackage):
         if self.src.pdn != os.path.splitext(os.path.basename(self.xml))[0]:
             print 'The manifest.xml target:', self.xml
             print 'does not have the correct PD number:', self.src.pdn, 'as filename.'
-        if self.src.soc and self.selected_machine:
+        if self.selected_machine:
             print 'Do you really want to release a SOC bsp with a selected machine:',
             print self.selected_machine
 
