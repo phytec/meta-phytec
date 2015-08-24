@@ -1,15 +1,4 @@
-*.pyc
-*.pyo
+*.py?
 /*.patch
-build*/
-pyshtables.py
-pstage/
-sources/
-*.swp
-*.orig
-*.rej
+*.sw?
 *~
-documentation/user-manual/user-manual.html
-documentation/user-manual/user-manual.pdf
-documentation/user-manual/user-manual.tgz
-pull-*/
