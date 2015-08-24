@@ -39,9 +39,6 @@ MACHINE_FIRMWARE ?= ""
 
 MACHINE_EXTRA_RRECOMMENDS += "${MACHINE_FIRMWARE}"
 
-# Extra udev rules
-MACHINE_EXTRA_RRECOMMENDS += "udev-extraconf"
-
 # GStreamer 0.10 plugins
 MACHINE_GSTREAMER_PLUGIN ?= "gst-fsl-plugin"
 
