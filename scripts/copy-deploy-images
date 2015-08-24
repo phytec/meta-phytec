@@ -18,6 +18,7 @@
 
 # TODO add flag -v,--verbose
 
+set -e
 
 # Functions
 get_image_files () {
