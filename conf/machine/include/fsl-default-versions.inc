@@ -1,1 +1,0 @@
-# Freescale BSP default versions

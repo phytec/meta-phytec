@@ -1,14 +1,12 @@
 # Provides the i.MX common settings
 
-include conf/machine/include/fsl-default-settings.inc
-include conf/machine/include/fsl-default-versions.inc
-include conf/machine/include/fsl-default-providers.inc
-
 include conf/machine/include/soc-family.inc
 
 # Disable perf features as 2.6.35.3 fail to build otherwise
 PERF_FEATURES_ENABLE = ""
 
+# XServer
+PREFERRED_PROVIDER_virtual/xserver = "xserver-xorg"
 # We don't support a Xserver yet.
 #XSERVER_DRIVER = "xf86-video-fbdev"
 #XSERVER_DRIVER_mx6 = "xf86-video-imxfb-vivante"
@@ -45,6 +43,8 @@ PREFERRED_PROVIDER_virtual/libgles1 ?= "gpu-viv-bin-mx6q"
 PREFERRED_PROVIDER_virtual/libgles2 ?= "gpu-viv-bin-mx6q"
 PREFERRED_PROVIDER_virtual/libgl ?= "gpu-viv-bin-mx6q"
 
+# sd-card image
+IMAGE_CLASSES += "image_types_fsl"
 
 SERIAL_CONSOLE = "115200 ttymxc0"
 
