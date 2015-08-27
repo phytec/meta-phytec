@@ -6,7 +6,7 @@ inherit buildinfo
 require recipes-kernel/linux/linux-yocto.inc
 include linux-common.inc
 
-FILESEXTRAPATHS_prepend = "${THISDIR}/${PN}/features:"
+FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}/features:"
 
 GIT_URL = "git://git.phytec.de/${PN}"
 SRC_URI = "${GIT_URL};branch=${BRANCH};protocol=git;nocheckout=1"
