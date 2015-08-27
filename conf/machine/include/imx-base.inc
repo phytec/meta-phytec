@@ -39,13 +39,6 @@ MACHINE_FIRMWARE ?= ""
 
 MACHINE_EXTRA_RRECOMMENDS += "${MACHINE_FIRMWARE}"
 
-# GStreamer 0.10 plugins
-MACHINE_GSTREAMER_PLUGIN ?= "gst-fsl-plugin"
-
-# GStreamer 1.0 plugins
-MACHINE_GSTREAMER_1_0_PLUGIN ?= ""
-MACHINE_GSTREAMER_1_0_PLUGIN_mx6 ?= "gstreamer1.0-plugins-imx-meta"
-
 # mx6 GPU libraries
 PREFERRED_PROVIDER_virtual/egl ?= "gpu-viv-bin-mx6q"
 PREFERRED_PROVIDER_virtual/libgles1 ?= "gpu-viv-bin-mx6q"
