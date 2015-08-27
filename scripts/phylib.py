@@ -200,9 +200,3 @@ class BoardSupportPackage(object):
             print 'Could not set MACHINE in local.conf'
             return False
         return True
-
-    def sanity_check_configuration(self):
-        if self.pdn != os.path.splitext(os.path.basename(self.xml))[0]:
-            print 'There is a misconfiguration in your Release!'
-            print 'The manifest.xml target:', self.xml
-            print 'does not have the PD number:', self.pdn, 'as filename.'
