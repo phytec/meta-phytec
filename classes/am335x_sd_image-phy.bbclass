@@ -202,6 +202,9 @@ populate_boot_part () {
 	SDIMG=$1
 	BOOTIMG=$2
 
+	# Delete the boot image to avoid trouble with the build cache
+	rm -f ${WORKDIR}/${BOOTIMG}
+
 	# Create a vfat image with boot files
 	BOOT_BLOCKS=$(LC_ALL=C parted -s ${SDIMG} unit b print | awk '/ 1 / { print substr($4, 1, length($4 -1)) / 512 /2 }')
 	mkfs.vfat -n "${BOOTDD_VOLUME_ID}" -S 512 -C ${WORKDIR}/${BOOTIMG} $BOOT_BLOCKS
