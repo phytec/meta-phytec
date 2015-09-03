@@ -109,6 +109,8 @@ FATPAYLOAD ?= ""
 
 # Copy additional images to the vfat partition
 FATPAYLOAD_IMG ?= "${DEPLOY_DIR_IMAGE}/${IMAGE_LINK_NAME}.ubifs"
+IMAGE_TYPEDEP_sdcard += "ubifs"
+IMAGE_TYPEDEP_emmc += "ubifs"
 
 IMAGEDATESTAMP = "${@time.strftime('%Y.%m.%d',time.gmtime())}"
 
