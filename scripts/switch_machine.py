@@ -7,6 +7,16 @@ import sys
 import argparse
 from phylib import *
 
+def get_soc_of_machine(machine_name):
+    """Heuristic to get SoC of machine. Maybe add a field in machine
+       configuration instead."""
+
+    if "imx6" in machine_name.lower():
+        return "imx6"
+    else:
+        # should also match "beagleboneblack-1.conf"
+        return "am335x"
+
 
 class BSP_Switcher(BoardSupportPackage):
     """This class extends the bsp with functionality to select one of the
@@ -24,8 +34,15 @@ class BSP_Switcher(BoardSupportPackage):
         # [hide] if requested.
         machines = []
         for machine, data in self.src.machines.items():
-            if show_all or not "[hide]" in data["description"].lower():
-                machines.append(machine)
+            if not show_all:
+                # If show_all is passed as an argument, show all machines.
+                # Otherwise filter hidding machines and machines from other
+                # socs.
+                if "[hide]" in data["description"].lower():
+                    continue
+                if self.soc != "UNASSIGNED" and not self.soc in get_soc_of_machine(machine):
+                    continue
+            machines.append(machine)
 
         machines.sort()
         max_len_machines = max(len(machine) for machine in machines)
