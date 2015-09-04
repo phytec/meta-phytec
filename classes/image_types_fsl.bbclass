@@ -158,10 +158,18 @@ copy_kernel_device_trees () {
 		# Create README
 		README=${WORKDIR}/README.sdcard.txt
 		cat > ${README} <<EOF
-The file oftree contains the device tree '${DEVICETREE_DEFAULT}',
-because it was the first element in yocto variable KERNEL_DEVICETREE. To change
-the default device tree, reorder the device trees in variable KERNEL_DEVICETREE
-in your yocto machine configuration.
+This directory maybe contains multiple device tree files (suffix dtb).  So a
+single sd-card image can be used on multiple board configurations.
+
+By default the device tree in the file 'oftree' is loaded. The file is a plain
+copy of the device tree '${DEVICETREE_DEFAULT}'.  If you want to use another
+device tree, either rename the file to 'oftree' or change the variable
+'global.bootm.oftree' in the barebox environment file '/env/boot/mmc' (Don't
+forget to execute 'saveenv').
+
+If you want to change the default device tree for the sd-card in the yocto
+image creation process, place the default device tree at the beginning of the
+variable KERNEL_DEVICETREE in the machine configuration.
 EOF
 		mcopy -i ${BOOT_IMAGE} -s ${README} ::/README.txt
 	fi
