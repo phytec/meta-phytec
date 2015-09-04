@@ -160,6 +160,16 @@ comment out the line
 
 the debug settings, like setting an empty root password, will not be applied.
 
+The emmc is similar to the sdcard image. Copy the emmc image to your sdcard:
+
+ sudo dd if=phytec-headless-image-<MACHINE>.emmc of=/dev/<your_device> bs=1MB
+
+Boot the kernel from the sdcard and copy the whole content to the emmc deivce:
+
+ dd if=/dev/mmcblk<sdcard_number> of=/dev/mmcblk<emmc_number>
+
+Emmc devices are currently only supported by am335x modules.
+
 ============
 Common tasks
 ============

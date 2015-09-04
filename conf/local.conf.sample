@@ -17,6 +17,7 @@ DISTRO ?= "yogurt"
 IMAGE_FSTYPES += "sdcard"
 IMAGE_FSTYPES += "tar.gz"
 IMAGE_FSTYPES += "ubifs"
+IMAGE_FSTYPES_append_ti33x = " emmc"
 DEPLOY_DIR = "${TOPDIR}/deploy"
 
 # The default package class of the distro yogurt is 'package_ipk'. The first
