@@ -42,7 +42,7 @@ IMAGE_INSTALL_append = " omap3-sgx-modules"
 
 # rootfs images
 # register image class for usage
-IMAGE_CLASSES += "sdcard_image-phy"
+IMAGE_CLASSES += "am335x_sd_image-phy"
 # Use the expected value of the ubifs filesystem's volume name in the kernel
 UBI_VOLNAME = "root"
 # The biggest NANDs on current modules are 1GB. With current partition layout,
