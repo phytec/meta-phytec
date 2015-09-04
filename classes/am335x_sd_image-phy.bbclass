@@ -50,6 +50,7 @@ IMAGE_DEPENDS_sdcard = " \
     e2fsprogs-native \
     virtual/kernel:do_deploy \
     virtual/bootloader:do_deploy \
+    virtual/prebootloader:do_deploy \
 "
 
 # SD card image name
