@@ -1,6 +1,6 @@
 #!/bin/sh
 
-/env/config-expansions
+[ -e /env/config-expansions ] && /env/config-expansions
 
 global.bootm.image="/dev/nand0.kernel.bb"
 global.bootm.oftree="/dev/nand0.oftree.bb"

@@ -14,7 +14,7 @@ SRC_URI_append = " \
 "
 S = "${WORKDIR}/git"
 
-PR = "${INC_PR}.1"
+PR = "${INC_PR}.2"
 
 # NOTE: Keep version in filename in sync with commit id and barebox-ipl!
 SRCREV = "eb699b609649147f2706b2c86a9599275bdecbdf"

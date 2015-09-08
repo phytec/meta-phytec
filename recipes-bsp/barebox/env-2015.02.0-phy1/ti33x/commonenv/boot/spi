@@ -1,6 +1,6 @@
 #!/bin/sh
 
-/env/config-expansions
+[ -e /env/config-expansions ] && /env/config-expansions
 
 global.bootm.image="/dev/m25p0.kernel"
 global.bootm.oftree="/dev/m25p0.oftree"
