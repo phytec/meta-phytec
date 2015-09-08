@@ -20,7 +20,7 @@ SRC_URI_append_phyboard-mira-imx6-4 = " file://environment"
 
 S = "${WORKDIR}/git"
 
-PR = "${INC_PR}.2"
+PR = "${INC_PR}.3"
 
 # NOTE: Keep version in filename in sync with commit id!
 SRCREV = "acf66d87eeb4ec485617e2c3e1fc3c4b5719b853"
