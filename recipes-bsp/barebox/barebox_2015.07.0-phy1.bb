@@ -14,15 +14,12 @@ SRC_URI_append = " \
     file://no-blspec.cfg \
     file://md5sum.cfg \
     file://commonenv \
+    file://environment \
 "
-SRC_URI_append_phyflex-imx6-3 = " file://environment"
-SRC_URI_append_phyflex-imx6-4 = " file://environment"
-SRC_URI_append_phyboard-mira-imx6-3 = " file://environment"
-SRC_URI_append_phyboard-mira-imx6-4 = " file://environment"
 
 S = "${WORKDIR}/git"
 
-PR = "${INC_PR}.3"
+PR = "${INC_PR}.4"
 
 # NOTE: Keep version in filename in sync with commit id!
 SRCREV = "acf66d87eeb4ec485617e2c3e1fc3c4b5719b853"
