@@ -8,9 +8,9 @@ GIT_URL = "git://git.phytec.de/barebox"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 S = "${WORKDIR}/git"
 
-PR = "${INC_PR}.1"
+PR = "${INC_PR}.0"
 
-SRCREV = "eb699b609649147f2706b2c86a9599275bdecbdf"
+SRCREV = "d402a392053daacb7cda698078e0b417425571d2"
 
 SRC_URI_append = " file://noafiboard.cfg"
 
