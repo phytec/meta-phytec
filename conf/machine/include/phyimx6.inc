@@ -7,7 +7,6 @@ SOC_FAMILY = "mx6"
 
 #Bootloader
 PREFERRED_PROVIDER_virtual/bootloader ?= "barebox"
-IMAGE_BOOTLOADER ?= "barebox"
 BAREBOX_DEFAULT_DEFCONFIG = "imx_v7_defconfig"
 
 # Kernel 

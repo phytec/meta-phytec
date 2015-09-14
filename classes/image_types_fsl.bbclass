@@ -17,7 +17,7 @@
 
 inherit image_types
 
-IMAGE_BOOTLOADER ?= "u-boot"
+PREFERRED_PROVIDER_virtual/bootloader ??= "u-boot"
 
 # Default type of rootfs filesystem.
 SDCARD_ROOTFS_TYPE ?= "ext4"
@@ -109,7 +109,8 @@ IMAGE_DEPENDS_sdcard = "parted-native:do_populate_sysroot \
                         dosfstools-native:do_populate_sysroot \
                         mtools-native:do_populate_sysroot \
                         virtual/kernel:do_deploy \
-                        ${@d.getVar('IMAGE_BOOTLOADER', True) and d.getVar('IMAGE_BOOTLOADER', True) + ':do_deploy' or ''}"
+                        virtual/bootloader:do_deploy \
+"
 
 SDCARD = "${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.rootfs.sdcard"
 
@@ -171,8 +172,8 @@ EOF
 # with i.MX SoC family
 #
 # External variables needed:
-#   ${SDCARD_ROOTFS}    - the rootfs image to incorporate
-#   ${IMAGE_BOOTLOADER} - bootloader to use {u-boot, barebox}
+#   ${SDCARD_ROOTFS}                         - the rootfs image to incorporate
+#   ${PREFERRED_PROVIDER_virtual/bootloader} - bootloader to use {u-boot, barebox}
 #
 # The disk layout used is:
 #
@@ -199,7 +200,7 @@ generate_imx_sdcard () {
 	parted ${SDCARD} print
 
 	# Burn bootloader
-	case "${IMAGE_BOOTLOADER}" in
+	case "${PREFERRED_PROVIDER_virtual/bootloader}" in
 		imx-bootlets)
 		bberror "The imx-bootlets is not supported for i.MX based machines"
 		exit 1
@@ -219,7 +220,7 @@ generate_imx_sdcard () {
 		"")
 		;;
 		*)
-		bberror "Unknown IMAGE_BOOTLOADER value"
+		bberror "Unknown PREFERRED_PROVIDER_virtual/bootloader value"
 		exit 1
 		;;
 	esac
@@ -252,13 +253,13 @@ generate_imx_sdcard () {
 #
 # External variables needed:
 #   ${SDCARD_ROOTFS}    - the rootfs image to incorporate
-#   ${IMAGE_BOOTLOADER} - bootloader to use {imx-bootlets, u-boot}
+#   ${PREFERRED_PROVIDER_virtual/bootloader} - bootloader to use {imx-bootlets, u-boot}
 #
 generate_mxs_sdcard () {
 	# Create partition table
 	parted -s ${SDCARD} mklabel msdos
 
-	case "${IMAGE_BOOTLOADER}" in
+	case "${PREFERRED_PROVIDER_virtual/bootloader}" in
 		imx-bootlets)
 		# The disk layout used is:
 		#
@@ -335,7 +336,7 @@ generate_mxs_sdcard () {
 #		dd if=${DEPLOY_DIR_IMAGE}/bareboxenv-${MACHINE}.bin of=${SDCARD} conv=notrunc seek=$(expr ${IMAGE_ROOTFS_ALIGNMENT} \+ ${BOOT_SPACE_ALIGNED} - ${BAREBOX_ENV_SPACE}) bs=1024
 		;;
 		*)
-		bberror "Unknown IMAGE_BOOTLOADER value"
+		bberror "Unknown PREFERRED_PROVIDER_virtual/bootloader value"
 		exit 1
 		;;
 	esac
