@@ -9,12 +9,13 @@ GIT_URL = "git://git.phytec.de/${PN}"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 SRC_URI_append = " \
     file://commonenv \
+    file://boardenv \
     file://machineenv \
     file://targettools.cfg \
 "
 S = "${WORKDIR}/git"
 
-PR = "${INC_PR}.1"
+PR = "${INC_PR}.2"
 
 # NOTE: Keep version in filename in sync with commit id and barebox-ipl!
 SRCREV = "d402a392053daacb7cda698078e0b417425571d2"

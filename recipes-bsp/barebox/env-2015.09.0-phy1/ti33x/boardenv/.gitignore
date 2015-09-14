@@ -1,0 +1,5 @@
+# this is a dummy supressing warnings for boards not using the barebox recipe
+# Ignore everything in this directory
+*
+# Except this file
+!.gitignore
