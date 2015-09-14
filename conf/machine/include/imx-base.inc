@@ -18,12 +18,10 @@ PREFERRED_PROVIDER_virtual/xserver = "xserver-xorg"
 MACHINE_EXTRA_RRECOMMENDS = "kernel-modules"
 
 # Float-Point setting
-DEFAULTTUNE_mx6 ?= "cortexa9hf-neon"
+DEFAULTTUNE ?= "cortexa9hf-neon"
 
 # Sub-architecture support
-MACHINE_SOCARCH ?= ""
-MACHINE_SOCARCH_mx6q = "${TUNE_PKGARCH}-mx6qdl"
-MACHINE_SOCARCH_mx6dl = "${TUNE_PKGARCH}-mx6qdl"
+MACHINE_SOCARCH = "${TUNE_PKGARCH}-mx6qdl"
 PACKAGE_EXTRA_ARCHS_append = " ${MACHINE_SOCARCH}"
 
 # Firmware
