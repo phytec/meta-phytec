@@ -54,7 +54,7 @@ BAREBOX_DEFAULT_ENV ?= ""
 
 # recipe private variables
 BAREBOX_COMMON_ENVDIR = "${WORKDIR}/commonenv"
-BAREBOX_ENVDIR = "${WORKDIR}/environment"
+BAREBOX_MACHINE_ENVDIR = "${WORKDIR}/machineenv"
 
 
 python do_prepare_configure_append() {
@@ -65,7 +65,7 @@ python do_prepare_configure_append() {
 
     # Add environment directories to .config if they exist
     env_dirs = ""
-    for env_dir in [".commonenv", ".environment"]:   # order is important!
+    for env_dir in [".commonenv", ".machineenv"]:   # order is important!
        if os.path.isdir(os.path.join(B, env_dir)):
            env_dirs += " " + env_dir
 
@@ -82,9 +82,9 @@ python do_prepare_configure_append() {
 python do_prepare_env() {
     import shutil, subprocess
     S = d.getVar('S', True)
-    env_dir = d.getVar('BAREBOX_ENVDIR', True)
+    machine_env_dir = d.getVar('BAREBOX_MACHINE_ENVDIR', True)
     common_env_dir = d.getVar('BAREBOX_COMMON_ENVDIR', True)
-    if not (os.path.isdir(common_env_dir) or os.path.isdir(env_dir)):
+    if not (os.path.isdir(common_env_dir) or os.path.isdir(machine_env_dir)):
         bb.note("No environment directory provided, using BAREBOX_DEFAULT_ENV")
         common_env_dir = d.getVar('BAREBOX_DEFAULT_ENV', True)
         if not common_env_dir:
@@ -93,9 +93,9 @@ python do_prepare_env() {
     if os.path.isdir(common_env_dir):
         bb.note("copying common environment to source directory")
         oe.path.copytree(common_env_dir, oe.path.join(S, '.commonenv'))
-    if os.path.isdir(env_dir):
-        bb.note("copying environment to source directory")
-        oe.path.copytree(env_dir, oe.path.join(S, '.environment'))
+    if os.path.isdir(machine_env_dir):
+        bb.note("copying machine environment to source directory")
+        oe.path.copytree(machine_env_dir, oe.path.join(S, '.machineenv'))
 
     # Install the script far into the barebox environment. It will only be
     # added, if you enable "debug-tweaks" in EXTRA_IMAGE_FEATURES in your
