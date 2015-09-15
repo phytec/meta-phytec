@@ -14,12 +14,13 @@ SRC_URI_append = " \
     file://no-blspec.cfg \
     file://md5sum.cfg \
     file://commonenv \
+    file://boardenv \
     file://machineenv \
 "
 
 S = "${WORKDIR}/git"
 
-PR = "${INC_PR}.5"
+PR = "${INC_PR}.6"
 
 # NOTE: Keep version in filename in sync with commit id!
 SRCREV = "acf66d87eeb4ec485617e2c3e1fc3c4b5719b853"
