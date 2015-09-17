@@ -108,17 +108,18 @@ SDIMG_emmc = "${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.rootfs.emmc"
 FATPAYLOAD ?= ""
 
 # Copy additional images to the vfat partition
-FATPAYLOAD_IMG ?= "${DEPLOY_DIR_IMAGE}/${IMAGE_LINK_NAME}.ubifs"
+FATPAYLOAD_IMG_emmc ?= ""
+FATPAYLOAD_IMG_sdcard ?= "${DEPLOY_DIR_IMAGE}/${IMAGE_LINK_NAME}.ubifs"
 IMAGE_TYPEDEP_sdcard += "ubifs"
-IMAGE_TYPEDEP_emmc += "ubifs"
+
 
 IMAGEDATESTAMP = "${@time.strftime('%Y.%m.%d',time.gmtime())}"
 
 IMAGE_CMD_sdcard () {
 
-	create_image ${SDIMG_sdcard}
+	create_image ${SDIMG_sdcard} "${FATPAYLOAD_IMG_sdcard}"
 
-	populate_boot_part ${SDIMG_sdcard} ${BOOTIMG_sdcard}
+	populate_boot_part ${SDIMG_sdcard} ${BOOTIMG_sdcard} "${FATPAYLOAD_IMG_sdcard}"
 
 	finish_image ${SDIMG_sdcard} ${BOOTIMG_sdcard}
 
@@ -130,9 +131,9 @@ IMAGE_CMD_sdcard () {
 
 IMAGE_CMD_emmc () {
 
-	create_image ${SDIMG_emmc}
+	create_image ${SDIMG_emmc} "${FATPAYLOAD_IMG_emmc}"
 
-	populate_boot_part ${SDIMG_emmc} ${BOOTIMG_emmc}
+	populate_boot_part ${SDIMG_emmc} ${BOOTIMG_emmc} "${FATPAYLOAD_IMG_emmc}"
 
 	finish_image ${SDIMG_emmc} ${BOOTIMG_emmc}
 
@@ -154,8 +155,9 @@ IMAGE_CMD_emmc () {
 create_image () {
 
 	SDIMG=$1
+	FATPAYLOAD_IMG="$2"
 
-	if [ -n ${FATPAYLOAD_IMG} ] ; then
+	if [ -n "${FATPAYLOAD_IMG}" ] ; then
 		# Caclulate size of aditional image in KiB
 		FATPAYLOAD_IMG_SIZE=$(expr $(stat -L -c%s "${FATPAYLOAD_IMG}") / 1024)
 	else
@@ -201,6 +203,7 @@ populate_boot_part () {
 
 	SDIMG=$1
 	BOOTIMG=$2
+	FATPAYLOAD_IMG="$3"
 
 	# Delete the boot image to avoid trouble with the build cache
 	rm -f ${WORKDIR}/${BOOTIMG}
@@ -227,7 +230,7 @@ populate_boot_part () {
 		done
 	fi
 
-	if [ -n ${FATPAYLOAD_IMG} ] ; then
+	if [ -n "${FATPAYLOAD_IMG}" ] ; then
 		echo "Copying payload image into VFAT"
 		for entry in ${FATPAYLOAD_IMG} ; do
 				# add the || true to stop aborting on vfat issues like not supporting .~lock files
