@@ -32,8 +32,21 @@ DEPLOY_DIR = "${TOPDIR}/deploy"
 # filesystem:
 #IMAGE_ROOTFS_EXTRA_SPACE = "524288"
 
+# See http://www.yoctoproject.org/docs/1.8/ref-manual/ref-manual.html#ref-features-image
+#   "Through these variables, you can add several different predefined
+#    packages such as development utilities or packages with debug information
+#    needed to investigate application problems or profile applications
+EXTRA_IMAGE_FEATURES = ""
+# - "Makes an image suitable for development (e.g. allows root logins without
+#    passwords and enables post-installation logging)"
+EXTRA_IMAGE_FEATURES += "debug-tweaks"
+# - "Installs debug symbol packages for all packages installed in a given
+#    image."
+#EXTRA_IMAGE_FEATURES += "dbg-pkgs"
+# - "Installs debugging tools such as strace and gdb."
+#EXTRA_IMAGE_FEATURES += "tools-debug"
+
 #SDKMACHINE ?= "x86_64"
-EXTRA_IMAGE_FEATURES = "debug-tweaks"
 
 OE_TERMINAL = "auto"
 PATCHRESOLVE = "noop"
