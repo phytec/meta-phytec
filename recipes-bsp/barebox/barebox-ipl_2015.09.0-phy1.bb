@@ -22,6 +22,8 @@ COMPATIBLE_MACHINE .= "|phycore-am335x-1"
 SRC_URI_append_phycore-am335x-1 = " file://netboot.cfg"
 COMPATIBLE_MACHINE .= "|phycore-am335x-2"
 SRC_URI_append_phycore-am335x-2 = " file://netboot.cfg"
+COMPATIBLE_MACHINE .= "|phycore-am335x-3"
+SRC_URI_append_phycore-am335x-3 = " file://netboot.cfg"
 COMPATIBLE_MACHINE .= "|phyflex-am335x-1"
 
 do_deploy_append () {
