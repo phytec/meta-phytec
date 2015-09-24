@@ -1,2 +1,14 @@
 #!/bin/sh
 . /env/expansions/am335x-phytec-lcd-018-pba-b-01
+
+#7" display
+#of_display_timings -S /panel/display-timings/ETM0700G0DH6
+
+#5.7" display
+#of_display_timings -S /panel/display-timings/ETMV570G2DHU
+
+#4.3" display
+#of_display_timings -S /panel/display-timings/ETM0430G0DH6
+
+#3.5" display
+#of_display_timings -S /panel/display-timings/ETM0350G0DH6
