@@ -1,5 +1,10 @@
 #!/bin/sh
+#use this expansion when a capacitive touchscreen is connected
 . /env/expansions/am335x-phytec-lcd-018-peb-av-02
+
+#use this expansion when a resisitive touchscreen is connected
+#. /env/expansions/am335x-phytec-lcd-018-peb-av-02-res
+
 . /env/expansions/am335x-wega-peb-eval-01
 
 #7" display

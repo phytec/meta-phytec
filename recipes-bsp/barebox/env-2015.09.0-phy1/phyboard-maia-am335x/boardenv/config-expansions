@@ -1,5 +1,9 @@
 #!/bin/sh
+#use this expansion when a capacitive touchscreen is connected
 . /env/expansions/am335x-phytec-lcd-018-pba-c-01
+
+#use this expansion when a resisitive touchscreen is connected
+#. /env/expansions/am335x-phytec-lcd-018-pba-c-01-res
 
 #7" display
 #of_display_timings -S /panel/display-timings/ETM0700G0DH6
