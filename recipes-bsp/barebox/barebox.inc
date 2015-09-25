@@ -76,8 +76,8 @@ python do_prepare_configure_append() {
 
 }
 
-# its possible to give two environment folders to barebox: commonenv and
-# environment, if an environment directory is provided, use it
+# its possible to give three environment folders to barebox: commonenv,
+# boardenv and machineenv.
 python do_prepare_env() {
     import shutil, subprocess
     S = d.getVar('S', True)
