@@ -29,7 +29,7 @@ inherit kernel-arch cml1 deploy
 inherit kconfig-prepare-configure
 
 # Increase INC_PR everytime the include file is changed.
-INC_PR = "r2"
+INC_PR = "r3"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 # verbose build 0/1
@@ -49,8 +49,6 @@ BAREBOX_IMAGE_BASE_NAME ?= "barebox-${MACHINE}-${PKGV}-${PKGR}-${DATETIME}"
 BAREBOX_IMAGE_BASE_NAME[vardepsexclude] += "DATETIME"
 BAREBOX_BIN_SYMLINK ?= "barebox.bin"
 BAREBOX_DEFAULT_DEFCONFIG ?= ""
-# barebox environment
-BAREBOX_DEFAULT_ENV ?= ""
 
 # recipe private variables
 BAREBOX_COMMON_ENVDIR = "${WORKDIR}/commonenv"
@@ -86,12 +84,6 @@ python do_prepare_env() {
     machine_env_dir = d.getVar('BAREBOX_MACHINE_ENVDIR', True)
     board_env_dir = d.getVar('BAREBOX_BOARD_ENVDIR', True)
     common_env_dir = d.getVar('BAREBOX_COMMON_ENVDIR', True)
-    if not (os.path.isdir(common_env_dir) or os.path.isdir(board_env_dir) or os.path.isdir(machine_env_dir)):
-        bb.note("No environment directory provided, using BAREBOX_DEFAULT_ENV")
-        common_env_dir = d.getVar('BAREBOX_DEFAULT_ENV', True)
-        if not common_env_dir:
-            bb.note("no BAREBOX_DEFAULT_ENV provided, creating empty default")
-            bb.utils.mkdirhier(os.path.join(S, '.commonenv'))
     if os.path.isdir(common_env_dir):
         bb.note("copying common environment to source directory")
         oe.path.copytree(common_env_dir, oe.path.join(S, '.commonenv'))
