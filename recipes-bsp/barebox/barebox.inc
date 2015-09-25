@@ -65,7 +65,7 @@ python do_prepare_configure_append() {
     # Add environment directories to .config if they exist
     env_dirs = ""
     for env_dir in [".commonenv", ".boardenv", ".machineenv"]:   # order is important!
-       if os.path.isdir(os.path.join(B, env_dir)):
+       if os.path.isdir(os.path.join(S, env_dir)):
            env_dirs += " " + env_dir
 
     if env_dirs.strip() != "":
