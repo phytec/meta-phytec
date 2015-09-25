@@ -99,9 +99,9 @@ python do_prepare_env() {
     # local.conf.
     workdir_far_env_bin = os.path.join("${WORKDIR}", "far.env.bin")
     if os.path.isfile(workdir_far_env_bin):
-        bb.utils.mkdirhier(os.path.join(S, ".environment/bin"))
+        bb.utils.mkdirhier(os.path.join(S, ".commonenv/bin"))
         shutil.copyfile(workdir_far_env_bin,
-                        os.path.join(S, ".environment/bin", "far"))
+                        os.path.join(S, ".commonenv/bin", "far"))
 }
 addtask prepare_env after do_patch before do_prepare_configure
 
