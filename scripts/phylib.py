@@ -127,10 +127,6 @@ class Sourcecode(object):
                 break
         self.machines[machine]['description'] = desc
 
-    def get_machines_by_property(self, prop, value):
-        machines = sorted(self.machines)
-        return filter(lambda x: self.machines[x][prop] == value, machines)
-
 
 class BoardSupportPackage(object):
     def __init__(self):
