@@ -36,7 +36,7 @@ MODULE_TARBALL_DEPLOY = "0"
 # per default
 # RDEPENDS_kernel-modules_append = " am33x-cm3"
 # SGX GPL Kernel Modules
-IMAGE_INSTALL_append = " omap3-sgx-modules"
+IMAGE_INSTALL_append = " ${@bb.utils.contains("MACHINE_FEATURES", "sgx", "omap3-sgx-modules", "",d)}"
 
 # rootfs images
 # register image class for usage
