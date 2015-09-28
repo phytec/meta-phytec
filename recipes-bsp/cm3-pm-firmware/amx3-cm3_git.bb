@@ -21,7 +21,7 @@ do_compile() {
 
 do_install() {
 	install -d ${D}${base_libdir}/firmware
-	install -m 0644 bin/am335x-pm-firmware.elf ${D}${base_libdir}/firmware/
+	install -m 0644 bin/am335x-pm-firmware.bin ${D}${base_libdir}/firmware/
 	install -m 0644 bin/*-scale-data.bin ${D}${base_libdir}/firmware/
 }
 
