@@ -31,7 +31,8 @@ LIC_FILES_CHKSUM[vardepsexclude] += "FSL_EULA_FILE"
 REQUIRED_DISTRO_FEATURES = "opengl"
 
 # We don't provide virtual/libgl yet.
-PROVIDES += "virtual/libgles2 virtual/egl virtual/libgles1"
+# NOTE: The virtual provider "virtual/opencl" is non-standard.
+PROVIDES += "virtual/libgles2 virtual/egl virtual/libgles1 virtual/opencl"
 
 PR = "r3"
 
@@ -87,7 +88,7 @@ python __anonymous() {
 
     for p in (("libegl", "libegl1"), ("libgl", "libgl1"),
               ("libgles1", "libglesv1-cm1"), ("libgles2", "libglesv2-2"),
-              ("libgles3",)):
+              ("libgles3",), ("libopencl",)):
         fullp = p[0] + "-mx6"
         pkgs = " ".join(p)
         d.setVar("DEBIAN_NOAUTONAME_" + fullp, "1")
