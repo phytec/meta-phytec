@@ -34,7 +34,7 @@ MODULE_TARBALL_DEPLOY = "0"
 # powermanagement firmware for the on-die Cortex M3
 # the newer version makes a lot of problems dont include
 # per default
-# RDEPENDS_kernel-modules_append = " am33x-cm3"
+RDEPENDS_kernel-modules_append = " amx3-cm3"
 # SGX GPL Kernel Modules
 IMAGE_INSTALL_append = " ${@bb.utils.contains("MACHINE_FEATURES", "sgx", "omap3-sgx-modules", "",d)}"
 
