@@ -1,0 +1,8 @@
+#!/bin/sh
+
+global linux.bootargs.dyn.video
+
+. /env/expansions/am335x-wega-peb-av-01
+. /env/expansions/am335x-wega-peb-eval-01
+
+global.linux.bootargs.dyn.video="video=HDMI-A-1:1024x768-32@60"
