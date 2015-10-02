@@ -62,3 +62,5 @@ do_install() {
                  O="${STAGING_KERNEL_BUILDDIR}" \
                  modules_install
 }
+
+COMPATIBLE_MACHINE = "ti33x"
