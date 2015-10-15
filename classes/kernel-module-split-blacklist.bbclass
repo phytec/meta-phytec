@@ -21,16 +21,18 @@ KERNEL_MODULES_RDEPENDS_BLACKLIST ??= ""
 # <poky>/meta/classes/kernel-module-split.bbclass.
 python split_kernel_module_packages_append () {
     # Get all modules which shouldn't be in RDEPENDS.
-    blacklisted_modules = set(s.strip() for s in
-                              d.getVar("KERNEL_MODULES_RDEPENDS_BLACKLIST", True).split(' '))
+    if modules:
+        blacklisted_modules = set(s.strip() for s in
+                                  d.getVar("KERNEL_MODULES_RDEPENDS_BLACKLIST", True).split(' '))
 
-    # Remove packages in set blacklisted_modules from variable
-    #    RDEPENDS_${KERNEL_MODULES_META_PACKAGE}.
-    # After that the package 'kernel-modules' doesn't pull these packages onto
-    # the rootfs automatically.
-    kernel_modules = d.getVar("KERNEL_MODULES_META_PACKAGE", True)
-    rdepends = d.getVar("RDEPENDS_%s" % (kernel_modules), True)
-    rdepends = [pkg for pkg in rdepends.split(" ") if pkg not in blacklisted_modules]
-    d.setVar("RDEPENDS_%s" % (kernel_modules), ' '.join(rdepends))
+        # Remove packages in set blacklisted_modules from variable
+        #    RDEPENDS_${KERNEL_MODULES_META_PACKAGE}.
+        # After that the package 'kernel-modules' doesn't pull these packages onto
+        # the rootfs automatically.
+        kernel_modules = d.getVar("KERNEL_MODULES_META_PACKAGE", True)
+        rdepends = d.getVar("RDEPENDS_%s" % (kernel_modules,), True)
+        if rdepends is not None:
+            rdepends = [pkg for pkg in rdepends.split(" ") if pkg not in blacklisted_modules]
+            d.setVar("RDEPENDS_%s" % (kernel_modules), ' '.join(rdepends))
 
 }
