@@ -1,0 +1,26 @@
+From 96c8165d5f9a63baee148d2ec5d45ae6d5e658d6 Mon Sep 17 00:00:00 2001
+From: Christian Hemp <c.hemp@phytec.de>
+Date: Mon, 24 Aug 2015 14:34:20 +0200
+Subject: [PATCH] dts:imx6qdl: replace flash with m25p
+
+Signed-off-by: Christian Hemp <c.hemp@phytec.de>
+---
+ arch/arm/boot/dts/imx6qdl-phytec-pfla02.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/boot/dts/imx6qdl-phytec-pfla02.dtsi b/arch/arm/boot/dts/imx6qdl-phytec-pfla02.dtsi
+index 73d3c15..009c4dd 100644
+--- a/arch/arm/boot/dts/imx6qdl-phytec-pfla02.dtsi
++++ b/arch/arm/boot/dts/imx6qdl-phytec-pfla02.dtsi
+@@ -105,7 +105,7 @@
+ 	fsl,spi-num-chipselects = <1>;
+ 	cs-gpios = <&gpio4 24 0>;
+ 
+-	flash@0 {
++	flash: m25p80@0 {
+ 		compatible = "m25p80";
+ 		spi-max-frequency = <20000000>;
+ 		reg = <0>;
+-- 
+1.9.1
+
