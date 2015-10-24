@@ -1,6 +1,26 @@
 DEPENDS += "lzop-native lz4-native"
 PATCHTOOL = "git"
 
+# Copy .dts iand .dtsi from SRC_URI to the kernel boot/dts path
+# This should go to poky/meta/recipes-kernel/linux/linux-dtb.inc
+# returns all the elements from the src uri that are .dts or .dtsi files
+def find_dtss(d):
+    sources=src_patches(d, True)
+    dtss_list=[]
+    for s in sources:
+        base, ext = os.path.splitext(s)
+        if ext in [".dtsi", ".dts"]:
+            dtss_list.append(s)
+
+    return dtss_list
+
+do_patch_append () {
+    DTSS="${@" ".join(find_dtss(d))}"
+    for DTS in ${DTSS}; do
+        cp ${DTS} ${S}/arch/${ARCH}/boot/dts/
+    done
+}
+
 # this is a workaround for missing upstream patch [kernel.bbclass: Fix
 # so_shared_workdir task ordering
 do_compile_kernelmodules_append(){
