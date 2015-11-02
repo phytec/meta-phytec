@@ -199,6 +199,41 @@ finish_image () {
 
 }
 
+# Copy all dtb files in KERNEL_DEVICETREE onto the sdcard image and use the
+# first device tree in KERNEL_DEVICETREE as the 'oftree' file which will be
+# used as the default device tree by the bootloader.
+copy_kernel_device_trees () {
+	BOOT_IMAGE=$1
+
+	if test -n "${KERNEL_DEVICETREE}"; then
+		DEVICETREE_DEFAULT=""
+		for DTS_FILE in ${KERNEL_DEVICETREE}; do
+			[ -n "${DEVICETREE_DEFAULT}"] && DEVICETREE_DEFAULT="${DTS_FILE}"
+			mcopy -i ${BOOT_IMAGE} -s ${DEPLOY_DIR_IMAGE}/${KERNEL_IMAGETYPE}-${DTS_FILE} ::${DTS_FILE}
+		done
+
+		mcopy -i ${BOOT_IMAGE} -s ${DEPLOY_DIR_IMAGE}/${KERNEL_IMAGETYPE}-${DEVICETREE_DEFAULT} ::oftree
+
+		# Create README
+		README=${WORKDIR}/README.sdcard.txt
+		cat > ${README} <<EOF
+This directory maybe contains multiple device tree files (suffix dtb).  So a
+single sd-card image can be used on multiple board configurations.
+
+By default the device tree in the file 'oftree' is loaded. The file is a plain
+copy of the device tree '${DEVICETREE_DEFAULT}'.  If you want to use another
+device tree, either rename the file to 'oftree' or change the variable
+'global.bootm.oftree' in the barebox environment file '/env/boot/mmc' (Don't
+forget to execute 'saveenv').
+
+If you want to change the default device tree for the sd-card in the yocto
+image creation process, place the default device tree at the beginning of the
+variable KERNEL_DEVICETREE in the machine configuration.
+EOF
+		mcopy -i ${BOOT_IMAGE} -s ${README} ::/README.txt
+	fi
+}
+
 populate_boot_part () {
 
 	SDIMG=$1
@@ -212,7 +247,8 @@ populate_boot_part () {
 	BOOT_BLOCKS=$(LC_ALL=C parted -s ${SDIMG} unit b print | awk '/ 1 / { print substr($4, 1, length($4 -1)) / 512 /2 }')
 	mkfs.vfat -n "${BOOTDD_VOLUME_ID}" -S 512 -C ${WORKDIR}/${BOOTIMG} $BOOT_BLOCKS
 	mcopy -i ${WORKDIR}/${BOOTIMG} -s ${DEPLOY_DIR_IMAGE}/${KERNEL_IMAGETYPE}-${MACHINE}.bin ::linuximage
-	mcopy -i ${WORKDIR}/${BOOTIMG} -s ${DEPLOY_DIR_IMAGE}/${KERNEL_IMAGETYPE}-${KERNEL_DEVICETREE} ::oftree
+
+	copy_kernel_device_trees "${WORKDIR}/${BOOTIMG}"
 
 	case "${PREFERRED_PROVIDER_virtual/bootloader}" in
 	"barebox")
