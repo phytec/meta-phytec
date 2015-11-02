@@ -37,6 +37,7 @@ SRC_URI_append_phycore-am335x-7 = " file://netboot.cfg"
 COMPATIBLE_MACHINE .= "|phyflex-am335x-1"
 COMPATIBLE_MACHINE .= "|phyflex-am335x-2"
 COMPATIBLE_MACHINE .= "|phyflex-am335x-3"
+COMPATIBLE_MACHINE .= "|phyflex-am335x-4"
 
 do_deploy_append () {
     # deploy spi boot images
