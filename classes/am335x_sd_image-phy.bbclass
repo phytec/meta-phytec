@@ -1,10 +1,8 @@
-inherit image_types
-# Copyright (C) 2014 Jan weitzel <j.weitzel@phytec.de> \
-# # PHYTEC Messtechnik GmbH
+# Copyright (C) 2014, 2015 PHYTEC Messtechnik GmbH
+# Jan weitzel <j.weitzel@phytec.de>
+# Daniel Schultz <d.schultz@phytec.de>
 # based on meta-raspberrypi/classes/sdcard_image-rpi.bbclass
 #
-# (C) Copyright 2015 Phytec Messtechnik GmbH
-# Author: Daniel Schultz <d.schultz@phytec.de>
 #
 # Create an image that can by written onto a SD card using dd.
 #
@@ -50,6 +48,8 @@ inherit image_types
 # |     131KiB MLO
 # 0 MLO + partition table
 #
+
+inherit image_types
 
 # This image depends on the rootfs image
 IMAGE_TYPEDEP_sdcard = "${SDIMG_ROOTFS_TYPE}"
