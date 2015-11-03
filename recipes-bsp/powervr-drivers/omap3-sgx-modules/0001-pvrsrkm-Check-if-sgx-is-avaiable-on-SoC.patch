@@ -1,0 +1,58 @@
+From de360406a86c8b7dddbdfadf35e86a7f464c0eb9 Mon Sep 17 00:00:00 2001
+From: Teresa Remmet <t.remmet@phytec.de>
+Date: Tue, 3 Nov 2015 13:03:44 +0100
+Subject: [PATCH] pvrsrkm: Check if sgx is avaiable on SoC
+
+Not all AM335x SoCs do have a sgx unit. Check first if one is avaiable.
+
+Based on work of:
+Christoph Fritz <chf.fritz@googlemail.com>
+
+Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
+---
+ services4/srvkm/env/linux/module.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
+
+diff --git a/services4/srvkm/env/linux/module.c b/services4/srvkm/env/linux/module.c
+index 90e16ce..3683c12 100644
+--- a/services4/srvkm/env/linux/module.c
++++ b/services4/srvkm/env/linux/module.c
+@@ -1027,7 +1027,35 @@ static int __init PVRCore_Init(void)
+ 	struct device *psDev;
+ #endif
+ 
++	u32 r;
++	void __iomem *omap2_ctrl_base;
++	const u32 iobase_ctrl_module_feat = 0x44E10604;
++	const u32 sgx_shift = 29;
++
++	if (!request_mem_region(iobase_ctrl_module_feat, 0x4, "ctrl-test")) {
++		printk(KERN_INFO "request_mem_region failed");
++		error = -EFAULT;
++		return error;
++	}
++
++	omap2_ctrl_base = ioremap(iobase_ctrl_module_feat, 0x4);
++	if (!omap2_ctrl_base) {
++		printk(KERN_INFO "ioremap failed");
++		release_mem_region(iobase_ctrl_module_feat, 0x4);
++		error = -EFAULT;
++		return error;
++	}
+ 
++	r = __raw_readl(omap2_ctrl_base);
++
++	iounmap(omap2_ctrl_base);
++	release_mem_region(iobase_ctrl_module_feat, 0x4);
++
++	if ((r & (1 << sgx_shift)) == 0) {
++		printk(KERN_ERR "No SGX on SoC found.\n");
++		error = -ENODEV;
++		return error;
++	}
+ 
+ #if !defined(SUPPORT_DRI_DRM)
+ 	/*
+-- 
+1.9.1
+

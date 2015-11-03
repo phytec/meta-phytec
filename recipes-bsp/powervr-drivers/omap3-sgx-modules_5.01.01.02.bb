@@ -31,7 +31,9 @@ python __anonymous() {
 
 BINFILE := "${BINFILE_HARDFP}"
 
+FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 SRC_URI = "http://software-dl.ti.com/dsps/dsps_public_sw/gfxsdk/${SGXPV}/exports/${BINFILE}"
+SRC_URI_append = " file://0001-pvrsrkm-Check-if-sgx-is-avaiable-on-SoC.patch"
 
 
 SRC_URI[md5sum] := "${MD5SUM_HARDFP}"
