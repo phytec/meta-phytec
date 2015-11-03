@@ -120,25 +120,6 @@ SDCARD_GENERATION_COMMAND_mx5 = "generate_imx_sdcard"
 SDCARD_GENERATION_COMMAND_mx6 = "generate_imx_sdcard"
 SDCARD_GENERATION_COMMAND_vf60 = "generate_imx_sdcard"
 
-# Copy a dtb file onto a sdcard image and optionally use a new name for it.
-copy_device_tree_file () {
-	BOOT_IMAGE=$1
-	DTS_FILE=$2
-	FILENAME=$3
-
-	DTS_BASE_NAME=`basename ${DTS_FILE} | awk -F "." '{print $1}'`
-
-	# Set default filename if not provided
-	[ -z "${FILENAME}" ] && FILENAME="${DTS_BASE_NAME}.dtb"
-
-	if [ -e "${KERNEL_IMAGETYPE}-${DTS_BASE_NAME}.dtb" ]; then
-		kernel_bin="`readlink ${KERNEL_IMAGETYPE}-${MACHINE}.bin`"
-		kernel_bin_for_dtb="`readlink ${KERNEL_IMAGETYPE}-${DTS_BASE_NAME}.dtb | sed "s,$DTS_BASE_NAME,${MACHINE},g;s,\.dtb$,.bin,g"`"
-		if [ $kernel_bin = $kernel_bin_for_dtb ]; then
-			mcopy -i ${BOOT_IMAGE} -s ${DEPLOY_DIR_IMAGE}/${KERNEL_IMAGETYPE}-${DTS_BASE_NAME}.dtb ::/${FILENAME}
-		fi
-	fi
-}
 
 # Copy all dtb files in KERNEL_DEVICETREE onto the sdcard image and use the
 # first device tree in KERNEL_DEVICETREE as the 'oftree' file which will be
@@ -150,10 +131,10 @@ copy_kernel_device_trees () {
 		DEVICETREE_DEFAULT=""
 		for DTS_FILE in ${KERNEL_DEVICETREE}; do
 			[ -n "${DEVICETREE_DEFAULT}"] && DEVICETREE_DEFAULT="${DTS_FILE}"
-			copy_device_tree_file ${BOOT_IMAGE} ${DTS_FILE}
+			mcopy -i ${BOOT_IMAGE} -s ${DEPLOY_DIR_IMAGE}/${KERNEL_IMAGETYPE}-${DTS_FILE} ::${DTS_FILE}
 		done
 
-		copy_device_tree_file ${BOOT_IMAGE} ${DEVICETREE_DEFAULT} "oftree"
+		mcopy -i ${BOOT_IMAGE} -s ${DEPLOY_DIR_IMAGE}/${KERNEL_IMAGETYPE}-${DEVICETREE_DEFAULT} ::oftree
 
 		# Create README
 		README=${WORKDIR}/README.sdcard.txt
