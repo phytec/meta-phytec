@@ -140,6 +140,7 @@ python do_savedefconfig() {
 
 }
 addtask savedefconfig after do_configure
+do_savedefconfig[nostamp] = "1"
 
 do_compile () {
 	unset CFLAGS LDFLAGS
