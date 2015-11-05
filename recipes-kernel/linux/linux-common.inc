@@ -1,6 +1,9 @@
 DEPENDS += "lzop-native lz4-native"
 PATCHTOOL = "git"
 
+# Overwrites task savedefconfig from kernel.bbclass
+inherit kconfig-savedefconfig
+
 # Copy .dts iand .dtsi from SRC_URI to the kernel boot/dts path
 # This should go to poky/meta/recipes-kernel/linux/linux-dtb.inc
 # returns all the elements from the src uri that are .dts or .dtsi files
