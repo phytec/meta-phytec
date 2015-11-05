@@ -29,7 +29,7 @@ inherit kernel-arch cml1 deploy
 inherit kconfig-prepare-configure
 
 # Increase INC_PR everytime the include file is changed.
-INC_PR = "r3"
+INC_PR = "r4"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 # verbose build 0/1
@@ -56,24 +56,21 @@ BAREBOX_MACHINE_ENVDIR = "${WORKDIR}/machineenv"
 BAREBOX_BOARD_ENVDIR = "${WORKDIR}/boardenv"
 
 
-python do_prepare_configure_append() {
-    localversion = d.getVar('BAREBOX_LOCALVERSION', True)
-    bb.note("Setting LOCALVERSION in .config to %s" % localversion)
-    cmd = 'kconfig-tweak --file %s --set-str LOCALVERSION "%s"' % (config, localversion)
-    subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
+do_prepare_configure_append() {
+    bbnote "Setting LOCALVERSION in .config to ${BAREBOX_LOCALVERSION}"
+    kconfig-tweak --file "${S}/.config" --set-str "LOCALVERSION" "${BAREBOX_LOCALVERSION}"
 
     # Add environment directories to .config if they exist
-    env_dirs = ""
-    for env_dir in [".commonenv", ".boardenv", ".machineenv"]:   # order is important!
-       if os.path.isdir(os.path.join(S, env_dir)):
-           env_dirs += " " + env_dir
+    env_dirs=""
+    for env_dir in .commonenv .boardenv .machineenv; do   # order is important!
+        if test -d "${S}/$env_dir"; then
+            env_dirs="$env_dirs $env_dir"
+        fi
+    done
 
-    if env_dirs.strip() != "":
-        ret = subprocess.call(["kconfig-tweak", "--file", config,
-                               "--set-str", "DEFAULT_ENVIRONMENT_PATH", env_dirs])
-        if ret != 0:
-            bb.error("Cannot set DEFAULT_ENVIRONMENT_PATH. kconfig-tweak exit code is %d." % (ret))
-
+    if test ! -z "$env_dirs"; then
+        kconfig-tweak --file "${S}/.config" --set-str "DEFAULT_ENVIRONMENT_PATH" "$env_dirs"
+    fi
 }
 
 # its possible to give three environment folders to barebox: commonenv,

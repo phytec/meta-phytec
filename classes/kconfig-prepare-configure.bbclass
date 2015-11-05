@@ -17,32 +17,31 @@ def find_sccs(d):
 
 
 # uses kern-tools-native to merge the config fragments
-python do_prepare_configure() {
-    import subprocess
-    workdir = d.getVar('WORKDIR', True)
-    B = d.getVar('B', True)
-    S = d.getVar('S', True)
-    defconfig = os.path.join(workdir , 'defconfig')
-    config = os.path.join(B, '.config')
+do_prepare_configure() {
+    defconfig="${WORKDIR}/defconfig"
+    config="${S}/.config"
 
-    # Setup .config from various sources
-    if os.path.isfile(defconfig):
-        bb.note("Use defconfig from SRC_URI")
-        bb.utils.copyfile(defconfig, config)
-    else:
-        bb.note("No defconfig file provided for the recipe")
-        if not os.path.isfile(config):
-            bb.note("recipe is not configured")
-            bb.build.exec_func("do_default_defconfig",d)
+    set -e
 
-    # Merge fragments into .config
-    fragments = find_sccs(d)
-    if len(fragments) > 0:
-        bb.note("combining kconfig fragments into .config")
-        cmd = '%s -m -O %s %s %s' % \
-              (os.path.join(S, "scripts/kconfig/merge_config.sh"),
-              B, config, ' '.join(map(str, fragments)))
-        subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
+    if test -f "$defconfig"; then
+	bbnote "Use defconfig from SRC_URI"
+	cp -f "$defconfig" "$config"
+    else
+	bbnote "No defconfig file provided for the recipe"
+	if test ! -f "$config"; then
+	    bbnote "recipe is not configured"
+	    do_default_defconfig
+	fi
+    fi
+
+    fragments="${@' '.join(find_sccs(d))}"
+    if test ! -z "$fragments"; then
+	bbnote "combining kconfig fragments into .config"
+	# Change directory to WORKDIR, because the fragments are located there
+	# and filenames in variable $fragments are not absolute.
+	# Use subshell to avoid changing the work directory of current shell.
+	(cd "${WORKDIR}" && ${S}/scripts/kconfig/merge_config.sh -m -O "${S}" "$config" $fragments)
+    fi
 
 }
 addtask prepare_configure after do_patch before do_configure
