@@ -7,16 +7,15 @@ OEROOT := "##OEROOT##"
 
 BBFILES ?= ""
 
-BBLAYERS  = "${OEROOT}/meta"
-BBLAYERS += "${OEROOT}/meta-yocto"
-BBLAYERS += "${OEROOT}/../meta-phytec"
-BBLAYERS += "${OEROOT}/../meta-yogurt"
-BBLAYERS += "${OEROOT}/../meta-openembedded/meta-oe"
-BBLAYERS += "${OEROOT}/../meta-openembedded/meta-networking"
-BBLAYERS += "${OEROOT}/../meta-openembedded/meta-python"
-BBLAYERS += "${OEROOT}/../meta-openembedded/meta-multimedia"
-#BBLAYERS += "${OEROOT}/../meta-openembedded/meta-systemd"
-#BBLAYERS += "${OEROOT}/../meta-openembedded/meta-gpe"
-#BBLAYERS += "${OEROOT}/../meta-openembedded/meta-gnome"
-BBLAYERS += "${OEROOT}/../meta-qt5"
-BBLAYERS += "${OEROOT}/../meta-openembedded/meta-ruby"
+BBLAYERS  = " \
+  ${OEROOT}/meta \
+  ${OEROOT}/meta-yocto \
+  ${OEROOT}/../meta-phytec \
+  ${OEROOT}/../meta-yogurt \
+  ${OEROOT}/../meta-openembedded/meta-oe \
+  ${OEROOT}/../meta-openembedded/meta-networking \
+  ${OEROOT}/../meta-openembedded/meta-python \
+  ${OEROOT}/../meta-openembedded/meta-multimedia \
+  ${OEROOT}/../meta-qt5 \
+  ${OEROOT}/../meta-openembedded/meta-ruby \
+"
