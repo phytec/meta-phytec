@@ -29,7 +29,7 @@ inherit kernel-arch cml1 deploy
 inherit kconfig-prepare-configure
 
 # Increase INC_PR everytime the include file is changed.
-INC_PR = "r4"
+INC_PR = "r5"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 # verbose build 0/1
@@ -56,7 +56,7 @@ BAREBOX_MACHINE_ENVDIR = "${WORKDIR}/machineenv"
 BAREBOX_BOARD_ENVDIR = "${WORKDIR}/boardenv"
 
 
-do_prepare_configure_append() {
+do_configure_append() {
     bbnote "Setting LOCALVERSION in .config to ${BAREBOX_LOCALVERSION}"
     kconfig-tweak --file "${S}/.config" --set-str "LOCALVERSION" "${BAREBOX_LOCALVERSION}"
 
@@ -100,7 +100,7 @@ python do_prepare_env() {
         shutil.copyfile(workdir_far_env_bin,
                         os.path.join(S, ".commonenv/bin", "far"))
 }
-addtask prepare_env after do_patch before do_prepare_configure
+addtask prepare_env after do_patch before do_configure
 
 do_default_defconfig () {
 	bbnote "generating .config for target ${BAREBOX_DEFAULT_DEFCONFIG}"
