@@ -4,7 +4,7 @@ require conf/machine/include/soc-family.inc
 DEFAULTTUNE ?= "cortexa8thf-neon"
 require conf/machine/include/tune-cortexa8.inc
 # List common SoC features
-MACHINE_FEATURES = "kernel26 usbgadget usbhost vfat ext2 screen alsa ethernet sgx can"
+MACHINE_FEATURES = "kernel26 usbgadget usbhost vfat ext2 screen alsa ethernet can"
 
 # Sub-architecture support adapted fom fsl-arm
 MACHINE_SOCARCH = "${TUNE_PKGARCH}-ti33x"
@@ -39,8 +39,6 @@ MODULE_TARBALL_DEPLOY = "0"
 # the newer version makes a lot of problems dont include
 # per default
 RDEPENDS_kernel-modules_append = " amx3-cm3"
-# SGX GPL Kernel Modules
-IMAGE_INSTALL_append = " ${@bb.utils.contains("MACHINE_FEATURES", "sgx", "omap3-sgx-modules", "",d)}"
 
 # rootfs images
 # register image class for usage
