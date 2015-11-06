@@ -6,6 +6,10 @@ require conf/machine/include/tune-cortexa8.inc
 # List common SoC features
 MACHINE_FEATURES = "kernel26 usbgadget usbhost vfat ext2 screen alsa ethernet sgx can"
 
+# Sub-architecture support adapted fom fsl-arm
+MACHINE_SOCARCH = "${TUNE_PKGARCH}-ti33x"
+PACKAGE_EXTRA_ARCHS_append = " ${MACHINE_SOCARCH}"
+
 # Bootloader
 PREFERRED_PROVIDER_virtual/bootloader ?= "barebox"
 PREFERRED_PROVIDER_virtual/prebootloader ?= "barebox-ipl"
