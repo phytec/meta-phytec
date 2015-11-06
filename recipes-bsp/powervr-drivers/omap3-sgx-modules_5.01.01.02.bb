@@ -12,6 +12,7 @@ inherit module
 
 MACHINE_KERNEL_PR_append = "b"
 PR = "${MACHINE_KERNEL_PR}"
+PACKAGE_ARCH = "${MACHINE_SOCARCH}"
 
 BINFILE_HARDFP = "Graphics_SDK_setuplinux_hardfp_${SGXPV}.bin"
 MD5SUM_HARDFP = "94bcb31ea7eb50df1dfa4037055b638e"
