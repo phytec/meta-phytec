@@ -5,6 +5,8 @@ LIC_FILES_CHKSUM = "file://TSPA.txt;md5=c0d5d9c1e38b41677144c4e24d6ddee1"
 
 INC_PR = "r38"
 
+PACKAGE_ARCH = "${MACHINE_SOCARCH}"
+
 COMPATIBLE_MACHINE = "ti33x"
 
 PVR_INIT ?= "pvrsrvinit"
