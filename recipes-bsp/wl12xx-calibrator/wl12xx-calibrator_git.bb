@@ -22,6 +22,7 @@ do_compile() {
 	oe_runmake all NLVER=3
 }
 
+SRC_URI_append = " file://tiwi-ble-fcc-etsi.ini"
 FILES_${PN} = "${datadir}/wl127x-inis/* \
 	${bindir}"
 
@@ -30,5 +31,5 @@ do_install() {
 	install -m 0755 calibrator ${D}${bindir}
 
 	install -d ${D}${datadir}/wl127x-inis
-	install -m 0644 hw/ini_files/127x/*.ini ${D}${datadir}/wl127x-inis
+	install -m 0644 ${WORKDIR}/tiwi-ble-fcc-etsi.ini ${D}${datadir}/wl127x-inis
 }
