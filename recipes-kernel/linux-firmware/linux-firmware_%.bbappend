@@ -1,3 +1,6 @@
+LICENSE_${PN}-wl12xx = "LICENSE.ti-connectivity"
+LICENSE_${PN}-wl18xx = "LICENSE.ti-connectivity"
+
 FILESEXTRAPATHS_prepend := "${THISDIR}/linux-firmware:"
 SRC_URI_append = " file://wl1271-nvs.bin"
 
