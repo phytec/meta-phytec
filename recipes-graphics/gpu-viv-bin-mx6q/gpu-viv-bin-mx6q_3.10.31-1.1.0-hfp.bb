@@ -65,12 +65,11 @@ PACKAGES += " \
 "
 
 # Skip package if it does not match the machine float-point type in use
-python __anonymous () {
-        is_machine_hardfp = base_contains("TUNE_FEATURES", "callconvention-hard", True, False, d)
-
-        if not is_machine_hardfp:
-                raise bb.parse.SkipPackage("Package Float-Point is not compatible with the machine")
-}
+# Binaries were compiled with (extracted from debugging symbols):
+#     GNU C 4.9.1 -march=armv7-a -mthumb-interwork -mfloat-abi=hard -mfpu=neon
+#          -mtune=cortex-a9 -mtls-dialect=gnu -g -g -O2 -feliminate-unused-debug-types
+inherit tune_features_check
+REQUIRED_TUNE_FEATURES = "armv7a cortexa9 neon callconvention-hard"
 
 
 # FIXME: The provided binary doesn't provide soname. If in future BSP
