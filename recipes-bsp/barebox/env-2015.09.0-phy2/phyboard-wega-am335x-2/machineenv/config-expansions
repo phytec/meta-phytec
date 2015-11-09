@@ -7,6 +7,8 @@
 
 . /env/expansions/am335x-wega-peb-eval-01
 
+#. /env/expansions/am335x-wlan
+
 #7" display
 #of_display_timings -S /panel/display-timings/ETM0700G0DH6
 
