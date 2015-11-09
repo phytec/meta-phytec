@@ -59,7 +59,7 @@ BAREBOX_BOARD_ENVDIR = "${WORKDIR}/boardenv"
 
 do_configure_append() {
     bbnote "Setting LOCALVERSION in .config to ${BAREBOX_LOCALVERSION}"
-    kconfig-tweak --file "${S}/.config" --set-str "LOCALVERSION" "${BAREBOX_LOCALVERSION}"
+    kconfig-tweak --file "${B}/.config" --set-str "LOCALVERSION" "${BAREBOX_LOCALVERSION}"
 
     # Add environment directories to .config if they exist
     env_dirs=""
@@ -70,7 +70,7 @@ do_configure_append() {
     done
 
     if test ! -z "$env_dirs"; then
-        kconfig-tweak --file "${S}/.config" --set-str "DEFAULT_ENVIRONMENT_PATH" "$env_dirs"
+        kconfig-tweak --file "${B}/.config" --set-str "DEFAULT_ENVIRONMENT_PATH" "$env_dirs"
     fi
 }
 
