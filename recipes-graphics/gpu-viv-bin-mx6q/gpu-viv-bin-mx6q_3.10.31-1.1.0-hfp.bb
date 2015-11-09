@@ -324,4 +324,5 @@ FILES_libvdk-mx6-dbg = "${libdir}/.debug/libVDK.so"
 RDEPENDS_libvdk-mx6 += "libegl-mx6"
 
 
+PACKAGE_ARCH = "${MACHINE_SOCARCH}"
 COMPATIBLE_MACHINE = "(mx6)"
