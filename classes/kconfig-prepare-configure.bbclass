@@ -20,7 +20,7 @@ DEPENDS += "kconfig-frontends-native"
 # uses kern-tools-native to merge the config fragments
 do_configure_prepend() {
     defconfig="${WORKDIR}/defconfig"
-    config="${S}/.config"
+    config="${B}/.config"
 
     set -e
 
@@ -41,7 +41,7 @@ do_configure_prepend() {
 	# Change directory to WORKDIR, because the fragments are located there
 	# and filenames in variable $fragments are not absolute.
 	# Use subshell to avoid changing the work directory of current shell.
-	(cd "${WORKDIR}" && ${S}/scripts/kconfig/merge_config.sh -m -O "${S}" "$config" $fragments)
+	(cd "${WORKDIR}" && ${S}/scripts/kconfig/merge_config.sh -m -O "${B}" "$config" $fragments)
     fi
 
 }
