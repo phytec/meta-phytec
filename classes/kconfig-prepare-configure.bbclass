@@ -15,9 +15,6 @@ def find_sccs(d):
             sources_list.append(s)
     return sources_list
 
-DEPENDS += "kconfig-frontends-native"
-
-# uses kern-tools-native to merge the config fragments
 do_configure_prepend() {
     defconfig="${WORKDIR}/defconfig"
     config="${B}/.config"

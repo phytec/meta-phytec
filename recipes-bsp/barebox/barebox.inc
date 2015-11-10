@@ -1,10 +1,5 @@
 # Copyright (C) 2014 Stefan Mueller-Klieser <s.mueller-klieser@phytec.de>
 # PHYTEC Messtechnik GmbH
-#
-# TODO: see if there is some development towards moving all kconfig
-#       funcionality into the kconfig-frontends package and adjust
-#       the recipe accordingly.
-#
 SUMMARY = "The Barebox Bootloader"
 DESCRIPTION = "Barebox (formerly known as u-boot-v2) is a bootloader that \
                inherits the best of U-Boot and the Linux kernel: The size and \
@@ -26,11 +21,12 @@ SRC_URI_append = " \
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
 inherit kernel-arch cml1 deploy
-inherit kconfig-prepare-configure
+inherit kconfig
 inherit kconfig-savedefconfig
+inherit kconfig-prepare-configure
 
 # Increase INC_PR everytime the include file is changed.
-INC_PR = "r5"
+INC_PR = "r6"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 # verbose build 0/1
@@ -59,7 +55,7 @@ BAREBOX_BOARD_ENVDIR = "${WORKDIR}/boardenv"
 
 do_configure_append() {
     bbnote "Setting LOCALVERSION in .config to ${BAREBOX_LOCALVERSION}"
-    kconfig-tweak --file "${B}/.config" --set-str "LOCALVERSION" "${BAREBOX_LOCALVERSION}"
+    kconfig_set LOCALVERSION "${BAREBOX_LOCALVERSION}"
 
     # Add environment directories to .config if they exist
     env_dirs=""
@@ -70,7 +66,7 @@ do_configure_append() {
     done
 
     if test ! -z "$env_dirs"; then
-        kconfig-tweak --file "${B}/.config" --set-str "DEFAULT_ENVIRONMENT_PATH" "$env_dirs"
+        kconfig_set DEFAULT_ENVIRONMENT_PATH "\"$env_dirs\""
     fi
 }
 
