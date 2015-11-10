@@ -95,3 +95,18 @@ python do_savedefconfig() {
 }
 addtask savedefconfig after do_configure
 do_savedefconfig[nostamp] = "1"
+
+# Define which command will run when calling bitbake -c menuconfig
+# KCONFIG_CONFIG_COMMAND ?= "MENUCONFIG_COLOR=mono menuconfig"
+KCONFIG_CONFIG_COMMAND ?= "nconfig"
+python do_menuconfig() {
+    import shutil
+
+    try:
+        mtime = os.path.getmtime(".config")
+        shutil.copy(".config", ".config.orig")
+    except OSError:
+        mtime = 0
+
+    oe_terminal("${SHELL} -c \"make ${KCONFIG_CONFIG_COMMAND}; if [ \$? -ne 0 ]; then echo 'Command failed.'; printf 'Press any key to continue... '; read r; fi\"", '${PN} Configuration', d)
+}
