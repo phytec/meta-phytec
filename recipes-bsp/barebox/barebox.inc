@@ -45,7 +45,6 @@ BAREBOX_BIN ?= "barebox.bin"
 BAREBOX_IMAGE_BASE_NAME ?= "barebox-${MACHINE}-${PKGV}-${PKGR}-${DATETIME}"
 BAREBOX_IMAGE_BASE_NAME[vardepsexclude] += "DATETIME"
 BAREBOX_BIN_SYMLINK ?= "barebox.bin"
-BAREBOX_DEFAULT_DEFCONFIG ?= ""
 
 # recipe private variables
 BAREBOX_COMMON_ENVDIR = "${WORKDIR}/commonenv"
@@ -98,12 +97,6 @@ python do_prepare_env() {
                         os.path.join(S, ".commonenv/bin", "far"))
 }
 addtask prepare_env after do_patch before do_configure
-
-do_default_defconfig () {
-	bbnote "generating .config for target ${BAREBOX_DEFAULT_DEFCONFIG}"
-	unset CFLAGS LDFLAGS
-	oe_runmake ${BAREBOX_DEFAULT_DEFCONFIG}
-}
 
 do_compile () {
 	unset CFLAGS LDFLAGS

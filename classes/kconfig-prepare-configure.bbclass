@@ -3,7 +3,7 @@
 # Released under the MIT license (see COPYING.MIT for the terms)
 
 # FIXME Recipes, which use the bbclass, must define the task
-# 'do_default_defconfig' by themselfs.
+# 'do_intree_defconfig' by themselfs.
 
 # returns and .cfg filenames from SRC_URI
 def find_sccs(d):
@@ -28,7 +28,7 @@ do_configure_prepend() {
 	bbnote "No defconfig file provided for the recipe"
 	if test ! -f "$config"; then
 	    bbnote "recipe is not configured"
-	    do_default_defconfig
+	    do_intree_defconfig
 	fi
     fi
 

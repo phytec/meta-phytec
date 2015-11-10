@@ -18,9 +18,6 @@ PATCHTOOL = "git"
 
 KERNEL_CONFIG_COMMAND = "oe_runmake -C ${S} O=${B} olddefconfig"
 
-# these variables need to be assigned in the machine.conf 
-KERNEL_DEFAULT_DEFCONFIG ?= ""
-
 # Copy .dts iand .dtsi from SRC_URI to the kernel boot/dts path
 # This should go to poky/meta/recipes-kernel/linux/linux-dtb.inc
 # returns all the elements from the src uri that are .dts or .dtsi files
@@ -73,11 +70,6 @@ addtask nconfig
 do_configure_append() {
     bbnote "Setting LOCALVERSION in .config to ${LINUX_VERSION_EXTENSION}"
     kconfig_set LOCALVERSION "${LINUX_VERSION_EXTENSION}"
-}
-
-do_default_defconfig () {
-    bbnote "generating .config for target ${KERNEL_DEFAULT_DEFCONFIG}"
-    oe_runmake -C ${S} O=${B} ${KERNEL_DEFAULT_DEFCONFIG}
 }
 
 KERNEL_IMAGE_BASE_NAME = "${KERNEL_IMAGETYPE}-${PN}-${PKGV}-${PKGR}-${MACHINE}-${DATETIME}"

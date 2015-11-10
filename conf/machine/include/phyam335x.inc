@@ -13,8 +13,8 @@ PACKAGE_EXTRA_ARCHS_append = " ${MACHINE_SOCARCH}"
 # Bootloader
 PREFERRED_PROVIDER_virtual/bootloader ?= "barebox"
 PREFERRED_PROVIDER_virtual/prebootloader ?= "barebox-ipl"
-BAREBOX_DEFAULT_DEFCONFIG = "am335x_defconfig"
-BAREBOX_IPL_DEFAULT_DEFCONFIG = "am335x_mlo_defconfig"
+INTREE_DEFCONFIG_pn-barebox = "am335x_defconfig"
+INTREE_DEFCONFIG_pn-barebox-ipl = "am335x_mlo_defconfig"
 BAREBOX_IPL_IMAGE_BASE_NAME = "MLO-${MACHINE}-${PKGV}-${PKGR}-${DATETIME}"
 BAREBOX_IPL_BIN_SYMLINK = "MLO"
 # all am335x need an mlo, whenever we need a bootloader
@@ -25,7 +25,7 @@ DEPENDS_pn-u-boot_append = " virtual/prebootloader"
 # Kernel 
 PREFERRED_PROVIDER_virtual/kernel ?= "linux-ti"
 KERNEL_IMAGETYPE ?= "zImage"
-KERNEL_DEFAULT_DEFCONFIG = "am335x_phytec_defconfig"
+INTREE_DEFCONFIG_pn-linux-ti = "am335x_phytec_defconfig"
 # Install modules in initramfs and rootfs
 PACKAGE_INSTALL_append = " kernel-modules"
 

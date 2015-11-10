@@ -15,18 +15,11 @@ BAREBOX_IPL_BIN ?= "barebox.bin"
 BAREBOX_IPL_IMAGE_BASE_NAME ?= "IPL-${MACHINE}-${PKGV}-${PKGR}-${DATETIME}"
 BAREBOX_IPL_IMAGE_BASE_NAME[vardepsexclude] = "DATETIME"
 BAREBOX_IPL_BIN_SYMLINK ?= "IPL"
-BAREBOX_IPL_DEFAULT_DEFCONFIG ?= ""
 
 # dont use the environment prepare function from barebox
 python do_prepare_env() {
     return
 } 
-
-do_default_defconfig () {
-	bbnote "generating .config for target ${BAREBOX_IPL_DEFAULT_DEFCONFIG}"
-	unset CFLAGS LDFLAGS
-	oe_runmake ${BAREBOX_IPL_DEFAULT_DEFCONFIG}
-}
 
 do_install () {
 	bbnote "Installing barebox-ipl image on target rootfs"
