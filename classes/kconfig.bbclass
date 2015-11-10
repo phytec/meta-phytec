@@ -2,6 +2,7 @@ inherit cml1
 
 # these variables can be configured in the recipes inheriting kconfig
 INTREE_DEFCONFIG ??= ""
+LOCALVERSION ??= ""
 
 # class variables
 KBUILD_OUTPUT = "${B}"
@@ -58,6 +59,9 @@ do_configure_prepend() {
 	(cd "${WORKDIR}" && ${S}/scripts/kconfig/merge_config.sh -m -O "${B}" "$config" $fragments)
     fi
 
+    if [ ! -z "${LOCALVERSION}" ]; then
+        kconfig_set LOCALVERSION \"${LOCALVERSION}\"
+    fi
 }
 
 # Python implementation of function oe_runmake_call and oe_runmake from

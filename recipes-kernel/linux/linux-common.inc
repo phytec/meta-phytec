@@ -65,11 +65,6 @@ do_nconfig[depends] += "ncurses-native:do_populate_sysroot"
 do_nconfig[nostamp] = "1"
 addtask nconfig
 
-do_configure_append() {
-    bbnote "Setting LOCALVERSION in .config to ${LINUX_VERSION_EXTENSION}"
-    kconfig_set LOCALVERSION "${LINUX_VERSION_EXTENSION}"
-}
-
 KERNEL_IMAGE_BASE_NAME = "${KERNEL_IMAGETYPE}-${PN}-${PKGV}-${PKGR}-${MACHINE}-${DATETIME}"
 do_deploy_append() {
     install -m 644 ${B}/.config ${DEPLOYDIR}/${KERNEL_IMAGE_BASE_NAME}.config

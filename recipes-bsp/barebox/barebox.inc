@@ -39,7 +39,6 @@ PATCHTOOL = "git"
 
 DEPENDS += "lzop-native"
 
-BAREBOX_LOCALVERSION ??= ""
 # name of the image created by barebox Makefile
 BAREBOX_BIN ?= "barebox.bin"
 # filename of file to be deployed by this recipe
@@ -54,9 +53,6 @@ BAREBOX_BOARD_ENVDIR = "${WORKDIR}/boardenv"
 
 
 do_configure_append() {
-    bbnote "Setting LOCALVERSION in .config to ${BAREBOX_LOCALVERSION}"
-    kconfig_set LOCALVERSION "${BAREBOX_LOCALVERSION}"
-
     # Add environment directories to .config if they exist
     env_dirs=""
     for env_dir in .commonenv .boardenv .machineenv; do   # order is important!
