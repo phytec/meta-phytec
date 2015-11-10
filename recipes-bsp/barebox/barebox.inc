@@ -23,7 +23,6 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 inherit kernel-arch cml1 deploy
 inherit kconfig
 inherit kconfig-savedefconfig
-inherit kconfig-prepare-configure
 
 # Increase INC_PR everytime the include file is changed.
 INC_PR = "r6"
