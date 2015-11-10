@@ -3,6 +3,9 @@ inherit cml1
 # these variables can be configured in the recipes inheriting kconfig
 INTREE_DEFCONFIG ??= ""
 LOCALVERSION ??= ""
+# This command is used when parsing a defconfig provided in the SRC_URI
+# It will depend on the way you have created your defconfig
+CONFIG_COMMAND ??= "olddefconfig"
 
 # class variables
 KBUILD_OUTPUT = "${B}"
@@ -33,7 +36,7 @@ def find_cfgs(d):
             sources_list.append(s)
     return sources_list
 
-do_configure_prepend() {
+kconfig_do_configure() {
     defconfig="${WORKDIR}/defconfig"
     config="${B}/.config"
 
@@ -62,7 +65,11 @@ do_configure_prepend() {
     if [ ! -z "${LOCALVERSION}" ]; then
         kconfig_set LOCALVERSION \"${LOCALVERSION}\"
     fi
+
+    cml1_do_configure
 }
+EXPORT_FUNCTIONS do_configure
+addtask configure after do_unpack do_patch before do_compile
 
 # Python implementation of function oe_runmake_call and oe_runmake from
 # meta/classes/base.bbclass.
