@@ -1,8 +1,25 @@
+# Copyright (C) 2014-2015 PHYTEC Messtechnik GmbH,
+# Author: Stefan Mueller-Klieser <s.mueller-klieser@phytec.de>
+DESCRIPTION = "Linux Kernel Phytec common base"
+SECTION = "kernel"
+LICENSE = "GPLv2"
+LIC_FILES_CHKSUM = "file://COPYING;md5=d7810fab7487fb0aad327b76f1be7cd7"
+
+inherit kernel
+inherit kconfig
+inherit kconfig-savedefconfig
+inherit kconfig-prepare-configure
+require recipes-kernel/linux/linux-dtb.inc
+
+INC_PR = "r0"
+
 DEPENDS += "lzop-native lz4-native"
 PATCHTOOL = "git"
 
-# Overwrites task savedefconfig from kernel.bbclass
-inherit kconfig-savedefconfig
+KERNEL_CONFIG_COMMAND = "oe_runmake -C ${S} O=${B} olddefconfig"
+
+# these variables need to be assigned in the machine.conf 
+KERNEL_DEFAULT_DEFCONFIG ?= ""
 
 # Copy .dts iand .dtsi from SRC_URI to the kernel boot/dts path
 # This should go to poky/meta/recipes-kernel/linux/linux-dtb.inc
@@ -18,10 +35,14 @@ def find_dtss(d):
     return dtss_list
 
 do_patch_append () {
-    DTSS="${@" ".join(find_dtss(d))}"
-    for DTS in ${DTSS}; do
-        cp ${DTS} ${S}/arch/${ARCH}/boot/dts/
-    done
+    import shutil
+    srcdir = d.getVar('STAGING_KERNEL_DIR', True)
+    arch = d.getVar('ARCH', True)
+    for dts in find_dtss(d):
+        cptarget=os.path.join(srcdir, "arch", arch, "boot", "dts",
+                             os.path.basename(dts))
+        bb.note("copying dts from: %s to: %s" % (dts, cptarget))
+        shutil.copyfile(dts, cptarget)
 }
 
 # this is a workaround for missing upstream patch [kernel.bbclass: Fix
@@ -48,6 +69,16 @@ python do_nconfig() {
 do_nconfig[depends] += "ncurses-native:do_populate_sysroot"
 do_nconfig[nostamp] = "1"
 addtask nconfig
+
+do_configure_append() {
+    bbnote "Setting LOCALVERSION in .config to ${LINUX_VERSION_EXTENSION}"
+    kconfig_set LOCALVERSION "${LINUX_VERSION_EXTENSION}"
+}
+
+do_default_defconfig () {
+    bbnote "generating .config for target ${KERNEL_DEFAULT_DEFCONFIG}"
+    oe_runmake -C ${S} O=${B} ${KERNEL_DEFAULT_DEFCONFIG}
+}
 
 KERNEL_IMAGE_BASE_NAME = "${KERNEL_IMAGETYPE}-${PN}-${PKGV}-${PKGR}-${MACHINE}-${DATETIME}"
 do_deploy_append() {

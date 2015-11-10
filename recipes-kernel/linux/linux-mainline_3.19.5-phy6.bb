@@ -3,13 +3,12 @@
 
 inherit phygittag
 inherit buildinfo
-require recipes-kernel/linux/linux-yocto.inc
 include linux-common.inc
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}/features:"
 
 GIT_URL = "git://git.phytec.de/${PN}"
-SRC_URI = "${GIT_URL};branch=${BRANCH};protocol=git;nocheckout=1"
+SRC_URI = "${GIT_URL};branch=${BRANCH};protocol=git"
 SRC_URI_append = " \
     file://ipv6.cfg \
     file://systemd.cfg \
@@ -23,7 +22,7 @@ PR = "${INC_PR}.1"
 # NOTE: Keep version in filename in sync with commit id!
 SRCREV = "a012ea7cfed89252684365d27ba27b9914f1c026"
 
-LINUX_VERSION = "${PV}"
+S = "${WORKDIR}/git"
 
 COMPATIBLE_MACHINE  =  "phyflex-imx6-1"
 COMPATIBLE_MACHINE .= "|phyflex-imx6-2"

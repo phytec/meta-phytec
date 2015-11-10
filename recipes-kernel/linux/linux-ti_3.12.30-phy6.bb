@@ -1,18 +1,17 @@
-## Copyright (C) 2014 Stefan Mueller-Klieser <s.mueller-klieser@phytec.de>
-# PHYTEC Messtechnik GmbH
+# Copyright (C) 2014-2015 PHYTEC Messtechnik GmbH,
+# Author: Stefan Mueller-Klieser <s.mueller-klieser@phytec.de>
 DESCRIPTION =   "Linux Kernel provided and supported by PHYTEC based on TIs \
                 Kernel for AM335x Family Boards. It includes support for \
                 many IPs such as GPU, VPU and IPU."
 
 inherit phygittag
 inherit buildinfo
-require recipes-kernel/linux/linux-yocto.inc
 include linux-common.inc
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}/features:"
 
 GIT_URL = "git://git.phytec.de/${PN}"
-SRC_URI = "${GIT_URL};branch=${BRANCH};protocol=git;nocheckout=1"
+SRC_URI = "${GIT_URL};branch=${BRANCH};protocol=git"
 SRC_URI_append = " \
     ${@bb.utils.contains('DISTRO_FEATURES', 'ipv6', 'file://ipv6.cfg', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'file://systemd.cfg', '', d)} \
@@ -21,8 +20,7 @@ SRC_URI_append = " \
 # TI kernel Graphics drivers even the legacy da8xx driver
 SRC_URI_append  = " ${@bb.utils.contains('DISTRO_FEATURES', 'opengl', 'file://da8xx-fb.cfg', '', d)}"
 SRC_URI[vardeps] += "DISTRO_FEATURES"
-
-LINUX_VERSION = "${PV}"
+S = "${WORKDIR}/git"
 
 PR = "${INC_PR}.0"
 

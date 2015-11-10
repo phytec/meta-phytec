@@ -25,8 +25,7 @@ DEPENDS_pn-u-boot_append = " virtual/prebootloader"
 # Kernel 
 PREFERRED_PROVIDER_virtual/kernel ?= "linux-ti"
 KERNEL_IMAGETYPE ?= "zImage"
-KBUILD_DEFCONFIG = "am335x_phytec_defconfig"
-KCONFIG_MODE = "--alldefconfig"
+KERNEL_DEFAULT_DEFCONFIG = "am335x_phytec_defconfig"
 # Install modules in initramfs and rootfs
 PACKAGE_INSTALL_append = " kernel-modules"
 
