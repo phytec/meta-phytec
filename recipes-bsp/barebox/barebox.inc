@@ -29,6 +29,9 @@ inherit kconfig-prepare-configure
 INC_PR = "r6"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
+
+B = "${WORKDIR}/build"
+
 # verbose build 0/1
 VERBOSE_BUILD ?= "0"
 EXTRA_OEMAKE = 'TARGETCC="${CC}" V=${VERBOSE_BUILD} CROSS_COMPILE=${TARGET_PREFIX} CC="${TARGET_PREFIX}gcc ${TOOLCHAIN_OPTIONS}"'
