@@ -14,6 +14,8 @@ INC_PR = "r0"
 DEPENDS += "lzop-native lz4-native"
 PATCHTOOL = "git"
 
+SRCTREECOVEREDTASKS ?= "do_unpack do_fetch"
+
 # Copy .dts iand .dtsi from SRC_URI to the kernel boot/dts path
 # This should go to poky/meta/recipes-kernel/linux/linux-dtb.inc
 # returns all the elements from the src uri that are .dts or .dtsi files
