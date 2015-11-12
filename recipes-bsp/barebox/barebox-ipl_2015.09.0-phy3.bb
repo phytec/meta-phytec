@@ -10,7 +10,7 @@ S = "${WORKDIR}/git"
 
 PR = "${INC_PR}.0"
 
-SRCREV = "0b50578ddcb9886299b4a519aea1a6a1a6e71f18"
+SRCREV = "881f89451d8945cddbebe981ec00e91cf554d205"
 
 SRC_URI_append = " file://noafiboard.cfg"
 
