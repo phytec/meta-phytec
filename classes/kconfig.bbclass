@@ -44,8 +44,8 @@ kconfig_do_configure() {
     set -e
 
     if test -f "$defconfig"; then
-	bbnote "Using defconfig from SRC_URI"
-	cp -f "$defconfig" "$config"
+        bbnote "Using defconfig from SRC_URI"
+        cp -f "$defconfig" "$config"
         oe_runmake -C ${S} ${CONFIG_COMMAND}
     elif [ ! -z "${INTREE_DEFCONFIG}" ]; then
         bbnote "Using intree defconfig: ${INTREE_DEFCONFIG}"
@@ -56,11 +56,11 @@ kconfig_do_configure() {
 
     fragments="${@' '.join(find_cfgs(d))}"
     if test ! -z "$fragments"; then
-	bbnote "combining kconfig fragments into .config"
-	# Change directory to WORKDIR, because the fragments are located there
-	# and filenames in variable $fragments are not absolute.
-	# Use subshell to avoid changing the work directory of current shell.
-	(cd "${WORKDIR}" && ${S}/scripts/kconfig/merge_config.sh -m -O "${B}" "$config" $fragments)
+        bbnote "combining kconfig fragments into .config"
+        # Change directory to WORKDIR, because the fragments are located there
+        # and filenames in variable $fragments are not absolute.
+        # Use subshell to avoid changing the work directory of current shell.
+        (cd "${WORKDIR}" && ${S}/scripts/kconfig/merge_config.sh -m -O "${B}" "$config" $fragments)
     fi
 
     if [ ! -z "${LOCALVERSION}" ]; then
