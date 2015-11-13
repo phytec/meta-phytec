@@ -148,10 +148,10 @@ Note: You have to commit all your changes. Otherwise yocto doesn't pick them up!
 
 2. Work and compile from the local working directory
 To work and compile in an external source directoy we provide the
-phyexternalsrc.bbclass. To use it copy and paste the following snippet to your
+externalsrc.bbclass. To use it copy and paste the following snippet to your
 "local.conf":
 
-INHERIT += "phyexternalsrc"
+INHERIT += "externalsrc"
 EXTERNALSRC_pn-${PN} = "\x24{HOME}/git/${PN}"
 EXTERNALSRC_BUILD_pn-${PN} = "\x24{HOME}/git/${PN}"
 
