@@ -40,17 +40,18 @@ kconfig_do_configure() {
     defconfig="${WORKDIR}/defconfig"
     config="${B}/.config"
 
+    rm -rf $config
     set -e
 
     if test -f "$defconfig"; then
 	bbnote "Using defconfig from SRC_URI"
 	cp -f "$defconfig" "$config"
+        oe_runmake -C ${S} ${CONFIG_COMMAND}
+    elif [ ! -z "${INTREE_DEFCONFIG}" ]; then
+        bbnote "Using intree defconfig: ${INTREE_DEFCONFIG}"
+        oe_runmake -C ${S} ${INTREE_DEFCONFIG}
     else
-	bbnote "No defconfig file is provided for the recipe."
-	if test ! -f "$config"; then
-            bbnote "Using intree defconfig: ${INTREE_DEFCONFIG}"
-            oe_runmake -C ${S} ${INTREE_DEFCONFIG}
-	fi
+        bbwarn "No defconfig provided. This will propably lead to errors."
     fi
 
     fragments="${@' '.join(find_cfgs(d))}"
