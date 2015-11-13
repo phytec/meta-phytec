@@ -109,12 +109,20 @@ do_savedefconfig[nostamp] = "1"
 KCONFIG_CONFIG_COMMAND ?= "nconfig"
 python do_menuconfig() {
     import shutil
+    shutil.copy(".config", ".config.orig")
 
-    try:
-        mtime = os.path.getmtime(".config")
-        shutil.copy(".config", ".config.orig")
-    except OSError:
-        mtime = 0
-
+    # FIXME: We have to taint in that case as there is no way in
+    # tracking changes in the tempdirectoy but outside of the sstate.
+    # to fix this we should integrate menuconfig in the devtool
+    # tainting is really not a viable solution as users dont want to
+    # rebuild the package all the time after calling menuconfig
+    pn = d.getVar("PN", True)
+    bb.plain("You called menuconfig and tainted %s. If your change should be" % pn)
+    bb.plain("applied in future, call:")
+    bb.plain("    bitbake -c diffconfig %s" % pn)
+    bb.plain("The generated .cfg file needs to be added to the SRC_URI in your layer.")
+    bb.plain("To untaint the compile")
+    bb.plain("    bitbake -c clean %s" % pn)
+    bb.build.write_taint("do_compile", d)
     oe_terminal("${SHELL} -c \"make ${KCONFIG_CONFIG_COMMAND}; if [ \$? -ne 0 ]; then echo 'Command failed.'; printf 'Press any key to continue... '; read r; fi\"", '${PN} Configuration', d)
 }
