@@ -13,10 +13,9 @@ SRC_URI_append = " \
     file://ipv6.cfg \
     file://systemd.cfg \
     file://resetdriver.cfg \
-    file://0001-dts-imx6qdl-replace-flash-with-m25p.patch \
 "
 
-PR = "${INC_PR}.1"
+PR = "${INC_PR}.2"
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
 # NOTE: Keep version in filename in sync with commit id!
