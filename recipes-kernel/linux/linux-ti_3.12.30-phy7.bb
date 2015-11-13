@@ -25,7 +25,7 @@ S = "${WORKDIR}/git"
 PR = "${INC_PR}.0"
 
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "fb8ad35147fb6c510b9fab883ef7abc9ac9a651d"
+SRCREV = "f1af4b1ad24ed720181d38dc2d9408ef92c0857d"
 
 COMPATIBLE_MACHINE = "beagleboneblack-1"
 SRC_URI_append_beagleboneblack-1 = " file://beagleboneblack-1.cfg"
