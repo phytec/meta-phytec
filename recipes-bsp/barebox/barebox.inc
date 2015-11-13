@@ -20,7 +20,7 @@ SRC_URI_append = " \
 "
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
-inherit kernel-arch cml1 deploy
+inherit kernel-arch deploy
 inherit kconfig
 
 # Increase INC_PR everytime the include file is changed.
