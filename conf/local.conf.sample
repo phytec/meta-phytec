@@ -20,6 +20,11 @@ IMAGE_FSTYPES += "ubifs"
 IMAGE_FSTYPES_append_ti33x = " emmc"
 DEPLOY_DIR = "${TOPDIR}/deploy"
 
+# Select configuration UI for linux and barebox recipe. The openembedded
+# default is 'menuconfig', 'nconfig' has more features.
+#KCONFIG_CONFIG_COMMAND = "menuconfig"
+KCONFIG_CONFIG_COMMAND = "nconfig"
+
 # The default package class of the distro yogurt is 'package_ipk'. The first
 # value is used as the package manager to build the image and sdk. To build
 # also tar packages use

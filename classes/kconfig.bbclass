@@ -106,7 +106,7 @@ do_savedefconfig[nostamp] = "1"
 
 # Define which command will run when calling bitbake -c menuconfig
 # KCONFIG_CONFIG_COMMAND ?= "MENUCONFIG_COLOR=mono menuconfig"
-KCONFIG_CONFIG_COMMAND ?= "nconfig"
+KCONFIG_CONFIG_COMMAND ??= "menuconfig"
 python do_menuconfig() {
     import shutil
     shutil.copy(".config", ".config.orig")
