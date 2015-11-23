@@ -1,0 +1,75 @@
+#!/bin/bash
+# Using bash is important. We need the variable BASH_SOURCE which is the
+# filepath of the bash script.
+
+# This script is a init script for our bsp. It resides in the bsp release specific folder
+# this is the soc specific init script. It assumes that you have only one soc layer
+# which holds all your machines.
+PHYLINUX_API_VERSION="2"
+
+
+# Try to find ROOTDIR from path of bash script.
+DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)
+# stdlib function 'realpath' is not accessable from shell/bash.  What a pitty.
+# We cannot resolve symbolic links easily.
+
+# Try to find ROOTDIR of the Yocto BSP. Walk up the directory tree until we
+# find the sources/meta-phytec or .repo directory. Returns the empty string as
+# an error code.
+function find_root_dir() {
+	dir=$(readlink -f "$1")  # should return an absoulte path
+	while [ ! "$dir" == "/" ]; do
+		if [ -d "$dir/.repo" ]; then
+		# or [ -d "$dir/sources/meta-phytec" ];
+			echo $dir;
+			return;
+		fi
+		dir=$(dirname "$dir")
+	done
+	# If anchor directory isn't found, function returns the empty strings
+	# as an error code.
+}
+
+ROOTDIR=$(find_root_dir "$DIR")
+if [ "$ROOTDIR" == "" ]; then
+	echo >&2 "ERROR: Cannot find root directory of the Yocto BSP."
+        echo >&2 "Is '$DIR' in a checkout of a BSP? Aborting..."
+	exit 1;
+fi
+
+
+# Folders
+SOC_DIR="${ROOTDIR}/sources/meta-phytec/meta-phyam335x"
+PHYTEC_DIR="${ROOTDIR}/sources/meta-phytec"
+TEMPLATECONF="${ROOTDIR}/tools/templateconf"
+
+# Setup template directory and Readmes
+install -d ${TEMPLATECONF}
+install -m 0644 ${SOC_DIR}/conf/bblayers.conf.sample ${TEMPLATECONF}
+install -m 0644 ${SOC_DIR}/conf/doc/HOWTO-am335x ${ROOTDIR}
+install -m 0644 ${PHYTEC_DIR}/conf/local.conf.sample ${TEMPLATECONF}
+install -m 0644 ${PHYTEC_DIR}/conf/conf-notes.txt ${TEMPLATECONF}
+install -m 0644 ${PHYTEC_DIR}/conf/doc/HOWTO-yocto ${ROOTDIR}
+
+# Init a build directory if we dont have one.
+# NOTE: Since the script 'oe-buildenv-internal' will use the current working
+# directory as the base for the build directory, we set the build directory
+# explicitly to '${ROOTDIR}/build' here. So the 'init' script's actions don't
+# depend on the current working directory of the caller.
+bash -c "TEMPLATECONF=\"${TEMPLATECONF}\" source ${ROOTDIR}/sources/poky/oe-init-build-env \"${ROOTDIR}/build\"" > /dev/null
+
+${PHYTEC_DIR}/scripts/copy_site_conf.py
+${PHYTEC_DIR}/scripts/init_machine.py
+${PHYTEC_DIR}/scripts/write_bsp_version_to_lconf.py
+
+echo ""
+echo "Before you start your work, please check your build/conf/local.conf for"
+echo "host specific configuration. Check the documentation especially for:"
+echo "   - proxy settings"
+echo "   - DL_DIR"
+echo "   - SSTATE_DIR"
+echo ""
+echo "To set up your shell environment for some Yocto work, you have to type:"
+echo "$ source sources/poky/oe-init-build-env"
+echo ""
+echo ""

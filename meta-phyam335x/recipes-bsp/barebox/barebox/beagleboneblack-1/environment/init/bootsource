@@ -1,0 +1,11 @@
+#!/bin/sh
+
+if [ -n "$nv.boot.default" ]; then
+	exit
+fi
+
+if [ $bootsource = mmc ]; then
+	global.boot.default="mmc net"
+elif [ $bootsource = net ]; then
+	global.boot.default="net mmc"
+fi

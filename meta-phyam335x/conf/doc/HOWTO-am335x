@@ -1,0 +1,35 @@
+==============
+meta-phyam335x
+==============
+
+This Yocto meta layer includes board specific software features of PHYTEC's
+AM335x products The branch of the git repository indicates the Yocto version
+it is compatible with. It depends on meta-phytec.
+
+Where to find ...?
+==================
+
+If you want to use our software without the repo tool managed environment, you
+can find all git repositories on
+
+  git://git.phytec.de
+
+The barebox and kernel git repositories for this BSP are called "barebox" and
+"linux-ti". To find out which tag is used for a specific board, have a look at:
+
+ meta-phytec/meta-phyam335x/recipes-bsp/barebox/barebox_*.bb
+ meta-phytec/meta-phyam335x/recipes-kernel/linux/linux-ti_*.bb
+
+If you need to figure out the Machine name of your board, have a look at the
+files in:
+
+ meta-phytec/meta-phyam335x/conf/machine/*.conf
+
+There you can find the corresponding product numbers.
+
+additional software
+===================
+
+phyedit
+=======
+Edit the additional ethernet phy registers of KSZ9021/31.

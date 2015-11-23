@@ -1,0 +1,2 @@
+of_enable_node /hdmi
+of_enable_node /ocp/lcdc@0x4830e000

@@ -1,0 +1,6 @@
+of_enable_node /panel
+of_enable_node /backlight
+of_enable_node /ocp/lcdc@0x4830e000/
+of_enable_node /ocp/epwmss@48300000/
+of_enable_node /ocp/epwmss@48300000/ecap@48300100/
+of_enable_node /ocp/i2c@44e0b000/touchscreen@38/

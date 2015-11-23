@@ -1,0 +1,20 @@
+=====================
+PHYTEC meta-phyam335x
+=====================
+
+This layer is made specifically for all PHYTEC boards using a Texas 
+Instruments Sitara AM335x Processor. It is a part of our standard
+Linux BSP, but can also be used standalone if you resolve the
+dependencies manually.
+
+Further information on the hardware can be found on our webpage:
+
+  http://www.phytec.de
+
+Dependencies
+============
+
+This layer depends on:
+
+  URI: git://git.phytec.de/meta-phytec
+  the revision is managed by our BSP infrastructure
