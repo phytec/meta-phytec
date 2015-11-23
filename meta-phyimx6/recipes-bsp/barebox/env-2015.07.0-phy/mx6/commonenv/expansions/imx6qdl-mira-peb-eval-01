@@ -1,0 +1,3 @@
+of_enable_node /soc/aips-bus@02100000/serial@021e8000
+of_enable_node /gpio-keys
+of_enable_node /user_leds
