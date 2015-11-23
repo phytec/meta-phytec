@@ -67,6 +67,14 @@ kconfig_do_configure() {
         kconfig_set LOCALVERSION \"${LOCALVERSION}\"
     fi
 
+    # Disable auto version globally. There are some bad behaving recipes
+    # which modify the source tree of the kernel at some point in time.
+    # building several kernel modules leads to a change in the kernel version,
+    # because of the race. This should be fixed per design in the ill behaving
+    # recipes, so that yocto behaves more predictable. For now we can live
+    # with this workaround.
+    kconfig_set LOCALVERSION_AUTO n
+
     cml1_do_configure
 }
 EXPORT_FUNCTIONS do_configure
