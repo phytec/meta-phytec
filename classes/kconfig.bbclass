@@ -13,7 +13,7 @@ KBUILD_OUTPUT[export] = "1"
 
 kconfig_set() {
     bbnote "Setting $1 in .config to $2"
-    if [ "$2" == "n" ]; then
+    if [ "$2" = "n" ]; then
         line="# CONFIG_$1 is not set"
     else
         line="CONFIG_$1=$2"
