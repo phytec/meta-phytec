@@ -37,6 +37,12 @@ def find_cfgs(d):
     return sources_list
 
 kconfig_do_configure() {
+    # fixes extra + in /lib/modules/2.6.37+
+    # $ scripts/setlocalversion . => +
+    # $ make kernelversion => 2.6.37
+    # $ make kernelrelease => 2.6.37+
+    touch ${B}/.scmversion ${S}/.scmversion
+
     defconfig="${WORKDIR}/defconfig"
     config="${B}/.config"
 
