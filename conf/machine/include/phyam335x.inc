@@ -37,7 +37,7 @@ MODULE_TARBALL_DEPLOY = "0"
 # powermanagement firmware for the on-die Cortex M3
 # the newer version makes a lot of problems dont include
 # per default
-RDEPENDS_kernel-modules_append = " amx3-cm3"
+#RDEPENDS_kernel-modules_append = " amx3-cm3"
 
 # rootfs images
 # register image class for usage
