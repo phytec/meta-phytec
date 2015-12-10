@@ -9,7 +9,8 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=b234ee4d69f5fce4486a80fdaf4a4263"
 SECTION = "multimedia"
 DEPENDS += "gstreamer1.0 gstreamer1.0-plugins-base"
 
-PR = "1"
+PE = "1"
+PR = "r1"
 
 SRC_URI = "git://git.phytec.de/gst-plugin-i2c;branch=master"
 SRCREV = "fbf8f9b7aa002e96224a41194b1c8d0a617e775e"
