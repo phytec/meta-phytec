@@ -6,17 +6,18 @@
 #   Copyright (C) 2012-2014 O.S. Systems Software LTDA.
 #   Released under the MIT license (see COPYING.MIT for the terms)
 
-inherit fsl-eula-unpack
-FSL_EULA_FILE = "${@os.path.join("${THISDIR}", "EULA")}"
+inherit fsl-bin-unpack
 
 DESCRIPTION = "GPU driver and apps for imx6"
 SECTION = "libs"
+
+# Year and version are from file COPYING
+LICENSE_FLAGS = "license-freescale-v4-june-2013"
 LICENSE = "Proprietary"
 LIC_FILES_CHKSUM = " \
     file://usr/include/gc_vdk.h;endline=11;md5=c4713c78d7f52bf2f92688a6f8f0cc93 \
-    file://${FSL_EULA_FILE};md5=6df184a9b1950b68e17fdcd7513bdb97 \
+    file://${WORKDIR}/COPYING;md5=6df184a9b1950b68e17fdcd7513bdb97 \
 "
-LIC_FILES_CHKSUM[vardepsexclude] += "FSL_EULA_FILE"
 
 # The recipe provides multiple packages for the Freescale demo programs,
 # libgles1, libgles2 and egl support. The libgles1, libgles2 and libegl packages
@@ -34,15 +35,16 @@ REQUIRED_DISTRO_FEATURES = "opengl"
 # NOTE: The virtual provider "virtual/opencl" is non-standard.
 PROVIDES += "virtual/libgles2 virtual/egl virtual/libgles1 virtual/opencl"
 
-PR = "r3"
+PR = "r4"
 
 _PV_beta = "${@'${PV}'.replace('1.1.0', '1.1.0-beta')}"
-SRC_URI = "http://www.freescale.com/lgfiles/NMG/MAD/YOCTO/${PN}-${_PV_beta}.bin;fsl-eula=true \
+SRC_URI = "http://www.freescale.com/lgfiles/NMG/MAD/YOCTO/${PN}-${_PV_beta}.bin;fsl-bin=true \
     file://egl.pc \
     file://glesv1_cm.pc \
     file://glesv2.pc \
     file://vg.pc \
     file://Vivante.icd \
+    file://COPYING \
 "
 S = "${WORKDIR}/${PN}-${_PV_beta}"
 

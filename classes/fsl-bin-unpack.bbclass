@@ -1,10 +1,12 @@
-# fsl-eula-unpack.bbclass provides the mechanism used for unpacking
+# fsl-bin-unpack.bbclass provides the mechanism used for unpacking
 # the .bin file downloaded by HTTP and handle the EULA acceptance.
 #
-# To use it, the 'fsl-eula' parameter needs to be added to the
+# To use it, the 'fsl-bin' parameter needs to be added to the
 # SRC_URI entry, e.g:
 #
-#  SRC_URI = "${FSL_MIRROR}/firmware-imx-${PV};fsl-eula=true"
+#  SRC_URI = "${FSL_MIRROR}/firmware-imx-${PV};fsl-bin=true"
+
+# The eula bla mechanisum is in the recipe now.
 
 python fsl_bin_do_unpack() {
     src_uri = (d.getVar('SRC_URI', True) or "").split()
@@ -21,7 +23,7 @@ python fsl_bin_do_unpack() {
         save_cwd = os.getcwd()
         # Check for supported fetchers
         if url.type in ['http', 'https', 'ftp', 'file']:
-            if url.parm.get('fsl-eula', False):
+            if url.parm.get('fsl-bin', False):
                 # If download has failed, do nothing
                 if not os.path.exists(url.localpath):
                     bb.debug(1, "Exiting as '%s' cannot be found" % url.basename)
@@ -40,18 +42,6 @@ python fsl_bin_do_unpack() {
 }
 
 python do_unpack() {
-    eula = d.getVar('ACCEPT_FSL_EULA', True)
-    eula_file = d.getVar('FSL_EULA_FILE', True)
-    pkg = d.getVar('PN', True)
-    if eula == None:
-        bb.fatal("To use '%s' you need to accept the Freescale EULA at '%s'. "
-                 "Please read it and in case you accept it, write: "
-                 "ACCEPT_FSL_EULA = \"1\" in your local.conf." % (pkg, eula_file))
-    elif eula == '0':
-        bb.fatal("To use '%s' you need to accept the Freescale EULA." % pkg)
-    else:
-        bb.note("Freescale EULA has been accepted for '%s'" % pkg)
-
     try:
         bb.build.exec_func('base_do_unpack', d)
     except:
@@ -59,5 +49,3 @@ python do_unpack() {
 
     bb.build.exec_func('fsl_bin_do_unpack', d)
 }
-
-do_unpack[vardepsexclude] += "FSL_EULA_FILE"
