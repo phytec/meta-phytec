@@ -8,7 +8,7 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=4725015cb0be7be389cf06deeae3683d"
 DEPENDS += "libnl"
 
 PV = "R8.5+git${SRCPV}"
-PR = "r0"
+PR = "r1"
 
 # Tag: R8.5
 SRCREV = "dcf0800f30ba449cd7f3a20f8b3f4853dc829652"
@@ -16,7 +16,7 @@ SRC_URI = "git://git.ti.com/wilink8-wlan/18xx-ti-utils.git"
 
 S = "${WORKDIR}/git"
 
-CFLAGS += "-I${STAGING_INCDIR}/libnl3 -DCONFIG_LIBNL32"
+CFLAGS += "-I=/usr/include/libnl3 -DCONFIG_LIBNL32"
 
 do_compile() {
 	oe_runmake all NLVER=3
