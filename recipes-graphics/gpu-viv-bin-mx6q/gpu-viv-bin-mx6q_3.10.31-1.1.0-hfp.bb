@@ -38,7 +38,7 @@ PROVIDES += "virtual/libgles2 virtual/egl virtual/libgles1 virtual/opencl"
 PR = "r4"
 
 _PV_beta = "${@'${PV}'.replace('1.1.0', '1.1.0-beta')}"
-SRC_URI = "http://www.freescale.com/lgfiles/NMG/MAD/YOCTO/${PN}-${_PV_beta}.bin;fsl-bin=true \
+SRC_URI = "${FSL_MIRROR}/${PN}-${_PV_beta}.bin;fsl-bin=true \
     file://egl.pc \
     file://glesv1_cm.pc \
     file://glesv2.pc \
