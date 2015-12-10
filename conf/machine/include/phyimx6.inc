@@ -34,3 +34,7 @@ UBI_VOLNAME = "root"
 # this sums up to 7943 LEBs available for the ubifs
 MKUBIFS_ARGS = "-F -m 2048 -e 126976 -c 8083"
 UBINIZE_ARGS = "-m 2048 -p 128KiB -s 2048 -O 2048"
+
+# Firmware files
+MACHINE_EXTRA_RRECOMMENDS_append_mx6q = " firmware-imx-vpu-mx6q"
+MACHINE_EXTRA_RRECOMMENDS_append_mx6dl = " firmware-imx-vpu-mx6dl"
