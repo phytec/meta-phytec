@@ -12,6 +12,12 @@ DISTRO ?= "yogurt"
 #DL_DIR = "${TOPDIR}/downloads"
 #SSTATE_DIR = "${TOPDIR}/sstate-cache"
 
+# License Handling
+#  - Uncomment for Freescale i.MX6 proprietary GPU libraries
+#LICENSE_FLAGS_WHITELIST += "license-freescale-v4-june-2013_gpu-viv-bin-mx6q"
+#  - Uncomment for Freescale i.MX6 legacy VPU firmware blobs
+#LICENSE_FLAGS_WHITELIST += "license-freescale-v6-february-2015_firmware-imx"
+
 # You can disable and enable FSTYPES as you wish. e.g. 'ext4'.
 # This is ordering dependend.
 IMAGE_FSTYPES += "sdcard"
