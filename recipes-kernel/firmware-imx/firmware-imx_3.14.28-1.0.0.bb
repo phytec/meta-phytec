@@ -9,7 +9,7 @@ SECTION = "base"
 
 # Year and version are from file COPYING in binary archive
 LICENSE_FLAGS = "license-freescale-v6-february-2015"
-LICENSE = "Proprietary"
+LICENSE = "Proprietary & LICENCE.freescale-v6-february-2015"
 LIC_FILES_CHKSUM = " \
     file://COPYING;md5=acdb807ac7275fe32f9f64992e111241 \
 "
