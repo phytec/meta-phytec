@@ -8,6 +8,7 @@
 
 inherit fsl-bin-unpack
 
+SUMMARY = "Userspace GPU driver for i.MX6"
 DESCRIPTION = "GPU driver and apps for imx6"
 SECTION = "libs"
 
