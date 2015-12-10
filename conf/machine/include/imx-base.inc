@@ -2,9 +2,6 @@
 
 include conf/machine/include/soc-family.inc
 
-# Disable perf features as 2.6.35.3 fail to build otherwise
-PERF_FEATURES_ENABLE = ""
-
 # XServer
 PREFERRED_PROVIDER_virtual/xserver = "xserver-xorg"
 # We don't support a Xserver yet.
