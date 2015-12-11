@@ -40,6 +40,7 @@ COMPATIBLE_MACHINE .= "|phyflex-am335x-1"
 COMPATIBLE_MACHINE .= "|phyflex-am335x-2"
 COMPATIBLE_MACHINE .= "|phyflex-am335x-3"
 COMPATIBLE_MACHINE .= "|phyflex-am335x-4"
+COMPATIBLE_MACHINE .= "|phyboard-regor-am335x-1"
 
 do_deploy_append () {
     # deploy spi boot images
