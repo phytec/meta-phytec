@@ -13,7 +13,7 @@ DESCRIPTION = "GPU driver and apps for imx6"
 SECTION = "libs"
 
 # Year and version are from file COPYING
-LICENSE_FLAGS = "license-freescale-v4-june-2013"
+LICENSE_FLAGS = "license-freescale_v4-june-2013"
 LICENSE = "Proprietary"
 LIC_FILES_CHKSUM = " \
     file://usr/include/gc_vdk.h;endline=11;md5=c4713c78d7f52bf2f92688a6f8f0cc93 \
