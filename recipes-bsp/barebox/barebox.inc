@@ -16,7 +16,7 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=057bf9e50e1ca857d0eb97bfe4ba8e5d"
 SRC_URI = "http://barebox.org/download/barebox-${PV}.tar.bz2"
 SRC_URI_append = " \
     file://0001-Makefile-add-TARGETCC.patch \
-    ${@bb.utils.contains("EXTRA_IMAGE_FEATURES", "debug-tweaks", "file://far.env.bin", "", d)} \
+    file://far.env.bin \
 "
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
@@ -71,6 +71,14 @@ do_configure_append() {
 python do_prepare_env() {
     import shutil, subprocess
     S = d.getVar('S', True)
+    bb.note("cleanup environment in source directory")
+    source_env_dirs = [ oe.path.join(S, '.machineenv'),
+                        oe.path.join(S, '.boardenv'),
+                        oe.path.join(S, '.commonenv') ]
+    for env_dir in source_env_dirs:
+        if os.path.isdir(env_dir):
+            oe.path.remove(env_dir)
+
     machine_env_dir = d.getVar('BAREBOX_MACHINE_ENVDIR', True)
     board_env_dir = d.getVar('BAREBOX_BOARD_ENVDIR', True)
     common_env_dir = d.getVar('BAREBOX_COMMON_ENVDIR', True)
@@ -88,7 +96,8 @@ python do_prepare_env() {
     # added, if you enable "debug-tweaks" in EXTRA_IMAGE_FEATURES in your
     # local.conf.
     workdir_far_env_bin = os.path.join("${WORKDIR}", "far.env.bin")
-    if os.path.isfile(workdir_far_env_bin):
+    if os.path.isfile(workdir_far_env_bin) and \
+       bb.utils.contains('EXTRA_IMAGE_FEATURES', 'debug-tweaks', True, False, d):
         bb.utils.mkdirhier(os.path.join(S, ".commonenv/bin"))
         shutil.copyfile(workdir_far_env_bin,
                         os.path.join(S, ".commonenv/bin", "far"))
