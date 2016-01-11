@@ -6,7 +6,7 @@ Some documentation about the scripts and datastructures.
 
 
 Script switch_machine.py
--------------------------
+------------------------
 
 It's possible to hide some machines from the user in the selectable machine
 list. That's useful if you want to have machines in the BSP, which are not
