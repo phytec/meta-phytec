@@ -86,3 +86,15 @@ To check the files against the checksum after deployment, execute
 
     $ find ~/deploy/folder/images -name sha1sum.txt -execdir sha1sum -c sha1sum.txt ";" \
       | grep -v OK
+
+
+
+Script wipe-deploy-images
+-------------------------
+
+Remove all images in the directory ${DEPLOY_DIR}/images. Use like
+
+    $ . sources/poky/oe-init-build-env
+    $ ../sources/meta-phytec/scripts/wipe-deploy-images
+
+Useful to free harddisk space after a lot of builds.
