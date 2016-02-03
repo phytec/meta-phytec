@@ -38,16 +38,19 @@ if [ "$ROOTDIR" == "" ]; then
 fi
 
 
-# Folders
+# Folders and Readme
 PHYTEC_DIR="${ROOTDIR}/sources/meta-phytec"
-TEMPLATECONF="${ROOTDIR}/tools/templateconf"
-
-# Setup template directory and Readmes
-install -d ${TEMPLATECONF}
-install -m 0644 ${PHYTEC_DIR}/conf/bblayers.conf.sample ${TEMPLATECONF}
-install -m 0644 ${PHYTEC_DIR}/conf/local.conf.sample ${TEMPLATECONF}
-install -m 0644 ${PHYTEC_DIR}/conf/conf-notes.txt ${TEMPLATECONF}
 install -m 0644 ${PHYTEC_DIR}/conf/doc/HOWTO ${ROOTDIR}
+
+# Setup template directory. All caller to overwrite default TEMPLATECONF.
+if [ -z "${TEMPLATECONF}" ]; then
+	TEMPLATECONF="${ROOTDIR}/tools/templateconf"
+	install -d ${TEMPLATECONF}
+	install -m 0644 ${PHYTEC_DIR}/conf/bblayers.conf.sample ${TEMPLATECONF}
+	install -m 0644 ${PHYTEC_DIR}/conf/local.conf.sample ${TEMPLATECONF}
+	install -m 0644 ${PHYTEC_DIR}/conf/conf-notes.txt ${TEMPLATECONF}
+fi
+
 
 # Init a build directory if we dont have one.
 # NOTE: Since the script 'oe-buildenv-internal' will use the current working
