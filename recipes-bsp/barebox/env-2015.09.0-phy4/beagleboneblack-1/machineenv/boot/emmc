@@ -4,4 +4,4 @@ mkdir -p /mnt/emmc
 mount /dev/mmc1.0 /mnt/emmc
 global.bootm.image=/mnt/emmc/linuximage
 global.bootm.oftree=/mnt/emmc/oftree
-global.linux.bootargs.dyn.root="root=/dev/mmcblk1p2 rootwait rw"
+global.linux.bootargs.dyn.root="root=/dev/mmcblk1p2"
