@@ -15,11 +15,11 @@ SRC_URI_append = " \
     file://resetdriver.cfg \
 "
 
-PR = "${INC_PR}.2"
+PR = "${INC_PR}.0"
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "a012ea7cfed89252684365d27ba27b9914f1c026"
+SRCREV = "bc0c65e493dd3eab982abf1ae4af0738cc85d6ab"
 
 S = "${WORKDIR}/git"
 
