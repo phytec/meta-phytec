@@ -9,15 +9,15 @@
 inherit fsl-bin-unpack
 
 SUMMARY = "Userspace GPU driver for i.MX6"
-DESCRIPTION = "GPU driver and apps for imx6"
+DESCRIPTION = "Userspace GPU driver and apps for i.MX6"
 SECTION = "libs"
 
-# Year and version are from file COPYING
-LICENSE_FLAGS = "license-freescale_v4-june-2013"
-LICENSE = "Proprietary"
+# Year and version are from file COPYING in binary archive
+LICENSE_FLAGS = "license-freescale_v6-february-2015"
+LICENSE = "Proprietary & LICENCE.freescale-v6-february-2015"
 LIC_FILES_CHKSUM = " \
-    file://usr/include/gc_vdk.h;endline=11;md5=c4713c78d7f52bf2f92688a6f8f0cc93 \
-    file://${WORKDIR}/COPYING;md5=6df184a9b1950b68e17fdcd7513bdb97 \
+    file://gpu-core/usr/include/gc_vdk.h;beginline=5;endline=11;md5=12c028cbbbedb4b8770267131500592c \
+    file://COPYING;md5=acdb807ac7275fe32f9f64992e111241 \
 "
 
 # The recipe provides multiple packages for the Freescale demo programs,
@@ -25,35 +25,40 @@ LIC_FILES_CHKSUM = " \
 # are mostly pulled in by dependences of other packages, like qtbase. The
 # Freescale demo programs are not installed by default into the rootfs, because
 # the package is roughly 600MB. To install it, put
-#     IMAGE_INSTALL_append = " gpu-viv-bin-mx6q"
+#     IMAGE_INSTALL_append = " imx-gpu-viv-demos"
 # into your local.conf.
+
+# Nice tool from binary 'gmem_info'. Shows memory information of gpu:
+#
+#     $ gmem_info
+#      Pid          Total      Reserved    Contiguous       Virtual      Nonpaged    Name
+#       225    28,304,252    26,207,100             0     2,097,152             0    ./QtDemo
+#      ------------------------------------------------------------------------------
+#         1    28,304,252    26,207,100             0     2,097,152             0    Summary
+#         -             -   108,010,628             -             -             -    Available
+#     GPU Idle time:  0.000000 ms
+#
+# Install with
+#     IMAGE_INSTALL_append = " imx-gpu-viv-tools"
 
 
 # Require the same distro feature as the mesa recipe
 REQUIRED_DISTRO_FEATURES = "opengl"
 
-# We don't provide virtual/libgl yet.
+# We don't provide virtual/libgl yet. Library libGL.so depends on X symbols.
 # NOTE: The virtual provider "virtual/opencl" is non-standard.
-PROVIDES += "virtual/libgles2 virtual/egl virtual/libgles1 virtual/opencl"
+PROVIDES += "virtual/libgles2 virtual/libgles1 virtual/egl virtual/libg2d virtual/opencl"
 
-PR = "r4"
+PR = "r0"
 
-_PV_beta = "${@'${PV}'.replace('1.1.0', '1.1.0-beta')}"
-SRC_URI = "${FSL_MIRROR}/${PN}-${_PV_beta}.bin;fsl-bin=true \
-    file://egl.pc \
-    file://glesv1_cm.pc \
-    file://glesv2.pc \
-    file://vg.pc \
-    file://Vivante.icd \
-    file://COPYING \
-"
-S = "${WORKDIR}/${PN}-${_PV_beta}"
+SRC_URI = "${FSL_MIRROR}/${PN}-${PV}.bin;fsl-bin=true"
+SRC_URI[md5sum] = "8314408acb6b3bc58fcbbb8a0f48b54b"
+SRC_URI[sha256sum] = "0591b495cd1c2547ae007d405b90729e2fb90603a5728b39d1a99cb4e1cf1eb4"
 
-SRC_URI[md5sum] = "8aa5c16021ce38762e7e3c07a57146eb"
-SRC_URI[sha256sum] = "c132de60b28c73e8d6ea12219151ca9a0a0bb4f73d62ca1bdd0feac6db0d964e"
+S = "${WORKDIR}/${PN}-${PV}"
 
-PACKAGES = "${PN} ${PN}-dev"
-PACKAGES += " \
+PACKAGES = " \
+    imx-gpu-viv-demos-dbg imx-gpu-viv-demos \
     libegl-mx6 libegl-mx6-dev libegl-mx6-dbg \
     libgles2-mx6 libgles2-mx6-dev libgles2-mx6-dbg \
     libgles1-mx6 libgles1-mx6-dev libgles1-mx6-dbg \
@@ -65,6 +70,8 @@ PACKAGES += " \
     libvdk-mx6 libvdk-mx6-dev libvdk-mx6-dbg \
     libclc-mx6 libclc-mx6-dev libclc-mx6-dbg \
     libopencl-mx6 libopencl-mx6-dev libopencl-mx6-dbg \
+    imx-gpu-viv-tools imx-gpu-viv-tools-dbg \
+    imx-gpu-viv-g2d imx-gpu-viv-g2d-dev imx-gpu-viv-g2d-dbg \
 "
 
 # Skip package if it does not match the machine float-point type in use
@@ -116,123 +123,146 @@ do_install () {
     install -d ${D}${includedir}
 
     # Package libgal-mx6
-    install -m 0644 ${S}/usr/lib/libGAL-fb.so ${D}${libdir}/libGAL.so
+    install -m 0644 ${S}/gpu-core/usr/lib/libGAL-fb.so  ${D}${libdir}/libGAL.so
 
     install -d ${D}${includedir}/HAL
-    for name in ${S}/usr/include/HAL/*; do
+    for name in ${S}/gpu-core/usr/include/HAL/*; do
         install -m 0644 "$name"  ${D}${includedir}/HAL/
     done
 
 
     # Package libvivante-mx6
-    install -m 0644 ${S}/usr/lib/libVIVANTE-fb.so ${D}${libdir}/libVIVANTE.so
+    install -m 0644 ${S}/gpu-core/usr/lib/libVIVANTE-fb.so ${D}${libdir}/libVIVANTE.so
 
 
     # Package libegl-mx6
-    install -m 0644 ${S}/usr/lib/libEGL-fb.so ${D}${libdir}/libEGL.so.1.0
+    install -m 0644 ${S}/gpu-core/usr/lib/libEGL-fb.so ${D}${libdir}/libEGL.so.1.0
     ln -sf libEGL.so.1.0 ${D}${libdir}/libEGL.so.1
     ln -sf libEGL.so.1.0 ${D}${libdir}/libEGL.so
-    install -m 0644 ${WORKDIR}/egl.pc ${D}${libdir}/pkgconfig/egl.pc
-    install -m 0644 ${S}/usr/lib/libGAL_egl.fb.so ${D}${libdir}/libGAL_egl.so
+    install -m 0644 ${S}/gpu-core/usr/lib/pkgconfig/egl_linuxfb.pc ${D}${libdir}/pkgconfig/egl.pc
+    install -m 0644 ${S}/gpu-core/usr/lib/libGAL_egl.fb.so ${D}${libdir}/libGAL_egl.so
 
     install -d ${D}${includedir}/EGL
-    for name in ${S}/usr/include/EGL/*; do
-        install -m 0644 "$name"  ${D}${includedir}/EGL/
+    for name in ${S}/gpu-core/usr/include/EGL/*; do
+        install -m 0644 "$name" ${D}${includedir}/EGL/
     done
     install -d ${D}${includedir}/KHR/
-    for name in ${S}/usr/include/KHR/*; do
-        install -m 0644 "$name"  ${D}${includedir}/KHR/
+    for name in ${S}/gpu-core/usr/include/KHR/*; do
+        install -m 0644 "$name" ${D}${includedir}/KHR/
     done
 
 
     # Package libgles2-mx6
-    install -m 0644 ${S}/usr/lib/libGLESv2-fb.so ${D}${libdir}/libGLESv2.so.2.0.0
+    install -m 0644 ${S}/gpu-core/usr/lib/libGLESv2-fb.so ${D}${libdir}/libGLESv2.so.2.0.0
     ln -sf libGLESv2.so.2.0.0 ${D}${libdir}/libGLESv2.so.2
     ln -sf libGLESv2.so.2.0.0 ${D}${libdir}/libGLESv2.so
-    install -m 0644 ${WORKDIR}/glesv2.pc ${D}${libdir}/pkgconfig/glesv2.pc
+    install -m 0644 ${S}/gpu-core/usr/lib/pkgconfig/glesv2.pc ${D}${libdir}/pkgconfig/glesv2.pc
 
     install -d ${D}${includedir}/GLES2
-    for name in ${S}/usr/include/GLES2/*; do
-        install -m 0644 "$name"  ${D}${includedir}/GLES2/
+    for name in ${S}/gpu-core/usr/include/GLES2/*; do
+        install -m 0644 "$name" ${D}${includedir}/GLES2/
     done
 
 
     # Package libgles1-mx6
-    install -m 0644 ${WORKDIR}/glesv1_cm.pc ${D}${libdir}/pkgconfig/glesv1_cm.pc
-    install -m 0644 ${S}/usr/lib/libGLESv1_CL.so.1.1.0 ${D}${libdir}/libGLESv1_CL.so.1.1.0
+    install -m 0644 ${S}/gpu-core/usr/lib/pkgconfig/glesv1_cm.pc ${D}${libdir}/pkgconfig/glesv1_cm.pc
+    install -m 0644 ${S}/gpu-core/usr/lib/libGLESv1_CL.so.1.1.0 ${D}${libdir}/libGLESv1_CL.so.1.1.0
     ln -sf libGLESv1_CL.so.1.1.0 ${D}${libdir}/libGLESv1_CL.so.1
     ln -sf libGLESv1_CL.so.1.1.0 ${D}${libdir}/libGLESv1_CL.so
-    install -m 0644 ${S}/usr/lib/libGLES_CL.so.1.1.0 ${D}${libdir}/libGLES_CL.so.1.1.0
+    install -m 0644 ${S}/gpu-core/usr/lib/libGLES_CL.so.1.1.0 ${D}${libdir}/libGLES_CL.so.1.1.0
     ln -sf libGLES_CL.so.1.1.0 ${D}${libdir}/libGLES_CL.so.1
     ln -sf libGLES_CL.so.1.1.0 ${D}${libdir}/libGLES_CL.so
-    install -m 0644 ${S}/usr/lib/libGLES_CM.so.1.1.0 ${D}${libdir}/libGLES_CM.so.1.1.0
+    install -m 0644 ${S}/gpu-core/usr/lib/libGLES_CM.so.1.1.0 ${D}${libdir}/libGLES_CM.so.1.1.0
     ln -sf libGLES_CM.so.1.1.0 ${D}${libdir}/libGLES_CM.so.1
     ln -sf libGLES_CM.so.1.1.0 ${D}${libdir}/libGLES_CM.so
-    install -m 0644 ${S}/usr/lib/libGLESv1_CM.so.1.1.0 ${D}${libdir}/libGLESv1_CM.so.1.1.0
+    install -m 0644 ${S}/gpu-core/usr/lib/libGLESv1_CM.so.1.1.0 ${D}${libdir}/libGLESv1_CM.so.1.1.0
     ln -sf libGLESv1_CM.so.1.1.0 ${D}${libdir}/libGLESv1_CM.so
     ln -sf libGLESv1_CM.so.1.1.0 ${D}${libdir}/libGLESv1_CM.so.1
 
     install -d ${D}${includedir}/GLES
-    for name in ${S}/usr/include/GLES/*; do
-        install -m 0644 "$name"  ${D}${includedir}/GLES/
+    for name in ${S}/gpu-core/usr/include/GLES/*; do
+        install -m 0644 "$name" ${D}${includedir}/GLES/
     done
 
 
     # Package libopenvg-mx6
-    install -m 0644 ${S}/usr/lib/libOpenVG.3d.so  ${D}${libdir}/libOpenVG.3d.so
-    install -m 0644 ${S}/usr/lib/libOpenVG.so  ${D}${libdir}/libOpenVG.so
-    install -m 0644 ${WORKDIR}/vg.pc ${D}${libdir}/pkgconfig/vg.pc
+    install -m 0644 ${S}/gpu-core/usr/lib/libOpenVG.3d.so ${D}${libdir}/libOpenVG.3d.so
+    install -m 0644 ${S}/gpu-core/usr/lib/libOpenVG.so ${D}${libdir}/libOpenVG.so
+    install -m 0644 ${S}/gpu-core/usr/lib/pkgconfig/vg.pc ${D}${libdir}/pkgconfig/vg.pc
 
     install -d ${D}${includedir}/VG
-    for name in ${S}/usr/include/VG/*; do
-        install -m 0644 "$name"  ${D}${includedir}/VG/
+    for name in ${S}/gpu-core/usr/include/VG/*; do
+        install -m 0644 "$name" ${D}${includedir}/VG/
     done
 
 
     # Package libglslc-mx6
-    install -m 0644 ${S}/usr/lib/libGLSLC.so ${D}${libdir}/libGLSLC.so
+    install -m 0644 ${S}/gpu-core/usr/lib/libGLSLC.so ${D}${libdir}/libGLSLC.so
 
-    install -d ${D}${includedir}/CL
-    for name in ${S}/usr/include/CL/*; do
-        install -m 0644 "$name"  ${D}${includedir}/CL/
-    done
 
     # Package libopencl-mx6
-    install -m 0644 ${S}/usr/lib/libOpenCL.so ${D}${libdir}/libOpenCL.so
-    install -m 0644 ${S}/usr/lib/libVivanteOpenCL.so ${D}${libdir}/libVivanteOpenCL.so
+    install -m 0644 ${S}/gpu-core/usr/lib/libOpenCL.so ${D}${libdir}/libOpenCL.so
+    install -m 0644 ${S}/gpu-core/usr/lib/libVivanteOpenCL.so ${D}${libdir}/libVivanteOpenCL.so
     install -d ${D}${sysconfdir}/OpenCL/vendors/
-    install -m 0644 ${WORKDIR}/Vivante.icd ${D}${sysconfdir}/OpenCL/vendors/Vivante.icd
+    install -m 0644 ${S}/gpu-core/etc/Vivante.icd ${D}${sysconfdir}/OpenCL/vendors/Vivante.icd
+
+    install -d ${D}${includedir}/CL
+    for name in ${S}/gpu-core/usr/include/CL/*; do
+        install -m 0644 "$name" ${D}${includedir}/CL/
+    done
 
 
     # Package libvsc-mx6
-    install -m 0644 ${S}/usr/lib/libVSC.so ${D}${libdir}/libVSC.so
+    install -m 0644 ${S}/gpu-core/usr/lib/libVSC.so ${D}${libdir}/libVSC.so
+
+
+    # Package imx-gpu-viv-g2d
+    install -m 0644 ${S}/g2d/usr/include/g2d.h ${D}${includedir}/g2d.h
+    install -m 0644 ${S}/g2d/usr/lib/libg2d-viv.so ${D}${libdir}/libg2d-viv.so
+    ln -sf libg2d-viv.so ${D}${libdir}/libg2d.so
+    ln -sf libg2d-viv.so ${D}${libdir}/libg2d.so.0.8
 
 
     # Package libvdk-mx6
-    install -m 0644 ${S}/usr/lib/libVDK.so ${D}${libdir}/libVDK.so
-    install -m 0644 ${S}/usr/include/*vdk.h ${D}${includedir}/
+    install -m 0644 ${S}/gpu-core/usr/lib/libVDK.so ${D}${libdir}/libVDK.so
+    install -m 0644 ${S}/gpu-core/usr/include/*vdk.h ${D}${includedir}/
 
 
     # Package libcsc-mx6
-    install -m 0644 ${S}/usr/lib/libCLC.so ${D}${libdir}/libCLC.so
+    install -m 0644 ${S}/gpu-core/usr/lib/libCLC.so ${D}${libdir}/libCLC.so
 
 
-    # Package gpu-viv-bin-mx6q
+    # Package imx-gpu-viv-demos
     install -d ${D}/opt/viv_samples/
+    install -d ${D}/opt/fsl-samples/
     # Permissions should be correct.
-    cp -r ${S}/opt/viv_samples ${D}/opt/
+    cp -r ${S}/gpu-demos/opt/viv_samples ${D}/opt/
+    cp -r ${S}/gpu-demos/opt/fsl-samples ${D}/opt/
+
+
+    # Package imx-gpu-viv-tools
+    install -d ${D}${bindir}
+    install -m 0755 ${S}/gpu-tools/gmem-info/usr/bin/gmem_info ${D}${bindir}/gmem_info
 }
 
 # THE YOCTO PACKAGEING MECHANISM IS A CRAZY SHIT!!!! INCOMPREHENSIBLE!!!
 # Some notes:
 # - Package dependencies should mostly be correct.
 
-# debug-files avoids warning for "/opt/viv_samples/hal/unit_test/.debug/libgal2DColorKey.so"
-INSANE_SKIP_${PN} += "rpaths already-stripped debug-files"
-FILES_${PN} = "/opt/viv_samples/"
-FILES_${PN}-dev = ""
-FILES_${PN}-dbg = "/opt/viv_samples/*/*/.debug"
-RDEPENDS_${PN} += "libvdk-mx6 libegl-mx6 libgal-mx6 libgles2-mx6 libvsc-mx6 libopencl-mx6"
+# Arg INSANE_SKIP is not per package. It's per recipe!
+# ARG ARG "already-stripped" is per recipe. Not per package!
+INSANE_SKIP_${PN} = "already-stripped"
+
+FILES_imx-gpu-viv-demos = "/opt/viv_samples/ /opt/fsl-samples/"
+FILES_imx-gpu-viv-demos-dbg = " \
+    /opt/viv_samples/*/*/.debug/* \
+    /opt/fsl-samples/g2d/overlay_test/.debug/g2d_overlay_test \
+    /opt/fsl-samples/g2d/.debug/g2d_test \
+"
+RDEPENDS_imx-gpu-viv-demos += " \
+    libvdk-mx6 libegl-mx6 libgal-mx6 libgles2-mx6 libvsc-mx6 \
+    libopencl-mx6 imx-gpu-viv-g2d \
+"
 
 FILES_libclc-mx6 = "${libdir}/libCLC.so"
 FILES_libclc-mx6-dev = "${libdir}/libCLC.so"
@@ -247,10 +277,7 @@ INSANE_SKIP_libgles2-mx6 += "dev-so"
 FILES_libgles2-mx6 = "${libdir}/libGLESv2.so ${libdir}/libGLESv2.so.*"
 FILES_libgles2-mx6-dev = "${includedir}/GLES2 ${libdir}/libGLESv2.so* ${libdir}/pkgconfig/glesv2.pc"
 FILES_libgles2-mx6-dbg = "${libdir}/.debug/libGLESv2.*"
-RDEPENDS_libgles2-mx6 += "libgal-mx6"
-RDEPENDS_libgles2-mx6 += "libvsc-mx6"
-RDEPENDS_libgles2-mx6 += "libopenvg-mx6"
-RDEPENDS_libgles2-mx6 += "libglslc-mx6"
+RDEPENDS_libgles2-mx6 += "libgal-mx6 libvsc-mx6 libopenvg-mx6 libglslc-mx6"
 # NOTE: GLESv2 doesn't depend on libEGL
 # qtbase depends on virtual/egl _and_ virtual/libgles2
 
@@ -324,6 +351,22 @@ FILES_libvdk-mx6 = "${libdir}/libVDK.so"
 FILES_libvdk-mx6-dev = "${includedir}/*vdk.h ${libdir}/libVDK.so"
 FILES_libvdk-mx6-dbg = "${libdir}/.debug/libVDK.so"
 RDEPENDS_libvdk-mx6 += "libegl-mx6"
+
+
+# Avoid error for libg2d.so:
+#   .../build/tmp-glibc/sysroots/x86_64-linux/usr/lib/rpm/bin/debugedit: \
+#        canonicalization unexpectedly shrank by one character
+PACKAGE_DEBUG_SPLIT_STYLE = "debug-without-src"
+
+INSANE_SKIP_imx-gpu-viv-g2d += "dev-so"
+FILES_imx-gpu-viv-g2d = "${libdir}/libg2d.* ${libdir}/libg2d-viv.*"
+FILES_imx-gpu-viv-g2d-dev = "${includedir}/g2d.h"
+FILES_imx-gpu-viv-g2d-dbg = "${libdir}/.debug/libg2d.* ${libdir}/.debug/libg2d-viv.*"
+RDEPENDS_imx-gpu-viv-g2d += "libgal-mx6"
+
+INSANE_SKIP_imx-gpu-viv-tools += "dev-so"
+FILES_imx-gpu-viv-tools = "${bindir}/gmem_info"
+FILES_imx-gpu-viv-tools-dbg = "${bindir}/.debug/gmem_info"
 
 
 PACKAGE_ARCH = "${MACHINE_SOCARCH}"

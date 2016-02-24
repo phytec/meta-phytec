@@ -22,10 +22,10 @@ MACHINE_SOCARCH = "${TUNE_PKGARCH}-mx6qdl"
 PACKAGE_EXTRA_ARCHS_append = " ${MACHINE_SOCARCH}"
 
 # mx6 GPU libraries
-PREFERRED_PROVIDER_virtual/egl ?= "gpu-viv-bin-mx6q"
-PREFERRED_PROVIDER_virtual/libgles1 ?= "gpu-viv-bin-mx6q"
-PREFERRED_PROVIDER_virtual/libgles2 ?= "gpu-viv-bin-mx6q"
-PREFERRED_PROVIDER_virtual/libgl ?= "gpu-viv-bin-mx6q"
+PREFERRED_PROVIDER_virtual/egl ?= "imx-gpu-viv"
+PREFERRED_PROVIDER_virtual/libgles1 ?= "imx-gpu-viv"
+PREFERRED_PROVIDER_virtual/libgles2 ?= "imx-gpu-viv"
+PREFERRED_PROVIDER_virtual/libgl ?= "imx-gpu-viv"
 
 # sd-card image
 IMAGE_CLASSES += "image_types_fsl"

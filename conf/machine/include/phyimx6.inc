@@ -24,8 +24,8 @@ MODULE_TARBALL_DEPLOY = "0"
 
 # Avoid pulling package 'gstreamer1.0-plugins-bad-meta' into the image
 # 'core-image-sato', because the recipe gstreamer1.0-plugins-bad depends on
-# virtual/libgles2 which pulls in gpu-viv-bin-mx6q which conflicts with mesa
-# which is pulled in by xorg-xserver. Puh!
+# virtual/libgles2 which pulls in imx-gpu-viv which conflicts with mesa which
+# is pulled in by xorg-xserver. Puh!
 RRECOMMENDS_gst-player-bin_remove_pn-gst-player = "gstreamer1.0-plugins-bad-meta"
 
 # Use the expected value of the ubifs filesystem's volume name in the kernel
