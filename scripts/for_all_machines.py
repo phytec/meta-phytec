@@ -201,6 +201,11 @@ def main():
 
     # Execute command
     print >>sys.stderr, "%s: cmd is \"%s\"" % (name, cmd)
+
+    # Sanity check II: Print after cmd message to be more visible
+    if len(machines) == 0:
+        print >>sys.stderr, "Warning: List of machines is empty. Nothing will be executed!"
+
     ret, non_build_machines = for_all_machines(machines, cmd)
 
     if len(non_build_machines):
