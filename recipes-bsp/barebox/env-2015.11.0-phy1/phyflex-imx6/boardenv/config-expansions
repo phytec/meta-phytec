@@ -1,3 +1,9 @@
 #!/bin/sh
 
 #. /env/expansions/imx6qdl-phytec-lcd
+
+#Enable VM-011-COL on CSI0
+of_camera_selection -a 0x48 -p 0 -b phyCAM-P VM-011-COL
+
+#Enable VM-011-COL on CSI1
+#of_camera_selection -a 0x48 -p 1 -b phyCAM-P VM-011-COL
