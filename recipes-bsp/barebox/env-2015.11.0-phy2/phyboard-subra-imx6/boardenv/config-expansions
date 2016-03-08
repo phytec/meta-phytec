@@ -16,6 +16,6 @@
 
 
 #Enable VM-010-BW-LVDS
-of_camera_selection -a 0x48 -p 0 -b phyCAM-S+ VM-010-BW
+#of_camera_selection -a 0x48 -p 0 -b phyCAM-S+ VM-010-BW
 
 #of_camera_selection -a 0x48 -p 1 -b phyCAM-S+ VM-010-BW
