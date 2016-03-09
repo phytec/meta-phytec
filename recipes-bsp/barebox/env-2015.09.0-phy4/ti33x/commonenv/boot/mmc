@@ -4,4 +4,4 @@
 
 global.bootm.image=/boot/linuximage
 global.bootm.oftree=/boot/oftree
-global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2"
+global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootflags='data=journal'"

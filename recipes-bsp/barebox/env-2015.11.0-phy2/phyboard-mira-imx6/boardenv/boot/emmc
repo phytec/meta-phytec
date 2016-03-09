@@ -4,4 +4,4 @@
 
 global.bootm.image="/mnt/emmc/zImage"
 global.bootm.oftree="/mnt/emmc/oftree"
-global.linux.bootargs.dyn.root="root=/dev/mmcblk3p2"
+global.linux.bootargs.dyn.root="root=/dev/mmcblk3p2 rootflags='data=journal'"
