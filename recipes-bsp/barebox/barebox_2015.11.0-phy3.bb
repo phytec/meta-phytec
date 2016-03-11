@@ -12,6 +12,7 @@ GIT_URL = "git://git.phytec.de/${PN}"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 SRC_URI_append = " \
     file://no-blspec.cfg \
+    file://nandtest.cfg \
     file://commonenv \
     file://boardenv \
     file://machineenv \
