@@ -116,12 +116,26 @@ int main(int argc, char *argv[])
                         phy_read_mmd(mem, 2, phyad, 8));
         } else if (phy_id1 == 0x22 && phy_id2 == 0x1611) {
                 printf("### KSZ9021\n");
-                printf("Register 0x104 =\t 0x%X\n",
-                        phy_read_ext(mem, phyad, 0x104));
-                printf("Register 0x105 =\t 0x%X\n",
-                        phy_read_ext(mem, phyad, 0x105));
-                printf("Register 0x106 =\t 0x%X\n",
-                        phy_read_ext(mem, phyad, 0x106));
+                int i;
+                for (i = 0; i < 0xe; i++)
+                        printf("Register 0x%x =\t 0x%X\n", i,
+                               phy_read(mem, phyad, i));
+                printf("Register 0xf =\t 0x%X\n",
+                        phy_read(mem, phyad, 0xF));
+                for (i = 0x11; i < 0x14; i++)
+                        printf("Register 0x%x =\t 0x%X\n", i,
+                               phy_read(mem, phyad, i));
+                printf("Register 0x15 =\t 0x%X\n",
+                        phy_read(mem, phyad, 0x15));
+                printf("Register 0x1b =\t 0x%X\n",
+                        phy_read(mem, phyad, 0x1B));
+                printf("Register 0x1c =\t 0x%X\n",
+                        phy_read(mem, phyad, 0x1C));
+                printf("Register 0x1f =\t 0x%X\n",
+                        phy_read(mem, phyad, 0x1F));
+                for (i = 0x100; i < 0x108; i++)
+                        printf("Register 0x%x =\t 0x%X\n", i,
+                                phy_read_ext(mem, phyad, i));
         } else if (phy_id1 == 0x7 && phy_id2 == 0xC0F1) {
                 printf("### LAN8710A\n");
                 printf("Reg  0 =\t 0x%X\n", phy_read(mem, phyad, 0));
