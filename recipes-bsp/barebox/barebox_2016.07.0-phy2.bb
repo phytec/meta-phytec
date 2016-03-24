@@ -1,6 +1,7 @@
 inherit phygittag
 inherit buildinfo
 require barebox.inc
+inherit barebox-environment
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/env-2016.07.0-phy2:"
 

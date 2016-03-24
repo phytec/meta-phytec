@@ -12,11 +12,6 @@ BAREBOX_IPL_IMAGE_BASE_NAME ?= "IPL-${MACHINE}-${PKGV}-${PKGR}-${DATETIME}"
 BAREBOX_IPL_IMAGE_BASE_NAME[vardepsexclude] = "DATETIME"
 BAREBOX_IPL_BIN_SYMLINK ?= "IPL"
 
-# dont use the environment prepare function from barebox
-python do_prepare_env() {
-    return
-} 
-
 do_install () {
 	bbnote "Installing barebox-ipl image on target rootfs"
 	install -d ${D}${base_bootdir}
