@@ -6,13 +6,12 @@ inherit buildinfo
 require barebox.inc
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}/features:"
-FILESEXTRAPATHS_prepend := "${THISDIR}/env-2015.11.0-phy3:"
+FILESEXTRAPATHS_prepend := "${THISDIR}/env-2015.11.0-phy4:"
 
 GIT_URL = "git://git.phytec.de/${PN}"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 SRC_URI_append = " \
     file://no-blspec.cfg \
-    file://nandtest.cfg \
     file://commonenv \
     file://boardenv \
     file://machineenv \
@@ -23,7 +22,7 @@ S = "${WORKDIR}/git"
 PR = "${INC_PR}.0"
 
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "3f9234a0bf87eb9304f4a05cc109a5f7d2bf1ef2"
+SRCREV = "c6deeede5e01353947dc7d943522952619f5b69e"
 
 COMPATIBLE_MACHINE  =  "phyflex-imx6-1"
 COMPATIBLE_MACHINE .= "|phyflex-imx6-2"
