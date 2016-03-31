@@ -1,13 +1,13 @@
 #!/bin/sh
 
 #use this expansion when a capacitive touchscreen is connected
-#. /env/expansions/imx6qdl-phytec-lcd
+. /env/expansions/imx6qdl-phytec-lcd
 
 #use this expansion when a resisitive touchscreen is connected
 #. /env/expansions/imx6qdl-phytec-lcd-res
 
 # imx6qdl-phytec-lcd: 7" display
-#of_display_timings -S /soc/aips-bus@02000000/ldb@020e0008/lvds-channel@0/display-timings/ETM0700G0DH6
+of_display_timings -S /soc/aips-bus@02000000/ldb@020e0008/lvds-channel@0/display-timings/ETM0700G0DH6
 
 # imx6qdl-phytec-lcd: 5.7" display
 #of_display_timings -S /soc/aips-bus@02000000/ldb@020e0008/lvds-channel@0/display-timings/ETMV570G2DHU
