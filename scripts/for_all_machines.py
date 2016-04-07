@@ -8,6 +8,7 @@ import sys
 import os
 import signal
 import re
+from fnmatch import fnmatch
 from subprocess import Popen, PIPE
 
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
@@ -45,7 +46,7 @@ def signal_handler(signum, frame):
     exit_app = True
 
 
-# NOTE: command in cmd must not be a bitbake call. It maybe any shell command.
+# NOTE: Command in cmd must not be a bitbake call. It can be any shell command.
 def call_bitbake(env, machine, prefix, cmd):
     global p
 
@@ -111,23 +112,36 @@ def for_all_machines(machines, cmd):
 
 # Quick and dirty commandline parsing. Maybe use module argparse instead.
 def parse_args(args):
+    # Filter patterns and machines names. Patterns contain characters like *,
+    # ?, [ or ]. Machine names only consist of sane characters.
+    def is_pattern(m_or_p):
+        return '*' in m_or_p or '?' in m_or_p or '[' in m_or_p or ']' in m_or_p
+
     if "--" in args:
         i = args.index("--")
-        machines = args[:i]
-        cmd = args[i + 1:]
+        machines_or_patterns, cmd = args[:i], args[i + 1:]
+
+        patterns = [m_or_p for m_or_p in machines_or_patterns if is_pattern(m_or_p)]
+        machines = [m_or_p for m_or_p in machines_or_patterns if not is_pattern(m_or_p)]
     else:
         # Use all machines
-        machines = None
+        machines = []
+        patterns = []
         cmd = args
-    return cmd, machines
+
+    return cmd, machines, patterns
 
 
 def print_usage():
     name = sys.argv[0]
-    print """Usage: %s [cmd]*   or   %s [machine]* -- [cmd]*
+    print """Usage: %s [cmd]*
+       %s [machine]* -- [cmd]*
+       %s [pattern]* -- [cmd]*
 
  [cmd]*      bitbake or shell command to execute
  [machine]*  one or more machines to use
+ [pattern]*  one or more shell-wildcard patterns to match a subset of machines
+             Can include *, ? and [] modifiers
 
 Calls bitbake or any shell command and sets the appropriated $MACHINE
 environment variable. If only a command is provided, all machines are used.
@@ -142,8 +156,9 @@ Examples:
     ../tools/for_all_machines bitbake virtual/kernel
   Build image for two machines:
     ../tools/for_all_machines phyflex-imx6-1 phyboard-wega-am335x-1 -- bitbake phytec-hwbringup-image
-
-""" % (name, name),
+  Build bootloader for all am335x machines (Quotes are necessary):
+    ../tools/for_all_machines "*am335x*" -- bitbake virtual/bootloader
+""" % (name, name, name)
 
 
 def sanity_checks():
@@ -177,14 +192,31 @@ def main():
         sys.exit(0)
 
     # Parse commandline arguments
-    cmd_list, machines = parse_args(sys.argv[1:])  # remove name of program
-    if machines is None:
-        # Use all machines
-        # Get all machines from sources/meta-phytec/meta-phy*/conf/machine/
+    args = sys.argv[1:]  # remove name of program
+    cmd_list, machines, patterns = parse_args(args)
+
+    if len(patterns) > 0 and len(machines) > 0:
+        print >>sys.stderr, "Error: You cannot use patterns and machines at the same time!"
+        sys.exit(1)
+
+    if len(machines) > 0:
+        # Build machines from commandline
+        machines = machines
+
+    elif len(patterns) > 0:
+        # Build all machines which match shell glob pattern
+        # First get all machines from meta-phytec
         sourcecode = Sourcecode()
-        # sourcecode.machines is a Vividict which is nearly a normal
-        # dict. We only need the machines as a list of strings.
         machines = sourcecode.machines.keys()
+        # Filter machines against patterns. At least one pattern must match!
+        machines = [m for m in machines if any(fnmatch(m, p) for p in patterns)]
+
+    else:
+        # Build all machines from meta-phytec
+        # Get all machines from sources/meta-phytec/conf/machine/
+        sourcecode = Sourcecode()
+        machines = sourcecode.machines.keys()
+
     cmd = " ".join(cmd_list)
 
     # Sanity checks
@@ -205,6 +237,9 @@ def main():
     # Sanity check II: Print after cmd message to be more visible
     if len(machines) == 0:
         print >>sys.stderr, "Warning: List of machines is empty. Nothing will be executed!"
+    else:
+        print >>sys.stderr, "Building machines:"
+        print >>sys.stderr, '\n'.join("  " + m for m in machines)
 
     ret, non_build_machines = for_all_machines(machines, cmd)
 
