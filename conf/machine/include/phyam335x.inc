@@ -64,9 +64,3 @@ GUI_MACHINE_CLASS = "smallscreen"
 PREFERRED_PROVIDER_virtual/libgles1 = "libgles-omap3"
 PREFERRED_PROVIDER_virtual/libgles2 = "libgles-omap3"
 PREFERRED_PROVIDER_virtual/egl = "libgles-omap3"
-
-# Avoid pulling package 'gstreamer1.0-plugins-bad-meta' into the image
-# 'core-image-sato', because the recipe gstreamer1.0-plugins-bad depends on
-# virtual/libgles2 which pulls in libgles-omap3 which conflicts with mesa which
-# is pulled in by xorg-xserver. Puh!
-RRECOMMENDS_gst-player-bin_remove_pn-gst-player = "gstreamer1.0-plugins-bad-meta"

@@ -22,12 +22,6 @@ RDEPENDS_kernel-base = ""
 # dont create legacy tarball of modules
 MODULE_TARBALL_DEPLOY = "0"
 
-# Avoid pulling package 'gstreamer1.0-plugins-bad-meta' into the image
-# 'core-image-sato', because the recipe gstreamer1.0-plugins-bad depends on
-# virtual/libgles2 which pulls in imx-gpu-viv which conflicts with mesa which
-# is pulled in by xorg-xserver. Puh!
-RRECOMMENDS_gst-player-bin_remove_pn-gst-player = "gstreamer1.0-plugins-bad-meta"
-
 # Use the expected value of the ubifs filesystem's volume name in the kernel
 UBI_VOLNAME = "root"
 # The biggest NANDs on current modules are 1GB. With current partition layout,
