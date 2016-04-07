@@ -17,10 +17,6 @@ INTREE_DEFCONFIG_pn-barebox = "am335x_defconfig"
 INTREE_DEFCONFIG_pn-barebox-ipl = "am335x_mlo_defconfig"
 BAREBOX_IPL_IMAGE_BASE_NAME = "MLO-${MACHINE}-${PKGV}-${PKGR}-${DATETIME}"
 BAREBOX_IPL_BIN_SYMLINK = "MLO"
-# all am335x need an mlo, whenever we need a bootloader
-# we need to have a dependency to build the mlo too
-DEPENDS_pn-barebox_append = " virtual/prebootloader"
-DEPENDS_pn-u-boot_append = " virtual/prebootloader"
 
 # Kernel 
 PREFERRED_PROVIDER_virtual/kernel ?= "linux-ti"
