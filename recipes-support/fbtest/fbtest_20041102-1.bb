@@ -5,12 +5,9 @@ HOMEPAGE = "http://www.pengutronix.de/"
 LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://COPYING;md5=ea5bed2f60d357618ca161ad539f7c0a"
 
-#inherit autotools 
-
 PR = "r1"
 
 DEPENDS += "linux-libc-headers"
-#readline genparse-native libtool
 
 SRC_URI = "http://www.pengutronix.de/software/ptxdist/temporary-src/${BPN}-${PV}.tar.gz \
            file://0001-provide-a-pre-generated-penguin.c-to-get-rid-of-this.patch \
@@ -20,11 +17,6 @@ SRC_URI = "http://www.pengutronix.de/software/ptxdist/temporary-src/${BPN}-${PV}
 
 SRC_URI[md5sum] = "d9dc61e96edb60dc52491ce3a5d5185c"
 SRC_URI[sha256sum] = "d215a038eca53c99d0a8ef2b689b3b940b08c39516aa472afbfb5f3cd744118f"
-
-#EXTRA_OEMAKE = 'CROSS_COMPILE=${TARGET_PREFIX}'
-# CC="${TARGET_PREFIX}gcc ${TOOLCHAIN_OPTIONS}"'
-#CROSS_COMPILE = "${TARGET_PREFIX}"
-#CFLAGS += "-I${STAGING_INCDIR} -I${STAGING_KERNEL_DIR}"
 
 do_compile () {
     make
