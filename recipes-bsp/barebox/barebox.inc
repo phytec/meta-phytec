@@ -18,7 +18,6 @@ SRC_URI_append = " \
     file://0001-Makefile-add-TARGETCC.patch \
     file://far.env.bin \
 "
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
 inherit kernel-arch deploy
 inherit kconfig

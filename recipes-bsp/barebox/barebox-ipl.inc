@@ -10,6 +10,9 @@ DESCRIPTION = "Barebox IPL Inintial Program Loader: some machines need \
 PROVIDES = "virtual/prebootloader"
 S = "${WORKDIR}/barebox-${PV}"
 
+# Set include folder explicitly, because ${PN} of IPL recipe is not "barebox".
+FILESEXTRAPATHS_prepend := "${THISDIR}/barebox/:"
+
 # Pre Bootloader 
 BAREBOX_IPL_BIN ?= "barebox.bin"
 BAREBOX_IPL_IMAGE_BASE_NAME ?= "IPL-${MACHINE}-${PKGV}-${PKGR}-${DATETIME}"

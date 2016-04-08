@@ -2,7 +2,6 @@ inherit phygittag
 inherit buildinfo
 require barebox.inc
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}/features:"
 FILESEXTRAPATHS_prepend := "${THISDIR}/env-2015.09.0-phy4:"
 
 GIT_URL = "git://git.phytec.de/${PN}"

@@ -2,8 +2,6 @@ inherit phygittag
 inherit buildinfo
 require barebox-ipl.inc
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/barebox/features:"
-
 GIT_URL = "git://git.phytec.de/barebox"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 S = "${WORKDIR}/git"
