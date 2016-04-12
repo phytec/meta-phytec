@@ -1,3 +1,0 @@
-of_enable_node /wlcore@0
-of_enable_node /fixedregulator@2
-of_enable_node /ocp/mmc@47810000

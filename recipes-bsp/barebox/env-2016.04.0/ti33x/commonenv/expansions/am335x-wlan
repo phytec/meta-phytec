@@ -1,0 +1,3 @@
+of_fixup_status /wlcore@0
+of_fixup_status /fixedregulator@2
+of_fixup_status /ocp/mmc@47810000
