@@ -102,9 +102,19 @@ GIT_TAG = "v${_PV_FILE}"
 PV = "${@oe.utils.conditional("SRCREV", "AUTOINC", "${_PV_FILE}+git${SRCPV}", "${_PV_FILE}", d)}"
 
 
-# Extract the branch from version string in filename:
-# NOTE: The package version is for example "2014.11.0-phy1", but the upstream
-# repository uses the tag name "v2014.11.0" in the branch name. Therefore the
-# upstream branch name is "v2014.11.0-phy", so we must prefixd the version with
-# "v".
-BRANCH = "v${@"${_PV_FILE}".rstrip("0123456789")}"
+# Extract the phytec branch from version string in filename:
+# The package version is for example a phytec version "2014.11.0-phy1" and
+# "4.1.18-phy4". Or a upstream version  like "2014.11.0" or "4.1.18" if the
+# recipe is based on a upstream version without local changes.
+#
+# The function converts the version from the filename to a phytec integration
+# branch. Names look like "v2014.11.0-phy" or "v4.1.18-phy".
+def git_tag_to_integration_branch(_pv_file):
+    if "-phy" in _pv_file:
+        # Is a phytec version, based on a upstream tag. Remove numbers and
+        # add "v" for tag name.
+        return "v" + _pv_file.rstrip("0123456789")
+    else:
+        # Is a original upstream version like "2014.11.0" or "4.1.18".
+        return "v" +  _pv_file + "-phy"
+BRANCH = "${@git_tag_to_integration_branch("${_PV_FILE}")}"
