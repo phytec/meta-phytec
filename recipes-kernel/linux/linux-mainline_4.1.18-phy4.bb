@@ -5,8 +5,6 @@ inherit phygittag
 inherit buildinfo
 include linux-common.inc
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}/features:"
-
 GIT_URL = "git://git.phytec.de/${PN}"
 SRC_URI = "${GIT_URL};branch=${BRANCH};protocol=git"
 SRC_URI_append = " \
