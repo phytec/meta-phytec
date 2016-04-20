@@ -35,6 +35,8 @@ SRC_URI = "http://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/gf
 		   file://99-bufferclass.rules  \
 "
 
+SRC_URI_append = " file://egl.pc"
+
 S = "${WORKDIR}/OMAP35x_Graphics_SDK_${SGXPV}"
 
 # Logic to unpack installjammer file
@@ -192,6 +194,7 @@ do_install () {
 	install -d ${D}${sysconfdir}/udev/rules.d
 	install -m 0644 ${WORKDIR}/99-bufferclass.rules ${D}${sysconfdir}/udev/rules.d/
 
+	install -Dm 0644 ${WORKDIR}/egl.pc ${D}/usr/lib/pkgconfig/egl.pc
 }
 
 PACKAGES =+ "${PN}-rawdemos ${PN}-rawtrainingcourses ${PN}-tests"
@@ -253,7 +256,7 @@ FILES_${PN}-linuxfbwsegl-es9 = "${libdir}/ES9*/libpvrPVR2D_LINUXFBWSEGL.so.*"
 
 CONFFILES_${PN} = "${sysconfdir}/powervr.ini"
 
-FILES_${PN} = "${sysconfdir} ${libdir}/*.so* ${bindir}/${PVR_INIT} ${bindir}/*"
+FILES_${PN} = "${sysconfdir} ${libdir}/*.so* ${bindir}/${PVR_INIT} ${bindir}/* /usr/lib/pkgconfig/*"
 
 FILES_${PN}-tests = "${bindir}/*test*"
 FILES_${PN}-dbg = "${libdir}/.debug/* ${bindir}/.debug/* \
