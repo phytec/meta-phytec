@@ -23,8 +23,8 @@ class BSP_Switcher(BoardSupportPackage):
         # Create a list of available machines. Don't include machines with tag
         # [hide] if requested.
         machines = []
-        for machine, data in self.src.machines.items():
-            if show_all or not "[hide]" in data["description"].lower():
+        for machine in self.machines:
+            if show_all or not "[hide]" in self.src.machines[machine]["description"].lower():
                 machines.append(machine)
 
         machines.sort()
@@ -40,7 +40,7 @@ class BSP_Switcher(BoardSupportPackage):
         while True:
             try:
                 user_input = int(raw_input('$ '))
-                if user_input < 1 or user_input > len(self.src.machines):
+                if user_input < 1 or user_input > len(self.machines):
                     raise ValueError
                 break
             except ValueError:

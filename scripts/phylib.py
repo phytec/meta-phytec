@@ -150,7 +150,9 @@ class BoardSupportPackage(object):
         self.uid = "UNASSIGNED"
         self.pdn = "UNASSIGNED"
         self.soc = "UNASSIGNED"
+        self.machines = ["UNASSIGNED"]
         self.selected_machine = "UNASSIGNED"
+        self.supported_products = ["UNASSIGNED"]
         self.local_conf = ""
         self.build_dir = ""
         self.image_base_dir = ""
@@ -165,6 +167,11 @@ class BoardSupportPackage(object):
             self.image_dir_deploy_N_lw = ""
             self.image_dir_ftp = "ftp://ftp.phytec.de"
             self.probe_selected_release()
+            self.machines= [x for x in self.src.machines if self.soc in x]
+            if self.soc == "am335x":
+                for x in self.src.machines:
+                    if "beaglebone" in x:
+                        self.machines.append(x)
         except (IOError, OSError) as e:
             print "Could not find necessary file: ", e
             raise SystemExit
@@ -180,9 +187,9 @@ class BoardSupportPackage(object):
         try:
             self.uid = release_info["release_uid"]
             self.pdn = release_info["pdn"]
-            self.soc = release_info["soc"]
-            # BSP settings
+            self.soc = release_info["soc"].lower()
             self.selected_machine = release_info["machine"]
+            self.supported_products = release_info["supported_products"].split(",").strip()
         except KeyError, e:
             #There can be measures taken, if a key is not set
             #print e
