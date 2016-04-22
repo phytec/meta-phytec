@@ -23,7 +23,7 @@ DISTRO ?= "yogurt"
 IMAGE_FSTYPES += "sdcard"
 IMAGE_FSTYPES += "tar.gz"
 IMAGE_FSTYPES += "ubifs"
-IMAGE_FSTYPES_append_ti33x = " emmc"
+#IMAGE_FSTYPES_append_ti33x = " emmc"
 DEPLOY_DIR = "${TOPDIR}/deploy"
 
 # Select configuration UI for linux and barebox recipe. The openembedded
