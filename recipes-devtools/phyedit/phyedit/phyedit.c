@@ -150,7 +150,25 @@ int main(int argc, char *argv[])
                 printf("Reg 29 =\t 0x%X\n", phy_read(mem, phyad, 29));
                 printf("Reg 30 =\t 0x%X\n", phy_read(mem, phyad, 30));
                 printf("Reg 31 =\t 0x%X\n", phy_read(mem, phyad, 31));
-        }
+        } else if (phy_id1 == 0x22 && phy_id2 == 0x1560) {
+                int i;
+                printf("### KSZ8091\n");
+                for (i = 0x0; i <= 0x8; i++)
+                        printf("Register 0x%x =\t 0x%X\n", i,
+                                phy_read(mem, phyad, i));
+                printf("Register 0x10 =\t 0x%X\n",
+                        phy_read(mem, phyad, 0x10));
+                printf("Register 0x11 =\t 0x%X\n",
+                        phy_read(mem, phyad, 0x11));
+                for (i = 0x15; i <= 0x18; i++)
+                        printf("Register 0x%x =\t 0x%X\n", i,
+                                phy_read(mem, phyad, i));
+                printf("Register 0x1b =\t 0x%X\n",
+                        phy_read(mem, phyad, 0x1b));
+                for (i = 0x1d; i <= 0x1f; i++)
+                        printf("Register 0x%x =\t 0x%X\n", i,
+                                phy_read(mem, phyad, i));
+	}
 
         munmap(mem, 0x1000);
 
