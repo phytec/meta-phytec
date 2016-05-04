@@ -14,7 +14,7 @@ S = "${WORKDIR}/git"
 
 PR = "r0"
 
-inherit autotools pkgconfig
+inherit autotools pkgconfig update-alternatives
 
 PACKAGES =+ "${PN}-dtblint ${PN}-barebox-state ${PN}-fdtdump"
 
@@ -24,5 +24,8 @@ RDEPENDS_${PN}-dtblint += "${PN}"
 FILES_${PN}-barebox-state += "${bindir}/barebox-state"
 RDEPENDS_${PN}-barebox-state += "${PN}"
 
-FILES_${PN}-fdtdump += "${bindir}/fdtdump"
+FILES_${PN}-fdtdump += "${bindir}/fdtdump.dt-utils"
 RDEPENDS_${PN}-fdtdump += "${PN}"
+ALTERNATIVE_PRIORITY = "100"
+ALTERNATIVE_${PN}-fdtdump = "fdtdump"
+ALTERNATIVE_LINK_NAME[fdtdump] = "${bindir}/fdtdump"
