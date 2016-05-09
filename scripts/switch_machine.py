@@ -7,20 +7,9 @@ import sys
 import argparse
 from phylib import *
 
-def get_soc_of_machine(machine_name):
-    """Heuristic to get SoC of machine. Maybe add a field in machine
-       configuration instead."""
-
-    if "imx6" in machine_name.lower():
-        return "imx6"
-    else:
-        # should also match "beagleboneblack-1.conf"
-        return "am335x"
-
-
 class BSP_Switcher(BoardSupportPackage):
-    """This class extends the bsp with functionality to select one of the
-    included machines throu a shell selection menu
+    """
+    Provide a shell selection menu for the machines.
     """
     def __init__(self):
         super(BSP_Switcher, self).__init__()
@@ -30,19 +19,10 @@ class BSP_Switcher(BoardSupportPackage):
             self.selected_machine = arg
             return self.write_machine_to_localconf()
 
-        # Create a list of available machines. Don't include machines with tag
-        # [hide] if requested.
-        machines = []
-        for machine, data in self.src.machines.items():
-            if not show_all and not self.soc == "all":
-                # If show_all is passed as an argument, show all machines.
-                # Otherwise filter hidding machines and machines from other
-                # socs.
-                if "[hide]" in data["description"].lower():
-                    continue
-                if not self.soc in get_soc_of_machine(machine):
-                    continue
-            machines.append(machine)
+        if show_all:
+            machines = self.src.machines.keys()
+        else:
+            machines = self.supported_machines
 
         machines.sort()
         max_len_machines = max(len(machine) for machine in machines)
@@ -50,14 +30,17 @@ class BSP_Switcher(BoardSupportPackage):
         print '***************************************************'
         print '* Please choose one of the available Machines:'
         print '*'
+        print '* no.: %s : article : description' % "machine".rjust(max_len_machines)
         for i, line in enumerate(machines, 1):
             machine = line.rjust(max_len_machines)
-            print '*   %2d : %s : %s' % (i, machine, self.src.machines[line]['description'])
+            print '* %2d : %s : %s : %s' % (i, machine,
+                            self.src.machines[line]['ARTICLENUMBERS'],
+                            self.src.machines[line]['DESCRIPTION'])
 
         while True:
             try:
                 user_input = int(raw_input('$ '))
-                if user_input < 1 or user_input > len(self.src.machines):
+                if user_input < 1 or user_input > len(machines):
                     raise ValueError
                 break
             except ValueError:

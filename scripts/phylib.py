@@ -29,6 +29,7 @@ import pprint
 import collections
 import shutil
 import subprocess
+import re
 import xml.etree.ElementTree as ET
 
 
@@ -113,20 +114,20 @@ class Sourcecode(object):
                 machname = os.path.splitext(j)[0]
                 path = os.path.join(self.meta_phytec_dir, 'conf/machine', j)
                 self.machines[machname]['abs_path'] = path
-                self.machine_parse_description(machname)
+                self.parse_machine_info(machname)
         return True
 
-    def machine_parse_description(self, machine):
-        # at the moment we get the machine description by extracting
-        # the @DESCRIPTION tag from machine.conf file
-        desc = "no description found"
+    def parse_machine_info(self, machine):
+        # we read the machine information from @TAGS provided
+        # by the machine.conf files.
         file = open(self.machines[machine]['abs_path'])
         for line in file:
-            if '@DESCRIPTION' in line:
-                desc = line.split(":", 1)[1][:-1]
-                break
-        self.machines[machine]['description'] = desc
-
+            m = re.search(r'(@[A-Z]+:)', line)
+            if m:
+                data = line.split(m.group(0))[1]
+                # remove leading @ and tailing : from tag
+                tag = m.group(0)[1:-1]
+                self.machines[machine][tag] = data.strip()
 
 class BoardSupportPackage(object):
     def __init__(self):
@@ -136,6 +137,7 @@ class BoardSupportPackage(object):
         self.pdn = "UNASSIGNED"
         self.soc = "all"
         self.selected_machine = "UNASSIGNED"
+        self.supported_machines = []
         self.local_conf = ""
         self.build_dir = ""
         self.image_base_dir = ""
@@ -146,6 +148,12 @@ class BoardSupportPackage(object):
             self.build_dir = os.path.join(self.src.bsp_dir, "build")
             self.image_base_dir = os.path.join(self.src.bsp_dir, "build/deploy/images")
             self.probe_selected_release()
+            self.supported_machines = []
+            for x in self.src.machines:
+                if self.src.machines[x]['SUPPORTEDIMAGE']:
+                    if self.soc in x or self.soc == "all":
+                        self.supported_machines.append(x)
+
         except (IOError, OSError) as e:
             print "Could not find necessary file: ", e
             raise SystemExit
