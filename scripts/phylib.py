@@ -134,7 +134,7 @@ class BoardSupportPackage(object):
         self.src = Sourcecode()
         self.xml = ""
         self.pdn = "UNASSIGNED"
-        self.soc = "UNASSIGNED"
+        self.soc = "all"
         self.selected_machine = "UNASSIGNED"
         self.local_conf = ""
         self.build_dir = ""
@@ -167,11 +167,6 @@ class BoardSupportPackage(object):
             #There can be measures taken, if a key is not set
             #print e
             pass
-
-        # Checks
-        if self.soc not in ("imx6", "am335x"):
-            raise Exception("Soc '%s' in manifest not valid. Must be 'imx6' or 'am335x'!" %
-                            (self.soc,))
 
     def probe_selected_release(self):
         repo_dir = self.src.get_repo_dir()

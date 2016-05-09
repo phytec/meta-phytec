@@ -34,13 +34,13 @@ class BSP_Switcher(BoardSupportPackage):
         # [hide] if requested.
         machines = []
         for machine, data in self.src.machines.items():
-            if not show_all:
+            if not show_all and not self.soc == "all":
                 # If show_all is passed as an argument, show all machines.
                 # Otherwise filter hidding machines and machines from other
                 # socs.
                 if "[hide]" in data["description"].lower():
                     continue
-                if self.soc != "UNASSIGNED" and not self.soc in get_soc_of_machine(machine):
+                if not self.soc in get_soc_of_machine(machine):
                     continue
             machines.append(machine)
 
