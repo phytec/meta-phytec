@@ -20,9 +20,9 @@ DISTRO ?= "yogurt"
 
 # You can disable and enable FSTYPES as you wish. e.g. 'ext4'.
 # This is ordering dependend.
-IMAGE_FSTYPES += "sdcard"
 IMAGE_FSTYPES += "tar.gz"
-IMAGE_FSTYPES += "ubifs"
+IMAGE_FSTYPES_append_mx6 = " sdcard ubifs"
+IMAGE_FSTYPES_append_ti33x = " sdcard ubifs"
 #IMAGE_FSTYPES_append_ti33x = " emmc"
 DEPLOY_DIR = "${TOPDIR}/deploy"
 
