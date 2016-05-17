@@ -17,7 +17,7 @@ BAREBOX_LOCALVERSION = "-${BSP_VERSION}"
 PR = "${INC_PR}.0"
 
 # NOTE: Keep version in filename in sync with commit id and barebox-ipl!
-SRCREV = "eb699b609649147f2706b2c86a9599275bdecbdf"
+SRCREV = "675d2418dc7c4973cb8d84c964352907cc0257e4"
 
 COMPATIBLE_MACHINE = "beagleboneblack-1"
 COMPATIBLE_MACHINE .= "|phyboard-maia-am335x-1"

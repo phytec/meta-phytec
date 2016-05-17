@@ -11,7 +11,7 @@ BAREBOX_LOCALVERSION = "-${BSP_VERSION}"
 
 PR = "${INC_PR}.1"
 
-SRCREV = "eb699b609649147f2706b2c86a9599275bdecbdf"
+SRCREV = "675d2418dc7c4973cb8d84c964352907cc0257e4"
 
 SRC_URI_append = " file://noafiboard.cfg"
 
