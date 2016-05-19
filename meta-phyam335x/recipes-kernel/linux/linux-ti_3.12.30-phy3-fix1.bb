@@ -28,7 +28,7 @@ LINUX_VERSION = "${PV}"
 PR = "${INC_PR}.0"
 
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "d28a07a4c2debbd8bf147517c2467711a019265a"
+SRCREV = "f3e8346c641a9668df6b55b376597c32a814a843"
 
 COMPATIBLE_MACHINE = "beagleboneblack-1"
 SRC_URI_append_beagleboneblack-1 = " file://beagleboneblack-1.cfg"
