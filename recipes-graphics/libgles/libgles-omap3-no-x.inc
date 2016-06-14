@@ -35,7 +35,7 @@ SRC_URI = "http://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/gf
 		   file://99-bufferclass.rules  \
 "
 
-SRC_URI_append = " file://egl.pc"
+SRC_URI_append = " file://egl.pc file://glesv2.pc"
 
 S = "${WORKDIR}/OMAP35x_Graphics_SDK_${SGXPV}"
 
@@ -195,6 +195,7 @@ do_install () {
 	install -m 0644 ${WORKDIR}/99-bufferclass.rules ${D}${sysconfdir}/udev/rules.d/
 
 	install -Dm 0644 ${WORKDIR}/egl.pc ${D}/usr/lib/pkgconfig/egl.pc
+	install -Dm 0644 ${WORKDIR}/glesv2.pc ${D}/usr/lib/pkgconfig/glesv2.pc
 }
 
 PACKAGES =+ "${PN}-rawdemos ${PN}-rawtrainingcourses ${PN}-tests"
