@@ -10,8 +10,8 @@ BINLOCATION_ti814x = "${S}/gfx_rel_es6.x"
 BINLOCATION_ti33x = "${S}/gfx_rel_es8.x"
 BINLOCATION_ti43x = "${S}/gfx_rel_es9.x"
 
-PLATFORM = "LinuxARMV7"
-PVR_INIT = "pvrsrvctl"
+export PLATFORM = "LinuxARMV7"
+export PVR_INIT = "pvrsrvctl"
 
 SGXPV = "5_01_01_02"
 IMGPV = "1.10.2359475"

@@ -31,8 +31,10 @@ RCONFLICTS_${PN} = "libegl libgles1 libgles2"
 RCONFLICTS_${PN}-dev = "libegl-dev libgles1-dev libgles2-dev"
 RCONFLICTS_${PN}-dbg = "libegl-dbg libgles1-dbg libgles2-dbg"
 
-SRC_URI = "http://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/gfxsdk/${SGXPV}/exports/${BINFILE} \
-		   file://99-bufferclass.rules  \
+SRC_URI = "http://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/gfxsdk/${SGXPV}/exports/${BINFILE}"
+SRC_URI += "\
+    file://99-bufferclass.rules  \
+    file://0001-Makefiles-fix-PLAT_CC.patch \
 "
 
 SRC_URI_append = " file://egl.pc file://glesv2.pc"
@@ -51,6 +53,8 @@ export ES8LOCATION ?= "${S}/gfx_rel_es8.x"
 export ES9LOCATION ?= "${S}/gfx_rel_es9.x"
 
 LIBGLESWINDOWSYSTEM ?= "libpvrPVR2D_FRONTWSEGL.so.1"
+
+export SDK_INSTALL_DIR = "${WORKDIR}"
 
 do_configure() {
 	# Attempt to fix up the worst offenders for file permissions
@@ -71,6 +75,8 @@ do_configure() {
 	# Due to recursive make PLAT_* isn't always passed down correctly, so use sed to fix those
 	for mak in $(find ${S} -name "*.mak") ; do
 		sed -i -e s:arm-none-linux-gnueabi-:${TARGET_PREFIX}:g $mak
+                sed -i '/^PLAT_CC/d' $mak
+                sed -i '/^PLAT_CPP/d' $mak
 	done
 
 	# clear out old stuff
