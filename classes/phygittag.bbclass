@@ -72,7 +72,7 @@
 # Get the version string from the recipe filename and store it into a 'local'
 # variable for further use in this bbclass.
 # NOTE: The same handler is used in bitbake.conf for the real PV variable.
-_PV_FILE = "${@bb.parse.BBHandler.vars_from_file(d.getVar('FILE'),d)[1] or '1.0'}"
+_PV_FILE = "${@bb.parse.BBHandler.vars_from_file(d.getVar('FILE', False),d)[1] or '1.0'}"
 
 
 # Construct the git tag name from the version string in the recipe filename.
