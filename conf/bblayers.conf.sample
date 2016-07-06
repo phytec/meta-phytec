@@ -1,15 +1,14 @@
-# LAYER_CONF_VERSION is increased each time build/conf/bblayers.conf
+# POKY_BBLAYERS_CONF_VERSION is increased each time build/conf/bblayers.conf
 # changes incompatibly
-LCONF_VERSION = "6"
+POKY_BBLAYERS_CONF_VERSION = "2"
 
 BBPATH = "${TOPDIR}"
-OEROOT := "##OEROOT##"
-
 BBFILES ?= ""
 
-BBLAYERS  = " \
+OEROOT := "##OEROOT##"
+BBLAYERS  ?= " \
   ${OEROOT}/meta \
-  ${OEROOT}/meta-yocto \
+  ${OEROOT}/meta-poky \
   ${OEROOT}/../meta-phytec \
   ${OEROOT}/../meta-yogurt \
   ${OEROOT}/../meta-openembedded/meta-oe \
@@ -18,4 +17,4 @@ BBLAYERS  = " \
   ${OEROOT}/../meta-openembedded/meta-multimedia \
   ${OEROOT}/../meta-qt5 \
   ${OEROOT}/../meta-openembedded/meta-ruby \
-"
+  "
