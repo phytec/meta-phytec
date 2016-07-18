@@ -15,7 +15,6 @@ LICENSE = "GPL-2.0"
 LIC_FILES_CHKSUM = "file://COPYING;md5=057bf9e50e1ca857d0eb97bfe4ba8e5d"
 SRC_URI = "http://barebox.org/download/barebox-${PV}.tar.bz2"
 SRC_URI_append = " \
-    file://0001-Makefile-add-TARGETCC.patch \
     file://far.env.bin \
 "
 
@@ -63,6 +62,12 @@ do_configure_append() {
     if test ! -z "$env_dirs"; then
         kconfig_set DEFAULT_ENVIRONMENT_PATH "\"$env_dirs\""
     fi
+
+    # Don't compile target tools for barebox here
+    kconfig_set BAREBOXENV_TARGET n
+    kconfig_set BAREBOXCRC32_TARGET n
+    kconfig_set KERNEL_INSTALL_TARGET n
+    kconfig_set IMD_TARGET n
 }
 
 # its possible to give three environment folders to barebox: commonenv,
