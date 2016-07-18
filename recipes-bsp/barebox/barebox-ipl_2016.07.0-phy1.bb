@@ -8,7 +8,7 @@ S = "${WORKDIR}/git"
 
 PR = "${INC_PR}.0"
 
-SRCREV = "c8a619231c7d548dd1d93d0fd6bcf9d0147eb00b"
+SRCREV = "5653786efa3a3997350d3e452ade16f80e3b65b4"
 
 SRC_URI_append = " file://netboot.cfg"
 

@@ -2,7 +2,7 @@ inherit phygittag
 inherit buildinfo
 require barebox.inc
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/env-2016.04.0-phy1:"
+FILESEXTRAPATHS_prepend := "${THISDIR}/env-2016.07.0-phy1:"
 
 GIT_URL = "git://git.phytec.de/${PN}"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
@@ -17,7 +17,7 @@ S = "${WORKDIR}/git"
 PR = "${INC_PR}.0"
 
 # NOTE: Keep version in filename in sync with commit id and barebox-ipl!
-SRCREV = "c8a619231c7d548dd1d93d0fd6bcf9d0147eb00b"
+SRCREV = "5653786efa3a3997350d3e452ade16f80e3b65b4"
 
 COMPATIBLE_MACHINE = "beagleboneblack-1"
 COMPATIBLE_MACHINE .= "|phyboard-maia-am335x-1"
