@@ -1,2 +1,2 @@
 of_fixup_status /hdmi
-of_fixup_status /ocp/lcdc@0x4830e000
+of_fixup_status /ocp/lcdc@4830e000
