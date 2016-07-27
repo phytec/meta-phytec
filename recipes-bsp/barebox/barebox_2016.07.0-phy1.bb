@@ -10,7 +10,6 @@ SRC_URI_append = " \
     file://commonenv \
     file://boardenv \
     file://machineenv \
-    file://targettools.cfg \
 "
 S = "${WORKDIR}/git"
 
