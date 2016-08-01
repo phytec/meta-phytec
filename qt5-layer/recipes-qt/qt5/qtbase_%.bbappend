@@ -4,6 +4,7 @@
 # opengl, we have to disable gl and enable gles2 by hand here.
 PACKAGECONFIG_GL_mx6 = "gles2"
 PACKAGECONFIG_GL_ti33x = "gles2"
+PACKAGECONFIG_GL_rk3288 = "gles2"
 
 # From the layer meta-fsl-arm. Fix qtbase build.
 do_configure_prepend_mx6() {
