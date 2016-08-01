@@ -18,3 +18,5 @@ PROVIDES_remove_mx6 = "virtual/libgles2 virtual/egl virtual/libgles1"
 #   ERROR: Multiple .bb files are due to be built which each provide virtual/egl ...
 #    This usually means one provides something the other doesn't and should.
 PROVIDES_remove_ti33x = "virtual/libgles2 virtual/egl virtual/libgles1"
+
+PROVIDES_remove_rk3288 = "virtual/libgles2 virtual/libgles1 virtual/egl"
