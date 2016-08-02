@@ -1,0 +1,76 @@
+#!/bin/sh
+# This script is a init script for our bsp. It resides in the bsp release specific folder
+# this is the soc specific init script. It assumes that you have only one soc layer
+# which holds all your machines.
+PHYLINUX_API_VERSION="2"
+
+# Try to find ROOTDIR from arg0 of shell process.
+DIR="`dirname $(readlink -f $0)`"
+
+# Try to find ROOTDIR of the Yocto BSP. Walk up the directory tree until we
+# find the sources/meta-phytec or .repo directory. Returns the empty string as
+# an error code.
+find_root_dir() {
+	dir=$(readlink -f "$1")  # should return an absoulte path
+	while [ ! "$dir" = "/" ]; do
+		if [ -d "$dir/.repo" ]; then
+		# or [ -d "$dir/sources/meta-phytec" ];
+			echo $dir;
+			return;
+		fi
+		dir=$(dirname "$dir")
+	done
+	# If anchor directory isn't found, function returns the empty strings
+	# as an error code.
+}
+
+ROOTDIR=$(find_root_dir "$DIR")
+if [ "$ROOTDIR" = "" ]; then
+	echo >&2 "ERROR: Cannot find root directory of the Yocto BSP."
+        echo >&2 "Is '$DIR' in a checkout of a BSP? Aborting..."
+	exit 1;
+fi
+
+
+# Folders and Readme
+PHYTEC_DIR="${ROOTDIR}/sources/meta-phytec"
+install -m 0644 ${PHYTEC_DIR}/conf/doc/HOWTO ${ROOTDIR}
+
+# Setup template directory. Allow caller to overwrite default TEMPLATECONF.
+if [ -z "${TEMPLATECONF}" ]; then
+	export TEMPLATECONF="${ROOTDIR}/tools/templateconf"
+	install -d ${TEMPLATECONF}
+	install -m 0644 ${PHYTEC_DIR}/conf/bblayers.conf.sample ${TEMPLATECONF}
+	install -m 0644 ${PHYTEC_DIR}/conf/local.conf.sample ${TEMPLATECONF}
+	install -m 0644 ${PHYTEC_DIR}/conf/conf-notes.txt ${TEMPLATECONF}
+fi
+
+# Init a build directory if we dont have one.
+# NOTE: Since the script 'oe-buildenv-internal' will use the current working
+# directory as the base for the build directory, we set the build directory
+# explicitly as argument here. So the 'init' script's actions don't depend on
+# the current working directory of the caller. This method works for dash, too.
+if [ -z "${1}" ]; then
+	set -- "${ROOTDIR}/build"
+else
+	set -- "${ROOTDIR}/${1}"
+fi
+cd ${ROOTDIR}/sources/poky/
+. ./oe-init-build-env > /dev/null
+
+${PHYTEC_DIR}/scripts/copy_site_conf.py
+${PHYTEC_DIR}/scripts/init_machine.py
+
+echo ""
+echo "Before you start your work, please check your build/conf/local.conf for"
+echo "host specific configuration. Check the documentation especially for:"
+echo "   - proxy settings"
+echo "   - DL_DIR"
+echo "   - SSTATE_DIR"
+echo ""
+echo "To set up your shell environment for some Yocto work, you have to type this"
+echo "command, including the 'dot':"
+echo ""
+echo "    $ . sources/poky/oe-init-build-env"
+echo ""
+echo ""

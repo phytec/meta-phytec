@@ -1,0 +1,72 @@
+MACHINE ?= "UNASSIGNED"
+
+DISTRO ?= "yogurt"
+
+# The following line disables the autostart of the phytec-qtdemo by
+# default, but you can start the demo anytime using
+#  $ systemctl start phytec-qtdemo.service
+#SYSTEMD_AUTO_ENABLE_pn-phytec-qtdemo = "disable"
+
+# That are the default values of bitbake.  Adapt these to your workspace and
+# host preferences.
+#DL_DIR = "${TOPDIR}/downloads"
+#SSTATE_DIR = "${TOPDIR}/sstate-cache"
+
+# License Handling
+#  - Uncomment for Freescale i.MX6 proprietary GPU libraries
+#LICENSE_FLAGS_WHITELIST += "license-freescale_v6-february-2015_imx-gpu-viv"
+#  - Uncomment for Freescale i.MX6 legacy VPU firmware blobs
+#LICENSE_FLAGS_WHITELIST += "license-freescale_v6-february-2015_firmware-imx"
+
+# You can disable and enable FSTYPES as you wish. e.g. 'ext4'.
+# This is ordering dependend.
+IMAGE_FSTYPES += "tar.gz"
+IMAGE_FSTYPES_append_mx6 = " sdcard ubifs"
+IMAGE_FSTYPES_append_ti33x = " sdcard ubifs"
+#IMAGE_FSTYPES_append_ti33x = " emmc"
+DEPLOY_DIR = "${TOPDIR}/deploy"
+
+# Select configuration UI for linux and barebox recipe. The openembedded
+# default is 'menuconfig', 'nconfig' has more features.
+#KCONFIG_CONFIG_COMMAND = "menuconfig"
+KCONFIG_CONFIG_COMMAND = "nconfig"
+
+# The default package class of the distro yogurt is 'package_ipk'. The first
+# value is used as the package manager to build the image and sdk. To build
+# also tar packages use
+#PACKAGE_CLASSES = "package_ipk package_tar"
+
+# Variable IMAGE_ROOTFS_EXTRA_SPACE from poky/meta/conf/documentation.conf:
+#   Defines additional free disk space created in the image in Kbytes. By
+#   default, this variable is set to '0'.
+# This example line adds an additional 512 MiB of free space to the root
+# filesystem:
+#IMAGE_ROOTFS_EXTRA_SPACE = "524288"
+
+# See http://www.yoctoproject.org/docs/1.8/ref-manual/ref-manual.html#ref-features-image
+#   "Through these variables, you can add several different predefined
+#    packages such as development utilities or packages with debug information
+#    needed to investigate application problems or profile applications
+EXTRA_IMAGE_FEATURES = ""
+# - "Makes an image suitable for development (e.g. allows root logins without
+#    passwords and enables post-installation logging)"
+EXTRA_IMAGE_FEATURES += "debug-tweaks"
+# - "Installs debug symbol packages for all packages installed in a given
+#    image."
+#EXTRA_IMAGE_FEATURES += "dbg-pkgs"
+# - "Installs debugging tools such as strace and gdb."
+#EXTRA_IMAGE_FEATURES += "tools-debug"
+
+#SDKMACHINE ?= "x86_64"
+
+OE_TERMINAL = "auto"
+PATCHRESOLVE = "noop"
+BB_DISKMON_DIRS = "\
+    STOPTASKS,${TMPDIR},1G,100K \
+    STOPTASKS,${DL_DIR},1G,100K \
+    STOPTASKS,${SSTATE_DIR},1G,100K \
+    ABORT,${TMPDIR},100M,1K \
+    ABORT,${DL_DIR},100M,1K \
+    ABORT,${SSTATE_DIR},100M,1K"
+
+CONF_VERSION = "1"

@@ -1,0 +1,4 @@
+of_enable_node /display@di0
+of_enable_node /backlight
+of_enable_node /soc/aips-bus@02100000/i2c@021a0000/edt-ft5x06@38
+of_enable_node /soc/aips-bus@02000000/pwm@02080000

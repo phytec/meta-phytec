@@ -1,0 +1,65 @@
+#! /bin/sh
+
+# Based on the script wipe-sysroot in poky/oe-core.
+#
+# Wipe out all of the images and binaries of all images in ${DEPLOY_DIR}/images
+# and all of the stamps that populated it.
+#
+#   Author: Stefan Christ <s.christ@phytec.de>
+#   Copyright (C) 2016 PHYTEC Messtechnik GmbH
+#
+# Copyright and author of wipe-sysroot:
+#   Author: Ross Burton <ross.burton@intel.com>
+#   Copyright (c) 2012 Intel Corporation
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
+set -e
+
+if [ $# -gt 0 ]; then
+    echo "Wipe all images and binaries in \${DEPLOY_DIR}/images"
+    echo "Usage: $0"
+    exit 1
+fi
+
+ENVS=`mktemp --suffix -wipe-deploy-images-envs`
+bitbake -p -e > $ENVS
+
+
+eval `grep -F SSTATE_MANIFESTS= $ENVS`
+eval `grep -F DEPLOY_DIR= $ENVS`
+eval `grep -F STAMPS_DIR= $ENVS`
+rm -f $ENVS
+
+if [ -z "$SSTATE_MANIFESTS" -o -z "$DEPLOY_DIR" -o -z "$STAMPS_DIR" ]; then
+    echo "Could not determine SSTATE_MANIFESTS/DEPLOY_DIR/STAMPS_DIR from bitbake, check above for errors" >&2
+    exit 1
+fi
+
+echo "Deleting the binaries and images in"
+echo "    $DEPLOY_DIR/images,"
+echo "and selected stamps in"
+echo "    $SSTATE_MANIFESTS and"
+echo "    $STAMPS_DIR."
+
+# Delete the images and binaries themselves
+rm -v -rf $DEPLOY_DIR/images
+
+# Delete the stamps that said the images and binaries were populated
+rm -v -rf $STAMPS_DIR/*/*/*.do_rootfs.*
+rm -v -rf $STAMPS_DIR/*/*/*.do_deploy.*
+rm -v -rf $STAMPS_DIR/*/*/*.do_deploy_setscene.*
+
+# Delete the sstate manifests
+rm -v -rf $SSTATE_MANIFESTS/manifest-*.deploy

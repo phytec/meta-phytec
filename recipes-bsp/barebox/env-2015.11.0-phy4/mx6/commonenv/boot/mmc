@@ -1,0 +1,7 @@
+#!/bin/sh
+
+[ -e /env/config-expansions ] && /env/config-expansions
+
+global.bootm.image="/mnt/mmc/zImage"
+global.bootm.oftree="/mnt/mmc/oftree"
+global.linux.bootargs.dyn.root="root=/dev/mmcblk2p2 rootflags='data=journal'"

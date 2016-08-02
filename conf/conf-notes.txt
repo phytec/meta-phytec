@@ -1,0 +1,20 @@
+
+██████╗ ██╗  ██╗██╗   ██╗████████╗███████╗ ██████╗
+██╔══██╗██║  ██║╚██╗ ██╔╝╚══██╔══╝██╔════╝██╔════╝
+██████╔╝███████║ ╚████╔╝    ██║   █████╗  ██║     
+██╔═══╝ ██╔══██║  ╚██╔╝     ██║   ██╔══╝  ██║     
+██║     ██║  ██║   ██║      ██║   ███████╗╚██████╗
+╚═╝     ╚═╝  ╚═╝   ╚═╝      ╚═╝   ╚══════╝ ╚═════╝
+
+
+Welcome to the PHYTEC BSP-Yocto buildsystem.
+
+Before building for the first time, you should take a look in the main
+configuration file 'conf/local.conf'. There you can tweak the build system
+settings and license configuration. For example you may have to accept the
+Freescale/NXP GPU and VPU licence for an i.MX6 board.
+
+Tested build targets for the yocto bsp are:
+	bitbake phytec-headless-image
+	bitbake phytec-qt5demo-image
+

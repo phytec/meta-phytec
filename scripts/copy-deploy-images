@@ -1,0 +1,123 @@
+#!/bin/sh
+
+# Copyright (C) 2015 PHYTEC Messtechnik GmbH,
+# Author: Stefan Christ <s.christ@phytec.de>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+# TODO add flag -v,--verbose
+
+set -e
+
+# Functions
+get_image_files () {
+	# Use all links, but not the zImage-$MACHINE.bin link
+	#   $ find  deploy/images/phycore-am335x-1/  -type l | sort
+	#   deploy/images/phycore-am335x-1/barebox.bin
+	#   deploy/images/phycore-am335x-1/barebox.config
+	#   deploy/images/phycore-am335x-1/MLO
+	#   deploy/images/phycore-am335x-1/MLO.config
+	#   deploy/images/phycore-am335x-1/MLO.per
+	#   deploy/images/phycore-am335x-1/zImage
+	#   deploy/images/phycore-am335x-1/zImage-am335x-phycore-rdk.dtb
+	#   deploy/images/phycore-am335x-1/zImage.config
+	#   deploy/images/phycore-am335x-1/zImage-phycore-am335x-1.bin
+
+	dir="$1"
+	find "$dir" -maxdepth 1 -type l \! -name "zImage-*.bin"
+}
+
+print_usage () {
+	name="$1"
+	cat >&2 <<EOL
+Usage: $name [<source directory>] <destination directory>" >&2
+Copies images from the deploy directory and computes MD5 and SHA1 checksums.
+
+Deploy all machines:
+    copy-deploy-images deploy/images ~/share/d/BSP-X/images/
+    copy-deploy-images ~/share/d/BSP-X/images/
+
+Deploy a single machine:"
+    copy-deploy-images deploy/images/machine-xxx ~/share/d/BSP-X/machine-xxx
+
+The script doesn't remove any files or directories in the destination
+directory, but it will overwrite existing files. If you need a clean
+destination directory, remove it first.
+
+To check the images after the copy operation execute
+    find ~/share/d/BSP-X/images -name sha1sum.txt  -execdir sha1sum -c sha1sum.txt ";"
+
+EOL
+}
+
+
+# Parse commandline arguments
+if test "$#" -eq 1 ; then
+	src_dir="."
+	dest_dir="$1"
+elif test "$#" -eq 2 ; then
+	src_dir="$1"
+	dest_dir="$2"
+else
+	print_usage "copy-deploy-images"
+	exit 1
+fi
+
+
+# Checks
+if ! test -d "$src_dir"; then
+	echo "ERROR: Source directory '$src_dir' doesn't exist!" >&2
+	exit 1
+fi
+
+
+# Create destination root directory
+mkdir -p "$dest_dir"
+
+
+# Descend in subshell into the $src_dir. Find should print paths relative to
+# $src_dir.
+for dir in $(cd "$src_dir" && find . -type d); do
+	src_image_dir="$src_dir"/"$dir"
+	dest_image_dir="$dest_dir"/"$dir"
+	echo copy files in $dir
+
+	# Get full paths to all files which should be deployed
+	# - use "| sort" to be a deterministic
+	files=$(get_image_files "$src_image_dir" | sort) || exit 1
+
+	# Get only the names of the files. Need them to execute the checksum
+	# tool in the image directory.
+	# - The "sed 's#\./##g'" removes the prefix "./" from all filenames.
+	#   They are not needed and look ugly in the checksum files.
+	names=$(cd "$src_image_dir" && get_image_files "." | sed 's#\./##g' | sort) || exit 1
+
+	if test -z "$files" ; then
+		echo "Warning: No images in '$dir'. Skipping folder!" >&2
+		continue # No files to copy
+	fi
+
+	# First create directory in desitnation directory
+	mkdir -p "$dest_image_dir"
+
+	# Write files to destination directory
+	# -L: always follow symbolic links in SOURCE
+	# -f: overwrite files
+	cp -L -f $files "$dest_image_dir"
+
+	# Compute checksums in source directory and write checksum file to
+	# destination directory.
+	(cd $src_image_dir && md5sum $names)  > "$dest_image_dir"/md5sum.txt
+	(cd $src_image_dir && sha1sum $names) > "$dest_image_dir"/sha1sum.txt
+done

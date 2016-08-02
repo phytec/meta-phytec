@@ -1,15 +1,12 @@
-PREMIRRORS_append () {
-}
-
-MIRRORS_append () {
-ftp://.*/.* ftp://ftp.phytec.de/pub/BSP_PACKAGES/yoctomirror/
-cvs://.*/.* ftp://ftp.phytec.de/pub/BSP_PACKAGES/yoctomirror/
-svn://.*/.* ftp://ftp.phytec.de/pub/BSP_PACKAGES/yoctomirror/
-git://.*/.* ftp://ftp.phytec.de/pub/BSP_PACKAGES/yoctomirror/
-hg://.*/.*  ftp://ftp.phytec.de/pub/BSP_PACKAGES/yoctomirror/
-bzr://.*/.* ftp://ftp.phytec.de/pub/BSP_PACKAGES/yoctomirror/
-osc://.*/.* ftp://ftp.phytec.de/pub/BSP_PACKAGES/yoctomirror/
-p4://.*/.*  ftp://ftp.phytec.de/pub/BSP_PACKAGES/yoctomirror/
-svk://.*/.* ftp://ftp.phytec.de/pub/BSP_PACKAGES/yoctomirror/
-https?$://.*/.*	ftp://ftp.phytec.de/pub/BSP_PACKAGES/yoctomirror/
-}
+MIRRORS += "\
+ftp://.*/.*     ftp://ftp.phytec.de/pub/Software/Linux/Yocto/SourceMirror/ \n \
+cvs://.*/.*     ftp://ftp.phytec.de/pub/Software/Linux/Yocto/SourceMirror/ \n \
+svn://.*/.*     ftp://ftp.phytec.de/pub/Software/Linux/Yocto/SourceMirror/ \n \
+git://.*/.*     ftp://ftp.phytec.de/pub/Software/Linux/Yocto/SourceMirror/ \n \
+gitsm://.*/.*   ftp://ftp.phytec.de/pub/Software/Linux/Yocto/SourceMirror/ \n \
+hg://.*/.*      ftp://ftp.phytec.de/pub/Software/Linux/Yocto/SourceMirror/ \n \
+bzr://.*/.*     ftp://ftp.phytec.de/pub/Software/Linux/Yocto/SourceMirror/ \n \
+osc://.*/.*     ftp://ftp.phytec.de/pub/Software/Linux/Yocto/SourceMirror/ \n \
+p4://.*/.*      ftp://ftp.phytec.de/pub/Software/Linux/Yocto/SourceMirror/ \n \
+https?$://.*/.*	ftp://ftp.phytec.de/pub/Software/Linux/Yocto/SourceMirror/ \n \
+"

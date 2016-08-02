@@ -1,0 +1,18 @@
+#!/bin/sh
+#use this expansion when a capacitive touchscreen is connected
+. /env/expansions/am335x-phytec-lcd-018-pcm-953
+
+#use this expansion when a resisitive touchscreen is connected
+#. /env/expansions/am335x-phytec-lcd-018-pcm-953-res
+
+#7" display
+#of_display_timings -S /panel/display-timings/ETM0700G0DH6
+
+#5.7" display
+#of_display_timings -S /panel/display-timings/ETMV570G2DHU
+
+#4.3" display
+#of_display_timings -S /panel/display-timings/ETM0430G0DH6
+
+#3.5" display
+#of_display_timings -S /panel/display-timings/ETM0350G0DH6

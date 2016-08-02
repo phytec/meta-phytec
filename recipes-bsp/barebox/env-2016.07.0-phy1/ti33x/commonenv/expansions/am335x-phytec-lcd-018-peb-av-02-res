@@ -1,0 +1,6 @@
+of_fixup_status /panel
+of_fixup_status /backlight
+of_fixup_status /ocp/lcdc@4830e000/
+of_fixup_status /ocp/epwmss@48304000/
+of_fixup_status /ocp/epwmss@48304000/ecap@48304100/
+of_fixup_status /ocp/tscadc@44e0d000/
