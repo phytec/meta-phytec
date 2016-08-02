@@ -1,0 +1,320 @@
+========================================
+PHYTEC Yocto Linux BSP: Yocto Quickstart
+========================================
+
+NOTE: For expert users who want to get our barebox and kernel only: have a look
+at at the conf/doc/HOWTO-<SOC> file of the meta-phy<SOC> layer. It describes in
+which git repository to look for a specific kernel or barebox version. If you
+already have a Yocto/OpenEmbedded workflow running you can get meta-phytec and
+the meta-phy<SOC> layers, with all the board specific patches directly from
+
+ git://git.phytec.de
+
+Prerequisite
+============
+
+You need to have a running Linux distribution at your hand. It should be
+running on a powerful machine, as a lot of compiling will be done on it.
+Yocto needs a handful of additional packages on your host. For Ubuntu
+14.04 you need:
+
+ sudo apt-get install gawk wget git-core diffstat unzip texinfo \
+                      gcc-multilib build-essential chrpath socat \
+                      libsdl1.2-dev xterm
+
+For the other distributions you can find infos in the Yocto Quickstart:
+
+http://www.yoctoproject.org/docs/latest/yocto-project-qs/yocto-project-qs.html
+
+Phytec Linux Script
+===================
+
+Create a fresh project folder, e.g.
+
+ mkdir ~/yocto
+
+Download and run the init script
+
+ cd ~/yocto
+ wget ftp://ftp.phytec.de/pub/Software/Linux/Yocto/Tools/phyLinux
+ chmod +x phyLinux
+ ./phyLinux init
+
+The script will ask you to install the "repo tool" in your /usr/local/bin
+folder. You can install it at a different location manually. Repo will be 
+automatically detected by phyLinux if it is found in the PATH. The repo tool
+will be used to manage the different git repositories of the Yocto BSP.
+
+During the execution of the script, you need to choose your processor platform,
+Phytec's BSP release number and the hardware you are working on. If you cannot
+identify your board with the information given in the selector, have a look at
+the invoice of the product.
+After the configuration is done, you can always run
+
+ ./phyLinux info
+
+to see which BSP and Machine is selected in the current workspace.
+If you don't want to use the selector, phyLinux also supports command line
+arguments for the several settings, e.g.
+
+ ./phyLinux init -p am335x -r PD14.1-rc1 -m phycore-am335x-1
+
+or view the command help
+
+ ./phyLinux init -h
+
+Build set up
+============
+
+Before starting the Yocto build, it is advisable to configure the development
+setup. Two things are most important: the download directory and the cache
+directory. It is not a precondition to do this, but strongly recommended, as it
+will help a lot with build times in the development process.
+
+The download directory is a place where Yocto stores all sources fetched from
+the Internet. It can contain tar.gz, git mirror or anything else. It is very
+useful to set this to a common shared location on the machine, so that all
+developers can reuse this directory for their builds.
+
+The cache directory stores all stages of the build process. Poky has quite an
+involved caching infrastructure. It is advisable too, to create a shared
+directory, as all builds can access this cache directory, called shared state
+cache.
+
+Create the two directories on a drive where you have approximately 50GB of
+ space and assign the two Variables in your build/local.conf.
+
+ DL_DIR ?= "<your_directory>/yocto_downloads"
+ SSTATE_DIR ?= "<your_directory>/yocto_sstate/1.7"
+
+If you want to know more about configuring your build, have a look at the
+documented example settings:
+
+ sources/poky/meta-yocto/conf/local.conf.sample
+ sources/poky/meta-yocto/conf/local.conf.sample.extended
+
+Start the build
+===============
+
+After you downloaded all the meta data with phyLinux init, you have to set up
+the shell environment variables. This needs to be done every time you open a
+new shell for starting builds. We use the shell script provided by poky in its
+default configuration. From the root of your project directory type:
+
+ source sources/poky/oe-init-build-env
+
+The current working directory of the shell should change to build/ and you are
+now ready to build your first image. We suggest to start with our hardware
+bring-up image to see if everything is working correctly. If you want, you can
+separate the download process from the compile process to identify problems of
+your Internet connection. With
+
+ bitbake -c fetchall phytec-hwbringup-image
+
+all external source repositories get pulled into the download directory. With
+
+ du -sh <DL_DIR>
+
+you can see what the download volume was. Now start the compile process.
+
+ bitbake phytec-hwbringup-image
+
+The first compile process takes about 40 minutes on a modern Intel Core i7. All
+subsequent builds will use the filled caches and should take about 3 minutes.
+
+Images
+======
+If everything went fine, the images can be found under:
+
+ cd deploy/images/<MACHINE>
+
+The easiest way to test your image is to jumper your board for sdcard boot and
+flash the build image to sdcard:
+
+ sudo dd if=phytec-hwbringup-image-<MACHINE>.sdimg-phy of=/dev/<your_device> bs=1MB
+
+where <your_device> could be "sde" for example, depending on your system. Be
+very careful when selecting the right drive! You have been warned.
+After booting you can login using a serial cable or over ssh. There is no root
+password. That is because of the debug settings in conf/local.conf. If you
+comment out the line
+
+ #EXTRA_IMAGE_FEATURES = "debug-tweaks"
+
+the debug settings, like setting an empty root password, will not be applied.
+
+============
+Common tasks
+============
+
+Add existing community software or libraries
+============================================
+
+To add another software to the image have a look at
+
+http://layers.openembedded.org/layerindex/branch/dizzy/layers/
+
+to find out the name of the package and in which layer it can be found. If it
+is in the meta-openembedded layer, the recipe is already in your build tree.
+Check in build/conf/bblayers.conf if the corresponding meta layer gets parsed
+to bitbake. Than you just add the software to your image by adding following
+line into build/conf/local.conf
+
+ IMAGE_INSTALL_append = " <software>"
+
+Please note the leading whitespace, which is necessary for the append command.
+If you want to add another layer to the build, download it into sources and
+add it to the build/conf/bblayers.conf file.
+
+Change or configure an existing software
+========================================
+
+We advise you to create your own layer on top of the existing BSP
+meta-<your_project>, and start your work there. That way it will be easier to
+react on updates of the BSP and your custom changes don't need to be applied
+again. To configure or change a existing software you can use the PACKAGECONFIG
+mechanism and create a .bbappend file in your own layer, e.g.
+
+ barebox_%.bbappend
+
+Poky includes several tools to inspect your build layout. You can inspect the
+commands of the layer tool:
+
+ bitbake-layers
+
+It can for example be used to view in which layer a specific recipe gets
+modified.
+
+ bitbake-layers show-appends
+
+Add you own project
+===================
+
+Inside your layer, you can start a new recipe and have several possibilities to
+include your sources in your build.
+
+ - use a pre-built adt
+ - create a toolchain installer and work "out of tree"
+ - use the toolchain out of the tmp/ dir
+ - remote scm repository
+ - local scm repository
+ - temporary scm
+ - source code files
+
+If you need more information on how to use these methods and how create a new
+layer and a new recipe and so on, the Yocto Project delivers documentation for
+many different use cases.
+
+Yocto Documentation
+===================
+
+The most important piece of the documentation for a BSP user is probably the
+developer manual.
+
+http://www.yoctoproject.org/docs/current/dev-manual/dev-manual.html
+
+Especially the chapter about common tasks is a good starting point.
+
+http://www.yoctoproject.org/docs/current/dev-manual/dev-manual.html#extendpoky
+
+The complete documentation is available in one single html page, which is good
+for searching for a feature or a variable name:
+
+http://www.yoctoproject.org/docs/current/mega-manual/mega-manual.html
+
+====================
+BSP Reference Manual
+====================
+
+The BSP consists roughly of three parts. BSP management, BSP meta data and BSP
+content. The management consists of repo and phyLinux, the meta data depends on
+the soc and describes how to build the software and the content are Phytec's
+git repositories and external sources.
+
+BSP management
+==============
+
+Yocto is an umbrella project. Naturally, this will force the user to base his
+work on several external repositories. They need to be managed in a
+deterministic way. The repo tool is one way of managing git repository tasks in
+a more comfortable way. Phytec's Yocto BSP is managed with repo.
+
+Repo
+----
+
+Repo is a wrapper around the repo tool set. The phyLinux script will install
+the wrapper in a global path. This is only a wrapper, though. Whenever you run
+"repo init -u <url>", you first download the repo tools from googles git server
+in a specific version to the .repo/repo directory. Next time you run repo, all
+the commands will be available. So be aware of the fact, that the repo version
+in different build directories can drift apart over the years if you don't run
+repo sync. Also if you store stuff for the archives, you need to include the
+complete .repo folder.
+
+Repo expects a git repository which will be parsed from the command line. In
+case of our BSP, we called it phy²octo, derived from Phytecs yocto, phyyocto,
+phy²octo. In this repository the hole information about a software BSP release
+is stored in the form of a repo xml manifest. This data structure defines URLs
+of git servers, called "remotes", and git repositories and it states, called
+"projects". The git repositories can be checked out in different states. The
+revision field can be a branch, tag or commit id of a repository. So the state
+of the software is not necessarily unique, e.g. the HEAD of a branch,  and can
+change over time.
+That is the reason we use only tags or commit ids for our releases. The state
+of the working directory is therefore unique and does not change.
+
+The manifests for the releases have the same name as the release itself. It is
+a unique identifier for the complete BSP. The releases are sorted by SOC
+platform. Thats why you have to choose the SOC you are using. The selected SOC
+will define the branch of the phy²octo git repository which will be checked
+out for the manifest selection.
+
+phyLinux
+--------
+
+The phyLinux script is a helper to get started with the BSP structure. You can
+get all the BSP sources without the need of interacting with repo. There are
+only two important commands at the moment init and info. The first uses the
+repo tool to fetch all meta data of a BSP, the other probes the work directory
+for the version which is checked out and gives you some hints about the current
+state.
+
+BSP meta data
+=============
+
+The Yocto Project separates meta data into layers. A layer can have a specific
+function, e.g. serve as a BSP to configure software packages for board
+specifics. It can also serve as a Linux Distribution layer and can define the
+system layout and package infrastructure. We use Poky as a base for our BSP.
+Inside the meta layers you will find bitbake recipes, classes and config files.
+
+Poky
+----
+
+Poky is the Yocto Project Reference Distribution. It consists of bitbake, the
+build tool, a collection of Linux base recipes and some scripts. The recipes
+describe how a specific software gets downloaded, compiled and installed. The
+classes define functionality in a broader sense. Config files and patches
+accompany the recipes. Poky defines only a very rudimentary Linux system. That
+is why we need meta-openembedded.
+
+meta-openembedded
+-----------------
+
+OpenEmbedded is a collection of different layers containing the build
+abstraction for a lot of software packages. The layers do not follow Yocto in
+its version scheme. So there can be conflicts if one pulls random packages
+together.
+
+meta-phytec
+-----------
+
+This layer contains common features for all our BSPs. And is the core of our
+BSP, together with the SOC layers.
+
+meta-phytec/meta-phy<SOC>
+-------------------------
+
+Those layers define the barebox, kernel and software configuration for specific
+boards. The boards get defined in the machine config files in conf/machine.
+More details can be found in the corresponding HOWTO inside the layer.
