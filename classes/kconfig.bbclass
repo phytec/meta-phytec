@@ -116,6 +116,7 @@ python do_savedefconfig() {
     shutil.copyfile(os.path.join(B, "defconfig"), workdir_defconfig)
 }
 addtask savedefconfig after do_configure
+do_savedefconfig[dirs] = "${B}"
 do_savedefconfig[nostamp] = "1"
 
 # Define which command will run when calling bitbake -c menuconfig
@@ -141,3 +142,4 @@ python do_menuconfig() {
     oe_terminal("${SHELL} -c \"TERM=\"xterm-256color\";make %s; if [ \$? -ne 0 ]; then echo 'Command failed.'; printf 'Press any key to continue... '; read r; fi\"" % d.getVar('KCONFIG_CONFIG_COMMAND', True),
         pn + ' Configuration', d)
 }
+do_menuconfig[dirs] = "${B}"
