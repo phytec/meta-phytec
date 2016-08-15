@@ -1,1 +1,2 @@
 of_fixup_status /user_leds
+of_fixup_status /user_buttons
