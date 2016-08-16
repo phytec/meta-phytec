@@ -40,16 +40,6 @@ do_patch_append () {
         shutil.copyfile(dts, cptarget)
 }
 
-# This fixes the broken upstream kernel recipe. In the kernel.bbclass we still
-# have a missing fix of:
-# addtask shared_workdir after do_compile_kernelmodules before do_strip
-# which is refused to be merged because of the crazy yocto-kernel design.
-python() {
-    d.setVarFlag("do_compile_kernelmodules", "deps", ['do_compile'])
-    d.setVarFlag("do_shared_workdir", "deps", ['do_compile_kernelmodules'])
-    d.setVarFlag("do_strip", "deps", ['do_shared_workdir', 'do_kernel_link_vmlinux'])
-}
-
 KERNEL_IMAGE_BASE_NAME = "${KERNEL_IMAGETYPE}-${PN}-${PKGV}-${PKGR}-${MACHINE}-${DATETIME}"
 do_deploy_append() {
     install -m 644 ${B}/.config ${DEPLOYDIR}/${KERNEL_IMAGE_BASE_NAME}.config
