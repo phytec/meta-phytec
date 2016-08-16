@@ -10,10 +10,6 @@ include linux-common.inc
 
 GIT_URL = "git://git.phytec.de/${PN}"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
-SRC_URI_append = " \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'ipv6', 'file://ipv6.cfg', '', d)} \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'file://systemd.cfg', '', d)} \
-"
 
 S = "${WORKDIR}/git"
 

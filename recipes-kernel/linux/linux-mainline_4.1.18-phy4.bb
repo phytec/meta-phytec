@@ -7,10 +7,6 @@ include linux-common.inc
 
 GIT_URL = "git://git.phytec.de/${PN}"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
-SRC_URI_append = " \
-    file://ipv6.cfg \
-    file://systemd.cfg \
-"
 
 PR = "${INC_PR}.1"
 
