@@ -14,7 +14,7 @@ SRC_URI_append = " \
     ${@bb.utils.contains('DISTRO_FEATURES', 'ipv6', 'file://ipv6.cfg', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'file://systemd.cfg', '', d)} \
 "
-SRC_URI[vardeps] += "DISTRO_FEATURES"
+
 S = "${WORKDIR}/git"
 
 PR = "${INC_PR}.0"
