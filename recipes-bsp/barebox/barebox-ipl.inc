@@ -1,14 +1,7 @@
-# Copyright (C) 2014 Stefan Mueller-Klieser <s.mueller-klieser@phytec.de> \
-# PHYTEC Messtechnik GmbH
-# Recipe released under the GPL-3.0 license
-
-require barebox.inc
-
 DESCRIPTION = "Barebox IPL Inintial Program Loader: some machines need \
                a pre-bootloader. This one gets build by the barebox."
 # Overwrite PROVIDES in barebox.inc
 PROVIDES = "virtual/prebootloader"
-S = "${WORKDIR}/barebox-${PV}"
 
 # Set include folder explicitly, because ${PN} of IPL recipe is not "barebox".
 FILESEXTRAPATHS_prepend := "${THISDIR}/barebox/:"

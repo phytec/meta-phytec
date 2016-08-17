@@ -7,7 +7,7 @@ require barebox.inc
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/env-2015.11.0-phy4:"
 
-GIT_URL = "git://git.phytec.de/${PN}"
+GIT_URL = "git://git.phytec.de/barebox"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 SRC_URI_append = " \
     file://no-blspec.cfg \
