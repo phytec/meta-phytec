@@ -1,41 +1,29 @@
-# Copyright (C) 2014 Stefan Mueller-Klieser <s.mueller-klieser@phytec.de>
-# PHYTEC Messtechnik GmbH
-SUMMARY = "The Barebox Bootloader"
-DESCRIPTION = "Barebox (formerly known as u-boot-v2) is a bootloader that \
-               inherits the best of U-Boot and the Linux kernel: The size and \
-	       look-and-feel of u-boot, with driver model and lots of design \
-	       concepts from the kernel. \
-	       The bb recipe adds config fragment support and kconfig \
-	       command handling using the yocto kern-tools-native and \
-	       kconfig-frontends-native."
+SUMMARY = "The barebox bootloader"
+DESCRIPTION = "The barebox is a bootloader designed for embedded systems. It \
+               runs on a variety of architectures including x86, ARM, MIPS, \
+               PowerPC and others."
 HOMEPAGE = "http://www.barebox.org"
 SECTION = "bootloaders"
-PROVIDES = "virtual/bootloader"
 LICENSE = "GPL-2.0"
 LIC_FILES_CHKSUM = "file://COPYING;md5=057bf9e50e1ca857d0eb97bfe4ba8e5d"
+DEPENDS += "lzop-native"
+PROVIDES = "virtual/bootloader"
+# Increase INC_PR everytime the include file is changed.
+INC_PR = "r7"
+
 SRC_URI = "http://barebox.org/download/barebox-${PV}.tar.bz2"
 SRC_URI_append = " \
     file://far.env.bin \
 "
+PATCHTOOL = "git"
 
 inherit kernel-arch deploy
 inherit kconfig
 
-# Increase INC_PR everytime the include file is changed.
-INC_PR = "r6"
-
-PACKAGE_ARCH = "${MACHINE_ARCH}"
-
-B = "${WORKDIR}/build"
-
 # verbose build 0/1
 VERBOSE_BUILD ?= "0"
 EXTRA_OEMAKE = 'CROSS_COMPILE="${TARGET_PREFIX}" CC="${TARGET_PREFIX}gcc" V="${VERBOSE_BUILD}"'
-# target rootfs boot directory
-base_bootdir = "/boot"
-PATCHTOOL = "git"
-
-DEPENDS += "lzop-native"
+B = "${WORKDIR}/build"
 
 # name of the image created by barebox Makefile
 BAREBOX_BIN ?= "barebox.bin"
@@ -48,7 +36,6 @@ BAREBOX_BIN_SYMLINK ?= "barebox.bin"
 BAREBOX_COMMON_ENVDIR = "${WORKDIR}/commonenv"
 BAREBOX_MACHINE_ENVDIR = "${WORKDIR}/machineenv"
 BAREBOX_BOARD_ENVDIR = "${WORKDIR}/boardenv"
-
 
 do_configure_append() {
     # Add environment directories to .config if they exist
@@ -109,31 +96,36 @@ python do_prepare_env() {
 addtask prepare_env after do_patch before do_configure
 
 do_compile () {
-	unset CFLAGS LDFLAGS
-	oe_runmake all
+    unset CFLAGS LDFLAGS
+    oe_runmake all
 }
+
+# target rootfs boot directory
+base_bootdir = "/boot"
 
 do_install () {
-	bbnote "Installing barebox image on target rootfs"
-	install -d ${D}${base_bootdir}
-	install ${B}/${BAREBOX_BIN} ${D}${base_bootdir}/${BAREBOX_IMAGE_BASE_NAME}.bin
-	ln -sf ${BAREBOX_IMAGE_BASE_NAME}.bin ${D}${base_bootdir}/${BAREBOX_BIN_SYMLINK}
+    bbnote "Installing barebox image on target rootfs"
+    install -d ${D}${base_bootdir}
+    install ${B}/${BAREBOX_BIN} ${D}${base_bootdir}/${BAREBOX_IMAGE_BASE_NAME}.bin
+    ln -sf ${BAREBOX_IMAGE_BASE_NAME}.bin ${D}${base_bootdir}/${BAREBOX_BIN_SYMLINK}
 }
 do_install[prefuncs] += "package_get_auto_pr"
-FILES_${PN} = ""
-FILES_${PN} += "${base_bootdir}"
+
+PACKAGE_ARCH = "${MACHINE_ARCH}"
+
+FILES_${PN} = "${base_bootdir}"
 
 do_deploy () {
-	bbnote "Deploying barebox"
-	install -m 644 ${B}/${BAREBOX_BIN} ${DEPLOYDIR}/${BAREBOX_IMAGE_BASE_NAME}.bin
-	ln -sf ${BAREBOX_IMAGE_BASE_NAME}.bin ${DEPLOYDIR}/${BAREBOX_BIN_SYMLINK}
+    bbnote "Deploying barebox"
+    install -m 644 ${B}/${BAREBOX_BIN} ${DEPLOYDIR}/${BAREBOX_IMAGE_BASE_NAME}.bin
+    ln -sf ${BAREBOX_IMAGE_BASE_NAME}.bin ${DEPLOYDIR}/${BAREBOX_BIN_SYMLINK}
 
-	bbnote "Installing host barebox toolset"
-	install -d ${STAGING_BINDIR_NATIVE}
-	install -m 755 ${B}/scripts/bareboxenv ${STAGING_BINDIR_NATIVE}/
+    bbnote "Installing host barebox toolset"
+    install -d ${STAGING_BINDIR_NATIVE}
+    install -m 755 ${B}/scripts/bareboxenv ${STAGING_BINDIR_NATIVE}/
 
-	install -m 644 ${B}/.config ${DEPLOYDIR}/${BAREBOX_IMAGE_BASE_NAME}.config
-	ln -sf ${BAREBOX_IMAGE_BASE_NAME}.config ${DEPLOYDIR}/${PN}.config
+    install -m 644 ${B}/.config ${DEPLOYDIR}/${BAREBOX_IMAGE_BASE_NAME}.config
+    ln -sf ${BAREBOX_IMAGE_BASE_NAME}.config ${DEPLOYDIR}/${PN}.config
 }
 do_deploy[prefuncs] += "package_get_auto_pr"
 addtask deploy before do_build after do_compile
