@@ -14,6 +14,7 @@ SRC_URI_append = " \
     file://commonenv \
     file://boardenv \
     file://machineenv \
+    file://0001-scripts-Add-scripts-include-to-include-path-for-targ.patch \
 "
 
 S = "${WORKDIR}/git"

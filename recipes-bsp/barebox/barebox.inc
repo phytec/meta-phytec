@@ -30,7 +30,7 @@ B = "${WORKDIR}/build"
 
 # verbose build 0/1
 VERBOSE_BUILD ?= "0"
-EXTRA_OEMAKE = 'TARGETCC="${CC}" V=${VERBOSE_BUILD} CROSS_COMPILE=${TARGET_PREFIX} CC="${TARGET_PREFIX}gcc ${TOOLCHAIN_OPTIONS}"'
+EXTRA_OEMAKE = 'CROSS_COMPILE="${TARGET_PREFIX}" CC="${TARGET_PREFIX}gcc" V="${VERBOSE_BUILD}"'
 # target rootfs boot directory
 base_bootdir = "/boot"
 PATCHTOOL = "git"
@@ -118,30 +118,10 @@ do_install () {
 	install -d ${D}${base_bootdir}
 	install ${B}/${BAREBOX_BIN} ${D}${base_bootdir}/${BAREBOX_IMAGE_BASE_NAME}.bin
 	ln -sf ${BAREBOX_IMAGE_BASE_NAME}.bin ${D}${base_bootdir}/${BAREBOX_BIN_SYMLINK}
-
-	if [ -e ${B}/scripts/bareboxenv-target ] ; then
-		bbnote "Installing target env tool"
-		install -d ${D}${base_sbindir}
-		install -m 744 ${B}/scripts/bareboxenv-target ${D}${base_sbindir}/bareboxenv
-	fi
-
-	if [ -e ${B}/scripts/bareboxcrc32-target ] ; then
-		bbnote "Installing target crc32 tool"
-		install -d ${D}${base_sbindir}
-		install -m 744 ${B}/scripts/bareboxcrc32-target ${D}${base_sbindir}/bareboxcrc32
-	fi
-
-	if [ -e ${B}/scripts/kernel-install-target ] ; then
-		bbnote "Installing target kernel-install tool"
-		install -d ${D}${base_sbindir}
-		install -m 744 ${B}/scripts/kernel-install-target ${D}${base_sbindir}/barebox-kernel-install
-	fi
 }
 do_install[prefuncs] += "package_get_auto_pr"
 FILES_${PN} = ""
 FILES_${PN} += "${base_bootdir}"
-PACKAGES =+ "${PN}-targettools"
-FILES_${PN}-targettools += "${base_sbindir}/barebox*"
 
 do_deploy () {
 	bbnote "Deploying barebox"

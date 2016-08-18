@@ -11,6 +11,7 @@ SRC_URI_append = " \
     file://boardenv \
     file://machineenv \
 "
+
 S = "${WORKDIR}/git"
 
 PR = "${INC_PR}.0"

@@ -1,0 +1,36 @@
+From f81d608b2efde7801f865514753b888e3121cbd0 Mon Sep 17 00:00:00 2001
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue, 29 Mar 2016 10:16:11 +0200
+Subject: [PATCH] scripts: Add scripts/include/ to include path for target
+ programs
+
+Programs compiled for the target need -I $(srctree)/scripts/include/ to
+be able to include for example linux/err.h.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ scripts/Makefile | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/scripts/Makefile b/scripts/Makefile
+index a3f6222..8eab2be 100644
+--- a/scripts/Makefile
++++ b/scripts/Makefile
+@@ -44,12 +44,13 @@ targetprogs-$(CONFIG_IMD_TARGET) += bareboximd-target
+ subdir-	+= basic kconfig setupmbr
+ 
+ quiet_cmd_csingle	= CC      $@
+-      cmd_csingle	= $(CC) -Wp,-MD,$(depfile) $(CFLAGS) -o $@ $<
++      cmd_csingle	= $(CC) -Wp,-MD,$(depfile) $(TARGETCFLAGS) $(CFLAGS) -o $@ $<
+ 
+ __targetprogs	:= $(sort $(targetprogs-y) $(targetprogs-m))
+ target-csingle	:= $(foreach m,$(__targetprogs),$(if $($(m)-objs),,$(m)))
+ __targetprogs	:= $(addprefix $(obj)/,$(__targetprogs))
+ target-csingle	:= $(addprefix $(obj)/,$(target-csingle))
++TARGETCFLAGS += -I$(srctree)/scripts/include/
+ 
+ always		:= $(hostprogs-y) $(hostprogs-m) $(targetprogs-y)
+ 
+-- 
+1.9.1
+
