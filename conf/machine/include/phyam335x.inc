@@ -30,10 +30,6 @@ SERIAL_CONSOLES ?= "115200;ttyO0"
 RDEPENDS_kernel-base = ""
 # dont create legacy tarball of modules
 MODULE_TARBALL_DEPLOY = "0"
-# powermanagement firmware for the on-die Cortex M3
-# the newer version makes a lot of problems dont include
-# per default
-#RDEPENDS_kernel-modules_append = " amx3-cm3"
 
 # rootfs images
 # register image class for usage
