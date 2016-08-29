@@ -52,7 +52,7 @@ XSERVER = "xserver-xorg \
 # Default to external video, change to smallscreen for built-in LCD
 GUI_MACHINE_CLASS = "smallscreen"
 
-# OpenGLES support TI SDK 5xx, doesnt supports x11 nor wayland as of now
-PREFERRED_PROVIDER_virtual/libgles1 = "libgles-omap3"
-PREFERRED_PROVIDER_virtual/libgles2 = "libgles-omap3"
-PREFERRED_PROVIDER_virtual/egl = "libgles-omap3"
+# OpenGLES support for AM335x SGX Core
+PREFERRED_PROVIDER_virtual/libgles1 = "ti-sgx-ddk-um"
+PREFERRED_PROVIDER_virtual/libgles2 = "ti-sgx-ddk-um"
+PREFERRED_PROVIDER_virtual/egl = "ti-sgx-ddk-um"

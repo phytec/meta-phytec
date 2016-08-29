@@ -20,6 +20,7 @@ SRCREV = "e3fe937f0464bf6b7bd980a909859f3839bd2847"
 
 RDEPENDS_kernel-modules_ti33x = "\
     ${@bb.utils.contains('MACHINE_FEATURES', 'suspend', 'amx3-cm3', '', d)} \
+    ${@bb.utils.contains('MACHINE_FEATURES', 'sgx', 'ti-sgx-ddk-km', '', d)} \
 "
 
 COMPATIBLE_MACHINE = "beagleboneblack-1"
