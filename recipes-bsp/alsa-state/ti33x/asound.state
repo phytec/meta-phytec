@@ -2474,7 +2474,7 @@ state.AM335xphyCORE {
 	control.6 {
 		iface MIXER
 		name 'PCM Volume'
-		value 255
+		value 247
 		comment {
 			access 'read write'
 			type INTEGER
@@ -2482,13 +2482,13 @@ state.AM335xphyCORE {
 			range '0 - 255'
 			dbmin -9999999
 			dbmax 0
-			dbvalue.0 0
+			dbvalue.0 -400
 		}
 	}
 	control.7 {
 		iface MIXER
 		name 'High Pass Filter Switch'
-		value false
+		value true
 		comment {
 			access 'read write'
 			type BOOLEAN
@@ -2498,7 +2498,7 @@ state.AM335xphyCORE {
 	control.8 {
 		iface MIXER
 		name 'High Pass Cut Off'
-		value 0
+		value 4
 		comment {
 			access 'read write'
 			type INTEGER
@@ -2519,7 +2519,7 @@ state.AM335xphyCORE {
 	control.10 {
 		iface MIXER
 		name 'Capture Volume'
-		value 245
+		value 255
 		comment {
 			access 'read write'
 			type INTEGER
@@ -2527,7 +2527,7 @@ state.AM335xphyCORE {
 			range '0 - 255'
 			dbmin -9999999
 			dbmax 0
-			dbvalue.0 -500
+			dbvalue.0 0
 		}
 	}
 	control.11 {
@@ -2916,7 +2916,7 @@ state.AM335xphyCORE {
 	control.43 {
 		iface MIXER
 		name 'Capture PGA Volume'
-		value 21
+		value 16
 		comment {
 			access 'read write'
 			type INTEGER
@@ -2924,7 +2924,7 @@ state.AM335xphyCORE {
 			range '0 - 63'
 			dbmin -1200
 			dbmax 3525
-			dbvalue.0 375
+			dbvalue.0 0
 		}
 	}
 	control.44 {
@@ -2950,7 +2950,7 @@ state.AM335xphyCORE {
 	control.46 {
 		iface MIXER
 		name 'Speaker Playback Volume'
-		value 43
+		value 57
 		comment {
 			access 'read write'
 			type INTEGER
@@ -2958,10 +2958,22 @@ state.AM335xphyCORE {
 			range '0 - 63'
 			dbmin -5700
 			dbmax 600
-			dbvalue.0 -1400
+			dbvalue.0 0
 		}
 	}
 	control.47 {
+		iface MIXER
+		name 'Mic Bias Level'
+		value '0.9*AVDD'
+		comment {
+			access 'read write'
+			type ENUMERATED
+			count 1
+			item.0 '0.9*AVDD'
+			item.1 '0.65*AVDD'
+		}
+	}
+	control.48 {
 		iface MIXER
 		name 'Aux Mode'
 		value Buffer
@@ -2973,7 +2985,7 @@ state.AM335xphyCORE {
 			item.1 Mixer
 		}
 	}
-	control.48 {
+	control.49 {
 		iface MIXER
 		name 'Capture Boost(+20dB)'
 		value false
@@ -2983,7 +2995,7 @@ state.AM335xphyCORE {
 			count 1
 		}
 	}
-	control.49 {
+	control.50 {
 		iface MIXER
 		name 'Mono Playback Switch'
 		value true
@@ -2993,7 +3005,7 @@ state.AM335xphyCORE {
 			count 1
 		}
 	}
-	control.50 {
+	control.51 {
 		iface MIXER
 		name 'DAC 128x Oversampling Switch'
 		value true
@@ -3003,20 +3015,10 @@ state.AM335xphyCORE {
 			count 1
 		}
 	}
-	control.51 {
-		iface MIXER
-		name 'ADC 128x Oversampling Switch'
-		value false
-		comment {
-			access 'read write'
-			type BOOLEAN
-			count 1
-		}
-	}
 	control.52 {
 		iface MIXER
-		name 'Boost Mixer Aux Switch'
-		value false
+		name 'ADC 128x Oversampling Switch'
+		value true
 		comment {
 			access 'read write'
 			type BOOLEAN
@@ -3025,7 +3027,7 @@ state.AM335xphyCORE {
 	}
 	control.53 {
 		iface MIXER
-		name 'Input PGA Aux Switch'
+		name 'Speaker Mixer Line Bypass Switch'
 		value false
 		comment {
 			access 'read write'
@@ -3035,8 +3037,8 @@ state.AM335xphyCORE {
 	}
 	control.54 {
 		iface MIXER
-		name 'Input PGA MicN Switch'
-		value true
+		name 'Speaker Mixer Aux Playback Switch'
+		value false
 		comment {
 			access 'read write'
 			type BOOLEAN
@@ -3045,7 +3047,7 @@ state.AM335xphyCORE {
 	}
 	control.55 {
 		iface MIXER
-		name 'Input PGA MicP Switch'
+		name 'Speaker Mixer PCM Playback Switch'
 		value true
 		comment {
 			access 'read write'
@@ -3076,7 +3078,7 @@ state.AM335xphyCORE {
 	control.58 {
 		iface MIXER
 		name 'Mono Mixer PCM Playback Switch'
-		value true
+		value false
 		comment {
 			access 'read write'
 			type BOOLEAN
@@ -3085,7 +3087,7 @@ state.AM335xphyCORE {
 	}
 	control.59 {
 		iface MIXER
-		name 'Speaker Mixer Line Bypass Switch'
+		name 'Input PGA Aux Switch'
 		value false
 		comment {
 			access 'read write'
@@ -3095,8 +3097,8 @@ state.AM335xphyCORE {
 	}
 	control.60 {
 		iface MIXER
-		name 'Speaker Mixer Aux Playback Switch'
-		value false
+		name 'Input PGA MicN Switch'
+		value true
 		comment {
 			access 'read write'
 			type BOOLEAN
@@ -3105,8 +3107,18 @@ state.AM335xphyCORE {
 	}
 	control.61 {
 		iface MIXER
-		name 'Speaker Mixer PCM Playback Switch'
+		name 'Input PGA MicP Switch'
 		value true
+		comment {
+			access 'read write'
+			type BOOLEAN
+			count 1
+		}
+	}
+	control.62 {
+		iface MIXER
+		name 'Boost Mixer Aux Switch'
+		value false
 		comment {
 			access 'read write'
 			type BOOLEAN
