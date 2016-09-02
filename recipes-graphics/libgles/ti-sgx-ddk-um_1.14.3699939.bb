@@ -3,7 +3,7 @@ HOMEPAGE = "https://git.ti.com/graphics/omap5-sgx-ddk-um-linux"
 LICENSE = "TI-TSPA"
 LIC_FILES_CHKSUM = "file://TI-Linux-Graphics-DDK-UM-Manifest.doc;md5=550702a031857e0426ef7d6f6cf2d9f4"
 
-PACKAGE_ARCH = "${MACHINE_ARCH}"
+PACKAGE_ARCH = "${MACHINE_SOCARCH}"
 
 BRANCH = "ti-img-sgx/${PV}"
 
@@ -11,16 +11,8 @@ SRC_URI = "git://git.ti.com/graphics/omap5-sgx-ddk-um-linux.git;protocol=git;bra
 SRCREV = "4cdbb6b192fc5cac53695faca3c3f8be16ca871d"
 
 # There's only hardfp version available
-python __anonymous() {
-    tunes = bb.data.getVar("TUNE_FEATURES", d, 1)
-    if not tunes:
-        return
-    pkgn = bb.data.getVar("PN", d, 1)
-    pkgv = bb.data.getVar("PV", d, 1)
-    if "callconvention-hard" not in tunes:
-        bb.warn("%s-%s ONLY supports hardfp mode for now" % (pkgn, pkgv))
-        raise bb.parse.SkipPackage("%s-%s ONLY supports hardfp mode for now" % (pkgn, pkgv))
-}
+inherit tune_features_check
+REQUIRED_TUNE_FEATURES = "arm armv7a vfp thumb callconvention-hard"
 
 TARGET_PRODUCT_omap-a15 = "jacinto6evm"
 TARGET_PRODUCT_ti33x = "ti335x"
@@ -31,7 +23,7 @@ INITSCRIPT_PARAMS = "defaults 8"
 
 inherit update-rc.d
 
-PR = "r14"
+PR = "r15"
 PROVIDES += "virtual/egl virtual/libgles1 virtual/libgles2 omap5-sgx-ddk-um-linux"
 
 DEPENDS += "libdrm udev libgbm wayland libffi"
@@ -55,6 +47,9 @@ do_install () {
     oe_runmake install DESTDIR=${D} TARGET_PRODUCT=${TARGET_PRODUCT}
     mkdir -p ${D}${libdir}/gbm
     ln -sf ../libpvrGBMWSEGL.so.${PV} ${D}${libdir}/gbm/gbm_pvr.so
+
+    # fix host-user-contaminated files
+    chown -R root.root ${D}
 }
 
 FILES_${PN} =  "${bindir}/*"
