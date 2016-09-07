@@ -12,7 +12,7 @@ PR = "${INC_PR}.0"
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "fa0c9fc9fe0b58b787ebbf2e765c103b7b0bf559"
+SRCREV = "056ac9e711ddf44e29b478c1b48564ee0f8391b5"
 
 S = "${WORKDIR}/git"
 
@@ -20,3 +20,5 @@ COMPATIBLE_MACHINE = "firefly-rk3288-1"
 SRC_URI_append_firefly-rk3288-1 = " file://rk-dbg-uart2.cfg"
 COMPATIBLE_MACHINE .= "|phycore-rk3288-1"
 SRC_URI_append_phycore-rk3288-1 = " file://rk-dbg-uart0.cfg"
+COMPATIBLE_MACHINE .= "|phycore-rk3288-2"
+SRC_URI_append_phycore-rk3288-2 = " file://rk-dbg-uart0.cfg"
