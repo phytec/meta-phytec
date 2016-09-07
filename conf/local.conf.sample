@@ -23,6 +23,7 @@ DISTRO ?= "yogurt"
 IMAGE_FSTYPES += "tar.gz"
 IMAGE_FSTYPES_append_mx6 = " sdcard ubifs"
 IMAGE_FSTYPES_append_ti33x = " sdcard ubifs"
+IMAGE_FSTYPES_append_rk3288 = " sdcard"
 #IMAGE_FSTYPES_append_ti33x = " emmc"
 DEPLOY_DIR = "${TOPDIR}/deploy"
 

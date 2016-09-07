@@ -20,3 +20,7 @@ SERIAL_CONSOLES = "115200;ttyS0"
 PREFERRED_PROVIDER_virtual/egl ?= "mali-t760-libs"
 PREFERRED_PROVIDER_virtual/libgles1 ?= "mali-t760-libs"
 PREFERRED_PROVIDER_virtual/libgles2 ?= "mali-t760-libs"
+
+# rootfs images
+# register image class for usage
+IMAGE_CLASSES += "rk3288_sd_image-phy"
