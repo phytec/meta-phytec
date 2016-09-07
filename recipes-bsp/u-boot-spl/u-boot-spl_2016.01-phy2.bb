@@ -21,6 +21,8 @@ COMPATIBLE_MACHINE = "firefly-rk3288-1"
 SRC_URI_append_firefly-rk3288-1 = " file://rk-dbg-uart2.cfg"
 COMPATIBLE_MACHINE .= "|phycore-rk3288-1"
 SRC_URI_append_phycore-rk3288-1 = " file://rk-dbg-uart0.cfg"
+COMPATIBLE_MACHINE .= "|phycore-rk3288-2"
+SRC_URI_append_phycore-rk3288-2 = " file://rk-dbg-uart0.cfg"
 
 UBOOT_SUFFIX = "img"
 UBOOT_BINARY = "u-boot-dtb.${UBOOT_SUFFIX}"
