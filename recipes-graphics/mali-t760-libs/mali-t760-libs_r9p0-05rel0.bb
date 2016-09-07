@@ -51,4 +51,11 @@ FILES_${PN}-dev += " \
 
 INSANE_SKIP_${PN} = "dev-so"
 
+# Fix warnings:
+#   WARNING: do_package_qa: QA Issue: libqminimalegl.so contained in package qtbase-plugins
+#        requires libEGL.so, but no providers found in RDEPENDS_qtbase-plugins? [file-rdeps]
+#   WARNING: do_package_qa: QA Issue: libQt5OpenGL.so.5.6.1 contained in package qtbase
+#        requires libGLESv2.so, but no providers found in RDEPENDS_qtbase? [file-rdeps]
+RPROVIDES_${PN} = "libGLESv1_CM.so libGLESv2.so libEGL.so libOpenCL.so"
+
 COMPATIBLE_MACHINE = "rk3288"
