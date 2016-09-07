@@ -12,9 +12,6 @@ PROVIDES = "virtual/bootloader"
 INC_PR = "r7"
 
 SRC_URI = "http://barebox.org/download/barebox-${PV}.tar.bz2"
-SRC_URI_append = " \
-    file://far.env.bin \
-"
 PATCHTOOL = "git"
 
 inherit kernel-arch deploy
@@ -82,16 +79,6 @@ python do_prepare_env() {
     if os.path.isdir(machine_env_dir):
         bb.note("copying machine environment to source directory")
         oe.path.copytree(machine_env_dir, oe.path.join(S, '.machineenv'))
-
-    # Install the script far into the barebox environment. It will only be
-    # added, if you enable "debug-tweaks" in EXTRA_IMAGE_FEATURES in your
-    # local.conf.
-    workdir_far_env_bin = os.path.join("${WORKDIR}", "far.env.bin")
-    if os.path.isfile(workdir_far_env_bin) and \
-       bb.utils.contains('EXTRA_IMAGE_FEATURES', 'debug-tweaks', True, False, d):
-        bb.utils.mkdirhier(os.path.join(S, ".commonenv/bin"))
-        shutil.copyfile(workdir_far_env_bin,
-                        os.path.join(S, ".commonenv/bin", "far"))
 }
 addtask prepare_env after do_patch before do_configure
 
