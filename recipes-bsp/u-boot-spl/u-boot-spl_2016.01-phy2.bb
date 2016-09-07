@@ -1,7 +1,10 @@
 inherit phygittag
 require recipes-bsp/u-boot/u-boot.inc
 
-PROVIDES += "virtual/prebootloader"
+PROVIDES = "virtual/prebootloader"
+
+LICENSE = "GPLv2+"
+LIC_FILES_CHKSUM = "file://Licenses/README;md5=0507cd7da8e7ad6d6701926ec9b84c95"
 
 DEPENDS += "dtc-native"
 
@@ -10,7 +13,7 @@ SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
 S = "${WORKDIR}/git"
 
-SRCREV = "bdd1ffb4dd94b7f89593e1afd0e97269ae0b03c4"
+SRCREV = "6e5f0d9ab23a524d04959b54810850807175cd76"
 
 PR = "r0"
 
