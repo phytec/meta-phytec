@@ -25,7 +25,9 @@ RCONFLICTS_${PN} = "omapdrm-pvr"
 BRANCH = "ti-img-sgx/${PV}/k4.4"
 
 SRC_URI = "git://git.ti.com/graphics/omap5-sgx-ddk-linux.git;protocol=git;branch=${BRANCH}"
+SRC_URI += "file://0001-srvkm-env-linux-Check-whether-Soc-supports-SGX.patch"
 S = "${WORKDIR}/git"
+
 
 SRCREV = "c13efb766a8fc680374ae7affc6df535f823bacb"
 
