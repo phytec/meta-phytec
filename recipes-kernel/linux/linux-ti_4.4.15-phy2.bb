@@ -16,7 +16,7 @@ S = "${WORKDIR}/git"
 PR = "${INC_PR}.0"
 
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "e3fe937f0464bf6b7bd980a909859f3839bd2847"
+SRCREV = "d0b3235e0af0c945dab6baa3e5ca8ce7bdabd944"
 
 RDEPENDS_kernel-modules_ti33x = "\
     ${@bb.utils.contains('MACHINE_FEATURES', 'suspend', 'amx3-cm3', '', d)} \
