@@ -21,6 +21,12 @@ PR = "${INC_PR}.1"
 # NOTE: Keep version in filename in sync with commit id!
 SRCREV = "c6deeede5e01353947dc7d943522952619f5b69e"
 
+python do_env_append() {
+    env_add(d, "nv/allow_color", "false\n")
+    env_add(d, "nv/linux.bootargs.base", "consoleblank=0\n")
+    env_add(d, "nv/linux.bootargs.rootfs", "rootwait ro fsck.repair=yes\n")
+}
+
 python do_env_append_mx6() {
     env_add(d, "boot/mmc",
 """#!/bin/sh
@@ -109,9 +115,6 @@ netmask=255.255.255.0
 gateway=192.168.3.10
 serverip=192.168.3.10
 """)
-    env_add(d, "nv/allow_color", "false\n")
-    env_add(d, "nv/linux.bootargs.base", "consoleblank=0\n")
-    env_add(d, "nv/linux.bootargs.rootfs", "rootwait ro fsck.repair=yes\n")
 }
 
 python do_env_append_phycard-imx6() {

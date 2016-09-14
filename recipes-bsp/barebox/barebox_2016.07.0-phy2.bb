@@ -29,6 +29,12 @@ do_deploy_append_rk3288 () {
 	ln -sf ${BAREBOX_IMAGE_BASE_NAME}.bin.u-boot ${DEPLOYDIR}/${BAREBOX_BIN_SYMLINK}.u-boot
 }
 
+python do_env_append() {
+    env_add(d, "nv/allow_color", "false\n")
+    env_add(d, "nv/linux.bootargs.base", "consoleblank=0\n")
+    env_add(d, "nv/linux.bootargs.rootfs", "rootwait ro fsck.repair=yes\n")
+}
+
 python do_env_append_ti33x() {
     env_add(d, "boot/mmc",
 """#!/bin/sh
@@ -138,10 +144,7 @@ netmask=255.255.255.0
 gateway=192.168.3.10
 serverip=192.168.3.10
 """)
-    env_add(d, "nv/allow_color", "false\n")
     env_add(d, "nv/boot.watchdog_timeout", "60\n")
-    env_add(d, "nv/linux.bootargs.base", "consoleblank=0\n")
-    env_add(d, "nv/linux.bootargs.rootfs", "rootwait ro fsck.repair=yes\n")
 }
 
 python do_env_append_rk3288() {
@@ -161,9 +164,6 @@ global.bootm.oftree=/mnt/sdmmc/oftree
 
 global.linux.bootargs.dyn.root="root=/dev/mmcblk1p2 rootflags='data=journal'"
 """)
-    env_add(d, "nv/allow_color", "false\n")
-    env_add(d, "nv/linux.bootargs.base", "consoleblank=0\n")
-    env_add(d, "nv/linux.bootargs.rootfs", "rootwait ro fsck.repair=yes\n")
 }
 
 python do_env_append_phycore-am335x() {
