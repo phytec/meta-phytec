@@ -1,4 +1,0 @@
-of_enable_node /soc/aips-bus@02000000/ldb@020e0008/
-of_enable_node /soc/aips-bus@02000000/ldb@020e0008/lvds-channel@0
-of_enable_node /soc/aips-bus@02000000/pwm@02080000
-of_enable_node /backlight
