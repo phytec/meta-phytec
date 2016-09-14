@@ -25,6 +25,22 @@ python do_env_append() {
     env_add(d, "nv/allow_color", "false\n")
     env_add(d, "nv/linux.bootargs.base", "consoleblank=0\n")
     env_add(d, "nv/linux.bootargs.rootfs", "rootwait ro fsck.repair=yes\n")
+    env_add(d, "bin/far",
+"""#!/bin/sh
+# barebox script far (="Fetch And Reset"):
+#
+# The script is useful for a rapid compile and execute development cycle. If
+# the deployment directory of yocto is the root directory of the tftp server
+# (e.g. use a bind mount), you can fetch and execute a newly compiled barebox
+# with this script.
+
+cp /mnt/tftp/barebox.bin /dev/ram0
+if [ $? != 0 ]; then
+    echo "Error: Cannot fetch file \"barebox.bin\" from host!"
+else
+    go /dev/ram0
+fi
+""")
 }
 
 python do_env_append_mx6() {
