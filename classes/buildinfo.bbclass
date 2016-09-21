@@ -8,9 +8,9 @@
 # with the exact same software version as in the package recipe. To see the
 # output, the developer executes
 #
-#    $ bitbake <package> -c buildinfo
+#    $ bitbake <recipe> -c buildinfo
 #
-# A recipe which wants to use the buildinfo task has to provide some
+# A recipe that wants to use the buildinfo task has to provide some
 # information. It has to define GIT_URL and GIT_TAG. One example
 # configurations is
 #
@@ -48,7 +48,7 @@
 #
 # If a recipe doesn't fetch the source code from a git repository and uses
 # another method, e.g. a tar.gz, the buildinfo task can be used, too.  Only
-# GIT_URL, GIT_TAG must be set.  An example recipe may looks like
+# GIT_URL, GIT_TAG and SRCREV must be set.  An example recipe may looks like
 #
 #     inherit buildinfo
 #     GIT_TAG = "v3.17.6-phy1"
@@ -99,50 +99,48 @@
 
 python do_buildinfo() {
     # Check: Are variables defined in recipe?
-    if d.getVar("GIT_URL", True) is None or d.getVar("GIT_TAG", True) is None:
-        bb.fatal("Package recipe doesn't provide the variable GIT_URL and "
-                 "GIT_TAG. "
+    if d.getVar("GIT_URL", True) is None or d.getVar("GIT_TAG", True) is None or \
+        d.getVar("SRCREV", True) is None:
+        bb.fatal("Package recipe doesn't provide the variable GIT_URL, GIT_TAG and "
+                 "SRCREV."
                  "Task needs both to compile the build info. Fix the recipe!")
 
     # Generate a meaningful branch name for developer's repository.
-    local_branch_name = "${GIT_TAG}-local_development"
+    branch_name = d.getVar("GIT_TAG", True) + "-local-development"
 
     # SRCREV which contains a tag name or a specific commit id is used to
     # checkout the git branch.
-    checkout_rev = "${SRCREV}"
+    checkout_rev = d.getVar("SRCREV", True)
 
-    # NOTE: bitbake will replace all occurrences of the string "${GIT_URL}" in
-    # this file with the value of the variable GIT_URL in the bitbake recipe.
-    # If you want to include the text "${GIT_URL}" in a string, you have to
-    # escape it.  E.g. with "\x24{GIT_URL}".
-    # NOTE: In the following code some variables should be replaced with the
-    # actual value at parsing time of the recipe and other should be printed as
-    # plain text.
+    # Some more variables for buildinfo text.
+    git_url = d.getVar("GIT_URL", True)
+    pv = d.getVar("PV", True)
+    pn = d.getVar("PN", True)
+
     bb.plain("""
-(mini) HOWTO: Use a local git repository to build ${PN}:
+(mini) HOWTO: Use a local git repository to build {PN}:
 
-To get source code for this package and version (${PN}-${PV}), execute
+To get source code for this package and version ({PN}-{PV}), execute
 
 $ mkdir -p ~/git
 $ cd ~/git
-$ git clone ${GIT_URL} ${PN}
-$ cd ~/git/${PN}
-$ git checkout -b %s %s
-""" % (local_branch_name, checkout_rev))
+$ git clone {GIT_URL} {PN}
+$ cd ~/git/{PN}
+$ git checkout -b {branchname} {checkoutrev}
 
-    bb.plain("""You now have two possible workflows for your changes.
+You now have two possible workflows for your changes:
 
 1. Work inside the git repository:
 Copy and paste the following snippet to your "local.conf":
 
-SRC_URI_pn-${PN} = "git:///\x24{HOME}/git/${PN};branch=\x24{BRANCH}\"
-SRCREV_pn-${PN} = "\x24{AUTOREV}"
-BRANCH_pn-${PN} = \"%s\"
+SRC_URI_pn-{PN} = "git:///${{HOME}}/git/{PN};branch=${{BRANCH}}\"
+SRCREV_pn-{PN} = "${{AUTOREV}}"
+BRANCH_pn-{PN} = \"{branchname}\"
 
 After that you can recompile and deploy the package with
 
-$ bitbake ${PN} -c compile
-$ bitbake ${PN} -c deploy
+$ bitbake {PN} -c compile
+$ bitbake {PN} -c deploy
 
 Note: You have to commit all your changes. Otherwise yocto doesn't pick them up!
 
@@ -152,12 +150,13 @@ externalsrc.bbclass. To use it copy and paste the following snippet to your
 "local.conf":
 
 INHERIT += "externalsrc"
-EXTERNALSRC_pn-${PN} = "\x24{HOME}/git/${PN}"
-EXTERNALSRC_BUILD_pn-${PN} = "\x24{HOME}/git/${PN}"
+EXTERNALSRC_pn-{PN} = "${{HOME}}/git/{PN}"
+EXTERNALSRC_BUILD_pn-{PN} = "${{HOME}}/git/{PN}"
 
 Note: All the compiling is done in the EXTERNALSRC directory. Everytime
 you build an Image, the package will be recompiled and build.
-""" % (local_branch_name,))
+""".format(PN=pn, PV=pv, GIT_URL=git_url, branchname=branch_name,
+        checkoutrev=checkout_rev))
 }
 do_buildinfo[nostamp] = "1"
 addtask buildinfo
