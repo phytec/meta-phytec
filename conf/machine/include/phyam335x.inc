@@ -56,3 +56,7 @@ GUI_MACHINE_CLASS = "smallscreen"
 PREFERRED_PROVIDER_virtual/libgles1 = "ti-sgx-ddk-um"
 PREFERRED_PROVIDER_virtual/libgles2 = "ti-sgx-ddk-um"
 PREFERRED_PROVIDER_virtual/egl = "ti-sgx-ddk-um"
+
+# Enable cryptographic hardware acceleration
+KERNEL_MODULE_AUTOLOAD += "cryptodev"
+IMAGE_INSTALL_append = " cryptodev-module"
