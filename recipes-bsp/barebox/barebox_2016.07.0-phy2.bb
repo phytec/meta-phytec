@@ -143,9 +143,9 @@ of_fixup_status /ocp/i2c@44e0b000/tda19988@70
 of_fixup_status /user_buttons
 """)
     env_add(d, "expansions/am335x-wlan",
-"""of_fixup_status /wlcore@0
-of_fixup_status /fixedregulator@2
+"""of_fixup_status /fixedregulator@2
 of_fixup_status /ocp/mmc@47810000
+of_fixup_status /ocp/mmc@47810000/wlcore@0
 """)
     env_add(d, "network/eth0",
 """#!/bin/sh
