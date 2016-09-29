@@ -3,6 +3,11 @@ DESCRIPTION = "Barebox IPL Inintial Program Loader: some machines need \
 # Overwrite PROVIDES in barebox.inc
 PROVIDES = "virtual/prebootloader"
 
+# The barebox-ipl recipes include the bbclass barebox-environment-2.  The
+# environment is not needed for the MLO, so don't generate it.
+do_env[noexec] = "1"
+do_env_write[noexec] = "1"
+
 # Set include folder explicitly, because ${PN} of IPL recipe is not "barebox".
 FILESEXTRAPATHS_prepend := "${THISDIR}/barebox/:"
 
