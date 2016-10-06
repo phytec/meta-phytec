@@ -32,6 +32,10 @@ DEPLOY_DIR = "${TOPDIR}/deploy"
 #KCONFIG_CONFIG_COMMAND = "menuconfig"
 KCONFIG_CONFIG_COMMAND = "nconfig"
 
+# Turn on debugging options of the kernel
+# This is currently only supported for the TI kernel v4.4
+#DEBUG_BUILD_pn-linux-ti = "1"
+
 # The default package class of the distro yogurt is 'package_ipk'. The first
 # value is used as the package manager to build the image and sdk. To build
 # also tar packages use
