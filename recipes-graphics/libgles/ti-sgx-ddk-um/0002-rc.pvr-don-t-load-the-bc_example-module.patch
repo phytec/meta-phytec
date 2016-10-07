@@ -1,0 +1,62 @@
+From c162f47d9acbcc9248fc5cfaf0a5c77e3db857f9 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Stefan=20M=C3=BCller-Klieser?= <s.mueller-klieser@phytec.de>
+Date: Fri, 7 Oct 2016 15:15:20 +0200
+Subject: [PATCH 2/2] rc.pvr: don't load the bc_example module
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Stefan Müller-Klieser <s.mueller-klieser@phytec.de>
+---
+ targetfs/ti335x/etc/init.d/rc.pvr | 29 -----------------------------
+ 1 file changed, 29 deletions(-)
+
+diff --git a/targetfs/ti335x/etc/init.d/rc.pvr b/targetfs/ti335x/etc/init.d/rc.pvr
+index ec8e89e..98bee66 100755
+--- a/targetfs/ti335x/etc/init.d/rc.pvr
++++ b/targetfs/ti335x/etc/init.d/rc.pvr
+@@ -43,41 +43,12 @@ load_pvr()
+ 	# Run the PVR initialisation server
+ 	if ! /usr/bin/pvrsrvctl --start --no-module; then return 1; fi
+ 
+-	# Load remaining modules.
+-	#
+-				
+-	if ! /sbin/modprobe -q bc_example ; then
+-		echo "Module bc_example failed to load. Retrying."
+-		if [ -z $depmod_has_been_run ]; then
+-			if [ -e /sbin/depmod ]; then
+-				echo "Running /sbin/depmod"
+-				/sbin/depmod && depmod_has_been_run=1
+-			fi
+-		fi
+-		if ! /sbin/modprobe -q bc_example ; then echo "Continuing to load PowerVR services"; bc_example_failed=1; fi
+-	fi
+-	
+-	# Delete the device for bc_example and recreate with the
+-	# correct major number.
+-	#
+-	if [ -z $bc_example_failed ]; then
+-		bcd_maj=`grep "bc_example$" /proc/devices | cut -b1,2,3`
+-		/bin/rm -f /dev/bc_example
+-		/bin/mknod /dev/bc_example c $bcd_maj 0
+-		/bin/chmod 666 /dev/bc_example
+-	fi
+-
+ 	echo "Loaded PowerVR consumer services."
+ 	return 0;
+ }
+ 
+ unload_pvr()
+ {
+-	# Unload modules.  This won't pick up cases where a further module
+-	# has been added which has a dependency on one of these modules.
+-	#
+-		if rmmod bc_example; then :; else echo "Warning: Could not unload bc_example"; fi
+-
+ 	# Unload the PVR Services module.
+ 	#
+ 	if rmmod pvrsrvkm; then :; else return 1; fi
+-- 
+1.9.1
+

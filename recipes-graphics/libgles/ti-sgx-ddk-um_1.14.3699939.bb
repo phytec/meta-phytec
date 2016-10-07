@@ -7,7 +7,11 @@ PACKAGE_ARCH = "${MACHINE_SOCARCH}"
 
 BRANCH = "ti-img-sgx/${PV}"
 
-SRC_URI = "git://git.ti.com/graphics/omap5-sgx-ddk-um-linux.git;protocol=git;branch=${BRANCH}"
+SRC_URI = "\
+    git://git.ti.com/graphics/omap5-sgx-ddk-um-linux.git;protocol=git;branch=${BRANCH} \
+    file://0001-rc.pvr-add-proper-error-return-code.patch \
+    file://0002-rc.pvr-don-t-load-the-bc_example-module.patch \
+"
 SRCREV = "4cdbb6b192fc5cac53695faca3c3f8be16ca871d"
 
 # There's only hardfp version available
