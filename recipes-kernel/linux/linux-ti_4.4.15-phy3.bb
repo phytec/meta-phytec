@@ -25,6 +25,7 @@ SRCREV = "1ed04632afa87e857f1da9a99ec42856caf45330"
 RDEPENDS_kernel-modules_ti33x = "\
     ${@bb.utils.contains('MACHINE_FEATURES', 'suspend', 'amx3-cm3', '', d)} \
     ${@bb.utils.contains('MACHINE_FEATURES', 'sgx', 'ti-sgx-ddk-km', '', d)} \
+    cryptodev-module \
 "
 
 COMPATIBLE_MACHINE = "beagleboneblack-1"
