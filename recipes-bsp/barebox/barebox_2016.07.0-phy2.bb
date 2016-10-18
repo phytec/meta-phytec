@@ -280,6 +280,9 @@ python do_env_append_phyboard-wega-am335x-2() {
 
 #4.3" display
 #of_display_timings -S /panel/display-timings/ETM0430G0DH6
+
+#7" display AC158
+#of_display_timings -S /panel/display-timings/ETM0700G0EDH6_WEGA
 """)
 }
 
