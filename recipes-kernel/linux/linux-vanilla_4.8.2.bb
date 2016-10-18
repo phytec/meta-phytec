@@ -12,8 +12,8 @@ SRC_URI = "${GIT_URL};branch=${BRANCH}"
 PR = "${INC_PR}.0"
 
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "523d939ef98fd712632d93a5a2b588e477a7565e"
-BRANCH = "linux-4.7.y"
+SRCREV = "cb5d016a9dd33c3131efff555d43095caf51f69e"
+BRANCH = "linux-4.8.y"
 
 S = "${WORKDIR}/git"
 
