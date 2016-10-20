@@ -26,3 +26,6 @@ load(qt_config)
 
 EOF
 }
+
+FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
+SRC_URI += " file://0001-eglfs_kms_egldevice-fix-include-path-mismatch-for-dr.patch"

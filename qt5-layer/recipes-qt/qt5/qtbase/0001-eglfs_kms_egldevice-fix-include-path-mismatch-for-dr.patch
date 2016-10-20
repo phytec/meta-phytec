@@ -1,0 +1,43 @@
+From e43f6173e0aa1576911a102a5139e5176f9d1da6 Mon Sep 17 00:00:00 2001
+From: Stefan Lengfeld <s.lengfeld@phytec.de>
+Date: Thu, 20 Oct 2016 14:10:05 +0200
+Subject: [PATCH] eglfs_kms_egldevice: fix include path mismatch for drm.h
+
+The configure script compiles the program
+
+     config.tests/qpa/eglfs-egldevice/eglfs-egldevice.cpp
+
+to check whether it should enable the QT_CONFIG 'eglfs_egldevice'.  This
+seems to be a generic libdrm EGL backend.  The code includes the header
+drm.h from the userspace libdrm library in the directory
+/usr/include/libdrm.
+
+When compiling the EGLFS backend eglfs_kms_egldevice the header drm.h is
+included from the kernel header directory /usr/include/drm/. The headers
+in the different directories are not identical. This leads to compile
+errors for our RK3288 board with a MALI GPU.
+
+Add an extra INCLUDEPATH statement so the header is included from the
+userspace library 'libdrm' for the eglfs_egldevice, too.
+
+Signed-off-by: Stefan Lengfeld <s.lengfeld@phytec.de>
+---
+ .../eglfs/deviceintegration/eglfs_kms_egldevice/eglfs_kms_egldevice.pro | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/src/plugins/platforms/eglfs/deviceintegration/eglfs_kms_egldevice/eglfs_kms_egldevice.pro b/src/plugins/platforms/eglfs/deviceintegration/eglfs_kms_egldevice/eglfs_kms_egldevice.pro
+index 1932f86..12a08dc8 100644
+--- a/src/plugins/platforms/eglfs/deviceintegration/eglfs_kms_egldevice/eglfs_kms_egldevice.pro
++++ b/src/plugins/platforms/eglfs/deviceintegration/eglfs_kms_egldevice/eglfs_kms_egldevice.pro
+@@ -16,6 +16,8 @@ HEADERS += $$PWD/qeglfskmsegldeviceintegration.h
+ 
+ OTHER_FILES += $$PWD/eglfs_kms_egldevice.json
+ 
++INCLUDEPATH += =/usr/include/libdrm/
++
+ LIBS += -ldrm
+ 
+ PLUGIN_TYPE = egldeviceintegrations
+-- 
+1.9.1
+
