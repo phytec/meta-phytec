@@ -29,3 +29,12 @@ UBI_VOLNAME = "root"
 # this sums up to 7943 LEBs available for the ubifs
 MKUBIFS_ARGS = "-F -m 2048 -e 131072 -c 4056"
 UBINIZE_ARGS = "-m 2048 -p 128KiB -s 2048 -O 2048"
+
+# Avoid pulling package 'gstreamer1.0-plugins-bad-meta' into the image
+# 'core-image-sato', because the recipe gstreamer1.0-plugins-bad depends on
+# virtual/libgles2.
+RRECOMMENDS_gst-player-bin_remove_pn-gst-player = "gstreamer1.0-plugins-bad-meta"
+
+# Don't build the X server with xwayland support. It depends on libepoxy
+# (OpenGL function pointer management library) that depends on EGL.
+PACKAGECONFIG_remove_pn-xserver-xorg = "xwayland"
