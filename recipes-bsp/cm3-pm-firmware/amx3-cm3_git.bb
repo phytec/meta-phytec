@@ -3,10 +3,10 @@ DESCRIPTION = "Cortex-M3 binary blob for suspend-resume"
 LICENSE = "TI-TSPA"
 LIC_FILES_CHKSUM = "file://License.txt;md5=7bdc54a749ab7a7dea999d25d99a41b8"
 
-PV = "1.9.1"
-PR = "r3"
+PV = "1.9.2"
+PR = "r0"
 
-SRCREV = "97c2c32d0bc8ca0254710dcb5df055aa9a569ae6"
+SRCREV = "7eb9c0856a9e8b3b42bf64f761da135852b8eea7"
 BRANCH ?= "ti-v4.1.y"
 
 SRC_URI = "git://git.ti.com/processor-firmware/ti-amx3-cm3-pm-firmware.git;protocol=git;branch=${BRANCH}"
