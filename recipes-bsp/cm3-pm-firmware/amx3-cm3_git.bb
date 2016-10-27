@@ -11,6 +11,8 @@ BRANCH ?= "ti-v4.1.y"
 
 SRC_URI = "git://git.ti.com/processor-firmware/ti-amx3-cm3-pm-firmware.git;protocol=git;branch=${BRANCH}"
 
+SRC_URI_append = " file://am335x-pcm060-scale-data.bin"
+
 S = "${WORKDIR}/git"
 
 FLOATABI = "${@bb.utils.contains("TUNE_FEATURES", "vfp", bb.utils.contains("TUNE_FEATURES", "callconvention-hard", " -mfloat-abi=hard", " -mfloat-abi=softfp", d), "" ,d)}"
@@ -23,6 +25,7 @@ do_install() {
 	install -d ${D}${base_libdir}/firmware
 	install -m 0644 bin/am335x-pm-firmware.elf ${D}${base_libdir}/firmware/
 	install -m 0644 bin/*-scale-data.bin ${D}${base_libdir}/firmware/
+	install -m 0644 ${WORKDIR}/am335x-pcm060-scale-data.bin ${D}${base_libdir}/firmware/
 }
 
 FILES_${PN} += "${base_libdir}/firmware"
