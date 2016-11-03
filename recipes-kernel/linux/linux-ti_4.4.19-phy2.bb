@@ -13,6 +13,7 @@ SRC_URI = "${GIT_URL};branch=${BRANCH}"
 SRC_URI_append = "\
     ${@bb.utils.contains('MACHINE_FEATURES', 'sgx', 'file://preempt_voluntary.cfg', '', d)} \
     ${@bb.utils.contains('MACHINE_FEATURES', 'suspend', 'file://am335x-cm3.cfg', '', d)} \
+    ${@bb.utils.contains('MACHINE_FEATURES', '3g', 'file://3g.cfg', '', d)} \
     ${@base_conditional('DEBUG_BUILD','1','file://debugging.cfg','',d)} \
 "
 
