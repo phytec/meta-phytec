@@ -3,6 +3,8 @@ DESCRIPTION = "Cortex-M3 binary blob for suspend-resume"
 LICENSE = "TI-TSPA"
 LIC_FILES_CHKSUM = "file://License.txt;md5=7bdc54a749ab7a7dea999d25d99a41b8"
 
+PROVIDES += "amx3-cm3"
+
 PV = "1.9.2"
 PR = "r0"
 
@@ -10,8 +12,7 @@ SRCREV = "7eb9c0856a9e8b3b42bf64f761da135852b8eea7"
 BRANCH ?= "ti-v4.1.y"
 
 SRC_URI = "git://git.ti.com/processor-firmware/ti-amx3-cm3-pm-firmware.git;protocol=git;branch=${BRANCH}"
-
-SRC_URI_append = " file://am335x-pcm060-scale-data.bin"
+SRC_URI += "file://am335x-pcm060-scale-data.bin"
 
 S = "${WORKDIR}/git"
 
@@ -28,4 +29,5 @@ do_install() {
 	install -m 0644 ${WORKDIR}/am335x-pcm060-scale-data.bin ${D}${base_libdir}/firmware/
 }
 
+RPROVIDES_${PN} = "amx3-cm3"
 FILES_${PN} += "${base_libdir}/firmware"

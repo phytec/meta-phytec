@@ -20,6 +20,7 @@ BAREBOX_IPL_BIN_SYMLINK = "MLO"
 
 # Kernel 
 PREFERRED_PROVIDER_virtual/kernel ?= "linux-ti"
+PREFERRED_PROVIDER_amx3-cm3 ?= "amx3-cm3-phy"
 KERNEL_IMAGETYPE ?= "zImage"
 INTREE_DEFCONFIG_pn-linux-ti = "am335x_phytec_defconfig"
 # Install modules in initramfs and rootfs
