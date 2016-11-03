@@ -29,8 +29,6 @@ PACKAGE_INSTALL_append = " kernel-modules"
 SERIAL_CONSOLES ?= "115200;ttyO0"
 # dont install kernelimage to rootfs
 RDEPENDS_kernel-base = ""
-# dont create legacy tarball of modules
-MODULE_TARBALL_DEPLOY = "0"
 
 # rootfs images
 # register image class for usage
