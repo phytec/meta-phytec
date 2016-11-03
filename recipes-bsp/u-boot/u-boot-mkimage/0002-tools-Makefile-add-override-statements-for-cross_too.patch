@@ -1,0 +1,39 @@
+From 92f7ce32cbb043e58281a9336c68600ed77d9ad3 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Stefan=20M=C3=BCller-Klieser?= <s.mueller-klieser@phytec.de>
+Date: Thu, 3 Nov 2016 08:48:02 +0100
+Subject: [PATCH 2/2] tools: Makefile: add override statements for cross_tools
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+This fixes the use case where one needs to override the host compiler
+flags for building the target tools. Usually the Makefile will build the
+basic tools first using the hostcc. After that cc will be assigned to
+hostcc to build the target tools. So in this scenario overriding HOSTCC
+fails to build. Using the override statement is one possible fix.
+
+Signed-off-by: Stefan Müller-Klieser <s.mueller-klieser@phytec.de>
+---
+ tools/Makefile | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/tools/Makefile b/tools/Makefile
+index 305336c..9cb1607 100644
+--- a/tools/Makefile
++++ b/tools/Makefile
+@@ -262,9 +262,9 @@ $(LICENSE_H): $(obj)/bin2header $(srctree)/Licenses/gpl-2.0.txt
+ subdir- += env
+ 
+ ifneq ($(CROSS_BUILD_TOOLS),)
+-HOSTCC = $(CC)
+-HOSTCFLAGS = $(CFLAGS)
+-HOSTLDFLAGS = $(LDFLAGS)
++override HOSTCC = $(CC)
++override HOSTCFLAGS = $(CFLAGS)
++override HOSTLDFLAGS = $(LDFLAGS)
+ 
+ quiet_cmd_crosstools_strip = STRIP   $^
+       cmd_crosstools_strip = $(STRIP) $^; touch $@
+-- 
+1.9.1
+
