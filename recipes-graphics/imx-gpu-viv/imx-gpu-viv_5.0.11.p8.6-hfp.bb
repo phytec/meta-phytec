@@ -13,11 +13,11 @@ DESCRIPTION = "Userspace GPU driver and apps for i.MX6"
 SECTION = "libs"
 
 # Year and version are from file COPYING in binary archive
-LICENSE_FLAGS = "license-freescale_v6-february-2015"
-LICENSE = "Proprietary & LICENCE.freescale-v6-february-2015"
+LICENSE_FLAGS = "license-nxp_v14-june-2016"
+LICENSE = "Proprietary & LICENCE.nxp-v14-june-2016"
 LIC_FILES_CHKSUM = " \
     file://gpu-core/usr/include/gc_vdk.h;beginline=5;endline=11;md5=12c028cbbbedb4b8770267131500592c \
-    file://COPYING;md5=acdb807ac7275fe32f9f64992e111241 \
+    file://COPYING;md5=d4f548f93b5fe0ee2bc86758c344412d \
 "
 
 # The recipe provides multiple packages for the Freescale demo programs,
@@ -52,8 +52,8 @@ PROVIDES += "virtual/libgles2 virtual/libgles1 virtual/egl virtual/libg2d virtua
 PR = "r0"
 
 SRC_URI = "${FSL_MIRROR}/${PN}-${PV}.bin;fsl-bin=true"
-SRC_URI[md5sum] = "8314408acb6b3bc58fcbbb8a0f48b54b"
-SRC_URI[sha256sum] = "0591b495cd1c2547ae007d405b90729e2fb90603a5728b39d1a99cb4e1cf1eb4"
+SRC_URI[md5sum] = "92fc34fc37b0865f61be1bd931f5166f"
+SRC_URI[sha256sum] = "caaabd59a259e29aa5b7f9d1d7f3fe71cff9336ba44904485d258baef276351f"
 
 S = "${WORKDIR}/${PN}-${PV}"
 
@@ -140,7 +140,6 @@ do_install () {
     ln -sf libEGL.so.1.0 ${D}${libdir}/libEGL.so.1
     ln -sf libEGL.so.1.0 ${D}${libdir}/libEGL.so
     install -m 0644 ${S}/gpu-core/usr/lib/pkgconfig/egl_linuxfb.pc ${D}${libdir}/pkgconfig/egl.pc
-    install -m 0644 ${S}/gpu-core/usr/lib/libGAL_egl.fb.so ${D}${libdir}/libGAL_egl.so
 
     install -d ${D}${includedir}/EGL
     for name in ${S}/gpu-core/usr/include/EGL/*; do
@@ -318,18 +317,15 @@ RDEPENDS_libopencl-mx6 = "libclc-mx6 libvsc-mx6"
 INSANE_SKIP_libegl-mx6 += "dev-so"
 FILES_libegl-mx6 = " \
     ${libdir}/libEGL.so* \
-    ${libdir}/libGAL_egl.so \
 "
 FILES_libegl-mx6-dev = " \
     ${includedir}/EGL \
     ${includedir}/KHR \
     ${libdir}/libEGL.so* \
-    ${libdir}/libGAL_egl.so \
     ${libdir}/pkgconfig/egl.pc \
 "
 FILES_libegl-mx6-dbg = " \
     ${libdir}/.debug/libEGL.so* \
-    ${libdir}/.debug/libGAL_egl.so \
 "
 RDEPENDS_libegl-mx6 += "libgal-mx6"
 
