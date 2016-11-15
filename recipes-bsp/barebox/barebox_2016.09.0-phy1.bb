@@ -11,7 +11,6 @@ GIT_URL = "git://git.phytec.de/barebox"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 SRC_URI_append = " \
     file://no-blspec.cfg \
-    file://0001-scripts-Add-scripts-include-to-include-path-for-targ.patch \
 "
 
 S = "${WORKDIR}/git"
