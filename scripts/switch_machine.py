@@ -25,18 +25,23 @@ class BSP_Switcher(BoardSupportPackage):
             machines = self.supported_machines
 
         machines.sort()
-        max_len_machines = max(len(machine) for machine in machines)
+        min_len_machines = min(len(machine) for machine in machines)
 
         print '***************************************************'
         print '* Please choose one of the available Machines:'
         print '*'
-        print '* no.: %s : article : description' % "machine".rjust(max_len_machines)
-        for i, line in enumerate(machines, 1):
-            machine = line.rjust(max_len_machines)
-            print '* %2d : %s : %s : %s' % (i, machine,
-                            self.src.machines[line]['ARTICLENUMBERS'],
-                            self.src.machines[line]['DESCRIPTION'])
+        print 'no: %s: description and article number' % "machine".rjust(min_len_machines)
+        print ''
+        for i, machine in enumerate(machines, 1):
+            # split description at first comma and print it as a two-liner
+            description = map(str.strip, self.src.machines[machine]['DESCRIPTION'].split(',',1))
+            print '%2d: %s: %s' % (i, machine, description[0])
+            if len(description) > 1:
+                print '%s %s' % (' ' * (5 + min_len_machines), description[1])
+            print '%s %s' % (' ' * (5 + min_len_machines),
+                            self.src.machines[machine]['ARTICLENUMBERS'])
 
+        # request user input
         while True:
             try:
                 user_input = int(raw_input('$ '))
