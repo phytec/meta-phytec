@@ -1,25 +1,15 @@
 # Common settings for phytecs imx6ul boards
 
-include conf/machine/include/imx-base.inc
+include conf/machine/include/phyimx6.inc
 include conf/machine/include/tune-cortexa7.inc
 
-SOC_FAMILY = "mx6"
 DEFAULTTUNE = "cortexa7hf-neon"
 
-#Bootloader
-PREFERRED_PROVIDER_virtual/bootloader ?= "barebox"
-INTREE_DEFCONFIG_pn-barebox = "imx_v7_defconfig"
-
-# Kernel
-PREFERRED_PROVIDER_virtual/kernel ?= "linux-mainline"
-KERNEL_IMAGETYPE ?= "zImage"
-INTREE_DEFCONFIG_pn-linux-mainline = "imx_v6_v7_defconfig"
-# Install modules in initramfs and roofs
-PACKAGE_INSTALL_append = " kernel-modules"
-
 SERIAL_CONSOLES ?= "115200;ttymxc0"
-# dont install kernelimage to rootfs
-RDEPENDS_kernel-base = ""
+
+# Sub-architecture support
+MACHINE_SOCARCH = "${TUNE_PKGARCH}-mx6ul"
+PACKAGE_EXTRA_ARCHS_append = " ${MACHINE_SOCARCH}"
 
 # Use the expected value of the ubifs filesystem's volume name in the kernel
 UBI_VOLNAME = "root"

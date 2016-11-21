@@ -1,7 +1,6 @@
 # Common settings for phytecs imx6 boards
 
-include conf/machine/include/imx-base.inc
-include conf/machine/include/tune-cortexa9.inc
+include conf/machine/include/soc-family.inc
 
 SOC_FAMILY = "mx6"
 
@@ -16,17 +15,26 @@ INTREE_DEFCONFIG_pn-linux-mainline = "imx_v6_v7_defconfig"
 # Install modules in initramfs and roofs
 PACKAGE_INSTALL_append = " kernel-modules"
 
-SERIAL_CONSOLES ?= "115200;ttymxc3"
 # dont install kernelimage to rootfs
 RDEPENDS_kernel-base = ""
 
-# Use the expected value of the ubifs filesystem's volume name in the kernel
-UBI_VOLNAME = "root"
-# The biggest NANDs on current modules are 1GB. With current partition layout,
-# this sums up to 7943 LEBs available for the ubifs
-MKUBIFS_ARGS = "-F -m 2048 -e 126976 -c 8083"
-UBINIZE_ARGS = "-m 2048 -p 128KiB -s 2048 -O 2048"
+# XServer
+PREFERRED_PROVIDER_virtual/xserver = "xserver-xorg"
+# We don't support a Xserver yet.
+#XSERVER_DRIVER = "xf86-video-fbdev"
+#XSERVER_DRIVER_mx6 = "xf86-video-imxfb-vivante"
+#XSERVER = "xserver-xorg \
+#           xf86-input-evdev \
+#           ${XSERVER_DRIVER}"
 
-# Firmware files
-MACHINE_EXTRA_RRECOMMENDS_append_mx6q = " firmware-imx-vpu-mx6q"
-MACHINE_EXTRA_RRECOMMENDS_append_mx6dl = " firmware-imx-vpu-mx6dl"
+# Ship kernel modules
+MACHINE_EXTRA_RRECOMMENDS = "kernel-modules"
+
+# sd-card image
+IMAGE_CLASSES += "image_types_fsl"
+
+SERIAL_CONSOLE = "115200 ttymxc0"
+
+KERNEL_IMAGETYPE = "zImage"
+
+MACHINE_FEATURES = "apm usbgadget usbhost vfat"
