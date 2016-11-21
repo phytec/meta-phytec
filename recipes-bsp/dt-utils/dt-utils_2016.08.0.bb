@@ -8,7 +8,7 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=9ac2e7cff1ddaf48b6eab6028f23ef88"
 
 DEPENDS = "udev"
 
-SRCREV = "fb48280edcede9b97bf913654a19ea3b0ec45fac"
+SRCREV = "3491b5af596c8edea2cfb136d9b42be804d320a0"
 SRC_URI = "git://git.pengutronix.de/git/tools/dt-utils.git"
 S = "${WORKDIR}/git"
 
