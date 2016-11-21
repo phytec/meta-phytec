@@ -29,7 +29,7 @@ SRC_URI += "file://0001-srvkm-env-linux-Check-whether-Soc-supports-SGX.patch"
 S = "${WORKDIR}/git"
 
 
-SRCREV = "c13efb766a8fc680374ae7affc6df535f823bacb"
+SRCREV = "e68719ba7c54602c710b6615cd665f5b7f47f85e"
 
 TARGET_PRODUCT_omap-a15 = "jacinto6evm"
 TARGET_PRODUCT_ti33x = "ti335x"
