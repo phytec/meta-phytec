@@ -4,7 +4,10 @@
 # opengl, we have to disable gl and enable gles2 by hand here.
 PACKAGECONFIG_GL_mx6 = "gles2 eglfs"
 PACKAGECONFIG_GL_ti33x = "gles2 eglfs"
-PACKAGECONFIG_GL_rk3288 = "gles2 eglfs"
+PACKAGECONFIG_GL_rk3288 = "gles2 eglfs kms"
+
+# Remove virtual/mesa for kms
+PACKAGECONFIG[kms] = "-kms,-no-kms,virtual/egl"
 
 # From the layer meta-fsl-arm. Fix qtbase build.
 do_configure_prepend_mx6() {
@@ -26,3 +29,6 @@ load(qt_config)
 
 EOF
 }
+
+FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
+SRC_URI += " file://0001-Add-createDisplay-for-QEglFSKmsGbmIntegration.patch"

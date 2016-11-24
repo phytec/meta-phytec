@@ -1,0 +1,107 @@
+From 136732cce0442612efc76826a8a5b33bd23b6628 Mon Sep 17 00:00:00 2001
+From: Wadim Egorov <w.egorov@phytec.de>
+Date: Thu, 24 Nov 2016 11:41:58 +0100
+Subject: [PATCH] Add createDisplay for QEglFSKmsGbmIntegration
+
+createDisplay will use eglGetPlatformDisplayEXT() to retrieve a EGLDisplay for
+the GBM platform.
+If eglGetPlatformDisplayEXT is not defined, eglGetDisplay() will be used.
+
+Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
+---
+
+Hi,
+
+mit dem Patch können wir QT mit dem KMS/GBM backend auf dem Rockchip laufen lassen.
+Die Mali libs integrieren die EGL_KHR_platform_gbm Extension
+
+  https://www.khronos.org/registry/egl/extensions/KHR/EGL_KHR_platform_gbm.txt
+
+Der Patch sollte auch nichts bei anderen Plattformen kaputt machen,
+da im Falle der nicht vorhandenen GBM Extension der alte Weg
+über eglGetDisplay() verwenden wird.
+
+QT Anwendungen lassen sich auch ohne diesen Patch in einem Wayland compositor starten.
+
+---
+ .../eglfs_kms/qeglfskmsgbmintegration.cpp          | 30 ++++++++++++++++++++++
+ .../eglfs_kms/qeglfskmsgbmintegration.h            |  1 +
+ .../eglfs_kms_support/qeglfskmsscreen.cpp          |  2 +-
+ 3 files changed, 32 insertions(+), 1 deletion(-)
+
+diff --git a/src/plugins/platforms/eglfs/deviceintegration/eglfs_kms/qeglfskmsgbmintegration.cpp b/src/plugins/platforms/eglfs/deviceintegration/eglfs_kms/qeglfskmsgbmintegration.cpp
+index 1c0a8e1..2bb4d2d 100644
+--- a/src/plugins/platforms/eglfs/deviceintegration/eglfs_kms/qeglfskmsgbmintegration.cpp
++++ b/src/plugins/platforms/eglfs/deviceintegration/eglfs_kms/qeglfskmsgbmintegration.cpp
+@@ -58,6 +58,8 @@
+ #include <xf86drmMode.h>
+ #include <gbm.h>
+ 
++#include <EGL/eglext.h>
++
+ QT_BEGIN_NAMESPACE
+ 
+ QMutex QEglFSKmsGbmScreen::m_waitForFlipMutex;
+@@ -66,6 +68,34 @@ QEglFSKmsGbmIntegration::QEglFSKmsGbmIntegration()
+     : QEglFSKmsIntegration()
+ {}
+ 
++EGLDisplay QEglFSKmsGbmIntegration::createDisplay(EGLNativeDisplayType nativeDisplay)
++{
++    qCDebug(qLcEglfsKmsDebug, "Creating display");
++
++    EGLDisplay display;
++    PFNEGLGETPLATFORMDISPLAYEXTPROC eglGetPlatformDisplayEXT = Q_NULLPTR;
++    eglGetPlatformDisplayEXT =
++        (PFNEGLGETPLATFORMDISPLAYEXTPROC)eglGetProcAddress("eglGetPlatformDisplayEXT");
++    if (eglGetPlatformDisplayEXT) {
++        display = eglGetPlatformDisplayEXT(EGL_PLATFORM_GBM_KHR, nativeDisplay, Q_NULLPTR);
++    } else {
++        qWarning("eglGetPlatformDisplayEXT not available, falling back to legacy path!");
++        display = eglGetDisplay(nativeDisplay);
++    }
++
++    if (Q_UNLIKELY(display == EGL_NO_DISPLAY))
++        qFatal("Could not get EGL display");
++
++    EGLint major, minor;
++    if (Q_UNLIKELY(!eglInitialize(display, &major, &minor)))
++        qFatal("Could not initialize egl display");
++
++    if (Q_UNLIKELY(!eglBindAPI(EGL_OPENGL_ES_API)))
++        qFatal("Failed to bind EGL_OPENGL_ES_API\n");
++
++    return display;
++}
++
+ EGLNativeWindowType QEglFSKmsGbmIntegration::createNativeWindow(QPlatformWindow *platformWindow,
+                                                      const QSize &size,
+                                                      const QSurfaceFormat &format)
+diff --git a/src/plugins/platforms/eglfs/deviceintegration/eglfs_kms/qeglfskmsgbmintegration.h b/src/plugins/platforms/eglfs/deviceintegration/eglfs_kms/qeglfskmsgbmintegration.h
+index 727571d..018ad45 100644
+--- a/src/plugins/platforms/eglfs/deviceintegration/eglfs_kms/qeglfskmsgbmintegration.h
++++ b/src/plugins/platforms/eglfs/deviceintegration/eglfs_kms/qeglfskmsgbmintegration.h
+@@ -55,6 +55,7 @@ class QEglFSKmsGbmIntegration : public QEglFSKmsIntegration
+ public:
+     QEglFSKmsGbmIntegration();
+ 
++    EGLDisplay createDisplay(EGLNativeDisplayType nativeDisplay) Q_DECL_OVERRIDE;
+     EGLNativeWindowType createNativeWindow(QPlatformWindow *platformWindow,
+                                            const QSize &size,
+                                            const QSurfaceFormat &format) Q_DECL_OVERRIDE;
+diff --git a/src/plugins/platforms/eglfs/deviceintegration/eglfs_kms_support/qeglfskmsscreen.cpp b/src/plugins/platforms/eglfs/deviceintegration/eglfs_kms_support/qeglfskmsscreen.cpp
+index e6b256f..9b38ac0 100644
+--- a/src/plugins/platforms/eglfs/deviceintegration/eglfs_kms_support/qeglfskmsscreen.cpp
++++ b/src/plugins/platforms/eglfs/deviceintegration/eglfs_kms_support/qeglfskmsscreen.cpp
+@@ -73,7 +73,7 @@ QEglFSKmsScreen::QEglFSKmsScreen(QEglFSKmsIntegration *integration,
+                                  QEglFSKmsDevice *device,
+                                  QEglFSKmsOutput output,
+                                  QPoint position)
+-    : QEglFSScreen(eglGetDisplay(device->nativeDisplay()))
++    : QEglFSScreen(integration->createDisplay(device->nativeDisplay()))
+     , m_integration(integration)
+     , m_device(device)
+     , m_output(output)
+-- 
+1.9.1
+
