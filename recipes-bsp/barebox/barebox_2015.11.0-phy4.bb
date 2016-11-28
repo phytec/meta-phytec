@@ -204,6 +204,8 @@ of_enable_node /soc/aips-bus@02000000/ldb@020e0008/lvds-channel@0
 of_enable_node /backlight
 of_enable_node /soc/aips-bus@02100000/i2c@021a4000/stmpe@41
 """)
+    # Fix QtWebkit rendering issue for LVDS and DVI output on phyFLEX-CarrierBoard
+    env_add(d, "nv/linux.bootargs.fb", "imxdrm.legacyfb_depth=32\n");
 }
 
 python do_env_append_phyboard-alcor-imx6() {
