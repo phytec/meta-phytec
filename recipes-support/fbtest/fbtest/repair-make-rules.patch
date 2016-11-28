@@ -1,7 +1,5 @@
-Index: fbtest-20041102-1/Rules.make
-===================================================================
---- fbtest-20041102-1.orig/Rules.make
-+++ fbtest-20041102-1/Rules.make
+--- a/Rules.make
++++ b/Rules.make
 @@ -1,12 +1,5 @@
 -
 -CC = $(CROSS_COMPILE)gcc
@@ -16,3 +14,12 @@ Index: fbtest-20041102-1/Rules.make
  
  SRCS += $(wildcard *.c)
  OBJS += $(subst .c,.o,$(SRCS))
+@@ -24,7 +17,7 @@ ifdef SUBDIRS
+ endif
+ 
+ $(TARGET):	$(OBJS)
+-		$(CC) -o $(TARGET) $(filter $(OBJS), $^) $(LIBS)
++		$(CC) -o $(TARGET) $(LDFLAGS) $(filter $(OBJS), $^) $(LIBS)
+ 
+ $(O_TARGET):	$(OBJS)
+ 		$(LD) -r -o $(O_TARGET) $(filter $(OBJS), $^)
