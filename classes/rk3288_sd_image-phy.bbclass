@@ -45,7 +45,7 @@ IMAGE_ROOTFS_ALIGNMENT = "4096"
 
 # Use an uncompressed ext4 by default as rootfs
 SDIMG_ROOTFS_TYPE = "ext4"
-SDIMG_ROOTFS = "${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.rootfs.${SDIMG_ROOTFS_TYPE}"
+SDIMG_ROOTFS = "${IMGDEPLOYDIR}/${IMAGE_NAME}.rootfs.${SDIMG_ROOTFS_TYPE}"
 
 IMAGE_DEPENDS_sdcard = " \
     parted-native \
@@ -59,7 +59,7 @@ IMAGE_DEPENDS_sdcard = " \
 BOOTIMG_sdcard = "boot_sdcard.img"
 
 # SD image names
-SDIMG_sdcard = "${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.rootfs.sdcard"
+SDIMG_sdcard = "${IMGDEPLOYDIR}/${IMAGE_NAME}.rootfs.sdcard"
 
 # Compression method to apply to SDIMG after it has been created. Supported
 # compression formats are "gzip", "bzip2" or "xz". The original .sdcard file
