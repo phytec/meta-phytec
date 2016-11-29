@@ -13,3 +13,4 @@ SRCREV = "96f37555c7e82a417b02051661377b10e6b3966e"
 SRC_URI = "git://git.ti.com/glsdk/libgbm.git;protocol=git;branch=${BRANCH}"
 
 S = "${WORKDIR}/git"
+COMPATIBLE_MACHINE = "ti33x"
