@@ -14,6 +14,7 @@ SRC_URI = "${GIT_URL};branch=${BRANCH}"
 S = "${WORKDIR}/git"
 
 SRCREV = "6e5f0d9ab23a524d04959b54810850807175cd76"
+SRC_URI += " file://0001-compiler-.h-sync-include-linux-compiler-.h-with-Linu.patch"
 
 PR = "r0"
 
