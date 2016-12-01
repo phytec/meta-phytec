@@ -17,6 +17,8 @@ SRC_URI = "git://chromium.googlesource.com/chromiumos/third_party/libdrm;branch=
 SRCREV = "bf23724d876ad4495ec455ad9a713fa197df758a"
 S = "${WORKDIR}/git"
 
+COMPATIBLE_MACHINE = "rk3288"
+
 inherit autotools pkgconfig
 
 EXTRA_OECONF += "--disable-cairo-tests \
