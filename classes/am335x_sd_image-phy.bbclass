@@ -69,7 +69,7 @@ IMAGE_ROOTFS_ALIGNMENT = "4096"
 
 # Use an uncompressed ext4 by default as rootfs
 SDIMG_ROOTFS_TYPE ?= "ext4"
-SDIMG_ROOTFS = "${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.rootfs.${SDIMG_ROOTFS_TYPE}"
+SDIMG_ROOTFS = "${IMGDEPLOYDIR}/${IMAGE_NAME}.rootfs.${SDIMG_ROOTFS_TYPE}"
 
 IMAGE_DEPENDS_sdcard = " \
     parted-native \
@@ -94,8 +94,8 @@ BOOTIMG_sdcard = "boot_sdcard.img"
 BOOTIMG_emmc = "boot_emmc.img"
 
 # SD image names
-SDIMG_sdcard = "${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.rootfs.sdcard"
-SDIMG_emmc = "${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.rootfs.emmc"
+SDIMG_sdcard = "${IMGDEPLOYDIR}/${IMAGE_NAME}.rootfs.sdcard"
+SDIMG_emmc = "${IMGDEPLOYDIR}/${IMAGE_NAME}.rootfs.emmc"
 
 # Compression method to apply to SDIMG after it has been created. Supported
 # compression formats are "gzip", "bzip2" or "xz". The original .sdcard file
@@ -109,7 +109,7 @@ FATPAYLOAD ?= ""
 
 # Copy additional images to the vfat partition
 FATPAYLOAD_IMG_emmc ?= ""
-FATPAYLOAD_IMG_sdcard ?= "${DEPLOY_DIR_IMAGE}/${IMAGE_LINK_NAME}.ubifs"
+FATPAYLOAD_IMG_sdcard ?= "${IMGDEPLOYDIR}/${IMAGE_LINK_NAME}.ubifs"
 IMAGE_TYPEDEP_sdcard += "ubifs"
 
 
