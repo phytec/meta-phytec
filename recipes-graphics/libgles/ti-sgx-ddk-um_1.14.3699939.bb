@@ -70,7 +70,7 @@ ALLOW_EMPTY_${PN}-plugins = "1"
 INHIBIT_PACKAGE_STRIP = "1"
 INHIBIT_SYSROOT_STRIP = "1"
 
-INSANE_SKIP_${PN} += "dev-so ldflags useless-rpaths"
+INSANE_SKIP_${PN} += "dev-so ldflags useless-rpaths already-stripped"
 INSANE_SKIP_${PN}-plugins = "dev-so"
 
 CLEANBROKEN = "1"
