@@ -9,17 +9,13 @@ inherit barebox-environment-2
 
 GIT_URL = "git://git.phytec.de/barebox"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
-SRC_URI_append = " \
-    file://no-blspec.cfg \
-    file://0001-scripts-Add-scripts-include-to-include-path-for-targ.patch \
-"
 
 S = "${WORKDIR}/git"
 
-PR = "${INC_PR}.1"
+PR = "${INC_PR}.0"
 
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "c6deeede5e01353947dc7d943522952619f5b69e"
+SRCREV = "f97e2699990b48652729a985e4eba726ba9e3b86"
 
 python do_env_append() {
     env_add(d, "nv/allow_color", "false\n")
@@ -58,8 +54,10 @@ global.linux.bootargs.dyn.root="root=/dev/mmcblk2p2 rootflags='data=journal'"
 
 [ -e /env/config-expansions ] && /env/config-expansions
 
-global.bootm.image="/dev/nand0.kernel.bb"
-global.bootm.oftree="/dev/nand0.oftree.bb"
+[ ! -e /dev/nand0.root.ubi ] && ubiattach /dev/nand0.root
+
+global.bootm.image="/dev/nand0.root.ubi.kernel"
+global.bootm.oftree="/dev/nand0.root.ubi.oftree"
 global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=root rootfstype=ubifs"
 """)
     env_add(d, "boot/net",
@@ -90,33 +88,33 @@ global.bootm.oftree="/dev/m25p0.oftree"
 global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=root rootfstype=ubifs"
 """)
     env_add(d, "expansions/imx6qdl-mira-enable-lvds",
-"""of_enable_node /soc/aips-bus@02000000/ldb@020e0008/
-of_enable_node /soc/aips-bus@02000000/ldb@020e0008/lvds-channel@0
-of_enable_node /soc/aips-bus@02000000/pwm@02080000
-of_enable_node /backlight
+"""of_fixup_status /soc/aips-bus@02000000/ldb@020e0008/
+of_fixup_status /soc/aips-bus@02000000/ldb@020e0008/lvds-channel@0
+of_fixup_status /soc/aips-bus@02000000/pwm@02080000
+of_fixup_status /backlight
 """)
     env_add(d, "expansions/imx6qdl-mira-peb-eval-01",
-"""of_enable_node /soc/aips-bus@02100000/serial@021e8000
-of_enable_node /gpio-keys
-of_enable_node /user_leds
+"""of_fixup_status /soc/aips-bus@02100000/serial@021e8000
+of_fixup_status /gpio-keys
+of_fixup_status /user_leds
 """)
     env_add(d, "expansions/imx6qdl-phytec-lcd",
 """#!/bin/sh
-of_enable_node /soc/aips-bus@02000000/ldb@020e0008/
-of_enable_node /soc/aips-bus@02000000/ldb@020e0008/lvds-channel@0
-of_enable_node /backlight
-of_enable_node /soc/aips-bus@02100000/i2c@021a4000/edt-ft5x06@38
+of_fixup_status /soc/aips-bus@02000000/ldb@020e0008/
+of_fixup_status /soc/aips-bus@02000000/ldb@020e0008/lvds-channel@0
+of_fixup_status /backlight
+of_fixup_status /soc/aips-bus@02100000/i2c@021a4000/edt-ft5x06@38
 """)
     env_add(d, "expansions/imx6qdl-phytec-lcd-018-peb-av-02",
-"""of_enable_node /display@di0
-of_enable_node /backlight
-of_enable_node /soc/aips-bus@02100000/i2c@021a0000/edt-ft5x06@38
-of_enable_node /soc/aips-bus@02000000/pwm@02080000
+"""of_fixup_status /display@di0
+of_fixup_status /backlight
+of_fixup_status /soc/aips-bus@02100000/i2c@021a0000/edt-ft5x06@38
+of_fixup_status /soc/aips-bus@02000000/pwm@02080000
 """)
     env_add(d, "expansions/imx6qdl-phytec-peb-wlbt-01",
 """#!/bin/sh
-of_enable_node /soc/aips-bus@02100000/usdhc@02198000
-of_enable_node /regulators/regulator@7
+of_fixup_status /soc/aips-bus@02100000/usdhc@02198000
+of_fixup_status /regulators/regulator@7
 """)
     env_add(d, "network/eth0",
 """#!/bin/sh
@@ -161,10 +159,10 @@ of_display_timings -S /soc/aips-bus@02000000/ldb@020e0008/lvds-channel@0/display
 """)
     env_add(d, "expansions/imx6qdl-phytec-lcd-res",
 """#!/bin/sh
-of_enable_node /soc/aips-bus@02000000/ldb@020e0008/
-of_enable_node /soc/aips-bus@02000000/ldb@020e0008/lvds-channel@0
-of_enable_node /backlight
-of_enable_node /soc/aips-bus@02100000/i2c@021a4000/stmpe@44
+of_fixup_status /soc/aips-bus@02000000/ldb@020e0008/
+of_fixup_status /soc/aips-bus@02000000/ldb@020e0008/lvds-channel@0
+of_fixup_status /backlight
+of_fixup_status /soc/aips-bus@02100000/i2c@021a4000/stmpe@44
 """)
 }
 
@@ -199,10 +197,10 @@ of_display_timings -S /soc/aips-bus@02000000/ldb@020e0008/lvds-channel@0/display
 """)
     env_add(d, "expansions/imx6qdl-phytec-lcd-res",
 """#!/bin/sh
-of_enable_node /soc/aips-bus@02000000/ldb@020e0008/
-of_enable_node /soc/aips-bus@02000000/ldb@020e0008/lvds-channel@0
-of_enable_node /backlight
-of_enable_node /soc/aips-bus@02100000/i2c@021a4000/stmpe@41
+of_fixup_status /soc/aips-bus@02000000/ldb@020e0008/
+of_fixup_status /soc/aips-bus@02000000/ldb@020e0008/lvds-channel@0
+of_fixup_status /backlight
+of_fixup_status /soc/aips-bus@02100000/i2c@021a4000/stmpe@41
 """)
     # Fix QtWebkit rendering issue for LVDS and DVI output on phyFLEX-CarrierBoard
     env_add(d, "nv/linux.bootargs.fb", "imxdrm.legacyfb_depth=32\n");
