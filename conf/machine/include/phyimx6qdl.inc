@@ -11,6 +11,9 @@ SERIAL_CONSOLES ?= "115200;ttymxc3"
 MACHINE_SOCARCH = "${TUNE_PKGARCH}-mx6qdl"
 PACKAGE_EXTRA_ARCHS_append = " ${MACHINE_SOCARCH}"
 
+# cpu feature overwrite support
+MACHINEOVERRIDES .= ":imxgpu3d"
+
 # Use the expected value of the ubifs filesystem's volume name in the kernel
 UBI_VOLNAME = "root"
 # The biggest NANDs on current modules are 1GB. With current partition layout,
