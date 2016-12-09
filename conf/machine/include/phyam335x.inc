@@ -55,3 +55,5 @@ GUI_MACHINE_CLASS = "smallscreen"
 PREFERRED_PROVIDER_virtual/libgles1 = "ti-sgx-ddk-um"
 PREFERRED_PROVIDER_virtual/libgles2 = "ti-sgx-ddk-um"
 PREFERRED_PROVIDER_virtual/egl = "ti-sgx-ddk-um"
+
+QT_QPA_DEFAULT_PLATFORM ?= "${@bb.utils.contains('MACHINE_FEATURES', 'sgx', 'eglfs', 'linuxfb', d)}"
