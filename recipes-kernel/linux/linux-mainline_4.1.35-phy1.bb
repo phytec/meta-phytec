@@ -8,7 +8,7 @@ include linux-common.inc
 GIT_URL = "git://git.phytec.de/${PN}"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
-PR = "${INC_PR}.0"
+PR = "${INC_PR}.1"
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
 # NOTE: Keep version in filename in sync with commit id!
@@ -38,3 +38,5 @@ COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-3"
 COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-4"
 COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-5"
 COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-7"
+COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-10"
+COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-11"
