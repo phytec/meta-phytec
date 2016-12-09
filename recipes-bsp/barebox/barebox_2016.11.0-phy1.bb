@@ -300,6 +300,32 @@ python do_env_append_phyboard-mira-imx6-5() {
     env_add(d, "nv/linux.bootargs.cma", "cma=265M@1G\n")
 }
 
+python do_env_append_phyboard-mira-imx6-6() {
+    env_add(d, "config-expansions",
+"""#!/bin/sh
+
+. /env/expansions/imx6qdl-mira-peb-eval-01
+#. /env/expansions/imx6qdl-phytec-lcd-018-peb-av-02
+#. /env/expansions/imx6qdl-mira-enable-lvds
+. /env/expansions/imx6qdl-phytec-peb-wlbt-01
+
+# imx6qdl-phytec-lcd: 7" display
+#of_display_timings -S /display@di0/display-timings/ETM0700G0BDH6
+
+# imx6qdl-phytec-lcd: 5.7" display
+#of_display_timings -S /display@di0/display-timings/ETMV570G2DHU
+
+# imx6qdl-phytec-lcd: 4.3" display
+#of_display_timings -S /display@di0/display-timings/ETM0430G0DH6
+
+# imx6qdl-phytec-lcd: 3.5" display
+#of_display_timings -S /display@di0/display-timings/ETM0350G0DH6
+
+#Enable VM-010-BW-LVDS
+#of_camera_selection -a 0x48 -p 0 -b phyCAM-S+ VM-010-BW
+""")
+}
+
 python do_env_append_phyboard-mira-imx6-10() {
     env_add(d, "config-expansions",
 """#!/bin/sh
@@ -373,6 +399,7 @@ COMPATIBLE_MACHINE .= "|phyboard-subra-imx6-2"
 COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-3"
 COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-4"
 COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-5"
+COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-6"
 COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-7"
 COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-9"
 COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-10"
