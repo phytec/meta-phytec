@@ -8,11 +8,11 @@ include linux-common.inc
 GIT_URL = "git://git.phytec.de/${PN}"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
-PR = "${INC_PR}.1"
+PR = "${INC_PR}.0"
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "5ce398b7938a8a4145b7621dbf8964b93f409caf"
+SRCREV = "316b0aefed53e5ec0aebc89f43a350536b148997"
 
 S = "${WORKDIR}/git"
 
