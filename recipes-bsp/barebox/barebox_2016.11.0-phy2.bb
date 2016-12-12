@@ -15,7 +15,7 @@ S = "${WORKDIR}/git"
 PR = "${INC_PR}.0"
 
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "f97e2699990b48652729a985e4eba726ba9e3b86"
+SRCREV = "b718e07fd7cdc22ac6134cc97de3b194ac54ad22"
 
 python do_env_append() {
     env_add(d, "nv/allow_color", "false\n")
@@ -378,6 +378,72 @@ of_display_timings -S /display@di0/display-timings/ETM0700G0BDH6
 """)
 }
 
+python do_env_append_phyboard-segin-imx6ul-1() {
+    env_add(d, "boot/mmc",
+"""#!/bin/sh
+
+[ -e /env/config-expansions ] && /env/config-expansions
+
+global.bootm.image="/mnt/mmc/zImage"
+global.bootm.oftree="/mnt/mmc/oftree"
+global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootflags='data=journal'"
+""")
+    env_add(d, "boot/nand",
+"""#!/bin/sh
+
+[ -e /env/config-expansions ] && /env/config-expansions
+
+[ ! -e /dev/nand0.root.ubi ] && ubiattach /dev/nand0.root
+
+global.bootm.image="/dev/nand0.root.ubi.kernel"
+global.bootm.oftree="/dev/nand0.root.ubi.oftree"
+
+global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=root rootfstype=ubifs rw"
+""")
+    env_add(d, "config-expansions",
+"""#!/bin/sh
+
+. /env/expansions/imx6ul-phytec-segin-peb-eval-01
+#use this expansion when a capacitive touchscreen is connected
+#. /env/expansions/imx6ul-phytec-segin-peb-av-02
+#use this expansion when a resisitive touchscreen is connected
+#. /env/expansions/imx6ul-phytec-segin-peb-av-02-res
+
+# imx6ul-phytec-lcd: 7" display
+#of_display_timings -S /soc/aips-bus@02100000/lcdif@021c8000/display@di0/display-timings/ETM0700G0EDH6
+
+# imx6ul-phytec-lcd: 5.7" display
+#of_display_timings -S /soc/aips-bus@02100000/lcdif@021c8000/display@di0/display-timings/ETMV570G2DHU
+
+# imx6ul-phytec-lcd: 4.3" display
+#of_display_timings -S /soc/aips-bus@02100000/lcdif@021c8000/display@di0/display-timings/ETM0430G0DH6
+
+# imx6ul-phytec-lcd: 3.5" display
+#of_display_timings -S /soc/aips-bus@02100000/lcdif@021c8000/display@di0/display-timings/ETM0350G0DH6
+""")
+    env_add(d, "expansions/imx6ul-phytec-segin-peb-eval-01",
+"""
+of_fixup_status /gpio-keys
+of_fixup_status /user_leds
+""")
+    env_add(d, "expansions/imx6ul-phytec-segin-peb-av-02",
+"""
+of_fixup_status /soc/aips-bus@02100000/lcdif@021c8000/
+of_fixup_status /soc/aips-bus@02100000/lcdif@021c8000/display@di0
+of_fixup_status /backlight
+of_fixup_status /soc/aips-bus@02100000/i2c@021a0000/edt-ft5x06@38
+of_fixup_status /soc/aips-bus@02000000/pwm@02088000/
+""")
+    env_add(d, "expansions/imx6ul-phytec-segin-peb-av-02-res",
+"""
+of_fixup_status /soc/aips-bus@02100000/lcdif@021c8000/
+of_fixup_status /soc/aips-bus@02100000/lcdif@021c8000/display@di0
+of_fixup_status /backlight
+of_fixup_status /soc/aips-bus@02100000/i2c@021a0000/stmpe@44
+of_fixup_status /soc/aips-bus@02000000/pwm@02088000/
+""")
+}
+
 COMPATIBLE_MACHINE  =  "phyflex-imx6-1"
 COMPATIBLE_MACHINE .= "|phyflex-imx6-2"
 COMPATIBLE_MACHINE .= "|phyflex-imx6-3"
@@ -405,3 +471,5 @@ COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-9"
 COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-10"
 COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-11"
 COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-12"
+
+COMPATIBLE_MACHINE .= "|phyboard-segin-imx6ul-1"
