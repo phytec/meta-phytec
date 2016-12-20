@@ -23,7 +23,7 @@ PREFERRED_PROVIDER_virtual/bootloader ??= "u-boot"
 SDCARD_ROOTFS_TYPE ?= "ext4"
 
 # Location of root filesystem which is written to the sdcard.
-SDCARD_ROOTFS = "${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.rootfs.${SDCARD_ROOTFS_TYPE}"
+SDCARD_ROOTFS = "${IMGDEPLOYDIR}/${IMAGE_NAME}.rootfs.${SDCARD_ROOTFS_TYPE}"
 
 # The sdcard requires the rootfs filesystem to be built before using
 # it so we must make this dependency explicit.
@@ -112,7 +112,7 @@ IMAGE_DEPENDS_sdcard = "parted-native:do_populate_sysroot \
                         virtual/bootloader:do_deploy \
 "
 
-SDCARD = "${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.rootfs.sdcard"
+SDCARD = "${IMGDEPLOYDIR}/${IMAGE_NAME}.rootfs.sdcard"
 
 SDCARD_GENERATION_COMMAND_mxs = "generate_mxs_sdcard"
 SDCARD_GENERATION_COMMAND_mx25 = "generate_imx_sdcard"
