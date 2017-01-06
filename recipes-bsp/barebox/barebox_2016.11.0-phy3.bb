@@ -112,6 +112,12 @@ of_fixup_status /backlight
 of_fixup_status /soc/aips-bus@02100000/i2c@021a0000/edt-ft5x06@38
 of_fixup_status /soc/aips-bus@02000000/pwm@02080000
 """)
+    env_add(d, "expansions/imx6qdl-phytec-lcd-018-peb-av-02-res",
+"""of_fixup_status /display@di0
+of_fixup_status /backlight
+of_fixup_status /soc/aips-bus@02100000/i2c@021a0000/stmpe@44
+of_fixup_status /soc/aips-bus@02000000/pwm@02080000
+""")
     env_add(d, "expansions/imx6qdl-phytec-peb-wlbt-01",
 """#!/bin/sh
 of_fixup_status /soc/aips-bus@02100000/usdhc@02198000
@@ -250,9 +256,14 @@ global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootflags='data=journal'"
 """#!/bin/sh
 
 . /env/expansions/imx6qdl-mira-peb-eval-01
-#. /env/expansions/imx6qdl-phytec-lcd-018-peb-av-02
 #. /env/expansions/imx6qdl-mira-enable-lvds
 #. /env/expansions/imx6qdl-phytec-peb-wlbt-01
+
+#use this expansion when a capacitive touchscreen is connected
+#. /env/expansions/imx6qdl-phytec-lcd-018-peb-av-02
+
+#use this expansion when a resisitive touchscreen is connected
+#. /env/expansions/imx6qdl-phytec-lcd-018-peb-av-02-res
 
 # imx6qdl-phytec-lcd: 7" display
 #of_display_timings -S /display@di0/display-timings/ETM0700G0BDH6
@@ -318,9 +329,14 @@ python do_env_append_phyboard-mira-imx6-6() {
 """#!/bin/sh
 
 . /env/expansions/imx6qdl-mira-peb-eval-01
-#. /env/expansions/imx6qdl-phytec-lcd-018-peb-av-02
 #. /env/expansions/imx6qdl-mira-enable-lvds
 . /env/expansions/imx6qdl-phytec-peb-wlbt-01
+
+#use this expansion when a capacitive touchscreen is connected
+#. /env/expansions/imx6qdl-phytec-lcd-018-peb-av-02
+
+#use this expansion when a resisitive touchscreen is connected
+#. /env/expansions/imx6qdl-phytec-lcd-018-peb-av-02-res
 
 # imx6qdl-phytec-lcd: 7" display
 #of_display_timings -S /display@di0/display-timings/ETM0700G0BDH6
@@ -344,9 +360,14 @@ python do_env_append_phyboard-mira-imx6-10() {
 """#!/bin/sh
 
 . /env/expansions/imx6qdl-mira-peb-eval-01
-#. /env/expansions/imx6qdl-phytec-lcd-018-peb-av-02
 #. /env/expansions/imx6qdl-mira-enable-lvds
 . /env/expansions/imx6qdl-phytec-peb-wlbt-01
+
+#use this expansion when a capacitive touchscreen is connected
+#. /env/expansions/imx6qdl-phytec-lcd-018-peb-av-02
+
+#use this expansion when a resisitive touchscreen is connected
+#. /env/expansions/imx6qdl-phytec-lcd-018-peb-av-02-res
 
 # imx6qdl-phytec-lcd: 7" display
 #of_display_timings -S /display@di0/display-timings/ETM0700G0BDH6
@@ -370,9 +391,14 @@ python do_env_append_phyboard-mira-imx6-11() {
 """#!/bin/sh
 
 . /env/expansions/imx6qdl-mira-peb-eval-01
-. /env/expansions/imx6qdl-phytec-lcd-018-peb-av-02
 #. /env/expansions/imx6qdl-mira-enable-lvds
 #. /env/expansions/imx6qdl-phytec-peb-wlbt-01
+
+#use this expansion when a capacitive touchscreen is connected
+. /env/expansions/imx6qdl-phytec-lcd-018-peb-av-02
+
+#use this expansion when a resisitive touchscreen is connected
+#. /env/expansions/imx6qdl-phytec-lcd-018-peb-av-02-res
 
 # imx6qdl-phytec-lcd: 7" display
 of_display_timings -S /display@di0/display-timings/ETM0700G0BDH6
