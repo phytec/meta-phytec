@@ -265,8 +265,11 @@ global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootflags='data=journal'"
 #use this expansion when a resisitive touchscreen is connected
 #. /env/expansions/imx6qdl-phytec-lcd-018-peb-av-02-res
 
-# imx6qdl-phytec-lcd: 7" display
-#of_display_timings -S /display@di0/display-timings/ETM0700G0BDH6
+# imx6qdl-phytec-lcd: 7" display (AC138 and AC156)
+#of_display_timings -S /display@di0/display-timings/ETM0700G0EDH6
+
+# imx6qdl-phytec-lcd: 7" display (AC104)
+#of_display_timings -S /display@di0/display-timings/ETM0700G0DH6
 
 # imx6qdl-phytec-lcd: 5.7" display
 #of_display_timings -S /display@di0/display-timings/ETMV570G2DHU
@@ -338,8 +341,11 @@ python do_env_append_phyboard-mira-imx6-6() {
 #use this expansion when a resisitive touchscreen is connected
 #. /env/expansions/imx6qdl-phytec-lcd-018-peb-av-02-res
 
-# imx6qdl-phytec-lcd: 7" display
-#of_display_timings -S /display@di0/display-timings/ETM0700G0BDH6
+# imx6qdl-phytec-lcd: 7" display (AC138 and AC156)
+#of_display_timings -S /display@di0/display-timings/ETM0700G0EDH6
+
+# imx6qdl-phytec-lcd: 7" display (AC104)
+#of_display_timings -S /display@di0/display-timings/ETM0700G0DH6
 
 # imx6qdl-phytec-lcd: 5.7" display
 #of_display_timings -S /display@di0/display-timings/ETMV570G2DHU
@@ -369,8 +375,11 @@ python do_env_append_phyboard-mira-imx6-10() {
 #use this expansion when a resisitive touchscreen is connected
 #. /env/expansions/imx6qdl-phytec-lcd-018-peb-av-02-res
 
-# imx6qdl-phytec-lcd: 7" display
-#of_display_timings -S /display@di0/display-timings/ETM0700G0BDH6
+# imx6qdl-phytec-lcd: 7" display (AC138 and AC156)
+#of_display_timings -S /display@di0/display-timings/ETM0700G0EDH6
+
+# imx6qdl-phytec-lcd: 7" display (AC104)
+#of_display_timings -S /display@di0/display-timings/ETM0700G0DH6
 
 # imx6qdl-phytec-lcd: 5.7" display
 #of_display_timings -S /display@di0/display-timings/ETMV570G2DHU
@@ -400,8 +409,11 @@ python do_env_append_phyboard-mira-imx6-11() {
 #use this expansion when a resisitive touchscreen is connected
 #. /env/expansions/imx6qdl-phytec-lcd-018-peb-av-02-res
 
-# imx6qdl-phytec-lcd: 7" display
-of_display_timings -S /display@di0/display-timings/ETM0700G0BDH6
+# imx6qdl-phytec-lcd: 7" display (AC138 and AC156)
+of_display_timings -S /display@di0/display-timings/ETM0700G0EDH6
+
+# imx6qdl-phytec-lcd: 7" display (AC104)
+#of_display_timings -S /display@di0/display-timings/ETM0700G0DH6
 
 # imx6qdl-phytec-lcd: 5.7" display
 #of_display_timings -S /display@di0/display-timings/ETMV570G2DHU
