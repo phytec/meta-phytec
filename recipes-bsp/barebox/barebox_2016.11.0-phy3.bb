@@ -253,6 +253,18 @@ global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootflags='data=journal'"
 #. /env/expansions/imx6qdl-mira-enable-lvds
 #. /env/expansions/imx6qdl-phytec-peb-wlbt-01
 
+# imx6qdl-phytec-lcd: 7" display
+#of_display_timings -S /display@di0/display-timings/ETM0700G0BDH6
+
+# imx6qdl-phytec-lcd: 5.7" display
+#of_display_timings -S /display@di0/display-timings/ETMV570G2DHU
+
+# imx6qdl-phytec-lcd: 4.3" display
+#of_display_timings -S /display@di0/display-timings/ETM0430G0DH6
+
+# imx6qdl-phytec-lcd: 3.5" display
+#of_display_timings -S /display@di0/display-timings/ETM0350G0DH6
+
 #Enable VM-010-BW-LVDS
 #of_camera_selection -a 0x48 -p 0 -b phyCAM-S+ VM-010-BW
 """)
