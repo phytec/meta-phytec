@@ -91,6 +91,7 @@ global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=root rootfstype=ubifs"
 """of_fixup_status /soc/aips-bus@02000000/ldb@020e0008/
 of_fixup_status /soc/aips-bus@02000000/ldb@020e0008/lvds-channel@0
 of_fixup_status /soc/aips-bus@02000000/pwm@02080000
+of_fixup_status /soc/aips-bus@02100000/i2c@021a0000/stmpe@44
 of_fixup_status /backlight
 """)
     env_add(d, "expansions/imx6qdl-mira-peb-eval-01",
