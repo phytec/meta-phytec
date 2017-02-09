@@ -31,6 +31,8 @@ ASSUME_SHLIBS += "libEGL.so:mali-t760-libs"
 ASSUME_SHLIBS += "libGLESv1_CM.so:mali-t760-libs"
 ASSUME_SHLIBS += "libGLESv2.so:mali-t760-libs"
 ASSUME_SHLIBS += "libOpenCL.so:mali-t760-libs"
+ASSUME_SHLIBS += "libgbm.so:mali-t760-libs"
+ASSUME_SHLIBS += "libwayland-egl.so:mali-t760-libs"
 
 # rootfs images
 # register image class for usage
