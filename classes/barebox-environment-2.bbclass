@@ -110,14 +110,14 @@ def env_add(d, path, content):
         if len(new_parts) == 0:
             # Place file into tree
             if filename in tree:
-                bb.warn("Overwriting file %s in barebox environment." % (filename,))
+                bb.debug(1, "Overwriting file %s in barebox environment." % (filename,))
             tree[filename] = content
         else:
             if filename in tree:
                 # Directory of file already exists
                 if not isinstance(tree[filename], dict):
                     # It's a file
-                    bb.warn("Overwriting file %s in barebox environment." % (filename,))
+                    bb.debug(1, "Overwriting file %s in barebox environment." % (filename,))
                     tree[filename] = {}
                 # Descend into directory
             else:
@@ -142,7 +142,7 @@ def env_rm(d, path):
                 bb.warn("Cannot delete file %s in barebox environment. It doesn't exist!" % (filename,))
             else:
                 if isinstance(tree[filename], dict):
-                    bb.warn("Removing directory %s in barebox environment!" % (filename,))
+                    bb.debug(1, "Removing directory %s in barebox environment!" % (filename,))
                 del tree[filename]
         else:
             if filename not in tree:
