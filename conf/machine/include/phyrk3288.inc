@@ -15,7 +15,7 @@ INTREE_DEFCONFIG_pn-barebox = "rk3288_defconfig"
 PREFERRED_PROVIDER_virtual/bootloader ?= "barebox"
 PREFERRED_PROVIDER_virtual/prebootloader ?= "u-boot-spl"
 
-SERIAL_CONSOLES = "115200;ttyS0"
+SERIAL_CONSOLES = "115200;ttyS2"
 
 PREFERRED_PROVIDER_virtual/egl ?= "mali-t760-libs"
 PREFERRED_PROVIDER_virtual/libgles1 ?= "mali-t760-libs"
