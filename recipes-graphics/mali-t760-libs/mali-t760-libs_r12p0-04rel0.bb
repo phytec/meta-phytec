@@ -4,7 +4,7 @@
 SUMMARY = "Userspace GPU driver for Mali-T760"
 DESCRIPTION = "Userspace GPU driver for Mali-T760"
 SECTION = "libs"
-LICENSE = "proprietary-binary"
+LICENSE = "ARM-MALI-EULA"
 LIC_FILES_CHKSUM = "file://END_USER_LICENCE_AGREEMENT.txt;md5=3918cc9836ad038c5a090a0280233eea"
 
 PROVIDES += "libgbm virtual/libgles2 virtual/libgles1 virtual/egl virtual/opencl virtual/wayland-egl"
@@ -43,8 +43,7 @@ do_install() {
 
 	install -d ${D}${libdir}/pkgconfig
 	install -m 0644 pkgconfig/* ${D}${libdir}/pkgconfig
-	cp -av lib* ${D}${libdir}/
-	install -m 0644 libmali.so ${D}${libdir}/libmali.so
+	cp -rd lib* ${D}${libdir}/
 }
 
 FILES_${PN} += "${libdir}"
