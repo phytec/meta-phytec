@@ -1,0 +1,82 @@
+From 2c155b144360de9878bec9301bd2eb11a4f7d8ac Mon Sep 17 00:00:00 2001
+From: "jakub@138bc75d-0d04-0410-961f-82ee72b054a4"
+ <jakub@138bc75d-0d04-0410-961f-82ee72b054a4>
+Date: Wed, 15 Feb 2017 14:20:21 +0100
+Subject: [PATCH] =?UTF-8?q?=20=20=20=20=20=20=20=20Backported=20from=20mai?=
+ =?UTF-8?q?nline=20=20=20=20=20=20=20=20=202016-01-21=20=20Stefan=20S?=
+ =?UTF-8?q?=C3=B8rensen=20=20<stefan.sorensen@spectralink.com>=20=20=20=20?=
+ =?UTF-8?q?=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20Jakub=20Jeli?=
+ =?UTF-8?q?nek=20=20<jakub@redhat.com>?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+        PR target/69187
+        PR target/65624
+        * config/arm/arm-builtins.c (arm_expand_neon_builtin): Increase
+        args array size by one to avoid buffer overflow.
+
+        * gcc.target/arm/pr69187.c: New test.
+
+    git-svn-id: svn+ssh://gcc.gnu.org/svn/gcc/branches/gcc-5-branch@233296 138bc75d-0d04-0410-961f-82ee72b054a4
+
+Signed-off-by: Jan Remmet <j.remmet@phytec.de>
+---
+ gcc/ChangeLog                 | 12 ++++++++++++
+ gcc/config/arm/arm-builtins.c |  2 +-
+ gcc/testsuite/ChangeLog       |  9 +++++++++
+ 3 files changed, 22 insertions(+), 1 deletion(-)
+
+diff --git a/gcc/ChangeLog b/gcc/ChangeLog
+index 8316552..ec59d04 100644
+--- a/gcc/ChangeLog
++++ b/gcc/ChangeLog
+@@ -1,3 +1,15 @@
++2017-02-15  Jan Remmet <j.remmet@phytec.de>
++
++	Backported from mainline
++	2016-01-21  Stefan Sørensen  <stefan.sorensen@spectralink.com>
++		    Jakub Jelinek  <jakub@redhat.com>
++
++	PR target/69187
++	PR target/65624
++	* config/arm/arm-builtins.c (arm_expand_neon_builtin): Increase
++	args array size by one to avoid buffer overflow.
++
++
+ 2015-12-04  Release Manager
+ 
+ 	* GCC 5.3.0 released.
+diff --git a/gcc/config/arm/arm-builtins.c b/gcc/config/arm/arm-builtins.c
+index 7a45113..09fd3e7 100644
+--- a/gcc/config/arm/arm-builtins.c
++++ b/gcc/config/arm/arm-builtins.c
+@@ -2160,7 +2160,7 @@ arm_expand_neon_builtin (int fcode, tree exp, rtx target)
+   neon_builtin_datum *d =
+ 		&neon_builtin_data[fcode - ARM_BUILTIN_NEON_BASE];
+   enum insn_code icode = d->code;
+-  builtin_arg args[SIMD_MAX_BUILTIN_ARGS];
++  builtin_arg args[SIMD_MAX_BUILTIN_ARGS + 1];
+   int num_args = insn_data[d->code].n_operands;
+   int is_void = 0;
+   int k;
+diff --git a/gcc/testsuite/ChangeLog b/gcc/testsuite/ChangeLog
+index 8f98975..0eb4511 100644
+--- a/gcc/testsuite/ChangeLog
++++ b/gcc/testsuite/ChangeLog
+@@ -1,3 +1,12 @@
++2017-02-15  Jan Remmet <j.remmet@phytec.de>
++
++	Backported from mainline
++	2016-01-21  Jakub Jelinek  <jakub@redhat.com>
++
++	PR target/69187
++	PR target/65624
++	* gcc.target/arm/pr69187.c: New test.
++
+ 2015-12-04  Release Manager
+ 
+ 	* GCC 5.3.0 released.
+-- 
+1.9.1
+
