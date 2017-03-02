@@ -1,0 +1,25 @@
+From 0023a75f19eeb93e28ae577bb7e1a1a43e3ca566 Mon Sep 17 00:00:00 2001
+From: Fabian Godehardt <fg@emlix.com>
+Date: Tue, 28 Feb 2017 11:42:00 +0100
+Subject: [PATCH] pxp/blitter: reenable GRAY8 as input format
+
+Signed-off-by: Fabian Godehardt <fg@emlix.com>
+---
+ src/pxp/blitter.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/pxp/blitter.h b/src/pxp/blitter.h
+index 28a0f5c..af570c7 100644
+--- a/src/pxp/blitter.h
++++ b/src/pxp/blitter.h
+@@ -111,6 +111,7 @@ typedef struct _GstImxPxPBlitterPrivate GstImxPxPBlitterPrivate;
+ 	" , YUY2 " \
+ 	" , UYVY " \
+ 	" , YVYU " \
++	" , GRAY8 " \
+ 	" } "
+ 
+ #define GST_IMX_PXP_BLITTER_SINK_CAPS \
+-- 
+2.10.2
+
