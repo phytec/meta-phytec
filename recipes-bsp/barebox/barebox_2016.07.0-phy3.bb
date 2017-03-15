@@ -13,7 +13,7 @@ PR = "${INC_PR}.1"
 # NOTE: Keep version in filename in sync with commit id and barebox-ipl!
 SRCREV = "9f6e06139826c875ff3a3a892558fdd8b018b1a0"
 
-DEPENDS += "u-boot-mkimage-native"
+DEPENDS_rk3288 += "u-boot-mkimage-native"
 
 do_compile_append_rk3288 () {
 	mkimage -A arm -T firmware -C none -O u-boot -a 0x02000000 -e 0 -n "barebox image" -d ${B}/${BAREBOX_BIN} ${B}/${BAREBOX_BIN}.u-boot
