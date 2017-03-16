@@ -12,7 +12,7 @@ SRC_URI = "\
     file://0001-rc.pvr-add-proper-error-return-code.patch \
     file://0002-rc.pvr-don-t-load-the-bc_example-module.patch \
 "
-SRCREV = "fccafce7d0a023e36c064ccbaa7d33e89252ea00"
+SRCREV = "d184140aa5c17e13e1bf21151f1a7bc068bdf8bf"
 
 # There's only hardfp version available
 inherit tune_features_check
@@ -27,7 +27,7 @@ INITSCRIPT_PARAMS = "defaults 8"
 
 inherit update-rc.d
 
-PR = "r16"
+PR = "r23"
 PROVIDES += "virtual/egl virtual/libgles1 virtual/libgles2 omap5-sgx-ddk-um-linux"
 
 DEPENDS += "libdrm udev libgbm wayland libffi"
