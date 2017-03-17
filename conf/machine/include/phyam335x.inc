@@ -31,8 +31,6 @@ SERIAL_CONSOLES ?= "115200;ttyO0"
 RDEPENDS_kernel-base = ""
 
 # rootfs images
-# register image class for usage
-IMAGE_CLASSES += "am335x_sd_image-phy"
 # Use the expected value of the ubifs filesystem's volume name in the kernel
 UBI_VOLNAME = "root"
 # The biggest NANDs on current modules are 1GB. With current partition layout,
@@ -57,3 +55,12 @@ PREFERRED_PROVIDER_virtual/libgles2 = "ti-sgx-ddk-um"
 PREFERRED_PROVIDER_virtual/egl = "ti-sgx-ddk-um"
 
 QT_QPA_DEFAULT_PLATFORM ?= "${@bb.utils.contains('MACHINE_FEATURES', 'sgx', 'eglfs', 'linuxfb', d)}"
+
+
+#WIC
+IMAGE_CLASSES += "wic-helper"
+IMAGE_BOOT_FILES = "barebox.bin MLO zImage;linuximage ${@parse_dtbs(d)}"
+IMAGE_DEPENDS_wic_append = " \
+    virtual/prebootloader:do_deploy \
+"
+WKS_FILES_ti33x = "am335x-sdimage.wks"

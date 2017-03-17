@@ -34,6 +34,10 @@ ASSUME_SHLIBS += "libOpenCL.so:mali-t760-libs"
 ASSUME_SHLIBS += "libgbm.so:mali-t760-libs"
 ASSUME_SHLIBS += "libwayland-egl.so:mali-t760-libs"
 
-# rootfs images
-# register image class for usage
-IMAGE_CLASSES += "rk3288_sd_image-phy"
+#WIC
+IMAGE_CLASSES += "wic-helper"
+IMAGE_BOOT_FILES = "zImage;linuximage ${@parse_dtbs(d)}"
+IMAGE_DEPENDS_wic_append = " \
+    virtual/prebootloader:do_deploy \
+"
+WKS_FILES_rk3288 = "rk3288-sdimage.wks"
