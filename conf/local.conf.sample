@@ -21,10 +21,9 @@ DISTRO ?= "yogurt"
 # You can disable and enable FSTYPES as you wish. e.g. 'ext4'.
 # This is ordering dependend.
 IMAGE_FSTYPES += "tar.gz"
-IMAGE_FSTYPES_append_mx6 = " sdcard ubifs"
-IMAGE_FSTYPES_append_ti33x = " sdcard ubifs"
-IMAGE_FSTYPES_append_rk3288 = " sdcard"
-#IMAGE_FSTYPES_append_ti33x = " emmc"
+IMAGE_FSTYPES_append_mx6 = " wic ubifs"
+IMAGE_FSTYPES_append_ti33x = " wic ubifs"
+IMAGE_FSTYPES_append_rk3288 = " wic"
 DEPLOY_DIR = "${TOPDIR}/deploy"
 
 # Select configuration UI for linux and barebox recipe. The openembedded
