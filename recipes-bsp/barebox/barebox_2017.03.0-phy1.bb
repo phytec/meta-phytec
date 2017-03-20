@@ -147,25 +147,6 @@ serverip=192.168.3.10
     env_add(d, "nv/boot.watchdog_timeout", "60\n")
 }
 
-python do_env_append_rk3288() {
-    env_add(d, "boot/emmc",
-"""#!/bin/sh
-
-global.bootm.image=/mnt/emmc/linuximage
-global.bootm.oftree=/mnt/emmc/oftree
-
-global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootflags='data=journal'"
-""")
-    env_add(d, "boot/mmc",
-"""#!/bin/sh
-
-global.bootm.image=/mnt/sdmmc/linuximage
-global.bootm.oftree=/mnt/sdmmc/oftree
-
-global.linux.bootargs.dyn.root="root=/dev/mmcblk1p2 rootflags='data=journal'"
-""")
-}
-
 python do_env_append_phycore-am335x() {
     env_add(d, "config-expansions",
 """#!/bin/sh
