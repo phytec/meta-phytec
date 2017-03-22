@@ -38,3 +38,8 @@ SERIAL_CONSOLE = "115200 ttymxc0"
 KERNEL_IMAGETYPE = "zImage"
 
 MACHINE_FEATURES = "apm usbgadget usbhost vfat"
+
+#WIC
+IMAGE_CLASSES += "wic-helper"
+IMAGE_BOOT_FILES = "zImage ${@parse_dtbs(d)}"
+WKS_FILES_mx6 = "imx6-sdimage.wks"
