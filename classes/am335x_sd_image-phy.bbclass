@@ -115,6 +115,12 @@ IMAGE_TYPEDEP_sdcard += "ubifs"
 
 IMAGEDATESTAMP = "${@time.strftime('%Y.%m.%d',time.gmtime())}"
 
+IMAGE_CMD_ext4_append () {
+
+	fsck.ext4 -fy ${IMGDEPLOYDIR}/${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.ext4
+
+}
+
 IMAGE_CMD_sdcard () {
 
 	create_image ${SDIMG_sdcard} "${FATPAYLOAD_IMG_sdcard}"

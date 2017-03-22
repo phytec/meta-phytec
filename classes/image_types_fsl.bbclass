@@ -120,6 +120,11 @@ SDCARD_GENERATION_COMMAND_mx5 = "generate_imx_sdcard"
 SDCARD_GENERATION_COMMAND_mx6 = "generate_imx_sdcard"
 SDCARD_GENERATION_COMMAND_vf60 = "generate_imx_sdcard"
 
+IMAGE_CMD_ext4_append () {
+
+	fsck.ext4 -fy ${IMGDEPLOYDIR}/${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.ext4
+
+}
 
 # Copy all dtb files in KERNEL_DEVICETREE onto the sdcard image and use the
 # first device tree in KERNEL_DEVICETREE as the 'oftree' file which will be

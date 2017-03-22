@@ -70,6 +70,12 @@ SDIMG_sdcard = "${IMGDEPLOYDIR}/${IMAGE_NAME}.rootfs.sdcard"
 
 IMAGEDATESTAMP = "${@time.strftime('%Y.%m.%d',time.gmtime())}"
 
+IMAGE_CMD_ext4_append () {
+
+	fsck.ext4 -fy ${IMGDEPLOYDIR}/${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.ext4
+
+}
+
 IMAGE_CMD_sdcard () {
 	create_image ${SDIMG_sdcard}
 	populate_boot_part ${SDIMG_sdcard} ${BOOTIMG_sdcard}
