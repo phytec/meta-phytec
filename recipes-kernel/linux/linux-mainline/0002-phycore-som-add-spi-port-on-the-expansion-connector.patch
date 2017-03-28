@@ -1,0 +1,58 @@
+From 518aaf0a3d70b5431b43b117a00fddc52da1cb7d Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Stefan=20M=C3=BCller-Klieser?= <s.mueller-klieser@phytec.de>
+Date: Mon, 6 Mar 2017 14:33:59 +0100
+Subject: [PATCH 2/2] phycore-som: add spi port on the expansion connector
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+The mira board has the spi chip select 0 on the expansion connector. Use
+it instead of the gpio chip select and add userspace spi access on the
+chip select 0. SPI flash now has address 1.
+
+Signed-off-by: Stefan Müller-Klieser <s.mueller-klieser@phytec.de>
+---
+ arch/arm/boot/dts/imx6qdl-phytec-phycore-som.dtsi | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
+
+diff --git a/arch/arm/boot/dts/imx6qdl-phytec-phycore-som.dtsi b/arch/arm/boot/dts/imx6qdl-phytec-phycore-som.dtsi
+index 82a2a86..3881211 100644
+--- a/arch/arm/boot/dts/imx6qdl-phytec-phycore-som.dtsi
++++ b/arch/arm/boot/dts/imx6qdl-phytec-phycore-som.dtsi
+@@ -53,14 +53,19 @@
+ &ecspi1 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_ecspi1>;
+-	fsl,spi-num-chipselects = <1>;
+-	cs-gpios = <&gpio3 19 0>;
++	fsl,spi-num-chipselects = <2>;
+ 	status = "okay";
+ 
++	spi@0 {
++		compatible = "spidev";
++		spi-max-frequency = <20000000>;
++		reg = <0>;
++	};
++
+ 	flash: m25p80@0 {
+ 		compatible = "m25p80";
+ 		spi-max-frequency = <20000000>;
+-		reg = <0>;
++		reg = <1>;
+ 		status = "disabled";
+ 
+ 		#address-cells = <1>;
+@@ -287,7 +292,9 @@
+ 				MX6QDL_PAD_EIM_D16__ECSPI1_SCLK		0x100b1
+ 				MX6QDL_PAD_EIM_D17__ECSPI1_MISO		0x100b1
+ 				MX6QDL_PAD_EIM_D18__ECSPI1_MOSI		0x100b1
+-				MX6QDL_PAD_EIM_D19__GPIO3_IO19		0x80000000
++				MX6QDL_PAD_EIM_EB2__ECSPI1_SS0		0x100b1
++				MX6QDL_PAD_EIM_D19__ECSPI1_SS1		0x100b1
++
+ 			>;
+ 		};
+ 
+-- 
+1.9.1
+
