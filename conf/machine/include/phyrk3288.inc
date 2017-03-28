@@ -15,6 +15,9 @@ INTREE_DEFCONFIG_pn-barebox = "rk3288_defconfig"
 PREFERRED_PROVIDER_virtual/bootloader ?= "barebox"
 PREFERRED_PROVIDER_virtual/prebootloader ?= "u-boot-spl"
 
+# Install modules in initramfs and rootfs
+PACKAGE_INSTALL_append = " kernel-modules"
+
 SERIAL_CONSOLES = "115200;ttyS2"
 
 PREFERRED_PROVIDER_virtual/egl ?= "mali-t760-libs"
