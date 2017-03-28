@@ -25,7 +25,7 @@ def at24c32_get_ram(devaddr, addr):
 def at24c32_set_ram(devaddr, addr, val):
 	upperbyte = (addr & 0b1111111100000000) >> 8
 	lowerbyte = addr & 0b0000000011111111
-	i2c.write_i2c_block_data(devaddr, upperbyte, [lowerbyte, val])	
+	i2c.write_i2c_block_data(devaddr, upperbyte, [lowerbyte, val])
 	time.sleep(0.1)
 
 # Lock EEPROM permanently
@@ -67,7 +67,7 @@ coding_spi = {
 }
 
 coding_controller = {
-	0: "RK3288 (1,8Ghz, Quad A17)",
+	0: "RK3288 (1.8Ghz, Quad A17)",
 	1: "RK3288-",
 }
 
@@ -132,6 +132,7 @@ def decode_eeprom(devaddr):
 	decoded["reserved3"]	= at24c32_get_ram(devaddr, 14 + 10)
 	decoded["version0"]	= str(unichr(at24c32_get_ram(devaddr, 14 + 11)))
 	decoded["version1"]	= at24c32_get_ram(devaddr, 14 + 12)
+	decoded["somrev"]	= at24c32_get_ram(devaddr, 14 + 13)
 	return decoded
 
 def set_artno(devaddr, artno):
@@ -157,36 +158,27 @@ def set_option(devaddr, opt):
 		at24c32_set_ram(devaddr, 14 + i, opt[i])
 
 def set_api(devaddr, api):
-	at24c32_set_ram(devaddr, 0, 0)
+	at24c32_set_ram(devaddr, 0, api)
 
 def set_mod(devaddr, mod):
-	at24c32_set_ram(devaddr, 1, 0)
+	at24c32_set_ram(devaddr, 1, mod)
+
+def set_rev(devaddr, rev):
+	at24c32_set_ram(devaddr, 14 + 13, rev)
 
 def main():
-	dev = 0x59
+	dev = 0x58
 
 	parser = argparse.ArgumentParser(
-		description="RK3288 SoM EEPROM configurator.")
-	group = parser.add_mutually_exclusive_group(required=True)
-	group.add_argument(
-		"-l",
-		action="store_true",
-		help="list SoM all variants.",
+		description="phyCORE-RK3288 SoM EEPROM configurator.")
+	parser.add_argument("-p", nargs=2,
+		help="Program EEPROM: -p variant revision", required=False)
+	parser.add_argument("-l", help="List all known SoM variants",
+		action="store_true")
+	parser.add_argument("-d", action="store_true",
+		help="decode SoM EEPROM."
 	)
-	group.add_argument(
-		"-d",
-		action="store_true",
-		help="decode SoM EEPROM.",
-	)
-	group.add_argument(
-		"-p",
-		action="store",
-		dest="variant",
-		help="program EEPROM.",
-	)
-	group.add_argument(
-		"-x",
-		action="store_true",
+	parser.add_argument("-x", action="store_true",
 		help="lock EEPROM. This will set write protectioin.",
 	)
 
@@ -198,16 +190,23 @@ def main():
 		if args.d:
 			for s, c in sorted(decode_eeprom(dev).items()):
 				print(s + ":    \t" + str(c))
-		if args.variant:
-			if args.variant in variant_opt:
-				set_api(dev, api_version)
-				set_mod(dev, mod_version)
-				set_artno(dev, variant_artno[args.variant])
-				set_option(dev, variant_opt[args.variant])
-			else:
-				print("Unsupported variant")
 		if args.x:
 			lock_eeprom(dev)
+		if args.p:
+			if args.p[0] in variant_opt:
+				# clear identification page
+				for i in range(32):
+					at24c32_set_ram(dev, i, 0)
+
+				set_api(dev, api_version)
+				set_mod(dev, mod_version)
+				set_artno(dev, variant_artno[args.p[0]])
+				set_option(dev, variant_opt[args.p[0]])
+				set_rev(dev, int(args.p[1]))
+			else:
+				print("Unsupported variant")
+	except ValueError:
+		print("Please enter a valid type.")
 	except IOError as (errno, strerror):
 		print("EEPROM is locked.")
 		print("I/O error({0}): {1}".format(errno, strerror))
