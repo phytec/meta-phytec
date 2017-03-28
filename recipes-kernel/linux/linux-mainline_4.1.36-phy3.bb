@@ -43,3 +43,9 @@ COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-9"
 COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-10"
 COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-11"
 COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-12"
+COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-13"
+SRC_URI_append_phyboard-mira-imx6-13 = " \
+    file://0001-mira-peb-eval-01-mux-gpios-and-do-not-load-driver.patch \
+    file://0002-phycore-som-add-spi-port-on-the-expansion-connector.patch \
+    file://defconfig \
+"

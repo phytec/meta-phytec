@@ -429,6 +429,42 @@ of_display_timings -S /display@di0/display-timings/ETM0700G0EDH6
 """)
 }
 
+python do_env_append_phyboard-mira-imx6-13() {
+    env_add(d, "config-expansions",
+"""#!/bin/sh
+
+#active debug uart on the expansion connector
+of_fixup_status /soc/aips-bus@02100000/serial@021e8000
+
+#. /env/expansions/imx6qdl-mira-enable-lvds
+#. /env/expansions/imx6qdl-phytec-peb-wlbt-01
+
+#use this expansion when a capacitive touchscreen is connected
+. /env/expansions/imx6qdl-phytec-lcd-018-peb-av-02
+
+#use this expansion when a resisitive touchscreen is connected
+#. /env/expansions/imx6qdl-phytec-lcd-018-peb-av-02-res
+
+# imx6qdl-phytec-lcd: 7" display (AC138 and AC156)
+#of_display_timings -S /display@di0/display-timings/ETM0700G0EDH6
+
+# imx6qdl-phytec-lcd: 7" display (AC104)
+of_display_timings -S /display@di0/display-timings/ETM0700G0DH6
+
+# imx6qdl-phytec-lcd: 5.7" display
+#of_display_timings -S /display@di0/display-timings/ETMV570G2DHU
+
+# imx6qdl-phytec-lcd: 4.3" display
+#of_display_timings -S /display@di0/display-timings/ETM0430G0DH6
+
+# imx6qdl-phytec-lcd: 3.5" display
+#of_display_timings -S /display@di0/display-timings/ETM0350G0DH6
+
+#Enable VM-010-BW-LVDS
+#of_camera_selection -a 0x48 -p 0 -b phyCAM-S+ VM-010-BW
+""")
+}
+
 python do_env_append_phyboard-segin-imx6ul-1() {
     env_add(d, "boot/mmc",
 """#!/bin/sh
@@ -522,5 +558,6 @@ COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-9"
 COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-10"
 COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-11"
 COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-12"
+COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-13"
 
 COMPATIBLE_MACHINE .= "|phyboard-segin-imx6ul-1"

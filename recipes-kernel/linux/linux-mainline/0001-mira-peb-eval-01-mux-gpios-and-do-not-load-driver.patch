@@ -1,0 +1,110 @@
+From 757f6a90b8438e5ba5c2c0f99dbcf42215a7742f Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Stefan=20M=C3=BCller-Klieser?= <s.mueller-klieser@phytec.de>
+Date: Mon, 20 Feb 2017 13:55:32 +0100
+Subject: [PATCH 1/2] mira-peb-eval-01: mux gpios and do not load driver
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+We want to have those available to demonstrate userspace driver access.
+
+Signed-off-by: Stefan Müller-Klieser <s.mueller-klieser@phytec.de>
+---
+ .../boot/dts/imx6qdl-phytec-mira-peb-eval-01.dtsi  | 75 ++++++----------------
+ 1 file changed, 18 insertions(+), 57 deletions(-)
+
+diff --git a/arch/arm/boot/dts/imx6qdl-phytec-mira-peb-eval-01.dtsi b/arch/arm/boot/dts/imx6qdl-phytec-mira-peb-eval-01.dtsi
+index e1e548b..6a742c5 100644
+--- a/arch/arm/boot/dts/imx6qdl-phytec-mira-peb-eval-01.dtsi
++++ b/arch/arm/boot/dts/imx6qdl-phytec-mira-peb-eval-01.dtsi
+@@ -10,69 +10,30 @@
+  * http://www.gnu.org/copyleft/gpl.html
+  */
+ 
+-#include <dt-bindings/input/input.h>
+-
+-/ {
+-	gpio-keys {
+-		compatible = "gpio-key";
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&pinctrl_gpio_keys>;
+-		status = "disabled";
+-
+-		home {
+-			label = "Home";
+-			gpios = <&gpio6 18 GPIO_ACTIVE_LOW>;
+-			linux,code = <KEY_HOME>;
+-		};
+-
+-		power {
+-			label = "Power Button";
+-			gpios = <&gpio5 28 GPIO_ACTIVE_LOW>;
+-			linux,code = <KEY_POWER>;
+-			gpio-key,wakeup;
+-		};
+-	};
+-
+-	user_leds: user_leds {
+-		compatible = "gpio-leds";
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&pinctrl_user_leds>;
+-		status = "disabled";
+-
+-		user_led_green {
+-			gpios = <&gpio5 29 GPIO_ACTIVE_HIGH>;
+-			linux,default-trigger = "gpio";
+-			default-state = "on";
+-		};
+-
+-		user_led_yellow {
+-			gpios = <&gpio7 0 GPIO_ACTIVE_HIGH>;
+-			linux,default-trigger = "gpio";
+-			default-state = "on";
+-		};
+-
+-		user_led_red {
+-			gpios = <&gpio7 1 GPIO_ACTIVE_HIGH>;
+-			linux,default-trigger = "gpio";
+-			default-state = "on";
+-		};
+-	};	
+-};
+-
+ &iomuxc {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_gpios>;
++
+ 	imx6qdl-phytec-mira-pebeval01 {
+-		pinctrl_gpio_keys: gpio_keysgrp {
++		pinctrl_gpios: gpios_grp {
+ 			fsl,pins = <
+-				MX6QDL_PAD_SD3_DAT6__GPIO6_IO18		0x80000000
++				MX6QDL_PAD_SD3_CMD__GPIO7_IO02		0x80000000
++				MX6QDL_PAD_SD3_DAT0__GPIO7_IO04		0x80000000
++				MX6QDL_PAD_SD3_CLK__GPIO7_IO03		0x80000000
++				MX6QDL_PAD_SD3_DAT1__GPIO7_IO05		0x80000000
++				MX6QDL_PAD_SD3_DAT2__GPIO7_IO06		0x80000000
++				MX6QDL_PAD_CSI0_DAT11__GPIO5_IO29	0x80000000
++				MX6QDL_PAD_SD3_DAT3__GPIO7_IO07		0x80000000
+ 				MX6QDL_PAD_CSI0_DAT10__GPIO5_IO28	0x80000000
+-			>;
+-		};
+-
+-		pinctrl_user_leds: user_ledsgrp {
+-			fsl,pins = <
+ 				MX6QDL_PAD_SD3_DAT4__GPIO7_IO01		0x80000000
+ 				MX6QDL_PAD_SD3_DAT5__GPIO7_IO00		0x80000000
+-				MX6QDL_PAD_CSI0_DAT11__GPIO5_IO29	0x80000000
++				MX6QDL_PAD_SD3_DAT6__GPIO6_IO18		0x80000000
++				MX6QDL_PAD_SD3_DAT7__GPIO6_IO17		0x80000000
++				MX6QDL_PAD_EIM_A25__GPIO5_IO02		0x80000000
++				MX6QDL_PAD_CSI0_DAT8__GPIO5_IO26	0x80000000
++				MX6QDL_PAD_KEY_COL4__GPIO4_IO14		0x80000000
++				MX6QDL_PAD_KEY_ROW4__GPIO4_IO15		0x80000000
++				MX6QDL_PAD_CSI0_DAT9__GPIO5_IO27	0x80000000
+ 			>;
+ 		};
+ 	};
+-- 
+1.9.1
+
