@@ -12,7 +12,7 @@ SRC_URI = "file://rkeeprom.py"
 
 S = "${WORKDIR}"
 
-DEPENDS += "python python-smbus python-argparse"
+RDEPENDS_${PN} = "python python-smbus python-argparse"
 
 do_install() {
 	install -d ${D}${bindir}
