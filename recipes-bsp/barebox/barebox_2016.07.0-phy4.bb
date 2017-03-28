@@ -11,9 +11,9 @@ S = "${WORKDIR}/git"
 PR = "${INC_PR}.1"
 
 # NOTE: Keep version in filename in sync with commit id and barebox-ipl!
-SRCREV = "9f6e06139826c875ff3a3a892558fdd8b018b1a0"
+SRCREV = "47f9b2423809580eaf8a4fbcc3eff31d981a4cbc"
 
-DEPENDS_rk3288 += "u-boot-mkimage-native"
+DEPENDS += "u-boot-mkimage-native"
 
 do_compile_append_rk3288 () {
 	mkimage -A arm -T firmware -C none -O u-boot -a 0x02000000 -e 0 -n "barebox image" -d ${B}/${BAREBOX_BIN} ${B}/${BAREBOX_BIN}.u-boot
@@ -55,6 +55,8 @@ python do_env_append_rk3288() {
     env_add(d, "boot/emmc",
 """#!/bin/sh
 
+[ -e /env/config-expansions ] && /env/config-expansions
+
 global.bootm.image=/mnt/emmc/linuximage
 global.bootm.oftree=/mnt/emmc/oftree
 
@@ -63,12 +65,28 @@ global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootflags='data=journal'"
     env_add(d, "boot/mmc",
 """#!/bin/sh
 
+[ -e /env/config-expansions ] && /env/config-expansions
+
 global.bootm.image=/mnt/sdmmc/linuximage
 global.bootm.oftree=/mnt/sdmmc/oftree
 
 global.linux.bootargs.dyn.root="root=/dev/mmcblk1p2 rootflags='data=journal'"
 """)
+    env_add(d, "expansions/phytec-lcd-018-pcm-947",
+"""of_fixup_status /lvds-panel
+of_fixup_status /backlight
+of_fixup_status /lvds@ff96c000/
+of_fixup_status /i2c@ff660000/touchscreen@38/
+""")
 }
 
-OMPATIBLE_MACHINE .= "|phycore-rk3288-1"
-COMPATIBLE_MACHINE .= "|phycore-rk3288-2"
+python do_env_append_phycore-rk3288-3() {
+    env_add(d, "config-expansions",
+"""#!/bin/sh
+
+#. /env/expansions/phytec-lcd-018-pcm-947
+
+""")
+}
+
+COMPATIBLE_MACHINE = "phycore-rk3288-3"
