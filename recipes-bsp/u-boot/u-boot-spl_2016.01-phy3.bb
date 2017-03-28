@@ -13,17 +13,12 @@ SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
 S = "${WORKDIR}/git"
 
-SRCREV = "6e5f0d9ab23a524d04959b54810850807175cd76"
+SRCREV = "91790f3877871a8bb74d1ca3c81577053cfff5dc"
 SRC_URI += " file://0001-compiler-.h-sync-include-linux-compiler-.h-with-Linu.patch"
 
 PR = "r0"
 
-COMPATIBLE_MACHINE = "firefly-rk3288-1"
-SRC_URI_append_firefly-rk3288-1 = " file://rk-dbg-uart2.cfg"
-COMPATIBLE_MACHINE .= "|phycore-rk3288-1"
-SRC_URI_append_phycore-rk3288-1 = " file://rk-dbg-uart0.cfg"
-COMPATIBLE_MACHINE .= "|phycore-rk3288-2"
-SRC_URI_append_phycore-rk3288-2 = " file://rk-dbg-uart0.cfg"
+COMPATIBLE_MACHINE = "phycore-rk3288-3"
 
 UBOOT_SUFFIX = "img"
 UBOOT_BINARY = "u-boot-dtb.${UBOOT_SUFFIX}"
