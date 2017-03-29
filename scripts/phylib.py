@@ -137,6 +137,7 @@ class BoardSupportPackage(object):
         self.pdn = "UNASSIGNED"
         self.soc = "all"
         self.selected_machine = "UNASSIGNED"
+        self.selected_distro = "yogurt"
         self.supported_machines = []
         self.local_conf = ""
         self.build_dir = ""
@@ -166,15 +167,11 @@ class BoardSupportPackage(object):
             if child.tag == "phytec":
                 release_info = child.attrib
         # source settings
-        try:
-            self.pdn = release_info["pdn"]
-            self.soc = release_info["soc"].lower()
-            # BSP settings
-            self.selected_machine = release_info["machine"]
-        except KeyError, e:
-            #There can be measures taken, if a key is not set
-            #print e
-            pass
+        for key in release_info.keys():
+            setattr(self, key, release_info[key])
+
+        # allow capitalization for soc in manifest
+        self.soc = self.soc.lower()
 
     def probe_selected_release(self):
         repo_dir = self.src.get_repo_dir()
@@ -189,18 +186,18 @@ class BoardSupportPackage(object):
         fw = open(lconf, 'w')
         fr = open(lconftmp, 'r')
         frl = fr.readlines()
-        set_already = False
         for line in frl:
-            if "MACHINE" in line and not line.strip().startswith("#") and not set_already:
-                print 'set MACHINE in local.conf to ', self.selected_machine
+            if line.strip().startswith("#"):
+                fw.write(line)
+            elif line.strip().startswith("MACHINE "):
+                print('set MACHINE in local.conf to %s' % self.selected_machine)
                 fw.write('MACHINE ?= "' + self.selected_machine + '"\n')
-                set_already = True
+            elif line.strip().startswith("DISTRO "):
+                print('set DISTRO in local.conf to %s' % self.selected_distro)
+                fw.write('DISTRO ?= "' + self.selected_distro + '"\n')
             else:
                 fw.write(line)
         fr.close()
         fw.close()
         os.remove(lconftmp)
-        if not set_already:
-            print 'Could not set MACHINE in local.conf'
-            return False
         return True
