@@ -10,6 +10,11 @@ from switch_machine import *
 
 def main():
     bsp = BSP_Switcher()
+
+    if "DISTRO" in os.environ:
+        # overwrite distro selection with env variable
+        bsp.selected_distro = os.environ["DISTRO"]
+
     if "MACHINE" in os.environ:
         # overwrite machine selection with env variable
         if not bsp.switch_machine(os.environ['MACHINE']):
