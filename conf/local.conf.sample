@@ -28,8 +28,10 @@ DEPLOY_DIR = "${TOPDIR}/deploy"
 
 # Select configuration UI for linux and barebox recipe. The openembedded
 # default is 'menuconfig', 'nconfig' has more features.
+# busybox only supports menuconfig
 #KCONFIG_CONFIG_COMMAND = "menuconfig"
 KCONFIG_CONFIG_COMMAND = "nconfig"
+KCONFIG_CONFIG_COMMAND_pn-busybox = "menuconfig"
 
 # Turn on debugging options of the kernel
 # This is currently only supported for the TI kernel v4.4
