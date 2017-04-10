@@ -6,7 +6,7 @@ HOMEPAGE = "http://www.barebox.org"
 SECTION = "bootloaders"
 LICENSE = "GPL-2.0"
 LIC_FILES_CHKSUM = "file://COPYING;md5=057bf9e50e1ca857d0eb97bfe4ba8e5d"
-DEPENDS += "lzop-native"
+DEPENDS += "lzop-native coreutils-native"
 PROVIDES = "virtual/bootloader"
 # Increase INC_PR everytime the include file is changed.
 INC_PR = "r7"
