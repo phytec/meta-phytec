@@ -22,14 +22,14 @@ RPROVIDES_${PN} = "omapdrm-pvr"
 RREPLACES_${PN} = "omapdrm-pvr"
 RCONFLICTS_${PN} = "omapdrm-pvr"
 
-BRANCH = "ti-img-sgx/${PV}/k4.4"
+BRANCH = "ti-img-sgx/${PV}/k4.9"
 
 SRC_URI = "git://git.ti.com/graphics/omap5-sgx-ddk-linux.git;protocol=git;branch=${BRANCH}"
 SRC_URI += "file://0001-srvkm-env-linux-Check-whether-Soc-supports-SGX.patch"
 S = "${WORKDIR}/git"
 
 
-SRCREV = "e68719ba7c54602c710b6615cd665f5b7f47f85e"
+SRCREV = "0086977380d3320d70a3abc78b95fa0641427073"
 
 TARGET_PRODUCT_omap-a15 = "jacinto6evm"
 TARGET_PRODUCT_ti33x = "ti335x"
