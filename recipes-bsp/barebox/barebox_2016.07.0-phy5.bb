@@ -11,7 +11,7 @@ S = "${WORKDIR}/git"
 PR = "${INC_PR}.1"
 
 # NOTE: Keep version in filename in sync with commit id and barebox-ipl!
-SRCREV = "47f9b2423809580eaf8a4fbcc3eff31d981a4cbc"
+SRCREV = "f33e653930f2ac63f940d2c019f13aad819b43a0"
 
 DEPENDS += "u-boot-mkimage-native"
 
