@@ -79,7 +79,7 @@ PACKAGES = " \
 #     GNU C 4.9.1 -march=armv7-a -mthumb-interwork -mfloat-abi=hard -mfpu=neon
 #          -mtune=cortex-a9 -mtls-dialect=gnu -g -g -O2 -feliminate-unused-debug-types
 inherit tune_features_check
-REQUIRED_TUNE_FEATURES = "armv7a cortexa9 neon callconvention-hard"
+REQUIRED_TUNE_FEATURES = "armv7a neon callconvention-hard"
 
 
 # FIXME: The provided binary doesn't provide soname. If in future BSP
