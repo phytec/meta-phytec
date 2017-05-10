@@ -1,9 +1,8 @@
 # Common settings for phytecs imx6qdl boards
+DEFAULTTUNE ?= "cortexa9thf-neon"
 
 include conf/machine/include/phyimx6.inc
 include conf/machine/include/tune-cortexa9.inc
-
-DEFAULTTUNE = "cortexa9hf-neon"
 
 SERIAL_CONSOLES ?= "115200;ttymxc3"
 
