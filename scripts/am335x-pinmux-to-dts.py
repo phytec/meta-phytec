@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Copyright 2014 Stefan Müller-Klieser, PHYTEC Messtechnik GmbH
 # adapted from a script by Jan Lübbe
