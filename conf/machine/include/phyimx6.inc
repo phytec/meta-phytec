@@ -30,16 +30,19 @@ PREFERRED_PROVIDER_virtual/xserver = "xserver-xorg"
 # Ship kernel modules
 MACHINE_EXTRA_RRECOMMENDS = "kernel-modules"
 
-# sd-card image
-IMAGE_CLASSES += "image_types_fsl"
-
 SERIAL_CONSOLE = "115200 ttymxc0"
 
 KERNEL_IMAGETYPE = "zImage"
 
 MACHINE_FEATURES = "apm usbgadget usbhost vfat"
 
+# sd-card image
+IMAGE_CLASSES += "image_types_fsl"
+
 #WIC
 IMAGE_CLASSES += "wic-helper"
 IMAGE_BOOT_FILES = "zImage ${@parse_dtbs(d)}"
 WKS_FILES_mx6 = "imx6-sdimage.wks"
+
+# default images to build
+IMAGE_FSTYPES ?= "tar.gz sdcard ubifs"

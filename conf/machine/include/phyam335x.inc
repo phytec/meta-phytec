@@ -58,7 +58,6 @@ PREFERRED_PROVIDER_virtual/egl = "ti-sgx-ddk-um"
 
 QT_QPA_DEFAULT_PLATFORM ?= "${@bb.utils.contains('MACHINE_FEATURES', 'sgx', 'eglfs', 'linuxfb', d)}"
 
-
 #WIC
 IMAGE_CLASSES += "wic-helper"
 IMAGE_BOOT_FILES = "barebox.bin MLO zImage;linuximage ${@parse_dtbs(d)}"
@@ -66,3 +65,6 @@ IMAGE_DEPENDS_wic_append = " \
     virtual/prebootloader:do_deploy \
 "
 WKS_FILES_ti33x = "am335x-sdimage.wks"
+
+# default images to build
+IMAGE_FSTYPES ?= "tar.gz sdcard ubifs"
