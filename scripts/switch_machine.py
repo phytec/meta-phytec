@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Copyright 2015, PHYTEC Messtechnik GmbH
 # Author: Stefan Müller-Klieser <s.mueller-klieser@phytec.de>
@@ -20,39 +20,39 @@ class BSP_Switcher(BoardSupportPackage):
             return self.write_machine_to_localconf()
 
         if show_all:
-            machines = self.src.machines.keys()
+            machines = list(self.src.machines.keys())
         else:
             machines = self.supported_machines
 
         machines.sort()
         min_len_machines = min(len(machine) for machine in machines)
 
-        print '***************************************************'
-        print '* Please choose one of the available Machines:'
-        print '*'
-        print 'no: %s: description and article number' % "machine".rjust(min_len_machines)
-        print ''
+        print('***************************************************')
+        print('* Please choose one of the available Machines:')
+        print('*')
+        print('no: %s: description and article number' % "machine".rjust(min_len_machines))
+        print('')
         for i, machine in enumerate(machines, 1):
             # split description at first comma and print it as a two-liner
-            description = map(str.strip, self.src.machines[machine]['DESCRIPTION'].split(',',1))
-            print '%2d: %s: %s' % (i, machine, description[0])
+            description = list(map(str.strip, self.src.machines[machine]['DESCRIPTION'].split(',',1)))
+            print('%2d: %s: %s' % (i, machine, description[0]))
             if len(description) > 1:
-                print '%s %s' % (' ' * (5 + min_len_machines), description[1])
-            print '%s %s' % (' ' * (5 + min_len_machines),
-                            self.src.machines[machine]['ARTICLENUMBERS'])
+                print('%s %s' % (' ' * (5 + min_len_machines), description[1]))
+            print('%s %s' % (' ' * (5 + min_len_machines),
+                            self.src.machines[machine]['ARTICLENUMBERS']))
 
         # request user input
         while True:
             try:
-                user_input = int(raw_input('$ '))
+                user_input = int(input('$ '))
                 if user_input < 1 or user_input > len(machines):
                     raise ValueError
                 break
-            except ValueError:
-                print 'No valid input.  Try again...'
+            except (ValueError, NameError):
+                print('No valid input.  Try again...')
             except KeyboardInterrupt:
                 # If the user presses CTRL+C, exit the application nicely.
-                print ''  # print newline, so prompt doesn't start after '$ '
+                print('')  # print newline, so prompt doesn't start after '$ '
                 return False
 
         # User index starts with 1, list index starts with 0.

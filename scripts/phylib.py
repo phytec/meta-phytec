@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Copyright 2015, PHYTEC Messtechnik GmbH
 # Author: Stefan Müller-Klieser <s.mueller-klieser@phytec.de>
@@ -34,13 +34,13 @@ import xml.etree.ElementTree as ET
 
 
 def call(cmd):
-    print '$', cmd
+    print('$', cmd)
     returncode = subprocess.call(cmd,shell=True)
-    print ''
+    print('')
     return returncode
 
 def userquery_yes_no(default=True):
-    print '[yes/no]:'
+    print('[yes/no]:')
     yes = set(['y', 'ye', 'yes'])
     no = set(['n', 'no'])
     if default:
@@ -48,13 +48,13 @@ def userquery_yes_no(default=True):
     else:
         no.add('')
     while True:
-        user_input = raw_input('$ ').lower()
+        user_input = input('$ ').lower()
         if user_input in yes:
             return True
         elif user_input in no:
             return False
         else:
-            print 'Please type y or n'
+            print('Please type y or n')
 
 
 # Stack overflow helper Classes
@@ -89,8 +89,8 @@ class Sourcecode(object):
             self.bsp_dir = cwd
             self.meta_phytec_dir = os.path.join(cwd, "sources/meta-phytec")
             self.init_machines()
-        except (IOError, OSError), e:
-            print "Could not find necessary file: ", e
+        except (IOError, OSError) as e:
+            print("Could not find necessary file: ", e)
             raise SystemExit
 
     def search_for_bsp_dir(self):
@@ -156,7 +156,7 @@ class BoardSupportPackage(object):
                         self.supported_machines.append(x)
 
         except (IOError, OSError) as e:
-            print "Could not find necessary file: ", e
+            print("Could not find necessary file: ", e)
             raise SystemExit
 
     def set_manifest(self, manifest_abs_path):
@@ -167,7 +167,7 @@ class BoardSupportPackage(object):
             if child.tag == "phytec":
                 release_info = child.attrib
         # source settings
-        for key in release_info.keys():
+        for key in list(release_info.keys()):
             setattr(self, key, release_info[key])
 
         # allow capitalization for soc in manifest

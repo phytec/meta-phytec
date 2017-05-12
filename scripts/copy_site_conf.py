@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Copyright 2015, PHYTEC Messtechnik GmbH
 # Author: Stefan Müller-Klieser <s.mueller-klieser@phytec.de>
@@ -22,10 +22,10 @@ class BSP_SiteConfLoader(BoardSupportPackage):
         if arg is None:
             arg = self.probe_for_siteconf()
         if arg is None:
-            print 'No site.conf found on host.'
+            print('No site.conf found on host.')
             return False
         target = os.path.join(self.build_dir, 'conf/site.conf')
-        print "site.conf setup: Copying " + arg + " to " + target
+        print("site.conf setup: Copying " + arg + " to " + target)
         shutil.copyfile(arg, target)
         return True
 
