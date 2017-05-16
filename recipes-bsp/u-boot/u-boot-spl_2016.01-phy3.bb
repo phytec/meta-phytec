@@ -6,7 +6,7 @@ PROVIDES = "virtual/prebootloader"
 LICENSE = "GPLv2+"
 LIC_FILES_CHKSUM = "file://Licenses/README;md5=0507cd7da8e7ad6d6701926ec9b84c95"
 
-DEPENDS += "dtc-native"
+DEPENDS += "bc-native dtc-native"
 
 GIT_URL = "git://git.phytec.de/u-boot"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
