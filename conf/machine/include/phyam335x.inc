@@ -66,4 +66,4 @@ IMAGE_DEPENDS_wic_append = " \
 WKS_FILES_ti33x = "am335x-sdimage.wks"
 
 # default images to build
-IMAGE_FSTYPES ?= "tar.gz sdcard ubifs"
+IMAGE_FSTYPES ?= "tar.gz wic ubifs"
