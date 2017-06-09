@@ -20,6 +20,7 @@ inherit kconfig
 # verbose build 0/1
 VERBOSE_BUILD ?= "0"
 EXTRA_OEMAKE = 'CROSS_COMPILE="${TARGET_PREFIX}" CC="${TARGET_PREFIX}gcc" V="${VERBOSE_BUILD}"'
+LDFLAGS = "--no-dynamic-linker"
 B = "${WORKDIR}/build"
 
 # name of the image created by barebox Makefile
@@ -38,7 +39,7 @@ do_configure_append() {
 }
 
 do_compile () {
-    unset CFLAGS LDFLAGS
+    unset CFLAGS
     oe_runmake all
 }
 
