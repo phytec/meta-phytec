@@ -1,7 +1,4 @@
-# (C) Copyright 2017 Phytec Messtechnik GmbH
-# Daniel Schultz <d.schultz@phytec.de>
-#
-#This file is a global helper class for the WIC tool to create Phytec BSPs.
+# This is a helper class for creating patitioned images with WIC for sd cards and emmc
 
 def parse_dtbs(d):
     kdt=d.getVar('KERNEL_DEVICETREE', True)
@@ -13,6 +10,7 @@ def parse_dtbs(d):
         dtbs += " zImage-"+DTB
         dtbcount += 1
     return dtbs
+
 IMAGE_DEPENDS_wic_append = " \
     dosfstools-native \
     mtools-native \
@@ -20,15 +18,35 @@ IMAGE_DEPENDS_wic_append = " \
     virtual/bootloader:do_deploy \
 "
 
-python do_rename_wic () {
-    deploy_dir = d.getVar('IMGDEPLOYDIR', True)
-    link_name = d.getVar('IMAGE_LINK_NAME', True)
-    old = os.path.join(deploy_dir, link_name + ".wic")
-    new = os.path.join(deploy_dir, link_name + ".sdcard")
-    if os.path.exists(old):
-        os.rename(old, new)
-        bb.note("renamed %s to %s" % (old, new))
-    else:
-        bb.error("failed to rename %s, because it doesn't exist" % (old))
+IMAGE_CMD_wic_append () {
+	mv "$out${IMAGE_NAME_SUFFIX}.wic" "$out${IMAGE_NAME_SUFFIX}.sdcard"
+	ln -fs "${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.sdcard" "${IMGDEPLOYDIR}/${IMAGE_LINK_NAME}.sdcard"
 }
-addtask do_rename_wic after do_image_wic before do_image_complete
+
+IMAGE_CMD_emmc () {
+	if [ -e ${IMGDEPLOYDIR}/${IMAGE_NAME}.rootfs.sdcard ]; then
+		SDIMG=${IMGDEPLOYDIR}/${IMAGE_NAME}.rootfs.sdcard
+	else
+		if [ -e ${IMGDEPLOYDIR}/${IMAGE_LINK_NAME}.sdcard ]; then
+			SDIMG=`readlink -f ${IMGDEPLOYDIR}/${IMAGE_LINK_NAME}.sdcard`
+		else
+			SDIMG=${IMGDEPLOYDIR}/${IMAGE_NAME}.rootfs.wic
+		fi
+	fi
+	EMMCIMG=${IMGDEPLOYDIR}/${IMAGE_NAME}.rootfs.emmc
+	cp ${SDIMG} ${EMMCIMG}
+
+	ln -sf ${EMMCIMG} ${IMGDEPLOYDIR}/${IMAGE_LINK_NAME}.emmc
+}
+
+IMAGE_TYPEDEP_emmc = "wic"
+
+IMAGE_DEPENDS_emmc = " \
+    parted-native \
+    mtools-native \
+    dosfstools-native \
+    e2fsprogs-native \
+    virtual/kernel:do_deploy \
+    virtual/bootloader:do_deploy \
+    virtual/prebootloader:do_deploy \
+"
