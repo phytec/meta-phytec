@@ -5,6 +5,9 @@ inherit barebox-environment-2
 
 GIT_URL = "git://git.phytec.de/barebox"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
+SRC_URI_append = "\
+	file://bitflip.cfg \
+"
 
 S = "${WORKDIR}/git"
 
