@@ -41,3 +41,6 @@ MACHINE_FEATURES = "apm usbgadget usbhost vfat"
 IMAGE_CLASSES += "wic-helper"
 IMAGE_BOOT_FILES = "zImage ${@parse_dtbs(d)}"
 WKS_FILES_mx6 = "imx6-sdimage.wks"
+
+# default images to build
+IMAGE_FSTYPES ?= "tar.gz wic ubifs"

@@ -44,3 +44,6 @@ IMAGE_DEPENDS_wic_append = " \
     virtual/prebootloader:do_deploy \
 "
 WKS_FILES_rk3288 = "rk3288-sdimage.wks"
+
+# default images to build
+IMAGE_FSTYPES ?= "tar.gz wic"
