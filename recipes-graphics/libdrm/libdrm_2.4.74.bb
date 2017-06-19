@@ -9,12 +9,13 @@ accelerated OpenGL drivers."
 HOMEPAGE = "http://dri.freedesktop.org"
 SECTION = "x11/base"
 LICENSE = "MIT"
-LIC_FILES_CHKSUM = "file://xf86drm.c;beginline=9;endline=32;md5=c8a3b961af7667c530816761e949dc71"
+LIC_FILES_CHKSUM = "file://${COREBASE}/meta/COPYING.MIT;md5=3da9cfbcb788c80a0384361b4de20420"
 PROVIDES = "drm"
 DEPENDS = "libpthread-stubs udev libpciaccess"
 
-SRC_URI = "git://chromium.googlesource.com/chromiumos/third_party/libdrm;branch=chromeos-2.4.66;protocol=https"
-SRCREV = "bf23724d876ad4495ec455ad9a713fa197df758a"
+SRCBRANCH ?= "rockchip-2.4.74"
+SRC_URI = "git://github.com/rockchip-linux/libdrm-rockchip.git;branch=${SRCBRANCH}"
+SRCREV = "fde97735848fe63934c76a5ae579f9a915959db5"
 S = "${WORKDIR}/git"
 
 COMPATIBLE_MACHINE = "rk3288"
@@ -48,3 +49,7 @@ FILES_${PN}-kms = "${libdir}/libkms*.so.*"
 FILES_${PN}-freedreno = "${libdir}/libdrm_freedreno.so.*"
 FILES_${PN}-amdgpu = "${libdir}/libdrm_amdgpu.so.*"
 FILES_${PN}-rockchip = "${libdir}/libdrm_rockchip.so.*"
+
+do_configure_prepend() {
+	${S}/autogen.sh ${CONFIGUREOPTS} ${EXTRA_OECONF}
+}
