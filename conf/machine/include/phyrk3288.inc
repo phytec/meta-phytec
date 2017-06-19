@@ -24,7 +24,7 @@ PREFERRED_PROVIDER_virtual/egl ?= "mali-t760-libs"
 PREFERRED_PROVIDER_virtual/libgles1 ?= "mali-t760-libs"
 PREFERRED_PROVIDER_virtual/libgles2 ?= "mali-t760-libs"
 
-PREFERRED_VERSION_libdrm = "2.4.66"
+PREFERRED_VERSION_libdrm = "2.4.74"
 
 # Workaround: package.bbclass cannot extract dependency information from mali
 # library automatically. SONAME is missing and libEGL and libGLES are only
