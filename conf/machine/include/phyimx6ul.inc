@@ -30,3 +30,6 @@ RRECOMMENDS_gst-player-bin_remove_pn-gst-player = "gstreamer1.0-plugins-bad-meta
 # Don't build the X server with xwayland support. It depends on libepoxy
 # (OpenGL function pointer management library) that depends on EGL.
 PACKAGECONFIG_remove_pn-xserver-xorg = "xwayland"
+
+# Disable gstreamer plugins by default
+PACKAGECONFIG_pn-gstreamer1.0-plugins-imx = ""
