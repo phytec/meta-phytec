@@ -560,4 +560,4 @@ COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-11"
 COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-12"
 COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-13"
 
-COMPATIBLE_MACHINE .= "|phyboard-segin-imx6ul-1"
+COMPATIBLE_MACHINE .= "|phyboard-segin-imx6ul-2"
