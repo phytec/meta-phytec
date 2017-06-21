@@ -1,0 +1,1 @@
+export QMLSCENE_DEVICE=softwarecontext
