@@ -465,7 +465,7 @@ of_display_timings -S /display@di0/display-timings/ETM0700G0DH6
 """)
 }
 
-python do_env_append_phyboard-segin-imx6ul-1() {
+python do_env_append_phyboard-segin-imx6ul-2() {
     env_add(d, "boot/mmc",
 """#!/bin/sh
 
