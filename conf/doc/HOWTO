@@ -8,7 +8,7 @@ You can find all git repositories at:
   git://git.phytec.de
 
 The barebox and kernel git repositories for this BSP are called
-"barebox", "linux-mainline"  and "linux-ti". To find out which tag is
+"barebox", "linux-mainline", "linux-ti" and "linux-imx". To find out which tag is
 used for a specific board, run the buildinfo command:
 
  bitbake -c buildinfo [barebox/linux-mainline/linux-ti]
