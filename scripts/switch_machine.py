@@ -14,38 +14,42 @@ class BSP_Switcher(BoardSupportPackage):
     def __init__(self):
         super(BSP_Switcher, self).__init__()
 
-    def switch_machine(self, arg=None, show_all=False):
-        if arg is not None:
-            self.selected_machine = arg
+    def switch_machine(self, machine=None, distro=None):
+        if distro is not None:
+            self.selected_distro = "distro"
+        if machine is not None:
+            self.selected_machine = machine
             return self.write_machine_to_localconf()
 
-        if show_all:
-            machines = list(self.src.machines.keys())
-        else:
-            machines = self.supported_machines
+        builds = self.supported_builds
 
-        machines.sort()
-        min_len_machines = min(len(machine) for machine in machines)
+        min_len_machines = min(len(build[0]) for build in builds)
 
-        print('***************************************************')
-        print('* Please choose one of the available Machines:')
+        print('*********************************************************************')
+        print('* Please choose one of the available builds:')
         print('*')
-        print('no: %s: description and article number' % "machine".rjust(min_len_machines))
+        print('no: %s: description and article number' % 'machine'.rjust(min_len_machines))
+        print('    %s  distro: supported yocto distribution' % ' '.rjust(min_len_machines))
+        print('    %s  target: supported build target'       % ' '.rjust(min_len_machines))
         print('')
-        for i, machine in enumerate(machines, 1):
+        for i, (machine, target, distro) in enumerate(builds, 1):
             # split description at first comma and print it as a two-liner
-            description = list(map(str.strip, self.src.machines[machine]['DESCRIPTION'].split(',',1)))
-            print('%2d: %s: %s' % (i, machine, description[0]))
-            if len(description) > 1:
-                print('%s %s' % (' ' * (5 + min_len_machines), description[1]))
-            print('%s %s' % (' ' * (5 + min_len_machines),
-                            self.src.machines[machine]['ARTICLENUMBERS']))
+            description = lambda x: self.src.machines[x]['DESCRIPTION'].split(',',1)
+            print('%2d: %s: %s' % (i, machine, description(machine)[0].strip()))
+            if len(description(machine)) > 1:
+                print('%s %s' % (' ' * (5 + min_len_machines), description(machine)[1].strip()))
+            if self.src.machines[machine]['ARTICLENUMBERS']:
+                print('%s %s' % (' ' * (5 + min_len_machines),
+                                self.src.machines[machine]['ARTICLENUMBERS']))
+            print('%s distro: %s' % (' ' * (5 + min_len_machines), distro))
+            print('%s target: %s' % (' ' * (5 + min_len_machines), target))
+
 
         # request user input
         while True:
             try:
                 user_input = int(input('$ '))
-                if user_input < 1 or user_input > len(machines):
+                if user_input < 1 or user_input > len(builds):
                     raise ValueError
                 break
             except (ValueError, NameError):
@@ -56,9 +60,23 @@ class BSP_Switcher(BoardSupportPackage):
                 return False
 
         # User index starts with 1, list index starts with 0.
-        self.selected_machine = machines[user_input - 1]
-        return self.write_machine_to_localconf()
+        (machine, target, distro) = builds[user_input -1]
+        self.selected_machine = machine
+        self.selected_distro = distro
 
+        # write build target to conf-notex.txt so it will be displayed after
+        # sourcing the environment
+        confnotes = os.path.join(self.src.bsp_dir, 'tools', 'templateconf', 'conf-notes.txt')
+        f = open(confnotes, 'r')
+        lines = f.readlines()
+        f.close()
+        f = open(confnotes, 'w')
+        f.writelines([l for l in lines[:-2]])
+        print('set TARGET in conf-notes.txt to %s' % target)
+        f.write('   $ bitbake %s\n\n' % target)
+        f.close()
+
+        return self.write_machine_to_localconf()
 
 ##############
 # Executable #
@@ -70,13 +88,12 @@ def main():
     """
     parser = argparse.ArgumentParser(description='Select an available machine and set it in your local.conf')
     parser.add_argument('-m', dest='machine', help='set the machine string')
-    parser.add_argument('-a', "--all", dest="show_all", action="store_true",
-                        default=False, help='show all hidden machines')
+    parser.add_argument('-d', dest='distro', help='set the distro string')
 
     args = parser.parse_args()
 
     bsp = BSP_Switcher()
-    if not bsp.switch_machine(args.machine, show_all=args.show_all):
+    if not bsp.switch_machine(args.machine, args.distro):
         # An error has happened. Report it back to calling program.
         sys.exit(1)
 
