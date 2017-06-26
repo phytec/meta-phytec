@@ -30,8 +30,11 @@ import collections
 import shutil
 import subprocess
 import re
+import sys
 import xml.etree.ElementTree as ET
 
+if sys.version_info < (3, 0):
+    input = raw_input
 
 def call(cmd):
     print('$', cmd)
@@ -138,7 +141,7 @@ class BoardSupportPackage(object):
         self.soc = "all"
         self.selected_machine = "UNASSIGNED"
         self.selected_distro = "yogurt"
-        self.supported_machines = []
+        self.supported_builds = []
         self.local_conf = ""
         self.build_dir = ""
         self.image_base_dir = ""
@@ -149,15 +152,39 @@ class BoardSupportPackage(object):
             self.build_dir = os.path.join(self.src.bsp_dir, "build")
             self.image_base_dir = os.path.join(self.src.bsp_dir, "build/deploy/images")
             self.probe_selected_release()
-            self.supported_machines = []
-            for x in self.src.machines:
-                if self.src.machines[x]['SUPPORTEDIMAGE']:
-                    if self.soc in x or self.soc == "all":
-                        self.supported_machines.append(x)
+            self.release_fallback()
 
         except (IOError, OSError) as e:
             print("Could not find necessary file: ", e)
+            self.release_fallback()
             raise SystemExit
+
+    def release_fallback(self):
+        """ This function will cover two cases.
+        If we have a manifest and are not on a release, we don't have any supported
+        builds. In that case we are most probably on the HEAD of a branch and should
+        just use the machine meta information for the selection script.
+        On the other hand, it could be that we have no manifest at all. In that case
+        we also just parse the meta data from the machines."""
+
+        # don't do anything if we get the data from a release manifest
+        if len(self.supported_builds) > 0:
+            return True
+
+        # add supported_builds based on machine meta data
+        for x in self.src.machines:
+            # if a soc is set in the manifest, filter non matching machines
+            if self.soc != "all" and self.soc not in x:
+                continue
+
+            if self.src.machines[x]['SUPPORTEDIMAGE']:
+                for target in map(str.strip, self.src.machines[x]['SUPPORTEDIMAGE'].split(',')):
+                    distro = 'yogurt'
+                    var = target.split('/')
+                    if len(var) > 1:
+                        target = var[0]
+                        distro = var[1]
+                    self.supported_builds.append((x, target, distro))
 
     def set_manifest(self, manifest_abs_path):
         self.xml = manifest_abs_path
@@ -166,9 +193,14 @@ class BoardSupportPackage(object):
         for child in root:
             if child.tag == "phytec":
                 release_info = child.attrib
-        # source settings
+
+        # import meta data, some keys need special treatments
         for key in list(release_info.keys()):
-            setattr(self, key, release_info[key])
+            if key == "supported_builds":
+                for b in filter(None, release_info[key].split(' ')):
+                    self.supported_builds.append(b.split('/'))
+            else:
+                setattr(self, key, release_info[key])
 
         # allow capitalization for soc in manifest
         self.soc = self.soc.lower()
