@@ -5,8 +5,8 @@ inherit barebox-environment-2
 
 GIT_URL = "git://git.phytec.de/barebox"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
-SRC_URI_append = "\
-	file://bitflip.cfg \
+SRC_URI += "\
+    file://bitflip.cfg \
 "
 
 S = "${WORKDIR}/git"
@@ -14,7 +14,7 @@ S = "${WORKDIR}/git"
 PR = "${INC_PR}.0"
 
 # NOTE: Keep version in filename in sync with commit id and barebox-ipl!
-SRCREV = "be51bdf793b2de9454a1d16daa8bc9402ab74064"
+SRCREV = "b8513d340d52ff3f005492768f1e3cac7cb14be4"
 
 python do_env_append() {
     env_add(d, "bin/far",
