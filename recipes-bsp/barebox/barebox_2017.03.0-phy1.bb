@@ -14,9 +14,6 @@ PR = "${INC_PR}.0"
 SRCREV = "be51bdf793b2de9454a1d16daa8bc9402ab74064"
 
 python do_env_append() {
-    env_add(d, "nv/allow_color", "false\n")
-    env_add(d, "nv/linux.bootargs.base", "consoleblank=0\n")
-    env_add(d, "nv/linux.bootargs.rootfs", "rootwait ro fsck.repair=yes\n")
     env_add(d, "bin/far",
 """#!/bin/sh
 # barebox script far (="Fetch And Reset"):
@@ -36,55 +33,6 @@ fi
 }
 
 python do_env_append_ti33x() {
-    env_add(d, "boot/mmc",
-"""#!/bin/sh
-
-[ -e /env/config-expansions ] && /env/config-expansions
-
-global.bootm.image=/boot/linuximage
-global.bootm.oftree=/boot/oftree
-global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootflags='data=journal'"
-""")
-    env_add(d, "boot/nand",
-"""#!/bin/sh
-
-[ -e /env/config-expansions ] && /env/config-expansions
-
-[ ! -e /dev/nand0.root.ubi ] && ubiattach /dev/nand0.root
-
-global.bootm.image="/dev/nand0.root.ubi.kernel"
-global.bootm.oftree="/dev/nand0.root.ubi.oftree"
-global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=root rootfstype=ubifs"
-""")
-    env_add(d, "boot/net",
-"""#!/bin/sh
-
-path="/mnt/tftp"
-
-global.bootm.image="${path}/${global.user}-linux-${global.hostname}"
-
-oftree="${path}/${global.user}-oftree-${global.hostname}"
-if [ -f "${oftree}" ]; then
-    global.bootm.oftree="$oftree"
-fi
-
-nfsroot="/nfsroot/${global.hostname}"
-bootargs-ip
-
-[ -e /env/config-expansions ] && /env/config-expansions
-
-global.linux.bootargs.dyn.root="root=/dev/nfs nfsroot=$nfsroot,vers=3,udp"
-""")
-    env_add(d, "boot/spi",
-"""#!/bin/sh
-
-[ -e /env/config-expansions ] && /env/config-expansions
-
-global.bootm.image="/dev/m25p0.kernel"
-global.bootm.oftree="/dev/m25p0.oftree"
-# Use rootfs from NAND
-global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=root rootfstype=ubifs"
-""")
     env_add(d, "expansions/am335x-maia-peb-c-004", "of_fixup_status /ocp/mmc@47810000\n")
     env_add(d, "expansions/am335x-phytec-lcd-018-pcm-953",
 """of_fixup_status /panel
@@ -144,11 +92,10 @@ netmask=255.255.255.0
 gateway=192.168.3.10
 serverip=192.168.3.10
 """)
-    env_add(d, "nv/boot.watchdog_timeout", "60\n")
 }
 
 python do_env_append_phycore-am335x() {
-    env_add(d, "config-expansions",
+    env_add(d, "init/config-expansions",
 """#!/bin/sh
 #use this expansion when a capacitive touchscreen is connected
 . /env/expansions/am335x-phytec-lcd-018-pcm-953
@@ -167,65 +114,8 @@ python do_env_append_phycore-am335x() {
 """)
 }
 
-python do_env_append_beagleboneblack-1() {
-    env_add(d, "boot/emmc",
-"""#!/bin/sh
-
-mkdir -p /mnt/emmc
-mount /dev/mmc1.0 /mnt/emmc
-global.bootm.image=/mnt/emmc/linuximage
-global.bootm.oftree=/mnt/emmc/oftree
-global.linux.bootargs.dyn.root="root=/dev/mmcblk1p2"
-""")
-    env_add(d, "boot/mmc",
-"""#!/bin/sh
-
-mkdir -p /mnt/mmc
-mount /dev/mmc0.0 /mnt/mmc/
-global.bootm.image=/mnt/mmc/linuximage
-global.bootm.oftree=/mnt/mmc/oftree
-global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2"
-""")
-    env_add(d, "boot/net",
-"""#!/bin/sh
-
-path="/mnt/tftp"
-
-global.bootm.image="${path}/${global.user}-linux-${global.hostname}"
-
-oftree="${path}/${global.user}-oftree-${global.hostname}"
-if [ -f "${oftree}" ]; then
-        global.bootm.oftree="$oftree"
-fi
-
-nfsroot="/nfsroot/${global.hostname}"
-bootargs-ip
-global.linux.bootargs.dyn.root="root=/dev/nfs nfsroot=$nfsroot,vers=3,udp"
-""")
-    env_add(d, "config-expansions",
-"""#!/bin/sh
-
-# Beaglebone has capes. Does not need this.
-""")
-    env_add(d, "init/bootsource",
-"""#!/bin/sh
-
-if [ -n "$nv.boot.default" ]; then
-    exit
-fi
-
-if [ $bootsource = mmc -a $bootsource_instance = 1 ]; then
-    global.boot.default="emmc mmc net"
-elif [ $bootsource = mmc -a $bootsource_instance = 0 ]; then
-    global.boot.default="mmc emmc net"
-elif [ $bootsource = net ]; then
-    global.boot.default="net emmc mmc"
-fi
-""")
-}
-
 python do_env_append_phyboard-wega-am335x-2() {
-    env_add(d, "config-expansions",
+    env_add(d, "init/config-expansions",
 """#!/bin/sh
 #use this expansion when a capacitive touchscreen is connected
 . /env/expansions/am335x-phytec-lcd-018-peb-av-02
@@ -252,7 +142,7 @@ python do_env_append_phyboard-wega-am335x-2() {
 }
 
 python do_env_append_phycore-am335x-7() {
-    env_add(d, "config-expansions",
+    env_add(d, "init/config-expansions",
 """#!/bin/sh
 #use this expansion when a capacitive touchscreen is connected
 . /env/expansions/am335x-phytec-lcd-018-pcm-953
@@ -272,7 +162,7 @@ python do_env_append_phycore-am335x-7() {
 }
 
 python do_env_append_phyboard-wega-am335x-1() {
-    env_add(d, "config-expansions",
+    env_add(d, "init/config-expansions",
 """#!/bin/sh
 
 global linux.bootargs.dyn.video
@@ -287,7 +177,7 @@ global.linux.bootargs.dyn.video="video=HDMI-A-1:1024x768-32@60"
 }
 
 python do_env_append_phyboard-wega-am335x-3() {
-    env_add(d, "config-expansions",
+    env_add(d, "init/config-expansions",
 """#!/bin/sh
 
 global linux.bootargs.dyn.video
@@ -302,7 +192,7 @@ global.linux.bootargs.dyn.video="video=HDMI-A-1:1024x768-32@60"
 }
 
 python do_env_append_phyboard-wega-r2-am335x-1() {
-    env_add(d, "config-expansions",
+    env_add(d, "init/config-expansions",
 """#!/bin/sh
 
 global linux.bootargs.dyn.video
