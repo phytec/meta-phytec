@@ -11,9 +11,9 @@ def parse_dtbs(d):
         dtbcount += 1
     return dtbs
 
-IMAGE_DEPENDS_wic_append = " \
-    dosfstools-native \
-    mtools-native \
+do_image_wic[depends] += "\
+    dosfstools-native:do_populate_sysroot \
+    mtools-native:do_populate_sysroot \
     virtual/kernel:do_deploy \
     virtual/bootloader:do_deploy \
 "
@@ -39,13 +39,13 @@ IMAGE_CMD_emmc () {
 	ln -sf ${EMMCIMG} ${IMGDEPLOYDIR}/${IMAGE_LINK_NAME}.emmc
 }
 
-IMAGE_TYPEDEP_emmc = "wic"
+do_image_emmc[depends] = "do_image_wic"
 
-IMAGE_DEPENDS_emmc = " \
-    parted-native \
-    mtools-native \
-    dosfstools-native \
-    e2fsprogs-native \
+do_image_emmc[depends] += " \
+    parted-native:do_populate_sysroot \
+    mtools-native:do_populate_sysroot \
+    dosfstools-native:do_populate_sysroot \
+    e2fsprogs-native:do_populate_sysroot \
     virtual/kernel:do_deploy \
     virtual/bootloader:do_deploy \
     virtual/prebootloader:do_deploy \

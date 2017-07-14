@@ -60,7 +60,7 @@ QT_QPA_DEFAULT_PLATFORM ?= "${@bb.utils.contains('MACHINE_FEATURES', 'sgx', 'egl
 IMAGE_CLASSES += "wic-helper"
 IMAGE_CLASSES += "wic-am335x-helper"
 IMAGE_BOOT_FILES = "barebox.bin MLO zImage;linuximage ${@parse_dtbs(d)}"
-IMAGE_DEPENDS_wic_append = " \
+do_image_wic[depends] += "\
     virtual/prebootloader:do_deploy \
 "
 WKS_FILES_ti33x = "am335x-sdimage.wks"
