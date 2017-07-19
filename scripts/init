@@ -58,6 +58,7 @@ fi
 cd ${ROOTDIR}/sources/poky/
 . ./oe-init-build-env > /dev/null
 
+${PHYTEC_DIR}/scripts/init_bblayers.py
 ${PHYTEC_DIR}/scripts/copy_site_conf.py
 ${PHYTEC_DIR}/scripts/init_machine.py
 

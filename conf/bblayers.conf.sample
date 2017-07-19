@@ -9,12 +9,9 @@ OEROOT := "##OEROOT##"
 BBLAYERS  ?= " \
   ${OEROOT}/meta \
   ${OEROOT}/meta-poky \
-  ${OEROOT}/../meta-phytec \
-  ${OEROOT}/../meta-yogurt \
   ${OEROOT}/../meta-openembedded/meta-oe \
   ${OEROOT}/../meta-openembedded/meta-networking \
   ${OEROOT}/../meta-openembedded/meta-python \
   ${OEROOT}/../meta-openembedded/meta-multimedia \
-  ${OEROOT}/../meta-qt5 \
   ${OEROOT}/../meta-openembedded/meta-ruby \
   "
