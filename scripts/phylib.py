@@ -145,6 +145,7 @@ class BoardSupportPackage(object):
         self.local_conf = ""
         self.build_dir = ""
         self.image_base_dir = ""
+        self.project_paths = []
 
         try:
             #v2 Implementation
@@ -190,9 +191,12 @@ class BoardSupportPackage(object):
         self.xml = manifest_abs_path
         root = ET.parse(self.xml).getroot()
         release_info = {}
+        projects = [{}]
         for child in root:
             if child.tag == "phytec":
                 release_info = child.attrib
+            elif child.tag == "project":
+                projects.append(child.attrib)
 
         # import meta data, some keys need special treatments
         for key in list(release_info.keys()):
@@ -204,6 +208,13 @@ class BoardSupportPackage(object):
 
         # allow capitalization for soc in manifest
         self.soc = self.soc.lower()
+
+        # format and store project paths
+        for project in projects:
+            for key in list(project.keys()):
+                if key == "path":
+                    path = os.path.split(project[key].rstrip('/'))[1]
+                    self.project_paths.append(path)
 
     def probe_selected_release(self):
         repo_dir = self.src.get_repo_dir()
