@@ -28,7 +28,7 @@ Please try to do the following first:
 Maintainer
 ==========
 
-M:  Stefan Müller-Klieser <s.mueller-klieser@phytec.de> 
+M:  Stefan Müller-Klieser <s.mueller-klieser@phytec.de>  
 M:  Wadim Egorov <w.egorov@phytec.de>
 
 Dependencies
