@@ -16,7 +16,7 @@ PR = "${INC_PR}.0"
 
 # NOTE: Keep version in filename in sync with commit id!
 SRCREV = "5e936732882e16603ddb73bbd8265080967a14ba"
-SRC_URI_append = "\
+SRC_URI += "\
 	file://bitflip.cfg \
 "
 
