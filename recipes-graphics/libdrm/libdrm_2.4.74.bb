@@ -49,7 +49,3 @@ FILES_${PN}-kms = "${libdir}/libkms*.so.*"
 FILES_${PN}-freedreno = "${libdir}/libdrm_freedreno.so.*"
 FILES_${PN}-amdgpu = "${libdir}/libdrm_amdgpu.so.*"
 FILES_${PN}-rockchip = "${libdir}/libdrm_rockchip.so.*"
-
-do_configure_prepend() {
-	${S}/autogen.sh ${CONFIGUREOPTS} ${EXTRA_OECONF}
-}
