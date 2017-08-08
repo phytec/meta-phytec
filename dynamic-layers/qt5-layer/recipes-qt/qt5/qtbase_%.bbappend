@@ -1,3 +1,5 @@
+FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
+SRC_URI += " file://0001-Add-createDisplay-for-QEglFSKmsGbmIntegration.patch"
 
 # The string 'gl' is in PACKAGECONFIG because "opengl" is in yogurt's
 # DISTRO_FEATURES. Since our boards only support egl/gles2 and not the full
