@@ -183,6 +183,37 @@ of_fixup_status -d /soc/aips-bus@02100000/adc@02198000
 """)
 }
 
+python do_env_append_phyboard-segin-imx6ul-5() {
+    env_rm(d, "config-expansions")
+    env_add(d, "config-expansions",
+"""#!/bin/sh
+
+. /env/expansions/imx6ul-phytec-segin-peb-eval-01
+#use this expansion when a capacitive touchscreen is connected
+#. /env/expansions/imx6ul-phytec-segin-peb-av-02
+#use this expansion when a resisitive touchscreen is connected
+#. /env/expansions/imx6ul-phytec-segin-peb-av-02-res
+
+#use this expansion when peb-wlbt-01 adapter is connected
+. /env/expansions/imx6ul-phytec-peb-wlbt-01
+
+# imx6ul-phytec-lcd: 7" display
+#of_display_timings -S /soc/aips-bus@02100000/lcdif@021c8000/display@di0/display-timings/ETM0700G0EDH6
+
+# imx6ul-phytec-lcd: 5.7" display
+#of_display_timings -S /soc/aips-bus@02100000/lcdif@021c8000/display@di0/display-timings/ETMV570G2DHU
+
+# imx6ul-phytec-lcd: 4.3" display
+#of_display_timings -S /soc/aips-bus@02100000/lcdif@021c8000/display@di0/display-timings/ETM0430G0DH6
+
+# imx6ul-phytec-lcd: 3.5" display
+#of_display_timings -S /soc/aips-bus@02100000/lcdif@021c8000/display@di0/display-timings/ETM0350G0DH6
+
+#use this bootarg when the VM010 Color is connected
+#nv linux.bootargs.mt9v022="mt9v022.sensor_type=color"
+""")
+}
+
 COMPATIBLE_MACHINE = "phyboard-segin-imx6ul-2"
 COMPATIBLE_MACHINE .= "|phyboard-segin-imx6ul-3"
 COMPATIBLE_MACHINE .= "|phyboard-segin-imx6ul-4"
