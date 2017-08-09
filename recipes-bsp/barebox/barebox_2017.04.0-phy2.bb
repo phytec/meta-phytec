@@ -136,6 +136,9 @@ global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=root rootfstype=ubifs rw"
 #use this expansion when a resisitive touchscreen is connected
 #. /env/expansions/imx6ul-phytec-segin-peb-av-02-res
 
+#use this expansion when peb-wlbt-01 adapter is connected
+#. /env/expansions/imx6ul-phytec-peb-wlbt-01
+
 # imx6ul-phytec-lcd: 7" display
 #of_display_timings -S /soc/aips-bus@02100000/lcdif@021c8000/display@di0/display-timings/ETM0700G0EDH6
 
@@ -171,6 +174,12 @@ of_fixup_status /soc/aips-bus@02100000/lcdif@021c8000/display@di0
 of_fixup_status /backlight
 of_fixup_status /soc/aips-bus@02100000/i2c@021a0000/stmpe@44
 of_fixup_status /soc/aips-bus@02000000/pwm@02088000/
+""")
+    env_add(d, "expansions/imx6ul-phytec-peb-wlbt-01",
+"""#!/bin/sh
+of_fixup_status /soc/aips-bus@02100000/usdhc@02194000
+of_fixup_status /regulators/regulator@7
+of_fixup_status -d /soc/aips-bus@02100000/adc@02198000
 """)
 }
 
