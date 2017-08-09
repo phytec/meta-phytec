@@ -186,3 +186,4 @@ of_fixup_status -d /soc/aips-bus@02100000/adc@02198000
 COMPATIBLE_MACHINE = "phyboard-segin-imx6ul-2"
 COMPATIBLE_MACHINE .= "|phyboard-segin-imx6ul-3"
 COMPATIBLE_MACHINE .= "|phyboard-segin-imx6ul-4"
+COMPATIBLE_MACHINE .= "|phyboard-segin-imx6ul-5"
