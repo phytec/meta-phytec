@@ -1,0 +1,32 @@
+From 62627f870ab1fb7a76395444a2320244b996f944 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Stefan=20M=C3=BCller-Klieser?= <s.mueller-klieser@phytec.de>
+Date: Thu, 10 Aug 2017 14:00:29 +0200
+Subject: [PATCH] videonode: remove imx plugin
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+The plugins has render bug. It will not output frames to the screen
+using the imx-gpu-viv_5.0.11.p8.6-hfp driver. The default EGL plugin
+will at least output the video.
+
+Signed-off-by: Stefan Müller-Klieser <s.mueller-klieser@phytec.de>
+---
+ src/plugins/videonode/videonode.pro | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/src/plugins/videonode/videonode.pro b/src/plugins/videonode/videonode.pro
+index e38b0a6..9ff86a8 100644
+--- a/src/plugins/videonode/videonode.pro
++++ b/src/plugins/videonode/videonode.pro
+@@ -1,7 +1,3 @@
+ TEMPLATE = subdirs
+ 
+-config_gpu_vivante {
+-    SUBDIRS += imx6
+-}
+-
+ contains(QT_CONFIG, egl):contains(QT_CONFIG, opengles2):!android: SUBDIRS += egl
+-- 
+1.9.1
+
