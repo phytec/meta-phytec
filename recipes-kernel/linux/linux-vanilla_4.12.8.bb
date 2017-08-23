@@ -12,12 +12,14 @@ SRC_URI = "${GIT_URL};branch=${BRANCH}"
 PR = "${INC_PR}.0"
 
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "cb5d016a9dd33c3131efff555d43095caf51f69e"
-BRANCH = "linux-4.8.y"
+SRCREV = "a0fb6543b40f216f72ef57ff3f61df918047c0fc"
+BRANCH = "linux-4.12.y"
 
 S = "${WORKDIR}/git"
 
-INTREE_DEFCONFIG_ti33x = "omap2plus_defconfig"
+INTREE_DEFCONFIG = "multi_v7_defconfig"
 
 COMPATIBLE_MACHINE  =  "phyboard-wega-am335x-1"
 COMPATIBLE_MACHINE .= "|phyboard-wega-am335x-2"
+COMPATIBLE_MACHINE .= "|phycore-am335x-1"
+COMPATIBLE_MACHINE .= "|phycore-rk3288-3"
