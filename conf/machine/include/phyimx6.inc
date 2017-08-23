@@ -19,7 +19,7 @@ PACKAGE_INSTALL_append = " kernel-modules"
 RDEPENDS_kernel-base = ""
 
 # XServer
-PREFERRED_PROVIDER_virtual/xserver = "xserver-xorg"
+PREFERRED_PROVIDER_virtual/xserver ?= "xserver-xorg"
 # We don't support a Xserver yet.
 #XSERVER_DRIVER = "xf86-video-fbdev"
 #XSERVER_DRIVER_mx6 = "xf86-video-imxfb-vivante"
