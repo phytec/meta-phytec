@@ -39,7 +39,7 @@ MKUBIFS_ARGS = "-F -m 2048 -e 129024 -c 7943"
 UBINIZE_ARGS = "-m 2048 -p 128KiB -s 512"
 
 # xserver
-PREFERRED_PROVIDER_virtual/xserver = "xserver-xorg"
+PREFERRED_PROVIDER_virtual/xserver ?= "xserver-xorg"
 # For built-in LCD, add xf86-input-tslib
 XSERVER = "xserver-xorg \
            xf86-input-evdev \
@@ -50,9 +50,9 @@ XSERVER = "xserver-xorg \
 GUI_MACHINE_CLASS = "smallscreen"
 
 # OpenGLES support for AM335x SGX Core
-PREFERRED_PROVIDER_virtual/libgles1 = "ti-sgx-ddk-um"
-PREFERRED_PROVIDER_virtual/libgles2 = "ti-sgx-ddk-um"
-PREFERRED_PROVIDER_virtual/egl = "ti-sgx-ddk-um"
+PREFERRED_PROVIDER_virtual/libgles1 ?= "ti-sgx-ddk-um"
+PREFERRED_PROVIDER_virtual/libgles2 ?= "ti-sgx-ddk-um"
+PREFERRED_PROVIDER_virtual/egl ?= "ti-sgx-ddk-um"
 
 QT_QPA_DEFAULT_PLATFORM ?= "${@bb.utils.contains('MACHINE_FEATURES', 'sgx', 'eglfs', 'linuxfb', d)}"
 
