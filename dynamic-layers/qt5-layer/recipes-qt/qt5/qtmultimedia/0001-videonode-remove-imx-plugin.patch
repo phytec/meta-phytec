@@ -1,4 +1,4 @@
-From 62627f870ab1fb7a76395444a2320244b996f944 Mon Sep 17 00:00:00 2001
+From ecb72b397631997460f9ae9a68c43450036dc3bb Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Stefan=20M=C3=BCller-Klieser?= <s.mueller-klieser@phytec.de>
 Date: Thu, 10 Aug 2017 14:00:29 +0200
 Subject: [PATCH] videonode: remove imx plugin
@@ -16,17 +16,18 @@ Signed-off-by: Stefan Müller-Klieser <s.mueller-klieser@phytec.de>
  1 file changed, 4 deletions(-)
 
 diff --git a/src/plugins/videonode/videonode.pro b/src/plugins/videonode/videonode.pro
-index e38b0a6..9ff86a8 100644
+index ab72954..1529fff 100644
 --- a/src/plugins/videonode/videonode.pro
 +++ b/src/plugins/videonode/videonode.pro
-@@ -1,7 +1,3 @@
+@@ -1,8 +1,4 @@
  TEMPLATE = subdirs
+ QT_FOR_CONFIG += gui-private multimedia-private
  
--config_gpu_vivante {
+-qtConfig(gpu_vivante) {
 -    SUBDIRS += imx6
 -}
 -
- contains(QT_CONFIG, egl):contains(QT_CONFIG, opengles2):!android: SUBDIRS += egl
+ qtConfig(egl):qtConfig(opengles2):!android: SUBDIRS += egl
 -- 
-1.9.1
+2.7.4
 
