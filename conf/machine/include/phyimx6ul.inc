@@ -37,3 +37,5 @@ PACKAGECONFIG_pn-gstreamer1.0-plugins-imx = ""
 PREFERRED_PROVIDER_virtual/egl ?= "opengldummy"
 PREFERRED_PROVIDER_virtual/libgles2 ?= "opengldummy"
 RDEPENDS_qtbase_append = " opengldummy qtdeclarative-render2d"
+
+PREFERRED_VERSION_gstreamer ?= "1.8%"
