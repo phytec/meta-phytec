@@ -152,7 +152,7 @@ global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=root rootfstype=ubifs rw"
 #of_display_timings -S /soc/aips-bus@02100000/lcdif@021c8000/display@di0/display-timings/ETM0350G0DH6
 
 #use this bootarg when the VM010 Color is connected
-#nv linux.bootargs.mt9v022="mt9v022.sensor_type=color"
+#global linux.bootargs.mt9v022="mt9v022.sensor_type=color"
 """)
     env_add(d, "expansions/imx6ul-phytec-segin-peb-eval-01",
 """
