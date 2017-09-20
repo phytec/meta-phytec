@@ -12,11 +12,10 @@ PR = "${INC_PR}.0"
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "b5d70bd73e605a97f66c38ed506ab4d558b11d6b"
+SRCREV = "6df8b6f348b0127a90f3f0df1e92498811693b21"
 
 S = "${WORKDIR}/git"
 
 COMPATIBLE_MACHINE = "phyboard-segin-imx6ul-2"
 COMPATIBLE_MACHINE .= "|phyboard-segin-imx6ul-3"
 COMPATIBLE_MACHINE .= "|phyboard-segin-imx6ul-4"
-COMPATIBLE_MACHINE .= "|phyboard-segin-imx6ul-5"
