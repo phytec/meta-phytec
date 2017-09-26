@@ -209,6 +209,18 @@ global.linux.bootargs.dyn.video="video=HDMI-A-1:1024x768-32@60"
 """)
 }
 
+python do_env_append_phycore-emmc-am335x-1() {
+    env_add(d, "boot/spi",
+"""#!/bin/sh
+
+global.bootm.image="/dev/m25p0.kernel"
+global.bootm.oftree="/dev/m25p0.oftree"
+
+# Use rootfs from eMMC
+global.linux.bootargs.dyn.root="root=/dev/mmcblk1p2 rootflags='data=journal'"
+""")
+}
+
 COMPATIBLE_MACHINE = "beagleboneblack-1"
 COMPATIBLE_MACHINE .= "|phyboard-wega-am335x-1"
 COMPATIBLE_MACHINE .= "|phyboard-wega-am335x-2"
