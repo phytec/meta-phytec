@@ -16,6 +16,8 @@ SRCREV = "d9a27aaa16e11688caa32986aff05151a311d60c"
 
 S = "${WORKDIR}/git"
 
+INTREE_DEFCONFIG = "imx_v7_defconfig"
+
 COMPATIBLE_MACHINE = "phyboard-segin-imx6ul-2"
 COMPATIBLE_MACHINE .= "|phyboard-segin-imx6ul-3"
 COMPATIBLE_MACHINE .= "|phyboard-segin-imx6ul-4"
