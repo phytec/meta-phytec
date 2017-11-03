@@ -19,10 +19,10 @@ BAREBOX_IPL_IMAGE_BASE_NAME = "MLO-${MACHINE}-${PKGV}-${PKGR}-${DATETIME}"
 BAREBOX_IPL_BIN_SYMLINK = "MLO"
 
 # Kernel 
-PREFERRED_PROVIDER_virtual/kernel ?= "linux-ti"
+PREFERRED_PROVIDER_virtual/kernel ?= "linux-mainline"
 PREFERRED_PROVIDER_amx3-cm3 ?= "amx3-cm3-phy"
 KERNEL_IMAGETYPE ?= "zImage"
-INTREE_DEFCONFIG_pn-linux-ti = "am335x_phytec_defconfig"
+INTREE_DEFCONFIG_pn-linux-mainline = "am335x_phytec_defconfig"
 # Install modules in initramfs and rootfs
 PACKAGE_INSTALL_append = " kernel-modules"
 
