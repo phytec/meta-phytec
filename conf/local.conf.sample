@@ -32,8 +32,7 @@ KCONFIG_CONFIG_COMMAND = "nconfig"
 KCONFIG_CONFIG_COMMAND_pn-busybox = "menuconfig"
 
 # Turn on debugging options of the kernel
-# This is currently only supported for the TI kernel v4.4
-DEBUG_BUILD_pn-linux-ti = "1"
+DEBUG_BUILD_pn-linux-mainline = "1"
 # Turn on debugging options of the barebox
 DEBUG_BUILD_pn-barebox = "1"
 
