@@ -39,7 +39,7 @@ IMAGE_CMD_emmc () {
 	ln -sf ${EMMCIMG} ${IMGDEPLOYDIR}/${IMAGE_LINK_NAME}.emmc
 }
 
-do_image_emmc[depends] = "do_image_wic"
+IMAGE_TYPEDEP_emmc = "wic"
 
 do_image_emmc[depends] += " \
     parted-native:do_populate_sysroot \
