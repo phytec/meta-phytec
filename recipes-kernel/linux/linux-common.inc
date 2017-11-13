@@ -7,7 +7,6 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=d7810fab7487fb0aad327b76f1be7cd7"
 
 inherit kernel
 inherit kconfig
-require recipes-kernel/linux/linux-dtb.inc
 
 INC_PR = "r0"
 
@@ -17,7 +16,7 @@ PATCHTOOL = "git"
 SRCTREECOVEREDTASKS ?= "do_unpack do_fetch"
 
 # Copy .dts and .dtsi from SRC_URI to the kernel boot/dts path
-# This should go to poky/meta/recipes-kernel/linux/linux-dtb.inc
+# This should go to poky/meta/classes/kernel-devicetree.bbclass
 # returns all the elements from the src uri that are .dts or .dtsi files
 def find_dtss(d):
     sources=src_patches(d, True)
