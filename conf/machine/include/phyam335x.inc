@@ -60,6 +60,9 @@ QT_QPA_DEFAULT_PLATFORM ?= "${@bb.utils.contains('MACHINE_FEATURES', 'sgx', 'egl
 IMAGE_CLASSES += "wic-helper"
 IMAGE_CLASSES += "wic-am335x-helper"
 IMAGE_BOOT_FILES = "barebox.bin MLO zImage;linuximage ${@parse_dtbs(d)}"
+#copy ubifs image to sdcard
+IMAGE_BOOT_FILES += "${IMGDEPLOYDIR}/${IMAGE_NAME}.rootfs.ubifs;${IMAGE_LINK_NAME}.ubifs"
+IMAGE_TYPEDEP_wic = "ubifs"
 IMAGE_DEPENDS_wic_append = " \
     virtual/prebootloader:do_deploy \
 "
