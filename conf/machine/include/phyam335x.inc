@@ -25,6 +25,7 @@ KERNEL_IMAGETYPE ?= "zImage"
 INTREE_DEFCONFIG_pn-linux-mainline = "am335x_phytec_defconfig"
 # Install modules in initramfs and rootfs
 PACKAGE_INSTALL_append = " kernel-modules"
+KERNEL_MODULE_AUTOLOAD += " cryptodev"
 
 SERIAL_CONSOLES ?= "115200;ttyO0"
 # dont install kernelimage to rootfs
