@@ -5,6 +5,13 @@ inherit phygittag
 inherit buildinfo
 include linux-common.inc
 
+#Skip this recipe if DISTRO_FEATURES contains the PREEMPT-RT value and
+# a kernel with real-time is desired
+python () {
+    if 'preempt-rt' in d.getVar("DISTRO_FEATURES"):
+        raise bb.parse.SkipPackage("Disable 'preempt-rt' in DISTRO_FEATURES!")
+}
+
 GIT_URL = "git://git.phytec.de/${PN}"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 SRC_URI_append = "\
