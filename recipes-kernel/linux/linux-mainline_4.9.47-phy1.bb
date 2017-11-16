@@ -39,8 +39,8 @@ SRCREV = "58482841720ca0616a6e46d54e23852af06582ac"
 S = "${WORKDIR}/git"
 
 INTREE_DEFCONFIG_ti33x = "am335x_phytec_defconfig"
+INTREE_DEFCONFIG_rk3288 = "rk3288_phytec_defconfig"
 
-COMPATIBLE_MACHINE = "phycore-rk3288-3"
 COMPATIBLE_MACHINE = "beagleboneblack-1"
 COMPATIBLE_MACHINE .= "|phyboard-wega-am335x-1"
 COMPATIBLE_MACHINE .= "|phyboard-wega-am335x-2"
@@ -61,3 +61,5 @@ COMPATIBLE_MACHINE .= "|phycore-r2-am335x-3"
 COMPATIBLE_MACHINE .= "|phycore-r2-am335x-4"
 COMPATIBLE_MACHINE .= "|phycore-r2-am335x-5"
 COMPATIBLE_MACHINE .= "|phycore-emmc-am335x-1"
+
+COMPATIBLE_MACHINE .= "|phycore-rk3288-3"
