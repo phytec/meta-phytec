@@ -16,6 +16,8 @@ SRCREV = "2daddfb77a87b8353fdd06ce548c5ae8ca5f9c0a"
 
 S = "${WORKDIR}/git"
 
+INTREE_DEFCONFIG = "imx_v6_v7_defconfig"
+
 COMPATIBLE_MACHINE  =  "phyflex-imx6-1"
 COMPATIBLE_MACHINE .= "|phyflex-imx6-2"
 COMPATIBLE_MACHINE .= "|phyflex-imx6-3"

@@ -89,4 +89,6 @@ python do_env_append_phycore-rk3288-3() {
 """)
 }
 
+INTREE_DEFCONFIG = "rk3288_defconfig"
+
 COMPATIBLE_MACHINE = "phycore-rk3288-3"

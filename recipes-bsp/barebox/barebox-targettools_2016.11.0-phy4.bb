@@ -7,7 +7,6 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/barebox/:"
 PR = "${INC_PR}.0"
 
 export TARGETCFLAGS="${TARGET_CC_ARCH} ${TOOLCHAIN_OPTIONS} ${CFLAGS} ${LDFLAGS}"
-INTREE_DEFCONFIG = "${INTREE_DEFCONFIG_pn-barebox}"
 
 do_configure_append() {
     # Compile target tools for barebox

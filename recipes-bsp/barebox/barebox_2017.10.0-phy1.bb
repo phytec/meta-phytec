@@ -221,6 +221,8 @@ global.linux.bootargs.dyn.root="root=/dev/mmcblk1p2 rootflags='data=journal'"
 """)
 }
 
+INTREE_DEFCONFIG = "am335x_defconfig"
+
 COMPATIBLE_MACHINE = "beagleboneblack-1"
 COMPATIBLE_MACHINE .= "|phyboard-wega-am335x-1"
 COMPATIBLE_MACHINE .= "|phyboard-wega-am335x-2"

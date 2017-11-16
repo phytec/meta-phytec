@@ -18,3 +18,5 @@ do_deploy_append () {
     install -m 0644 ${B}/$perimg ${DEPLOYDIR}/${BAREBOX_IPL_IMAGE_BASE_NAME}.img.per
     ln -sf ${BAREBOX_IPL_IMAGE_BASE_NAME}.img.per ${DEPLOYDIR}/${BAREBOX_IPL_BIN_SYMLINK}.per
 }
+
+INTREE_DEFCONFIG = "am335x_mlo_defconfig"
