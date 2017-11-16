@@ -114,6 +114,9 @@ python do_env_append_phycore-am335x() {
 
 #4.3" display
 #of_display_timings -S /panel/display-timings/ETM0430G0DH6
+
+#3.5" display
+#of_display_timings -S /panel/display-timings/ETM0350G0DH6
 """)
 }
 
