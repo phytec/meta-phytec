@@ -8,10 +8,8 @@ SOC_FAMILY = "rk3288"
 
 PREFERRED_PROVIDER_virtual/kernel ?= "linux-mainline"
 KERNEL_IMAGETYPE ?= "zImage"
-INTREE_DEFCONFIG_pn-linux-mainline = "rk3288_phytec_defconfig"
 
 BAREBOX_BIN = "images/barebox-rk3288-phycore-som.img"
-INTREE_DEFCONFIG_pn-barebox = "rk3288_defconfig"
 PREFERRED_PROVIDER_virtual/bootloader ?= "barebox"
 PREFERRED_PROVIDER_virtual/prebootloader ?= "u-boot-spl"
 

@@ -6,12 +6,10 @@ SOC_FAMILY = "mx6"
 
 #Bootloader
 PREFERRED_PROVIDER_virtual/bootloader ?= "barebox"
-INTREE_DEFCONFIG_pn-barebox ?= "imx_v7_defconfig"
 
 # Kernel 
 PREFERRED_PROVIDER_virtual/kernel ?= "linux-mainline"
 KERNEL_IMAGETYPE ?= "zImage"
-INTREE_DEFCONFIG_pn-linux-mainline ?= "imx_v6_v7_defconfig"
 # Install modules in initramfs and roofs
 PACKAGE_INSTALL_append = " kernel-modules"
 
