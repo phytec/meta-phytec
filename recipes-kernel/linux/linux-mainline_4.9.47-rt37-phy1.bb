@@ -32,6 +32,8 @@ SRCREV = "1efa3a42d077b91150fdb8e89dfcad64be926f49"
 
 S = "${WORKDIR}/git"
 
+INTREE_DEFCONFIG_ti33x = "am335x_rt_phytec_defconfig"
+
 COMPATIBLE_MACHINE = "beagleboneblack-1"
 COMPATIBLE_MACHINE .= "|phyboard-wega-am335x-1"
 COMPATIBLE_MACHINE .= "|phyboard-wega-am335x-2"
