@@ -84,13 +84,11 @@ class Sourcecode(object):
         # Interface
         self.machines = Vividict()
         self.bsp_dir = ""
-        self.meta_phytec_dir = ""
 
         try:
             #v2 Implementation
             cwd = self.search_for_bsp_dir()
             self.bsp_dir = cwd
-            self.meta_phytec_dir = os.path.join(cwd, "sources/meta-phytec")
             self.init_machines()
         except (IOError, OSError) as e:
             print("Could not find necessary file: ", e)
@@ -110,14 +108,13 @@ class Sourcecode(object):
         return os.path.join(self.bsp_dir, '.repo')
 
     def init_machines(self):
-        d = os.listdir(os.path.join(self.meta_phytec_dir, 'conf/machine'))
-        d.sort()
-        for j in d:
-            if j.endswith('.conf'):
-                machname = os.path.splitext(j)[0]
-                path = os.path.join(self.meta_phytec_dir, 'conf/machine', j)
-                self.machines[machname]['abs_path'] = path
-                self.parse_machine_info(machname)
+        for root, dirs, files in os.walk(self.bsp_dir):
+            for name in files:
+                if name.endswith('.conf') and root.endswith('conf/machine'):
+                    machname = os.path.splitext(name)[0]
+                    path = os.path.join(root, name)
+                    self.machines[machname]['abs_path'] = path
+                    self.parse_machine_info(machname)
         return True
 
     def parse_machine_info(self, machine):
