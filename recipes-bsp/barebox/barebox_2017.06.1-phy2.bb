@@ -168,14 +168,14 @@ python do_env_append_phyboard-wega-am335x-1() {
     env_add(d, "init/config-expansions",
 """#!/bin/sh
 
-global linux.bootargs.dyn.video
+global linux.bootargs.video
 
 . /env/expansions/am335x-wega-peb-av-01
 . /env/expansions/am335x-wega-peb-eval-01
 
 #. /env/expansions/am335x-wlan
 
-global.linux.bootargs.dyn.video="video=HDMI-A-1:1024x768-32@60"
+global.linux.bootargs.video="video=HDMI-A-1:1024x768-32@60"
 """)
 }
 
@@ -183,14 +183,14 @@ python do_env_append_phyboard-wega-am335x-3() {
     env_add(d, "init/config-expansions",
 """#!/bin/sh
 
-global linux.bootargs.dyn.video
+global linux.bootargs.video
 
 . /env/expansions/am335x-wega-peb-av-01
 . /env/expansions/am335x-wega-peb-eval-01
 
 #. /env/expansions/am335x-wlan
 
-global.linux.bootargs.dyn.video="video=HDMI-A-1:1024x768-32@60"
+global.linux.bootargs.video="video=HDMI-A-1:1024x768-32@60"
 """)
 }
 
@@ -198,14 +198,14 @@ python do_env_append_phyboard-wega-r2-am335x-1() {
     env_add(d, "init/config-expansions",
 """#!/bin/sh
 
-global linux.bootargs.dyn.video
+global linux.bootargs.video
 
 . /env/expansions/am335x-wega-peb-av-01
 . /env/expansions/am335x-wega-peb-eval-01
 
 #. /env/expansions/am335x-wlan
 
-global.linux.bootargs.dyn.video="video=HDMI-A-1:1024x768-32@60"
+global.linux.bootargs.video="video=HDMI-A-1:1024x768-32@60"
 """)
 }
 
