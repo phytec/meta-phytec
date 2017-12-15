@@ -283,6 +283,8 @@ global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootflags='data=journal'"
 #Enable VM-010-BW-LVDS
 #of_camera_selection -a 0x48 -p 0 -b phyCAM-S+ VM-010-BW
 """)
+    # Fix QtWebkit rendering issue for AC104 and AC158 displays on phyBOARD-Mira
+    env_add(d, "nv/linux.bootargs.fb", "imxdrm.legacyfb_depth=32\n");
 }
 
 python do_env_append_phyboard-subra-imx6() {
