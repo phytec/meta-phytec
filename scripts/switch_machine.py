@@ -66,15 +66,16 @@ class BSP_Switcher(BoardSupportPackage):
 
         # write build target to conf-notex.txt so it will be displayed after
         # sourcing the environment
-        confnotes = os.path.join(self.src.bsp_dir, 'tools', 'templateconf', 'conf-notes.txt')
-        f = open(confnotes, 'r')
-        lines = f.readlines()
-        f.close()
-        f = open(confnotes, 'w')
-        f.writelines([l for l in lines[:-2]])
-        print('set TARGET in conf-notes.txt to %s' % target)
-        f.write('   $ bitbake %s\n\n' % target)
-        f.close()
+        if target:
+            confnotes = os.path.join(self.src.bsp_dir, 'tools', 'templateconf', 'conf-notes.txt')
+            f = open(confnotes, 'r')
+            lines = f.readlines()
+            f.close()
+            f = open(confnotes, 'w')
+            f.writelines([l for l in lines[:-2]])
+            print('set TARGET in conf-notes.txt to %s' % target)
+            f.write('   $ bitbake %s\n\n' % target)
+            f.close()
 
         return self.write_machine_to_localconf()
 
