@@ -25,7 +25,10 @@ RCONFLICTS_${PN} = "omapdrm-pvr"
 BRANCH = "ti-img-sgx/${PV}/k4.9"
 
 SRC_URI = "git://git.ti.com/graphics/omap5-sgx-ddk-linux.git;protocol=git;branch=${BRANCH}"
-SRC_URI += "file://0001-srvkm-env-linux-Check-whether-Soc-supports-SGX.patch"
+SRC_URI += " \
+	file://0001-srvkm-env-linux-Check-whether-Soc-supports-SGX.patch \
+	file://0001-srvkm-common-Add-fallthrough-attribute-to-case.patch \
+"
 S = "${WORKDIR}/git"
 
 
