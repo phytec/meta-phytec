@@ -7,6 +7,7 @@ GIT_URL = "git://git.phytec.de/barebox"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 SRC_URI += "\
     ${@base_conditional('DEBUG_BUILD','1','file://debugging.cfg','',d)} \
+    file://disable_state.cfg \
 "
 
 S = "${WORKDIR}/git"
