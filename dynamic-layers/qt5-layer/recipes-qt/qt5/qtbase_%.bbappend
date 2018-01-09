@@ -7,9 +7,6 @@ PACKAGECONFIG_GL_imxgpu3d = "gles2 eglfs"
 PACKAGECONFIG_GL_ti33x = "gles2 eglfs"
 PACKAGECONFIG_GL_rk3288 = "gles2 eglfs kms"
 
-# Remove virtual/mesa for kms
-PACKAGECONFIG[kms] = "-kms,-no-kms,virtual/egl"
-
 # From the layer meta-fsl-arm. Fix qtbase build.
 do_configure_prepend_imxgpu3d() {
 # adapt qmake.conf to our needs
