@@ -21,10 +21,10 @@ MKUBIFS_ARGS = "-F -m 2048 -e 126976 -c 8083"
 UBINIZE_ARGS = "-m 2048 -p 128KiB -s 2048 -O 2048"
 
 # mx6 GPU libraries
-PREFERRED_PROVIDER_virtual/egl ?= "imx-gpu-viv"
-PREFERRED_PROVIDER_virtual/libgles1 ?= "imx-gpu-viv"
-PREFERRED_PROVIDER_virtual/libgles2 ?= "imx-gpu-viv"
-PREFERRED_PROVIDER_virtual/libgl ?= "imx-gpu-viv"
+PREFERRED_PROVIDER_virtual/egl ?= "mesa"
+PREFERRED_PROVIDER_virtual/libgles1 ?= "mesa"
+PREFERRED_PROVIDER_virtual/libgles2 ?= "mesa"
+PREFERRED_PROVIDER_virtual/libgl ?= "mesa"
 
 # Firmware files
 MACHINE_EXTRA_RRECOMMENDS_append_mx6q = " firmware-imx-vpu-mx6q"
