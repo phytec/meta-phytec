@@ -14,7 +14,7 @@ KERNEL_IMAGETYPE ?= "zImage"
 PACKAGE_INSTALL_append = " kernel-modules"
 
 # dont install kernelimage to rootfs
-RDEPENDS_kernel-base = ""
+RDEPENDS_${KERNEL_PACKAGE_NAME}-base = ""
 
 # XServer
 PREFERRED_PROVIDER_virtual/xserver ?= "xserver-xorg"
