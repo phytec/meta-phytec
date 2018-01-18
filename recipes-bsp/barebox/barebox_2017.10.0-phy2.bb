@@ -219,6 +219,36 @@ global.linux.bootargs.dyn.root="root=/dev/mmcblk1p2 rootflags='data=journal'"
 """)
 }
 
+python do_env_append_beagleboneblack-1() {
+    env_add(d, "boot/mmc",
+"""#!/bin/sh
+
+global.bootm.image=/mnt/mmc0.0/linuximage
+global.bootm.oftree=/mnt/mmc0.0/oftree
+global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootflags='data=journal'"
+""")
+    env_add(d, "boot/emmc",
+"""#!/bin/sh
+
+global.bootm.image=/mnt/mmc1.0/linuximage
+global.bootm.oftree=/mnt/mmc1.0/oftree
+global.linux.bootargs.dyn.root="root=/dev/mmcblk1p2 rootflags='data=journal'"
+""")
+    env_add(d, "init/bootsource",
+"""#!/bin/sh
+
+if [ -n "$nv.boot.default" ]; then
+	exit
+fi
+
+if [ $bootsource = mmc -a $bootsource_instance = 1 ]; then
+	global.boot.default="emmc mmc net"
+elif [ $bootsource = mmc -a $bootsource_instance = 0 ]; then
+	global.boot.default="mmc emmc net"
+fi
+""")
+}
+
 INTREE_DEFCONFIG = "am335x_defconfig"
 
 COMPATIBLE_MACHINE = "beagleboneblack-1"
