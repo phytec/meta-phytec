@@ -238,13 +238,13 @@ global.linux.bootargs.dyn.root="root=/dev/mmcblk1p2 rootflags='data=journal'"
 """#!/bin/sh
 
 if [ -n "$nv.boot.default" ]; then
-	exit
+    exit
 fi
 
 if [ $bootsource = mmc -a $bootsource_instance = 1 ]; then
-	global.boot.default="emmc mmc net"
+    global.boot.default="emmc mmc net"
 elif [ $bootsource = mmc -a $bootsource_instance = 0 ]; then
-	global.boot.default="mmc emmc net"
+    global.boot.default="mmc emmc net"
 fi
 """)
 }
