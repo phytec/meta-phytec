@@ -18,7 +18,7 @@ def at24c32_set_addr(devaddr, addr):
 	upperbyte = (addr & 0b1111111100000000) >> 8
 	lowerbyte = addr & 0b0000000011111111
 	i2c.write_i2c_block_data(devaddr, upperbyte, [lowerbyte])
-	time.sleep(0.1)
+	time.sleep(0.01)
 
 # Valid addr for RAM: 0 - 4096
 def at24c32_get_ram(devaddr, addr):
@@ -30,7 +30,7 @@ def at24c32_set_ram(devaddr, addr, val):
 	upperbyte = (addr & 0b1111111100000000) >> 8
 	lowerbyte = addr & 0b0000000011111111
 	i2c.write_i2c_block_data(devaddr, upperbyte, [lowerbyte, val])
-	time.sleep(0.1)
+	time.sleep(0.01)
 
 # Lock EEPROM permanently
 def lock_eeprom(devaddr):
@@ -189,7 +189,8 @@ def decode_eeprom(devaddr):
 	decoded["mac"]		= [None] * 6
 	for i in range(len(decoded["mac"])):
 		decoded["mac"][i] = at24c32_get_ram(devaddr, 15 + i)
-	decoded["ksp"]		= coding_ksp.get(at24c32_get_ram(devaddr, 21))
+	decoded["ksp"]		= coding_ksp.get(at24c32_get_ram(devaddr, 21),
+                                                 "Unknown")
 	decoded["kspno"]	= at24c32_get_ram(devaddr, 22)
 
 	return decoded
@@ -210,10 +211,6 @@ def validate_option(opt):
 	return True
 
 def set_option(devaddr, opt):
-	# clear option
-	for i in range(len(opt)):
-		at24c32_set_ram(devaddr, 2 + i, 0)
-
 	for i in range(len(opt)):
 		at24c32_set_ram(devaddr, 2 + i, opt[i])
 
@@ -275,7 +272,7 @@ def get_file_size(filename):
 
 # Returns a string which represents the ArtNo from the OptionTree
 def get_artno(devaddr):
-	result = coding_mod.get(at24c32_get_ram(devaddr, 1))
+	result = coding_mod.get(at24c32_get_ram(devaddr, 1), "Unknown")
 	result += "-"
 
 	v0 = str(unichr(at24c32_get_ram(devaddr, 12)))
@@ -284,7 +281,7 @@ def get_artno(devaddr):
 	ksp = at24c32_get_ram(devaddr, 21)
 	if ksp != 0:
 		kspno = at24c32_get_ram(devaddr, 22)
-		result += coding_ksp.get(ksp) + "-" + str(kspno)
+		result += coding_ksp.get(ksp, "Unknown") + "-" + str(kspno)
 		result += "." + v0 + v1
 		return result
 
@@ -407,6 +404,10 @@ def main():
 			else:
 				print("Unsupported variant")
 		if args.cmd == "ksp":
+			# clear identification page
+			for i in range(32):
+				at24c32_set_ram(dev, i, 0)
+
 			set_ksp(dev, args.ksp, args.kspno)
 			ksp_variant = [
 					args.ddr,
