@@ -1,0 +1,25 @@
+From 4e05458193b0c8fbeb4d50dfea47e1b410209f32 Mon Sep 17 00:00:00 2001
+From: Christoph Fritz <chf@fritzc.com>
+Date: Thu, 18 Jan 2018 02:32:28 +0100
+Subject: [PATCH] force-modesetting true
+
+---
+ sys/kms/gstkmssink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/sys/kms/gstkmssink.c b/sys/kms/gstkmssink.c
+index e6b15e1..f92e411 100644
+--- a/sys/kms/gstkmssink.c
++++ b/sys/kms/gstkmssink.c
+@@ -1768,7 +1768,7 @@ gst_kms_sink_class_init (GstKMSSinkClass * klass)
+    */
+   g_properties[PROP_FORCE_MODESETTING] =
+       g_param_spec_boolean ("force-modesetting", "Force modesetting",
+-      "When enabled, the sink try to configure the display mode", FALSE,
++      "When enabled, the sink try to configure the display mode", TRUE,
+       G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS | G_PARAM_CONSTRUCT);
+ 
+   /**
+-- 
+2.1.4
+
