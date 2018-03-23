@@ -1,0 +1,1 @@
+EXTRA_OEMAKE += "NO_JVMTI=1"
