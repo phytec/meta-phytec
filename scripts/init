@@ -31,6 +31,12 @@ if [ "$ROOTDIR" = "" ]; then
 	exit 1;
 fi
 
+# copy release notes to rootdir, if they are present in phy2octo
+RELEASE_UID=$(sed -n 's:.*release_uid="\([^"]*\).*:\1:p' ${ROOTDIR}/.repo/manifest.xml)
+RELEASE_NOTES="${ROOTDIR}/.repo/manifests/releasenotes/${RELEASE_UID}"
+if [ -e ${RELEASE_NOTES} ]; then
+	install -pm 0644 ${RELEASE_NOTES} ${ROOTDIR}/ReleaseNotes
+fi
 
 # Folders and Readme
 PHYTEC_DIR="${ROOTDIR}/sources/meta-phytec"
