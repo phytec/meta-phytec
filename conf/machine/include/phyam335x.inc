@@ -60,11 +60,11 @@ IMAGE_CLASSES += "wic-am335x-helper"
 IMAGE_BOOT_FILES = "barebox.bin MLO zImage;linuximage ${@parse_dtbs(d)}"
 #copy ubifs image to sdcard
 IMAGE_BOOT_FILES += "${IMGDEPLOYDIR}/${IMAGE_NAME}.rootfs.ubifs;${IMAGE_LINK_NAME}.ubifs"
-IMAGE_TYPEDEP_wic = "ubifs"
+IMAGE_TYPEDEP_wic ??= "ubifs"
 do_image_wic[depends] += "\
     virtual/prebootloader:do_deploy \
 "
 WKS_FILES_ti33x = "am335x-sdimage.wks"
 
 # default images to build
-IMAGE_FSTYPES ?= "tar.gz wic ubifs"
+IMAGE_FSTYPES ?= "tar.gz wic ubifs ext4"
