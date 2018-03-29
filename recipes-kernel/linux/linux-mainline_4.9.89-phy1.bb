@@ -14,7 +14,7 @@ RDEPENDS_kernel-modules_rk3288 += "cryptodev-module"
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "dbf0f12c5177ccebd3ffa0f32aab5a8071e8a2a8"
+SRCREV = "82fe74a3d9f4001c33f158ccd55b37c543a08a4d"
 
 S = "${WORKDIR}/git"
 
