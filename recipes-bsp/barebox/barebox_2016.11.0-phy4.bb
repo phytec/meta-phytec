@@ -17,7 +17,7 @@ PR = "${INC_PR}.0"
 # NOTE: Keep version in filename in sync with commit id!
 SRCREV = "5e936732882e16603ddb73bbd8265080967a14ba"
 SRC_URI += "\
-    ${@base_conditional('DEBUG_BUILD','1','file://debugging.cfg','',d)} \
+    ${@oe.utils.conditional('DEBUG_BUILD','1','file://debugging.cfg','',d)} \
 "
 
 python do_env_append() {
