@@ -36,6 +36,11 @@ DEBUG_BUILD_pn-linux-mainline = "1"
 # Turn on debugging options of the barebox
 DEBUG_BUILD_pn-barebox = "1"
 
+# QT Config
+# We disable qt widgets per default to save about 10 MB of storage. If
+# you need qt widget support, you can enable it with this line
+#PACKAGECONFIG_append_pn-qtbase = " widgets"
+
 # this can be used for testing latest mesa drivers
 #PREFERRED_VERSION_mesa = "git"
 
