@@ -12,6 +12,7 @@ DEPENDS += "gstreamer1.0-plugins-base rockchip-mpp"
 
 SRC_URI_remove = " \
     file://0001-introspection.m4-prefix-pkgconfig-paths-with-PKG_CON.patch \
+    file://gtk-doc-tweaks.patch \
 "
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
