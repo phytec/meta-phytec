@@ -1,0 +1,13 @@
+[Unit]
+Description=usb media RAUC service
+After=multi-user.target
+Requires=rauc.service
+
+[Service]
+Type=oneshot
+Environment=DBUS_SESSION_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket
+ExecStartPre=/bin/mkdir -p /media/%I
+ExecStartPre=/bin/mount -t auto /dev/%I /media/%I
+ExecStart=/usr/bin/update_usb.sh %I
+ExecStop=/bin/umount -l /media/%i
+ExecStopPost=-/bin/rmdir /media/%I
