@@ -41,7 +41,7 @@ IMAGE_BOOT_FILES = "zImage;linuximage ${@parse_dtbs(d)}"
 do_image_wic[depends] += "\
     virtual/prebootloader:do_deploy \
 "
-WKS_FILES_rk3288 = "rk3288-sdimage.wks"
+WKS_FILES_rk3288 ?= "rk3288-sdimage.wks"
 
 # default images to build
 IMAGE_FSTYPES ?= "tar.gz wic"

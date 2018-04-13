@@ -64,7 +64,7 @@ IMAGE_TYPEDEP_wic ??= "ubifs"
 do_image_wic[depends] += "\
     virtual/prebootloader:do_deploy \
 "
-WKS_FILES_ti33x = "am335x-sdimage.wks"
+WKS_FILES_ti33x ?= "am335x-sdimage.wks"
 
 # default images to build
 IMAGE_FSTYPES ?= "tar.gz wic ubifs ext4"
