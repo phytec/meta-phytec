@@ -1,0 +1,14 @@
+# short-description: Create a Phytec RK3288 disk image (SD card)
+# long-description: Creates a partitioned disk image for Phytec RK3288 BSPs
+# boards that the user can directly dd to an SD card and boot.
+# This image contains twice boot and rootfs partitions for a redundance system.
+
+part SPL     --source rawcopy --sourceparams="file=u-boot-spl-dtb.bin.rksd" --ondisk mmc --no-table --align 32
+part BAREBOX --source rawcopy --sourceparams="file=barebox.bin.u-boot" --ondisk mmc --no-table --align 128
+
+part --source bootimg-partition --fstype=vfat --label boot --ondisk mmc --active --align 4096 --size 20
+part / --source rootfs --fstype=ext4 --label root --ondisk mmc --align 1024 --use-uuid
+part --source bootimg-partition --fstype=vfat --label boot2 --ondisk mmc --active --align 4096 --size 20
+part / --source rootfs --fstype=ext4 --label root2 --ondisk mmc --align 1024 --use-uuid
+
+bootloader --timeout=0
