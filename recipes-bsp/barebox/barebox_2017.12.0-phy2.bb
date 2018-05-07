@@ -91,35 +91,30 @@ global.bootm.oftree="/dev/m25p0.oftree"
 global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=root rootfstype=ubifs"
 """)
     env_add(d, "expansions/imx6qdl-mira-enable-lvds",
-"""of_fixup_status /soc/aips-bus@02000000/ldb@020e0008/
-of_fixup_status /soc/aips-bus@02000000/ldb@020e0008/lvds-channel@0
-of_fixup_status /soc/aips-bus@02000000/pwm@02080000
-of_fixup_status /soc/aips-bus@02100000/i2c@021a0000/stmpe@44
-of_fixup_status /backlight
+"""of_fixup_status /soc/aips-bus@02000000/ldb/lvds-channel@0
+of_fixup_status /soc/aips-bus@02100000/i2c@021a0000/touchctrl@44
+""")
+    env_add(d, "expansions/imx6qdl-nunki-enable-lvds",
+"""of_fixup_status /soc/aips-bus@02000000/ldb/lvds-channel@0
+of_fixup_status /soc/aips-bus@02100000/i2c@021a0000/touchctrl@44
 """)
     env_add(d, "expansions/imx6qdl-mira-peb-eval-01",
 """of_fixup_status /soc/aips-bus@02100000/serial@021e8000
 of_fixup_status /gpio-keys
-of_fixup_status /user_leds
+of_fixup_status /user-leds
 """)
     env_add(d, "expansions/imx6qdl-phytec-lcd",
 """#!/bin/sh
-of_fixup_status /soc/aips-bus@02000000/ldb@020e0008/
-of_fixup_status /soc/aips-bus@02000000/ldb@020e0008/lvds-channel@0
-of_fixup_status /backlight
-of_fixup_status /soc/aips-bus@02100000/i2c@021a4000/edt-ft5x06@38
+of_fixup_status /soc/aips-bus@02000000/ldb/lvds-channel@0
+of_fixup_status /soc/aips-bus@02100000/i2c@021a4000/polytouch@38
 """)
     env_add(d, "expansions/imx6qdl-phytec-lcd-018-peb-av-02",
 """of_fixup_status /display@di0
-of_fixup_status /backlight
-of_fixup_status /soc/aips-bus@02100000/i2c@021a0000/edt-ft5x06@38
-of_fixup_status /soc/aips-bus@02000000/pwm@02080000
+of_fixup_status /soc/aips-bus@02100000/i2c@021a0000/polytouch@38
 """)
     env_add(d, "expansions/imx6qdl-phytec-lcd-018-peb-av-02-res",
 """of_fixup_status /display@di0
-of_fixup_status /backlight
-of_fixup_status /soc/aips-bus@02100000/i2c@021a0000/stmpe@44
-of_fixup_status /soc/aips-bus@02000000/pwm@02080000
+of_fixup_status /soc/aips-bus@02100000/i2c@021a0000/touchctrl@44
 """)
     env_add(d, "expansions/imx6qdl-phytec-peb-wlbt-01",
 """#!/bin/sh
@@ -151,17 +146,20 @@ python do_env_append_phyflex-imx6() {
 #use this expansion when a resisitive touchscreen is connected
 #. /env/expansions/imx6qdl-phytec-lcd-res
 
-# imx6qdl-phytec-lcd: 7" display
-of_display_timings -S /soc/aips-bus@02000000/ldb@020e0008/lvds-channel@0/display-timings/ETM0700G0DH6
+# imx6qdl-phytec-lcd: 7" display (AC158 / AC138)
+of_display_timings -P "/panel-lcd" -c "edt,etm0700g0edh6"
 
-# imx6qdl-phytec-lcd: 5.7" display
-#of_display_timings -S /soc/aips-bus@02000000/ldb@020e0008/lvds-channel@0/display-timings/ETMV570G2DHU
+# imx6qdl-phytec-lcd: 7" display (AC104)
+#of_display_timings -P "/panel-lcd" -c "edt,etm0700g0dh6"
 
-# imx6qdl-phytec-lcd: 4.3" display
-#of_display_timings -S /soc/aips-bus@02000000/ldb@020e0008/lvds-channel@0/display-timings/ETM0430G0DH6
+# imx6qdl-phytec-lcd: 5.7" display (AC103)
+#of_display_timings -P "/panel-lcd" -c "edt,etmv570g2dhu"
 
-# imx6qdl-phytec-lcd: 3.5" display
-#of_display_timings -S /soc/aips-bus@02000000/ldb@020e0008/lvds-channel@0/display-timings/ETM0350G0DH6
+# imx6qdl-phytec-lcd: 4.3" display (AC102)
+#of_display_timings -P "/panel-lcd" -c "edt,etm0430g0dh6"
+
+# imx6qdl-phytec-lcd: 3.5" display (AC167 / AC101)
+#of_display_timings -P "/panel-lcd" -c "edt,etm0350g0dh6"
 
 
 #Enable VM-011-COL on CSI0
@@ -172,10 +170,8 @@ of_display_timings -S /soc/aips-bus@02000000/ldb@020e0008/lvds-channel@0/display
 """)
     env_add(d, "expansions/imx6qdl-phytec-lcd-res",
 """#!/bin/sh
-of_fixup_status /soc/aips-bus@02000000/ldb@020e0008/
-of_fixup_status /soc/aips-bus@02000000/ldb@020e0008/lvds-channel@0
-of_fixup_status /backlight
-of_fixup_status /soc/aips-bus@02100000/i2c@021a4000/stmpe@41
+of_fixup_status /soc/aips-bus@02000000/ldb/lvds-channel@0
+of_fixup_status /soc/aips-bus@02100000/i2c@021a4000/touchctrl@41
 """)
     # Fix QtWebkit rendering issue for LVDS and DVI output on phyFLEX-CarrierBoard
     env_add(d, "nv/linux.bootargs.fb", "imxdrm.legacyfb_depth=32\n");
@@ -213,20 +209,20 @@ global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootflags='data=journal'"
 #use this expansion when a resisitive touchscreen is connected
 #. /env/expansions/imx6qdl-phytec-lcd-018-peb-av-02-res
 
-# imx6qdl-phytec-lcd: 7" display (AC138 and AC158)
-#of_display_timings -S /display@di0/display-timings/ETM0700G0EDH6
+# imx6qdl-phytec-lcd: 7" display (AC158 / AC138)
+#of_display_timings -P "/panel-lcd" -c "edt,etm0700g0edh6"
 
 # imx6qdl-phytec-lcd: 7" display (AC104)
-#of_display_timings -S /display@di0/display-timings/ETM0700G0DH6
+#of_display_timings -P "/panel-lcd" -c "edt,etm0700g0dh6"
 
-# imx6qdl-phytec-lcd: 5.7" display
-#of_display_timings -S /display@di0/display-timings/ETMV570G2DHU
+# imx6qdl-phytec-lcd: 5.7" display (AC103)
+#of_display_timings -P "/panel-lcd" -c "edt,etmv570g2dhu"
 
-# imx6qdl-phytec-lcd: 4.3" display
-#of_display_timings -S /display@di0/display-timings/ETM0430G0DH6
+# imx6qdl-phytec-lcd: 4.3" display (AC102)
+#of_display_timings -P "/panel-lcd" -c "edt,etm0430g0dh6"
 
-# imx6qdl-phytec-lcd: 3.5" display
-#of_display_timings -S /display@di0/display-timings/ETM0350G0DH6
+# imx6qdl-phytec-lcd: 3.5" display (AC167 / AC101)
+#of_display_timings -P "/panel-lcd" -c "edt,etm0350g0dh6"
 
 #Enable VM-010-BW-LVDS
 #of_camera_selection -a 0x48 -p 0 -b phyCAM-S+ VM-010-BW
@@ -263,20 +259,20 @@ python do_env_append_phyboard-mira-imx6-6() {
 #use this expansion when a resisitive touchscreen is connected
 #. /env/expansions/imx6qdl-phytec-lcd-018-peb-av-02-res
 
-# imx6qdl-phytec-lcd: 7" display (AC138 and AC158)
-#of_display_timings -S /display@di0/display-timings/ETM0700G0EDH6
+# imx6qdl-phytec-lcd: 7" display (AC158 / AC138)
+#of_display_timings -P "/panel-lcd" -c "edt,etm0700g0edh6"
 
 # imx6qdl-phytec-lcd: 7" display (AC104)
-#of_display_timings -S /display@di0/display-timings/ETM0700G0DH6
+#of_display_timings -P "/panel-lcd" -c "edt,etm0700g0dh6"
 
-# imx6qdl-phytec-lcd: 5.7" display
-#of_display_timings -S /display@di0/display-timings/ETMV570G2DHU
+# imx6qdl-phytec-lcd: 5.7" display (AC103)
+#of_display_timings -P "/panel-lcd" -c "edt,etmv570g2dhu"
 
-# imx6qdl-phytec-lcd: 4.3" display
-#of_display_timings -S /display@di0/display-timings/ETM0430G0DH6
+# imx6qdl-phytec-lcd: 4.3" display (AC102)
+#of_display_timings -P "/panel-lcd" -c "edt,etm0430g0dh6"
 
-# imx6qdl-phytec-lcd: 3.5" display
-#of_display_timings -S /display@di0/display-timings/ETM0350G0DH6
+# imx6qdl-phytec-lcd: 3.5" display (AC167 / AC101)
+#of_display_timings -P "/panel-lcd" -c "edt,etm0350g0dh6"
 
 #Enable VM-010-BW-LVDS
 #of_camera_selection -a 0x48 -p 0 -b phyCAM-S+ VM-010-BW
@@ -297,20 +293,20 @@ python do_env_append_phyboard-mira-imx6-10() {
 #use this expansion when a resisitive touchscreen is connected
 #. /env/expansions/imx6qdl-phytec-lcd-018-peb-av-02-res
 
-# imx6qdl-phytec-lcd: 7" display (AC138 and AC158)
-#of_display_timings -S /display@di0/display-timings/ETM0700G0EDH6
+# imx6qdl-phytec-lcd: 7" display (AC158 / AC138)
+#of_display_timings -P "/panel-lcd" -c "edt,etm0700g0edh6"
 
 # imx6qdl-phytec-lcd: 7" display (AC104)
-#of_display_timings -S /display@di0/display-timings/ETM0700G0DH6
+#of_display_timings -P "/panel-lcd" -c "edt,etm0700g0dh6"
 
-# imx6qdl-phytec-lcd: 5.7" display
-#of_display_timings -S /display@di0/display-timings/ETMV570G2DHU
+# imx6qdl-phytec-lcd: 5.7" display (AC103)
+#of_display_timings -P "/panel-lcd" -c "edt,etmv570g2dhu"
 
-# imx6qdl-phytec-lcd: 4.3" display
-#of_display_timings -S /display@di0/display-timings/ETM0430G0DH6
+# imx6qdl-phytec-lcd: 4.3" display (AC102)
+#of_display_timings -P "/panel-lcd" -c "edt,etm0430g0dh6"
 
-# imx6qdl-phytec-lcd: 3.5" display
-#of_display_timings -S /display@di0/display-timings/ETM0350G0DH6
+# imx6qdl-phytec-lcd: 3.5" display (AC167 / AC101)
+#of_display_timings -P "/panel-lcd" -c "edt,etm0350g0dh6"
 
 #Enable VM-010-BW-LVDS
 #of_camera_selection -a 0x48 -p 0 -b phyCAM-S+ VM-010-BW
@@ -331,20 +327,20 @@ python do_env_append_phyboard-mira-imx6-11() {
 #use this expansion when a resisitive touchscreen is connected
 #. /env/expansions/imx6qdl-phytec-lcd-018-peb-av-02-res
 
-# imx6qdl-phytec-lcd: 7" display (AC138 and AC158)
-of_display_timings -S /display@di0/display-timings/ETM0700G0EDH6
+# imx6qdl-phytec-lcd: 7" display (AC158 / AC138)
+of_display_timings -P "/panel-lcd" -c "edt,etm0700g0edh6"
 
 # imx6qdl-phytec-lcd: 7" display (AC104)
-#of_display_timings -S /display@di0/display-timings/ETM0700G0DH6
+#of_display_timings -P "/panel-lcd" -c "edt,etm0700g0dh6"
 
-# imx6qdl-phytec-lcd: 5.7" display
-#of_display_timings -S /display@di0/display-timings/ETMV570G2DHU
+# imx6qdl-phytec-lcd: 5.7" display (AC103)
+#of_display_timings -P "/panel-lcd" -c "edt,etmv570g2dhu"
 
-# imx6qdl-phytec-lcd: 4.3" display
-#of_display_timings -S /display@di0/display-timings/ETM0430G0DH6
+# imx6qdl-phytec-lcd: 4.3" display (AC102)
+#of_display_timings -P "/panel-lcd" -c "edt,etm0430g0dh6"
 
-# imx6qdl-phytec-lcd: 3.5" display
-#of_display_timings -S /display@di0/display-timings/ETM0350G0DH6
+# imx6qdl-phytec-lcd: 3.5" display (AC167 / AC101)
+#of_display_timings -P "/panel-lcd" -c "edt,etm0350g0dh6"
 
 #Enable VM-010-BW-LVDS
 #of_camera_selection -a 0x48 -p 0 -b phyCAM-S+ VM-010-BW
@@ -367,20 +363,20 @@ of_fixup_status /soc/aips-bus@02100000/serial@021e8000
 #use this expansion when a resisitive touchscreen is connected
 #. /env/expansions/imx6qdl-phytec-lcd-018-peb-av-02-res
 
-# imx6qdl-phytec-lcd: 7" display (AC138 and AC158)
-#of_display_timings -S /display@di0/display-timings/ETM0700G0EDH6
+# imx6qdl-phytec-lcd: 7" display (AC158 / AC138)
+#of_display_timings -P "/panel-lcd" -c "edt,etm0700g0edh6"
 
 # imx6qdl-phytec-lcd: 7" display (AC104)
-of_display_timings -S /display@di0/display-timings/ETM0700G0DH6
+#of_display_timings -P "/panel-lcd" -c "edt,etm0700g0dh6"
 
-# imx6qdl-phytec-lcd: 5.7" display
-#of_display_timings -S /display@di0/display-timings/ETMV570G2DHU
+# imx6qdl-phytec-lcd: 5.7" display (AC103)
+#of_display_timings -P "/panel-lcd" -c "edt,etmv570g2dhu"
 
-# imx6qdl-phytec-lcd: 4.3" display
-#of_display_timings -S /display@di0/display-timings/ETM0430G0DH6
+# imx6qdl-phytec-lcd: 4.3" display (AC102)
+#of_display_timings -P "/panel-lcd" -c "edt,etm0430g0dh6"
 
-# imx6qdl-phytec-lcd: 3.5" display
-#of_display_timings -S /display@di0/display-timings/ETM0350G0DH6
+# imx6qdl-phytec-lcd: 3.5" display (AC167 / AC101)
+#of_display_timings -P "/panel-lcd" -c "edt,etm0350g0dh6"
 
 #Enable VM-010-BW-LVDS
 #of_camera_selection -a 0x48 -p 0 -b phyCAM-S+ VM-010-BW
