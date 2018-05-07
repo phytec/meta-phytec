@@ -173,7 +173,7 @@ of_display_timings -P "/panel-lcd" -c "edt,etm0700g0edh6"
 of_fixup_status /soc/aips-bus@02000000/ldb/lvds-channel@0
 of_fixup_status /soc/aips-bus@02100000/i2c@021a4000/touchctrl@41
 """)
-    # Fix QtWebkit rendering issue for LVDS and DVI output on phyFLEX-CarrierBoard
+    # Enable 32 bit color depth for framebuffer emulation on phyFLEX-CarrierBoard
     env_add(d, "nv/linux.bootargs.fb", "imxdrm.legacyfb_depth=32\n");
 }
 
@@ -227,6 +227,8 @@ global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootflags='data=journal'"
 #Enable VM-010-BW-LVDS
 #of_camera_selection -a 0x48 -p 0 -b phyCAM-S+ VM-010-BW
 """)
+    # Enable 32 bit color depth for framebuffer emulation on phyBOARD-Mira
+    env_add(d, "nv/linux.bootargs.fb", "imxdrm.legacyfb_depth=32\n");
 }
 
 python do_env_append_phyboard-nunki-imx6() {
@@ -280,6 +282,8 @@ of_camera_selection -a 0x48 -p 0 -b phyCAM-P VM-010-BW
 #Enable VM-011-COL on CSI1
 #of_camera_selection -a 0x48 -p 1 -b phyCAM-P VM-011-COL
 """)
+    # Enable 32 bit color depth for framebuffer emulation on phyBOARD-Nunki
+    env_add(d, "nv/linux.bootargs.fb", "imxdrm.legacyfb_depth=32\n");
 }
 
 python do_env_append_phyflex-imx6-3() {
