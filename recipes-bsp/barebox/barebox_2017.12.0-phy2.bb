@@ -229,6 +229,59 @@ global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootflags='data=journal'"
 """)
 }
 
+python do_env_append_phyboard-nunki-imx6() {
+    env_add(d, "boot/emmc",
+"""#!/bin/sh
+
+[ -e /env/config-expansions ] && /env/config-expansions
+
+global.bootm.image="/mnt/emmc/zImage"
+global.bootm.oftree="/mnt/emmc/oftree"
+global.linux.bootargs.dyn.root="root=/dev/mmcblk3p2 rootflags='data=journal'"
+""")
+    env_add(d, "boot/mmc",
+"""#!/bin/sh
+
+[ -e /env/config-expansions ] && /env/config-expansions
+
+global.bootm.image="/mnt/mmc/zImage"
+global.bootm.oftree="/mnt/mmc/oftree"
+global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootflags='data=journal'"
+""")
+    env_add(d, "config-expansions",
+"""#!/bin/sh
+
+#. /env/expansions/imx6qdl-nunki-enable-lvds
+
+#use this expansion when a capacitive touchscreen is connected
+#. /env/expansions/imx6qdl-phytec-lcd-018-peb-av-02
+
+#use this expansion when a resisitive touchscreen is connected
+#. /env/expansions/imx6qdl-phytec-lcd-018-peb-av-02-res
+
+# imx6qdl-phytec-lcd: 7" display (AC158 / AC138)
+#of_display_timings -P "/panel-lcd" -c "edt,etm0700g0edh6"
+
+# imx6qdl-phytec-lcd: 7" display (AC104)
+#of_display_timings -P "/panel-lcd" -c "edt,etm0700g0dh6"
+
+# imx6qdl-phytec-lcd: 5.7" display (AC103)
+#of_display_timings -P "/panel-lcd" -c "edt,etmv570g2dhu"
+
+# imx6qdl-phytec-lcd: 4.3" display (AC102)
+#of_display_timings -P "/panel-lcd" -c "edt,etm0430g0dh6"
+
+# imx6qdl-phytec-lcd: 3.5" display (AC167 / AC101)
+#of_display_timings -P "/panel-lcd" -c "edt,etm0350g0dh6"
+
+#Enable VM-011-COL on CSI0
+of_camera_selection -a 0x48 -p 0 -b phyCAM-P VM-010-BW
+
+#Enable VM-011-COL on CSI1
+#of_camera_selection -a 0x48 -p 1 -b phyCAM-P VM-011-COL
+""")
+}
+
 python do_env_append_phyflex-imx6-3() {
     env_add(d, "nv/linux.bootargs.cma", "cma=265M@1G\n")
 }
@@ -481,3 +534,5 @@ COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-11"
 COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-12"
 COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-13"
 COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-14"
+
+COMPATIBLE_MACHINE .= "|phyboard-nunki-imx6-1"

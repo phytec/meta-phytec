@@ -46,3 +46,5 @@ SRC_URI_append_phyboard-mira-imx6-13 = " \
     file://0002-phycore-som-add-spi-port-on-the-expansion-connector.patch \
     file://defconfig \
 "
+
+COMPATIBLE_MACHINE .= "|phyboard-nunki-imx6-1"
