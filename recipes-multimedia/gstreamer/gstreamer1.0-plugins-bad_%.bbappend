@@ -8,5 +8,6 @@ DEPENDS += "zbar"
 
 PACKAGECONFIG += " opencv"
 
+EXTRA_OECONF_remove = "--disable-qt"
 EXTRA_OECONF_remove = "--disable-zbar"
 EXTRA_OECONF += "--enable-zbar "
