@@ -424,7 +424,7 @@ of_fixup_status /soc/aips-bus@02100000/serial@021e8000
 #of_display_timings -P "/panel-lcd" -c "edt,etm0700g0edh6"
 
 # imx6qdl-phytec-lcd: 7" display (AC104)
-#of_display_timings -P "/panel-lcd" -c "edt,etm0700g0dh6"
+of_display_timings -P "/panel-lcd" -c "edt,etm0700g0dh6"
 
 # imx6qdl-phytec-lcd: 5.7" display (AC103)
 #of_display_timings -P "/panel-lcd" -c "edt,etmv570g2dhu"
