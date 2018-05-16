@@ -1,5 +1,4 @@
 # Copyright (C) 2015 PHYTEC Messtechnik GmbH,
-# Author: Stefan Christ <s.christ@phytec.de>
 
 inherit phygittag
 inherit buildinfo
@@ -18,7 +17,7 @@ S = "${WORKDIR}/git"
 PR = "${INC_PR}.0"
 
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "56b6e89ae5f8c743c1c064bdf8fe3c5ebcba02eb"
+SRCREV = "855247cf590b8e473f76b9ac80894bdb24b1b01c"
 
 python do_env_append() {
     env_add(d, "nv/allow_color", "false\n")
@@ -90,19 +89,12 @@ global.bootm.image="/dev/m25p0.kernel"
 global.bootm.oftree="/dev/m25p0.oftree"
 global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=root rootfstype=ubifs"
 """)
-    env_add(d, "network/eth0",
-"""#!/bin/sh
-
-# ip setting (static/dhcp)
-ip=static
-global.dhcp.vendor_id=barebox-${global.hostname}
-
-# static setup used if ip=static
-ipaddr=192.168.3.11
-netmask=255.255.255.0
-gateway=192.168.3.10
-serverip=192.168.3.10
-""")
+    env_add(d, "nv/dev.eth0.mode", "static")
+    env_add(d, "nv/dev.eth0.ipaddr", "192.168.3.11")
+    env_add(d, "nv/dev.eth0.netmask", "255.255.255.0")
+    env_add(d, "nv/net.gateway", "192.168.3.10")
+    env_add(d, "nv/net.serverip", "192.168.3.10")
+    env_add(d, "nv/dhcp.vendor_id", "phytec")
 }
 
 python do_env_append_phyboard-segin-imx6ul() {
