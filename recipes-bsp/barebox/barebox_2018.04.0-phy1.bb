@@ -93,7 +93,7 @@ global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=root rootfstype=ubifs"
     env_add(d, "nv/dev.eth0.ipaddr", "192.168.3.11")
     env_add(d, "nv/dev.eth0.netmask", "255.255.255.0")
     env_add(d, "nv/net.gateway", "192.168.3.10")
-    env_add(d, "nv/net.serverip", "192.168.3.10")
+    env_add(d, "nv/dev.eth0.serverip", "192.168.3.10")
     env_add(d, "nv/dhcp.vendor_id", "phytec")
 }
 
