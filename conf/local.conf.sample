@@ -36,6 +36,12 @@ DEBUG_BUILD_pn-linux-mainline = "1"
 # Turn on debugging options of the barebox
 DEBUG_BUILD_pn-barebox = "1"
 
+######################
+# rauc configuration #
+######################
+# certificate location for signing bundles
+#CERT_PATH = "${TOPDIR}/../sources/meta-yogurt/openssl-ca"
+
 # QT Config
 # We disable qt widgets per default to save about 10 MB of storage. If
 # you need qt widget support, you can enable it with this line
