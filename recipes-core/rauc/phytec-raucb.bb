@@ -1,6 +1,3 @@
-# Copyright (C) 2018 Daniel Schultz <d.schultz@phytec.de>
-# Released under the MIT license (see COPYING.MIT for the terms)
-
 DESCRIPTION = "Bundle creator for rauc"
 HOMEPAGE = "http://www.phytec.de"
 LICENSE = "MIT"

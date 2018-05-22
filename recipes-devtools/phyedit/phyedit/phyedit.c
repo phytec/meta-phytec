@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Wadim Egorov <w.egorov@phytec.de> PHYTEC Messtechnik GmbH
+ * Copyright (C) 2014 PHYTEC Messtechnik GmbH
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as

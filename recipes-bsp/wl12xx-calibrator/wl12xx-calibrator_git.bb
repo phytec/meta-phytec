@@ -1,6 +1,3 @@
-# Copyright (C) 2015 Wadim Egorov <w.egorov@phytec.de>
-# Released under the MIT license (see COPYING.MIT for the terms)
-
 DESCRIPTION = "Configuration utility for TI wireless drivers (wl12xx)"
 LICENSE = "BSD-3-Clause"
 LIC_FILES_CHKSUM = "file://COPYING;md5=4725015cb0be7be389cf06deeae3683d"

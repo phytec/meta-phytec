@@ -1,6 +1,3 @@
-# Copyright (C) 2017 Wadim Egorov <w.egorov@phytec.de>
-# Released under the MIT license (see COPYING.MIT for the terms)
-
 DESCRIPTION = "rkeeprom.py is a configuration tool for PHYTEC's RK3288 SoMs"
 HOMEPAGE = "http://www.phytec.de"
 LICENSE = "GPL-2.0"
