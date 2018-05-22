@@ -1,6 +1,3 @@
-# Copyright (C) 2016 Wadim Egorov <w.egorov@phytec.de>
-# Released under the MIT license (see COPYING.MIT for the terms)
-
 SUMMARY = "Userspace GPU driver for Mali-T760"
 DESCRIPTION = "Userspace GPU driver for Mali-T760"
 SECTION = "libs"

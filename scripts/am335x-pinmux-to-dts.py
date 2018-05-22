@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2014 Stefan Müller-Klieser, PHYTEC Messtechnik GmbH
+# Copyright 2014 PHYTEC Messtechnik GmbH
 # adapted from a script by Jan Lübbe
 
 import sys

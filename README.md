@@ -4,6 +4,7 @@ meta-phytec
 This is the official hardware support layer for PHYTEC Boards.
 Meta-phytec is a distribution independent layer and delivers bootloader
 and kernel to our customers.
+The layer is distributed under the MIT license if not noted otherwise.
 If you are interested in a fully tested and configured Linux
 distribution, consider installing
 [meta-yogurt](git://git.phytec.de/meta-yogurt)

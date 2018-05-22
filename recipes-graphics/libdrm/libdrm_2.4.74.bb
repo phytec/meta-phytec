@@ -1,6 +1,3 @@
-# Copyright (C) 2016 Wadim Egorov <w.egorov@phytec.de>
-# Released under the MIT license (see COPYING.MIT for the terms)
-
 SUMMARY = "Userspace interface to the kernel DRM services"
 DESCRIPTION = "The runtime library for accessing the kernel DRM services.  DRM \
 stands for \"Direct Rendering Manager\", which is the kernel portion of the \
