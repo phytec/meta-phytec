@@ -1,5 +1,5 @@
 SUMMARY = "bayer2rgb color conversion with ARM neon support"
-DESCRIPTION = "Faster bayer two RGB color format converstion implement with the ARM NEON architecture"
+DESCRIPTION = "Faster bayer two RGB color format conversion implement with the ARM NEON architecture"
 SECTION = "libs"
 HOMEPAGE = "https://git.phytec.de/bayer2rgb-neon"
 
@@ -12,8 +12,8 @@ SRC_URI = "git://git.phytec.de/${BPN};branch=${BRANCH}"
 S = "${WORKDIR}/git"
 
 # NOTE: Keep sha1sum in sync with recipe version and git tag
-SRCREV = "7ff3d1ae404b73308c21844a15fbb4aecf2c4cc9"
-PV = "0.3+git${SRCPV}"
+SRCREV = "f7e81439634088f261926719d4061c77e27c14fc"
+PV = "0.4+git${SRCPV}"
 
 PR = "r0"
 
@@ -28,3 +28,7 @@ FILES_${PN}-dbg += "${PTEST_PATH}/.debug"
 PTEST_PATH = "${libdir}/bayer2rgb/testsuite"
 FILES_${PN}-tests += "${libdir}/bayer2rgb/testsuite"
 RDEPENDS_${PN}-tests += "bash"
+
+# TODO Check for "neon" in TUNE_FEATURES
+COMPATIBLE_MACHINE = "(arm)"
+COMPATIBLE_MACHINE .= "|mx6"
