@@ -17,7 +17,9 @@ PV = "0.4+git${SRCPV}"
 
 PR = "r0"
 
-inherit autotools ptest pkgconfig lib_package
+inherit autotools ptest pkgconfig lib_package tune_features_check
+
+REQUIRED_TUNE_FEATURES = "neon"
 
 DEPENDS += "gengetopt-native"
 
@@ -28,7 +30,3 @@ FILES_${PN}-dbg += "${PTEST_PATH}/.debug"
 PTEST_PATH = "${libdir}/bayer2rgb/testsuite"
 FILES_${PN}-tests += "${libdir}/bayer2rgb/testsuite"
 RDEPENDS_${PN}-tests += "bash"
-
-# TODO Check for "neon" in TUNE_FEATURES
-COMPATIBLE_MACHINE = "(arm)"
-COMPATIBLE_MACHINE .= "|mx6"
