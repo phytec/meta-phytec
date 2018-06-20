@@ -14,6 +14,9 @@ python () {
 
 GIT_URL = "git://git.phytec.de/${PN}"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
+SRC_URI_append = "\
+    ${@base_conditional('DEBUG_BUILD','1','file://debugging.cfg','',d)} \
+"
 SRC_URI_append_ti33x = "\
     ${@bb.utils.contains('MACHINE_FEATURES', '3g', 'file://3g.cfg', '', d)} \
     file://blacklist-cpufreq_dt.cfg \
