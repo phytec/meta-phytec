@@ -60,6 +60,7 @@ COMPATIBLE_MACHINE .= "|phycore-r2-am335x-2"
 COMPATIBLE_MACHINE .= "|phycore-r2-am335x-3"
 COMPATIBLE_MACHINE .= "|phycore-r2-am335x-4"
 COMPATIBLE_MACHINE .= "|phycore-r2-am335x-5"
+COMPATIBLE_MACHINE .= "|phycore-r2-am335x-6"
 COMPATIBLE_MACHINE .= "|phycore-emmc-am335x-1"
 
 COMPATIBLE_MACHINE .= "|phycore-rk3288-3"
