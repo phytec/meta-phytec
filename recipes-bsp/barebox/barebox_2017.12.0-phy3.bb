@@ -490,6 +490,10 @@ global.linux.bootargs.dyn.root="root=/dev/mmcblk3p2 rootflags='data=journal'"
 """)
 }
 
+python do_env_append_phyboard-mira-imx6-15() {
+    env_add(d, "nv/linux.bootargs.cma", "cma=64M\n")
+}
+
 #Enviroment changes for RAUC
 python do_env_append_phyboard-mira-imx6-3() {
     env_add(d, "boot/nand2",
@@ -574,5 +578,6 @@ COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-11"
 COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-12"
 COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-13"
 COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-14"
+COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-15"
 
 COMPATIBLE_MACHINE .= "|phyboard-nunki-imx6-1"

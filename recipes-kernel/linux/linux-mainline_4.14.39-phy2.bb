@@ -41,5 +41,6 @@ COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-11"
 COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-12"
 COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-13"
 COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-14"
+COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-15"
 
 COMPATIBLE_MACHINE .= "|phyboard-nunki-imx6-1"
