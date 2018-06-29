@@ -299,10 +299,28 @@ python do_env_append_phyboard-mira-imx6-4() {
 }
 
 python do_env_append_phyboard-mira-imx6-5() {
+    env_add(d, "boot/spi",
+"""#!/bin/sh
+
+[ -e /env/config-expansions ] && /env/config-expansions
+
+global.bootm.image="/dev/m25p0.kernel"
+global.bootm.oftree="/dev/m25p0.oftree"
+global.linux.bootargs.dyn.root="root=/dev/mmcblk3p2 rootflags='data=journal'"
+""")
     env_add(d, "nv/linux.bootargs.cma", "cma=265M@1G\n")
 }
 
 python do_env_append_phyboard-mira-imx6-6() {
+    env_add(d, "boot/spi",
+"""#!/bin/sh
+
+[ -e /env/config-expansions ] && /env/config-expansions
+
+global.bootm.image="/dev/m25p0.kernel"
+global.bootm.oftree="/dev/m25p0.oftree"
+global.linux.bootargs.dyn.root="root=/dev/mmcblk3p2 rootflags='data=journal'"
+""")
     env_add(d, "config-expansions",
 """#!/bin/sh
 
@@ -333,6 +351,30 @@ python do_env_append_phyboard-mira-imx6-6() {
 
 #Enable VM-010-BW-LVDS
 #of_camera_selection -a 0x48 -p 0 -b phyCAM-S+ VM-010-BW
+""")
+}
+
+python do_env_append_phyboard-mira-imx6-7() {
+    env_add(d, "boot/spi",
+"""#!/bin/sh
+
+[ -e /env/config-expansions ] && /env/config-expansions
+
+global.bootm.image="/dev/m25p0.kernel"
+global.bootm.oftree="/dev/m25p0.oftree"
+global.linux.bootargs.dyn.root="root=/dev/mmcblk3p2 rootflags='data=journal'"
+""")
+}
+
+python do_env_append_phyboard-mira-imx6-8() {
+    env_add(d, "boot/spi",
+"""#!/bin/sh
+
+[ -e /env/config-expansions ] && /env/config-expansions
+
+global.bootm.image="/dev/m25p0.kernel"
+global.bootm.oftree="/dev/m25p0.oftree"
+global.linux.bootargs.dyn.root="root=/dev/mmcblk3p2 rootflags='data=journal'"
 """)
 }
 
@@ -437,6 +479,18 @@ of_display_timings -P "/panel-lcd" -c "edt,etm0700g0dh6"
 
 #Enable VM-010-BW-LVDS
 #of_camera_selection -a 0x48 -p 0 -b phyCAM-S+ VM-010-BW
+""")
+}
+
+python do_env_append_phyboard-mira-imx6-14() {
+    env_add(d, "boot/spi",
+"""#!/bin/sh
+
+[ -e /env/config-expansions ] && /env/config-expansions
+
+global.bootm.image="/dev/m25p0.kernel"
+global.bootm.oftree="/dev/m25p0.oftree"
+global.linux.bootargs.dyn.root="root=/dev/mmcblk3p2 rootflags='data=journal'"
 """)
 }
 
