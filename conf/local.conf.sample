@@ -103,4 +103,8 @@ EXTRA_IMAGE_FEATURES += "debug-tweaks"
 # you need qt widget support, you can enable it with this line
 #PACKAGECONFIG_append_pn-qtbase = " widgets"
 
+# qml-debug: This enables qml logging and profiling capabilities.
+# It needs to be turned off for production use.
+PACKAGECONFIG_append_pn-qtbase = " qml-debug"
+
 CONF_VERSION = "1"
