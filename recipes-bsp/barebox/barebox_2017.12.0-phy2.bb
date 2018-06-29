@@ -119,7 +119,7 @@ of_fixup_status /soc/aips-bus@02100000/i2c@021a0000/touchctrl@44
     env_add(d, "expansions/imx6qdl-phytec-peb-wlbt-01",
 """#!/bin/sh
 of_fixup_status /soc/aips-bus@02100000/usdhc@02198000
-of_fixup_status /regulators/regulator@7
+of_fixup_status /regulator-wlan-en
 """)
     env_add(d, "network/eth0",
 """#!/bin/sh
