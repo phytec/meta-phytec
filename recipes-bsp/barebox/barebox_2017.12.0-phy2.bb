@@ -99,8 +99,7 @@ of_fixup_status /soc/aips-bus@02100000/i2c@021a0000/touchctrl@44
 of_fixup_status /soc/aips-bus@02100000/i2c@021a0000/touchctrl@44
 """)
     env_add(d, "expansions/imx6qdl-mira-peb-eval-01",
-"""of_fixup_status /soc/aips-bus@02100000/serial@021e8000
-of_fixup_status /gpio-keys
+"""of_fixup_status /gpio-keys
 of_fixup_status /user-leds
 """)
     env_add(d, "expansions/imx6qdl-phytec-lcd",
@@ -449,9 +448,6 @@ of_display_timings -P "/panel-lcd" -c "edt,etm0700g0edh6"
 python do_env_append_phyboard-mira-imx6-13() {
     env_add(d, "config-expansions",
 """#!/bin/sh
-
-#active debug uart on the expansion connector
-of_fixup_status /soc/aips-bus@02100000/serial@021e8000
 
 #. /env/expansions/imx6qdl-mira-enable-lvds
 #. /env/expansions/imx6qdl-phytec-peb-wlbt-01
