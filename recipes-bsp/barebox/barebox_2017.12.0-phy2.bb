@@ -548,21 +548,6 @@ cp /mnt/tftp/*.ubifs /dev/nand0.root.ubi.root
 cp /mnt/tftp/*.ubifs /dev/nand0.root.ubi.root2
 """)
 }
-python do_env_append_phyboard-mira-imx6-7() {
-    env_add(d, "boot/emmc2",
-"""#!/bin/sh
-
-global.bootm.image=/mnt/mmc1.2/zImage
-global.bootm.oftree=/mnt/mmc1.2/oftree
-global.linux.bootargs.dyn.root="root=/dev/mmcblk1p4 rootflags='data=journal'"
-""")
-    env_add(d, "nv/bootchooser.state_prefix", """state""")
-    env_add(d, "nv/bootchooser.targets", """system0 system1""")
-    env_add(d, "nv/bootchooser.system0.boot", """emmc""")
-    env_add(d, "nv/bootchooser.system1.boot", """emmc2""")
-    env_add(d, "nv/bootchooser.state_prefix", """state.bootstate""")
-}
-#No update and init scriptes needed, because the wic scripts create a correct sdcard image
 
 INTREE_DEFCONFIG = "imx_v7_defconfig"
 
