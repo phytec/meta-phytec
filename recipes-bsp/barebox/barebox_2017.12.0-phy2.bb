@@ -499,6 +499,8 @@ python do_env_append_phyboard-mira-imx6-3() {
     env_add(d, "boot/nand2",
 """#!/bin/sh
 
+[ -e /env/config-expansions ] && /env/config-expansions
+
 [ ! -e /dev/nand0.root.ubi ] && ubiattach /dev/nand0.root
 
 global.bootm.image="/dev/nand0.root.ubi.kernel2"
@@ -514,17 +516,16 @@ global.linux.bootargs.dyn.root="root=ubi0:root2 ubi.mtd=root rootfstype=ubifs"
     env_add(d, "bin/create_nand_partitions",
 """#!/bin/sh
 echo "Create NAND partitions"
-erase /dev/nand0
 ubiformat -q /dev/nand0.root
 ubiattach /dev/nand0.root
 #Hold the following order or change the /dev/ubi0_X enumeration in /etc/rauc/system.conf
 ubimkvol -t static /dev/nand0.root.ubi kernel 8M
 ubimkvol -t static /dev/nand0.root.ubi oftree 1M
-#For 512MB NANDs (otherwise other partition sizes)
-ubimkvol -t dynamic /dev/nand0.root.ubi root 230M
+#For 1GB NANDs (otherwise other partition sizes)
+ubimkvol -t dynamic /dev/nand0.root.ubi root 450M
 ubimkvol -t static /dev/nand0.root.ubi kernel2 8M
 ubimkvol -t static /dev/nand0.root.ubi oftree2 1M
-ubimkvol -t dynamic /dev/nand0.root.ubi root2 230M
+ubimkvol -t dynamic /dev/nand0.root.ubi root2 450M
 """)
     env_add(d, "bin/init_flash_from_mmc",
 """#!/bin/sh
@@ -532,8 +533,8 @@ echo "Initialize NAND flash from MMC"
 barebox_update -t MLO.nand /mnt/mmc0.0/MLO -y
 barebox_update -t nand /mnt/mmc0.0/barebox.bin -y
 [ ! -e /dev/nand0.root.ubi ] && ubiattach /dev/nand0.root
-ubiupdatevol /dev/nand0.root.ubi.kernel  /mnt/mmc0.0/linuximage
-ubiupdatevol /dev/nand0.root.ubi.kernel2 /mnt/mmc0.0/linuximage
+ubiupdatevol /dev/nand0.root.ubi.kernel  /mnt/mmc0.0/zImage
+ubiupdatevol /dev/nand0.root.ubi.kernel2 /mnt/mmc0.0/zImage
 ubiupdatevol /dev/nand0.root.ubi.oftree  /mnt/mmc0.0/oftree
 ubiupdatevol /dev/nand0.root.ubi.oftree2 /mnt/mmc0.0/oftree
 cp /mnt/mmc0.0/*.ubifs /dev/nand0.root.ubi.root
@@ -543,8 +544,8 @@ cp /mnt/mmc0.0/*.ubifs /dev/nand0.root.ubi.root2
 """#!/bin/sh
 echo "Initialize NAND flash from TFTP"
 [ ! -e /dev/nand0.root.ubi ] && ubiattach /dev/nand0.root
-ubiupdatevol /dev/nand0.root.ubi.kernel  /mnt/tftp/linuximage
-ubiupdatevol /dev/nand0.root.ubi.kernel2 /mnt/tftp/linuximage
+ubiupdatevol /dev/nand0.root.ubi.kernel  /mnt/tftp/zImage
+ubiupdatevol /dev/nand0.root.ubi.kernel2 /mnt/tftp/zImage
 ubiupdatevol /dev/nand0.root.ubi.oftree  /mnt/tftp/oftree
 ubiupdatevol /dev/nand0.root.ubi.oftree2 /mnt/tftp/oftree
 cp /mnt/tftp/*.ubifs /dev/nand0.root.ubi.root
@@ -555,7 +556,7 @@ python do_env_append_phyboard-mira-imx6-7() {
     env_add(d, "boot/emmc2",
 """#!/bin/sh
 
-global.bootm.image=/mnt/mmc1.2/linuximage
+global.bootm.image=/mnt/mmc1.2/zImage
 global.bootm.oftree=/mnt/mmc1.2/oftree
 global.linux.bootargs.dyn.root="root=/dev/mmcblk1p4 rootflags='data=journal'"
 """)
