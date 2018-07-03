@@ -1,0 +1,26 @@
+From 4b393cfd045ebf9f97f79d946f316863c898f7f5 Mon Sep 17 00:00:00 2001
+From: Christian Hemp <c.hemp@phytec.de>
+Date: Tue, 8 May 2018 11:29:18 +0200
+Subject: [PATCH 2/2] imx8m_bl31_setup: set mem size to 1GB
+
+Signed-off-by: Christian Hemp <c.hemp@phytec.de>
+---
+ plat/freescale/imx8mq/imx8m_bl31_setup.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/plat/freescale/imx8mq/imx8m_bl31_setup.c b/plat/freescale/imx8mq/imx8m_bl31_setup.c
+index ac35c94..fec6271 100644
+--- a/plat/freescale/imx8mq/imx8m_bl31_setup.c
++++ b/plat/freescale/imx8mq/imx8m_bl31_setup.c
+@@ -273,7 +273,7 @@ void bl31_plat_arch_setup(void)
+ 	mmap_add_region(0x180000, 0x180000, 0x8000,
+ 			MT_MEMORY | MT_RW);
+ 
+-	mmap_add_region(0x40000000, 0x40000000, 0xc0000000,
++	mmap_add_region(0x40000000, 0x40000000, 0x40000000,
+ 			MT_MEMORY | MT_RW | MT_NS);
+ 
+ 	mmap_add_region(BL31_BASE, BL31_BASE, BL31_RO_LIMIT - BL31_RO_BASE,
+-- 
+2.7.4
+
