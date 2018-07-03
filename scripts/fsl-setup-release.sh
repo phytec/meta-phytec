@@ -128,7 +128,7 @@ if test $fsl_setup_error || test $fsl_setup_help; then
     usage && clean_up && return 1
 fi
 
-if [ -z "$BUILD_DIR" ]; then
+if [ -z "$BUILD_DIR" -o "$BUILD_DIR" == "." ]; then
     BUILD_DIR='build'
 fi
 
@@ -209,6 +209,38 @@ if [ -d ../sources/meta-freescale ]; then
     sed -e "s,meta-fsl-arm\s,meta-freescale ,g" -i conf/bblayers.conf
     sed -e "s,\$.BSPDIR./sources/meta-fsl-arm-extra\s,,g" -i conf/bblayers.conf
 fi
+
+# Try to find ROOTDIR from arg0 of shell process.
+DIR="`dirname $(readlink -f .)`"
+
+# Try to find ROOTDIR of the Yocto BSP. Walk up the directory tree until we
+# find the sources/meta-phytec or .repo directory. Returns the empty string as
+# an error code.
+find_root_dir() {
+        dir=$(readlink -f "$1")  # should return an absoulte path
+        while [ ! "$dir" = "/" ]; do
+                if [ -d "$dir/.repo" ]; then
+                # or [ -d "$dir/sources/meta-phytec" ];
+                        echo $dir;
+                        return;
+                fi
+                dir=$(dirname "$dir")
+        done
+        # If anchor directory isn't found, function returns the empty strings
+        # as an error code.
+}
+
+ROOTDIR=$(find_root_dir "$DIR")
+if [ "$ROOTDIR" = "" ]; then
+        echo >&2 "ERROR: Cannot find root directory of the Yocto BSP."
+        echo >&2 "Is '$DIR' in a checkout of a BSP? Aborting..."
+        exit 1;
+fi
+
+# Folders and Readme
+PHYTEC_DIR="${ROOTDIR}/sources/meta-phytec"
+
+${PHYTEC_DIR}/scripts/copy_site_conf.py
 
 cd  $BUILD_DIR
 clean_up
