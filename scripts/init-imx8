@@ -1,0 +1,17 @@
+#!/bin/sh
+PHYLINUX_API_VERSION="2"
+
+
+echo ""
+echo "Before you start your work, please check your build/conf/local.conf for"
+echo "host specific configuration. Check the documentation especially for:"
+echo "   - proxy settings"
+echo "   - DL_DIR"
+echo "   - SSTATE_DIR"
+echo ""
+echo "To create a new Yocto build directory:"
+echo "MACHINE=phycore-imx8-1 DISTRO=fsl-imx-fb source fsl-setup-release.sh -b imx8-fb"
+echo ""
+echo "To use an existing Yocto build directory:"
+echo "source setup-environment imx8-fb"
+
