@@ -15,7 +15,7 @@ S = "${WORKDIR}/git"
 PR = "${INC_PR}.0"
 
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "03fc6aa3b854d0055ad013006699792beaac1ded"
+SRCREV = "1899a64a38a19e31537b1c1d155c0935773df0fd"
 SRC_URI += "\
     ${@base_conditional('DEBUG_BUILD','1','file://debugging.cfg','',d)} \
 "
