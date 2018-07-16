@@ -161,10 +161,10 @@ of_display_timings -P "/panel-lcd" -c "edt,etm0700g0edh6"
 #of_display_timings -P "/panel-lcd" -c "edt,etm0350g0dh6"
 
 
-#Enable VM-011-COL on CSI0
+#Enable VM-XXX on CSI0
 #of_camera_selection -a 0x48 -p 0 -b phyCAM-P VM-011-COL
 
-#Enable VM-011-COL on CSI1
+#Enable VM-XXX on CSI1
 #of_camera_selection -a 0x48 -p 1 -b phyCAM-P VM-011-COL
 """)
     env_add(d, "expansions/imx6qdl-phytec-lcd-res",
@@ -223,7 +223,7 @@ global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootflags='data=journal'"
 # imx6qdl-phytec-lcd: 3.5" display (AC167 / AC101)
 #of_display_timings -P "/panel-lcd" -c "edt,etm0350g0dh6"
 
-#Enable VM-010-BW-LVDS
+#Enable VM-XXX on CSI0
 #of_camera_selection -a 0x48 -p 0 -b phyCAM-S+ VM-010-BW
 """)
     # Enable 32 bit color depth for framebuffer emulation on phyBOARD-Mira
@@ -275,10 +275,10 @@ global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootflags='data=journal'"
 # imx6qdl-phytec-lcd: 3.5" display (AC167 / AC101)
 #of_display_timings -P "/panel-lcd" -c "edt,etm0350g0dh6"
 
-#Enable VM-011-COL on CSI0
+#Enable VM-XXX on CSI0
 of_camera_selection -a 0x48 -p 0 -b phyCAM-P VM-010-BW
 
-#Enable VM-011-COL on CSI1
+#Enable VM-XXX on CSI1
 #of_camera_selection -a 0x48 -p 1 -b phyCAM-P VM-011-COL
 """)
     # Enable 32 bit color depth for framebuffer emulation on phyBOARD-Nunki
@@ -348,7 +348,7 @@ global.linux.bootargs.dyn.root="root=/dev/mmcblk3p2 rootflags='data=journal'"
 # imx6qdl-phytec-lcd: 3.5" display (AC167 / AC101)
 #of_display_timings -P "/panel-lcd" -c "edt,etm0350g0dh6"
 
-#Enable VM-010-BW-LVDS
+#Enable VM-XXX on CSI0
 #of_camera_selection -a 0x48 -p 0 -b phyCAM-S+ VM-010-BW
 """)
 }
@@ -406,7 +406,7 @@ python do_env_append_phyboard-mira-imx6-10() {
 # imx6qdl-phytec-lcd: 3.5" display (AC167 / AC101)
 #of_display_timings -P "/panel-lcd" -c "edt,etm0350g0dh6"
 
-#Enable VM-010-BW-LVDS
+#Enable VM-XXX on CSI0
 #of_camera_selection -a 0x48 -p 0 -b phyCAM-S+ VM-010-BW
 """)
 }
@@ -440,7 +440,7 @@ of_display_timings -P "/panel-lcd" -c "edt,etm0700g0edh6"
 # imx6qdl-phytec-lcd: 3.5" display (AC167 / AC101)
 #of_display_timings -P "/panel-lcd" -c "edt,etm0350g0dh6"
 
-#Enable VM-010-BW-LVDS
+#Enable VM-XXX on CSI0
 #of_camera_selection -a 0x48 -p 0 -b phyCAM-S+ VM-010-BW
 """)
 }
@@ -473,7 +473,7 @@ of_display_timings -P "/panel-lcd" -c "edt,etm0700g0dh6"
 # imx6qdl-phytec-lcd: 3.5" display (AC167 / AC101)
 #of_display_timings -P "/panel-lcd" -c "edt,etm0350g0dh6"
 
-#Enable VM-010-BW-LVDS
+#Enable VM-XXX on CSI0
 #of_camera_selection -a 0x48 -p 0 -b phyCAM-S+ VM-010-BW
 """)
 }
