@@ -286,11 +286,11 @@ of_camera_selection -a 0x48 -p 0 -b phyCAM-P VM-010-BW
 }
 
 python do_env_append_phyflex-imx6-3() {
-    env_add(d, "nv/linux.bootargs.cma", "cma=265M@1G\n")
+    env_add(d, "nv/linux.bootargs.cma", "cma=256M@1G\n")
 }
 
 python do_env_append_phyflex-imx6-4() {
-    env_add(d, "nv/linux.bootargs.cma", "cma=265M@1G\n")
+    env_add(d, "nv/linux.bootargs.cma", "cma=256M@1G\n")
 }
 
 python do_env_append_phyboard-mira-imx6-4() {
@@ -307,7 +307,7 @@ global.bootm.image="/dev/m25p0.kernel"
 global.bootm.oftree="/dev/m25p0.oftree"
 global.linux.bootargs.dyn.root="root=/dev/mmcblk3p2 rootflags='data=journal'"
 """)
-    env_add(d, "nv/linux.bootargs.cma", "cma=265M@1G\n")
+    env_add(d, "nv/linux.bootargs.cma", "cma=256M@1G\n")
 }
 
 python do_env_append_phyboard-mira-imx6-6() {
