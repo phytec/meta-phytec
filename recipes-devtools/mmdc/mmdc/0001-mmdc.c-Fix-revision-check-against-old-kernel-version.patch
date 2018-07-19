@@ -1,0 +1,34 @@
+From d7db9bda759e9847da91ce26cc410f080e04c513 Mon Sep 17 00:00:00 2001
+From: Stefan Riedmueller <s.riedmueller@phytec.de>
+Date: Thu, 19 Jul 2018 15:10:43 +0200
+Subject: [PATCH] mmdc.c: Fix revision check against old kernel version
+
+With current kernel versions the revision info of /proc/cpuinfo can hold
+the SOC revision number. So we can not check against zero in revision of
+/proc/cpuinfo if we want to determine if the kernel is new (> 3.10.9).
+Since the /proc/cpuinfo holds values greater 0x1000 as SOC version for
+the i.MX 6 in kernels < 3.10.9 we can us this.
+
+This fixes an issue where the tool cannot work with VPU or GPU.
+
+Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
+---
+ mmdc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mmdc.c b/mmdc.c
+index 158622cea4e8..c95eee3e4402 100644
+--- a/mmdc.c
++++ b/mmdc.c
+@@ -186,7 +186,7 @@ static int get_system_rev(void)
+ 	}
+ 
+ 	//cpuinfo is changed in 3.10.9 kernel, new way is used.
+-	if((ret == 0) && (system_rev ==0))
++	if((ret == 0) && (system_rev < 0x1000))
+ 	{
+ 		ret = -1;
+ 		fp = fopen("/sys/devices/soc0/soc_id", "r");
+-- 
+2.7.4
+
