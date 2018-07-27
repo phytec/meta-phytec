@@ -184,6 +184,8 @@ class BoardSupportPackage(object):
                         distro = var[1]
                     self.supported_builds.append((x, target, distro))
 
+            self.supported_builds.sort()
+
     def set_manifest(self, manifest_abs_path):
         self.xml = manifest_abs_path
         root = ET.parse(self.xml).getroot()
@@ -202,6 +204,8 @@ class BoardSupportPackage(object):
                     self.supported_builds.append(b.split('/'))
             else:
                 setattr(self, key, release_info[key])
+
+        self.supported_builds.sort()
 
         # allow capitalization for soc in manifest
         self.soc = self.soc.lower()
