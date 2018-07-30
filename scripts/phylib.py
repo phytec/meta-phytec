@@ -200,8 +200,8 @@ class BoardSupportPackage(object):
         # import meta data, some keys need special treatments
         for key in list(release_info.keys()):
             if key == "supported_builds":
-                for b in filter(None, release_info[key].split(' ')):
-                    self.supported_builds.append(b.split('/'))
+                for b in filter(None, release_info[key].split(',')):
+                    self.supported_builds.append(b.strip().split('/'))
             else:
                 setattr(self, key, release_info[key])
 
