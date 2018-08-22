@@ -14,7 +14,7 @@ S = "${WORKDIR}/git"
 PR = "${INC_PR}.0"
 
 # NOTE: Keep version in filename in sync with commit id and barebox-ipl!
-SRCREV = "b4349ff7227818220d34cfb978fb36f3e158d817"
+SRCREV = "380e072aa0f11e8e8d4c8dec5ad542add51a1cea"
 
 python do_env_append() {
     env_add(d, "bin/far",
