@@ -1,17 +1,20 @@
-# Copyright (C) 2016 PHYTEC Messtechnik GmbH,
+# Copyright (C) 2018 PHYTEC Messtechnik GmbH,
 # Author: Jan Remmet  <j.remmet@phytec.de>
 
 # the fist picture found in SRC_URI, will be  convert and used as bootlogo
 # the picture size should match the lcd resolution
 
-DEPENDS += "imagemagick-native"
-
 do_patch_append () {
+    logo = os.path.join(d.getVar('STAGING_KERNEL_DIR', True),
+                        "drivers/video/logo/logo_linux_clut224.ppm")
     for s in src_patches(d, True):
         if s.endswith(('.bmp', '.ppm', '.png')):
-            os.system('convert.im6 -colors 224 -format ppm -compress none \
+            if os.system('convert.im7 -colors 224 -format ppm -compress none \
                 %(pic)s %(dest)s' %
-                { 'pic': s,
-                  'dest': '${S}/drivers/video/logo/logo_linux_clut224.ppm'})
+                { 'pic': s, 'dest': logo}):
+                bb.error("imagemagick convert failed")
             break
 }
+
+do_patch[depends] += "imagemagick-native:do_populate_sysroot"
+
