@@ -222,14 +222,14 @@ python do_env_append_beagleboneblack-1() {
     env_add(d, "boot/mmc",
 """#!/bin/sh
 
-global.bootm.image=/mnt/mmc0.0/linuximage
+global.bootm.image=/mnt/mmc0.0/zImage
 global.bootm.oftree=/mnt/mmc0.0/oftree
 global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootflags='data=journal'"
 """)
     env_add(d, "boot/emmc",
 """#!/bin/sh
 
-global.bootm.image=/mnt/mmc1.0/linuximage
+global.bootm.image=/mnt/mmc1.0/zImage
 global.bootm.oftree=/mnt/mmc1.0/oftree
 global.linux.bootargs.dyn.root="root=/dev/mmcblk1p2 rootflags='data=journal'"
 """)
@@ -286,8 +286,8 @@ echo "Initialize NAND flash from MMC"
 barebox_update -t MLO.nand /mnt/mmc0.0/MLO -y
 barebox_update -t nand /mnt/mmc0.0/barebox.bin -y
 [ ! -e /dev/nand0.root.ubi ] && ubiattach /dev/nand0.root
-ubiupdatevol /dev/nand0.root.ubi.kernel  /mnt/mmc0.0/linuximage
-ubiupdatevol /dev/nand0.root.ubi.kernel2 /mnt/mmc0.0/linuximage
+ubiupdatevol /dev/nand0.root.ubi.kernel  /mnt/mmc0.0/zImage
+ubiupdatevol /dev/nand0.root.ubi.kernel2 /mnt/mmc0.0/zImage
 ubiupdatevol /dev/nand0.root.ubi.oftree  /mnt/mmc0.0/oftree
 ubiupdatevol /dev/nand0.root.ubi.oftree2 /mnt/mmc0.0/oftree
 cp /mnt/mmc0.0/*.ubifs /dev/nand0.root.ubi.root
@@ -297,8 +297,8 @@ cp /mnt/mmc0.0/*.ubifs /dev/nand0.root.ubi.root2
 """#!/bin/sh
 echo "Initialize NAND flash from TFTP"
 [ ! -e /dev/nand0.root.ubi ] && ubiattach /dev/nand0.root
-ubiupdatevol /dev/nand0.root.ubi.kernel  /mnt/tftp/linuximage
-ubiupdatevol /dev/nand0.root.ubi.kernel2 /mnt/tftp/linuximage
+ubiupdatevol /dev/nand0.root.ubi.kernel  /mnt/tftp/zImage
+ubiupdatevol /dev/nand0.root.ubi.kernel2 /mnt/tftp/zImage
 ubiupdatevol /dev/nand0.root.ubi.oftree  /mnt/tftp/oftree
 ubiupdatevol /dev/nand0.root.ubi.oftree2 /mnt/tftp/oftree
 cp /mnt/tftp/*.ubifs /dev/nand0.root.ubi.root
@@ -309,7 +309,7 @@ python do_env_append_phycore-emmc-am335x-1() {
     env_add(d, "boot/emmc2",
 """#!/bin/sh
 
-global.bootm.image=/mnt/mmc1.2/linuximage
+global.bootm.image=/mnt/mmc1.2/zImage
 global.bootm.oftree=/mnt/mmc1.2/oftree
 global.linux.bootargs.dyn.root="root=/dev/mmcblk1p4 rootflags='data=journal'"
 """)
