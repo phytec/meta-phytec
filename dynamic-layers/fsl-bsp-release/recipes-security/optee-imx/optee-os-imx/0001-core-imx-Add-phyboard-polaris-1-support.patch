@@ -1,0 +1,71 @@
+From de5b5aa4605d8e09767141e0d74b58bb81172d79 Mon Sep 17 00:00:00 2001
+From: Christian Hemp <c.hemp@phytec.de>
+Date: Wed, 5 Sep 2018 09:31:16 +0200
+Subject: [PATCH] core: imx: Add phyboard-polaris-1 support
+
+Add support for phyBOARD-Polaris-1 with 1GB RAM.
+
+Signed-off-by: Christian Hemp <c.hemp@phytec.de>
+---
+ core/arch/arm/plat-imx/conf.mk               | 6 +++++-
+ core/arch/arm/plat-imx/config/config_imx8m.h | 5 +++++
+ core/arch/arm/plat-imx/tzasc.c               | 3 ++-
+ 3 files changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/core/arch/arm/plat-imx/conf.mk b/core/arch/arm/plat-imx/conf.mk
+index e63946d..b6842a6 100644
+--- a/core/arch/arm/plat-imx/conf.mk
++++ b/core/arch/arm/plat-imx/conf.mk
+@@ -13,7 +13,7 @@ mx6sl-flavorlist = mx6slevk
+ mx6sll-flavorlist = mx6sllevk
+ mx7-flavorlist = mx7dsabresd
+ mx7ulp-flavorlist = mx7ulpevk
+-mx8m-flavorlist = mx8mqevk
++mx8m-flavorlist = mx8mqevk phyboardpolarisimx8m1
+ 
+ ifneq (,$(filter $(PLATFORM_FLAVOR),$(mx6ul-flavorlist)))
+ $(call force,CFG_MX6,y)
+@@ -293,6 +293,10 @@ ifneq (,$(filter $(PLATFORM_FLAVOR),mx8mqevk))
+ CFG_DDR_SIZE ?= 0xC0000000
+ endif
+ 
++ifneq (,$(filter $(PLATFORM_FLAVOR),phyboardpolarisimx8m1))
++CFG_DDR_SIZE ?= 0x40000000
++endif
++
+ ifeq ($(filter y, $(CFG_PSCI_ARM32)), y)
+ CFG_HWSUPP_MEM_PERM_WXN = n
+ CFG_IMX_WDOG ?= y
+diff --git a/core/arch/arm/plat-imx/config/config_imx8m.h b/core/arch/arm/plat-imx/config/config_imx8m.h
+index 48ef76d..68c90e7 100644
+--- a/core/arch/arm/plat-imx/config/config_imx8m.h
++++ b/core/arch/arm/plat-imx/config/config_imx8m.h
+@@ -4,6 +4,11 @@
+  *
+  */
+ 
++
++#if defined(PLATFORM_FLAVOR_phyboardpolarisimx8m1)
++#define CFG_UART_BASE	(UART2_BASE)
++#endif
++
+ #ifndef CFG_UART_BASE
+ #define CFG_UART_BASE	(UART1_BASE)
+ #endif
+diff --git a/core/arch/arm/plat-imx/tzasc.c b/core/arch/arm/plat-imx/tzasc.c
+index 4755737..0087e19 100644
+--- a/core/arch/arm/plat-imx/tzasc.c
++++ b/core/arch/arm/plat-imx/tzasc.c
+@@ -271,7 +271,8 @@ static int board_imx_tzasc_configure(vaddr_t addr)
+ 
+ 	return 0;
+ }
+-#elif defined(PLATFORM_FLAVOR_mx8mqevk)
++#elif (defined(PLATFORM_FLAVOR_mx8mqevk) \
++		|| defined(PLATFORM_FLAVOR_phyboardpolarisimx8m1))
+ static int board_imx_tzasc_configure(vaddr_t addr)
+ {
+ 	tzc_init(addr);
+-- 
+2.7.4
+
