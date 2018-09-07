@@ -174,6 +174,7 @@ echo "    meta-phytec/dynamic-layers/qt5-layer/recipes-qt/qt5/qtbase_%.bbappend 
 echo "    meta-phytec/dynamic-layers/qt5-layer/recipes-qt/qt5/qtdeclarative-render2d_%.bbappend \\" >> $BUILD_DIR/conf/bblayers.conf
 echo "    meta-phytec/dynamic-layers/qt5-layer/recipes-qt/qt5/qtmultimedia_git.bbappend \\" >> $BUILD_DIR/conf/bblayers.conf
 echo "    meta-phytec/dynamic-layers/qt5-layer/recipes-qt/qt5/opengldummy_git.bb \\" >> $BUILD_DIR/conf/bblayers.conf
+echo "    meta-fsl-bsp-release/imx/meta-bsp/recipes-security/optee-imx/optee-os-imx_git.bb \\" >> $BUILD_DIR/conf/bblayers.conf
 echo "\"" >> $BUILD_DIR/conf/bblayers.conf
 
 
