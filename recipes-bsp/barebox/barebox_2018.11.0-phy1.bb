@@ -82,19 +82,11 @@ of_fixup_status /user_buttons
 of_fixup_status /ocp/mmc@47810000
 of_fixup_status /ocp/mmc@47810000/wlcore@2
 """)
-    env_add(d, "network/eth0",
-"""#!/bin/sh
-
-# ip setting (static/dhcp)
-ip=static
-global.dhcp.vendor_id=barebox-${global.hostname}
-
-# static setup used if ip=static
-ipaddr=192.168.3.11
-netmask=255.255.255.0
-gateway=192.168.3.10
-serverip=192.168.3.10
-""")
+    env_add(d, "nv/dev.eth0.mode", """static""")
+    env_add(d, "nv/dev.eth0.ipaddr", """192.168.3.11""")
+    env_add(d, "nv/dev.eth0.netmask", """255.255.255.0""")
+    env_add(d, "nv/net.server", """192.168.3.10""")
+    env_add(d, "nv/net.gateway", """192.168.3.10""")
 }
 
 python do_env_append_phycore-am335x() {
