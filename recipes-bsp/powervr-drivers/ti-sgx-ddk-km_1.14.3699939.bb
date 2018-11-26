@@ -7,7 +7,7 @@ inherit module
 
 COMPATIBLE_MACHINE = "ti33x|ti43x|omap-a15"
 
-MACHINE_KERNEL_PR_append = "1"
+MACHINE_KERNEL_PR_append = "2"
 PR = "${MACHINE_KERNEL_PR}"
 
 INHIBIT_PACKAGE_STRIP = "1"
@@ -31,7 +31,7 @@ SRC_URI += " \
 S = "${WORKDIR}/git"
 
 
-SRCREV = "d2b3959738cfcc6209e8e882d1989de790866c8f"
+SRCREV = "76da7d73976f0a5dc04fdc84a3af899d6c2b1fe2"
 
 TARGET_PRODUCT_omap-a15 = "jacinto6evm"
 TARGET_PRODUCT_ti33x = "ti335x"
