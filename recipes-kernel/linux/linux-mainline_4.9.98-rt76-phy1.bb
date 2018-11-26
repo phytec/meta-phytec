@@ -17,16 +17,8 @@ SRC_URI = "${GIT_URL};branch=${BRANCH}"
 SRC_URI_append = "\
     ${@oe.utils.conditional('DEBUG_BUILD','1','file://debugging.cfg','',d)} \
 "
-SRC_URI_append_ti33x = "\
-    ${@bb.utils.contains('MACHINE_FEATURES', '3g', 'file://3g.cfg', '', d)} \
-    file://blacklist-cpufreq_dt.cfg \
-"
 
-PR = "${INC_PR}.0"
-
-RDEPENDS_kernel-modules_ti33x += "\
-    cryptodev-module \
-"
+PR = "${INC_PR}.1"
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
 # NOTE: Keep version in filename in sync with commit id!
@@ -34,27 +26,6 @@ SRCREV = "2138ed7efa5a8646378446e80194fdaee65e4701"
 
 S = "${WORKDIR}/git"
 
-INTREE_DEFCONFIG_ti33x = "am335x_rt_phytec_defconfig"
 INTREE_DEFCONFIG_rk3288 = "rk3288_rt_phytec_defconfig"
-
-COMPATIBLE_MACHINE = "beagleboneblack-1"
-COMPATIBLE_MACHINE .= "|phyboard-wega-am335x-1"
-COMPATIBLE_MACHINE .= "|phyboard-wega-am335x-2"
-COMPATIBLE_MACHINE .= "|phyboard-wega-am335x-3"
-COMPATIBLE_MACHINE .= "|phyboard-wega-r2-am335x-1"
-COMPATIBLE_MACHINE .= "|phycore-am335x-1"
-COMPATIBLE_MACHINE .= "|phycore-am335x-2"
-COMPATIBLE_MACHINE .= "|phycore-am335x-3"
-COMPATIBLE_MACHINE .= "|phycore-am335x-4"
-COMPATIBLE_MACHINE .= "|phycore-am335x-5"
-COMPATIBLE_MACHINE .= "|phycore-am335x-7"
-COMPATIBLE_MACHINE .= "|phyboard-regor-am335x-1"
-COMPATIBLE_MACHINE .= "|phycore-r2-am335x-1"
-COMPATIBLE_MACHINE .= "|phycore-r2-am335x-2"
-COMPATIBLE_MACHINE .= "|phycore-r2-am335x-3"
-COMPATIBLE_MACHINE .= "|phycore-r2-am335x-4"
-COMPATIBLE_MACHINE .= "|phycore-r2-am335x-5"
-COMPATIBLE_MACHINE .= "|phycore-r2-am335x-6"
-COMPATIBLE_MACHINE .= "|phycore-emmc-am335x-1"
 
 COMPATIBLE_MACHINE .= "|phycore-rk3288-3"

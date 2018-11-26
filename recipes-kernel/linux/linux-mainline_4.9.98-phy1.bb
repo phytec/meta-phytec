@@ -17,20 +17,9 @@ SRC_URI = "${GIT_URL};branch=${BRANCH}"
 SRC_URI_append = "\
     ${@oe.utils.conditional('DEBUG_BUILD','1','file://debugging.cfg','',d)} \
 "
-SRC_URI_append_ti33x = "\
-    ${@bb.utils.contains('MACHINE_FEATURES', 'sgx', 'file://preempt_voluntary.cfg', '', d)} \
-    ${@bb.utils.contains('MACHINE_FEATURES', 'suspend', 'file://am335x-cm3.cfg', '', d)} \
-    ${@bb.utils.contains('MACHINE_FEATURES', '3g', 'file://3g.cfg', '', d)} \
-"
-
-PR = "${INC_PR}.0"
+PR = "${INC_PR}.1"
 
 RDEPENDS_kernel-modules_rk3288 += "cryptodev-module"
-RDEPENDS_kernel-modules_ti33x += "\
-    ${@bb.utils.contains('MACHINE_FEATURES', 'suspend', 'amx3-cm3', '', d)} \
-    ${@bb.utils.contains('MACHINE_FEATURES', 'sgx', 'ti-sgx-ddk-km', '', d)} \
-    cryptodev-module \
-"
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
 # NOTE: Keep version in filename in sync with commit id!
@@ -38,27 +27,6 @@ SRCREV = "e110e45ed2fd0a5adcb1f584dd3596b367fc3c73"
 
 S = "${WORKDIR}/git"
 
-INTREE_DEFCONFIG_ti33x = "am335x_phytec_defconfig"
 INTREE_DEFCONFIG_rk3288 = "rk3288_phytec_defconfig"
-
-COMPATIBLE_MACHINE = "beagleboneblack-1"
-COMPATIBLE_MACHINE .= "|phyboard-wega-am335x-1"
-COMPATIBLE_MACHINE .= "|phyboard-wega-am335x-2"
-COMPATIBLE_MACHINE .= "|phyboard-wega-am335x-3"
-COMPATIBLE_MACHINE .= "|phyboard-wega-r2-am335x-1"
-COMPATIBLE_MACHINE .= "|phycore-am335x-1"
-COMPATIBLE_MACHINE .= "|phycore-am335x-2"
-COMPATIBLE_MACHINE .= "|phycore-am335x-3"
-COMPATIBLE_MACHINE .= "|phycore-am335x-4"
-COMPATIBLE_MACHINE .= "|phycore-am335x-5"
-COMPATIBLE_MACHINE .= "|phycore-am335x-7"
-COMPATIBLE_MACHINE .= "|phyboard-regor-am335x-1"
-COMPATIBLE_MACHINE .= "|phycore-r2-am335x-1"
-COMPATIBLE_MACHINE .= "|phycore-r2-am335x-2"
-COMPATIBLE_MACHINE .= "|phycore-r2-am335x-3"
-COMPATIBLE_MACHINE .= "|phycore-r2-am335x-4"
-COMPATIBLE_MACHINE .= "|phycore-r2-am335x-5"
-COMPATIBLE_MACHINE .= "|phycore-r2-am335x-6"
-COMPATIBLE_MACHINE .= "|phycore-emmc-am335x-1"
 
 COMPATIBLE_MACHINE .= "|phycore-rk3288-3"
