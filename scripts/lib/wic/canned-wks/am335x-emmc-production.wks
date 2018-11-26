@@ -1,0 +1,8 @@
+# short-description: Create a Phytec AM335x bootpartition image
+# long-description: Creates a vfat partitioned disk image containing bootloader
+# and kernel images for Phytec AM335x BSPs boards. They are meant to update the vfat
+# partition of a sdcard or emmc.
+
+part --source bootimg-partition --fstype=vfat --label boot --ondisk mmc --active --align 4096 --size 10
+
+bootloader --timeout=0
