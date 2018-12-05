@@ -172,7 +172,7 @@ class BoardSupportPackage(object):
         # add supported_builds based on machine meta data
         for x in self.src.machines:
             # if a soc is set in the manifest, filter non matching machines
-            if self.soc != "all" and self.soc not in x:
+            if self.soc != "all" and "-" + self.soc + "-" not in x:
                 continue
 
             if self.src.machines[x]['SUPPORTEDIMAGE']:
