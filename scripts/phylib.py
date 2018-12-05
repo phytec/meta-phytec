@@ -148,8 +148,12 @@ class BoardSupportPackage(object):
             #v2 Implementation
             self.local_conf = os.path.join(self.src.bsp_dir, "build/conf/local.conf")
             self.build_dir = os.path.join(self.src.bsp_dir, "build")
-            self.image_base_dir = os.path.join(self.src.bsp_dir, "build/deploy/images")
             self.probe_selected_release()
+            #fixup for morty branch imx8 releases
+            if self.soc in ["imx8"]:
+                self.image_base_dir = os.path.join(self.src.bsp_dir, "build/tmp/deploy/images")
+            else:
+                self.image_base_dir = os.path.join(self.src.bsp_dir, "build/deploy/images")
             self.release_fallback()
 
         except (IOError, OSError) as e:
