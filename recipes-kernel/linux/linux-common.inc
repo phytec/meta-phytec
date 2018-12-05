@@ -28,7 +28,7 @@ def find_dtss(d):
 
     return dtss_list
 
-do_patch_append () {
+python do_dtsfixup () {
     import shutil
     srcdir = d.getVar('STAGING_KERNEL_DIR', True)
     arch = d.getVar('ARCH', True)
@@ -38,6 +38,8 @@ do_patch_append () {
         bb.note("copying dts from: %s to: %s" % (dts, cptarget))
         shutil.copyfile(dts, cptarget)
 }
+
+addtask dtsfixup after do_patch before do_compile
 
 KERNEL_IMAGE_BASE_NAME = "${KERNEL_IMAGETYPE}-${PN}-${PKGV}-${PKGR}-${MACHINE}-${DATETIME}"
 do_deploy_append() {
