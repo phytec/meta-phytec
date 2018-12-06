@@ -4,7 +4,7 @@
 # the fist picture found in SRC_URI, will be  convert and used as bootlogo
 # the picture size should match the lcd resolution
 
-do_patch_append () {
+python do_add_logo () {
     logo = os.path.join(d.getVar('STAGING_KERNEL_DIR', True),
                         "drivers/video/logo/logo_linux_clut224.ppm")
     for s in src_patches(d, True):
@@ -16,5 +16,6 @@ do_patch_append () {
             break
 }
 
-do_patch[depends] += "imagemagick-native:do_populate_sysroot"
+do_add_logo[depends] += "imagemagick-native:do_populate_sysroot"
+addtask add_logo after do_patch before do_compile
 
