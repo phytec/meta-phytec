@@ -21,9 +21,9 @@ class BSP_Switcher(BoardSupportPackage):
             self.selected_machine = machine
             return self.write_machine_to_localconf()
 
-        builds = self.supported_builds
+        configs = self.supported_configs
 
-        min_len_machines = min(len(build[0]) for build in builds)
+        min_len_machines = min(len(config[0]) for config in configs)
 
         print('*********************************************************************')
         print('* Please choose one of the available builds:')
@@ -32,7 +32,7 @@ class BSP_Switcher(BoardSupportPackage):
         print('    %s  distro: supported yocto distribution' % ' '.rjust(min_len_machines))
         print('    %s  target: supported build target'       % ' '.rjust(min_len_machines))
         print('')
-        for i, (machine, target, distro) in enumerate(builds, 1):
+        for i, (machine, distro, targets) in enumerate(configs, 1):
             # split description at first comma and print it as a two-liner
             description = lambda x: self.src.machines[x]['DESCRIPTION'].split(',',1)
             print('%2d: %s: %s' % (i, machine, description(machine)[0].strip()))
@@ -42,14 +42,15 @@ class BSP_Switcher(BoardSupportPackage):
                 print('%s %s' % (' ' * (5 + min_len_machines),
                                 self.src.machines[machine]['ARTICLENUMBERS']))
             print('%s distro: %s' % (' ' * (5 + min_len_machines), distro))
-            print('%s target: %s' % (' ' * (5 + min_len_machines), target))
+            for target in targets:
+                print('%s target: %s' % (' ' * (5 + min_len_machines), target))
 
 
         # request user input
         while True:
             try:
                 user_input = int(input('$ '))
-                if user_input < 1 or user_input > len(builds):
+                if user_input < 1 or user_input > len(configs):
                     raise ValueError
                 break
             except (ValueError, NameError):
@@ -60,21 +61,23 @@ class BSP_Switcher(BoardSupportPackage):
                 return False
 
         # User index starts with 1, list index starts with 0.
-        (machine, target, distro) = builds[user_input -1]
+        (machine, distro, targets) = configs[user_input -1]
         self.selected_machine = machine
         self.selected_distro = distro
 
         # write build target to conf-notex.txt so it will be displayed after
         # sourcing the environment
-        if target:
+        if any(targets):
             confnotes = os.path.join(self.src.bsp_dir, 'tools', 'templateconf', 'conf-notes.txt')
             f = open(confnotes, 'r')
             lines = f.readlines()
             f.close()
             f = open(confnotes, 'w')
-            f.writelines([l for l in lines[:-2]])
-            print('set TARGET in conf-notes.txt to %s' % target)
-            f.write('   $ bitbake %s\n\n' % target)
+            f.writelines([l for l in lines[:-1] if 'bitbake' not in l])
+            for target in targets:
+                print('add TARGET %s to conf-notes.txt' % target)
+                f.write('   $ bitbake %s\n' % target)
+            f.write('\n')
             f.close()
 
         return self.write_machine_to_localconf()
