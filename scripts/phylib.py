@@ -139,6 +139,7 @@ class BoardSupportPackage(object):
         self.selected_machine = "UNASSIGNED"
         self.selected_distro = "yogurt"
         self.supported_builds = []
+        self.supported_configs = []
         self.local_conf = ""
         self.build_dir = ""
         self.image_base_dir = ""
@@ -185,6 +186,7 @@ class BoardSupportPackage(object):
                     self.supported_builds.append((x, target, distro))
 
             self.supported_builds.sort()
+            self.supported_configs = self.__get_supported_configs()
 
     def set_manifest(self, manifest_abs_path):
         self.xml = manifest_abs_path
@@ -206,6 +208,7 @@ class BoardSupportPackage(object):
                 setattr(self, key, release_info[key])
 
         self.supported_builds.sort()
+        self.supported_configs = self.__get_supported_configs()
 
         # allow capitalization for soc in manifest
         self.soc = self.soc.lower()
@@ -245,3 +248,11 @@ class BoardSupportPackage(object):
         fw.close()
         os.remove(lconftmp)
         return True
+
+    def __get_supported_configs(self):
+        configs = {}
+        for (machine, target, distro) in self.supported_builds:
+            configs.setdefault((machine, distro), []).append(target)
+        configs = [(m, d, t) for ((m, d), t) in list(configs.items())]
+        configs.sort()
+        return configs
