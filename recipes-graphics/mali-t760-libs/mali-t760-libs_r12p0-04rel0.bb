@@ -16,7 +16,9 @@ S = "${WORKDIR}/mali-t760-libs_${PV}"
 SRC_URI[md5sum] = "71790b9a635263188bd88e539d24d89c"
 SRC_URI[sha256sum] = "f1ac336dd72401ec2656a9ef71fcee11d50a2f38d48fbd25a07f7750d1543a60"
 
-SRC_URI = "ftp://ftp.phytec.de/pub/Software/Linux/Driver/mali-t760/mali-t760-libs_${PV}.tar.gz"
+SRC_URI = "ftp://ftp.phytec.de/pub/Software/Linux/Driver/mali-t760/mali-t760-libs_${PV}.tar.gz \
+	file://0001-gbm.h-Add-a-missing-stddef.h-include-for-size_t.patch \
+"
 
 PACKAGES = "${PN} ${PN}-dev ${PN}-dbg"
 
