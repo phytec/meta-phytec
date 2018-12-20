@@ -259,9 +259,8 @@ global.linux.bootargs.dyn.root="root=ubi0:root2 ubi.mtd=root rootfstype=ubifs"
     env_add(d, "nv/bootchooser.state_prefix", """state.bootstate""")
     env_add(d, "bin/create_nand_partitions",
 """#!/bin/sh
-echo "Create NAND partitions"
-erase /dev/nand0
-ubiformat -q /dev/nand0.root
+echo "Create NAND partitions using rauc with 2nd system"
+ubiformat -q -y /dev/nand0.root
 ubiattach /dev/nand0.root
 #Hold the following order or change the /dev/ubi0_X enumeration in /etc/rauc/system.conf
 ubimkvol -t static /dev/nand0.root.ubi kernel 8M
@@ -271,6 +270,7 @@ ubimkvol -t dynamic /dev/nand0.root.ubi root 230M
 ubimkvol -t static /dev/nand0.root.ubi kernel2 8M
 ubimkvol -t static /dev/nand0.root.ubi oftree2 1M
 ubimkvol -t dynamic /dev/nand0.root.ubi root2 230M
+ubidetach /dev/nand0.root
 """)
     env_add(d, "bin/init_flash_from_mmc",
 """#!/bin/sh
