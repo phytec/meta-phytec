@@ -274,7 +274,7 @@ ubidetach /dev/nand0.root
 """)
     env_add(d, "bin/init_flash_from_mmc",
 """#!/bin/sh
-echo "Initialize NAND flash from MMC"
+echo "Initialize NAND flash for rauc from MMC"
 barebox_update -t MLO.nand /mnt/mmc0.0/MLO -y
 barebox_update -t nand /mnt/mmc0.0/barebox.bin -y
 [ ! -e /dev/nand0.root.ubi ] && ubiattach /dev/nand0.root
@@ -282,19 +282,23 @@ ubiupdatevol /dev/nand0.root.ubi.kernel  /mnt/mmc0.0/zImage
 ubiupdatevol /dev/nand0.root.ubi.kernel2 /mnt/mmc0.0/zImage
 ubiupdatevol /dev/nand0.root.ubi.oftree  /mnt/mmc0.0/oftree
 ubiupdatevol /dev/nand0.root.ubi.oftree2 /mnt/mmc0.0/oftree
-cp /mnt/mmc0.0/*.ubifs /dev/nand0.root.ubi.root
-cp /mnt/mmc0.0/*.ubifs /dev/nand0.root.ubi.root2
+# Update rootfs image name as needed
+cp /mnt/mmc0.0/root.ubifs /dev/nand0.root.ubi.root
+cp /mnt/mmc0.0/root.ubifs /dev/nand0.root.ubi.root2
+ubidetach /dev/nand0.root
 """)
     env_add(d, "bin/init_flash_from_tftp",
 """#!/bin/sh
-echo "Initialize NAND flash from TFTP"
+echo "Initialize NAND flash for rauc from TFTP"
 [ ! -e /dev/nand0.root.ubi ] && ubiattach /dev/nand0.root
 ubiupdatevol /dev/nand0.root.ubi.kernel  /mnt/tftp/zImage
 ubiupdatevol /dev/nand0.root.ubi.kernel2 /mnt/tftp/zImage
 ubiupdatevol /dev/nand0.root.ubi.oftree  /mnt/tftp/oftree
 ubiupdatevol /dev/nand0.root.ubi.oftree2 /mnt/tftp/oftree
-cp /mnt/tftp/*.ubifs /dev/nand0.root.ubi.root
-cp /mnt/tftp/*.ubifs /dev/nand0.root.ubi.root2
+# Update rootfs image name as needed
+cp /mnt/tftp/root.ubifs /dev/nand0.root.ubi.root
+cp /mnt/tftp/root.ubifs /dev/nand0.root.ubi.root2
+ubidetach /dev/nand0.root
 """)
 }
 python do_env_append_phycore-emmc-am335x-1() {
