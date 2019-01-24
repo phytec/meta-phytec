@@ -33,7 +33,7 @@ def find_cfgs(d):
     for s in sources:
         base, ext = os.path.splitext(os.path.basename(s))
         if ext and ext in [".cfg"]:
-            sources_list.append(s)
+            sources_list.append(os.path.join(d.getVar("WORKDIR", True), (base + ext)))
     return sources_list
 
 kconfig_do_configure() {
