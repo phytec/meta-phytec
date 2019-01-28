@@ -12,7 +12,7 @@ SRC_URI = " \
 S = "${WORKDIR}"
 
 do_compile() {
-    ${CC} -Wall -Werror rs485test.c -o rs485test ${LDFLAGS}
+    ${CC} -O2 -Wall -Werror rs485test.c -o rs485test ${LDFLAGS}
 }
 
 do_install() {
