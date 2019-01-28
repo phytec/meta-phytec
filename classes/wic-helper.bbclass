@@ -6,8 +6,8 @@ def parse_dtbs(d):
     dtbcount=1
     for DTB in kdt.split():
         if dtbcount == 1:
-            dtbs += "zImage-"+DTB+";oftree"
-        dtbs += " zImage-"+DTB
+            dtbs += DTB+";oftree"
+        dtbs += " "+DTB
         dtbcount += 1
     return dtbs
 
@@ -48,5 +48,4 @@ do_image_emmc[depends] += " \
     e2fsprogs-native:do_populate_sysroot \
     virtual/kernel:do_deploy \
     virtual/bootloader:do_deploy \
-    virtual/prebootloader:do_deploy \
 "
