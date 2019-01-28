@@ -9,9 +9,8 @@ SOC_FAMILY = "rk3288"
 PREFERRED_PROVIDER_virtual/kernel ?= "linux-mainline"
 KERNEL_IMAGETYPE ?= "zImage"
 
-BAREBOX_BIN = "images/barebox-rk3288-phycore-som.img"
-PREFERRED_PROVIDER_virtual/bootloader ?= "barebox"
-PREFERRED_PROVIDER_virtual/prebootloader ?= "u-boot-spl"
+PREFERRED_PROVIDER_virtual/bootloader ?= "u-boot"
+SPL_BINARY = "spl/u-boot-spl-dtb.bin"
 
 # Install modules in initramfs and rootfs
 PACKAGE_INSTALL_append = " kernel-modules"
