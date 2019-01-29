@@ -26,9 +26,9 @@ B = "${WORKDIR}/build"
 # name of the image created by barebox Makefile
 BAREBOX_BIN ?= "barebox.bin"
 # filename of file to be deployed by this recipe
-BAREBOX_IMAGE_BASE_NAME ?= "barebox-${MACHINE}-${PKGV}-${PKGR}-${DATETIME}"
-BAREBOX_IMAGE_BASE_NAME[vardepsexclude] += "DATETIME"
-BAREBOX_BIN_SYMLINK ?= "barebox.bin"
+BAREBOX_IMAGE_NAME ?= "barebox-${MACHINE}-${PKGV}-${PKGR}-${DATETIME}"
+BAREBOX_IMAGE_NAME[vardepsexclude] += "DATETIME"
+BAREBOX_BIN_LINK_NAME ?= "barebox.bin"
 
 do_configure_append() {
     # Don't compile target tools for barebox here
@@ -49,8 +49,8 @@ base_bootdir = "/boot"
 do_install () {
     bbnote "Installing barebox image on target rootfs"
     install -d ${D}${base_bootdir}
-    install ${B}/${BAREBOX_BIN} ${D}${base_bootdir}/${BAREBOX_IMAGE_BASE_NAME}.bin
-    ln -sf ${BAREBOX_IMAGE_BASE_NAME}.bin ${D}${base_bootdir}/${BAREBOX_BIN_SYMLINK}
+    install ${B}/${BAREBOX_BIN} ${D}${base_bootdir}/${BAREBOX_IMAGE_NAME}.bin
+    ln -sf ${BAREBOX_IMAGE_NAME}.bin ${D}${base_bootdir}/${BAREBOX_BIN_LINK_NAME}
 }
 do_install[prefuncs] += "package_get_auto_pr"
 
@@ -60,15 +60,15 @@ FILES_${PN} = "${base_bootdir}"
 
 do_deploy () {
     bbnote "Deploying barebox"
-    install -m 644 ${B}/${BAREBOX_BIN} ${DEPLOYDIR}/${BAREBOX_IMAGE_BASE_NAME}.bin
-    ln -sf ${BAREBOX_IMAGE_BASE_NAME}.bin ${DEPLOYDIR}/${BAREBOX_BIN_SYMLINK}
+    install -m 644 ${B}/${BAREBOX_BIN} ${DEPLOYDIR}/${BAREBOX_IMAGE_NAME}.bin
+    ln -sf ${BAREBOX_IMAGE_NAME}.bin ${DEPLOYDIR}/${BAREBOX_BIN_LINK_NAME}
 
     bbnote "Installing host barebox toolset"
     install -d ${STAGING_BINDIR_NATIVE}
     install -m 755 ${B}/scripts/bareboxenv ${STAGING_BINDIR_NATIVE}/
 
-    install -m 644 ${B}/.config ${DEPLOYDIR}/${BAREBOX_IMAGE_BASE_NAME}.config
-    ln -sf ${BAREBOX_IMAGE_BASE_NAME}.config ${DEPLOYDIR}/${PN}.config
+    install -m 644 ${B}/.config ${DEPLOYDIR}/${BAREBOX_IMAGE_NAME}.config
+    ln -sf ${BAREBOX_IMAGE_NAME}.config ${DEPLOYDIR}/${PN}.config
 }
 do_deploy[prefuncs] += "package_get_auto_pr"
 addtask deploy before do_build after do_compile
