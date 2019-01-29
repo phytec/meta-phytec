@@ -13,15 +13,15 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/barebox/:"
 
 # Pre Bootloader 
 BAREBOX_IPL_BIN ?= "barebox.bin"
-BAREBOX_IPL_IMAGE_BASE_NAME ?= "IPL-${MACHINE}-${PKGV}-${PKGR}-${DATETIME}"
-BAREBOX_IPL_IMAGE_BASE_NAME[vardepsexclude] = "DATETIME"
-BAREBOX_IPL_BIN_SYMLINK ?= "IPL"
+BAREBOX_IPL_IMAGE_NAME ?= "IPL-${MACHINE}-${PKGV}-${PKGR}-${DATETIME}"
+BAREBOX_IPL_IMAGE_NAME[vardepsexclude] = "DATETIME"
+BAREBOX_IPL_BIN_LINK_NAME ?= "IPL"
 
 do_install () {
 	bbnote "Installing barebox-ipl image on target rootfs"
 	install -d ${D}${base_bootdir}
-	install -m 644 ${B}/${BAREBOX_IPL_BIN} ${D}${base_bootdir}/${BAREBOX_IPL_IMAGE_BASE_NAME}.img
-	ln -sf ${BAREBOX_IPL_IMAGE_BASE_NAME}.img ${D}${base_bootdir}/${BAREBOX_IPL_BIN_SYMLINK}
+	install -m 644 ${B}/${BAREBOX_IPL_BIN} ${D}${base_bootdir}/${BAREBOX_IPL_IMAGE_NAME}.img
+	ln -sf ${BAREBOX_IPL_IMAGE_NAME}.img ${D}${base_bootdir}/${BAREBOX_IPL_BIN_LINK_NAME}
 }
 FILES_${PN} = ""
 FILES_${PN} = "${base_bootdir}"
@@ -29,9 +29,9 @@ FILES_${PN} = "${base_bootdir}"
 # Overwrites do_deploy in barebox.inc
 do_deploy () {
 	bbnote "Deploying barebox ipl"
-	install -m 644 ${B}/${BAREBOX_IPL_BIN} ${DEPLOYDIR}/${BAREBOX_IPL_IMAGE_BASE_NAME}.img
-	ln -sf ${BAREBOX_IPL_IMAGE_BASE_NAME}.img ${DEPLOYDIR}/${BAREBOX_IPL_BIN_SYMLINK}
+	install -m 644 ${B}/${BAREBOX_IPL_BIN} ${DEPLOYDIR}/${BAREBOX_IPL_IMAGE_NAME}.img
+	ln -sf ${BAREBOX_IPL_IMAGE_NAME}.img ${DEPLOYDIR}/${BAREBOX_IPL_BIN_LINK_NAME}
 
-	install -m 644 ${B}/.config ${DEPLOYDIR}/${BAREBOX_IPL_IMAGE_BASE_NAME}.config
-	ln -sf ${BAREBOX_IPL_IMAGE_BASE_NAME}.config ${DEPLOYDIR}/${BAREBOX_IPL_BIN_SYMLINK}.config
+	install -m 644 ${B}/.config ${DEPLOYDIR}/${BAREBOX_IPL_IMAGE_NAME}.config
+	ln -sf ${BAREBOX_IPL_IMAGE_NAME}.config ${DEPLOYDIR}/${BAREBOX_IPL_BIN_LINK_NAME}.config
 }
