@@ -37,9 +37,6 @@ ASSUME_SHLIBS += "libwayland-egl.so:mali-t760-libs"
 #WIC
 IMAGE_CLASSES += "wic-helper"
 IMAGE_BOOT_FILES = "zImage;linuximage ${@parse_dtbs(d)}"
-do_image_wic[depends] += "\
-    virtual/prebootloader:do_deploy \
-"
 WKS_FILES_rk3288 ?= "rk3288-sdimage.wks"
 
 # default images to build
