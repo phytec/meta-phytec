@@ -41,7 +41,7 @@ fi
 """)
 }
 
-python do_env_append_mx6() {
+python do_env_append_mx6ul() {
     env_add(d, "boot/mmc",
 """#!/bin/sh
 
@@ -49,7 +49,7 @@ python do_env_append_mx6() {
 
 global.bootm.image="/mnt/mmc/zImage"
 global.bootm.oftree="/mnt/mmc/oftree"
-global.linux.bootargs.dyn.root="root=/dev/mmcblk2p2 rootflags='data=journal'"
+global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootflags='data=journal'"
 """)
     env_add(d, "boot/nand",
 """#!/bin/sh
@@ -98,27 +98,6 @@ global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=root rootfstype=ubifs"
 }
 
 python do_env_append_phyboard-segin-imx6ul() {
-    env_add(d, "boot/mmc",
-"""#!/bin/sh
-
-[ -e /env/config-expansions ] && /env/config-expansions
-
-global.bootm.image="/mnt/mmc/zImage"
-global.bootm.oftree="/mnt/mmc/oftree"
-global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootflags='data=journal'"
-""")
-    env_add(d, "boot/nand",
-"""#!/bin/sh
-
-[ -e /env/config-expansions ] && /env/config-expansions
-
-[ ! -e /dev/nand0.root.ubi ] && ubiattach /dev/nand0.root
-
-global.bootm.image="/dev/nand0.root.ubi.kernel"
-global.bootm.oftree="/dev/nand0.root.ubi.oftree"
-
-global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=root rootfstype=ubifs rw"
-""")
     env_add(d, "config-expansions",
 """#!/bin/sh
 
