@@ -132,16 +132,16 @@ global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=root rootfstype=ubifs rw"
 #. /env/expansions/imx6ul-phytec-peb-wlbt-01
 
 # imx6ul-phytec-lcd: 7" display
-#of_display_timings -S /soc/aips-bus@02100000/lcdif@021c8000/display@di0/display-timings/ETM0700G0EDH6
+#of_display_timings -S /soc/aips-bus@2100000/lcdif@21c8000/display@di0/display-timings/ETM0700G0EDH6
 
 # imx6ul-phytec-lcd: 5.7" display
-#of_display_timings -S /soc/aips-bus@02100000/lcdif@021c8000/display@di0/display-timings/ETMV570G2DHU
+#of_display_timings -S /soc/aips-bus@2100000/lcdif@21c8000/display@di0/display-timings/ETMV570G2DHU
 
 # imx6ul-phytec-lcd: 4.3" display
-#of_display_timings -S /soc/aips-bus@02100000/lcdif@021c8000/display@di0/display-timings/ETM0430G0DH6
+#of_display_timings -S /soc/aips-bus@2100000/lcdif@21c8000/display@di0/display-timings/ETM0430G0DH6
 
 # imx6ul-phytec-lcd: 3.5" display
-#of_display_timings -S /soc/aips-bus@02100000/lcdif@021c8000/display@di0/display-timings/ETM0350G0DH6
+#of_display_timings -S /soc/aips-bus@2100000/lcdif@21c8000/display@di0/display-timings/ETM0350G0DH6
 
 #use this bootarg when the VM010 Color is connected
 #global linux.bootargs.mt9v022="mt9v022.sensor_type=color"
@@ -153,25 +153,25 @@ of_fixup_status /user_leds
 """)
     env_add(d, "expansions/imx6ul-phytec-segin-peb-av-02",
 """
-of_fixup_status /soc/aips-bus@02100000/lcdif@021c8000/
-of_fixup_status /soc/aips-bus@02100000/lcdif@021c8000/display@di0
+of_fixup_status /soc/aips-bus@2100000/lcdif@21c8000/
+of_fixup_status /soc/aips-bus@2100000/lcdif@21c8000/display@di0
 of_fixup_status /backlight
-of_fixup_status /soc/aips-bus@02100000/i2c@021a0000/edt-ft5x06@38
-of_fixup_status /soc/aips-bus@02000000/pwm@02088000/
+of_fixup_status /soc/aips-bus@2100000/i2c@21a0000/edt-ft5x06@38
+of_fixup_status /soc/aips-bus@2000000/pwm@2088000/
 """)
     env_add(d, "expansions/imx6ul-phytec-segin-peb-av-02-res",
 """
-of_fixup_status /soc/aips-bus@02100000/lcdif@021c8000/
-of_fixup_status /soc/aips-bus@02100000/lcdif@021c8000/display@di0
+of_fixup_status /soc/aips-bus@2100000/lcdif@21c8000/
+of_fixup_status /soc/aips-bus@2100000/lcdif@21c8000/display@di0
 of_fixup_status /backlight
-of_fixup_status /soc/aips-bus@02100000/i2c@021a0000/stmpe@44
-of_fixup_status /soc/aips-bus@02000000/pwm@02088000/
+of_fixup_status /soc/aips-bus@2100000/i2c@21a0000/stmpe@44
+of_fixup_status /soc/aips-bus@2000000/pwm@2088000/
 """)
     env_add(d, "expansions/imx6ul-phytec-peb-wlbt-01",
 """#!/bin/sh
-of_fixup_status /soc/aips-bus@02100000/usdhc@02194000
+of_fixup_status /soc/aips-bus@2100000/usdhc@2194000
 of_fixup_status /regulators/regulator@7
-of_fixup_status -d /soc/aips-bus@02100000/adc@02198000
+of_fixup_status -d /soc/aips-bus@2100000/adc@2198000
 """)
 }
 
@@ -190,16 +190,16 @@ python do_env_append_phyboard-segin-imx6ul-5() {
 . /env/expansions/imx6ul-phytec-peb-wlbt-01
 
 # imx6ul-phytec-lcd: 7" display
-#of_display_timings -S /soc/aips-bus@02100000/lcdif@021c8000/display@di0/display-timings/ETM0700G0EDH6
+#of_display_timings -S /soc/aips-bus@2100000/lcdif@21c8000/display@di0/display-timings/ETM0700G0EDH6
 
 # imx6ul-phytec-lcd: 5.7" display
-#of_display_timings -S /soc/aips-bus@02100000/lcdif@021c8000/display@di0/display-timings/ETMV570G2DHU
+#of_display_timings -S /soc/aips-bus@2100000/lcdif@21c8000/display@di0/display-timings/ETMV570G2DHU
 
 # imx6ul-phytec-lcd: 4.3" display
-#of_display_timings -S /soc/aips-bus@02100000/lcdif@021c8000/display@di0/display-timings/ETM0430G0DH6
+#of_display_timings -S /soc/aips-bus@2100000/lcdif@21c8000/display@di0/display-timings/ETM0430G0DH6
 
 # imx6ul-phytec-lcd: 3.5" display
-#of_display_timings -S /soc/aips-bus@02100000/lcdif@021c8000/display@di0/display-timings/ETM0350G0DH6
+#of_display_timings -S /soc/aips-bus@2100000/lcdif@21c8000/display@di0/display-timings/ETM0350G0DH6
 
 #use this bootarg when the VM010 Color is connected
 #nv linux.bootargs.mt9v022="mt9v022.sensor_type=color"
