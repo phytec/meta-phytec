@@ -29,7 +29,7 @@ MACHINEOVERRIDES .= ":imxpxp"
 
 MACHINE_FEATURES = "apm usbgadget usbhost vfat"
 
-QT_QPA_DEFAULT_PLATFORM ?= "linuxfb"
+QT_QPA_PLATFORM ?= "linuxfb"
 
 # Use the expected value of the ubifs filesystem's volume name in the kernel
 UBI_VOLNAME = "root"
