@@ -9,9 +9,9 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=393a5ca445f6965873eca0259a17f833"
 
 PV = "5.5+git${SRCPV}"
 SRC_URI = "git://github.com/NXPmicro/imx-kobs.git;protocal=https \
-           file://0001-Add-missing-includes-as-pointed-out-by-musl.patch \
+           file://0001-Slot-switch.patch \
 "
-SRCREV = "a0e9adce2fb7fcd57e794d7f9a5deba0f94f521b"
+SRCREV = "228dbb9b1a202892d884bd01985dd3522ad49d59"
 S = "${WORKDIR}/git"
 
 inherit autotools pkgconfig
