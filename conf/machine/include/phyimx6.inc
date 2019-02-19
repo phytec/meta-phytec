@@ -2,7 +2,7 @@
 
 include conf/machine/include/soc-family.inc
 
-SOC_FAMILY = "mx6"
+SOC_FAMILY = "imx:mx6"
 
 #Bootloader
 PREFERRED_PROVIDER_virtual/bootloader ?= "barebox"

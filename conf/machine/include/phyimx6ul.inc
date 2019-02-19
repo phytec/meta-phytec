@@ -1,7 +1,7 @@
 # Common settings for phytecs imx6ul boards
 include conf/machine/include/soc-family.inc
 
-SOC_FAMILY .= ":mx6ul"
+SOC_FAMILY .= "imx:mx6ul"
 
 DEFAULTTUNE ?= "cortexa7thf-neon-vfpv4"
 include conf/machine/include/tune-cortexa7.inc
