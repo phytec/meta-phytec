@@ -28,7 +28,7 @@ PREFERRED_PROVIDER_virtual/xserver ?= "xserver-xorg"
 # Ship kernel modules
 MACHINE_EXTRA_RRECOMMENDS = "kernel-modules"
 
-SERIAL_CONSOLE = "115200 ttymxc0"
+SERIAL_CONSOLES = "115200;ttymxc0"
 
 MACHINE_FEATURES = "apm usbgadget usbhost vfat"
 
