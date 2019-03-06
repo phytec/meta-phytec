@@ -8,8 +8,6 @@ DEPENDS += "libusb-native openssl-native zlib-native"
 
 inherit deploy pkgconfig
 
-export TARGETCFLAGS="${HOST_CC_ARCH} ${CFLAGS} -Wl,${LDFLAGS}"
-
 do_patch_append() {
     bb.build.exec_func('do_fix_pkg_config', d)
 }
