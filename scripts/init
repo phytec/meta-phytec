@@ -47,6 +47,33 @@ if [ -z "${TEMPLATECONF}" ]; then
 	export TEMPLATECONF="${ROOTDIR}/tools/templateconf"
 	copy_file_by_priority=${PHYTEC_DIR}/scripts/copy_file_by_priority.py
 	install -d ${TEMPLATECONF}
+	# Modify bblayers.conf.sample and local.conf.sample in case of freescale-release
+	case "$RELEASE_UID" in
+		*FSL*)
+                # copy new EULA to meta-freescale
+                cp ${ROOTDIR}/sources/meta-fsl-bsp-release/imx/EULA.txt ${ROOTDIR}/sources/meta-freescale/EULA
+
+		# add commented line in local.conf.sample (for easy acceptable NXP EULA)
+                echo "" >> ${PHYTEC_DIR}/conf/local.conf.sample
+                echo "# Uncomment to accept NXP EULA" >> ${PHYTEC_DIR}/conf/local.conf.sample
+                echo "# EULA can be found under ../sources/meta-freescale/EULA" >> ${PHYTEC_DIR}/conf/local.conf.sample
+                echo "#ACCEPT_FSL_EULA = \"1\""  >> ${PHYTEC_DIR}/conf/local.conf.sample
+
+		# add BSPDIR variable in bblayers.conf.sample (needed by recipes of NXP)
+                sed -e '9iBSPDIR := "${OEROOT}/../.."' -i ${PHYTEC_DIR}/conf/bblayers.conf.sample
+
+		# add further sublayer in bblayers.conf.sample
+		echo "" >> ${PHYTEC_DIR}/conf/bblayers.conf.sample
+		echo "# Adding sublayer because of \"$RELEASE_UID\" release" >> ${PHYTEC_DIR}/conf/bblayers.conf.sample
+		echo "BBLAYERS += \"\\" >> ${PHYTEC_DIR}/conf/bblayers.conf.sample
+		echo "  \${OEROOT}/../meta-openembedded/meta-filesystems \\" >> ${PHYTEC_DIR}/conf/bblayers.conf.sample
+		echo "  \${OEROOT}/../meta-openembedded/meta-gnome \\" >> ${PHYTEC_DIR}/conf/bblayers.conf.sample
+		echo "  \${OEROOT}/../meta-fsl-bsp-release/imx/meta-bsp \\" >> ${PHYTEC_DIR}/conf/bblayers.conf.sample
+		echo "  \${OEROOT}/../meta-fsl-bsp-release/imx/meta-sdk \\" >> ${PHYTEC_DIR}/conf/bblayers.conf.sample
+		echo "  \"" >> ${PHYTEC_DIR}/conf/bblayers.conf.sample
+		echo "" >> ${PHYTEC_DIR}/conf/bblayers.conf.sample
+		;;
+	esac
 	$copy_file_by_priority conf/bblayers.conf.sample ${TEMPLATECONF}
 	$copy_file_by_priority conf/local.conf.sample ${TEMPLATECONF}
 	$copy_file_by_priority conf/conf-notes.txt ${TEMPLATECONF}
