@@ -30,7 +30,7 @@ RDEPENDS_kernel-modules_ti33x += "\
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "806ab4c261f4c2c4c3ba91d6a13a1491b54b75ae"
+SRCREV = "9a2aafc9461f2e1108185c924dac55a088f8c205"
 
 S = "${WORKDIR}/git"
 
