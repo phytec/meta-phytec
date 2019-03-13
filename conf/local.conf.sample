@@ -59,9 +59,6 @@ DEBUG_BUILD_pn-linux-mainline = "1"
 # Turn on debugging options of the barebox
 DEBUG_BUILD_pn-barebox = "1"
 
-# this can be used for testing latest mesa drivers
-#PREFERRED_VERSION_mesa = "git"
-
 # The default package class of the distro yogurt is 'package_ipk'. The first
 # value is used as the package manager to build the image and sdk. To build
 # also tar packages use
