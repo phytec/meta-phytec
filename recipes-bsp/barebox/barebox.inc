@@ -17,6 +17,10 @@ PATCHTOOL = "git"
 inherit kernel-arch deploy
 inherit kconfig
 
+# Barebox doesn't seperate arm 32bit and 64bit. So we have to set
+# ARCH to arm for 64bit.
+ARCH_aarch64 = "arm"
+
 # verbose build 0/1
 VERBOSE_BUILD ?= "0"
 EXTRA_OEMAKE = 'CROSS_COMPILE="${TARGET_PREFIX}" CC="${TARGET_PREFIX}gcc" V="${VERBOSE_BUILD}"'
