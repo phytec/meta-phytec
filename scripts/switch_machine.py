@@ -22,6 +22,9 @@ class BSP_Switcher(BoardSupportPackage):
             return self.write_machine_to_localconf()
 
         builds = self.supported_builds
+        if builds == []:
+            print("No build/machine supported.")
+            return self.write_machine_to_localconf()
 
         min_len_machines = min(len(build[0]) for build in builds)
 
