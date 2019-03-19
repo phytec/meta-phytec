@@ -149,7 +149,7 @@ of_fixup_status /soc/aips-bus@2000000/pwm@2088000/
     env_add(d, "expansions/imx6ul-phytec-peb-wlbt-01",
 """#!/bin/sh
 of_fixup_status /soc/aips-bus@2100000/usdhc@2194000
-of_fixup_status /regulators/regulator@7
+of_fixup_status /regulator-wlan-en
 of_fixup_status -d /soc/aips-bus@2100000/adc@2198000
 """)
 }
