@@ -128,7 +128,7 @@ python do_env_append_phyboard-segin-imx6ul() {
     env_add(d, "expansions/imx6ul-phytec-segin-peb-eval-01",
 """
 of_fixup_status /gpio-keys
-of_fixup_status /user_leds
+of_fixup_status /user-leds
 """)
     env_add(d, "expansions/imx6ul-phytec-segin-peb-av-02",
 """
