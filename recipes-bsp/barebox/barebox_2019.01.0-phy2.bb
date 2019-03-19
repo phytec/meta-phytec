@@ -62,6 +62,15 @@ global.bootm.image="/dev/nand0.root.ubi.kernel"
 global.bootm.oftree="/dev/nand0.root.ubi.oftree"
 global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=root rootfstype=ubifs"
 """)
+    env_add(d, "boot/emmc",
+"""#!/bin/sh
+
+[ -e /env/config-expansions ] && /env/config-expansions
+
+global.bootm.image="/mnt/emmc/zImage"
+global.bootm.oftree="/mnt/emmc/oftree"
+global.linux.bootargs.dyn.root="root=/dev/mmcblk1p2 rootflags='discard,data=journal'"
+""")
     env_add(d, "boot/net",
 """#!/bin/sh
 
@@ -192,3 +201,4 @@ COMPATIBLE_MACHINE .= "|phyboard-segin-imx6ul-3"
 COMPATIBLE_MACHINE .= "|phyboard-segin-imx6ul-4"
 COMPATIBLE_MACHINE .= "|phyboard-segin-imx6ul-5"
 COMPATIBLE_MACHINE .= "|phyboard-segin-imx6ul-6"
+COMPATIBLE_MACHINE .= "|phyboard-segin-imx6ul-7"
