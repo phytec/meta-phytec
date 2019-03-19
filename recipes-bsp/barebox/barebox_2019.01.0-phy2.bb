@@ -104,6 +104,36 @@ global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=root rootfstype=ubifs"
     env_add(d, "nv/net.gateway", "192.168.3.10")
     env_add(d, "nv/dev.eth0.serverip", "192.168.3.10")
     env_add(d, "nv/dhcp.vendor_id", "phytec")
+
+    #NAND boot scripts for RAUC
+    env_add(d, "boot/nand0",
+"""#!/bin/sh
+
+[ -e /env/config-expansions ] && /env/config-expansions
+
+[ ! -e /dev/nand0.root.ubi ] && ubiattach /dev/nand0.root
+
+global.bootm.image="/dev/nand0.root.ubi.kernel0"
+global.bootm.oftree="/dev/nand0.root.ubi.oftree0"
+
+global.linux.bootargs.dyn.root="root=ubi0:root0 ubi.mtd=root rootfstype=ubifs"
+""")
+    env_add(d, "boot/nand1",
+"""#!/bin/sh
+
+[ -e /env/config-expansions ] && /env/config-expansions
+
+[ ! -e /dev/nand0.root.ubi ] && ubiattach /dev/nand0.root
+
+global.bootm.image="/dev/nand0.root.ubi.kernel1"
+global.bootm.oftree="/dev/nand0.root.ubi.oftree1"
+
+global.linux.bootargs.dyn.root="root=ubi0:root1 ubi.mtd=root rootfstype=ubifs"
+""")
+    env_add(d, "nv/bootchooser.targets", """system0 system1""")
+    env_add(d, "nv/bootchooser.system0.boot", """nand0""")
+    env_add(d, "nv/bootchooser.system1.boot", """nand1""")
+    env_add(d, "nv/bootchooser.state_prefix", """state.bootstate""")
 }
 
 python do_env_append_phyboard-segin-imx6ul() {
@@ -236,6 +266,57 @@ of_property -f -d ${ENDPOINT_PATH} link-frequencies
 
 of_fixup_status ${CAM_PATH}
 """)
+
+    #RAUC init scripts for NAND
+    env_add(d, "bin/rauc_init_nand",
+"""#!/bin/sh
+echo "Format /dev/nand0.root"
+
+ubiformat -q /dev/nand0.root
+ubiattach /dev/nand0.root
+ubimkvol -t static /dev/nand0.root.ubi kernel0 8M
+ubimkvol -t static /dev/nand0.root.ubi kernel1 8M
+ubimkvol -t static /dev/nand0.root.ubi oftree0 1M
+ubimkvol -t static /dev/nand0.root.ubi oftree1 1M
+ubimkvol /dev/nand0.root.ubi root0 244M
+ubimkvol /dev/nand0.root.ubi root1 0
+
+ubidetach 0
+""")
+    env_add(d, "bin/rauc_flash_nand_from_mmc",
+"""#!/bin/sh
+echo "Initialize NAND flash from MMC"
+[ ! -e /dev/nand0.root.ubi ] && ubiattach /dev/nand0.root
+ubiupdatevol /dev/nand0.root.ubi.kernel0 /mnt/mmc0.0/zImage
+ubiupdatevol /dev/nand0.root.ubi.kernel1 /mnt/mmc0.0/zImage
+ubiupdatevol /dev/nand0.root.ubi.oftree0 /mnt/mmc0.0/oftree
+ubiupdatevol /dev/nand0.root.ubi.oftree1 /mnt/mmc0.0/oftree
+cp /mnt/mmc0.0/root.ubifs /dev/nand0.root.ubi.root0
+cp /mnt/mmc0.0/root.ubifs /dev/nand0.root.ubi.root1
+""")
+    env_add(d, "bin/rauc_flash_nand_from_tftp",
+"""#!/bin/sh
+echo "Initialize NAND flash from TFTP"
+[ ! -e /dev/nand0.root.ubi ] && ubiattach /dev/nand0.root
+ubiupdatevol /dev/nand0.root.ubi.kernel0 /mnt/tftp/zImage
+ubiupdatevol /dev/nand0.root.ubi.kernel1 /mnt/tftp/zImage
+ubiupdatevol /dev/nand0.root.ubi.oftree0 /mnt/tftp/oftree
+ubiupdatevol /dev/nand0.root.ubi.oftree1 /mnt/tftp/oftree
+cp /mnt/tftp/root.ubifs /dev/nand0.root.ubi.root0
+cp /mnt/tftp/root.ubifs /dev/nand0.root.ubi.root1
+""")
+}
+
+#No RAUC support for the low-cost Segin due to small NAND
+python do_env_append_phyboard-segin-imx6ul-3() {
+    env_rm(d, "boot/nand0")
+    env_rm(d, "boot/nand1")
+    env_rm(d, "nv/bootchooser.targets")
+    env_rm(d, "nv/bootchooser.system0.boot")
+    env_rm(d, "nv/bootchooser.system1.boot")
+    env_rm(d, "nv/bootchooser.state_prefix")
+    env_rm(d, "bin/rauc_flash_nand_from_mmc")
+    env_rm(d, "bin/rauc_flash_nand_from_tftp")
 }
 
 python do_env_append_phyboard-segin-imx6ul-5() {
@@ -267,6 +348,18 @@ python do_env_append_phyboard-segin-imx6ul-5() {
 #use this bootarg when the VM010 Color is connected
 #nv linux.bootargs.mt9v022="mt9v022.sensor_type=color"
 """)
+}
+
+#Currently there is no rauc support for eMMC
+python do_env_append_phyboard-segin-imx6ul-7() {
+    env_rm(d, "boot/nand0")
+    env_rm(d, "boot/nand1")
+    env_rm(d, "nv/bootchooser.targets")
+    env_rm(d, "nv/bootchooser.system0.boot")
+    env_rm(d, "nv/bootchooser.system1.boot")
+    env_rm(d, "nv/bootchooser.state_prefix")
+    env_rm(d, "bin/rauc_flash_nand_from_mmc")
+    env_rm(d, "bin/rauc_flash_nand_from_tftp")
 }
 
 INTREE_DEFCONFIG = "imx_v7_defconfig"
