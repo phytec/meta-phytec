@@ -131,8 +131,20 @@ python do_env_append_phyboard-segin-imx6ul() {
 # imx6ul-phytec-lcd: 3.5" display
 #of_display_timings -S /soc/aips-bus@2100000/lcdif@21c8000/display@di0/display-timings/ETM0350G0DH6
 
-#use this bootarg when the VM010 Color is connected
-#global linux.bootargs.mt9v022="mt9v022.sensor_type=color"
+#use this bootarg if the VM010 Color is connected
+#. /env/expansions/imx6ul-phytec-vm010-col
+
+#use this bootarg if the VM010 Monochrome is connected
+#. /env/expansions/imx6ul-phytec-vm010-bw
+
+#use this bootarg if the VM011 Color is connected
+#. /env/expansions/imx6ul-phytec-vm011-col
+
+#use this bootarg if the VM011 Monochrome is connected
+#. /env/expansions/imx6ul-phytec-vm011-bw
+
+#use this bootarg if the VM009 is connected
+#. /env/expansions/imx6ul-phytec-vm009
 """)
     env_add(d, "expansions/imx6ul-phytec-segin-peb-eval-01",
 """
@@ -160,6 +172,69 @@ of_fixup_status /soc/aips-bus@2000000/pwm@2088000/
 of_fixup_status /soc/aips-bus@2100000/usdhc@2194000
 of_fixup_status /regulator-wlan-en
 of_fixup_status -d /soc/aips-bus@2100000/adc@2198000
+""")
+    env_add(d, "expansions/imx6ul-phytec-vm010-col",
+"""#!/bin/sh
+CAM_PATH="/soc/aips-bus@2100000/i2c@21a0000/cam0@48"
+ENDPOINT_PATH="/soc/aips-bus@2100000/i2c@21a0000/cam0@48/port/endpoint"
+
+of_property -f -s ${CAM_PATH} compatible "aptina,mt9v024"
+of_property -f -d ${CAM_PATH} assigned-clocks
+of_property -f -d ${CAM_PATH} assigned-clock-parents
+of_property -f -d ${CAM_PATH} assigned-clock-rates
+
+of_fixup_status ${CAM_PATH}
+""")
+    env_add(d, "expansions/imx6ul-phytec-vm010-bw",
+"""#!/bin/sh
+CAM_PATH="/soc/aips-bus@2100000/i2c@21a0000/cam0@48"
+ENDPOINT_PATH="/soc/aips-bus@2100000/i2c@21a0000/cam0@48/port/endpoint"
+
+of_property -f -s ${CAM_PATH} compatible "aptina,mt9v024m"
+of_property -f -d ${CAM_PATH} assigned-clocks
+of_property -f -d ${CAM_PATH} assigned-clock-parents
+of_property -f -d ${CAM_PATH} assigned-clock-rates
+
+of_fixup_status ${CAM_PATH}
+""")
+    env_add(d, "expansions/imx6ul-phytec-vm011-col",
+"""#!/bin/sh
+CAM_PATH="/soc/aips-bus@2100000/i2c@21a0000/cam0@48"
+ENDPOINT_PATH="/soc/aips-bus@2100000/i2c@21a0000/cam0@48/port/endpoint"
+
+of_property -f -s ${CAM_PATH} compatible "aptina,mt9p006"
+of_property -f -d ${ENDPOINT_PATH} link-frequencies
+of_property -f -s ${ENDPOINT_PATH} input-clock-frequency <50000000>
+of_property -f -s ${ENDPOINT_PATH} pixel-clock-frequency <50000000>
+of_property -f -s ${ENDPOINT_PATH} pclk-sample <0>
+
+of_fixup_status ${CAM_PATH}
+""")
+    env_add(d, "expansions/imx6ul-phytec-vm011-bw",
+"""#!/bin/sh
+CAM_PATH="/soc/aips-bus@2100000/i2c@21a0000/cam0@48"
+ENDPOINT_PATH="/soc/aips-bus@2100000/i2c@21a0000/cam0@48/port/endpoint"
+
+of_property -f -s ${CAM_PATH} compatible "aptina,mt9p006m"
+of_property -f -d ${ENDPOINT_PATH} link-frequencies
+of_property -f -s ${ENDPOINT_PATH} input-clock-frequency <50000000>
+of_property -f -s ${ENDPOINT_PATH} pixel-clock-frequency <50000000>
+of_property -f -s ${ENDPOINT_PATH} pclk-sample <0>
+
+of_fixup_status ${CAM_PATH}
+""")
+    env_add(d, "expansions/imx6ul-phytec-vm009",
+"""#!/bin/sh
+CAM_PATH="/soc/aips-bus@2100000/i2c@21a0000/cam0@48"
+ENDPOINT_PATH="/soc/aips-bus@2100000/i2c@21a0000/cam0@48/port/endpoint"
+
+of_property -f -s ${CAM_PATH} compatible "micron,mt9m111"
+of_property -f -s ${CAM_PATH} clock-names "mclk"
+of_property -f -s ${CAM_PATH} phytec,invert-pixclk
+of_property -f -s ${CAM_PATH} phytec,allow-10bit
+of_property -f -d ${ENDPOINT_PATH} link-frequencies
+
+of_fixup_status ${CAM_PATH}
 """)
 }
 
