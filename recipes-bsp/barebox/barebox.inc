@@ -29,8 +29,8 @@ B = "${WORKDIR}/build"
 # name of the image created by barebox Makefile
 BAREBOX_BIN ?= "barebox.bin"
 # filename of file to be deployed by this recipe
-BAREBOX_IMAGE_NAME ?= "barebox-${MACHINE}-${PKGV}-${PKGR}-${DATETIME}"
-BAREBOX_IMAGE_NAME[vardepsexclude] += "DATETIME"
+BAREBOX_IMAGE_NAME ?= "barebox-${MACHINE}-${PKGV}-${PKGR}${IMAGE_VERSION_SUFFIX}"
+BAREBOX_IMAGE_NAME[vardepsexclude] += "IMAGE_VERSION_SUFFIX"
 BAREBOX_BIN_LINK_NAME ?= "barebox.bin"
 
 do_configure_append() {
