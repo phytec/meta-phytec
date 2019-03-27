@@ -224,7 +224,7 @@ python do_env_append_phyboard-subra-imx6() {
 
 INTREE_DEFCONFIG = "imx_v7_defconfig"
 
-COMPATIBLE_MACHINE .= "|phycard-imx6-1"
+COMPATIBLE_MACHINE = "phycard-imx6-1"
 COMPATIBLE_MACHINE .= "|phycard-imx6-2"
 
 COMPATIBLE_MACHINE .= "|phyboard-alcor-imx6-1"
