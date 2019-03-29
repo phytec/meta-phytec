@@ -1,7 +1,8 @@
 # This is a helper class for creating patitioned images with WIC for sd cards and emmc
 
 def parse_dtbs(d):
-    kdt=d.getVar('KERNEL_DEVICETREE', True)
+    import re
+    kdt=re.sub(r'\b[\w-]+\/', '', d.getVar('KERNEL_DEVICETREE', ''))
     dtbs=""
     dtbcount=1
     for DTB in kdt.split():
