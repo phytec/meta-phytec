@@ -2,12 +2,13 @@
 
 def parse_dtbs(d):
     kdt=d.getVar('KERNEL_DEVICETREE', True)
+    kit=d.getVar('KERNEL_IMAGETYPE', 'zImage')
     dtbs=""
     dtbcount=1
     for DTB in kdt.split():
         if dtbcount == 1:
-            dtbs += "zImage-"+DTB+";oftree"
-        dtbs += " zImage-"+DTB
+            dtbs += kit+"-"+DTB+";oftree"
+        dtbs += " "+kit+"-"+DTB
         dtbcount += 1
     return dtbs
 
