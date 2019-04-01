@@ -27,6 +27,8 @@ BRANCH = "ti-img-sgx/${PV}/k4.14"
 SRC_URI = "git://git.ti.com/graphics/omap5-sgx-ddk-linux.git;protocol=git;branch=${BRANCH}"
 SRC_URI += " \
 	file://0001-srvkm-env-linux-Check-whether-Soc-supports-SGX.patch \
+	file://0001-srvkm-env-linux-osfunc.c-fix-gcc8-stringop-truncatio.patch \
+	file://0001-buildvars.mk-pass-Wno-cast-function-type.patch \
 "
 S = "${WORKDIR}/git"
 

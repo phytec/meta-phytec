@@ -1,0 +1,26 @@
+From 287ca27cdf9004b4ba9bb0ce30d6139f707246f9 Mon Sep 17 00:00:00 2001
+From: Denys Dmytriyenko <denys@ti.com>
+Date: Sun, 14 Oct 2018 19:53:14 -0400
+Subject: [PATCH] buildvars.mk: pass -Wno-cast-function-type
+
+Signed-off-by: Denys Dmytriyenko <denys@ti.com>
+---
+ eurasia_km/eurasiacon/build/linux2/buildvars.mk | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/eurasia_km/eurasiacon/build/linux2/buildvars.mk b/eurasia_km/eurasiacon/build/linux2/buildvars.mk
+index f30e467..f00f852 100644
+--- a/eurasia_km/eurasiacon/build/linux2/buildvars.mk
++++ b/eurasia_km/eurasiacon/build/linux2/buildvars.mk
+@@ -48,7 +48,7 @@
+ 
+ # These flags are used for kernel, User C and User C++
+ #
+-COMMON_FLAGS := -W -Wall
++COMMON_FLAGS := -W -Wall -Wno-cast-function-type
+ 
+ # Some GCC warnings are C only, so we must mask them from C++
+ #
+-- 
+2.7.4
+
