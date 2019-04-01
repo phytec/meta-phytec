@@ -1,0 +1,34 @@
+From 353d8b9313abc492e5938171cea4ac697fd991f0 Mon Sep 17 00:00:00 2001
+From: Denys Dmytriyenko <denys@ti.com>
+Date: Sun, 14 Oct 2018 19:41:49 -0400
+Subject: [PATCH] srvkm/env/linux/osfunc.c: fix gcc8 stringop-truncation error
+
+gcc8 now checks for strncpy function that potentially truncate the terminating
+NUL charcter from the source string. Fails like this:
+
+.../services4/srvkm/env/linux/osfunc.c:3051:13: error: 'strncpy' specified bound 50 equals destination size [-Werror=stringop-truncation]
+|              strncpy(psEventObject->szName, pszName, EVENTOBJNAME_MAXLENGTH);
+|              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+| cc1: all warnings being treated as errors
+
+Signed-off-by: Denys Dmytriyenko <denys@ti.com>
+---
+ eurasia_km/services4/srvkm/env/linux/osfunc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/eurasia_km/services4/srvkm/env/linux/osfunc.c b/eurasia_km/services4/srvkm/env/linux/osfunc.c
+index 02dfe9b..02c8e3b 100644
+--- a/eurasia_km/services4/srvkm/env/linux/osfunc.c
++++ b/eurasia_km/services4/srvkm/env/linux/osfunc.c
+@@ -3048,7 +3048,7 @@ PVRSRV_ERROR OSEventObjectCreateKM(const IMG_CHAR *pszName, PVRSRV_EVENTOBJECT *
+         if(pszName)
+         {
+             /* copy over the event object name */
+-            strncpy(psEventObject->szName, pszName, EVENTOBJNAME_MAXLENGTH);
++            strncpy(psEventObject->szName, pszName, EVENTOBJNAME_MAXLENGTH-1);
+         }
+         else
+         {
+-- 
+2.7.4
+
