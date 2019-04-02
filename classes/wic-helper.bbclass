@@ -49,4 +49,5 @@ do_image_emmc[depends] += " \
     e2fsprogs-native:do_populate_sysroot \
     virtual/kernel:do_deploy \
     virtual/bootloader:do_deploy \
+    virtual/prebootloader:do_deploy \
 "
