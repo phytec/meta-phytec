@@ -1,0 +1,35 @@
+From 5652cf6635a279845363bee9c8aa3edc811d9f9b Mon Sep 17 00:00:00 2001
+From: Norbert Wesp <n.wesp@phytec.de>
+Date: Thu, 4 Apr 2019 16:36:22 +0200
+Subject: [PATCH] src: Makefile.am: Fix the Makefile dependencies
+
+Without this change we run into a compile error like:
+ERROR: gengetopt-native-2.22.6-r0 do_compile: Function failed: do_compile)
+*** No rule to make target '../src/libgengetopt.la', needed by 'gengetopt'.
+
+This patch can be found here:
+website: https://packages.debian.org/source/sid/gengetopt
+package: gengetopt_2.22.6+dfsg0-3.debian.tar.xz
+patch:   ./patches/makefile-dependencies.patch
+
+Signed-off-by: Norbert Wesp <n.wesp@phytec.de>
+---
+ src/Makefile.am | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/Makefile.am b/src/Makefile.am
+index 1ef55ca..ce20b9a 100644
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -51,7 +51,7 @@ libgengetopt_la_LIBADD = $(top_builddir)/gl/libgnu.la \
+ 	@LTLIBOBJS@ \
+ 	skels/libgen.la
+ 
+-LDADD = $(top_builddir)/src/libgengetopt.la
++LDADD = libgengetopt.la
+ 
+ EXTRA_DIST = parser.h argsdef.h gengetopt.h ggos.h gm.h gnugetopt.h \
+ cmdline.c cmdline.h \
+-- 
+2.7.4
+
