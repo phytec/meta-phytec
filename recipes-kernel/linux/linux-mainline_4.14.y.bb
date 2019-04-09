@@ -5,6 +5,8 @@ inherit phygittag
 inherit buildinfo
 include linux-common.inc
 
+DEFAULT_PREFERENCE = "-1"
+
 GIT_URL = "git://git.phytec.de/${PN}"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
