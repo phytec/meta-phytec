@@ -22,6 +22,9 @@ class BSP_Switcher(BoardSupportPackage):
             return self.write_machine_to_localconf()
 
         configs = self.supported_configs
+        if configs == []:
+            print("No build/machine supported.")
+            return self.write_machine_to_localconf()
 
         min_len_machines = min(len(config[0]) for config in configs)
 
