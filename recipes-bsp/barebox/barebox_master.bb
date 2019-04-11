@@ -9,6 +9,8 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=f5125d13e000b9ca1f0d3364286c4192"
 
 DEPENDS += "bison-native flex-native"
 
+DEFAULT_PREFERENCE = "-1"
+
 GIT_URL = "git://git.pengutronix.de/git/barebox.git"
 SRC_URI = "${GIT_URL};branch=master"
 SRC_URI += "\
