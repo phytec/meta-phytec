@@ -1,0 +1,370 @@
+From a14df47e7255ff848e077c929f67c2d623c8fc11 Mon Sep 17 00:00:00 2001
+From: Norbert Wesp <n.wesp@phytec.de>
+Date: Tue, 16 Apr 2019 10:35:40 +0200
+Subject: [master] opencv: Updated to use new header path
+
+Backport of upstream patch (needed for nightly-builds).
+commit 9c91282ba64d1750c9c1500b06f826d565ace859
+
+Signed-off-by: Norbert Wesp <n.wesp@phytec.de>
+---
+ ext/opencv/MotionCells.h         | 3 ++-
+ ext/opencv/gstcvdilate.cpp       | 2 +-
+ ext/opencv/gstcvdilateerode.cpp  | 2 +-
+ ext/opencv/gstcvequalizehist.cpp | 2 +-
+ ext/opencv/gstcverode.cpp        | 2 +-
+ ext/opencv/gstcvlaplace.cpp      | 2 +-
+ ext/opencv/gstcvsmooth.cpp       | 2 +-
+ ext/opencv/gstcvsobel.cpp        | 2 +-
+ ext/opencv/gstdewarp.h           | 4 ++--
+ ext/opencv/gstedgedetect.cpp     | 2 +-
+ ext/opencv/gstedgedetect.h       | 2 +-
+ ext/opencv/gstfaceblur.cpp       | 3 +--
+ ext/opencv/gstfaceblur.h         | 6 +++---
+ ext/opencv/gstfacedetect.h       | 6 +++---
+ ext/opencv/gstgrabcut.cpp        | 7 ++-----
+ ext/opencv/gstgrabcut.h          | 2 +-
+ ext/opencv/gsthanddetect.h       | 6 +++---
+ ext/opencv/gstmotioncells.h      | 2 +-
+ ext/opencv/gstretinex.cpp        | 3 +--
+ ext/opencv/gstretinex.h          | 2 +-
+ ext/opencv/gstsegmentation.cpp   | 2 +-
+ ext/opencv/gstskindetect.cpp     | 2 +-
+ ext/opencv/gsttemplatematch.h    | 2 +-
+ 23 files changed, 32 insertions(+), 36 deletions(-)
+
+diff --git a/ext/opencv/MotionCells.h b/ext/opencv/MotionCells.h
+index 6c060a9..66e27b9 100644
+--- a/ext/opencv/MotionCells.h
++++ b/ext/opencv/MotionCells.h
+@@ -46,11 +46,12 @@
+ #define MOTIONCELLS_H_
+ 
+ #include <opencv2/core/core_c.h>
++#include <opencv2/core.hpp>
+ #ifdef HAVE_HIGHGUI_H
+ #include <highgui.h>            // includes highGUI definitions
+ #endif
+ #ifdef HAVE_OPENCV2_HIGHGUI_HIGHGUI_C_H
+-#include <opencv2/highgui/highgui_c.h>            // includes highGUI definitions
++#include <opencv2/highgui.hpp>            // includes highGUI definitions
+ #endif
+ #include <fstream>
+ #include <vector>
+diff --git a/ext/opencv/gstcvdilate.cpp b/ext/opencv/gstcvdilate.cpp
+index bc6b032..673df6b 100644
+--- a/ext/opencv/gstcvdilate.cpp
++++ b/ext/opencv/gstcvdilate.cpp
+@@ -59,7 +59,7 @@
+ #endif
+ 
+ #include "gstcvdilate.h"
+-#include <opencv2/imgproc/imgproc_c.h>
++#include <opencv2/imgproc.hpp>
+ 
+ GST_DEBUG_CATEGORY_STATIC (gst_cv_dilate_debug);
+ #define GST_CAT_DEFAULT gst_cv_dilate_debug
+diff --git a/ext/opencv/gstcvdilateerode.cpp b/ext/opencv/gstcvdilateerode.cpp
+index 05823d9..0d8ee3e 100644
+--- a/ext/opencv/gstcvdilateerode.cpp
++++ b/ext/opencv/gstcvdilateerode.cpp
+@@ -53,7 +53,7 @@
+ #include "gst/opencv/gstopencvutils.h"
+ #include "gstcvdilateerode.h"
+ 
+-#include <opencv2/core/core_c.h>
++#include <opencv2/core.hpp>
+ 
+ /*
+ GST_DEBUG_CATEGORY_STATIC (gst_cv_dilate_erode_debug);
+diff --git a/ext/opencv/gstcvequalizehist.cpp b/ext/opencv/gstcvequalizehist.cpp
+index bd3a7f0..7f6327e 100644
+--- a/ext/opencv/gstcvequalizehist.cpp
++++ b/ext/opencv/gstcvequalizehist.cpp
+@@ -61,7 +61,7 @@
+ #endif
+ 
+ #include "gstcvequalizehist.h"
+-#include <opencv2/imgproc/imgproc_c.h>
++#include <opencv2/imgproc.hpp>
+ 
+ GST_DEBUG_CATEGORY_STATIC (gst_cv_equalize_hist_debug);
+ #define GST_CAT_DEFAULT gst_cv_equalize_hist_debug
+diff --git a/ext/opencv/gstcverode.cpp b/ext/opencv/gstcverode.cpp
+index 39b72be..65e4a55 100644
+--- a/ext/opencv/gstcverode.cpp
++++ b/ext/opencv/gstcverode.cpp
+@@ -59,7 +59,7 @@
+ #endif
+ 
+ #include "gstcverode.h"
+-#include <opencv2/imgproc/imgproc_c.h>
++#include <opencv2/imgproc.hpp>
+ 
+ GST_DEBUG_CATEGORY_STATIC (gst_cv_erode_debug);
+ #define GST_CAT_DEFAULT gst_cv_erode_debug
+diff --git a/ext/opencv/gstcvlaplace.cpp b/ext/opencv/gstcvlaplace.cpp
+index d4baed8..3bac160 100644
+--- a/ext/opencv/gstcvlaplace.cpp
++++ b/ext/opencv/gstcvlaplace.cpp
+@@ -59,7 +59,7 @@
+ #endif
+ 
+ #include "gstcvlaplace.h"
+-#include <opencv2/imgproc/imgproc_c.h>
++#include <opencv2/imgproc.hpp>
+ 
+ GST_DEBUG_CATEGORY_STATIC (gst_cv_laplace_debug);
+ #define GST_CAT_DEFAULT gst_cv_laplace_debug
+diff --git a/ext/opencv/gstcvsmooth.cpp b/ext/opencv/gstcvsmooth.cpp
+index baf0a10..a8d1c5a 100644
+--- a/ext/opencv/gstcvsmooth.cpp
++++ b/ext/opencv/gstcvsmooth.cpp
+@@ -60,7 +60,7 @@
+ 
+ #include "gst/opencv/gstopencvutils.h"
+ #include "gstcvsmooth.h"
+-#include <opencv2/imgproc/imgproc.hpp>
++#include <opencv2/imgproc.hpp>
+ 
+ 
+ GST_DEBUG_CATEGORY_STATIC (gst_cv_smooth_debug);
+diff --git a/ext/opencv/gstcvsobel.cpp b/ext/opencv/gstcvsobel.cpp
+index 8c329cb..9fc0079 100644
+--- a/ext/opencv/gstcvsobel.cpp
++++ b/ext/opencv/gstcvsobel.cpp
+@@ -59,7 +59,7 @@
+ #endif
+ 
+ #include "gstcvsobel.h"
+-#include <opencv2/imgproc/imgproc_c.h>
++#include <opencv2/imgproc.hpp>
+ 
+ GST_DEBUG_CATEGORY_STATIC (gst_cv_sobel_debug);
+ #define GST_CAT_DEFAULT gst_cv_sobel_debug
+diff --git a/ext/opencv/gstdewarp.h b/ext/opencv/gstdewarp.h
+index c8ab32a..3ef260d 100644
+--- a/ext/opencv/gstdewarp.h
++++ b/ext/opencv/gstdewarp.h
+@@ -47,8 +47,8 @@
+ 
+ #include <gst/gst.h>
+ #include <gst/opencv/gstopencvvideofilter.h>
+-#include <opencv2/core/core.hpp>
+-#include <opencv2/imgproc/imgproc.hpp>
++#include <opencv2/core.hpp>
++#include <opencv2/imgproc.hpp>
+ 
+ G_BEGIN_DECLS
+ /* #defines don't like whitespacey bits */
+diff --git a/ext/opencv/gstedgedetect.cpp b/ext/opencv/gstedgedetect.cpp
+index c3db499..3b8cfca 100644
+--- a/ext/opencv/gstedgedetect.cpp
++++ b/ext/opencv/gstedgedetect.cpp
+@@ -61,7 +61,7 @@
+ #endif
+ 
+ #include "gstedgedetect.h"
+-#include <opencv2/imgproc/imgproc_c.h>
++#include <opencv2/imgproc.hpp>
+ 
+ GST_DEBUG_CATEGORY_STATIC (gst_edge_detect_debug);
+ #define GST_CAT_DEFAULT gst_edge_detect_debug
+diff --git a/ext/opencv/gstedgedetect.h b/ext/opencv/gstedgedetect.h
+index af1cb8e..9248519 100644
+--- a/ext/opencv/gstedgedetect.h
++++ b/ext/opencv/gstedgedetect.h
+@@ -47,7 +47,7 @@
+ #define __GST_EDGE_DETECT_H__
+ 
+ #include <gst/opencv/gstopencvvideofilter.h>
+-#include <opencv2/core/core_c.h>
++#include <opencv2/core.hpp>
+ 
+ G_BEGIN_DECLS
+ /* #defines don't like whitespacey bits */
+diff --git a/ext/opencv/gstfaceblur.cpp b/ext/opencv/gstfaceblur.cpp
+index 4476e14..682d5e6 100644
+--- a/ext/opencv/gstfaceblur.cpp
++++ b/ext/opencv/gstfaceblur.cpp
+@@ -64,8 +64,7 @@
+ #include <vector>
+ 
+ #include "gstfaceblur.h"
+-#include <opencv2/imgproc/imgproc_c.h>
+-#include <opencv2/imgproc/imgproc.hpp>
++#include <opencv2/imgproc.hpp>
+ 
+ GST_DEBUG_CATEGORY_STATIC (gst_face_blur_debug);
+ #define GST_CAT_DEFAULT gst_face_blur_debug
+diff --git a/ext/opencv/gstfaceblur.h b/ext/opencv/gstfaceblur.h
+index 732276d..bf5a038 100644
+--- a/ext/opencv/gstfaceblur.h
++++ b/ext/opencv/gstfaceblur.h
+@@ -48,10 +48,10 @@
+ #define __GST_FACE_BLUR_H__
+ 
+ #include <gst/gst.h>
+-#include <opencv2/core/version.hpp>
+-
+ #include <gst/opencv/gstopencvvideofilter.h>
+-#include <opencv2/objdetect/objdetect.hpp>
++
++#include <opencv2/core.hpp>
++#include <opencv2/objdetect.hpp>
+ 
+ G_BEGIN_DECLS
+ /* #defines don't like whitespacey bits */
+diff --git a/ext/opencv/gstfacedetect.h b/ext/opencv/gstfacedetect.h
+index 03cf81c..52128e5 100644
+--- a/ext/opencv/gstfacedetect.h
++++ b/ext/opencv/gstfacedetect.h
+@@ -49,10 +49,10 @@
+ #define __GST_FACE_DETECT_H__
+ 
+ #include <gst/gst.h>
+-#include <opencv2/core/version.hpp>
+-#include <cv.h>
+ #include <gst/opencv/gstopencvvideofilter.h>
+-#include <opencv2/objdetect/objdetect.hpp>
++
++#include <opencv2/core.hpp>
++#include <opencv2/objdetect.hpp>
+ 
+ G_BEGIN_DECLS
+ /* #defines don't like whitespacey bits */
+diff --git a/ext/opencv/gstgrabcut.cpp b/ext/opencv/gstgrabcut.cpp
+index 2e3aa60..235206e 100644
+--- a/ext/opencv/gstgrabcut.cpp
++++ b/ext/opencv/gstgrabcut.cpp
+@@ -85,11 +85,8 @@
+ #endif
+ 
+ #include "gstgrabcut.h"
+-extern "C"
+-{
+-#include <opencv2/imgproc/imgproc_c.h>
+-}
+-#include <opencv2/imgproc/imgproc.hpp>
++#include <opencv2/imgproc.hpp>
++
+ GST_DEBUG_CATEGORY_STATIC (gst_grabcut_debug);
+ #define GST_CAT_DEFAULT gst_grabcut_debug
+ 
+diff --git a/ext/opencv/gstgrabcut.h b/ext/opencv/gstgrabcut.h
+index 885c54b..03aacd1 100644
+--- a/ext/opencv/gstgrabcut.h
++++ b/ext/opencv/gstgrabcut.h
+@@ -48,7 +48,7 @@
+ #include <gst/video/video.h>
+ #include <gst/video/gstvideofilter.h>
+ #include <gst/opencv/gstopencvvideofilter.h>
+-#include <opencv2/core/core_c.h>
++#include <opencv2/core.hpp>
+ 
+ 
+ 
+diff --git a/ext/opencv/gsthanddetect.h b/ext/opencv/gsthanddetect.h
+index 1137c5a..c719311 100644
+--- a/ext/opencv/gsthanddetect.h
++++ b/ext/opencv/gsthanddetect.h
+@@ -49,14 +49,14 @@
+ 
+ #include <gst/opencv/gstopencvvideofilter.h>
+ /* opencv */
+-#include <opencv2/core/version.hpp>
++#include <opencv2/core.hpp>
+ #ifdef HAVE_HIGHGUI_H
+ #include <highgui.h>            // includes highGUI definitions
+ #endif
+ #ifdef HAVE_OPENCV2_HIGHGUI_HIGHGUI_C_H
+-#include <opencv2/highgui/highgui_c.h>            // includes highGUI definitions
++#include <opencv2/highgui.hpp>            // includes highGUI definitions
+ #endif
+-#include <opencv2/objdetect/objdetect.hpp>
++#include <opencv2/objdetect.hpp>
+ 
+ G_BEGIN_DECLS
+ /* #defines don't like whitespacey bits */
+diff --git a/ext/opencv/gstmotioncells.h b/ext/opencv/gstmotioncells.h
+index 6f23b21..961d2e9 100644
+--- a/ext/opencv/gstmotioncells.h
++++ b/ext/opencv/gstmotioncells.h
+@@ -46,7 +46,7 @@
+ #define __GST_MOTIONCELLS_H__
+ 
+ #include <gst/opencv/gstopencvvideofilter.h>
+-#include <opencv2/core/core_c.h>
++#include <opencv2/core.hpp>
+ #include "motioncells_wrapper.h"
+ 
+ G_BEGIN_DECLS
+diff --git a/ext/opencv/gstretinex.cpp b/ext/opencv/gstretinex.cpp
+index 9ad9325..d7f4c9d 100644
+--- a/ext/opencv/gstretinex.cpp
++++ b/ext/opencv/gstretinex.cpp
+@@ -63,8 +63,7 @@
+ #endif
+ 
+ #include "gstretinex.h"
+-#include <opencv2/imgproc/imgproc_c.h>
+-#include <opencv2/imgproc/imgproc.hpp>
++#include <opencv2/imgproc.hpp>
+ 
+ GST_DEBUG_CATEGORY_STATIC (gst_retinex_debug);
+ #define GST_CAT_DEFAULT gst_retinex_debug
+diff --git a/ext/opencv/gstretinex.h b/ext/opencv/gstretinex.h
+index 716829b..1f2a6d1 100644
+--- a/ext/opencv/gstretinex.h
++++ b/ext/opencv/gstretinex.h
+@@ -44,7 +44,7 @@
+ #ifndef __GST_RETINEX_H__
+ #define __GST_RETINEX_H__
+ 
+-#include <opencv2/core/core_c.h>
++#include <opencv2/core.hpp>
+ 
+ #include <gst/opencv/gstopencvvideofilter.h>
+ 
+diff --git a/ext/opencv/gstsegmentation.cpp b/ext/opencv/gstsegmentation.cpp
+index d52476e..00568a6 100644
+--- a/ext/opencv/gstsegmentation.cpp
++++ b/ext/opencv/gstsegmentation.cpp
+@@ -91,7 +91,7 @@
+ #endif
+ 
+ #include "gstsegmentation.h"
+-#include <opencv2/imgproc/imgproc_c.h>
++#include <opencv2/imgproc.hpp>
+ 
+ GST_DEBUG_CATEGORY_STATIC (gst_segmentation_debug);
+ #define GST_CAT_DEFAULT gst_segmentation_debug
+diff --git a/ext/opencv/gstskindetect.cpp b/ext/opencv/gstskindetect.cpp
+index e2fcb59..4d31bc3 100644
+--- a/ext/opencv/gstskindetect.cpp
++++ b/ext/opencv/gstskindetect.cpp
+@@ -59,7 +59,7 @@
+ #endif
+ 
+ #include "gstskindetect.h"
+-#include <opencv2/imgproc/imgproc_c.h>
++#include <opencv2/imgproc.hpp>
+ 
+ GST_DEBUG_CATEGORY_STATIC (gst_skin_detect_debug);
+ #define GST_CAT_DEFAULT gst_skin_detect_debug
+diff --git a/ext/opencv/gsttemplatematch.h b/ext/opencv/gsttemplatematch.h
+index f27d9f3..a51ef9f 100644
+--- a/ext/opencv/gsttemplatematch.h
++++ b/ext/opencv/gsttemplatematch.h
+@@ -52,7 +52,7 @@
+ #include <highgui.h>            // includes highGUI definitions
+ #endif
+ #ifdef HAVE_OPENCV2_HIGHGUI_HIGHGUI_C_H
+-#include <opencv2/highgui/highgui_c.h>            // includes highGUI definitions
++#include <opencv2/highgui.hpp>            // includes highGUI definitions
+ #endif
+ 
+ G_BEGIN_DECLS
+-- 
+2.7.4
+
