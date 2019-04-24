@@ -17,7 +17,7 @@ SRCREV = "bc62c9d0c590dfbc801bf6b10176c3a8b6a39d98"
 
 # There's only hardfp version available
 inherit tune_features_check
-REQUIRED_TUNE_FEATURES = "arm armv7a vfp thumb callconvention-hard"
+REQUIRED_TUNE_FEATURES = "arm vfp thumb callconvention-hard"
 
 TARGET_PRODUCT_omap-a15 = "jacinto6evm"
 TARGET_PRODUCT_ti33x = "ti335x"
