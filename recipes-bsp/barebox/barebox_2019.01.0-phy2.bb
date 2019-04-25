@@ -86,7 +86,7 @@ if [ -f "${oftree}" ]; then
 fi
 
 nfsroot="/nfsroot/${global.hostname}"
-bootargs-ip
+ip_route_get -b ${global.net.server} global.linux.bootargs.dyn.ip
 global.linux.bootargs.dyn.root="root=/dev/nfs nfsroot=$nfsroot,vers=3,udp"
 """)
     env_add(d, "boot/spi",
