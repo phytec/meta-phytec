@@ -318,6 +318,10 @@ python do_env_append_phyboard-segin-imx6ul-3() {
     env_rm(d, "nv/bootchooser.state_prefix")
     env_rm(d, "bin/rauc_flash_nand_from_mmc")
     env_rm(d, "bin/rauc_flash_nand_from_tftp")
+
+    #Default CMA size (128 MB) is too big for the 256 MB RAM so it has to be
+    #reduced to 64 MB.
+    env_add(d, "nv/linux.bootargs.cma", "cma=64M\n")
 }
 
 python do_env_append_phyboard-segin-imx6ul-5() {
