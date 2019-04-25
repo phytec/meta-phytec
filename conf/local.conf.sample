@@ -98,7 +98,7 @@ EXTRA_IMAGE_FEATURES += "debug-tweaks"
 
 # We disable qt widgets per default to save about 10 MB of storage. If
 # you need qt widget support, you can enable it with this line
-#PACKAGECONFIG_append_pn-qtbase = " widgets"
+#DISTRO_FEATURES += "qtwidgets"
 
 # qml-debug: This enables qml logging and profiling capabilities.
 # It needs to be turned off for production use.
