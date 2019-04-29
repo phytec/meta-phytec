@@ -1,0 +1,32 @@
+From 3000eaf9cdff9874fac1f13fe83395882ec65a99 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Stefan=20M=C3=BCller-Klieser?= <s.mueller-klieser@phytec.de>
+Date: Mon, 29 Apr 2019 17:56:13 +0200
+Subject: [PATCH] Makefile: fix build error for clean task
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+With new Make versions, including missing rule files is an error. Also
+improve rm handling.
+
+Signed-off-by: Stefan Müller-Klieser <s.mueller-klieser@phytec.de>
+---
+ Makefile | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 3043ab5401f4..ab8032cd14fc 100644
+--- a/Makefile
++++ b/Makefile
+@@ -26,10 +26,4 @@ $(TARGET):$(OBJ)
+ 
+ .PHONY: clean
+ clean :
+-	rm -f $(OBJ)
+-
+-#
+-# include the Rules
+-#
+-include ../make.rules
+-
++	$(RM) $(OBJ)
