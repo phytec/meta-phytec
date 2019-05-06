@@ -81,7 +81,7 @@ kconfig_do_configure() {
     # with this workaround.
     kconfig_set LOCALVERSION_AUTO n
 
-    cml1_do_configure
+    oe_runmake -C ${S} ${CONFIG_COMMAND}
 }
 EXPORT_FUNCTIONS do_configure
 addtask configure after do_unpack do_patch before do_compile
