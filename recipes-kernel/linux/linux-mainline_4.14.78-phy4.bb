@@ -14,9 +14,6 @@ python () {
 
 GIT_URL = "git://git.phytec.de/${PN}"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
-SRC_URI_append = "\
-    ${@oe.utils.conditional('DEBUG_BUILD','1','file://debugging.cfg','',d)} \
-"
 SRC_URI_append_ti33x = "\
     ${@bb.utils.contains('MACHINE_FEATURES', 'sgx', 'file://preempt_voluntary.cfg', '', d)} \
     ${@bb.utils.contains('MACHINE_FEATURES', 'suspend', 'file://am335x-cm3.cfg', '', d)} \
