@@ -276,10 +276,10 @@ echo "Format /dev/nand0.root"
 ubiformat -q /dev/nand0.root
 ubiattach /dev/nand0.root
 ubimkvol -t static /dev/nand0.root.ubi kernel0 8M
-ubimkvol -t static /dev/nand0.root.ubi kernel1 8M
 ubimkvol -t static /dev/nand0.root.ubi oftree0 1M
-ubimkvol -t static /dev/nand0.root.ubi oftree1 1M
 ubimkvol /dev/nand0.root.ubi root0 244M
+ubimkvol -t static /dev/nand0.root.ubi kernel1 8M
+ubimkvol -t static /dev/nand0.root.ubi oftree1 1M
 ubimkvol /dev/nand0.root.ubi root1 0
 
 ubidetach 0
