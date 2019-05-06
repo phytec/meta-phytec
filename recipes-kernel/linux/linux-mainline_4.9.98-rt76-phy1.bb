@@ -14,9 +14,6 @@ python () {
 
 GIT_URL = "git://git.phytec.de/${PN}"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
-SRC_URI_append = "\
-    ${@oe.utils.conditional('DEBUG_BUILD','1','file://debugging.cfg','',d)} \
-"
 
 PR = "${INC_PR}.1"
 
