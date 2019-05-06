@@ -107,7 +107,7 @@ global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=root rootfstype=ubifs"
     env_add(d, "nv/dhcp.vendor_id", "phytec")
 
     #NAND boot scripts for RAUC
-    env_add(d, "boot/nand0",
+    env_add(d, "boot/system0",
 """#!/bin/sh
 
 [ -e /env/config-expansions ] && /env/config-expansions
@@ -119,7 +119,7 @@ global.bootm.oftree="/dev/nand0.root.ubi.oftree0"
 
 global.linux.bootargs.dyn.root="root=ubi0:root0 ubi.mtd=root rootfstype=ubifs"
 """)
-    env_add(d, "boot/nand1",
+    env_add(d, "boot/system1",
 """#!/bin/sh
 
 [ -e /env/config-expansions ] && /env/config-expansions
@@ -132,8 +132,8 @@ global.bootm.oftree="/dev/nand0.root.ubi.oftree1"
 global.linux.bootargs.dyn.root="root=ubi0:root1 ubi.mtd=root rootfstype=ubifs"
 """)
     env_add(d, "nv/bootchooser.targets", """system0 system1""")
-    env_add(d, "nv/bootchooser.system0.boot", """nand0""")
-    env_add(d, "nv/bootchooser.system1.boot", """nand1""")
+    env_add(d, "nv/bootchooser.system0.boot", """system0""")
+    env_add(d, "nv/bootchooser.system1.boot", """system1""")
     env_add(d, "nv/bootchooser.state_prefix", """state.bootstate""")
 }
 
@@ -310,8 +310,8 @@ cp /mnt/tftp/root.ubifs /dev/nand0.root.ubi.root1
 
 #No RAUC support for the low-cost Segin due to small NAND
 python do_env_append_phyboard-segin-imx6ul-3() {
-    env_rm(d, "boot/nand0")
-    env_rm(d, "boot/nand1")
+    env_rm(d, "boot/system0")
+    env_rm(d, "boot/system1")
     env_rm(d, "nv/bootchooser.targets")
     env_rm(d, "nv/bootchooser.system0.boot")
     env_rm(d, "nv/bootchooser.system1.boot")
@@ -357,8 +357,8 @@ python do_env_append_phyboard-segin-imx6ul-5() {
 
 #Currently there is no rauc support for eMMC
 python do_env_append_phyboard-segin-imx6ul-7() {
-    env_rm(d, "boot/nand0")
-    env_rm(d, "boot/nand1")
+    env_rm(d, "boot/system0")
+    env_rm(d, "boot/system1")
     env_rm(d, "nv/bootchooser.targets")
     env_rm(d, "nv/bootchooser.system0.boot")
     env_rm(d, "nv/bootchooser.system1.boot")
