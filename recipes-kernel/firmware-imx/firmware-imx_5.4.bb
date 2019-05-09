@@ -48,3 +48,5 @@ RDEPENDS_${PN}-vpu-mx6q += "${PN}-freescale-imx-license"
 LICENSE_${PN}-vpu-mx6dl = "LICENCE.freescale-v12-march-2016"
 FILES_${PN}-vpu-mx6dl = "/lib/firmware/vpu_fw_imx6d.bin"
 RDEPENDS_${PN}-vpu-mx6dl += "${PN}-freescale-imx-license"
+
+COMPATIBLE_MACHINE = "phy.*imx6.*"
