@@ -29,3 +29,4 @@ PREFERRED_PROVIDER_virtual/libgl ?= "mesa"
 # Firmware files
 MACHINE_EXTRA_RRECOMMENDS_append_mx6q = " firmware-imx-vpu-mx6q"
 MACHINE_EXTRA_RRECOMMENDS_append_mx6dl = " firmware-imx-vpu-mx6dl"
+PREFERRED_VERSION_firmware-imx = "5.4"
