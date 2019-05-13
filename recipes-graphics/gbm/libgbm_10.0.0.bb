@@ -10,7 +10,9 @@ BRANCH = "next"
 
 SRCREV = "96f37555c7e82a417b02051661377b10e6b3966e"
 
-SRC_URI = "git://git.ti.com/glsdk/libgbm.git;protocol=git;branch=${BRANCH}"
+SRC_URI = "git://git.ti.com/glsdk/libgbm.git;protocol=git;branch=${BRANCH} \
+           file://0001-gbm.c-include-sys-sysmacros.h-for-minor-major-in-new.patch \
+"
 
 S = "${WORKDIR}/git"
 COMPATIBLE_MACHINE = "ti33x"
