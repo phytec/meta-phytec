@@ -20,6 +20,12 @@ DISTRO ?= "yogurt"
 # build artifacts are deployed here
 DEPLOY_DIR = "${TOPDIR}/deploy"
 
+# enable bitbakes git shallow functionality: this reduces download volume
+# from 7.3G to 1.6 G as of sumo. If you need the git history of a project,
+# you can run a "git remote update" in the tmp idr, as the remotes are
+# correctly specified
+BB_GIT_SHALLOW = "1"
+
 # Select configuration UI for linux and barebox recipe. The openembedded
 # default is 'menuconfig', 'nconfig' has more features.
 # busybox only supports menuconfig
