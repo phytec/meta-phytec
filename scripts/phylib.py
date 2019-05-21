@@ -84,6 +84,7 @@ class Sourcecode(object):
         # Interface
         self.machines = Vividict()
         self.bsp_dir = ""
+        self._poky_version = None
 
         try:
             #v2 Implementation
@@ -93,6 +94,28 @@ class Sourcecode(object):
         except (IOError, OSError) as e:
             print("Could not find necessary file: ", e)
             raise SystemExit
+
+    @property
+    def poky_version(self):
+        if self._poky_version:
+            return self._poky_version
+        p = subprocess.Popen(["git", "tag", "-l", "yocto-*", "--merged", "HEAD"],
+                            cwd=os.path.join(self.bsp_dir, "sources", "poky"),
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        (out, error) = p.communicate()
+        if p.returncode != 0:
+            raise Exception("ERROR in git: %d '%s'" % (p.returncode, error))
+        taglist = out.decode('utf-8').split('\n')
+        taglist_sorted = []
+        for t in taglist:
+            t = t.lstrip('yocto-')
+            t = [e.split('_') for e in t.split('.')]
+            # flatten list
+            t = [item for sublist in t for item in sublist]
+            taglist_sorted.append(tuple(t))
+        taglist_sorted.sort()
+        self._poky_version = taglist_sorted[-1]
+        return self._poky_version
 
     def search_for_bsp_dir(self):
         path = os.path.normpath(os.getcwd())
