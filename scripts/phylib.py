@@ -108,7 +108,7 @@ class Sourcecode(object):
         return os.path.join(self.bsp_dir, '.repo')
 
     def init_machines(self):
-        for root, dirs, files in os.walk(self.bsp_dir):
+        for root, dirs, files in os.walk(os.path.join(self.bsp_dir, "sources")):
             for name in files:
                 if name.endswith('.conf') and root.endswith('conf/machine'):
                     machname = os.path.splitext(name)[0]
