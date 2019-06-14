@@ -1,15 +1,15 @@
 # Copyright (C) 2017 PHYTEC Messtechnik GmbH,
-# Author: Wadim Egorov <w.egorov@phytec.de>
+# Author: Daniel Schultz <d.schultz@phytec.de>
 
 inherit phygittag
 inherit buildinfo
 include linux-common.inc
 
-#Skip this recipe if DISTRO_FEATURES contains the PREEMPT-RT value and
-# a kernel with real-time is desired
+#Skip this recipe if DISTRO_FEATURES doesn't contain the PREEMPT-RT value and
+# a kernel without real-time is desired
 python () {
-    if 'preempt-rt' in d.getVar("DISTRO_FEATURES"):
-        raise bb.parse.SkipPackage("Disable 'preempt-rt' in DISTRO_FEATURES!")
+    if not 'preempt-rt' in d.getVar("DISTRO_FEATURES"):
+        raise bb.parse.SkipPackage("Enable 'preempt-rt' in DISTRO_FEATURES!")
 }
 
 GIT_URL = "git://git.phytec.de/${PN}"
@@ -18,27 +18,23 @@ SRC_URI_append = "\
     ${@oe.utils.conditional('DEBUG_BUILD','1','file://debugging.cfg','',d)} \
 "
 SRC_URI_append_ti33x = "\
-    ${@bb.utils.contains('MACHINE_FEATURES', 'sgx', 'file://preempt_voluntary.cfg', '', d)} \
-    ${@bb.utils.contains('MACHINE_FEATURES', 'suspend', 'file://am335x-cm3.cfg', '', d)} \
     ${@bb.utils.contains('MACHINE_FEATURES', '3g', 'file://3g.cfg', '', d)} \
+    file://blacklist-cpufreq_dt.cfg \
 "
 
 PR = "${INC_PR}.0"
 
-RDEPENDS_kernel-modules_rk3288 += "cryptodev-module"
 RDEPENDS_kernel-modules_ti33x += "\
-    ${@bb.utils.contains('MACHINE_FEATURES', 'suspend', 'amx3-cm3', '', d)} \
-    ${@bb.utils.contains('MACHINE_FEATURES', 'sgx', 'ti-sgx-ddk-km', '', d)} \
     cryptodev-module \
 "
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "3a9f8a871141986912d2d56995db386c2c158c3f"
+SRCREV = "c32940b2fae2eea91f0ec50886310fe92b561236"
 
 S = "${WORKDIR}/git"
 
-INTREE_DEFCONFIG_ti33x = "am335x_phytec_defconfig"
+INTREE_DEFCONFIG_ti33x = "am335x_rt_phytec_defconfig"
 
 COMPATIBLE_MACHINE = "beagleboneblack-1"
 COMPATIBLE_MACHINE .= "|phyboard-wega-am335x-1"
