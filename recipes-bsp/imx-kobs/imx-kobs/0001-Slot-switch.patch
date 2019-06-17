@@ -1,11 +1,23 @@
-commit ab10d292ef6cafa78488832aa342febf90987e86
-Author: Bernd Westermann <bernd.westermann@it-west.de>
-Date:   Mon Jan 21 20:46:33 2019 +0100
+From a773c75fcb67b3ec6da22b9c0147da7f27d951fe Mon Sep 17 00:00:00 2001
+From: Bernd Westermann <bernd.westermann@it-west.de>
+Date: Mon, 21 Jan 2019 20:46:33 +0100
+Subject: [PATCH] recipes-bsp: imx-kobs: Add barebox compatible slot switch
 
-    test
+commit ab10d292ef6cafa78488832aa342febf90987e86
+
+Adds switch to select on of the two firmware slots. This allow to safely
+update on slot while the other slot is still valid. Behavior taken from
+barebox.
+
+Signed-off-by: Jan Remmet <j.remmet@phytec.de>
+---
+ src/main.c |  4 ++++
+ src/mtd.c  | 68 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++---
+ src/mtd.h  |  1 +
+ 3 files changed, 70 insertions(+), 3 deletions(-)
 
 diff --git a/src/main.c b/src/main.c
-index 74d0cb5..27f4f93 100644
+index 74d0cb55d716..27f4f938e5a8 100644
 --- a/src/main.c
 +++ b/src/main.c
 @@ -82,6 +82,7 @@ void usage(void)
@@ -27,10 +39,20 @@ index 74d0cb5..27f4f93 100644
  	}
  
 diff --git a/src/mtd.c b/src/mtd.c
-index d5e6d96..517da31 100644
+index d5e6d960f12b..df185f048e9f 100644
 --- a/src/mtd.c
 +++ b/src/mtd.c
-@@ -1392,6 +1392,43 @@ void dump(const void *data, int size)
+@@ -727,7 +727,8 @@ int parse_nfc_geometry(struct mtd_data *md)
+ 	if (!plat_config_data->m_u32UseNfcGeo) {
+ 		/* fsl kernel patch provides bch_geometry via debugfs */
+ 		if (!(node = fopen(dbg_geometry_node_path, "r"))) {
+-			fprintf(stderr, "Cannot open BCH geometry node: \"%s\"\n",
++			fprintf(stderr, "Cannot open BCH geometry node: \"%s\""
++				        ", but we can calculate it ourselves.\n",
+ 				dbg_geometry_node_path);
+ 			return cal_nfc_geometry(md);
+ 		}
+@@ -1392,6 +1393,43 @@ void dump(const void *data, int size)
  	printf("\n");
  }
  
@@ -74,7 +96,7 @@ index d5e6d96..517da31 100644
  void *mtd_load_boot_structure(struct mtd_data *md, int chip, loff_t *ofsp, loff_t end,
  		uint32_t magic1, uint32_t magic2, uint32_t magic3, int use_ecc,
  		int magic_offset)
-@@ -2059,6 +2096,7 @@ static int fill_fcb(struct mtd_data *md, FILE *fp)
+@@ -2059,6 +2097,7 @@ static int fill_fcb(struct mtd_data *md, FILE *fp)
  	unsigned int  boot_stream_size_in_blocks;
  	unsigned int  boot_stream1_pos;
  	unsigned int  boot_stream2_pos;
@@ -82,7 +104,7 @@ index d5e6d96..517da31 100644
  
  	if ((cfg->search_area_size_in_bytes * 2) > mtd_size(md)) {
  		fprintf(stderr, "mtd: mtd size too small\n"
-@@ -2169,6 +2207,21 @@ static int fill_fcb(struct mtd_data *md, FILE *fp)
+@@ -2169,6 +2208,21 @@ static int fill_fcb(struct mtd_data *md, FILE *fp)
  			boot_stream2_pos + max_boot_stream_size_in_bytes,
  			boot_stream2_pos + boot_stream_size_in_bytes);
  
@@ -97,14 +119,14 @@ index d5e6d96..517da31 100644
 +			extra_boot_stream1_pos = extra_boot_stream2_pos;
 +			extra_boot_stream2_pos = boot_stream_pos;
 +		} else {
-+			printf("FW slot switch to LOW!!!\n");
++			vp(md,"FW slot switch to LOW!!!\n");
 +		}
 +	}
 +
  	memset(fcb, 0, sizeof(*fcb));
  
  	fcb->m_u32FingerPrint	= FCB_FINGERPRINT;
-@@ -3021,11 +3074,19 @@ int write_boot_stream(struct mtd_data *md, FILE *fp)
+@@ -3021,11 +3075,19 @@ int write_boot_stream(struct mtd_data *md, FILE *fp)
  		if (i == 0) {
  			startpage = fcb->m_u32Firmware1_startingPage;
  			size      = fcb->m_u32PagesInFirmware1;
@@ -127,7 +149,7 @@ index d5e6d96..517da31 100644
  
  		start = startpage * mtd_writesize(md);
 diff --git a/src/mtd.h b/src/mtd.h
-index 31e507b..c3e1b8b 100644
+index 31e507b7e37f..c3e1b8bcc259 100644
 --- a/src/mtd.h
 +++ b/src/mtd.h
 @@ -47,6 +47,7 @@
