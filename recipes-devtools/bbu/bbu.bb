@@ -12,7 +12,7 @@ S = "${WORKDIR}"
 
 # Depends on tools like hexdump, tr, grep, awk which are part of our
 # busybox configuration
-RDEPENDS_${PN} = "busybox mtd-utils"
+RDEPENDS_${PN} = "busybox mtd-utils barebox-targettools"
 RDEPENDS_${PN}_append_imx = " imx-kobs"
 
 do_install() {
