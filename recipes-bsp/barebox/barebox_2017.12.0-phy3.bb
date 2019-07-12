@@ -537,8 +537,8 @@ ubiupdatevol /dev/nand0.root.ubi.kernel  /mnt/mmc0.0/zImage
 ubiupdatevol /dev/nand0.root.ubi.kernel2 /mnt/mmc0.0/zImage
 ubiupdatevol /dev/nand0.root.ubi.oftree  /mnt/mmc0.0/oftree
 ubiupdatevol /dev/nand0.root.ubi.oftree2 /mnt/mmc0.0/oftree
-cp /mnt/mmc0.0/*.ubifs /dev/nand0.root.ubi.root
-cp /mnt/mmc0.0/*.ubifs /dev/nand0.root.ubi.root2
+cp /mnt/mmc0.0/root.ubifs /dev/nand0.root.ubi.root
+cp /mnt/mmc0.0/root.ubifs /dev/nand0.root.ubi.root2
 """)
     env_add(d, "bin/init_flash_from_tftp",
 """#!/bin/sh
@@ -548,8 +548,8 @@ ubiupdatevol /dev/nand0.root.ubi.kernel  /mnt/tftp/zImage
 ubiupdatevol /dev/nand0.root.ubi.kernel2 /mnt/tftp/zImage
 ubiupdatevol /dev/nand0.root.ubi.oftree  /mnt/tftp/oftree
 ubiupdatevol /dev/nand0.root.ubi.oftree2 /mnt/tftp/oftree
-cp /mnt/tftp/*.ubifs /dev/nand0.root.ubi.root
-cp /mnt/tftp/*.ubifs /dev/nand0.root.ubi.root2
+cp /mnt/tftp/root.ubifs /dev/nand0.root.ubi.root
+cp /mnt/tftp/root.ubifs /dev/nand0.root.ubi.root2
 """)
 }
 
