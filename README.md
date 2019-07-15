@@ -30,7 +30,7 @@ Maintainer
 ==========
 
 M:  Stefan Müller-Klieser <s.mueller-klieser@phytec.de>  
-M:  Wadim Egorov <w.egorov@phytec.de>
+M:  Norbert Wesp <n.wesp@phytec.de>
 
 Dependencies
 ============
