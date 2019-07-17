@@ -536,7 +536,8 @@ of_fixup_status /soc/aips-bus@02000000/pwm@02088000/
 
 INTREE_DEFCONFIG = "imx_v7_defconfig"
 
-COMPATIBLE_MACHINE  =  "phyflex-imx6-1"
+COMPATIBLE_MACHINE  = "^("
+COMPATIBLE_MACHINE .=  "phyflex-imx6-1"
 COMPATIBLE_MACHINE .= "|phyflex-imx6-2"
 COMPATIBLE_MACHINE .= "|phyflex-imx6-3"
 COMPATIBLE_MACHINE .= "|phyflex-imx6-4"
@@ -566,3 +567,4 @@ COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-12"
 COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-13"
 
 COMPATIBLE_MACHINE .= "|phyboard-segin-imx6ul-2"
+COMPATIBLE_MACHINE .= ")$"
