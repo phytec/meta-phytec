@@ -41,13 +41,15 @@
 #    # NOTE: Keep version in filename in sync with commit id!
 #    SRCREV = "57b87aedbf0b6ae0eb0b858dd0c83411097c777a"
 #
-#    COMPATIBLE_MACHINE  =  "phyflex-imx6-1"
+#    COMPATIBLE_MACHINE  = "^("
+#    COMPATIBLE_MACHINE .=  "phyflex-imx6-1"
 #    COMPATIBLE_MACHINE .= "|phyflex-imx6-2"
 #    COMPATIBLE_MACHINE .= "|phycard-imx6-1"
 #    COMPATIBLE_MACHINE .= "|phyboard-alcor-imx6-1"
 #    COMPATIBLE_MACHINE .= "|phyboard-subra-imx6-1"
 #    COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-1"
 #    COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-2"
+#    COMPATIBLE_MACHINE .= ")$"
 #
 # External assumptions and constraints:
 #

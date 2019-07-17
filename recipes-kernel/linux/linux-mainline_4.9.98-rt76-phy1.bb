@@ -25,4 +25,6 @@ S = "${WORKDIR}/git"
 
 INTREE_DEFCONFIG_rk3288 = "rk3288_rt_phytec_defconfig"
 
-COMPATIBLE_MACHINE = "phycore-rk3288-3"
+COMPATIBLE_MACHINE  = "^("
+COMPATIBLE_MACHINE .= "phycore-rk3288-3"
+COMPATIBLE_MACHINE .= ")$"

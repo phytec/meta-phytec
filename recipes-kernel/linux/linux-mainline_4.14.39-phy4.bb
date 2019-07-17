@@ -18,7 +18,8 @@ S = "${WORKDIR}/git"
 
 INTREE_DEFCONFIG = "imx_v6_v7_defconfig"
 
-COMPATIBLE_MACHINE  =  "phyflex-imx6-1"
+COMPATIBLE_MACHINE  = "^("
+COMPATIBLE_MACHINE .=  "phyflex-imx6-1"
 COMPATIBLE_MACHINE .= "|phyflex-imx6-2"
 COMPATIBLE_MACHINE .= "|phyflex-imx6-3"
 COMPATIBLE_MACHINE .= "|phyflex-imx6-4"
@@ -44,3 +45,4 @@ COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-14"
 COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-15"
 
 COMPATIBLE_MACHINE .= "|phyboard-nunki-imx6-1"
+COMPATIBLE_MACHINE .= ")$"
