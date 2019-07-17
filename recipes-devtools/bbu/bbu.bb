@@ -13,6 +13,7 @@ S = "${WORKDIR}"
 # Depends on tools like hexdump, tr, grep, awk which are part of our
 # busybox configuration
 RDEPENDS_${PN} = "busybox mtd-utils"
+RDEPENDS_${PN}_append_mx6 = " imx-kobs"
 
 do_install() {
 	install -d ${D}${bindir}
@@ -21,4 +22,4 @@ do_install() {
 
 FILES_${PN} = "${bindir}"
 
-COMPATIBLE_MACHINE = "ti33x"
+COMPATIBLE_MACHINE = "(ti33x|imx)"
