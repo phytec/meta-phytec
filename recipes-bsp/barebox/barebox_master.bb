@@ -47,7 +47,8 @@ fi
 
 INTREE_DEFCONFIG_ti33x = "am335x_defconfig"
 
-COMPATIBLE_MACHINE = "beagleboneblack-1"
+COMPATIBLE_MACHINE  = "^("
+COMPATIBLE_MACHINE .=  "beagleboneblack-1"
 COMPATIBLE_MACHINE .= "|phyboard-wega-am335x-1"
 COMPATIBLE_MACHINE .= "|phyboard-wega-am335x-2"
 COMPATIBLE_MACHINE .= "|phyboard-wega-am335x-3"
@@ -75,3 +76,4 @@ COMPATIBLE_MACHINE .= "|phyboard-segin-imx6ul-3"
 COMPATIBLE_MACHINE .= "|phyboard-segin-imx6ul-4"
 COMPATIBLE_MACHINE .= "|phyboard-segin-imx6ul-5"
 COMPATIBLE_MACHINE .= "|phyboard-segin-imx6ul-6"
+COMPATIBLE_MACHINE .= ")$"
