@@ -21,6 +21,9 @@ S = "${WORKDIR}/git"
 BOOT_TOOLS = "imx-boot-tools"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
-COMPATIBLE_MACHINE = "phycore-imx8-1"
+
+COMPATIBLE_MACHINE  = "^("
+COMPATIBLE_MACHINE .= "phycore-imx8-1"
+COMPATIBLE_MACHINE .= ")$"
 
 UBOOT_NAME_mx8 = "u-boot-${MACHINE}.bin-${UBOOT_CONFIG}"

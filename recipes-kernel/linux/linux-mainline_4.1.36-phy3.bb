@@ -16,7 +16,8 @@ SRCREV = "2daddfb77a87b8353fdd06ce548c5ae8ca5f9c0a"
 
 S = "${WORKDIR}/git"
 
-COMPATIBLE_MACHINE  =  "phyflex-imx6-1"
+COMPATIBLE_MACHINE  = "^("
+COMPATIBLE_MACHINE .=  "phyflex-imx6-1"
 COMPATIBLE_MACHINE .= "|phyflex-imx6-2"
 COMPATIBLE_MACHINE .= "|phyflex-imx6-3"
 COMPATIBLE_MACHINE .= "|phyflex-imx6-4"
@@ -44,6 +45,8 @@ COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-10"
 COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-11"
 COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-12"
 COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-13"
+COMPATIBLE_MACHINE .= ")$"
+
 SRC_URI_append_phyboard-mira-imx6-13 = " \
     file://0001-mira-peb-eval-01-mux-gpios-and-do-not-load-driver.patch \
     file://0002-phycore-som-add-spi-port-on-the-expansion-connector.patch \

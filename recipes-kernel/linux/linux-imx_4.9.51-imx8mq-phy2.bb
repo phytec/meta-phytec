@@ -19,4 +19,6 @@ S = "${WORKDIR}/git"
 
 INTREE_DEFCONFIG = "defconfig"
 
-COMPATIBLE_MACHINE = "phyboard-polaris-imx8m-2"
+COMPATIBLE_MACHINE  = "^("
+COMPATIBLE_MACHINE .= "phyboard-polaris-imx8m-2"
+COMPATIBLE_MACHINE .= ")$"

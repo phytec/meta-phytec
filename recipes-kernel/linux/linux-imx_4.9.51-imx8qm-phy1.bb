@@ -18,4 +18,6 @@ S = "${WORKDIR}/git"
 
 INTREE_DEFCONFIG = "defconfig"
 
-COMPATIBLE_MACHINE = "phycore-imx8-1"
+COMPATIBLE_MACHINE  = "^("
+COMPATIBLE_MACHINE .= "phycore-imx8-1"
+COMPATIBLE_MACHINE .= ")$"

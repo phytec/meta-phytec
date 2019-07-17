@@ -16,5 +16,7 @@ SRCREV = "eaa22a23edd09f12aafb6a9e0bc3353632250f49"
 
 S = "${WORKDIR}/git"
 
-COMPATIBLE_MACHINE = "phyboard-segin-imx6ul-2"
+COMPATIBLE_MACHINE  = "^("
+COMPATIBLE_MACHINE .=  "phyboard-segin-imx6ul-2"
 COMPATIBLE_MACHINE .= "|phyboard-segin-imx6ul-3"
+COMPATIBLE_MACHINE .= ")$"

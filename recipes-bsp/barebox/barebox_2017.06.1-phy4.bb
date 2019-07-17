@@ -221,7 +221,8 @@ global.linux.bootargs.dyn.root="root=/dev/mmcblk1p2 rootflags='data=journal'"
 """)
 }
 
-COMPATIBLE_MACHINE = "beagleboneblack-1"
+COMPATIBLE_MACHINE  = "^("
+COMPATIBLE_MACHINE .=  "beagleboneblack-1"
 COMPATIBLE_MACHINE .= "|phyboard-wega-am335x-1"
 COMPATIBLE_MACHINE .= "|phyboard-wega-am335x-2"
 COMPATIBLE_MACHINE .= "|phyboard-wega-am335x-3"
@@ -241,3 +242,4 @@ COMPATIBLE_MACHINE .= "|phycore-r2-am335x-3"
 COMPATIBLE_MACHINE .= "|phycore-r2-am335x-4"
 COMPATIBLE_MACHINE .= "|phycore-r2-am335x-5"
 COMPATIBLE_MACHINE .= "|phycore-emmc-am335x-1"
+COMPATIBLE_MACHINE .= ")$"

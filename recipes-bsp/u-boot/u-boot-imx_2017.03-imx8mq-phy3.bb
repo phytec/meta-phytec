@@ -47,6 +47,9 @@ do_deploy_append_mx8mq () {
 }
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
-COMPATIBLE_MACHINE = "phyboard-polaris-imx8m-2"
+
+COMPATIBLE_MACHINE  = "^("
+COMPATIBLE_MACHINE .= "phyboard-polaris-imx8m-2"
+COMPATIBLE_MACHINE .= ")$"
 
 UBOOT_NAME_mx8 = "u-boot-${MACHINE}.bin-${UBOOT_CONFIG}"

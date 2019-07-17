@@ -18,7 +18,9 @@ SRC_URI += " file://0001-compiler-.h-sync-include-linux-compiler-.h-with-Linu.pa
 
 PR = "r0"
 
-COMPATIBLE_MACHINE = "phycore-rk3288-3"
+COMPATIBLE_MACHINE  = "^("
+COMPATIBLE_MACHINE .= "phycore-rk3288-3"
+COMPATIBLE_MACHINE .= ")$"
 
 UBOOT_SUFFIX = "img"
 UBOOT_BINARY = "u-boot-dtb.${UBOOT_SUFFIX}"
