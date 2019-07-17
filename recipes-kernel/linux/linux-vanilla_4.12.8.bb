@@ -19,7 +19,9 @@ S = "${WORKDIR}/git"
 
 INTREE_DEFCONFIG = "multi_v7_defconfig"
 
-COMPATIBLE_MACHINE  =  "phyboard-wega-am335x-1"
+COMPATIBLE_MACHINE  = "^("
+COMPATIBLE_MACHINE .=  "phyboard-wega-am335x-1"
 COMPATIBLE_MACHINE .= "|phyboard-wega-am335x-2"
 COMPATIBLE_MACHINE .= "|phycore-am335x-1"
 COMPATIBLE_MACHINE .= "|phycore-rk3288-3"
+COMPATIBLE_MACHINE .= ")$"
