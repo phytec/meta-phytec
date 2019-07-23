@@ -20,6 +20,7 @@ PR = "${INC_PR}.0"
 SRCREV = "1899a64a38a19e31537b1c1d155c0935773df0fd"
 SRC_URI += "\
     ${@oe.utils.conditional('DEBUG_BUILD','1','file://debugging.cfg','',d)} \
+    file://0001-scripts-compiler.h-inline-functions-in-headers-must-.patch \
 "
 
 python do_env_append() {
