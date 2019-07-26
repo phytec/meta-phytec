@@ -566,6 +566,7 @@ COMPATIBLE_MACHINE .= "|phyflex-imx6-7"
 COMPATIBLE_MACHINE .= "|phyflex-imx6-8"
 COMPATIBLE_MACHINE .= "|phyflex-imx6-9"
 COMPATIBLE_MACHINE .= "|phyflex-imx6-10"
+COMPATIBLE_MACHINE .= "|phyflex-imx6-11"
 
 COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-3"
 COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-4"
