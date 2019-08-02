@@ -1,0 +1,30 @@
+From fe346e05564e6166b78ac6b784cd4bc9a474e0dd Mon Sep 17 00:00:00 2001
+From: Christian Hemp <c.hemp@phytec.de>
+Date: Thu, 1 Aug 2019 10:10:59 +0200
+Subject: [PATCH] Parsing the devicetree name
+
+The devicetree name is hardcoded to the NXP eval board.
+Because our u-boot devicetree has not the same name, we need a
+possibility to pass the name to the image creation.
+
+Signed-off-by: Christian Hemp <c.hemp@phytec.de>
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index 49ef486..7f5c08c 100644
+--- a/Makefile
++++ b/Makefile
+@@ -17,7 +17,7 @@ vpath $(INCLUDE)
+ 
+ .DEFAULT:
+ 	@$(MAKE) -s --no-print-directory bin
+-	@$(MAKE) --no-print-directory -C $(SOC_DIR) -f soc.mak $@
++	@$(MAKE) dtbs=${DTBS} --no-print-directory -C $(SOC_DIR) -f soc.mak $@
+ 
+ #print out usage as the default target
+ all: $(MKIMG) help
+-- 
+2.17.1
+
