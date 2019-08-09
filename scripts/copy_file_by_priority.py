@@ -34,8 +34,10 @@ class BSP_BBLayerFile(BoardSupportPackage):
                 name, val = line.partition("=")[::2]
                 if 'BBFILE_PRIORITY_' in name:
                     priority = int(val.strip('" \n'))
+                    lcfile.close
+                    return priority
             lcfile.close
-        return priority
+        return None
 
     def copy_file(self, search_file, destination):
         for _, ppath in self.project_paths_priority:
