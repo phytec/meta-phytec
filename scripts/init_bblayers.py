@@ -14,8 +14,8 @@ class BSP_BBLayer(BoardSupportPackage):
     def __init__(self):
         super(BSP_BBLayer, self).__init__()
         self.bblayers_conf = os.path.join(self.src.bsp_dir, "build/conf/bblayers.conf")
-        #layers in those project dirs will be controlled by the bblayers.conf.example
-        self.project_filter = ["poky", "meta-openembedded"]
+        #layers in those project dirs will be controlled by the bblayers.conf.sample
+        self.project_filter = ["poky", "meta-openembedded", "meta-fsl-bsp-release", "base"]
 
     def init_bblayers(self):
         layers_to_add = set(self.project_paths).difference(self.project_filter)
@@ -33,7 +33,7 @@ class BSP_BBLayer(BoardSupportPackage):
 ##############
 
 def main():
-    parser = argparse.ArgumentParser(description='Init the bblayers.conf. Poky and meta-openembedded will be handled by the bblayers.conf.example. The other layers will be added from the repo manifest.xml')
+    parser = argparse.ArgumentParser(description='Init the bblayers.conf. Poky, meta-openembedded and meta-fsl-bsp-release will be handled by the bblayers.conf.sample. The other layers will be added from the repo manifest.xml')
 
     args = parser.parse_args()
 
