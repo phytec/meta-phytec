@@ -53,7 +53,7 @@ do_compile () {
     # mkimage for i.MX8
     for target in ${IMXBOOT_TARGETS}; do
         echo "building ${SOC_TARGET} - ${target}"
-        make SOC=${SOC_TARGET} DTBS=${UBOOT_DTB_NAME} ${target}
+        make SOC=${SOC_TARGET} dtbs=${UBOOT_DTB_NAME} ${target}
         if [ -e "${S}/${SOC_DIR}/flash.bin" ]; then
             cp ${S}/${SOC_DIR}/flash.bin ${S}/${BOOT_CONFIG_MACHINE}-${target}
         fi
