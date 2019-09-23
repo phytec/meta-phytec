@@ -17,7 +17,7 @@ S = "${WORKDIR}/git"
 PR = "${INC_PR}.0"
 
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "1ba1d002e3b8c9dce164f89a6b4f739d9c454f20"
+SRCREV = "503e2dc772f9d0ab3ca21d54f6ee1af25018dbf7"
 SRC_URI += "\
     ${@oe.utils.conditional('DEBUG_BUILD','1','file://debugging.cfg','',d)} \
     file://0001-scripts-compiler.h-inline-functions-in-headers-must-.patch \
