@@ -47,6 +47,7 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 COMPATIBLE_MACHINE = "^("
 COMPATIBLE_MACHINE .= "phycore-imx8-2"
 COMPATIBLE_MACHINE .= "|phyboard-polaris-imx8m-2"
+COMPATIBLE_MACHINE .= "|phyboard-polaris-imx8m-3"
 COMPATIBLE_MACHINE .= ")$"
 
 UBOOT_NAME_mx8 = "u-boot-${MACHINE}.bin-${UBOOT_CONFIG}"
