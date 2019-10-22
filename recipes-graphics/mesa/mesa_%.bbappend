@@ -1,4 +1,4 @@
-PACKAGE_ARCH = "${MACHINE_SOCARCH}"
+PACKAGE_ARCH_mx6 = "${MACHINE_SOCARCH}"
 
 # use Etnaviv gallium driver for imxgpu3d machines
 # gpu needs to be covered by MACHINE_SOCARCH
