@@ -1,0 +1,25 @@
+diff --git a/fdts/phycore-stm32mp1-1.dtsi b/fdts/phycore-stm32mp1-1.dtsi
+index 1e3e165..6af04d0 100644
+--- a/fdts/phycore-stm32mp1-1.dtsi
++++ b/fdts/phycore-stm32mp1-1.dtsi
+@@ -280,7 +280,7 @@
+ 		CLK_CKPER_HSE
+ 		CLK_FMC_ACLK
+ 		CLK_QSPI_ACLK
+-		CLK_ETH_DISABLED
++		CLK_ETH_PLL4P
+ 		CLK_SDMMC12_PLL4P
+ 		CLK_DSI_DSIPLL
+ 		CLK_STGEN_HSE
+@@ -332,9 +332,9 @@
+ 		frac = < 0x1a04 >;
+ 	};
+ 
+-	/* VCO = 594.0 MHz => P = 99, Q = 74, R = 74 */
++	/* VCO = 750.0 MHz, P=125, Q=62.5, R=62.5 */
+ 	pll4: st,pll@3 {
+-		cfg = < 3 98 5 7 7 PQR(1,1,1) >;
++		cfg = <3 124 5 11 11 PQR(1,1,1)>;
+ 	};
+ };
+ 
