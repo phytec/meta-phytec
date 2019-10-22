@@ -20,6 +20,7 @@ PR = "r0"
 inherit autotools ptest pkgconfig lib_package tune_features_check
 
 REQUIRED_TUNE_FEATURES = "neon"
+REQUIRED_TUNE_FEATURES_aarch64 = ""
 
 DEPENDS += "gengetopt-native"
 
