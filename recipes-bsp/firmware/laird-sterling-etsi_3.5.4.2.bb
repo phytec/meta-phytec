@@ -8,6 +8,8 @@ SRC_URI[md5sum] = "dade11bdc823fa7557c730319413c5e0"
 SRC_URI[sha256sum] = "a74bb5208f86167f1bf2f723e2de82eca91c19f8939a332d8efae816600b0aef"
 
 RCONFLICTS_${PN} = "linux-firmware-bcm43430"
+RREPLACES_${PN} = "linux-firmware-bcm43430"
+RPROVIDES_${PN} = "linux-firmware-bcm43430"
 
 S = "${WORKDIR}/Sterling-bcm43430"
 
