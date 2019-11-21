@@ -66,7 +66,6 @@ if [ -z "${TEMPLATECONF}" ]; then
 		echo "" >> ${PHYTEC_DIR}/conf/bblayers.conf.sample
 		echo "# Adding sublayer because of \"$RELEASE_UID\" release" >> ${PHYTEC_DIR}/conf/bblayers.conf.sample
 		echo "BBLAYERS += \"\\" >> ${PHYTEC_DIR}/conf/bblayers.conf.sample
-		echo "  \${OEROOT}/../meta-openembedded/meta-filesystems \\" >> ${PHYTEC_DIR}/conf/bblayers.conf.sample
 		echo "  \${OEROOT}/../meta-openembedded/meta-gnome \\" >> ${PHYTEC_DIR}/conf/bblayers.conf.sample
 		echo "  \${OEROOT}/../meta-fsl-bsp-release/imx/meta-bsp \\" >> ${PHYTEC_DIR}/conf/bblayers.conf.sample
 		echo "  \${OEROOT}/../meta-fsl-bsp-release/imx/meta-sdk \\" >> ${PHYTEC_DIR}/conf/bblayers.conf.sample
