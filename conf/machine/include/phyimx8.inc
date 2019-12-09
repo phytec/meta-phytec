@@ -8,6 +8,7 @@ IMAGE_CLASSES += "wic-imx8-helper"
 IMAGE_BOOTFILES_DEPENDS ?= ""
 IMAGE_BOOT_FILES ?= "Image ${@parse_dtbs(d)}"
 WKS_FILES_mx8 ?= "imx8-sdimage.wks.in"
+WKS_FILES_mx8m ?= "imx8m-sdimage.wks.in"
 
 # default images to build
 IMAGE_FSTYPES_mx8 = "tar.gz wic"
