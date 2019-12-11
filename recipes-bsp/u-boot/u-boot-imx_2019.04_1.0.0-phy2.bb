@@ -47,6 +47,7 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 COMPATIBLE_MACHINE = "^("
 COMPATIBLE_MACHINE .= "phyboard-polis-imx8mm-1"
+COMPATIBLE_MACHINE .= "|phyboard-polis-imx8mm-2"
 COMPATIBLE_MACHINE .= ")$"
 
 UBOOT_NAME_mx8 = "u-boot-${MACHINE}.bin-${UBOOT_CONFIG}"
