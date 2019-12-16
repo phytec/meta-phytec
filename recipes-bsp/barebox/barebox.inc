@@ -27,7 +27,8 @@ EXTRA_OEMAKE = 'CROSS_COMPILE="${TARGET_PREFIX}" CC="${TARGET_PREFIX}gcc" V="${V
 B = "${WORKDIR}/build"
 
 # name of the image created by barebox Makefile
-BAREBOX_BIN ?= "barebox.bin"
+BAREBOX_BASE_BIN ?= "barebox"
+BAREBOX_BIN ?= "images/${BAREBOX_BASE_BIN}.img"
 # filename of file to be deployed by this recipe
 BAREBOX_IMAGE_NAME ?= "barebox-${MACHINE}-${PKGV}-${PKGR}${IMAGE_VERSION_SUFFIX}"
 BAREBOX_IMAGE_NAME[vardepsexclude] += "IMAGE_VERSION_SUFFIX"
