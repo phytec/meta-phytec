@@ -1,7 +1,7 @@
 DEPENDS = "openssl"
 
 REQUIRED_DISTRO_FEATURES = "secureboot"
-inherit distro_features_check
+inherit features_check
 
 S = "${WORKDIR}"
 
