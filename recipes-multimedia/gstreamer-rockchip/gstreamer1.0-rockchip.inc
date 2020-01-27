@@ -2,7 +2,7 @@
 # Released under the GNU GENERAL PUBLIC LICENSE Version 2
 # (see COPYING.GPLv2 for the terms)
 
-require recipes-multimedia/gstreamer/gstreamer1.0-plugins.inc
+require recipes-multimedia/gstreamer/gstreamer1.0-plugins-common.inc
 
 DESCRIPTION = "GStreamer 1.0 plugins for Rockchip platforms"
 
