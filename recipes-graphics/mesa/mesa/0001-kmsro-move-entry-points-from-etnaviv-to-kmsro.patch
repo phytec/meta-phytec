@@ -1,0 +1,42 @@
+From a3274859b182718aaddef4c86ef163538f6b9a72 Mon Sep 17 00:00:00 2001
+From: Jonathan Marek <jonathan@marek.ca>
+Date: Thu, 1 Aug 2019 12:48:40 -0400
+Subject: [PATCH] kmsro: move entry points from etnaviv to kmsro
+
+These drivers are kmsro drivers so they should be part of the kmsro #if
+
+This fixes missing imx_drm driver when building with only freedreno+kmsro
+
+Signed-off-by: Jonathan Marek <jonathan@marek.ca>
+Reviewed-by: Eric Anholt <eric@anholt.net>
+
+%% original patch: 0001-kmsro-move-entry-points-from-etnaviv-to-kmsro.patch
+---
+ src/gallium/targets/dri/target.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/src/gallium/targets/dri/target.c b/src/gallium/targets/dri/target.c
+index 6b0ea78..8326151 100644
+--- a/src/gallium/targets/dri/target.c
++++ b/src/gallium/targets/dri/target.c
+@@ -77,14 +77,15 @@ DEFINE_LOADER_DRM_ENTRYPOINT(v3d)
+ 
+ #if defined(GALLIUM_VC4)
+ DEFINE_LOADER_DRM_ENTRYPOINT(vc4)
++#endif
++
+ #if defined(GALLIUM_KMSRO)
+ DEFINE_LOADER_DRM_ENTRYPOINT(hx8357d)
+ DEFINE_LOADER_DRM_ENTRYPOINT(pl111)
+-#endif
++DEFINE_LOADER_DRM_ENTRYPOINT(imx_drm)
+ #endif
+ 
+ #if defined(GALLIUM_ETNAVIV)
+-DEFINE_LOADER_DRM_ENTRYPOINT(imx_drm)
+ DEFINE_LOADER_DRM_ENTRYPOINT(etnaviv)
+ #endif
+ 
+-- 
+2.7.4
+
