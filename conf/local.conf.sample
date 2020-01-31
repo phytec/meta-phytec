@@ -60,6 +60,11 @@ BB_DISKMON_DIRS ??= "\
 # This variable is ordering dependend.
 #IMAGE_FSTYPES = "tar.gz wic ubifs emmc"
 
+# Select preconfigured A/B system setup for i.MX 6's or i.MX 6UL/ULL
+# SD/eMMC image
+#WKS_FILES_mx6 = "imx6-rauc-sdcard.wks"
+#WKS_FILES_mx6ul = "imx6-rauc-sdcard.wks"
+
 # Turn on debugging options of the kernel
 DEBUG_BUILD_pn-linux-mainline = "1"
 # Turn on debugging options of the barebox
