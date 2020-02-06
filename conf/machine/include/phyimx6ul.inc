@@ -49,7 +49,7 @@ IMAGE_FSTYPES ?= "tar.gz wic ubifs"
 # Avoid pulling package 'gstreamer1.0-plugins-bad-meta' into the image
 # 'core-image-sato', because the recipe gstreamer1.0-plugins-bad depends on
 # virtual/libgles2.
-RRECOMMENDS_gst-player-bin_remove_pn-gst-player = "gstreamer1.0-plugins-bad-meta"
+RRECOMMENDS_gst-examples-bin_remove_pn-gst-examples = "gstreamer1.0-plugins-bad-meta"
 
 # XServer
 PREFERRED_PROVIDER_virtual/xserver ?= "xserver-xorg"
