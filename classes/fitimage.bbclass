@@ -337,17 +337,17 @@ addtask fitimagebundle after do_configure before do_build
 
 inherit deploy
 
-do_deploy[vardepsexclude] += "DATETIME"
+do_deploy[vardepsexclude] += "IMAGE_VERSION_SUFFIX"
 do_deploy() {
     # Update deploy directory
     install -d ${DEPLOYDIR}
 
-    its_base_name="${PN}-${PV}-${PR}-${MACHINE}-${DATETIME}"
+    its_base_name="${PN}-${PV}-${PR}-${MACHINE}${IMAGE_VERSION_SUFFIX}"
     its_symlink_name="${PN}-${MACHINE}"
     printf 'Copying fit-image.its source file...'
     install -m 0644 ${S}/manifest.its ${DEPLOYDIR}/${its_base_name}.its
 
-    linux_bin_base_name="${PN}-${PV}-${PR}-${MACHINE}-${DATETIME}"
+    linux_bin_base_name="${PN}-${PV}-${PR}-${MACHINE}${IMAGE_VERSION_SUFFIX}"
     linux_bin_symlink_name="${PN}-${MACHINE}"
     printf 'Copying linux.bin file...'
     install -m 0644 ${B}/fitImage ${DEPLOYDIR}/${linux_bin_base_name}.fitimg
