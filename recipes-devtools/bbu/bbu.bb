@@ -7,6 +7,7 @@ SECTION = "devel"
 PR = "r0"
 
 SRC_URI = "file://bbu.sh"
+SRC_URI_append_mx6 = " file://bbu_emmc.sh"
 
 S = "${WORKDIR}"
 
@@ -17,10 +18,14 @@ RDEPENDS_${PN}_append_mx6 = " barebox-targettools"
 RDEPENDS_${PN}_append_mx6ul = " barebox-targettools"
 RDEPENDS_${PN}_append_ti33x = " barebox-targettools"
 RDEPENDS_${PN}_append_imx = " imx-kobs"
+RDEPENDS_${PN}_append_mx6 = "${@bb.utils.contains('MACHINE_FEATURES', 'emmc', ' mmc-utils', '', d)}"
+
+BBU = "bbu.sh"
+BBU_mx6 = "${@bb.utils.contains('MACHINE_FEATURES', 'emmc', 'bbu_emmc.sh', 'bbu.sh', d)}"
 
 do_install() {
 	install -d ${D}${bindir}
-	install -m 0755 bbu.sh ${D}${bindir}
+	install -m 0755 ${BBU} ${D}${bindir}/bbu.sh
 }
 
 FILES_${PN} = "${bindir}"
