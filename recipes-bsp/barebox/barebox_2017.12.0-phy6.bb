@@ -6,6 +6,8 @@ inherit buildinfo
 require barebox.inc
 inherit barebox-environment-2
 
+LIC_FILES_CHKSUM = "file://COPYING;md5=057bf9e50e1ca857d0eb97bfe4ba8e5d"
+
 _XTRA_SETUP = "${@bb.utils.contains('DISTRO_FEATURES', 'secureboot', 'secureboot', 'none', d)}"
 include ${THISDIR}/barebox-${_XTRA_SETUP}.inc
 

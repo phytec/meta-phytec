@@ -5,7 +5,7 @@ DESCRIPTION = "The barebox is a bootloader designed for embedded systems. It \
 HOMEPAGE = "http://www.barebox.org"
 SECTION = "bootloaders"
 LICENSE = "GPL-2.0"
-LIC_FILES_CHKSUM = "file://COPYING;md5=057bf9e50e1ca857d0eb97bfe4ba8e5d"
+LIC_FILES_CHKSUM ?= "file://COPYING;md5=f5125d13e000b9ca1f0d3364286c4192"
 DEPENDS += "lzop-native coreutils-native"
 PROVIDES = "virtual/bootloader"
 # Increase INC_PR everytime the include file is changed.
