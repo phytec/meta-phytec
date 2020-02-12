@@ -40,7 +40,7 @@ UBINIZE_ARGS = "-m 2048 -p 128KiB -s 2048 -O 2048"
 
 #WIC
 IMAGE_CLASSES += "wic-helper"
-IMAGE_BOOT_FILES = "zImage ${@parse_dtbs(d)}"
+IMAGE_BOOT_FILES = "zImage oftree ${KERNEL_DEVICETREE}"
 WKS_FILES_mx6ul ?= "imx6-sdimage.wks"
 
 # default images to build
