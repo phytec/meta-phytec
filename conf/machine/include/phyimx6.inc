@@ -35,7 +35,7 @@ MACHINE_FEATURES = "apm usbgadget usbhost vfat"
 
 #WIC
 IMAGE_CLASSES += "wic-helper"
-IMAGE_BOOT_FILES = "zImage ${@parse_dtbs(d)}"
+IMAGE_BOOT_FILES = "zImage oftree ${KERNEL_DEVICETREE}"
 WKS_FILES_mx6 ?= "imx6-sdimage.wks"
 
 # default images to build
