@@ -6,8 +6,6 @@ inherit buildinfo
 require barebox.inc
 inherit barebox-environment-2
 
-LIC_FILES_CHKSUM = "file://COPYING;md5=057bf9e50e1ca857d0eb97bfe4ba8e5d"
-
 _XTRA_SETUP = "${@bb.utils.contains('DISTRO_FEATURES', 'secureboot', 'secureboot', 'none', d)}"
 include ${THISDIR}/barebox-${_XTRA_SETUP}.inc
 
@@ -19,7 +17,7 @@ S = "${WORKDIR}/git"
 PR = "${INC_PR}.0"
 
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "503e2dc772f9d0ab3ca21d54f6ee1af25018dbf7"
+SRCREV = "668f7a6cc6246aece7ec2d0b10cae156a69d7fd7"
 SRC_URI += "\
     ${@oe.utils.conditional('DEBUG_BUILD','1','file://debugging.cfg','',d)} \
     file://0001-scripts-compiler.h-inline-functions-in-headers-must-.patch \
