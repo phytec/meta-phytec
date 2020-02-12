@@ -49,8 +49,14 @@ python do_dtsfixup () {
 
 addtask dtsfixup after do_patch before do_compile
 
+def get_oftree(d):
+    kdt = d.getVar('KERNEL_DEVICETREE', '')
+    return os.path.basename(kdt.split()[0])
+
 KERNEL_IMAGE_NAME = "${KERNEL_IMAGETYPE}-${PN}-${PKGV}-${PKGR}-${MACHINE}${IMAGE_VERSION_SUFFIX}"
+FIRST_DTS = "${@get_oftree(d)}"
 do_deploy_append() {
     install -m 644 ${B}/.config ${DEPLOYDIR}/${KERNEL_IMAGE_NAME}.config
     ln -sf ${KERNEL_IMAGE_NAME}.config ${DEPLOYDIR}/${KERNEL_IMAGETYPE}.config
+    ln -sf ${FIRST_DTS}  ${DEPLOYDIR}/oftree
 }
