@@ -6,7 +6,7 @@ PREFERRED_PROVIDER_virtual/bootloader= "u-boot-imx"
 IMAGE_CLASSES += "wic-helper"
 IMAGE_CLASSES += "wic-imx8-helper"
 IMAGE_BOOTFILES_DEPENDS ?= ""
-IMAGE_BOOT_FILES ?= "Image oftree ${KERNEL_DEVICETREE}"
+IMAGE_BOOT_FILES += " oftree"
 WKS_FILES_mx8 ?= "imx8-sdimage.wks.in"
 WKS_FILES_mx8m ?= "imx8m-sdimage.wks.in"
 
