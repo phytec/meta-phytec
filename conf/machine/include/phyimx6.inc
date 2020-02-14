@@ -7,7 +7,7 @@ SOC_FAMILY = "imx:mx6"
 #Bootloader
 PREFERRED_PROVIDER_virtual/bootloader ?= "barebox"
 
-# Kernel 
+# Kernel
 PREFERRED_PROVIDER_virtual/kernel ?= "linux-mainline"
 KERNEL_IMAGETYPE ?= "zImage"
 # Install modules in initramfs and roofs
