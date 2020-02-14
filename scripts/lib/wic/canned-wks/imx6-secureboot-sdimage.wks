@@ -1,0 +1,10 @@
+# short-description: Create a Phytec i.MX6 disk image (SD card)
+# long-description: Creates a partitioned disk image for Phytec i.MX6 BSPs
+# boards that the user can directly dd to an SD card and boot.
+
+part BAREBOX --source rawcopy --sourceparams="file=barebox-s.bin,skip=1024" --ondisk mmc --no-table --align 1
+
+part --source bootimg-partition --fstype=vfat --label boot --ondisk mmc --active --align 4096 --size 80
+part / --source rootfs --fstype=ext4 --label root --ondisk mmc --align 1024 --use-uuid
+part /userdata --ondisk mmcblk --fstype=ext4 --label secrets --align 4096 --size 10
+bootloader --timeout=0
