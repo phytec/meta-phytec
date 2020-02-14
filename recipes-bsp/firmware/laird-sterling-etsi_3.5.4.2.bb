@@ -7,6 +7,7 @@ SRC_URI = "ftp://ftp.phytec.de/pub/Software/Linux/Driver/Sterling-bcm43430_v1.1.
 SRC_URI[md5sum] = "8213f4feee96560592746a8bea5f985c"
 SRC_URI[sha256sum] = "fe52f348c819f4cde62db3153b2c68ee5eaa828fe34a8857ecd0f6c2bb23bb93"
 
+RDEPENDS_${PN} = "brcm-patchram-plus"
 RCONFLICTS_${PN} = "linux-firmware-bcm43430"
 RREPLACES_${PN} = "linux-firmware-bcm43430"
 RPROVIDES_${PN} = "linux-firmware-bcm43430"
