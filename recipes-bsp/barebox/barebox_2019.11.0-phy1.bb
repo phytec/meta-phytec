@@ -94,12 +94,12 @@ global.bootm.oftree="/dev/m25p0.oftree"
 global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=root rootfstype=ubifs"
 """)
     env_add(d, "expansions/imx6qdl-mira-enable-lvds",
-"""of_fixup_status /soc/aips-bus@02000000/ldb/lvds-channel@0
-of_fixup_status /soc/aips-bus@02100000/i2c@021a0000/touchctrl@44
+"""of_fixup_status /ldb/lvds-channel@0
+of_fixup_status /soc/aips-bus@2100000/i2c@21a0000/touchctrl@44
 """)
     env_add(d, "expansions/imx6qdl-nunki-enable-lvds",
-"""of_fixup_status /soc/aips-bus@02000000/ldb/lvds-channel@0
-of_fixup_status /soc/aips-bus@02100000/i2c@021a0000/touchctrl@44
+"""of_fixup_status /ldb/lvds-channel@0
+of_fixup_status /soc/aips-bus@2100000/i2c@21a0000/touchctrl@44
 """)
     env_add(d, "expansions/imx6qdl-mira-peb-eval-01",
 """of_fixup_status /gpio-keys
@@ -107,20 +107,20 @@ of_fixup_status /user-leds
 """)
     env_add(d, "expansions/imx6qdl-phytec-lcd",
 """#!/bin/sh
-of_fixup_status /soc/aips-bus@02000000/ldb/lvds-channel@0
-of_fixup_status /soc/aips-bus@02100000/i2c@021a4000/polytouch@38
+of_fixup_status /ldb/lvds-channel@0
+of_fixup_status /soc/aips-bus@2100000/i2c@21a4000/polytouch@38
 """)
     env_add(d, "expansions/imx6qdl-phytec-lcd-018-peb-av-02",
 """of_fixup_status /display@di0
-of_fixup_status /soc/aips-bus@02100000/i2c@021a0000/polytouch@38
+of_fixup_status /soc/aips-bus@2100000/i2c@21a0000/polytouch@38
 """)
     env_add(d, "expansions/imx6qdl-phytec-lcd-018-peb-av-02-res",
 """of_fixup_status /display@di0
-of_fixup_status /soc/aips-bus@02100000/i2c@021a0000/touchctrl@44
+of_fixup_status /soc/aips-bus@2100000/i2c@21a0000/touchctrl@44
 """)
     env_add(d, "expansions/imx6qdl-phytec-peb-wlbt-01",
 """#!/bin/sh
-of_fixup_status /soc/aips-bus@02100000/usdhc@02198000
+of_fixup_status /soc/aips-bus@2100000/usdhc@2198000
 of_fixup_status /regulator-wlan-en
 """)
     env_add(d, "network/eth0",
@@ -172,8 +172,8 @@ of_display_timings -P "/panel-lcd" -c "edt,etm0700g0edh6"
 """)
     env_add(d, "expansions/imx6qdl-phytec-lcd-res",
 """#!/bin/sh
-of_fixup_status /soc/aips-bus@02000000/ldb/lvds-channel@0
-of_fixup_status /soc/aips-bus@02100000/i2c@021a4000/touchctrl@41
+of_fixup_status /ldb/lvds-channel@0
+of_fixup_status /soc/aips-bus@2100000/i2c@21a4000/touchctrl@41
 """)
     # Enable 32 bit color depth for framebuffer emulation on phyFLEX-CarrierBoard
     env_add(d, "nv/linux.bootargs.fb", "imxdrm.legacyfb_depth=32\n");
