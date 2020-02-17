@@ -135,15 +135,24 @@ of_fixup_status /user-leds
 """)
     env_add(d, "expansions/imx6qdl-phytec-lcd",
 """#!/bin/sh
+of_fixup_status /panel-lcd
 of_fixup_status /ldb/lvds-channel@0
 of_fixup_status /soc/aips-bus@2100000/i2c@21a4000/polytouch@38
 """)
+    env_add(d, "expansions/imx6qdl-phytec-lcd-res",
+"""#!/bin/sh
+of_fixup_status /panel-lcd
+of_fixup_status /ldb/lvds-channel@0
+of_fixup_status /soc/aips-bus@2100000/i2c@21a4000/touchctrl@41
+""")
     env_add(d, "expansions/imx6qdl-phytec-lcd-018-peb-av-02",
-"""of_fixup_status /display@di0
+"""of_fixup_status /panel-lcd
+of_fixup_status /display@di0
 of_fixup_status /soc/aips-bus@2100000/i2c@21a0000/polytouch@38
 """)
     env_add(d, "expansions/imx6qdl-phytec-lcd-018-peb-av-02-res",
-"""of_fixup_status /display@di0
+"""of_fixup_status /panel-lcd
+of_fixup_status /display@di0
 of_fixup_status /soc/aips-bus@2100000/i2c@21a0000/touchctrl@44
 """)
     env_add(d, "expansions/imx6qdl-phytec-peb-wlbt-01",
@@ -177,19 +186,19 @@ python do_env_append_phyflex-imx6() {
 #. /env/expansions/imx6qdl-phytec-lcd-res
 
 # imx6qdl-phytec-lcd: 7" display (AC158 / AC138)
-of_display_timings -P "/panel-lcd" -c "edt,etm0700g0edh6"
+of_property -s -f "/panel-lcd" compatible "edt,etm0700g0edh6"
 
 # imx6qdl-phytec-lcd: 7" display (AC104)
-#of_display_timings -P "/panel-lcd" -c "edt,etm0700g0dh6"
+#of_property -s -f "/panel-lcd" compatible "edt,etm0700g0dh6"
 
 # imx6qdl-phytec-lcd: 5.7" display (AC103)
-#of_display_timings -P "/panel-lcd" -c "edt,etmv570g2dhu"
+#of_property -s -f "/panel-lcd" compatible "edt,etmv570g2dhu"
 
 # imx6qdl-phytec-lcd: 4.3" display (AC102)
-#of_display_timings -P "/panel-lcd" -c "edt,etm0430g0dh6"
+#of_property -s -f "/panel-lcd" compatible "edt,etm0430g0dh6"
 
 # imx6qdl-phytec-lcd: 3.5" display (AC167 / AC101)
-#of_display_timings -P "/panel-lcd" -c "edt,etm0350g0dh6"
+#of_property -s -f "/panel-lcd" compatible "edt,etm0350g0dh6"
 
 
 #Enable VM-XXX on CSI0
@@ -197,11 +206,6 @@ of_display_timings -P "/panel-lcd" -c "edt,etm0700g0edh6"
 
 #Enable VM-XXX on CSI1
 #of_camera_selection -a 0x48 -p 1 -b phyCAM-P VM-011-COL
-""")
-    env_add(d, "expansions/imx6qdl-phytec-lcd-res",
-"""#!/bin/sh
-of_fixup_status /ldb/lvds-channel@0
-of_fixup_status /soc/aips-bus@2100000/i2c@21a4000/touchctrl@41
 """)
     # Enable 32 bit color depth for framebuffer emulation on phyFLEX-CarrierBoard
     env_add(d, "nv/linux.bootargs.fb", "imxdrm.legacyfb_depth=32\n");
@@ -222,19 +226,19 @@ python do_env_append_phyboard-mira-imx6() {
 #. /env/expansions/imx6qdl-phytec-lcd-018-peb-av-02-res
 
 # imx6qdl-phytec-lcd: 7" display (AC158 / AC138)
-#of_display_timings -P "/panel-lcd" -c "edt,etm0700g0edh6"
+#of_property -s -f "/panel-lcd" compatible "edt,etm0700g0edh6"
 
 # imx6qdl-phytec-lcd: 7" display (AC104)
-#of_display_timings -P "/panel-lcd" -c "edt,etm0700g0dh6"
+#of_property -s -f "/panel-lcd" compatible "edt,etm0700g0dh6"
 
 # imx6qdl-phytec-lcd: 5.7" display (AC103)
-#of_display_timings -P "/panel-lcd" -c "edt,etmv570g2dhu"
+#of_property -s -f "/panel-lcd" compatible "edt,etmv570g2dhu"
 
 # imx6qdl-phytec-lcd: 4.3" display (AC102)
-#of_display_timings -P "/panel-lcd" -c "edt,etm0430g0dh6"
+#of_property -s -f "/panel-lcd" compatible "edt,etm0430g0dh6"
 
 # imx6qdl-phytec-lcd: 3.5" display (AC167 / AC101)
-#of_display_timings -P "/panel-lcd" -c "edt,etm0350g0dh6"
+#of_property -s -f "/panel-lcd" compatible "edt,etm0350g0dh6"
 
 #Enable VM-XXX on CSI0
 #of_camera_selection -a 0x48 -p 0 -b phyCAM-S+ VM-010-BW
@@ -256,19 +260,19 @@ python do_env_append_phyboard-nunki-imx6() {
 #. /env/expansions/imx6qdl-phytec-lcd-018-peb-av-02-res
 
 # imx6qdl-phytec-lcd: 7" display (AC158 / AC138)
-#of_display_timings -P "/panel-lcd" -c "edt,etm0700g0edh6"
+#of_property -s -f "/panel-lcd" compatible "edt,etm0700g0edh6"
 
 # imx6qdl-phytec-lcd: 7" display (AC104)
-#of_display_timings -P "/panel-lcd" -c "edt,etm0700g0dh6"
+#of_property -s -f "/panel-lcd" compatible "edt,etm0700g0dh6"
 
 # imx6qdl-phytec-lcd: 5.7" display (AC103)
-#of_display_timings -P "/panel-lcd" -c "edt,etmv570g2dhu"
+#of_property -s -f "/panel-lcd" compatible "edt,etmv570g2dhu"
 
 # imx6qdl-phytec-lcd: 4.3" display (AC102)
-#of_display_timings -P "/panel-lcd" -c "edt,etm0430g0dh6"
+#of_property -s -f "/panel-lcd" compatible "edt,etm0430g0dh6"
 
 # imx6qdl-phytec-lcd: 3.5" display (AC167 / AC101)
-#of_display_timings -P "/panel-lcd" -c "edt,etm0350g0dh6"
+#of_property -s -f "/panel-lcd" compatible "edt,etm0350g0dh6"
 
 #Enable VM-XXX on CSI0
 of_camera_selection -a 0x48 -p 0 -b phyCAM-P VM-010-BW
@@ -311,19 +315,19 @@ python do_env_append_phyboard-mira-imx6-6() {
 #. /env/expansions/imx6qdl-phytec-lcd-018-peb-av-02-res
 
 # imx6qdl-phytec-lcd: 7" display (AC158 / AC138)
-#of_display_timings -P "/panel-lcd" -c "edt,etm0700g0edh6"
+#of_property -s -f "/panel-lcd" compatible "edt,etm0700g0edh6"
 
 # imx6qdl-phytec-lcd: 7" display (AC104)
-#of_display_timings -P "/panel-lcd" -c "edt,etm0700g0dh6"
+#of_property -s -f "/panel-lcd" compatible "edt,etm0700g0dh6"
 
 # imx6qdl-phytec-lcd: 5.7" display (AC103)
-#of_display_timings -P "/panel-lcd" -c "edt,etmv570g2dhu"
+#of_property -s -f "/panel-lcd" compatible "edt,etmv570g2dhu"
 
 # imx6qdl-phytec-lcd: 4.3" display (AC102)
-#of_display_timings -P "/panel-lcd" -c "edt,etm0430g0dh6"
+#of_property -s -f "/panel-lcd" compatible "edt,etm0430g0dh6"
 
 # imx6qdl-phytec-lcd: 3.5" display (AC167 / AC101)
-#of_display_timings -P "/panel-lcd" -c "edt,etm0350g0dh6"
+#of_property -s -f "/panel-lcd" compatible "edt,etm0350g0dh6"
 
 #Enable VM-XXX on CSI0
 #of_camera_selection -a 0x48 -p 0 -b phyCAM-S+ VM-010-BW
@@ -345,19 +349,19 @@ python do_env_append_phyboard-mira-imx6-10() {
 #. /env/expansions/imx6qdl-phytec-lcd-018-peb-av-02-res
 
 # imx6qdl-phytec-lcd: 7" display (AC158 / AC138)
-#of_display_timings -P "/panel-lcd" -c "edt,etm0700g0edh6"
+#of_property -s -f "/panel-lcd" compatible "edt,etm0700g0edh6"
 
 # imx6qdl-phytec-lcd: 7" display (AC104)
-#of_display_timings -P "/panel-lcd" -c "edt,etm0700g0dh6"
+#of_property -s -f "/panel-lcd" compatible "edt,etm0700g0dh6"
 
 # imx6qdl-phytec-lcd: 5.7" display (AC103)
-#of_display_timings -P "/panel-lcd" -c "edt,etmv570g2dhu"
+#of_property -s -f "/panel-lcd" compatible "edt,etmv570g2dhu"
 
 # imx6qdl-phytec-lcd: 4.3" display (AC102)
-#of_display_timings -P "/panel-lcd" -c "edt,etm0430g0dh6"
+#of_property -s -f "/panel-lcd" compatible "edt,etm0430g0dh6"
 
 # imx6qdl-phytec-lcd: 3.5" display (AC167 / AC101)
-#of_display_timings -P "/panel-lcd" -c "edt,etm0350g0dh6"
+#of_property -s -f "/panel-lcd" compatible "edt,etm0350g0dh6"
 
 #Enable VM-XXX on CSI0
 #of_camera_selection -a 0x48 -p 0 -b phyCAM-S+ VM-010-BW
@@ -379,19 +383,19 @@ python do_env_append_phyboard-mira-imx6-11() {
 #. /env/expansions/imx6qdl-phytec-lcd-018-peb-av-02-res
 
 # imx6qdl-phytec-lcd: 7" display (AC158 / AC138)
-of_display_timings -P "/panel-lcd" -c "edt,etm0700g0edh6"
+of_property -s -f "/panel-lcd" compatible "edt,etm0700g0edh6"
 
 # imx6qdl-phytec-lcd: 7" display (AC104)
-#of_display_timings -P "/panel-lcd" -c "edt,etm0700g0dh6"
+#of_property -s -f "/panel-lcd" compatible "edt,etm0700g0dh6"
 
 # imx6qdl-phytec-lcd: 5.7" display (AC103)
-#of_display_timings -P "/panel-lcd" -c "edt,etmv570g2dhu"
+#of_property -s -f "/panel-lcd" compatible "edt,etmv570g2dhu"
 
 # imx6qdl-phytec-lcd: 4.3" display (AC102)
-#of_display_timings -P "/panel-lcd" -c "edt,etm0430g0dh6"
+#of_property -s -f "/panel-lcd" compatible "edt,etm0430g0dh6"
 
 # imx6qdl-phytec-lcd: 3.5" display (AC167 / AC101)
-#of_display_timings -P "/panel-lcd" -c "edt,etm0350g0dh6"
+#of_property -s -f "/panel-lcd" compatible "edt,etm0350g0dh6"
 
 #Enable VM-XXX on CSI0
 #of_camera_selection -a 0x48 -p 0 -b phyCAM-S+ VM-010-BW
@@ -412,19 +416,19 @@ python do_env_append_phyboard-mira-imx6-13() {
 #. /env/expansions/imx6qdl-phytec-lcd-018-peb-av-02-res
 
 # imx6qdl-phytec-lcd: 7" display (AC158 / AC138)
-#of_display_timings -P "/panel-lcd" -c "edt,etm0700g0edh6"
+#of_property -s -f "/panel-lcd" compatible "edt,etm0700g0edh6"
 
 # imx6qdl-phytec-lcd: 7" display (AC104)
-of_display_timings -P "/panel-lcd" -c "edt,etm0700g0dh6"
+of_property -s -f "/panel-lcd" compatible "edt,etm0700g0dh6"
 
 # imx6qdl-phytec-lcd: 5.7" display (AC103)
-#of_display_timings -P "/panel-lcd" -c "edt,etmv570g2dhu"
+#of_property -s -f "/panel-lcd" compatible "edt,etmv570g2dhu"
 
 # imx6qdl-phytec-lcd: 4.3" display (AC102)
-#of_display_timings -P "/panel-lcd" -c "edt,etm0430g0dh6"
+#of_property -s -f "/panel-lcd" compatible "edt,etm0430g0dh6"
 
 # imx6qdl-phytec-lcd: 3.5" display (AC167 / AC101)
-#of_display_timings -P "/panel-lcd" -c "edt,etm0350g0dh6"
+#of_property -s -f "/panel-lcd" compatible "edt,etm0350g0dh6"
 
 #Enable VM-XXX on CSI0
 #of_camera_selection -a 0x48 -p 0 -b phyCAM-S+ VM-010-BW
