@@ -46,28 +46,33 @@ fi
 }
 
 python do_env_append_mx6() {
-    env_add(d, "boot/mmc",
-"""#!/bin/sh
+    kernelname = "zImage"
+    mmcid = "2"
+    emmcid = None
+
+    if "phyboard" in d.getVar("SOC_FAMILY"):
+        mmcid = "0"
+        emmcid = "3"
+
+    mmcboot = """#!/bin/sh
 
 [ -e /env/config-expansions ] && /env/config-expansions
 
-global.bootm.image="/mnt/mmc/zImage"
-global.bootm.oftree="/mnt/mmc/oftree"
-global.linux.bootargs.dyn.root="root=/dev/mmcblk2p2 rootflags='data=journal'"
-""")
-    env_add(d, "boot/nand",
-"""#!/bin/sh
+global.bootm.image="/mnt/mmc{_mmcid}.{_id}/{_kernel}"
+global.bootm.oftree="/mnt/mmc{_mmcid}.{_id}/oftree"
+global.linux.bootargs.dyn.root="root=/dev/mmcblk{_mmcid}p{_rootid} rootflags='data=journal'"
+"""
+    nandboot = """#!/bin/sh
 
 [ -e /env/config-expansions ] && /env/config-expansions
 
 [ ! -e /dev/nand0.root.ubi ] && ubiattach /dev/nand0.root
 
-global.bootm.image="/dev/nand0.root.ubi.kernel"
-global.bootm.oftree="/dev/nand0.root.ubi.oftree"
-global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=root rootfstype=ubifs"
-""")
-    env_add(d, "boot/net",
-"""#!/bin/sh
+global.bootm.image="/dev/nand0.root.ubi.kernel{_id}"
+global.bootm.oftree="/dev/nand0.root.ubi.oftree{_id}"
+global.linux.bootargs.dyn.root="root=ubi0:root{_id} ubi.mtd=root rootfstype=ubifs"
+"""
+    netboot = """#!/bin/sh
 
 [ -e /env/config-expansions ] && /env/config-expansions
 
@@ -83,16 +88,40 @@ fi
 nfsroot="/nfsroot/${global.hostname}"
 bootargs-ip
 global.linux.bootargs.dyn.root="root=/dev/nfs nfsroot=$nfsroot,vers=3,udp"
-""")
-    env_add(d, "boot/spi",
-"""#!/bin/sh
+"""
+    spiboot = """#!/bin/sh
 
 [ -e /env/config-expansions ] && /env/config-expansions
 
 global.bootm.image="/dev/m25p0.kernel"
 global.bootm.oftree="/dev/m25p0.oftree"
-global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=root rootfstype=ubifs"
-""")
+global.linux.bootargs.dyn.root="{_root}"
+"""
+
+    if bb.utils.contains("MACHINE_FEATURES", "emmc", "True", "False", d):
+        env_add(d, "boot/emmc", mmcboot.format(_kernel = kernelname,
+                                               _mmcid = emmcid, _id = 0,
+                                               _rootid = 2))
+        env_add(d, "boot/system0", mmcboot.format(_kernel = kernelname,
+                                                  _mmcid = emmcid, _id = 0,
+                                                  _rootid = 2))
+        env_add(d, "boot/system1", mmcboot.format(_kernel = kernelname,
+                                                  _mmcid = emmcid, _id = 2,
+                                                  _rootid = 4))
+        spiroot = "root=/dev/mmcblk{_id}p2 rootflags='data=journal'"
+        spiroot = spiroot.format(_id = emmcid)
+    else:
+        env_add(d, "boot/nand", nandboot.format(_id = ""))
+        env_add(d, "boot/system0", nandboot.format(_id = 0))
+        env_add(d, "boot/system1", nandboot.format(_id = 1))
+        spiroot = "root=ubi0:root ubi.mtd=root rootfstype=ubifs"
+
+    env_add(d, "boot/mmc", mmcboot.format(_kernel = kernelname,
+                                          _mmcid = mmcid, _id = 0,
+                                          _rootid = 2))
+    env_add(d, "boot/net", netboot)
+    env_add(d, "boot/spi", spiboot.format(_root = spiroot))
+
     env_add(d, "expansions/imx6qdl-mira-enable-lvds",
 """of_fixup_status /ldb/lvds-channel@0
 of_fixup_status /soc/aips-bus@2100000/i2c@21a0000/touchctrl@44
@@ -180,24 +209,6 @@ of_fixup_status /soc/aips-bus@2100000/i2c@21a4000/touchctrl@41
 }
 
 python do_env_append_phyboard-mira-imx6() {
-    env_add(d, "boot/emmc",
-"""#!/bin/sh
-
-[ -e /env/config-expansions ] && /env/config-expansions
-
-global.bootm.image="/mnt/emmc/zImage"
-global.bootm.oftree="/mnt/emmc/oftree"
-global.linux.bootargs.dyn.root="root=/dev/mmcblk3p2 rootflags='data=journal'"
-""")
-    env_add(d, "boot/mmc",
-"""#!/bin/sh
-
-[ -e /env/config-expansions ] && /env/config-expansions
-
-global.bootm.image="/mnt/mmc/zImage"
-global.bootm.oftree="/mnt/mmc/oftree"
-global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootflags='data=journal'"
-""")
     env_add(d, "config-expansions",
 """#!/bin/sh
 
@@ -234,24 +245,6 @@ global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootflags='data=journal'"
 }
 
 python do_env_append_phyboard-nunki-imx6() {
-    env_add(d, "boot/emmc",
-"""#!/bin/sh
-
-[ -e /env/config-expansions ] && /env/config-expansions
-
-global.bootm.image="/mnt/emmc/zImage"
-global.bootm.oftree="/mnt/emmc/oftree"
-global.linux.bootargs.dyn.root="root=/dev/mmcblk3p2 rootflags='data=journal'"
-""")
-    env_add(d, "boot/mmc",
-"""#!/bin/sh
-
-[ -e /env/config-expansions ] && /env/config-expansions
-
-global.bootm.image="/mnt/mmc/zImage"
-global.bootm.oftree="/mnt/mmc/oftree"
-global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootflags='data=journal'"
-""")
     env_add(d, "config-expansions",
 """#!/bin/sh
 
@@ -301,28 +294,10 @@ python do_env_append_phyboard-mira-imx6-4() {
 }
 
 python do_env_append_phyboard-mira-imx6-5() {
-    env_add(d, "boot/spi",
-"""#!/bin/sh
-
-[ -e /env/config-expansions ] && /env/config-expansions
-
-global.bootm.image="/dev/m25p0.kernel"
-global.bootm.oftree="/dev/m25p0.oftree"
-global.linux.bootargs.dyn.root="root=/dev/mmcblk3p2 rootflags='data=journal'"
-""")
     env_add(d, "nv/linux.bootargs.cma", "cma=256M@1G\n")
 }
 
 python do_env_append_phyboard-mira-imx6-6() {
-    env_add(d, "boot/spi",
-"""#!/bin/sh
-
-[ -e /env/config-expansions ] && /env/config-expansions
-
-global.bootm.image="/dev/m25p0.kernel"
-global.bootm.oftree="/dev/m25p0.oftree"
-global.linux.bootargs.dyn.root="root=/dev/mmcblk3p2 rootflags='data=journal'"
-""")
     env_add(d, "config-expansions",
 """#!/bin/sh
 
@@ -353,30 +328,6 @@ global.linux.bootargs.dyn.root="root=/dev/mmcblk3p2 rootflags='data=journal'"
 
 #Enable VM-XXX on CSI0
 #of_camera_selection -a 0x48 -p 0 -b phyCAM-S+ VM-010-BW
-""")
-}
-
-python do_env_append_phyboard-mira-imx6-7() {
-    env_add(d, "boot/spi",
-"""#!/bin/sh
-
-[ -e /env/config-expansions ] && /env/config-expansions
-
-global.bootm.image="/dev/m25p0.kernel"
-global.bootm.oftree="/dev/m25p0.oftree"
-global.linux.bootargs.dyn.root="root=/dev/mmcblk3p2 rootflags='data=journal'"
-""")
-}
-
-python do_env_append_phyboard-mira-imx6-8() {
-    env_add(d, "boot/spi",
-"""#!/bin/sh
-
-[ -e /env/config-expansions ] && /env/config-expansions
-
-global.bootm.image="/dev/m25p0.kernel"
-global.bootm.oftree="/dev/m25p0.oftree"
-global.linux.bootargs.dyn.root="root=/dev/mmcblk3p2 rootflags='data=journal'"
 """)
 }
 
@@ -481,40 +432,16 @@ of_display_timings -P "/panel-lcd" -c "edt,etm0700g0dh6"
 """)
 }
 
-python do_env_append_phyboard-mira-imx6-14() {
-    env_add(d, "boot/spi",
-"""#!/bin/sh
-
-[ -e /env/config-expansions ] && /env/config-expansions
-
-global.bootm.image="/dev/m25p0.kernel"
-global.bootm.oftree="/dev/m25p0.oftree"
-global.linux.bootargs.dyn.root="root=/dev/mmcblk3p2 rootflags='data=journal'"
-""")
-}
-
 python do_env_append_phyboard-mira-imx6-15() {
     env_add(d, "nv/linux.bootargs.cma", "cma=64M\n")
 }
 
 #Enviroment changes for RAUC
 python do_env_append_phyboard-mira-imx6-3() {
-    env_add(d, "boot/nand2",
-"""#!/bin/sh
-
-[ -e /env/config-expansions ] && /env/config-expansions
-
-[ ! -e /dev/nand0.root.ubi ] && ubiattach /dev/nand0.root
-
-global.bootm.image="/dev/nand0.root.ubi.kernel2"
-global.bootm.oftree="/dev/nand0.root.ubi.oftree2"
-
-global.linux.bootargs.dyn.root="root=ubi0:root2 ubi.mtd=root rootfstype=ubifs"
-""")
     env_add(d, "nv/bootchooser.state_prefix", """state""")
     env_add(d, "nv/bootchooser.targets", """system0 system1""")
-    env_add(d, "nv/bootchooser.system0.boot", """nand""")
-    env_add(d, "nv/bootchooser.system1.boot", """nand2""")
+    env_add(d, "nv/bootchooser.system0.boot", """system0""")
+    env_add(d, "nv/bootchooser.system1.boot", """system1""")
     env_add(d, "nv/bootchooser.state_prefix", """state.bootstate""")
     env_add(d, "bin/create_nand_partitions",
 """#!/bin/sh
