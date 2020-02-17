@@ -5,8 +5,6 @@ inherit phygittag
 inherit buildinfo
 include linux-common.inc
 
-LIC_FILES_CHKSUM = "file://COPYING;md5=bbea815ee2795b2f4230826c0c6b8814"
-
 BRANCH = "v4.19.35_1.0.0-phy"
 GIT_URL = "git://git.phytec.de/${PN}"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"

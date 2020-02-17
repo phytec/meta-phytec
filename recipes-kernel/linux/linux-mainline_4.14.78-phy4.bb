@@ -5,6 +5,8 @@ inherit phygittag
 inherit buildinfo
 include linux-common.inc
 
+LIC_FILES_CHKSUM = "file://COPYING;md5=d7810fab7487fb0aad327b76f1be7cd7"
+
 #Skip this recipe if DISTRO_FEATURES contains the PREEMPT-RT value and
 # a kernel with real-time is desired
 python () {
