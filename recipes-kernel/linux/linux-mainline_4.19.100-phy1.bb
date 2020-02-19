@@ -5,8 +5,6 @@ inherit phygittag
 inherit buildinfo
 include linux-common.inc
 
-LIC_FILES_CHKSUM = "file://COPYING;md5=d7810fab7487fb0aad327b76f1be7cd7"
-
 GIT_URL = "git://git.phytec.de/${PN}"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
@@ -14,7 +12,7 @@ PR = "${INC_PR}.0"
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "7a1f2887e3bad8d3951d259927549606aca589e8"
+SRCREV = "eacad03051e323be4e5f19581ce2934bd8d5d75b"
 
 S = "${WORKDIR}/git"
 
