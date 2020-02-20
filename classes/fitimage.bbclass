@@ -37,7 +37,6 @@ deltask do_package_write_ipk
 deltask do_package_write_deb
 deltask do_package_write_rpm
 
-#DEPENDS = "u-boot-mkimage-fitcheck-native dtc-native"
 DEPENDS = "u-boot-mkimage-native dtc-native"
 FITIMAGE_HASH ??= "sha1"
 FITIMAGE_LOADADDRESS ??= "0x8000"
@@ -318,10 +317,6 @@ do_fitimagebundle () {
                 -k "${path_key}" \
                 -K "${B}/pubkey.dtb" \
                 -r "${B}/fitImage"
-
-            #fit_check_sign \
-            #    -f "${B}/fitImage" \
-            #    -k "${B}/pubkey.dtb"
         else
             bberror "${FITIMAGE_SIGN_KEY_PATH} Key File do not exist for signing FIT Image"
         fi
@@ -348,8 +343,8 @@ do_deploy() {
     install -m 0644 ${S}/manifest.its ${DEPLOYDIR}/${its_base_name}.its
 
     linux_bin_base_name="${PN}-${PV}-${PR}-${MACHINE}${IMAGE_VERSION_SUFFIX}"
-    linux_bin_symlink_name="${PN}-${MACHINE}"
-    printf 'Copying linux.bin file...'
+    linux_bin_symlink_name="fitImage"
+    printf 'Copying fitImage file...'
     install -m 0644 ${B}/fitImage ${DEPLOYDIR}/${linux_bin_base_name}.fitimg
 
     cd ${DEPLOYDIR}
