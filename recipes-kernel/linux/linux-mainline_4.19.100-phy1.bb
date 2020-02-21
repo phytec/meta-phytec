@@ -31,6 +31,8 @@ COMPATIBLE_MACHINE .= "|phyflex-imx6-9"
 COMPATIBLE_MACHINE .= "|phyflex-imx6-10"
 COMPATIBLE_MACHINE .= "|phyflex-imx6-11"
 
+COMPATIBLE_MACHINE .= "|phycard-imx6-2"
+
 COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-3"
 COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-4"
 COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-5"
