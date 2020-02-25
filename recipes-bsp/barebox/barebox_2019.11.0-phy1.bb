@@ -446,43 +446,44 @@ python do_env_append_phyboard-mira-imx6-3() {
     env_add(d, "nv/bootchooser.system0.boot", """system0""")
     env_add(d, "nv/bootchooser.system1.boot", """system1""")
     env_add(d, "nv/bootchooser.state_prefix", """state.bootstate""")
-    env_add(d, "bin/create_nand_partitions",
+    env_add(d, "bin/rauc_init_nand",
 """#!/bin/sh
-echo "Create NAND partitions"
+#For 1GB NANDs (otherwise other partition sizes)
+ROOTFSSIZE=450M
+echo "Format /dev/nand0.root"
+
 ubiformat -q /dev/nand0.root
 ubiattach /dev/nand0.root
-#Hold the following order or change the /dev/ubi0_X enumeration in /etc/rauc/system.conf
-ubimkvol -t static /dev/nand0.root.ubi kernel 8M
-ubimkvol -t static /dev/nand0.root.ubi oftree 1M
-#For 1GB NANDs (otherwise other partition sizes)
-ubimkvol -t dynamic /dev/nand0.root.ubi root 450M
-ubimkvol -t static /dev/nand0.root.ubi kernel2 8M
-ubimkvol -t static /dev/nand0.root.ubi oftree2 1M
-ubimkvol -t dynamic /dev/nand0.root.ubi root2 450M
+ubimkvol -t static /dev/nand0.root.ubi kernel0 16M
+ubimkvol -t static /dev/nand0.root.ubi oftree0 1M
+ubimkvol /dev/nand0.root.ubi root0 ${ROOTFSSIZE}
+ubimkvol -t static /dev/nand0.root.ubi kernel1 16M
+ubimkvol -t static /dev/nand0.root.ubi oftree1 1M
+ubimkvol /dev/nand0.root.ubi root1 ${ROOTFSSIZE}
+
+ubidetach 0
 """)
-    env_add(d, "bin/init_flash_from_mmc",
+    env_add(d, "bin/rauc_flash_nand_from_mmc",
 """#!/bin/sh
 echo "Initialize NAND flash from MMC"
-barebox_update -t MLO.nand /mnt/mmc0.0/MLO -y
-barebox_update -t nand /mnt/mmc0.0/barebox.bin -y
 [ ! -e /dev/nand0.root.ubi ] && ubiattach /dev/nand0.root
-ubiupdatevol /dev/nand0.root.ubi.kernel  /mnt/mmc0.0/zImage
-ubiupdatevol /dev/nand0.root.ubi.kernel2 /mnt/mmc0.0/zImage
-ubiupdatevol /dev/nand0.root.ubi.oftree  /mnt/mmc0.0/oftree
-ubiupdatevol /dev/nand0.root.ubi.oftree2 /mnt/mmc0.0/oftree
-cp /mnt/mmc0.0/root.ubifs /dev/nand0.root.ubi.root
-cp /mnt/mmc0.0/root.ubifs /dev/nand0.root.ubi.root2
+ubiupdatevol /dev/nand0.root.ubi.kernel0 /mnt/mmc0.0/zImage
+ubiupdatevol /dev/nand0.root.ubi.kernel1 /mnt/mmc0.0/zImage
+ubiupdatevol /dev/nand0.root.ubi.oftree0 /mnt/mmc0.0/oftree
+ubiupdatevol /dev/nand0.root.ubi.oftree1 /mnt/mmc0.0/oftree
+cp /mnt/mmc0.0/root.ubifs /dev/nand0.root.ubi.root0
+cp /mnt/mmc0.0/root.ubifs /dev/nand0.root.ubi.root1
 """)
-    env_add(d, "bin/init_flash_from_tftp",
+    env_add(d, "bin/rauc_flash_nand_from_tftp",
 """#!/bin/sh
 echo "Initialize NAND flash from TFTP"
 [ ! -e /dev/nand0.root.ubi ] && ubiattach /dev/nand0.root
-ubiupdatevol /dev/nand0.root.ubi.kernel  /mnt/tftp/zImage
-ubiupdatevol /dev/nand0.root.ubi.kernel2 /mnt/tftp/zImage
-ubiupdatevol /dev/nand0.root.ubi.oftree  /mnt/tftp/oftree
-ubiupdatevol /dev/nand0.root.ubi.oftree2 /mnt/tftp/oftree
-cp /mnt/tftp/root.ubifs /dev/nand0.root.ubi.root
-cp /mnt/tftp/root.ubifs /dev/nand0.root.ubi.root2
+ubiupdatevol /dev/nand0.root.ubi.kernel0 /mnt/tftp/zImage
+ubiupdatevol /dev/nand0.root.ubi.kernel1 /mnt/tftp/zImage
+ubiupdatevol /dev/nand0.root.ubi.oftree0 /mnt/tftp/oftree
+ubiupdatevol /dev/nand0.root.ubi.oftree1 /mnt/tftp/oftree
+cp /mnt/tftp/root.ubifs /dev/nand0.root.ubi.root0
+cp /mnt/tftp/root.ubifs /dev/nand0.root.ubi.root1
 """)
 }
 
