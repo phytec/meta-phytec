@@ -284,20 +284,12 @@ of_camera_selection -a 0x48 -p 0 -b phyCAM-P VM-010-BW
     env_add(d, "nv/linux.bootargs.fb", "imxdrm.legacyfb_depth=32\n");
 }
 
-python do_env_append_phyflex-imx6-3() {
-    env_add(d, "nv/linux.bootargs.cma", "cma=256M\n")
-}
-
 python do_env_append_phyflex-imx6-4() {
     env_add(d, "nv/linux.bootargs.cma", "cma=256M\n")
 }
 
 python do_env_append_phyboard-mira-imx6-4() {
     env_add(d, "nv/linux.bootargs.cma", "cma=64M\n")
-}
-
-python do_env_append_phyboard-mira-imx6-5() {
-    env_add(d, "nv/linux.bootargs.cma", "cma=256M\n")
 }
 
 python do_env_append_phyboard-mira-imx6-6() {
