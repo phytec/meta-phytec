@@ -48,10 +48,15 @@ python do_env_append_mx6() {
     kernelname = "zImage"
     mmcid = "2"
     emmcid = None
+    dhcp_vendor = "phyFLEX-i.MX6"
 
     if "phyboard" in d.getVar("SOC_FAMILY"):
         mmcid = "0"
         emmcid = "3"
+        dhcp_vendor = "phyCORE-i.MX6"
+
+    if "phycard" in d.getVar("SOC_FAMILY"):
+        dhcp_vendor = "phyCARD-i.MX6"
 
     mmcboot = """#!/bin/sh
 
@@ -160,19 +165,13 @@ of_fixup_status /soc/aips-bus@2100000/i2c@21a0000/touchctrl@44
 of_fixup_status /soc/aips-bus@2100000/usdhc@2198000
 of_fixup_status /regulator-wlan-en
 """)
-    env_add(d, "network/eth0",
-"""#!/bin/sh
-
-# ip setting (static/dhcp)
-ip=static
-global.dhcp.vendor_id=barebox-${global.hostname}
-
-# static setup used if ip=static
-ipaddr=192.168.3.11
-netmask=255.255.255.0
-gateway=192.168.3.10
-serverip=192.168.3.10
-""")
+    env_add(d, "nv/dev.eth0.mode", "static")
+    env_add(d, "nv/dev.eth0.ipaddr", "192.168.3.11")
+    env_add(d, "nv/dev.eth0.netmask", "255.255.255.0")
+    env_add(d, "nv/net.gateway", "192.168.3.10")
+    env_add(d, "nv/dev.eth0.serverip", "192.168.3.10")
+    env_add(d, "nv/dev.eth0.linux.devname", "eth0")
+    env_add(d, "nv/dhcp.vendor_id", "barebox-{}".format(dhcp_vendor))
 }
 
 python do_env_append_phyflex-imx6() {
