@@ -29,3 +29,9 @@ FILES_${PN} = "${FIRMWARE_PATH}/4343w.hcd \
 	${FIRMWARE_PATH}/brcmfmac43430-sdio.bin \
 	${FIRMWARE_PATH}/brcmfmac43430-sdio.clm_blob \
 "
+
+COMPATIBLE_MACHINE  = "^("
+COMPATIBLE_MACHINE .= "phycore-imx8-2"
+COMPATIBLE_MACHINE .= "|phyboard-polaris-imx8m-2"
+COMPATIBLE_MACHINE .= "|phyboard-polaris-imx8m-3"
+COMPATIBLE_MACHINE .= ")$"
