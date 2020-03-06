@@ -37,7 +37,7 @@ deltask do_package_write_ipk
 deltask do_package_write_deb
 deltask do_package_write_rpm
 
-DEPENDS = "u-boot-mkimage-native dtc-native"
+DEPENDS = "phytec-dev-ca-native u-boot-mkimage-native dtc-native"
 FITIMAGE_HASH ??= "sha1"
 FITIMAGE_LOADADDRESS ??= "0x8000"
 FITIMAGE_ENTRYPOINT  ??= "0x8000"
