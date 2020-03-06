@@ -4,8 +4,8 @@ SRC_URI_append_secureboot = " \
         file://dynamic-config.cfg \
 "
 
-DEPENDS_append_secureboot = " nxp-cst-native dtc-native u-boot-mkimage-native"
-do_patch[depends] += "dtc-native:do_populate_sysroot u-boot-mkimage-native:do_populate_sysroot"
+DEPENDS_append_secureboot = " phytec-dev-ca-native nxp-cst-native dtc-native u-boot-mkimage-native"
+do_patch[depends] += "phytec-dev-ca-native:do_install dtc-native:do_populate_sysroot u-boot-mkimage-native:do_populate_sysroot"
 
 BAREBOX_BIN_SIGNED ?= "images/${BAREBOX_BASE_BIN}-s.img"
 BAREBOX_BIN_SIGNEDUSB ?= "images/${BAREBOX_BASE_BIN}-us.img"
