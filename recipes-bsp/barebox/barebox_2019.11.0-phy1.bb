@@ -6,8 +6,7 @@ inherit buildinfo
 require barebox.inc
 inherit barebox-environment-2
 
-_XTRA_SETUP = "${@bb.utils.contains('DISTRO_FEATURES', 'secureboot', 'secureboot', 'none', d)}"
-include ${THISDIR}/barebox-${_XTRA_SETUP}.inc
+include barebox-secureboot.inc
 include barebox-protectionshield.inc
 
 GIT_URL = "git://git.phytec.de/barebox"
