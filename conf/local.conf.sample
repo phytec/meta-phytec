@@ -67,6 +67,8 @@ BB_DISKMON_DIRS ??= "\
 
 # Turn on debugging options of the kernel
 DEBUG_BUILD_pn-linux-mainline = "1"
+# Turn on debugging options of the imx kernel
+DEBUG_BUILD_pn-linux-imx = "1"
 # Turn on debugging options of the barebox
 DEBUG_BUILD_pn-barebox = "1"
 
