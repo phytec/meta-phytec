@@ -5,18 +5,18 @@ inherit phygittag
 inherit buildinfo
 include linux-common.inc
 
-BRANCH = "v4.19.35_1.0.0-phy"
+BRANCH = "v4.19.35_1.1.0-phy"
 GIT_URL = "git://git.phytec.de/${PN}"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 PR = "${INC_PR}.0"
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "41702ab06483d2066c0cf700e2ab78305ee511d8"
+SRCREV = "673a0e98e65950f784a9f419604b6e8d6a630b8a"
 
 S = "${WORKDIR}/git"
 
-INTREE_DEFCONFIG = "defconfig"
+INTREE_DEFCONFIG = "defconfig imx8_phytec_distro.config imx8_phytec_platform.config"
 
 COMPATIBLE_MACHINE  = "^("
 COMPATIBLE_MACHINE .= "phyboard-polis-imx8mm-2"
