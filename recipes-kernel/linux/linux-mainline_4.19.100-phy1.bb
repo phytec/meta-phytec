@@ -16,7 +16,7 @@ SRCREV = "eacad03051e323be4e5f19581ce2934bd8d5d75b"
 
 S = "${WORKDIR}/git"
 
-INTREE_DEFCONFIG = "imx_v6_v7_defconfig"
+INTREE_DEFCONFIG = "imx_v6_v7_defconfig imx6_phytec_distro.config imx6_phytec_machine.config imx6_phytec_platform.config"
 
 COMPATIBLE_MACHINE  = "^("
 COMPATIBLE_MACHINE .=  "phyflex-imx6-1"
