@@ -399,26 +399,6 @@
 	status = "disabled";
 };
 
-&spi6 {
-       pinctrl-names = "default", "sleep";
-       pinctrl-0 = <&spi6_pins_a>;
-       pinctrl-1 = <&spi6_sleep_pins_a>;
-
-       status = "disabled";
-};
-
-&sdmmc3 {
-       pinctrl-names = "default", "opendrain", "sleep";
-       pinctrl-0 = <&sdmmc3_b4_pins_a>;
-       pinctrl-1 = <&sdmmc3_b4_od_pins_a>;
-       pinctrl-2 = <&sdmmc3_b4_sleep_pins_a>;
-       st,neg-edge;
-       bus-width = <4>;
-       max-frequency = <10000000>;
-       vmmc-supply = <&v3v3>;
-       status = "disabled";
-};
-
 /* Select display interface by commenting/uncommenting the following lines */ 
 //#include "phycore-stm32mp1-dsi-lcd-mb1407.dtsi"
 //#include "phycore-stm32mp1-peb-av01-hdmi.dtsi"
@@ -429,3 +409,4 @@
 //#include "phycore-stm32mp1-pi-hat-extension.dtsi"
 //#include "phycore-stm32mp1-uno-r3-extension.dtsi"
 //#include "phycore-stm32mp1-motor-control.dtsi"
+
