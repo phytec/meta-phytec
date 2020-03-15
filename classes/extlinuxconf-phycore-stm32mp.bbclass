@@ -119,7 +119,6 @@ python update_extlinuxconf_targets() {
         for devicetree in devicetree_list.split():
             bb.note('*** Loop for devicetree: %s' % devicetree)
             target_prefix = re.match('^phycore-stm32(.*)$', devicetree)
-            bb.note('>>> New target Prefix: %s' % target_prefix)
             new_target = target_prefix.group(1) + '_' + config_label
             bb.note('>>> New target label: %s' % new_target)
             if not new_target in default_targets.split():
@@ -146,6 +145,7 @@ python do_create_multiextlinux_config() {
         if not overrides:
             bb.fatal('OVERRIDES not defined')
         localdata.setVar('OVERRIDES', target + ':' + overrides)
+
         # Initialize labels from localdata to allow target override
         labels = localdata.getVar('UBOOT_EXTLINUX_LABELS')
         if not labels:
@@ -177,11 +177,11 @@ python do_create_multiextlinux_config() {
                 if len(labels.split()) > 1:
                     cfgfile.write('menu title Select the boot mode\n')
 
-                spashscreen_name = localdata.getVar('UBOOT_SPLASH_IMAGE')
-                if not spashscreen_name:
+                splashscreen_name = localdata.getVar('UBOOT_SPLASH_IMAGE')
+                if not splashscreen_name:
                     bb.warn('UBOOT_SPLASH_IMAGE not defined')
                 else:
-                    cfgfile.write('MENU BACKGROUND ../%s.bmp\n' % (spashscreen_name))
+                    cfgfile.write('MENU BACKGROUND /%s.bmp\n' % (splashscreen_name))
 
                 timeout =  localdata.getVar('UBOOT_EXTLINUX_TIMEOUT')
                 if timeout:
@@ -209,8 +209,6 @@ python do_create_multiextlinux_config() {
                     menu_description = localdata.getVar('UBOOT_EXTLINUX_MENU_DESCRIPTION')
                     if not menu_description:
                         menu_description = label
-
-                    bb.note('>>> New %s LABEL' % label)
 
                     root = localdata.getVar('UBOOT_EXTLINUX_ROOT')
                     if not root:

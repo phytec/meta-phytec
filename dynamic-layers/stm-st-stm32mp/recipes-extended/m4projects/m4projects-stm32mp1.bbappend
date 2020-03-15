@@ -1,4 +1,5 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+LIC_FILES_CHKSUM = "file://License.md;md5=6b267c73760fea024ffbc6049db473ba"
 
 GIT_URL = "git://git.phytec.de/STM32CubeMP1"
 BRANCH = "1.0.0-phy"

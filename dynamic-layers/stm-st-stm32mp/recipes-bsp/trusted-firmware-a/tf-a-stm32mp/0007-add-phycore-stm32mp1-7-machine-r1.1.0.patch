@@ -1,0 +1,46 @@
+diff --git a/fdts/phycore-stm32mp1-7.dts b/fdts/phycore-stm32mp1-7.dts
+new file mode 100644
+index 0000000..f18b45e
+--- /dev/null
++++ b/fdts/phycore-stm32mp1-7.dts
+@@ -0,0 +1,40 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) Phytec GmbH 2019-2020 - All Rights Reserved
++ * Author: Dom VOVARD <dom.vovard@linrt.com>.
++ */
++
++/dts-v1/;
++
++/* ATF Specific */
++#include <dt-bindings/clock/stm32mp1-clksrc.h>
++#include <dt-bindings/power/stm32mp1-power.h>
++#include "phycore-stm32mp157cac-som.dtsi"
++#include "stm32mp15-ddr3-1x4Gb-1066-binG.dtsi"
++
++/ {
++	model = "PHYTEC phyCORE-STM32MP1-7 SOM";
++	compatible = "st,phycore-stm32mp1", "st,stm32mp157";
++
++};
++
++&rtc {
++        status = "okay";
++};
++
++&fmc {
++        status = "okay";
++};
++
++&qspi {
++        status = "okay";
++};
++
++&sdmmc1 {
++        status = "okay";
++};
++
++&sdmmc2 {
++        status = "disabled";
++};
++

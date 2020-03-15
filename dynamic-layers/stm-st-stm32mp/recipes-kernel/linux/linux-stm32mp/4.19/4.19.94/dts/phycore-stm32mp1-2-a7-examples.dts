@@ -1,0 +1,16 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
+/*
+ * Copyright (C) PHYTEC GmbH 2019-2020 - All Rights Reserved
+ * Author: Dom VOVARD <dom.vovard@linrt.com>.
+ */
+
+/dts-v1/;
+
+#include "phycore-stm32mp157cac-som.dtsi"
+#include "phyboard-stm32mp1-alpha.dtsi"
+#include <dt-bindings/rtc/rtc-stm32.h>
+
+/ {
+        model = "Phytec GmbH phycore-stm32mp1-2 Alpha Dev Board";
+        compatible = "phycore-stm32mp1-2-a7-examples", "phytec,pcm068-1534-0-005", "phytec,pcm939-1517-1-002", "st,stm32mp157";
+};

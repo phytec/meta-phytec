@@ -1,0 +1,60 @@
+#@DESCRIPTION: PHYCORE-STM32mp1-5 machine extlinux file configuration
+
+# Set configuration file to monitor
+UBOOT_EXTLINUX_CONFIGURE_FILES_append = " ${PHYCORE_STM32MP_BASE}/conf/machine/include/phytec-machine-extlinux-config-phycore-stm32mp1-5.inc:True "
+
+include conf/machine/include/phytec-machine-extlinux-config-stm32mp.inc
+
+# -----------------------------------------------------------------------------
+# PHYCORE STM32mp1-5 configuration
+# -----------------------------------------------------------------------------
+# Define available targets to use
+UBOOT_EXTLINUX_CONFIGURED_TARGETS += "mp1-5_sdcard"
+UBOOT_EXTLINUX_CONFIGURED_TARGETS += "mp1-5_emmc"
+UBOOT_EXTLINUX_CONFIGURED_TARGETS += "mp1-5_nor-emmc"
+# Define bootprefix for each target
+UBOOT_EXTLINUX_BOOTPREFIXES_mp1-5_sdcard       = "${EXTLINUX_BOOTDEVICE_SDCARD}_phycore-stm32mp1-5_"
+UBOOT_EXTLINUX_BOOTPREFIXES_mp1-5_emmc = "${EXTLINUX_BOOTDEVICE_EMMC}_phycore-stm32mp1-5_"
+UBOOT_EXTLINUX_BOOTPREFIXES_mp1-5_nor-emmc = "${EXTLINUX_BOOTDEVICE_NOREMMC}_phycore-stm32mp1-5_"
+# Define labels for each target
+UBOOT_EXTLINUX_LABELS_mp1-5_sdcard       = "phycore-stm32mp1-5-sdcard"
+UBOOT_EXTLINUX_LABELS_mp1-5_emmc = "phycore-stm32mp1-5-emmc"
+UBOOT_EXTLINUX_LABELS_mp1-5_nor-emmc = "phycore-stm32mp1-5-nor-emmc"
+# Define default boot config for each target
+UBOOT_EXTLINUX_DEFAULT_LABEL_mp1-5_sdcard       ?= "phycore-stm32mp1-5-sdcard"
+UBOOT_EXTLINUX_DEFAULT_LABEL_mp1-5_emmc ?= "phycore-stm32mp1-5-emmc"
+UBOOT_EXTLINUX_DEFAULT_LABEL_mp1-5_nor-emmc ?= "phycore-stm32mp1-5-nor-emmc"
+# Define FDT overrides for all labels
+UBOOT_EXTLINUX_FDT_phycore-stm32mp1-5-sdcard       = "/phycore-stm32mp1-5.dtb"
+UBOOT_EXTLINUX_FDT_phycore-stm32mp1-5-emmc = "/phycore-stm32mp1-5.dtb"
+UBOOT_EXTLINUX_FDT_phycore-stm32mp1-5-nor-emmc = "/phycore-stm32mp1-5.dtb"
+# Define ROOT overrides for all labels
+UBOOT_EXTLINUX_ROOT_phycore-stm32mp1-5-sdcard = "${EXTLINUX_ROOT_SDCARD}"
+UBOOT_EXTLINUX_ROOT_phycore-stm32mp1-5-emmc = "${EXTLINUX_ROOT_EMMC}"
+UBOOT_EXTLINUX_ROOT_phycore-stm32mp1-5-nor-emmc = "${EXTLINUX_ROOT_NOREMMC}"
+# -----------------------------------------------------------------------------
+# Append A7 examples labels for each target
+UBOOT_EXTLINUX_LABELS_mp1-5_sdcard       += "phycore-stm32mp1-5-a7-examples-sdcard"
+UBOOT_EXTLINUX_LABELS_mp1-5_emmc += "phycore-stm32mp1-5-a7-examples-emmc"
+UBOOT_EXTLINUX_LABELS_mp1-5_nor-emmc += "phycore-stm32mp1-5-a7-examples-nor-emmc"
+# Define FDT overrides for A7 labels
+UBOOT_EXTLINUX_FDT_phycore-stm32mp1-5-a7-examples-sdcard       = "/phycore-stm32mp1-5-a7-examples.dtb"
+UBOOT_EXTLINUX_FDT_phycore-stm32mp1-5-a7-examples-emmc = "/phycore-stm32mp1-5-a7-examples.dtb"
+UBOOT_EXTLINUX_FDT_phycore-stm32mp1-5-a7-examples-nor-emmc = "/phycore-stm32mp1-5-a7-examples.dtb"
+# Define ROOT overrides for A7 labels
+UBOOT_EXTLINUX_ROOT_phycore-stm32mp1-5-a7-examples-sdcard       = "${EXTLINUX_ROOT_SDCARD}"
+UBOOT_EXTLINUX_ROOT_phycore-stm32mp1-5-a7-examples-emmc = "${EXTLINUX_ROOT_EMMC}"
+UBOOT_EXTLINUX_ROOT_phycore-stm32mp1-5-a7-examples-nor-emmc = "${EXTLINUX_ROOT_NOREMMC}"
+# -----------------------------------------------------------------------------
+# Append M4 examples labels for each target
+UBOOT_EXTLINUX_LABELS_mp1-5_sdcard       += "phycore-stm32mp1-5-m4-examples-sdcard"
+UBOOT_EXTLINUX_LABELS_mp1-5_emmc += "phycore-stm32mp1-5-m4-examples-emmc"
+UBOOT_EXTLINUX_LABELS_mp1-5_nor-emmc += "phycore-stm32mp1-5-m4-examples-nor-emmc"
+# Define FDT overrides for M4 labels
+UBOOT_EXTLINUX_FDT_phycore-stm32mp1-5-m4-examples-sdcard       = "/phycore-stm32mp1-5-m4-examples.dtb"
+UBOOT_EXTLINUX_FDT_phycore-stm32mp1-5-m4-examples-emmc = "/phycore-stm32mp1-5-m4-examples.dtb"
+UBOOT_EXTLINUX_FDT_phycore-stm32mp1-5-m4-examples-nor-emmc = "/phycore-stm32mp1-5-m4-examples.dtb"
+# Define ROOT overrides for M4 labels
+UBOOT_EXTLINUX_ROOT_phycore-stm32mp1-5-m4-examples-sdcard       = "${EXTLINUX_ROOT_SDCARD}"
+UBOOT_EXTLINUX_ROOT_phycore-stm32mp1-5-m4-examples-emmc = "${EXTLINUX_ROOT_EMMC}"
+UBOOT_EXTLINUX_ROOT_phycore-stm32mp1-5-m4-examples-nor-emmc = "${EXTLINUX_ROOT_NOREMMC}"

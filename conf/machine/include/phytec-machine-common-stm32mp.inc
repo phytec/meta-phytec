@@ -1,6 +1,5 @@
 #@DESCRIPTION: Common Machine configuration for STM32 systems
 
-require conf/machine/include/phytec-machine-extlinux-config-stm32mp.inc
 require conf/machine/include/phytec-machine-features-stm32mp.inc
 require conf/machine/include/phytec-machine-flashlayout-stm32mp.inc
 require conf/machine/include/phytec-machine-flashlayout-deleteall-stm32mp.inc
@@ -23,6 +22,7 @@ BOOTSCHEME_LABELS ??= "basic trusted optee"
 # Default machine feature
 MACHINE_FEATURES = "usbhost usbgadget alsa screen ext2"
 MACHINE_FEATURES_append = " ${@bb.utils.contains('BOOTSCHEME_LABELS', 'optee', 'optee', '', d)} "
+MACHINE_FEATURES_append = " watchdog "
 MACHINE_FEATURES_append = " tpm2 "
 
 # Default serial consoles (TTYs) to enable using getty
@@ -37,14 +37,8 @@ RDEPENDS_${KERNEL_PACKAGE_NAME}-base = ""
 MACHINE_EXTRA_RRECOMMENDS = " kernel-modules"
 
 # Default device tree list supported per board
-STM32MP_DT_FILES_DK ??= ""
-STM32MP_DT_FILES_ED ??= ""
-STM32MP_DT_FILES_EV ??= ""
 STM32MP_DT_FILES_PHYCORE ??= ""
 # Set default supported device tree list
-STM32MP_DEVICETREE_append = " ${STM32MP_DT_FILES_DK} "
-STM32MP_DEVICETREE_append = " ${STM32MP_DT_FILES_ED} "
-STM32MP_DEVICETREE_append = " ${STM32MP_DT_FILES_EV} "
 STM32MP_DEVICETREE_append = " ${STM32MP_DT_FILES_PHYCORE} "
 
 # =========================================================================
@@ -56,13 +50,13 @@ MACHINE_EXTRA_RRECOMMENDS_append = " m4projects-stm32mp1 "
 MACHINE_EXTRA_RRECOMMENDS_append = " linux-examples-stm32mp1 "
 MACHINE_EXTRA_RRECOMMENDS_append = " m4fwcoredump "
 # Enable Software watchdog when sysvinit
-# We enable it to be aligned with the activation within u-boot https://gerrit.st.com/#/c/102528
 MACHINE_EXTRA_RRECOMMENDS_append = " ${@bb.utils.contains('DISTRO_FEATURES','sysvinit',' watchdog ','',d)} "
 
 # =========================================================================
 # Image
 # =========================================================================
-IMAGE_CLASSES += "image_types-stubi st-partitions-image"
+# Partitions configuration
+IMAGE_CLASSES += "st-partitions-image"
 
 # Define image to use for extra partitions
 STM32MP_BOOTFS_IMAGE = "st-image-bootfs"
@@ -75,67 +69,89 @@ STM32MP_VENDORFS_IMAGE = "st-image-vendorfs"
 STM32MP_VENDORFS_LABEL = "vendorfs"
 STM32MP_VENDORFS_MOUNTPOINT_IMAGE = "/vendor"
 
-# Define extra partition to build
-PARTITIONS_IMAGE = "${STM32MP_BOOTFS_IMAGE} ${STM32MP_USERFS_IMAGE} ${STM32MP_VENDORFS_IMAGE}"
-PARTITIONS_MOUNTPOINT_IMAGE = "${STM32MP_BOOTFS_MOUNTPOINT_IMAGE} ${STM32MP_USERFS_MOUNTPOINT_IMAGE} ${STM32MP_VENDORFS_MOUNTPOINT_IMAGE}"
+# Configure use of VENDORFS partition
+ST_VENDORFS ?= "1"
 
-# Enable licence summary and configure License content generation
-ENABLE_IMAGE_LICENSE_SUMMARY = "1"
-IMAGE_SUMMARY_LIST = "${STM32MP_BOOTFS_IMAGE}:${STM32MP_VENDORFS_IMAGE}:#IMAGE#:${STM32MP_USERFS_IMAGE}"
+# Define extra partition to build
+PARTITIONS_IMAGE  = "${STM32MP_BOOTFS_IMAGE}"
+PARTITIONS_IMAGE += "${STM32MP_USERFS_IMAGE}"
+PARTITIONS_IMAGE += "${@bb.utils.contains('ST_VENDORFS','1','${STM32MP_VENDORFS_IMAGE}','',d)}"
+PARTITIONS_MOUNTPOINT_IMAGE  = "${STM32MP_BOOTFS_MOUNTPOINT_IMAGE}"
+PARTITIONS_MOUNTPOINT_IMAGE += "${STM32MP_USERFS_MOUNTPOINT_IMAGE}"
+PARTITIONS_MOUNTPOINT_IMAGE += "${@bb.utils.contains('ST_VENDORFS','1','${STM32MP_VENDORFS_MOUNTPOINT_IMAGE}','',d)}"
 
 # Provide list of partition to mount
 MOUNT_PARTITIONS_LIST  = "${STM32MP_BOOTFS_LABEL},${STM32MP_BOOTFS_MOUNTPOINT_IMAGE}"
 MOUNT_PARTITIONS_LIST += "${STM32MP_USERFS_LABEL},${STM32MP_USERFS_MOUNTPOINT_IMAGE}"
-MOUNT_PARTITIONS_LIST += "${STM32MP_VENDORFS_LABEL},${STM32MP_VENDORFS_MOUNTPOINT_IMAGE}"
+MOUNT_PARTITIONS_LIST += "${@bb.utils.contains('ST_VENDORFS','1','${STM32MP_VENDORFS_LABEL},${STM32MP_VENDORFS_MOUNTPOINT_IMAGE}','',d)}"
 
 # Define image partition size (supposed to be set as max size in image recipe)
+# Proposed value for bootfs is 64MB
 BOOTFS_PARTITION_SIZE = "65536"
-# New value proposed for rootfs is 768MB
-ROOTFS_PARTITION_SIZE = "768432"
-# If we consider the highest constraint is NAND size (so < 1GB)
-# Boot binaries 4 MB max (with optee) + bootfs 64 MB max + rootfs 768 MB max + userfs size (4*32MB) < 1024 MB
-USERFS_PARTITION_SIZE = "131072"
-# New value proposed for vendorfs is 16MB
-VENDORFS_PARTITION_SIZE = "16384"
 
-# Define volume list for multivolume UBIFS
-STM32MP_UBI_VOLUME += "${STM32MP_BOOTFS_IMAGE}-${DISTRO}-${MACHINE}:${BOOTFS_PARTITION_SIZE}"
-STM32MP_UBI_VOLUME += "${IMAGE_LINK_NAME}:${ROOTFS_PARTITION_SIZE}"
-STM32MP_UBI_VOLUME += "${STM32MP_VENDORFS_IMAGE}-${DISTRO}-${MACHINE}:${VENDORFS_PARTITION_SIZE}"
-STM32MP_UBI_VOLUME += "${STM32MP_USERFS_IMAGE}-${DISTRO}-${MACHINE}:${USERFS_PARTITION_SIZE}"
-
-# Set on machine side the max size for ROOTFS image to apply for default rootfs being built
+# Define the max size for ROOTFS image being built
 # On other image partition such settings is directly done in image recipe
 IMAGE_ROOTFS_MAXSIZE ?= "${ROOTFS_PARTITION_SIZE}"
+# Proposed value for rootfs should fit our highest constraint: NAND size (1GiB)
+# For optee bootscheme we have the maximum partitions:
+#   FSBL1 + SSBL + SSBL2 + TEEH + TEED + TEEX + Multivolume UBI = NAND size
+#   Multivolume UBI = 1GiB - (2MiB + 2MiB + 2MiB + 512KiB + 512KiB + 512KiB) = 1016.5MiB
+# With multivolume UBI split:
+#   Multivolume UBI > uboot_config + uboot_config_r + bootfs + vendorfs + rootfs + userfs + UBI Overhead
+# From http://www.linux-mtd.infradead.org/doc/ubi.html#L_overhead, we compute
+# the UBI overhead for our NAND:
+#   (20*4096/1024 + 4) * 256KiB + (256KiB - 248KiB) * (1016.5MiB/256KiB - 20*4096/1024 - 4) = 53360KiB
+# In addition, for each UBIFS, our NAND consummed 9 extra eraseblocks
+# So:
+#   rootfs < Multivolume UBI - (uboot_config + uboot_config_r + bootfs + vendorfs + userfs + UBI Overhead + 4 * 9*eraseblocks)
+#   rootfs < 1016.5MiB - (256KiB + 256KiB + 64MiB + 16MiB + 128MiB + 53360KiB + 4 * 9 * 256KiB)
+#   rootfs < 746.8MiB
+# Proposed value for rootfs is 746MiB
+ROOTFS_PARTITION_SIZE = "763904"
+# Proposed value for userfs is 128MB (4*32MB)
+USERFS_PARTITION_SIZE = "131072"
+# Proposed value for vendorfs is 16MB
+VENDORFS_PARTITION_SIZE = "16384"
 
-# ST Naming rules partitions for UBI format are :
-#   nand_<PageSize>_<BlockSize>
-#   nor_<BlockSize>
-# Like that a same UBI partition can be used for severals NAND/NOR providers
 
-# UBI Args for NAND soldered by default on MB1262
-# Micron MT29F8G16ABACAH4
-# LEB = BLOCK_SIZE - (2 * page size): 256*1024 - (2*4096)
-MKUBIFS_ARGS_nand_4_256 = "--min-io-size 4096 --leb-size 253952 --max-leb-cnt 4096 --space-fixup"
-UBINIZE_ARGS_nand_4_256 = "--min-io-size 4096 --peb-size 256KiB"
+# UBI Configuration
+IMAGE_CLASSES += "image_types-stubi"
 
-# Define UBI labels to build
-MULTIUBI_BUILD_append = " nand_4_256 "
+# Define specific U-Boot config partition settings
+STM32MP_UBOOTCONFIG_NAME   = "uboot_config"
+UBOOTCONFIG_PARTITION_SIZE = "256"
 
-# Set on machine side the UBI volume label for ROOTFS image to apply to reuse it
-# on kernel command line to mount UBI file system
-# On other image partition such settings is directly done in image recipe
+# Define volume list for multivolume UBIFS
+# We need to have two empty UBI volumes to manage U-Boot config in our multivolume UBI
+STM32MP_UBI_VOLUME += "${STM32MP_UBOOTCONFIG_NAME}:${UBOOTCONFIG_PARTITION_SIZE}:empty"
+STM32MP_UBI_VOLUME += "${STM32MP_UBOOTCONFIG_NAME}_r:${UBOOTCONFIG_PARTITION_SIZE}:empty"
+# Add default partition volumes
+STM32MP_UBI_VOLUME += "${STM32MP_BOOTFS_IMAGE}-${DISTRO}-${MACHINE}:${BOOTFS_PARTITION_SIZE}"
+STM32MP_UBI_VOLUME += "${IMAGE_LINK_NAME}:${ROOTFS_PARTITION_SIZE}"
+STM32MP_UBI_VOLUME += "${@bb.utils.contains('ST_VENDORFS','1','${STM32MP_VENDORFS_IMAGE}-${DISTRO}-${MACHINE}:${VENDORFS_PARTITION_SIZE}','',d)}"
+STM32MP_UBI_VOLUME += "${STM32MP_USERFS_IMAGE}-${DISTRO}-${MACHINE}:${USERFS_PARTITION_SIZE}"
+
+# Define UBI volume label for ROOTFS image being built
+# This is needed to have "generic" kernel command line to mount UBI file system
 UBI_VOLNAME ?= "rootfs"
 
-# create minimal inode number (as it is done by default in image_types.bbclass)
-# add naming of ext4 FS to be aligned with gpt... scripts
-# For label name we are using IMAGE_NAME_SUFFIX we are removing "." and truncing to 16 caracters
-# -L new-volume-label
-# Set the volume label for the filesystem to new-volume-label.  The maximum length of the volume label is 16 bytes.
-EXTRA_IMAGECMD_ext4 = "-i 4096 -L ${@d.getVar('IMAGE_NAME_SUFFIX').replace('.', '', 1)[:16]}"
-
 # Default FSTYPES requested
-IMAGE_FSTYPES = "tar.xz ext4"
+IMAGE_FSTYPES ?= "tar.xz ext4"
+
+# Define specific EXT4 command line:
+#   - Create minimal inode number (as it is done by default in image_types.bbclass)
+#   - Add label name (maximum length of the volume label is 16 bytes)
+#     So use IMAGE_NAME_SUFFIX name by removing the '.' and truncing to 16 caracters
+#   - Deactivate metadata_csum and dir_index (hashed b-trees): update not supported
+#     by U-Boot
+EXTRA_IMAGECMD_ext4 = "-i 4096 -L ${@d.getVar('IMAGE_NAME_SUFFIX').replace('.', '', 1)[:16]} -O ^metadata_csum,^dir_index"
+
+# Enable licence summary and configure License content generation
+ENABLE_IMAGE_LICENSE_SUMMARY = "1"
+IMAGE_SUMMARY_LIST = "${STM32MP_BOOTFS_IMAGE}"
+IMAGE_SUMMARY_LIST_append = "${@bb.utils.contains('ST_VENDORFS','1',':${STM32MP_VENDORFS_IMAGE}','',d)}"
+IMAGE_SUMMARY_LIST_append = ":#IMAGE#"
+IMAGE_SUMMARY_LIST_append = ":${STM32MP_USERFS_IMAGE}"
 
 # Allow debug on the platform with gdb and openocd tools
 EXTRA_IMAGEDEPENDS_append = " \
@@ -160,29 +176,38 @@ ST_TOOLS_FOR_SDK_append = " \
     nativesdk-glibc-gconv-utf-16 \
     nativesdk-glibc-gconv-utf-32 \
     "
+# For support wayland-scanner in SDK
+ST_TOOLS_FOR_SDK_append = " \
+    nativesdk-wayland \
+    "
+# Make sure to append mkimage to SDK for kernel uImage build
+ST_DEPENDENCIES_BUILD_FOR_SDK = " \
+    ${@bb.utils.contains('KERNEL_IMAGETYPE', 'uImage', 'nativesdk-u-boot-mkimage', '', d)} \
+    ${@bb.utils.contains('KERNEL_ALT_IMAGETYPE', 'uImage', 'nativesdk-u-boot-mkimage', '', d)} \
+  "
+# Make sure to append openssl to SDK for kernel-module and scripts build
+ST_DEPENDENCIES_BUILD_FOR_SDK_append = " nativesdk-openssl-dev "
+
+# Make sure to append bison to SDK for u-boot build
+ST_DEPENDENCIES_BUILD_FOR_SDK_append = " \
+    ${@bb.utils.contains('EXTRA_IMAGEDEPENDS', 'u-boot-stm32mp', 'nativesdk-bison', '', d)} \
+  "
 
 # for populate_sdk, we will have all the tools
 TOOLCHAIN_HOST_TASK_append = " ${ST_TOOLS_FOR_SDK} "
-
-# Make sure to append mkimage to SDK for kernel uImage build
-TOOLCHAIN_HOST_TASK_append = " ${@bb.utils.contains('KERNEL_IMAGETYPE', 'uImage', 'nativesdk-u-boot-mkimage', '', d)} "
-TOOLCHAIN_HOST_TASK_append = " ${@bb.utils.contains('KERNEL_ALT_IMAGETYPE', 'uImage', 'nativesdk-u-boot-mkimage', '', d)} "
-# Make sure to append openssl to SDK for kernel-module and scripts build
-TOOLCHAIN_HOST_TASK_append = " nativesdk-openssl-dev "
-
-# Make sure to append bison to SDK for u-boot build
-TOOLCHAIN_HOST_TASK_append = " ${@bb.utils.contains('EXTRA_IMAGEDEPENDS', 'u-boot-stm32mp', 'nativesdk-bison', '', d)} "
-
+TOOLCHAIN_HOST_TASK_append = " ${ST_DEPENDENCIES_BUILD_FOR_SDK} "
 # for populate_sdk_ext, the tools are not desired as mandatory tools (aka basic
 # tools for devtool)
 TOOLCHAIN_HOST_TASK_remove_task-populate-sdk-ext = " ${ST_TOOLS_FOR_SDK} "
-
-# buildtools and uninatve are used only by populate_sdk_ext
+TOOLCHAIN_HOST_TASK_remove_task-populate-sdk-ext = " ${ST_DEPENDENCIES_BUILD_FOR_SDK} "
+# buildtools is used only by populate_sdk_ext
 # populate_sdk_ext = buildtools + uninatve + layer
 # buildtools: sdk part of esdk (like sdk generated by populate_sdk)
 # uninative: basic tools for devtool
-TOOLCHAIN_HOST_TASK_append_pn-buildtools-tarball = " ${ST_TOOLS_FOR_SDK} "
-TOOLCHAIN_HOST_TASK_remove_pn-uninative-tarball = " ${ST_TOOLS_FOR_SDK} "
+TOOLCHAIN_HOST_TASK_remove_pn-buildtools-tarball = " ${ST_TOOLS_FOR_SDK} "
+
+TOOLCHAIN_TARGET_TASK += " bash-dev "
+TOOLCHAIN_TARGET_TASK_remove_pn-buildtools-tarball = " bash-dev "
 
 # =========================================================================
 # Kernel
@@ -206,6 +231,12 @@ STM32MP_KERNEL_DEVICETREE += "${@' '.join('%s.dtb' % d for d in '${STM32MP_DEVIC
 STM32MP_KERNEL_DEVICETREE += "${@' '.join('%s.dtb' % d for d in '${CUBE_M4_EXAMPLES_DT}'.split())}"
 STM32MP_KERNEL_DEVICETREE += "${@' '.join('%s.dtb' % d for d in '${LINUX_A7_EXAMPLES_DT}'.split())}"
 
+# Set LOADADDR
+# Set this address to 0xC2000040, which is 0xC2000000 + 0x40.
+# 0xC2000000 is the memory address where U-Boot will copy from flash the file uImage and 0x40 is uImage header size (64Bytes).
+# With this value, U-Boot will be able to execute in place the zImage contained in uImage.
+ST_KERNEL_LOADADDR ?= "0xC2000040"
+
 # Define the devicetree for Linux A7 examples
 LINUX_A7_EXAMPLES_DT ?= ""
 
@@ -213,6 +244,7 @@ LINUX_A7_EXAMPLES_DT ?= ""
 # u-boot
 # =========================================================================
 EXTRA_IMAGEDEPENDS += "u-boot-stm32mp"
+PREFERRED_PROVIDER_virtual/bootloader = "u-boot-stm32mp"
 
 # Define default U-Boot config
 UBOOT_CONFIG += "${@bb.utils.contains('BOOTSCHEME_LABELS', 'basic', 'basic', '', d)}"
@@ -301,4 +333,5 @@ DEFAULT_COPRO_FIRMWARE = "OpenAMP_TTY_echo"
 # GCNANO userland configuration
 # =========================================================================
 # Variable for using vendor directory instead of usr
+GCNANO_USERLAND_USE_VENDOR_DIR = "${@bb.utils.contains('ST_VENDORFS','1','1','0',d)}"
 GCNANO_USERLAND_VENDOR_DIR = "${STM32MP_VENDORFS_MOUNTPOINT_IMAGE}"

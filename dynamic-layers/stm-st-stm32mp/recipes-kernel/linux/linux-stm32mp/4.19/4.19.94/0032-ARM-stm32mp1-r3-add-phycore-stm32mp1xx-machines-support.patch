@@ -1,0 +1,1164 @@
+diff --git a/Documentation/devicetree/bindings/rtc/rtc.txt b/Documentation/devicetree/bindings/rtc/rtc.txt
+new file mode 100644
+index 0000000..e1c8406
+--- /dev/null
++++ b/Documentation/devicetree/bindings/rtc/rtc.txt
+@@ -0,0 +1,38 @@
++Generic device tree bindings for Real Time Clock devices
++========================================================
++
++This document describes generic bindings which can be used to describe Real Time
++Clock devices in a device tree.
++
++Required properties
++-------------------
++
++- compatible : name of RTC device following generic names recommended practice.
++
++For other required properties e.g. to describe register sets,
++clocks, etc. check the binding documentation of the specific driver.
++
++Optional properties
++-------------------
++
++- start-year : if provided, the default hardware range supported by the RTC is
++               shifted so the first usable year is the specified one.
++
++The following properties may not be supported by all drivers. However, if a
++driver wants to support one of the below features, it should adapt the bindings
++below.
++- trickle-resistor-ohms :   Selected resistor for trickle charger. Should be given
++                            if trickle charger should be enabled
++- backup-switchover-mode :  Configure RTC backup power supply switch behaviour
++
++Trivial RTCs
++------------
++
++This is a list of trivial RTC devices that have simple device tree
++bindings, consisting only of a compatible field, an address and
++possibly an interrupt line.
++
++
++Compatible		Vendor / Chip
++==========		=============
++microcrystal,rv3028	Real Time Clock Module with I2C-Bus
++
+diff --git a/arch/arm/boot/dts/stm32mp157c.dtsi b/arch/arm/boot/dts/stm32mp157c.dtsi
+index e8f995a..9811182 100644
+--- a/arch/arm/boot/dts/stm32mp157c.dtsi
++++ b/arch/arm/boot/dts/stm32mp157c.dtsi
+@@ -1818,10 +1818,14 @@
+ 			clock-names = "stmmaceth",
+ 				      "mac-clk-tx",
+ 				      "mac-clk-rx",
++                                      "eth-ck",
++                                      "syscfg-clk",
+ 				      "ethstp";
+ 			clocks = <&rcc ETHMAC>,
+ 				 <&rcc ETHTX>,
+ 				 <&rcc ETHRX>,
++                                 <&rcc ETHCK_K>,
++                                 <&rcc SYSCFG>,
+ 				 <&rcc ETHSTP>;
+ 			st,syscon = <&syscfg 0x4>;
+ 			snps,mixed-burst;
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index 97964f7..2818c9f 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -310,7 +310,7 @@ static int panel_simple_probe(struct device *dev, const struct panel_desc *desc)
+ 		return PTR_ERR(panel->supply);
+ 
+ 	panel->enable_gpio = devm_gpiod_get_optional(dev, "enable",
+-						     GPIOD_OUT_LOW);
++						     GPIOD_OUT_HIGH);
+ 	if (IS_ERR(panel->enable_gpio)) {
+ 		err = PTR_ERR(panel->enable_gpio);
+ 		if (err != -EPROBE_DEFER)
+diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
+index f028277..d77e73b 100644
+--- a/drivers/mtd/spi-nor/spi-nor.c
++++ b/drivers/mtd/spi-nor/spi-nor.c
+@@ -1072,6 +1072,7 @@ static const struct flash_info spi_nor_ids[] = {
+ 			SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ) },
+ 	{ "is25wp128",  INFO(0x9d7018, 0, 64 * 1024, 256,
+ 			SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ) },
++	{ "is25lq128", INFO(0x9d6018,  0,  64 * 1024, 256, 0) },
+ 
+ 	/* Macronix */
+ 	{ "mx25l512e",   INFO(0xc22010, 0, 64 * 1024,   1, SECT_4K) },
+@@ -1242,6 +1243,7 @@ static const struct flash_info spi_nor_ids[] = {
+ 	{ "w25q80", INFO(0xef5014, 0, 64 * 1024,  16, SECT_4K) },
+ 	{ "w25q80bl", INFO(0xef4014, 0, 64 * 1024,  16, SECT_4K) },
+ 	{ "w25q128", INFO(0xef4018, 0, 64 * 1024, 256, SECT_4K) },
++	{ "w25q128", INFO(0xef7018, 0, 64 * 1024, 256, SECT_4K) },
+ 	{ "w25q256", INFO(0xef4019, 0, 64 * 1024, 512, SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ) },
+ 	{ "w25m512jv", INFO(0xef7119, 0, 64 * 1024, 1024,
+ 			SECT_4K | SPI_NOR_QUAD_READ | SPI_NOR_DUAL_READ) },
+diff --git a/drivers/net/can/m_can/m_can.c b/drivers/net/can/m_can/m_can.c
+index 9b44940..509935e 100644
+--- a/drivers/net/can/m_can/m_can.c
++++ b/drivers/net/can/m_can/m_can.c
+@@ -27,6 +27,7 @@
+ #include <linux/iopoll.h>
+ #include <linux/can/dev.h>
+ #include <linux/pinctrl/consumer.h>
++#include <linux/regulator/consumer.h>
+ 
+ /* napi related */
+ #define M_CAN_NAPI_WEIGHT	64
+@@ -361,6 +362,7 @@ struct m_can_priv {
+ 	struct device *device;
+ 	struct clk *hclk;
+ 	struct clk *cclk;
++        struct regulator *reg_xceiver;
+ 	void __iomem *base;
+ 	u32 irqstatus;
+ 	int version;
+@@ -407,6 +409,23 @@ static inline bool m_can_tx_fifo_full(const struct m_can_priv *priv)
+ 		return !!(m_can_read(priv, M_CAN_TXFQS) & TXFQS_TFQF);
+ }
+ 
++static inline int m_can_transceiver_enable(const struct m_can_priv *priv)
++{
++        if (!priv->reg_xceiver)
++                return 0;
++
++        return regulator_enable(priv->reg_xceiver);
++}
++
++
++static inline int m_can_transceiver_disable(const struct m_can_priv *priv)
++{
++        if (!priv->reg_xceiver)
++                return 0;
++
++        return regulator_disable(priv->reg_xceiver);
++}
++
+ static inline void m_can_config_endisable(const struct m_can_priv *priv,
+ 					  bool enable)
+ {
+@@ -1180,6 +1199,7 @@ static void m_can_chip_config(struct net_device *dev)
+ 
+ static void m_can_start(struct net_device *dev)
+ {
++	int err;
+ 	struct m_can_priv *priv = netdev_priv(dev);
+ 
+ 	/* basic m_can configuration */
+@@ -1187,6 +1207,9 @@ static void m_can_start(struct net_device *dev)
+ 
+ 	priv->can.state = CAN_STATE_ERROR_ACTIVE;
+ 
++        err = m_can_transceiver_enable(priv);
++        if (err)
++                netdev_err(dev, "Transceiver enable error: %d \n", err);
+ 	m_can_enable_all_interrupts(priv);
+ }
+ 
+@@ -1373,6 +1396,8 @@ static void m_can_stop(struct net_device *dev)
+ 	/* disable all interrupts */
+ 	m_can_disable_all_interrupts(priv);
+ 
++        /* disable transceiver */
++	m_can_transceiver_disable(priv);
+ 	/* set the state as STOPPED */
+ 	priv->can.state = CAN_STATE_STOPPED;
+ }
+@@ -1596,6 +1621,7 @@ static int m_can_plat_probe(struct platform_device *pdev)
+ 	struct net_device *dev;
+ 	struct m_can_priv *priv;
+ 	struct resource *res;
++        struct regulator *reg_xceiver;
+ 	void __iomem *addr;
+ 	void __iomem *mram_addr;
+ 	struct clk *hclk, *cclk;
+@@ -1606,6 +1632,12 @@ static int m_can_plat_probe(struct platform_device *pdev)
+ 
+ 	np = pdev->dev.of_node;
+ 
++        reg_xceiver = devm_regulator_get(&pdev->dev, "xceiver");
++        if (PTR_ERR(reg_xceiver) == -EPROBE_DEFER)
++                return -EPROBE_DEFER;
++        else if (IS_ERR(reg_xceiver))
++                reg_xceiver = NULL;
++
+ 	hclk = devm_clk_get(&pdev->dev, "hclk");
+ 	cclk = devm_clk_get(&pdev->dev, "cclk");
+ 
+@@ -1665,6 +1697,7 @@ static int m_can_plat_probe(struct platform_device *pdev)
+ 	priv->cclk = cclk;
+ 	priv->can.clock.freq = clk_get_rate(cclk);
+ 	priv->mram_base = mram_addr;
++	priv->reg_xceiver = reg_xceiver;
+ 
+ 	platform_set_drvdata(pdev, dev);
+ 	SET_NETDEV_DEV(dev, &pdev->dev);
+diff --git a/drivers/net/phy/dp83867.c b/drivers/net/phy/dp83867.c
+index b393577..ff82f1b 100644
+--- a/drivers/net/phy/dp83867.c
++++ b/drivers/net/phy/dp83867.c
+@@ -19,6 +19,7 @@
+ #include <linux/module.h>
+ #include <linux/of.h>
+ #include <linux/phy.h>
++#include <linux/delay.h>
+ 
+ #include <dt-bindings/net/ti-dp83867.h>
+ 
+@@ -49,6 +51,13 @@
+ #define DP83867_SW_RESET	BIT(15)
+ #define DP83867_SW_RESTART	BIT(14)
+ 
++
++#define MIN_PHY_SW_DELAY_RESET  10		                /* in uS */
++#define MAX_PHY_SW_DELAY_RESET  (2 * MIN_PHY_SW_DELAY_RESET) 	/* in uS */
++
++/* PHYCTRL bits */
++#define MII_DP83867_PHYCTRL_FORCE_LINK_GOOD	BIT(10)
++
+ /* MICR Interrupt bits */
+ #define MII_DP83867_MICR_AN_ERR_INT_EN		BIT(15)
+ #define MII_DP83867_MICR_SPEED_CHNG_INT_EN	BIT(14)
+@@ -83,6 +92,7 @@
+ 
+ #define DP83867_IO_MUX_CFG_IO_IMPEDANCE_MAX	0x0
+ #define DP83867_IO_MUX_CFG_IO_IMPEDANCE_MIN	0x1f
++#define DP83867_IO_MUX_CFG_CLK_O_DISABLE	BIT(6)
+ #define DP83867_IO_MUX_CFG_CLK_O_SEL_MASK	(0x1f << 8)
+ #define DP83867_IO_MUX_CFG_CLK_O_SEL_SHIFT	8
+ 
+@@ -349,11 +357,25 @@ static int dp83867_config_init(struct phy_device *phydev)
+ 	/* Clock output selection if muxing property is set */
+ 	if (dp83867->clk_output_sel != DP83867_CLK_O_SEL_REF_CLK) {
+ 		val = phy_read_mmd(phydev, DP83867_DEVADDR, DP83867_IO_MUX_CFG);
+-		val &= ~DP83867_IO_MUX_CFG_CLK_O_SEL_MASK;
+-		val |= (dp83867->clk_output_sel << DP83867_IO_MUX_CFG_CLK_O_SEL_SHIFT);
++
++		if (dp83867->clk_output_sel == DP83867_CLK_O_SEL_OFF) {
++			val |= DP83867_IO_MUX_CFG_CLK_O_DISABLE;
++		} else {
++			val &= ~DP83867_IO_MUX_CFG_CLK_O_SEL_MASK;
++			val |= (dp83867->clk_output_sel << DP83867_IO_MUX_CFG_CLK_O_SEL_SHIFT);
++		}
++
+ 		phy_write_mmd(phydev, DP83867_DEVADDR, DP83867_IO_MUX_CFG, val);
+ 	}
+ 
++	/* Disable FORCE_LINK_GOOD */
++	val = phy_read(phydev, MII_DP83867_PHYCTRL);
++
++	if (val & MII_DP83867_PHYCTRL_FORCE_LINK_GOOD) {
++		val &= ~(MII_DP83867_PHYCTRL_FORCE_LINK_GOOD);
++		phy_write(phydev, MII_DP83867_PHYCTRL, val);
++	}
++
+ 	return 0;
+ }
+ 
+@@ -365,6 +367,7 @@ static int dp83867_phy_reset(struct phy_device *phydev)
+ 	if (err < 0)
+ 		return err;
+ 
++	usleep_range(MIN_PHY_SW_DELAY_RESET, MAX_PHY_SW_DELAY_RESET);
+ 	return dp83867_config_init(phydev);
+ }
+ 
+diff --git a/drivers/rtc/Kconfig b/drivers/rtc/Kconfig
+index 6e201ff..4a6748d 100644
+--- a/drivers/rtc/Kconfig
++++ b/drivers/rtc/Kconfig
+@@ -625,6 +625,15 @@ config RTC_DRV_EM3027
+ 	  This driver can also be built as a module. If so, the module
+ 	  will be called rtc-em3027.
+ 
++config RTC_DRV_RV3028
++	tristate "Micro Crystal RV3028"
++	help
++	  If you say yes here you get support for the Micro Crystal
++	  RV3028.
++
++	  This driver can also be built as a module. If so, the module
++	  will be called rtc-rv3028.
++
+ config RTC_DRV_RV8803
+ 	tristate "Micro Crystal RV8803, Epson RX8900"
+ 	help
+diff --git a/drivers/rtc/Makefile b/drivers/rtc/Makefile
+index 5ff2fc0..7c1ec1c 100644
+--- a/drivers/rtc/Makefile
++++ b/drivers/rtc/Makefile
+@@ -136,6 +136,7 @@ obj-$(CONFIG_RTC_DRV_RS5C313)	+= rtc-rs5c313.o
+ obj-$(CONFIG_RTC_DRV_RS5C348)	+= rtc-rs5c348.o
+ obj-$(CONFIG_RTC_DRV_RS5C372)	+= rtc-rs5c372.o
+ obj-$(CONFIG_RTC_DRV_RTD119X)	+= rtc-rtd119x.o
++obj-$(CONFIG_RTC_DRV_RV3028)	+= rtc-rv3028.o
+ obj-$(CONFIG_RTC_DRV_RV3029C2)	+= rtc-rv3029c2.o
+ obj-$(CONFIG_RTC_DRV_RV8803)	+= rtc-rv8803.o
+ obj-$(CONFIG_RTC_DRV_RX4581)	+= rtc-rx4581.o
+diff --git a/drivers/rtc/rtc-rv3028.c b/drivers/rtc/rtc-rv3028.c
+new file mode 100644
+index 0000000..327316b
+--- /dev/null
++++ b/drivers/rtc/rtc-rv3028.c
+@@ -0,0 +1,750 @@
++//SPDX
++/*
++ * RTC driver for the Micro Crystal RV3028
++ *
++ * Copyright (C) 2018 Micro Crystal SA
++ *
++ * Alexandre Belloni <alexandre.belloni@bootlin.com>
++ *
++ */
++
++#include <linux/bcd.h>
++#include <linux/bitops.h>
++#include <linux/i2c.h>
++#include <linux/interrupt.h>
++#include <linux/kernel.h>
++#include <linux/log2.h>
++#include <linux/module.h>
++#include <linux/of_device.h>
++#include <linux/regmap.h>
++#include <linux/rtc.h>
++#include "rtc-core.h"
++
++
++#define RV3028_SEC			0x00
++#define RV3028_MIN			0x01
++#define RV3028_HOUR			0x02
++#define RV3028_WDAY			0x03
++#define RV3028_DAY			0x04
++#define RV3028_MONTH			0x05
++#define RV3028_YEAR			0x06
++#define RV3028_ALARM_MIN		0x07
++#define RV3028_ALARM_HOUR		0x08
++#define RV3028_ALARM_DAY		0x09
++#define RV3028_STATUS			0x0E
++#define RV3028_CTRL1			0x0F
++#define RV3028_CTRL2			0x10
++#define RV3028_EVT_CTRL			0x13
++#define RV3028_TS_COUNT			0x14
++#define RV3028_TS_SEC			0x15
++#define RV3028_RAM1			0x1F
++#define RV3028_EEPROM_ADDR		0x25
++#define RV3028_EEPROM_DATA		0x26
++#define RV3028_EEPROM_CMD		0x27
++#define RV3028_CLKOUT			0x35
++#define RV3028_OFFSET			0x36
++#define RV3028_BACKUP			0x37
++
++#define RV3028_STATUS_PORF		BIT(0)
++#define RV3028_STATUS_EVF		BIT(1)
++#define RV3028_STATUS_AF		BIT(2)
++#define RV3028_STATUS_TF		BIT(3)
++#define RV3028_STATUS_UF		BIT(4)
++#define RV3028_STATUS_BSF		BIT(5)
++#define RV3028_STATUS_CLKF		BIT(6)
++#define RV3028_STATUS_EEBUSY		BIT(7)
++
++#define RV3028_CTRL1_EERD		BIT(3)
++#define RV3028_CTRL1_WADA		BIT(5)
++
++#define RV3028_CTRL2_RESET		BIT(0)
++#define RV3028_CTRL2_12_24		BIT(1)
++#define RV3028_CTRL2_EIE		BIT(2)
++#define RV3028_CTRL2_AIE		BIT(3)
++#define RV3028_CTRL2_TIE		BIT(4)
++#define RV3028_CTRL2_UIE		BIT(5)
++#define RV3028_CTRL2_TSE		BIT(7)
++
++#define RV3028_EVT_CTRL_TSR		BIT(2)
++
++#define RV3028_EEPROM_CMD_WRITE		0x21
++#define RV3028_EEPROM_CMD_READ		0x22
++
++#define RV3028_EEBUSY_POLL		10000
++#define RV3028_EEBUSY_TIMEOUT		100000
++
++#define RV3028_BACKUP_TCE		BIT(5)
++#define RV3028_BACKUP_TCR_MASK		GENMASK(1,0)
++#define RV3028_BACKUP_BSM_MASK  	0x0c
++
++#define OFFSET_STEP_PPT			953674
++
++
++enum rv3028_type {
++	rv_3028,
++};
++
++struct rv3028_data {
++	struct regmap *regmap;
++	struct rtc_device *rtc;
++	enum rv3028_type type;
++};
++
++static u32 rv3028_trickle_resistors[] = {1000, 3000, 6000, 11000};
++
++static ssize_t timestamp0_store(struct device *dev,
++				struct device_attribute *attr,
++				const char *buf, size_t count)
++{
++	struct rv3028_data *rv3028 = dev_get_drvdata(dev->parent);
++
++	regmap_update_bits(rv3028->regmap, RV3028_EVT_CTRL, RV3028_EVT_CTRL_TSR,
++			   RV3028_EVT_CTRL_TSR);
++
++	return count;
++};
++
++static ssize_t timestamp0_show(struct device *dev,
++			       struct device_attribute *attr, char *buf)
++{
++	struct rv3028_data *rv3028 = dev_get_drvdata(dev->parent);
++	struct rtc_time tm;
++	int ret, count;
++	u8 date[6];
++
++	ret = regmap_read(rv3028->regmap, RV3028_TS_COUNT, &count);
++	if (ret)
++		return ret;
++
++	if (!count)
++		return 0;
++
++	ret = regmap_bulk_read(rv3028->regmap, RV3028_TS_SEC, date,
++			       sizeof(date));
++	if (ret)
++		return ret;
++
++	tm.tm_sec = bcd2bin(date[0]);
++	tm.tm_min = bcd2bin(date[1]);
++	tm.tm_hour = bcd2bin(date[2]);
++	tm.tm_mday = bcd2bin(date[3]);
++	tm.tm_mon = bcd2bin(date[4]) - 1;
++	tm.tm_year = bcd2bin(date[5]) + 100;
++
++	ret = rtc_valid_tm(&tm);
++	if (ret)
++		return ret;
++
++	return sprintf(buf, "%llu\n",
++		       (unsigned long long)rtc_tm_to_time64(&tm));
++};
++
++static DEVICE_ATTR_RW(timestamp0);
++
++static ssize_t timestamp0_count_show(struct device *dev,
++				     struct device_attribute *attr, char *buf)
++{
++	struct rv3028_data *rv3028 = dev_get_drvdata(dev->parent);
++	int ret, count;
++
++	ret = regmap_read(rv3028->regmap, RV3028_TS_COUNT, &count);
++	if (ret)
++		return ret;
++
++	return sprintf(buf, "%u\n", count);
++};
++
++static DEVICE_ATTR_RO(timestamp0_count);
++
++static struct attribute *rv3028_attrs[] = {
++	&dev_attr_timestamp0.attr,
++	&dev_attr_timestamp0_count.attr,
++	NULL
++};
++
++static const struct attribute_group rv3028_attr_group = {
++	.attrs	= rv3028_attrs,
++};
++
++static irqreturn_t rv3028_handle_irq(int irq, void *dev_id)
++{
++	struct rv3028_data *rv3028 = dev_id;
++	unsigned long events = 0;
++	u32 status = 0, ctrl = 0;
++
++	if (regmap_read(rv3028->regmap, RV3028_STATUS, &status) < 0 ||
++	   status == 0) {
++		return IRQ_NONE;
++	}
++
++	if (status & RV3028_STATUS_PORF)
++		dev_warn(&rv3028->rtc->dev, "Voltage low, data loss detected.\n");
++
++	if (status & RV3028_STATUS_TF) {
++		status |= RV3028_STATUS_TF;
++		ctrl |= RV3028_CTRL2_TIE;
++		events |= RTC_PF;
++	}
++
++	if (status & RV3028_STATUS_AF) {
++		status |= RV3028_STATUS_AF;
++		ctrl |= RV3028_CTRL2_AIE;
++		events |= RTC_AF;
++	}
++
++	if (status & RV3028_STATUS_UF) {
++		status |= RV3028_STATUS_UF;
++		ctrl |= RV3028_CTRL2_UIE;
++		events |= RTC_UF;
++	}
++
++	if (events) {
++		rtc_update_irq(rv3028->rtc, 1, events);
++		regmap_update_bits(rv3028->regmap, RV3028_STATUS, status, 0);
++		regmap_update_bits(rv3028->regmap, RV3028_CTRL2, ctrl, 0);
++	}
++
++	if (status & RV3028_STATUS_EVF) {
++		sysfs_notify(&rv3028->rtc->dev.kobj, NULL,
++			     dev_attr_timestamp0.attr.name);
++		dev_warn(&rv3028->rtc->dev, "event detected");
++	}
++
++	return IRQ_HANDLED;
++}
++
++static int rv3028_get_time(struct device *dev, struct rtc_time *tm)
++{
++	struct rv3028_data *rv3028 = dev_get_drvdata(dev);
++	u8 date[7];
++	int ret, status;
++
++	ret = regmap_read(rv3028->regmap, RV3028_STATUS, &status);
++	if (ret < 0)
++		return ret;
++
++	if (status & RV3028_STATUS_PORF) {
++		dev_warn(dev, "Voltage low, data is invalid.\n");
++		return -EINVAL;
++	}
++
++	ret = regmap_bulk_read(rv3028->regmap, RV3028_SEC, date, sizeof(date));
++	if (ret)
++		return ret;
++
++	tm->tm_sec  = bcd2bin(date[RV3028_SEC] & 0x7f);
++	tm->tm_min  = bcd2bin(date[RV3028_MIN] & 0x7f);
++	tm->tm_hour = bcd2bin(date[RV3028_HOUR] & 0x3f);
++	tm->tm_wday = ilog2(date[RV3028_WDAY] & 0x7f);
++	tm->tm_mday = bcd2bin(date[RV3028_DAY] & 0x3f);
++	tm->tm_mon  = bcd2bin(date[RV3028_MONTH] & 0x1f) - 1;
++	tm->tm_year = bcd2bin(date[RV3028_YEAR]) + 100;
++
++	return 0;
++}
++
++static int rv3028_set_time(struct device *dev, struct rtc_time *tm)
++{
++	struct rv3028_data *rv3028 = dev_get_drvdata(dev);
++	u8 date[7];
++	int ret;
++
++	date[RV3028_SEC]   = bin2bcd(tm->tm_sec);
++	date[RV3028_MIN]   = bin2bcd(tm->tm_min);
++	date[RV3028_HOUR]  = bin2bcd(tm->tm_hour);
++	date[RV3028_WDAY]  = 1 << (tm->tm_wday);
++	date[RV3028_DAY]   = bin2bcd(tm->tm_mday);
++	date[RV3028_MONTH] = bin2bcd(tm->tm_mon + 1);
++	date[RV3028_YEAR]  = bin2bcd(tm->tm_year - 100);
++
++	/*
++	 * Writing to the Seconds register has the same effect as setting RESET
++	 * bit to 1
++	 */
++	ret = regmap_bulk_write(rv3028->regmap, RV3028_SEC, date,
++				sizeof(date));
++	if (ret)
++		return ret;
++
++	ret = regmap_update_bits(rv3028->regmap, RV3028_STATUS,
++				 RV3028_STATUS_PORF, 0);
++
++	return ret;
++}
++
++static int rv3028_get_alarm(struct device *dev, struct rtc_wkalrm *alrm)
++{
++	struct rv3028_data *rv3028 = dev_get_drvdata(dev);
++	u8 alarmvals[3];
++	int status, ctrl, ret;
++
++	ret = regmap_bulk_read(rv3028->regmap, RV3028_ALARM_MIN, alarmvals,
++			       sizeof(alarmvals));
++	if (ret)
++		return ret;
++
++	ret = regmap_read(rv3028->regmap, RV3028_STATUS, &status);
++	if (ret < 0)
++		return ret;
++
++	ret = regmap_read(rv3028->regmap, RV3028_CTRL2, &ctrl);
++	if (ret < 0)
++		return ret;
++
++	alrm->time.tm_sec  = 0;
++	alrm->time.tm_min  = bcd2bin(alarmvals[0] & 0x7f);
++	alrm->time.tm_hour = bcd2bin(alarmvals[1] & 0x3f);
++	alrm->time.tm_mday = bcd2bin(alarmvals[2] & 0x3f);
++
++	alrm->enabled = !!(ctrl & RV3028_CTRL2_AIE);
++	alrm->pending = (status & RV3028_STATUS_AF) && alrm->enabled;
++
++	return 0;
++}
++
++static int rv3028_set_alarm(struct device *dev, struct rtc_wkalrm *alrm)
++{
++	struct rv3028_data *rv3028 = dev_get_drvdata(dev);
++	u8 alarmvals[3];
++	u8 ctrl = 0;
++	int ret;
++
++	/* The alarm has no seconds, round up to nearest minute */
++	if (alrm->time.tm_sec) {
++		time64_t alarm_time = rtc_tm_to_time64(&alrm->time);
++
++		alarm_time += 60 - alrm->time.tm_sec;
++		rtc_time64_to_tm(alarm_time, &alrm->time);
++	}
++
++	ret = regmap_update_bits(rv3028->regmap, RV3028_CTRL2,
++				 RV3028_CTRL2_AIE | RV3028_CTRL2_UIE, 0);
++	if (ret)
++		return ret;
++
++	alarmvals[0] = bin2bcd(alrm->time.tm_min);
++	alarmvals[1] = bin2bcd(alrm->time.tm_hour);
++	alarmvals[2] = bin2bcd(alrm->time.tm_mday);
++
++	ret = regmap_update_bits(rv3028->regmap, RV3028_STATUS,
++				 RV3028_STATUS_AF, 0);
++	if (ret)
++		return ret;
++
++	ret = regmap_bulk_write(rv3028->regmap, RV3028_ALARM_MIN, alarmvals,
++				sizeof(alarmvals));
++	if (ret)
++		return ret;
++
++	if (alrm->enabled) {
++		if (rv3028->rtc->uie_rtctimer.enabled)
++			ctrl |= RV3028_CTRL2_UIE;
++		if (rv3028->rtc->aie_timer.enabled)
++			ctrl |= RV3028_CTRL2_AIE;
++	}
++
++	ret = regmap_update_bits(rv3028->regmap, RV3028_CTRL2,
++				 RV3028_CTRL2_UIE | RV3028_CTRL2_AIE, ctrl);
++
++	return ret;
++}
++
++static int rv3028_alarm_irq_enable(struct device *dev, unsigned int enabled)
++{
++	struct rv3028_data *rv3028 = dev_get_drvdata(dev);
++	int ctrl = 0, ret;
++
++	if (enabled) {
++		if (rv3028->rtc->uie_rtctimer.enabled)
++			ctrl |= RV3028_CTRL2_UIE;
++		if (rv3028->rtc->aie_timer.enabled)
++			ctrl |= RV3028_CTRL2_AIE;
++	}
++
++	ret = regmap_update_bits(rv3028->regmap, RV3028_STATUS,
++				 RV3028_STATUS_AF | RV3028_STATUS_UF, 0);
++	if (ret)
++		return ret;
++
++	ret = regmap_update_bits(rv3028->regmap, RV3028_CTRL2,
++				 RV3028_CTRL2_UIE | RV3028_CTRL2_AIE, ctrl);
++	if (ret)
++		return ret;
++
++	return 0;
++}
++
++static int rv3028_read_offset(struct device *dev, long *offset)
++{
++	struct rv3028_data *rv3028 = dev_get_drvdata(dev);
++	int ret, value, steps;
++
++	ret = regmap_read(rv3028->regmap, RV3028_OFFSET, &value);
++	if (ret < 0)
++		return ret;
++
++	steps = sign_extend32(value << 1, 8);
++
++	ret = regmap_read(rv3028->regmap, RV3028_BACKUP, &value);
++	if (ret < 0)
++		return ret;
++
++	steps += value >> 7;
++
++	*offset = DIV_ROUND_CLOSEST(steps * OFFSET_STEP_PPT, 1000);
++
++	return 0;
++}
++
++static int rv3028_set_offset(struct device *dev, long offset)
++{
++	struct rv3028_data *rv3028 = dev_get_drvdata(dev);
++	int ret;
++
++	offset = clamp(offset, -244141L, 243187L) * 1000;
++	offset = DIV_ROUND_CLOSEST(offset, OFFSET_STEP_PPT);
++
++	ret = regmap_write(rv3028->regmap, RV3028_OFFSET, offset >> 1);
++	if (ret < 0)
++		return ret;
++
++	return regmap_update_bits(rv3028->regmap, RV3028_BACKUP, BIT(7),
++				  offset << 7);
++}
++
++static int rv3028_ioctl(struct device *dev, unsigned int cmd, unsigned long arg)
++{
++	struct rv3028_data *rv3028 = dev_get_drvdata(dev);
++	int status, ret = 0;
++
++	switch (cmd) {
++	case RTC_VL_READ:
++		ret = regmap_read(rv3028->regmap, RV3028_STATUS, &status);
++		if (ret < 0)
++			return ret;
++
++		if (status & RV3028_STATUS_PORF)
++			dev_warn(&rv3028->rtc->dev, "Voltage low, data loss detected.\n");
++
++		status &= RV3028_STATUS_PORF;
++
++		if (copy_to_user((void __user *)arg, &status, sizeof(int)))
++			return -EFAULT;
++
++		return 0;
++
++	case RTC_VL_CLR:
++		ret = regmap_update_bits(rv3028->regmap, RV3028_STATUS,
++					 RV3028_STATUS_PORF, 0);
++
++		return ret;
++
++	default:
++		return -ENOIOCTLCMD;
++	}
++}
++
++static int rv3028_nvram_write(void *priv, unsigned int offset, void *val,
++			      size_t bytes)
++{
++	return regmap_bulk_write(priv, RV3028_RAM1 + offset, val, bytes);
++}
++
++static int rv3028_nvram_read(void *priv, unsigned int offset, void *val,
++			     size_t bytes)
++{
++	return regmap_bulk_read(priv, RV3028_RAM1 + offset, val, bytes);
++}
++
++static int rv3028_eeprom_write(void *priv, unsigned int offset, void *val,
++			       size_t bytes)
++{
++	u32 status, ctrl1;
++	int i, ret, err;
++	u8 *buf = val;
++
++	ret = regmap_read(priv, RV3028_CTRL1, &ctrl1);
++	if (ret)
++		return ret;
++
++	if (!(ctrl1 & RV3028_CTRL1_EERD)) {
++		ret = regmap_update_bits(priv, RV3028_CTRL1,
++					 RV3028_CTRL1_EERD, RV3028_CTRL1_EERD);
++		if (ret)
++			return ret;
++
++		ret = regmap_read_poll_timeout(priv, RV3028_STATUS, status,
++					       !(status & RV3028_STATUS_EEBUSY),
++					       RV3028_EEBUSY_POLL,
++					       RV3028_EEBUSY_TIMEOUT);
++		if (ret)
++			goto restore_eerd;
++	}
++
++	for (i = 0; i < bytes; i++) {
++		ret = regmap_write(priv, RV3028_EEPROM_ADDR, offset + i);
++		if (ret)
++			goto restore_eerd;
++
++		ret = regmap_write(priv, RV3028_EEPROM_DATA, buf[i]);
++		if (ret)
++			goto restore_eerd;
++
++		ret = regmap_write(priv, RV3028_EEPROM_CMD, 0x0);
++		if (ret)
++			goto restore_eerd;
++
++		ret = regmap_write(priv, RV3028_EEPROM_CMD,
++				   RV3028_EEPROM_CMD_WRITE);
++		if (ret)
++			goto restore_eerd;
++
++		usleep_range(RV3028_EEBUSY_POLL, RV3028_EEBUSY_TIMEOUT);
++
++		ret = regmap_read_poll_timeout(priv, RV3028_STATUS, status,
++					       !(status & RV3028_STATUS_EEBUSY),
++					       RV3028_EEBUSY_POLL,
++					       RV3028_EEBUSY_TIMEOUT);
++		if (ret)
++			goto restore_eerd;
++	}
++
++restore_eerd:
++	if (!(ctrl1 & RV3028_CTRL1_EERD))
++	{
++		err = regmap_update_bits(priv, RV3028_CTRL1, RV3028_CTRL1_EERD,
++					 0);
++		if (err && !ret)
++			ret = err;
++	}
++
++	return ret;
++}
++
++static int rv3028_eeprom_read(void *priv, unsigned int offset, void *val,
++			      size_t bytes)
++{
++	u32 status, ctrl1, data;
++	int i, ret, err;
++	u8 *buf = val;
++
++	ret = regmap_read(priv, RV3028_CTRL1, &ctrl1);
++	if (ret)
++		return ret;
++
++	if (!(ctrl1 & RV3028_CTRL1_EERD)) {
++		ret = regmap_update_bits(priv, RV3028_CTRL1,
++					 RV3028_CTRL1_EERD, RV3028_CTRL1_EERD);
++		if (ret)
++			return ret;
++
++		ret = regmap_read_poll_timeout(priv, RV3028_STATUS, status,
++					       !(status & RV3028_STATUS_EEBUSY),
++					       RV3028_EEBUSY_POLL,
++					       RV3028_EEBUSY_TIMEOUT);
++		if (ret)
++			goto restore_eerd;
++	}
++
++	for (i = 0; i < bytes; i++) {
++		ret = regmap_write(priv, RV3028_EEPROM_ADDR, offset + i);
++		if (ret)
++			goto restore_eerd;
++
++		ret = regmap_write(priv, RV3028_EEPROM_CMD, 0x0);
++		if (ret)
++			goto restore_eerd;
++
++		ret = regmap_write(priv, RV3028_EEPROM_CMD,
++				   RV3028_EEPROM_CMD_READ);
++		if (ret)
++			goto restore_eerd;
++
++		ret = regmap_read_poll_timeout(priv, RV3028_STATUS, status,
++					       !(status & RV3028_STATUS_EEBUSY),
++					       RV3028_EEBUSY_POLL,
++					       RV3028_EEBUSY_TIMEOUT);
++		if (ret)
++			goto restore_eerd;
++
++		ret = regmap_read(priv, RV3028_EEPROM_DATA, &data);
++		if (ret)
++			goto restore_eerd;
++		buf[i] = data;
++	}
++
++restore_eerd:
++	if (!(ctrl1 & RV3028_CTRL1_EERD))
++	{
++		err = regmap_update_bits(priv, RV3028_CTRL1, RV3028_CTRL1_EERD,
++					 0);
++		if (err && !ret)
++			ret = err;
++	}
++
++	return ret;
++}
++
++static struct rtc_class_ops rv3028_rtc_ops = {
++	.read_time = rv3028_get_time,
++	.set_time = rv3028_set_time,
++	.read_offset = rv3028_read_offset,
++	.set_offset = rv3028_set_offset,
++	.ioctl = rv3028_ioctl,
++};
++
++static const struct regmap_config regmap_config = {
++        .reg_bits = 8,
++        .val_bits = 8,
++        .max_register = 0x37,
++};
++
++static int rv3028_probe(struct i2c_client *client)
++{
++	struct rv3028_data *rv3028;
++	int ret, status;
++	u32 ohms;
++	u8 bsm;
++	struct nvmem_config nvmem_cfg = {
++		.name = "rv3028_nvram",
++		.word_size = 1,
++		.stride = 1,
++		.size = 2,
++		.reg_read = rv3028_nvram_read,
++		.reg_write = rv3028_nvram_write,
++	};
++	struct nvmem_config eeprom_cfg = {
++		.name = "rv3028_eeprom",
++		.word_size = 1,
++		.stride = 1,
++		.size = 43,
++		.reg_read = rv3028_eeprom_read,
++		.reg_write = rv3028_eeprom_write,
++	};
++
++	rv3028 = devm_kzalloc(&client->dev, sizeof(struct rv3028_data),
++			      GFP_KERNEL);
++	if (!rv3028)
++		return -ENOMEM;
++
++	rv3028->regmap = devm_regmap_init_i2c(client, &regmap_config);
++
++	i2c_set_clientdata(client, rv3028);
++
++	ret = regmap_read(rv3028->regmap, RV3028_STATUS, &status);
++	if (ret < 0)
++		return ret;
++
++	if (status & RV3028_STATUS_PORF)
++		dev_warn(&client->dev, "Voltage low, data loss detected.\n");
++
++	if (status & RV3028_STATUS_AF)
++		dev_warn(&client->dev, "An alarm may have been missed.\n");
++
++	rv3028->rtc = devm_rtc_allocate_device(&client->dev);
++	if (IS_ERR(rv3028->rtc)) {
++		return PTR_ERR(rv3028->rtc);
++	}
++
++	if (client->irq > 0) {
++		ret = devm_request_threaded_irq(&client->dev, client->irq,
++						NULL, rv3028_handle_irq,
++						IRQF_TRIGGER_LOW | IRQF_ONESHOT,
++						"rv3028", rv3028);
++		if (ret) {
++			dev_warn(&client->dev, "unable to request IRQ, alarms disabled\n");
++			client->irq = 0;
++		} else {
++			rv3028_rtc_ops.read_alarm = rv3028_get_alarm;
++			rv3028_rtc_ops.set_alarm = rv3028_set_alarm;
++			rv3028_rtc_ops.alarm_irq_enable = rv3028_alarm_irq_enable;
++		}
++	}
++
++	ret = regmap_update_bits(rv3028->regmap, RV3028_CTRL1,
++				 RV3028_CTRL1_WADA, RV3028_CTRL1_WADA);
++	if (ret)
++		return ret;
++
++	/* setup timestamping */
++	ret = regmap_update_bits(rv3028->regmap, RV3028_CTRL2,
++				 RV3028_CTRL2_EIE | RV3028_CTRL2_TSE,
++				 RV3028_CTRL2_EIE | RV3028_CTRL2_TSE);
++	if (ret)
++		return ret;
++
++        /* setup backup switchover mode */
++        if (!device_property_read_u8(&client->dev, "backup-switchover-mode",
++                                 &bsm))  {
++		if (bsm <= 3) {
++                	ret = regmap_update_bits(rv3028->regmap, RV3028_BACKUP,
++                        	RV3028_BACKUP_BSM_MASK,
++                        	(bsm & 0x03) << 2);
++                	if (ret)
++                   		return ret;
++                    dev_info(&client->dev, "backup switchover mode : %d\n", bsm);
++
++	        } else {
++	            dev_warn(&client->dev, "invalid backup switchover mode value\n");
++	        }
++        }
++
++	/* setup trickle charger */
++	if (!device_property_read_u32(&client->dev, "trickle-resistor-ohms",
++				      &ohms)) {
++		int i;
++
++		for (i = 0; i < ARRAY_SIZE(rv3028_trickle_resistors); i++)
++			if (ohms == rv3028_trickle_resistors[i])
++				break;
++
++		if (i < ARRAY_SIZE(rv3028_trickle_resistors)) {
++			ret = regmap_update_bits(rv3028->regmap, RV3028_BACKUP,
++						 RV3028_BACKUP_TCE |
++						 RV3028_BACKUP_TCR_MASK,
++						 RV3028_BACKUP_TCE | i);
++			if (ret)
++				return ret;
++		} else {
++			dev_warn(&client->dev, "invalid trickle resistor value\n");
++		}
++	}
++
++	ret = rtc_add_group(rv3028->rtc, &rv3028_attr_group);
++	if (ret)
++		return ret;
++
++	rv3028->rtc->range_max = RTC_TIMESTAMP_END_2099;
++	rv3028->rtc->ops = &rv3028_rtc_ops;
++	ret = rtc_register_device(rv3028->rtc);
++	if (ret)
++		return ret;
++
++	nvmem_cfg.priv = rv3028->regmap;
++	rtc_nvmem_register(rv3028->rtc, &nvmem_cfg);
++	eeprom_cfg.priv = rv3028->regmap;
++	rtc_nvmem_register(rv3028->rtc, &eeprom_cfg);
++
++	rv3028->rtc->max_user_freq = 1;
++
++	return 0;
++}
++
++static const struct of_device_id rv3028_of_match[] = {
++	{ .compatible = "microcrystal,rv3028", },
++	{ }
++};
++MODULE_DEVICE_TABLE(of, rv3028_of_match);
++
++static struct i2c_driver rv3028_driver = {
++	.driver = {
++		.name = "rtc-rv3028",
++		.of_match_table = of_match_ptr(rv3028_of_match),
++	},
++	.probe_new	= rv3028_probe,
++};
++module_i2c_driver(rv3028_driver);
++
++MODULE_AUTHOR("Alexandre Belloni <alexandre.belloni@bootlin.com>");
++MODULE_DESCRIPTION("Micro Crystal RV3028 RTC driver");
++MODULE_LICENSE("GPL v2");
+diff --git a/include/dt-bindings/net/ti-dp83867.h b/include/dt-bindings/net/ti-dp83867.h
+index 7b16564..e1d0c24 100644
+--- a/include/dt-bindings/net/ti-dp83867.h
++++ b/include/dt-bindings/net/ti-dp83867.h
+@@ -56,4 +56,7 @@
+ #define DP83867_CLK_O_SEL_CHN_C_TCLK		0xA
+ #define DP83867_CLK_O_SEL_CHN_D_TCLK		0xB
+ #define DP83867_CLK_O_SEL_REF_CLK		0xC
++
++/* Special flag to indicate clock should be off */
++#define DP83867_CLK_O_SEL_OFF			0xFFFFFFFF
+ #endif
+diff --git a/sound/soc/codecs/tlv320aic3x.c b/sound/soc/codecs/tlv320aic3x.c
+index 6c0a3da..eba7bea 100644
+--- a/sound/soc/codecs/tlv320aic3x.c
++++ b/sound/soc/codecs/tlv320aic3x.c
+@@ -32,6 +32,7 @@
+  *  snd_soc_dapm_disable_pin(codec, "MONO_LOUT"), etc.
+  */
+ 
++#include <linux/clk.h>
+ #include <linux/module.h>
+ #include <linux/moduleparam.h>
+ #include <linux/init.h>
+@@ -78,6 +79,7 @@ struct aic3x_priv {
+ 	struct aic3x_disable_nb disable_nb[AIC3X_NUM_SUPPLIES];
+ 	struct aic3x_setup_data *setup;
+ 	unsigned int sysclk;
++        struct clk *mclk_handle;
+ 	unsigned int dai_fmt;
+ 	unsigned int tdm_delay;
+ 	unsigned int slot_width;
+@@ -993,11 +995,23 @@ static const struct snd_soc_dapm_route intercon_3007[] = {
+ 	{"SPOM", NULL, "Right Class-D Out"},
+ };
+ 
++static const struct snd_soc_dapm_widget aic3x_dapm_mclk_widgets[] = {
++        SND_SOC_DAPM_CLOCK_SUPPLY("MCLK")
++};
++
+ static int aic3x_add_widgets(struct snd_soc_component *component)
+ {
+ 	struct aic3x_priv *aic3x = snd_soc_component_get_drvdata(component);
+ 	struct snd_soc_dapm_context *dapm = snd_soc_component_get_dapm(component);
+ 
++
++        if (aic3x->mclk_handle) {
++                snd_soc_dapm_new_controls(dapm, aic3x_dapm_mclk_widgets, 1);
++        } else {
++                dev_warn(component->dev, "DAPM MCLK widgets not set\n");
++        }
++
++
+ 	switch (aic3x->model) {
+ 	case AIC3X_MODEL_3X:
+ 	case AIC3X_MODEL_33:
+@@ -1061,6 +1075,7 @@ static int aic3x_hw_params(struct snd_pcm_substream *substream,
+ 		data |= (0x03 << 4);
+ 		break;
+ 	}
++
+ 	snd_soc_component_write(component, AIC3X_ASD_INTF_CTRLB, data);
+ 
+ 	/* Fsref can be 44100 or 48000 */
+@@ -1237,6 +1252,7 @@ static int aic3x_set_dai_sysclk(struct snd_soc_dai *codec_dai,
+ 				clk_id << CLKDIV_IN_SHIFT);
+ 
+ 	aic3x->sysclk = freq;
++
+ 	return 0;
+ }
+ 
+@@ -1686,6 +1702,13 @@ static void aic3x_remove(struct snd_soc_component *component)
+ 					      &aic3x->disable_nb[i].nb);
+ }
+ 
++static int aic3x_of_xlate_dai_id(struct snd_soc_component *component,
++				   struct device_node *endpoint)
++{
++	/* return dai id 0, whatever the endpoint index */
++	return 0;
++}
++
+ static const struct snd_soc_component_driver soc_component_dev_aic3x = {
+ 	.set_bias_level		= aic3x_set_bias_level,
+ 	.probe			= aic3x_probe,
+@@ -1696,6 +1719,7 @@ static const struct snd_soc_component_driver soc_component_dev_aic3x = {
+ 	.num_dapm_widgets	= ARRAY_SIZE(aic3x_dapm_widgets),
+ 	.dapm_routes		= intercon,
+ 	.num_dapm_routes	= ARRAY_SIZE(intercon),
++	.of_xlate_dai_id	= aic3x_of_xlate_dai_id,
+ 	.use_pmdown_time	= 1,
+ 	.endianness		= 1,
+ 	.non_legacy_dai_naming	= 1,
+@@ -1844,6 +1868,14 @@ static int aic3x_i2c_probe(struct i2c_client *i2c,
+ 
+ 	aic3x->model = id->driver_data;
+ 
++        aic3x->mclk_handle = devm_clk_get(&i2c->dev, "MCLK");
++        if (IS_ERR(aic3x->mclk_handle)) {
++                dev_err(&i2c->dev, "Failed to request MCLK\n");
++                if (PTR_ERR(aic3x->mclk_handle) != -ENOENT)
++                        return PTR_ERR(aic3x->mclk_handle);
++                aic3x->mclk_handle = NULL;
++        }
++
+ 	if (gpio_is_valid(aic3x->gpio_reset) &&
+ 	    !aic3x_is_shared_reset(aic3x)) {
+ 		ret = gpio_request(aic3x->gpio_reset, "tlv320aic3x reset");

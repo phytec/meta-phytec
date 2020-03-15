@@ -1,0 +1,139 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
+/*
+ * Copyright (C) PHYTEC GmbH 2019-2020 - All Rights Reserved
+ * Author: Dom VOVARD <dom.vovard@linrt.com>.
+ */
+
+/dts-v1/;
+
+#include "phycore-stm32mp157cac-som.dtsi"
+#include "phyboard-stm32mp1.dtsi"
+#include <dt-bindings/rtc/rtc-stm32.h>
+
+/ {
+        model = "Phytec GmbH phycore-stm32mp1-5 Dev Board";
+        compatible = "phycore-stm32mp1-5-m4-examples", "phytec,pcm068-1534-1", "phytec,pcm939-1517-2", "st,stm32mp157";
+};
+
+&adc {
+	status = "disabled";
+};
+
+&dac {
+	status = "disabled";
+};
+
+&dma2 {
+	status = "disabled";
+};
+
+&dmamux1 {
+	dma-masters = <&dma1>;
+	dma-channels = <8>;
+};
+
+&m4_adc {
+	vref-supply = <&vrefbuf>;
+	status = "okay";
+};
+
+&m4_dac {
+	status = "okay";
+};
+
+&m4_dma2 {
+	status = "okay";
+};
+
+&m4_crc2 {
+	status = "okay";
+};
+
+&m4_cryp2 {
+	status = "okay";
+};
+
+&m4_hash2 {
+	status = "okay";
+};
+
+&m4_i2c2 {
+	pinctrl-names = "rproc_default";
+	pinctrl-0 = <&i2c2_pins_a>;
+	status = "okay";
+};
+
+&m4_rng2 {
+	status = "okay";
+};
+
+&m4_rproc {
+	m4_system_resources {
+		status = "okay";
+
+		button {
+			compatible = "rproc-srm-dev";
+			interrupt-parent = <&gpioa>;
+			interrupts = <14 2>;
+			interrupt-names = "irq";
+			status = "okay";
+		};
+
+		m4_led: m4_led {
+			compatible = "rproc-srm-dev";
+			pinctrl-names = "rproc_default", "rproc_sleep";
+			pinctrl-0 = <&leds_orange_pins>;
+			pinctrl-1 = <&leds_orange_sleep_pins>;
+			status = "okay";
+		};
+	};
+};
+
+&m4_spi4 {
+	pinctrl-names = "rproc_default";
+	pinctrl-0 = <&spi4_pins_a>;
+	status = "okay";
+};
+
+
+&m4_timers2 {
+	pinctrl-names = "rproc_default";
+	status = "okay";
+};
+
+&m4_timers1 {
+	pinctrl-names = "rproc_default";
+	pinctrl-0 = <&timer1_pins>;
+	status = "okay";
+};
+
+&pinctrl {
+	timer1_pins: pwm1-test-0 {
+		pins {
+			pinmux = <STM32_PINMUX('E', 9, AF1)>; /* TIM1_CH1 */
+			bias-pull-down;
+			drive-push-pull;
+			slew-rate = <0>;
+		};
+	};
+
+	leds_orange_pins: leds_orange_test-0 {
+		pins {
+			pinmux = <STM32_PINMUX('H', 7, GPIO)>;
+			bias-pull-up;
+			drive-push-pull;
+			output-low;
+			slew-rate = <0>;
+		};
+	};
+
+	leds_orange_sleep_pins: leds_orange_sleep_test-0 {
+		pins {
+			pinmux = <STM32_PINMUX('H', 7, ANALOG)>;
+		};
+	};
+};
+
+&timers1 {
+	status = "disabled";
+};

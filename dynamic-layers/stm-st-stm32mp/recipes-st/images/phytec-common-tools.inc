@@ -5,4 +5,5 @@ CORE_IMAGE_EXTRA_INSTALL_append = " \
 		rs485test \
 		serial-test \
 		spidev-test \
+		${@bb.utils.contains("MACHINE_FEATURES", "nand", "mtd-utils-ubifs", "", d)} \	
 "

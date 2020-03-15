@@ -12,18 +12,17 @@ _SUPPORTED_UBUNTU_RELEASE="16.04 18.04"
 #----------------------------------------------
 # Set default layer root
 #
-if [ -z $META_LAYER_ROOT ]; then
+if [ -z "$META_LAYER_ROOT" ]; then
     _META_LAYER_ROOT=layers/meta-st
 else
     _META_LAYER_ROOT=$META_LAYER_ROOT
 fi
 
-if [ -z $META_LAYER_BSP ]; then
+if [ -z "$META_LAYER_BSP" ]; then
     _META_LAYER_BSP=layers/meta-phytec
 else
     _META_LAYER_BSP=$META_LAYER_BSP
 fi
-
 
 #----------------------------------------------
 # Set ROOTOE for oe sdk baseline
@@ -166,7 +165,7 @@ stoe_list_env() {
 ######################################################
 # init UI_CMD if needed
 _stoe_set_env_init() {
-    if [[ $_ENABLE_UI -eq 1 ]] && [[ -z "${UI_CMD}" ]]; then
+    if [ "$_ENABLE_UI" -eq 1 ] && [ -z "${UI_CMD}" ]; then
         # Init dialog box command if dialog or whiptail is available
         command -v dialog > /dev/null 2>&1 && UI_CMD='dialog'
         command -v whiptail > /dev/null 2>&1 && UI_CMD='whiptail'
@@ -230,7 +229,7 @@ stoe_config_summary() {
     echo "    BB_NUMBER_THREADS : " $(_stoe_config_read $builddir BB_NUMBER_THREADS)
     echo "    PARALLEL_MAKE     : " $(_stoe_config_read $builddir PARALLEL_MAKE)
     echo ""
-    echo "    BUILD_DIR         : " $(basename $builddir)
+    echo "    BUILDDIR          : " $(basename $builddir)
     echo "    DOWNLOAD_DIR      : " $(_stoe_config_read $builddir DL_DIR)
     echo "    SSTATE_DIR        : " $(_stoe_config_read $builddir SSTATE_DIR)
     echo ""
@@ -254,7 +253,7 @@ _stoe_list_images_descr() {
         else
             local descr=$(grep "^DESCRIPTION[ \t]*=" $l | sed -e 's/^.*"\(.*\)["\]$/\1/')
         fi
-        if [ -z "$descr" ] && [ "$2" == "ERR" ]; then
+        if [ -z "$descr" ] && [ "$2" = "ERR" ]; then
             descr="[ERROR] No description available"
         fi
         printf "    %-33s  -   $descr\n" $image
@@ -472,6 +471,7 @@ eula_check() {
         if [ -n "${!eula_machine}" ]; then
             # The EULA_$MACHINE variable is set in the environment, so we just use it to bypath EULA acceptance check
             _EULA_ACCEPT=${!eula_machine}
+            echo "[INFO] The ${eula_machine} variable is set from the environment to ${!eula_machine} : we use it to for EULA acceptance check."
         else
             # Ask user for EULA acceptance
             eula_askuser "${eula_file}"
@@ -497,7 +497,7 @@ in your images, you need to read and accept the following...\
 " > $EulaIntroFile
 
     # Select mode to dialogue with user
-    if ! [[ -z "$DISPLAY" ]] && ! [[ -z "${UI_CMD}" ]]; then
+    if ! [ -z "$DISPLAY" ] && ! [ -z "${UI_CMD}" ]; then
         # UI mode (through dialogue boxes)
         if (${UI_CMD} --title "EULA management" --yesno "$(cat $EulaIntroFile)" 0 0 --yes-button "Read the EULA" --no-button "EXIT"); then
             if (${UI_CMD} --title "EULA acceptance" --yesno "$(cat $EulaFile)" 0 0 --yes-button "Accept EULA" --no-button "EXIT"); then
@@ -805,23 +805,28 @@ get_templateconf()
         #extract bsp path
         local distro_path=$(find ${ROOTOE}/$_META_LAYER_ROOT/ -type d \( -name '.git' -o -name '.repo' -o -name 'build*' -o -name 'source*' -o -name 'script*' \) -prune -o -type f -name "$DISTRO.conf" | grep "/distro/$DISTRO.conf" | sed 's|\(.*\)/conf/distro/\(.*\)|\1|')
         if [ -z "$distro_path" ]; then
-            echo ""
-            echo "[ERROR] No '$DISTRO.conf' file available in $_META_LAYER_ROOT"
-            echo ""
-            return 1
+	        distro_path=$(find ${ROOTOE}/$_META_LAYER_BSP/ -type d \( -name '.git' -o -name '.repo' -o -name 'build*' -o -name 'source*' -o -name 'script*' \) -prune -o -type f -name "$DISTRO.conf" | grep "/distro/$DISTRO.conf" | sed 's|\(.*\)/conf/distro/\(.*\)|\1|')
+        	if [ -z "$distro_path" ]; then
+		    	echo ""
+            		echo "[ERROR] No '$DISTRO.conf' file available in $_META_LAYER_ROOT and $_META_LAYER_BSP layers"
+            		echo ""
+            		return 1
+		fi
         fi
         #make sure path is single
         if [ "$(echo $distro_path | wc -w)" -gt 1 ]; then
             echo ""
-            echo "[ERROR] Found multiple '$DISTRO.conf' file in $_META_LAYER_ROOT"
+            echo "[ERROR] Found multiple '$DISTRO.conf' file in $_META_LAYER_ROOT and $_META_LAYER_BSP layers"
             echo ""
             return 1
         fi
         #configure _TEMPLATECONF path
-        if [ -f $distro_path/conf/template/bblayers.conf.sample ]; then
+        if [ -f ${ROOTOE}/$_META_LAYER_BSP/conf/template/bblayers.conf.sample ]; then
+            _TEMPLATECONF=${ROOTOE}/$_META_LAYER_BSP/conf/template
+        elif [ -f $distro_path/conf/template/bblayers.conf.sample ]; then
             _TEMPLATECONF=$distro_path/conf/template
         else
-            echo "[WARNING] default template configuration files not found in $_META_LAYER_ROOT layer: using default ones from openembedded"
+            echo "[WARNING] default template configuration files not found in $_META_LAYER_ROOT and $_META_LAYER_BSP layers: using default ones from openembedded"
             _TEMPLATECONF=""
         fi
     fi
@@ -905,15 +910,13 @@ _choice_shell() {
     IFS=$old_IFS
     # Item selection from list
     local selection=""
-    # Init default_choice if not already provided
-    [ -z "${default_choice}" ] && default_choice=$(echo ${LAUNCH_MENU_CHOICES[0]} | cut -d' ' -f1)
     while [ -z "$selection" ]; do
         echo -n "Which one would you like? [${default_choice}] "
         read -r -t $READTIMEOUT answer
         # Check that user has answered before timeout, else break
-        test "$?" -gt "128" && break
+        [ "$?" -gt "128" ] && break
 
-        if [ -z "$answer" ]; then
+        if [ [ -z "$answer" ] && [ -n "$default_choice" ] ]; then
             selection=${default_choice}
             break
         fi
@@ -947,7 +950,7 @@ _choice_ui() {
         TARGETTABLE+=($target_name "$target_desc" $target_stat)
     done
     IFS=$old_IFS
-    while [[ -z "$target" ]]
+    while [ -z "$target" ]
     do
         target=$(${UI_CMD} --title "Available ${choice_name}" --radiolist "Please choose a ${choice_name}" 0 0 0 "${TARGETTABLE[@]}" 3>&1 1>&2 2>&3)
         test -z $target || break
@@ -972,10 +975,10 @@ choice() {
     if [[ $(echo "$choices" | wc -l) -eq 1 ]]; then
         eval $__TARGET=$(echo $choices | awk -F''"${_FORMAT_PATTERN}"'' '{print $1}')
     else
-        if ! [[ -z "$DISPLAY" ]] && ! [[ -z "${UI_CMD}" ]]; then
-            _choice_ui $__TARGET "$choices" $default_choice
-        else
+        if [ -z "$DISPLAY" ] || [ -z "${UI_CMD}" ]; then
             _choice_shell $__TARGET "$choices" $default_choice
+        else
+            _choice_ui $__TARGET "$choices" $default_choice
         fi
     fi
     echo "Selected $__TARGET: $(eval echo \$$__TARGET)"
@@ -1035,7 +1038,7 @@ _stoe_distrib_check() {
         echo "    RELEASE: ${_SUPPORTED_UBUNTU_RELEASE}" >> $UbuntuReleaseFile
         echo "Feel free to update your distribution, or to ignore the WARNING (at your risk)..." >> $UbuntuReleaseFile
         # Select mode to dialogue with user
-        if ! [[ -z "$DISPLAY" ]] && ! [[ -z "${UI_CMD}" ]]; then
+        if ! [ -z "$DISPLAY" ] && ! [ -z "${UI_CMD}" ]; then
             # UI mode (through dialogue boxes)
             if (${UI_CMD} --title "UBUNTU RELEASE SUPPORT" --yesno "$(cat $UbuntuReleaseFile)" 0 0 --yes-button "IGNORE WARNING" --no-button "EXIT"); then
                 return_value=0
@@ -1179,8 +1182,8 @@ _verify_env() {
         return
     else
         # Fix build system to use for init: default would be openembedded-core one
-        [[ -d $oe_tmp_pwd/layers/poky ]] && _BUILDSYSTEM=layers/poky
-        [[ -d $oe_tmp_pwd/layers/openembedded-core ]] && _BUILDSYSTEM=layers/openembedded-core
+        [ -d $oe_tmp_pwd/layers/poky ] && _BUILDSYSTEM=layers/poky
+        [ -d $oe_tmp_pwd/layers/openembedded-core ] && _BUILDSYSTEM=layers/openembedded-core
     fi
     if [[ "$__resultvar" ]]; then
         eval $__resultvar="NOERROR"
@@ -1210,6 +1213,8 @@ esac
 
 # Init parameters
 _ENABLE_UI=1
+_FORCE_RECONF=0
+_QUIET=0
 READTIMEOUT=${READTIMEOUT:-60}
 TRIALMAX=${TRIALMAX:-100}
 
@@ -1239,13 +1244,18 @@ do
         return 1
         ;;
     *)
-        #change buildir directory
-        if ! [[ $1 =~ ^build.* ]]; then
-            echo "[ERROR] '$1' : please provide BUILD_DIR with 'build' prefix."
+        if [ -z "${BUILD_DIR}" ]; then
+            # Change buildir directory
+            if ! [[ $1 =~ ^build.* ]]; then
+                echo "[ERROR] '$1' : please provide BUILD_DIR with 'build' prefix."
+                return 1
+            fi
+            # We want BUILD_DIR without any '/' at the end
+            BUILD_DIR=$(echo $1 | sed 's|[/]*$||')
+        else
+            echo "[ERROR] BUILD_DIR is already defined to '${BUILD_DIR}'. Please clarify if you really want to set it to '$1'"
             return 1
         fi
-        #we want BUILD_DIR without any '/' at the end
-        BUILD_DIR=$(echo $1 | sed 's|[/]*$||')
         ;;
     esac
     shift
@@ -1261,7 +1271,7 @@ _stoe_set_env_init
 #
 echo "[HOST DISTRIB check]"
 _stoe_distrib_check
-test "$?" == "1" && { echo "Check aborted: exiting now..."; _stoe_unset; return 1; }
+[ "$?" -eq 1 ] && { echo "Check aborted: exiting now..."; _stoe_unset; return 1; }
 
 #----------------------------------------------
 # Init BUILD_DIR variable
@@ -1275,49 +1285,60 @@ if [ -z "${BUILD_DIR}" ]; then
     # Get existing BUILD_DIR list from baseline
     LISTDIR=$(mktemp)
     for l in $(find ${ROOTOE} -maxdepth 1 -wholename "*/build*"); do
-        test -f ${l}/conf/local.conf && echo ${l#*${ROOTOE}/} >> ${LISTDIR}
+        [ -f ${l}/conf/local.conf ] && echo ${l#*${ROOTOE}/} >> ${LISTDIR}
     done
     # Select any existing BUILD_DIR from list
     if  [ -s ${LISTDIR} ]; then
         choice BUILD_DIR "$(_choice_formated_dirs "$(cat ${LISTDIR} | sort)")" $(_default_config_get "$(cat ${LISTDIR} | sort)")
         [ -z "${BUILD_DIR}" ] && { echo "Selection escaped: exiting now..."; _stoe_unset; return 1; }
+        # Check if we need to force or not INIT
+        if [ "${BUILD_DIR}" = "NEW" ]; then
+            _INIT=1
+            # Reset BUILD_DIR for new config choice
+            BUILD_DIR=""
+        else
+            _INIT=0
+        fi
+    else
+        # None previous build dir found so force INIT
+        _INIT=1
     fi
-    # Reset BUILD_DIR in case for new config choice
-    test "${BUILD_DIR}" == "NEW" && BUILD_DIR=""
 else
+    # Make sure BUILD_DIR is uniq
+    [ "$(echo ${BUILD_DIR} | wc -w)" -eq 1 ] || { echo "[ERROR] Provided BUILD_DIR is not uniq. Please make sure to set only one build dir." ; _stoe_unset; return 1; }
     # Check if configuration files exist to force or not INIT
-    test -f ${ROOTOE}/${BUILD_DIR}/conf/bblayers.conf || _INIT=1
-    test -f ${ROOTOE}/${BUILD_DIR}/conf/local.conf || _INIT=1
+    if [ -f ${ROOTOE}/${BUILD_DIR}/conf/bblayers.conf ] && [ -f ${ROOTOE}/${BUILD_DIR}/conf/local.conf ]; then
+        _INIT=0
+    else
+        _INIT=1
+    fi
 fi
 
-if [[ $_INIT -eq 1 ]] || [[ -z "${BUILD_DIR}" ]]; then
-    # There is no available config in baseline: force init from scratch
-    _INIT=1
-
+if [ "$_INIT" -eq 1 ]; then
     # Set DISTRO
     if [ -z "$DISTRO" ]; then
         DISTRO_CHOICES=$(_choice_formated_configs distro)
-        test "$?" == "1" && { echo "$DISTRO_CHOICES"; _stoe_unset; return 1; }
+        [ "$?" -eq 1 ] && { echo "$DISTRO_CHOICES"; _stoe_unset; return 1; }
         # Add nodistro option
         DISTRO_CHOICES=$(echo -e "$DISTRO_CHOICES\nnodistro${_FORMAT_PATTERN}*** DEFAULT OPENEMBEDDED SETTING : DISTRO is not defined ***")
         choice DISTRO "$DISTRO_CHOICES"
         [ -z "$DISTRO" ] && { echo "Selection escaped: exiting now..."; _stoe_unset; return 1; }
     fi
-
     # Set MACHINE
     if [ -z "$MACHINE" ]; then
         MACHINE_CHOICES=$(_choice_formated_configs machine)
-        test "$?" == "1" && { echo "$MACHINE_CHOICES"; _stoe_unset; return 1; }
+        [ "$?" -eq 1 ] && { echo "$MACHINE_CHOICES"; _stoe_unset; return 1; }
         choice MACHINE "$MACHINE_CHOICES"
         [ -z "$MACHINE" ] && { echo "Selection escaped: exiting now..."; _stoe_unset; return 1; }
     fi
 
     # Init BUILD_DIR if not yet set
-    test -z "${BUILD_DIR}" && BUILD_DIR="build-${DISTRO//-}-$MACHINE"
+    [ -z "${BUILD_DIR}" ] && BUILD_DIR="build-${DISTRO//-}-$MACHINE"
 
     # Check if BUILD_DIR already exists to use previous config (i.e. set _INIT to 0)
-    test -f ${ROOTOE}/${BUILD_DIR}/conf/bblayers.conf && _INIT=0
-    test -f ${ROOTOE}/${BUILD_DIR}/conf/local.conf && _INIT=0
+    if [ -f ${ROOTOE}/${BUILD_DIR}/conf/bblayers.conf ] && [ -f ${ROOTOE}/${BUILD_DIR}/conf/local.conf ]; then
+        _INIT=0
+    fi
 
 else
     # Get DISTRO and MACHINE from configuration file
@@ -1336,7 +1357,6 @@ else
         _stoe_unset
         return 1
     fi
-
     # Set MACHINE
     if [ -z "$MACHINE" ]; then
         MACHINE=${MACHINE_INIT}
@@ -1351,7 +1371,7 @@ fi
 #----------------------------------------------
 # Init baseline for full INIT if required
 #
-if [[ $_FORCE_RECONF -eq 1 ]] && [[ $_INIT -eq 0 ]]; then
+if [ "$_FORCE_RECONF" -eq 1 ] && [ "$_INIT" -eq 0 ]; then
     echo ""
     echo "[Removing current config from ${ROOTOE}/${BUILD_DIR}/conf]"
     rm -fv ${ROOTOE}/${BUILD_DIR}/conf/*.conf ${ROOTOE}/${BUILD_DIR}/conf/*.txt
@@ -1364,33 +1384,33 @@ fi
 # Standard Openembedded init
 #
 echo -en "[source $_BUILDSYSTEM/oe-init-build-env]"
-[[ $_INIT -eq 1 ]] && echo "[from nothing]"
-[[ $_INIT -eq 0 ]] && echo "[with previous config]"
+[ "$_INIT" -eq 1 ] && echo "[from nothing]"
+[ "$_INIT" -eq 0 ] && echo "[with previous config]"
 get_templateconf
-test "$?" == "1" && { _stoe_unset; return 1; }
+[ "$?" -eq 1 ] && { _stoe_unset; return 1; }
 TEMPLATECONF=${_TEMPLATECONF} source ${ROOTOE}/$_BUILDSYSTEM/oe-init-build-env ${BUILD_DIR} > /dev/null
-test "$?" == "1" && { _stoe_unset; return 1; }
+[ "$?" -eq 1 ] && { _stoe_unset; return 1; }
 
 #----------------------------------------------
 # Init ST DISTRO CODE NAME to use for DL_DIR and SSTATE_DIR path
 #
 get_distrocodename
-test "$?" == "1" && { rm -rf $BUILDDIR/conf/*; _stoe_unset; return 1; }
+[ "$?" -eq 1 ] && { rm -rf $BUILDDIR/conf/*; _stoe_unset; return 1; }
 
 #----------------------------------------------
 # Handle EULA acceptance for ST configurations
 #
-if [[ $_INIT -eq 1 ]]; then
+if [ "$_INIT" -eq 1 ]; then
     echo
     echo "[EULA configuration]"
     eula_check
-    test "$?" == "1" && { rm -rf $BUILDDIR/conf/*; _stoe_unset; return 1; }
+    [ "$?" -eq 1 ] && { rm -rf $BUILDDIR/conf/*; _stoe_unset; return 1; }
 fi
 
 #----------------------------------------------
 # Apply specific ST configurations
 #
-if [[ $_INIT -eq 1 ]]; then
+if [ "$_INIT" -eq 1 ]; then
     echo
     echo "[Configure *.conf files]"
     # Configure site.conf with specific settings
@@ -1411,7 +1431,7 @@ stoe_set_env
 #----------------------------------------------
 # Display when no quiet mode required
 #
-if ! [[ $_QUIET -eq 1 ]]; then
+if ! [ "$_QUIET" -eq 1 ]; then
     # Display current configs
     stoe_config_summary $BUILDDIR
 
@@ -1420,7 +1440,7 @@ if ! [[ $_QUIET -eq 1 ]]; then
         cat $BUILDDIR/conf/conf-notes.txt
     else
         stoe_list_images ${ROOTOE}/${_META_LAYER_ROOT} NOERR FILTER
-        test "$?" == "1" && { _stoe_unset; return 1; }
+        [ "$?" -eq 1 ] && { _stoe_unset; return 1; }
     fi
     echo ""
     echo "You can now run 'bitbake <image>'"

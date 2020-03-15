@@ -1,0 +1,30 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
+/*
+ * Copyright (C) PHYTEC GmbH 2019 - All Rights Reserved
+ * Author: Dom VOVARD <dom.vovard@linrt.com>.
+ */
+
+
+&spi6 {
+	cs-gpios = <&gpiog 2 0>;
+	status = "okay";
+
+	spi@0 {
+                compatible = "linux,spidev";
+                spi-max-frequency = <10000000>;
+                reg = <0>;
+        };
+};
+
+&sdmmc3 {
+       cd-gpios = <&gpiof 2 GPIO_ACTIVE_LOW>;
+	status = "okay";
+};
+
+&i2c1 {
+        status = "okay";
+};
+
+&usart1 {
+        status = "okay";
+};

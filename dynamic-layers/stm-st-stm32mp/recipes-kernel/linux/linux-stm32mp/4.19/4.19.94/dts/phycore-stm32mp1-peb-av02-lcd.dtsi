@@ -1,0 +1,83 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
+/*
+ * Copyright (C) PHYTEC GmbH 2019 - All Rights Reserved
+ * Author: Dom VOVARD <dom.vovard@linrt.com>.
+ */
+
+/ {
+        panel_rgb: panel {
+                compatible = "edt,etm0700g0edh6";
+
+                status = "okay";
+                backlight = <&panel_backlight>;
+		enable-gpios = <&gpioa 4 GPIO_ACTIVE_HIGH>;		
+
+                port {
+                        panel_in_rgb: endpoint {
+                                remote-endpoint = <&ltdc_ep0_out>;
+                        };
+                };
+        };
+
+        panel_backlight: panel-backlight {
+                compatible = "pwm-backlight";
+		pwms = <&pwm_5 3 100000>;
+
+		power-supply = <&v3v3>;		
+
+		brightness-levels = <0 4 8 16 32 64 128 255>;
+		default-brightness-level = <6>;
+                status = "okay";
+        };
+};
+
+&timers5 {
+	status = "okay";
+        /delete-property/dmas;
+        /delete-property/dma-names;
+        pwm_5: pwm {
+		#pwm-cells = <2>;
+                pinctrl-0 = <&pwm5_pins_a>;
+                pinctrl-1 = <&pwm5_sleep_pins_a>;
+                pinctrl-names = "default", "sleep";
+                status = "okay";
+        };
+
+        timer@4 {
+                status = "disabled";
+        };
+};
+
+&ltdc {
+	dma-ranges;
+        status = "okay";
+  
+        pinctrl-names = "default", "sleep";
+        pinctrl-0 = <&ltdc_pins_a>;
+        pinctrl-1 = <&ltdc_pins_sleep_a>;
+
+        port {
+                #address-cells = <1>;
+                #size-cells = <0>;
+
+                ltdc_ep0_out: endpoint@0 {
+                        reg = <0>;
+                        remote-endpoint = <&panel_in_rgb>;
+                };
+        };
+};
+
+&i2c1 {
+	i2c_ts: touchscreen@38 {
+		compatible = "edt,edt-ft5x06";
+		reg = <0x38>;
+                interrupts = <8 2>;
+                interrupt-parent = <&gpioi>;
+                interrupt-controller;
+		status = "okay";
+	};
+};
+
+&dsi {
+	status = "disabled";
+};

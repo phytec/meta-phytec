@@ -5,7 +5,8 @@ UBOOT_EXTLINUX_CONFIGURE_FILES_append = " ${PHYCORE_STM32MP_BASE}/conf/machine/i
 
 # Define the config flags to use to generate all extlinux targets
 UBOOT_EXTLINUX_CONFIG_FLAGS += "${@bb.utils.contains('FLASHLAYOUT_CONFIG_LABELS', 'emmc', '%s' % bb.utils.contains('BOOTSCHEME_LABELS', 'optee', 'emmc emmc-optee', 'emmc', d), '', d)}"
-UBOOT_EXTLINUX_CONFIG_FLAGS += "${@bb.utils.contains_any('FLASHLAYOUT_CONFIG_LABELS', [ 'nand-4-256', 'nor-nand-4-256' ], 'nand', '', d)}"
+UBOOT_EXTLINUX_CONFIG_FLAGS += "${@bb.utils.contains_any('FLASHLAYOUT_CONFIG_LABELS', [ 'nand-2-64', 'nor-nand-2-64' ], 'nand', '', d)}"
+UBOOT_EXTLINUX_CONFIG_FLAGS += "${@bb.utils.contains_any('FLASHLAYOUT_CONFIG_LABELS', [ 'nand-2-256', 'nor-nand-2-256' ], 'nand', '', d)}"
 UBOOT_EXTLINUX_CONFIG_FLAGS += "${@bb.utils.contains('FLASHLAYOUT_CONFIG_LABELS', 'nor-emmc', 'nor-emmc', '', d)}"
 UBOOT_EXTLINUX_CONFIG_FLAGS += "${@bb.utils.contains('FLASHLAYOUT_CONFIG_LABELS', 'nor-sdcard', 'nor-sdcard', '', d)}"
 UBOOT_EXTLINUX_CONFIG_FLAGS += "${@bb.utils.contains('FLASHLAYOUT_CONFIG_LABELS', 'sdcard', '%s' % bb.utils.contains('BOOTSCHEME_LABELS', 'optee', 'sdcard nor-emmc', 'sdcard', d), '', d)}"
@@ -71,46 +72,3 @@ EXTLINUX_ROOT_SDCARD       = "root=/dev/mmcblk0p6"
 
 # Set extlinux console for stm32mp machine
 UBOOT_EXTLINUX_CONSOLE = "console=${@d.getVar('SERIAL_CONSOLE').split()[1]},${@d.getVar('SERIAL_CONSOLE').split()[0]}"
-
-# -----------------------------------------------------------------------------
-# PHYCORE STM32mp1-1 configuration
-# -----------------------------------------------------------------------------
-# Define available targets to use
-UBOOT_EXTLINUX_CONFIGURED_TARGETS += "mp1-1_sdcard"
-UBOOT_EXTLINUX_CONFIGURED_TARGETS += "mp1-1_nor-emmc"
-# Define bootprefix for each target
-UBOOT_EXTLINUX_BOOTPREFIXES_mp1-1_sdcard       = "${EXTLINUX_BOOTDEVICE_SDCARD}_phycore-stm32mp1-1_"
-UBOOT_EXTLINUX_BOOTPREFIXES_mp1-1_nor-emmc = "${EXTLINUX_BOOTDEVICE_NOREMMC}_phycore-stm32mp1-1_"
-# Define labels for each target
-UBOOT_EXTLINUX_LABELS_mp1-1_sdcard       = "phycore-stm32mp1-sdcard"
-UBOOT_EXTLINUX_LABELS_mp1-1_nor-emmc = "phycore-stm32mp1-nor-emmc"
-# Define default boot config for each target
-UBOOT_EXTLINUX_DEFAULT_LABEL_mp1-1_sdcard       ?= "phycore-stm32mp1-sdcard"
-UBOOT_EXTLINUX_DEFAULT_LABEL_mp1-1_nor-emmc ?= "phycore-stm32mp1-nor-emmc"
-# Define FDT overrides for all labels
-UBOOT_EXTLINUX_FDT_phycore-stm32mp1-sdcard       = "/phycore-stm32mp1-1.dtb"
-UBOOT_EXTLINUX_FDT_phycore-stm32mp1-nor-emmc = "/phycore-stm32mp1-1.dtb"
-# Define ROOT overrides for all labels
-UBOOT_EXTLINUX_ROOT_phycore-stm32mp1-sdcard = "${EXTLINUX_ROOT_SDCARD}"
-UBOOT_EXTLINUX_ROOT_phycore-stm32mp1-nor-emmc = "${EXTLINUX_ROOT_NOREMMC}"
-# -----------------------------------------------------------------------------
-# Append A7 examples labels for each target
-UBOOT_EXTLINUX_LABELS_mp1-1_sdcard       += "phycore-stm32mp1-a7-examples-sdcard"
-UBOOT_EXTLINUX_LABELS_mp1-1_nor-emmc += "phycore-stm32mp1-a7-examples-nor-emmc"
-# Define FDT overrides for A7 labels
-UBOOT_EXTLINUX_FDT_phycore-stm32mp1-a7-examples-sdcard       = "/phycore-stm32mp1-1-a7-examples.dtb"
-UBOOT_EXTLINUX_FDT_phycore-stm32mp1-a7-examples-nor-emmc = "/phycore-stm32mp1-1-a7-examples.dtb"
-# Define ROOT overrides for A7 labels
-UBOOT_EXTLINUX_ROOT_phycore-stm32mp1-a7-examples-sdcard       = "${EXTLINUX_ROOT_SDCARD}"
-UBOOT_EXTLINUX_ROOT_phycore-stm32mp1-a7-examples-nor-emmc = "${EXTLINUX_ROOT_NOREMMC}"
-# -----------------------------------------------------------------------------
-# Append M4 examples labels for each target
-UBOOT_EXTLINUX_LABELS_mp1-1_sdcard       += "phycore-stm32mp1-m4-examples-sdcard"
-UBOOT_EXTLINUX_LABELS_mp1-1_nor-emmc += "phycore-stm32mp1-m4-examples-nor-emmc"
-# Define FDT overrides for M4 labels
-UBOOT_EXTLINUX_FDT_phycore-stm32mp1-m4-examples-sdcard       = "/phycore-stm32mp1-1-m4-examples.dtb"
-UBOOT_EXTLINUX_FDT_phycore-stm32mp1-m4-examples-nor-emmc = "/phycore-stm32mp1-1-m4-examples.dtb"
-# Define ROOT overrides for M4 labels
-UBOOT_EXTLINUX_ROOT_phycore-stm32mp1-m4-examples-sdcard       = "${EXTLINUX_ROOT_SDCARD}"
-UBOOT_EXTLINUX_ROOT_phycore-stm32mp1-m4-examples-nor-emmc = "${EXTLINUX_ROOT_NOREMMC}"
-

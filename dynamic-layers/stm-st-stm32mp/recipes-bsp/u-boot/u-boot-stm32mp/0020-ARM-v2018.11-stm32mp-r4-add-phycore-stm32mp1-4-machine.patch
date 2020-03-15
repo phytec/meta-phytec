@@ -1,0 +1,707 @@
+diff --git a/arch/arm/dts/phycore-stm32mp1-4-u-boot.dtsi b/arch/arm/dts/phycore-stm32mp1-4-u-boot.dtsi
+new file mode 100644
+index 0000000..bf1f26f
+--- /dev/null
++++ b/arch/arm/dts/phycore-stm32mp1-4-u-boot.dtsi
+@@ -0,0 +1,221 @@
++// SPDX-License-Identifier: GPL-2.0+ OR BSD-3-Clause
++/*
++ * Copyright : STMicroelectronics 2018
++ */
++
++#include <dt-bindings/clock/stm32mp1-clksrc.h>
++#include "stm32mp157-u-boot.dtsi"
++#include "stm32mp15-ddr3-2x4Gb-1066-binG.dtsi"
++
++/ {
++	aliases {
++		i2c3 = &i2c4;
++		mmc0 = &sdmmc1;
++		mmc1 = &sdmmc2;
++                spi0 = &qspi;
++	};
++
++	config {
++		u-boot,boot-led = "heartbeat";
++		st,fastboot-gpios = <&gpioa 13 GPIO_ACTIVE_LOW>;
++		st,stm32prog-gpios = <&gpioa 14 GPIO_ACTIVE_LOW>;
++	};
++
++	led {
++		blue {
++			default-state = "on";
++		};
++	};
++};
++
++
++&flash0 {
++        compatible = "spi-flash";
++        u-boot,dm-spl;
++};
++
++&qspi {
++        u-boot,dm-spl;
++};
++
++&qspi_clk_pins_a {
++        u-boot,dm-spl;
++        pins {
++                u-boot,dm-spl;
++        };
++};
++
++&qspi_bk1_pins_a {
++        u-boot,dm-spl;
++        pins1 {
++                u-boot,dm-spl;
++        };
++        pins2 {
++                u-boot,dm-spl;
++        };
++};
++
++&clk_hse {
++	st,digbypass;
++};
++
++&i2c4 {
++	u-boot,dm-pre-reloc;
++};
++
++&i2c4_pins_a {
++	u-boot,dm-pre-reloc;
++	pins {
++		u-boot,dm-pre-reloc;
++	};
++};
++
++&pmic {
++	u-boot,dm-pre-reloc;
++};
++
++&ethernet0 {
++        u-boot,dm-pre-reloc;
++};
++
++&rcc {
++	st,clksrc = <
++		CLK_MPU_PLL1P
++		CLK_AXI_PLL2P
++		CLK_MCU_PLL3P
++		CLK_PLL12_HSE
++		CLK_PLL3_HSE
++		CLK_PLL4_HSE
++		CLK_RTC_LSE
++		CLK_MCO1_DISABLED
++		CLK_MCO2_DISABLED
++	>;
++
++	st,clkdiv = <
++		1 /*MPU*/
++		0 /*AXI*/
++		0 /*MCU*/
++		1 /*APB1*/
++		1 /*APB2*/
++		1 /*APB3*/
++		1 /*APB4*/
++		2 /*APB5*/
++		23 /*RTC*/
++		0 /*MCO1*/
++		0 /*MCO2*/
++	>;
++
++	st,pkcs = <
++		CLK_CKPER_HSE
++		CLK_FMC_ACLK
++		CLK_QSPI_ACLK
++		CLK_ETH_PLL4P
++		CLK_SDMMC12_PLL4P
++		CLK_DSI_DSIPLL
++		CLK_STGEN_HSE
++		CLK_USBPHY_HSE
++                CLK_FDCAN_HSE
++		CLK_SPI2S1_PLL3Q
++		CLK_SPI2S23_PLL3Q
++		CLK_SPI45_HSI
++		CLK_SPI6_HSI
++		CLK_I2C46_HSI
++		CLK_SDMMC3_PLL4P
++		CLK_USBO_USBPHY
++		CLK_ADC_CKPER
++		CLK_CEC_LSE
++		CLK_I2C12_HSI
++		CLK_I2C35_HSI
++		CLK_UART1_HSI
++		CLK_UART24_HSI
++		CLK_UART35_HSI
++		CLK_UART6_HSI
++		CLK_UART78_HSI
++		CLK_SPDIF_PLL4P
++		CLK_FDCAN_PLL4Q
++		CLK_SAI1_PLL3Q
++		CLK_SAI2_PLL3Q
++		CLK_SAI3_PLL3Q
++		CLK_SAI4_PLL3Q
++		CLK_RNG1_LSI
++		CLK_RNG2_LSI
++		CLK_LPTIM1_PCLK1
++		CLK_LPTIM23_PCLK3
++		CLK_LPTIM45_LSE
++	>;
++
++	/* VCO = 1600.0 MHz => P = 800 (CPU) */
++	pll1: st,pll@0 {
++		cfg = < 2 99 0 0 0 PQR(1,0,0) >;
++		u-boot,dm-pre-reloc;
++	};
++
++	/* VCO = 1066.0 MHz => P = 266 (AXI), Q = 533 (GPU), R = 533 (DDR) */
++	pll2: st,pll@1 {
++		cfg = < 2 65 1 0 0 PQR(1,1,1) >;
++		frac = < 0x1400 >;
++		u-boot,dm-pre-reloc;
++	};
++
++	/* VCO = 417.8 MHz => P = 209, Q = 24, R = 11 */
++	pll3: st,pll@2 {
++		cfg = < 1 33 1 16 36 PQR(1,1,1) >;
++		frac = < 0x1a04 >;
++		u-boot,dm-pre-reloc;
++	};
++
++	/* VCO = 750.0 MHz, P=125, Q=62.5, R=62.5 */
++	pll4: st,pll@3 {
++		cfg = <3 124 5 11 11 PQR(1,1,1)>;
++		u-boot,dm-pre-reloc;
++	};
++};
++
++&sdmmc1 {
++	u-boot,dm-spl;
++};
++
++&sdmmc1_b4_pins_a {
++	u-boot,dm-spl;
++	pins1 {
++		u-boot,dm-spl;
++	};
++	pins2 {
++		u-boot,dm-spl;
++	};
++};
++
++&sdmmc2 {
++	u-boot,dm-spl;
++};
++
++&sdmmc2_b4_pins_a {
++	u-boot,dm-spl;
++	pins1 {
++		u-boot,dm-spl;
++	};
++	pins2 {
++		u-boot,dm-spl;
++	};
++};
++
++&sdmmc2_d47_pins_a {
++	u-boot,dm-spl;
++	pins {
++		u-boot,dm-spl;
++	};
++};
++
++&uart4 {
++	u-boot,dm-pre-reloc;
++};
++
++&uart4_pins_a {
++	u-boot,dm-pre-reloc;
++	pins1 {
++		u-boot,dm-pre-reloc;
++	};
++	pins2 {
++		u-boot,dm-pre-reloc;
++	};
++};
+diff --git a/arch/arm/dts/phycore-stm32mp1-4.dts b/arch/arm/dts/phycore-stm32mp1-4.dts
+new file mode 100644
+index 0000000..080e9d6
+--- /dev/null
++++ b/arch/arm/dts/phycore-stm32mp1-4.dts
+@@ -0,0 +1,45 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) PHYTEC GmbH 2019-2020 - All Rights Reserved
++ * Author: Dom VOVARD <dom.vovard@linrt.com>.
++ */
++
++/dts-v1/;
++
++#include "phycore-stm32mp157fac-som.dtsi"
++#include "phyboard-stm32mp1.dtsi"
++
++/ {
++        model = "Phytec GmbH phycore-stm32mp1-4 Dev Board";
++        compatible = "phycore-stm32mp1-4", "phytec,pcm068-1534-1", "phytec,pcm939-1517-2", "st,stm32mp157";
++
++};
++
++&dts {
++        status = "okay";
++};
++
++&gpu {
++        status = "okay";
++};
++
++&i2c4_rtc {
++        status = "okay";
++};
++
++&rtc {
++        status = "okay";
++};
++
++&qspi {
++        status = "okay";
++};
++
++&fmc {
++        status = "disabled";
++};
++
++&sdmmc2 {
++        status = "okay";
++};
++
+diff --git a/arch/arm/dts/phycore-stm32mp157fac-som.dtsi b/arch/arm/dts/phycore-stm32mp157fac-som.dtsi
+new file mode 100644
+index 0000000..d8d3fd2
+--- /dev/null
++++ b/arch/arm/dts/phycore-stm32mp157fac-som.dtsi
+@@ -0,0 +1,393 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) PHYTEC GmbH 2019-2020 - All Rights Reserved
++ * Author: Dom VOVARD <dom.vovard@linrt.com>.
++ */
++
++/dts-v1/;
++
++#include "stm32mp157c.dtsi"
++#include "phycore-stm32mp157cac-pinctrl.dtsi"
++#include "stm32mp157c-m4-srm.dtsi"
++#include <dt-bindings/gpio/gpio.h>
++#include <dt-bindings/input/input.h>
++#include <dt-bindings/mfd/st,stpmic1.h>
++#include <dt-bindings/net/ti-dp83867.h>
++#include <dt-bindings/rtc/rtc-stm32.h>
++
++
++/ {
++        model = "Phytec GmbH phycore-stm32mp1-1 SOM";
++        compatible = "phytec,PCM-068-1534-0-005", "st,stm32mp157";
++
++        memory@c0000000 {
++                reg = <0xc0000000 0x20000000>;
++        };
++
++        reserved-memory {
++                #address-cells = <1>;
++                #size-cells = <1>;
++                ranges;
++
++                retram: retram@0x38000000 {
++                        compatible = "shared-dma-pool";
++                        reg = <0x38000000 0x10000>;
++                        no-map;
++                };
++
++                mcuram: mcuram@0x30000000 {
++                        compatible = "shared-dma-pool";
++                        reg = <0x30000000 0x40000>;
++                        no-map;
++                };
++
++                mcuram2: mcuram2@0x10000000 {
++                        compatible = "shared-dma-pool";
++                        reg = <0x10000000 0x40000>;
++                        no-map;
++                };
++
++                vdev0vring0: vdev0vring0@10040000 {
++                        compatible = "shared-dma-pool";
++                        reg = <0x10040000 0x2000>;
++                        no-map;
++                };
++
++                vdev0vring1: vdev0vring1@10042000 {
++                        compatible = "shared-dma-pool";
++                        reg = <0x10042000 0x2000>;
++                        no-map;
++                };
++
++                vdev0buffer: vdev0buffer@10044000 {
++                        compatible = "shared-dma-pool";
++                        reg = <0x10044000 0x4000>;
++                        no-map;
++                };
++
++                gpu_reserved: gpu@f8000000 {
++                        reg = <0xf8000000 0x8000000>;
++                        no-map;
++                };
++        };
++
++        sram: sram@10050000 {
++                compatible = "mmio-sram";
++                reg = <0x10050000 0x10000>;
++                #address-cells = <1>;
++                #size-cells = <1>;
++                ranges = <0 0x10050000 0x10000>;
++
++                dma_pool: dma_pool@0 {
++                        reg = <0x0 0x10000>;
++                        pool;
++                };
++        };
++};
++
++&dma1 {
++        sram = <&dma_pool>;
++};
++
++&dma2 {
++        sram = <&dma_pool>;
++};
++
++&dts {
++        status = "okay";
++};
++
++&gpu {
++        contiguous-area = <&gpu_reserved>;
++        status = "okay";
++};
++
++&i2c4 {
++        pinctrl-names = "default", "sleep";
++        pinctrl-0 = <&i2c4_pins_a>;
++        pinctrl-1 = <&i2c4_pins_sleep_a>;
++        i2c-scl-rising-time-ns = <185>;
++        i2c-scl-falling-time-ns = <20>;
++        status = "okay";
++        /delete-property/dmas;
++        /delete-property/dma-names;
++
++        pmic: stpmic@33 {
++                compatible = "st,stpmic1";
++                reg = <0x33>;
++                interrupts-extended = <&exti_pwr 55 IRQ_TYPE_EDGE_FALLING>;
++                interrupt-controller;
++                #interrupt-cells = <2>;
++                status = "okay";
++
++                st,main-control-register = <0x04>;
++                st,vin-control-register = <0xc0>;
++                st,usb-control-register = <0x20>;
++
++                regulators {
++                        compatible = "st,stpmic1-regulators";
++
++                        ldo1-supply = <&v3v3>;
++                        ldo2-supply = <&v3v3>;
++                        ldo3-supply = <&vdd_ddr>;
++                        ldo5-supply = <&v3v3>;
++                        ldo6-supply = <&v3v3>;
++                        pwr_sw1-supply = <&bst_out>;
++                        pwr_sw2-supply = <&bst_out>;
++
++                        vddcore: buck1 {
++                                regulator-name = "vddcore";
++                                regulator-min-microvolt = <1325000>;
++                                regulator-max-microvolt = <1325000>;
++                                regulator-always-on;
++                                regulator-initial-mode = <0>;
++                                regulator-over-current-protection;
++                        };
++
++                        vdd_ddr: buck2 {
++                                regulator-name = "vdd_ddr";
++                                regulator-min-microvolt = <1350000>;
++                                regulator-max-microvolt = <1350000>;
++                                regulator-always-on;
++                                regulator-initial-mode = <0>;
++                                regulator-over-current-protection;
++                        };
++
++                        vdd: buck3 {
++                                regulator-name = "vdd";
++                                regulator-min-microvolt = <3300000>;
++                                regulator-max-microvolt = <3300000>;
++                                regulator-always-on;
++                                st,mask-reset;
++                                regulator-initial-mode = <0>;
++                                regulator-over-current-protection;
++                        };
++
++                        v3v3: buck4 {
++                                regulator-name = "v3v3";
++                                regulator-min-microvolt = <3300000>;
++                                regulator-max-microvolt = <3300000>;
++                                regulator-always-on;
++                                regulator-over-current-protection;
++                                regulator-initial-mode = <0>;
++                        };
++
++                        v1v8_audio: ldo1 {
++                                regulator-name = "v1v8_audio";
++                                regulator-min-microvolt = <1800000>;
++                                regulator-max-microvolt = <1800000>;
++                                regulator-always-on;
++                                interrupts = <IT_CURLIM_LDO1 0>;
++
++                        };
++
++                        vdd_eth_2v5: ldo2 {
++                                regulator-name = "dd_eth_2v5";
++                                regulator-min-microvolt = <2500000>;
++                                regulator-max-microvolt = <2500000>;
++                                regulator-always-on;
++                                interrupts = <IT_CURLIM_LDO2 0>;
++
++                        };
++
++                        vtt_ddr: ldo3 {
++                                regulator-name = "vtt_ddr";
++                                regulator-min-microvolt = <500000>;
++                                regulator-max-microvolt = <750000>;
++                                regulator-always-on;
++                                regulator-over-current-protection;
++                        };
++
++                        vdd_usb: ldo4 {
++                                regulator-name = "vdd_usb";
++                                regulator-min-microvolt = <3300000>;
++                                regulator-max-microvolt = <3300000>;
++                                interrupts = <IT_CURLIM_LDO4 0>;
++                        };
++
++                        vdda: ldo5 {
++                                regulator-name = "vdda";
++                                regulator-min-microvolt = <2900000>;
++                                regulator-max-microvolt = <2900000>;
++                                interrupts = <IT_CURLIM_LDO5 0>;
++                                regulator-boot-on;
++                        };
++
++                        vdd_eth_1v0: ldo6 {
++                                regulator-name = "vdd_eth_1v0";
++                                regulator-min-microvolt = <1000000>;
++                                regulator-max-microvolt = <1000000>;
++                                regulator-always-on;
++                                interrupts = <IT_CURLIM_LDO6 0>;
++
++                        };
++
++                        vref_ddr: vref_ddr {
++                                regulator-name = "vref_ddr";
++                                regulator-always-on;
++                                regulator-over-current-protection;
++                        };
++
++                        bst_out: boost {
++                                regulator-name = "bst_out";
++                                interrupts = <IT_OCP_BOOST 0>;
++                        };
++
++                        vbus_otg: pwr_sw1 {
++                                regulator-name = "vbus_otg";
++                                interrupts = <IT_OCP_OTG 0>;
++                                regulator-active-discharge;
++                        };
++
++                        vbus_sw: pwr_sw2 {
++                                regulator-name = "vbus_sw";
++                                interrupts = <IT_OCP_SWOUT 0>;
++                                regulator-active-discharge;
++                        };
++                };
++
++                onkey {
++                        compatible = "st,stpmic1-onkey";
++                        interrupts = <IT_PONKEY_F 0>, <IT_PONKEY_R 1>;
++                        interrupt-names = "onkey-falling", "onkey-rising";
++                        status = "okay";
++                };
++
++                watchdog {
++                        compatible = "st,stpmic1-wdt";
++                        status = "disabled";
++                };
++        };
++
++        eeprom@50 {
++                compatible = "microchip,24c32", "atmel,24c32";
++                reg = <0x50>;
++        };
++
++        i2c4_rtc: rtc@52 {
++                compatible = "microcrystal,rv3028";
++                reg = <0x52>;
++                /*interrupt-parent = <&gpio5>;
++                interrupts = <1 IRQ_TYPE_LEVEL_LOW>;*/
++		backup-switchover-mode = /bits/ 8 <0x01>;
++                status = "okay";
++        };
++};
++
++&ethernet0 {
++        status = "okay";
++        pinctrl-0 = <&ethernet0_rgmii_pins_a>;
++        pinctrl-1 = <&ethernet0_rgmii_pins_sleep_a>;
++        pinctrl-names = "default", "sleep";
++        phy-mode = "rgmii";
++        max-speed = <1000>;
++        phy-handle = <&phy0>;
++        st,eth_clk_sel = <1>;
++
++        mdio0 {
++                #address-cells = <1>;
++                #size-cells = <0>;
++                compatible = "snps,dwmac-mdio";
++
++                phy0: ethernet-phy@1 {
++                        compatible = "ethernet-phy-ieee802.3-c22";
++                        reg = <1>;
++                        interrupt-parent = <&gpiog>;
++                        interrupts = <12 IRQ_TYPE_EDGE_FALLING>;
++                        ti,rx-internal-delay = <DP83867_RGMIIDCTL_2_00_NS>;
++                        ti,tx-internal-delay = <DP83867_RGMIIDCTL_2_00_NS>;
++                        ti,fifo-depth = <DP83867_PHYCR_FIFO_DEPTH_4_B_NIB>;
++                        ti,min-output-impedance;
++                        enet-phy-lane-no-swap;
++			ti,clk-output-sel = <DP83867_CLK_O_SEL_OFF>;
++                };
++        };
++};
++
++&m4_rproc {
++        memory-region = <&retram>, <&mcuram>, <&mcuram2>, <&vdev0vring0>,
++                        <&vdev0vring1>, <&vdev0buffer>;
++        mboxes = <&ipcc 0>, <&ipcc 1>, <&ipcc 2>;
++        mbox-names = "vq0", "vq1", "shutdown";
++        interrupt-parent = <&exti>;
++        interrupts = <68 1>;
++        interrupt-names = "wdg";
++        recovery;
++        status = "okay";
++};
++
++&ipcc {
++        status = "okay";
++};
++
++&iwdg2 {
++        timeout-sec = <32>;
++        status = "okay";
++};
++
++&pwr {
++        pwr-supply = <&vdd>;
++};
++
++&rng1 {
++        status = "okay";
++};
++
++&rtc {
++        status = "okay";
++};
++
++&qspi {
++        pinctrl-names = "default", "sleep";
++        pinctrl-0 = <&qspi_clk_pins_a &qspi_bk1_pins_a>;
++        pinctrl-1 = <&qspi_clk_sleep_pins_a &qspi_bk1_sleep_pins_a>;
++        reg = <0x58003000 0x1000>, <0x70000000 0x4000000>;
++        #address-cells = <1>;
++        #size-cells = <0>;
++        status = "okay";
++
++        flash0: w25q128@0 {
++                compatible = "winbond,w25q128", "jedec,spi-nor", "spi-flash";
++                reg = <0>;
++                spi-rx-bus-width = <4>;
++                spi-max-frequency = <50000000>;
++                m25p,fast-read;
++                #address-cells = <1>;
++                #size-cells = <1>;
++        };
++};
++
++&fmc {
++        pinctrl-names = "default", "sleep";
++        pinctrl-0 = <&fmc_pins_a>;
++        pinctrl-1 = <&fmc_sleep_pins_a>;
++        status = "disabled";
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        nand: nand@0 {
++                reg = <0>;
++                nand-on-flash-bbt;
++                nand-ecc-strength = <4>;
++                nand-ecc-step-size = <512>;
++                #address-cells = <1>;
++                #size-cells = <1>;
++        };
++};
++
++&sdmmc2 {
++        pinctrl-names = "default", "opendrain", "sleep";
++        pinctrl-0 = <&sdmmc2_b4_pins_a &sdmmc2_d47_pins_a>;
++        pinctrl-1 = <&sdmmc2_b4_od_pins_a &sdmmc2_d47_pins_a>;
++        pinctrl-2 = <&sdmmc2_b4_sleep_pins_a &sdmmc2_d47_sleep_pins_a>;
++        non-removable;
++        no-sd;
++        no-sdio;
++        st,neg-edge;
++        bus-width = <8>;
++        vmmc-supply = <&v3v3>;
++        vqmmc-supply = <&v3v3>;
++        mmc-ddr-3_3v;
++        status = "okay";
++};
++
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index 58e0677..0d0d53d 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -559,7 +559,8 @@ dtb-$(CONFIG_TARGET_STM32MP1) += \
+ 	stm32mp157c-ev1.dtb \
+ 	phycore-stm32mp1-1.dtb \
+         phycore-stm32mp1-2.dtb \
+-        phycore-stm32mp1-3.dtb
++        phycore-stm32mp1-3.dtb \
++        phycore-stm32mp1-4.dtb
+ 
+ dtb-$(CONFIG_SOC_K3_AM6) += k3-am654-base-board.dtb
+ 
+diff --git a/board/st/stm32mp1/extlinux.conf b/board/st/stm32mp1/extlinux.conf
+index 2e0e32a..b663454 100644
+--- a/board/st/stm32mp1/extlinux.conf
++++ b/board/st/stm32mp1/extlinux.conf
+@@ -43,3 +43,11 @@ LABEL phycore-stm32mp1-3-m4
+         KERNEL /fit_kernel_dtb.itb#phycore-m4
+         APPEND root=/dev/mmcblk0p6 rootwait rw earlyprintk console=ttyS3,115200
+ 
++LABEL phycore-stm32mp1-4
++        KERNEL /fit_kernel_dtb.itb#phycore
++        APPEND root=/dev/mmcblk0p6 rootwait rw earlyprintk console=ttyS3,115200
++
++LABEL phycore-stm32mp1-4-m4
++        KERNEL /fit_kernel_dtb.itb#phycore-m4
++        APPEND root=/dev/mmcblk0p6 rootwait rw earlyprintk console=ttyS3,115200
++
