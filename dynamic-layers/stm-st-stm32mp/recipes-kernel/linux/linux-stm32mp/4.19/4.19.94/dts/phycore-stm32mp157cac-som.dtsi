@@ -262,6 +262,7 @@
         i2c4_eeprom: eeprom@50 {
                 compatible = "microchip,24c32", "atmel,24c32";
                 reg = <0x50>;
+		status = "disabled";
         };
 
         i2c4_rtc: rtc@52 {
@@ -270,7 +271,7 @@
                 /*interrupt-parent = <&gpio5>;
                 interrupts = <1 IRQ_TYPE_LEVEL_LOW>;*/
 		backup-switchover-mode = /bits/ 8 <0x01>;
-                status = "okay";
+                status = "disabled";
         };
 };
 
@@ -344,7 +345,7 @@
         reg = <0x58003000 0x1000>, <0x70000000 0x4000000>;
         #address-cells = <1>;
         #size-cells = <0>;
-        status = "okay";
+        status = "disabled";
 
         flash0: w25q128@0 {
                 compatible = "winbond,w25q128", "jedec,spi-nor", "spi-flash";
@@ -388,6 +389,6 @@
         vmmc-supply = <&v3v3>;
         vqmmc-supply = <&v3v3>;
         mmc-ddr-3_3v;
-        status = "okay";
+        status = "disabled";
 };
 

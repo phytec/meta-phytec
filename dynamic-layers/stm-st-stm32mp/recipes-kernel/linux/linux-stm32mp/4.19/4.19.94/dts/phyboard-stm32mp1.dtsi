@@ -264,6 +264,14 @@
 	status = "disabled";
 };
 
+&spi6 {
+        pinctrl-names = "default", "sleep";
+        pinctrl-0 = <&spi6_pins_a>;
+        pinctrl-1 = <&spi6_sleep_pins_a>;
+        status = "okay";
+};
+
+
 &timers1 {
 	/* spare dmas for other usage */
 	/delete-property/dmas;
@@ -406,7 +414,7 @@
 
 
 /* Selected connectors used commenting/uncommenting the following line  */ 
-//#include "phycore-stm32mp1-pi-hat-extension.dtsi"
+#include "phycore-stm32mp1-pi-hat-extension.dtsi"
 //#include "phycore-stm32mp1-uno-r3-extension.dtsi"
 //#include "phycore-stm32mp1-motor-control.dtsi"
 

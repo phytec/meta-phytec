@@ -5,20 +5,18 @@
  */
 
 
-&spi1 {
-	pinctrl-names = "default", "sleep";
-	pinctrl-0 = <&spi1_pins_a>;
-	pinctrl-1 = <&spi1_sleep_pins_a>;
+&spi6 {
 	cs-gpios = <&gpiog 2 0>;
         status = "okay";
 
 	spi@0 {
-                compatible = "spidev";
+                compatible = "linux,spidev";
                 spi-max-frequency = <10000000>;
                 reg = <0>;
         };
 };
 
+/*
 &sdmmc1 {
 	pinctrl-names = "default", "opendrain", "sleep";
 	pinctrl-0 = <&sdmmc1_b4_pins_a>;
@@ -31,6 +29,7 @@
 	vmmc-supply = <&v3v3>;
 	status = "disabled";
 };
+*/
 
 &i2c1 {
         status = "okay";
