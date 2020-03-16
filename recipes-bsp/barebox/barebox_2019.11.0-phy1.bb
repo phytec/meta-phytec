@@ -62,6 +62,8 @@ python do_env_append_mx6() {
 
     mmcboot = """#!/bin/sh
 
+detect mmc{_mmcid}
+
 [ -e /env/config-expansions ] && /env/config-expansions
 
 global.bootm.image="/mnt/mmc{_mmcid}.{_id}/{_kernel}"
