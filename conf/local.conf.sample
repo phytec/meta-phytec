@@ -60,8 +60,7 @@ BB_DISKMON_DIRS ??= "\
 # This variable is ordering dependend.
 #IMAGE_FSTYPES = "tar.gz wic ubifs emmc"
 
-# Select preconfigured A/B system setup for i.MX 6's or i.MX 6UL/ULL
-# SD/eMMC image
+# Select a preconfigured A/B system setup for SD/eMMC images.
 #WKS_FILES_mx6 = "imx6-rauc-sdimage.wks"
 #WKS_FILES_mx6ul = "imx6-rauc-sdimage.wks"
 
