@@ -1038,8 +1038,7 @@
 	spi6_pins_a: spi6-0 {
 		pins1 {
 			pinmux = <STM32_PINMUX('Z', 0, AF8)>, /* SPI6_SCK */
-                                <STM32_PINMUX('Z', 2, AF8)>, /* SPI6_MOSI */
-				 <STM32_PINMUX('Z', 3, AF8)>; /* SPI6_NSS */
+                                <STM32_PINMUX('Z', 2, AF8)>; /* SPI6_MOSI */
 			bias-disable;
 			drive-push-pull;
 			slew-rate = <1>;
@@ -1054,8 +1053,7 @@
 		pins {
 			pinmux = <STM32_PINMUX('Z', 0, ANALOG)>, /* SPI6_SCK */
 				 <STM32_PINMUX('Z', 1, ANALOG)>, /* SPI6_MISO */
-				 <STM32_PINMUX('Z', 2, ANALOG)>, /* SPI6_MOSI */
-                                <STM32_PINMUX('Z', 3, ANALOG)>; /* SPI6_NSS */
+				 <STM32_PINMUX('Z', 2, ANALOG)>; /* SPI6_MOSI */
 		};
 	};
 };
