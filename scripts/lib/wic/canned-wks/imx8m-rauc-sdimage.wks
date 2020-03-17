@@ -1,0 +1,14 @@
+# short-description: Create a PHYTEC i.MX8M disk image (SD card)
+# long-description: Creates a partitioned disk image for PHYTEC i.MX8M BSPs that
+# the user can directly dd to an SD card and boot. This image contains two boot
+# and rootfs partitions for a redundant system.
+
+part U-BOOT --source rawcopy --sourceparams="file=imx-boot" --ondisk mmc --no-table --align 33
+
+part --source bootimg-partition --fstype=vfat --label boot0 --ondisk mmc --active --align 4096 --size 20
+part / --source rootfs --fstype=ext4 --label root0 --ondisk mmc --align 1024 --use-uuid
+
+part --source bootimg-partition --fstype=vfat --label boot1 --ondisk mmc --active --size 20
+part / --source rootfs --fstype=ext4 --label root1 --ondisk mmc --align 1024 --use-uuid
+
+bootloader --timeout=0
