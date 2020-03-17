@@ -74,6 +74,7 @@
                 interrupts = <8 2>;
                 interrupt-parent = <&gpioi>;
                 interrupt-controller;
+		reset-gpios = <&gpiod 9 1>;
 		status = "okay";
 	};
 };
