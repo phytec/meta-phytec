@@ -69,7 +69,7 @@
 
 &i2c1 {
 	i2c_ts: touchscreen@38 {
-		compatible = "edt,edt-ft5x06";
+		compatible = "edt,edt-ft5406", "edt,edt-ft5x06";
 		reg = <0x38>;
                 interrupts = <8 2>;
                 interrupt-parent = <&gpioi>;

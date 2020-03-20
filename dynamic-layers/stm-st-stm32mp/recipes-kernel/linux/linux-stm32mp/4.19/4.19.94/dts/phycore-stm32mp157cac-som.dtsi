@@ -17,12 +17,18 @@
 
 
 / {
-        model = "Phytec GmbH phycore-stm32mp1-1 SOM";
+        model = "Phytec GmbH phycore-stm32mp1 SOM";
         compatible = "phytec,PCM-068-1534-0-005", "st,stm32mp157";
 
         memory@c0000000 {
                 reg = <0xc0000000 0x20000000>;
         };
+
+	aliases {
+		mmc0 = &sdmmc1;
+		mmc1 = &sdmmc2;
+                mmc2 = &sdmmc3;
+	};
 
         reserved-memory {
                 #address-cells = <1>;
@@ -270,7 +276,7 @@
                 reg = <0x52>;
                 /*interrupt-parent = <&gpio5>;
                 interrupts = <1 IRQ_TYPE_LEVEL_LOW>;*/
-		backup-switchover-mode = /bits/ 8 <0x01>;
+		backup-switchover-mode = /bits/ 8 <0x03>;
                 status = "disabled";
         };
 };

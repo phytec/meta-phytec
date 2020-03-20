@@ -251,16 +251,10 @@
 };
 
 &spi4 {
-	pinctrl-names = "default", "sleep";
-	pinctrl-0 = <&spi4_pins_a>;
-	pinctrl-1 = <&spi4_sleep_pins_a>;
 	status = "disabled";
 };
 
 &spi5 {
-	pinctrl-names = "default", "sleep";
-	pinctrl-0 = <&spi5_pins_a>;
-	pinctrl-1 = <&spi5_sleep_pins_a>;
 	status = "disabled";
 };
 
@@ -353,7 +347,8 @@
 	pinctrl-0 = <&usart3_pins_b>;
 	pinctrl-1 = <&usart3_sleep_pins_b>;
 	pinctrl-2 = <&usart3_idle_pins_b>;
-        st,hw-flow-ctrl;
+        /*st,hw-flow-ctrl;*/
+        /*linux,rs485-enabled-at-boot-time;*/
 	status = "okay";
 };
 

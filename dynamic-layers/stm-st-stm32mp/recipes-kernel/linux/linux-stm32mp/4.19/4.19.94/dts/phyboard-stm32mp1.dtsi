@@ -18,7 +18,7 @@
 		serial0 = &uart4;
                 serial1 = &usart3;
                 serial2 = &usart1;
-	};
+        };
 
 	chosen {
 		stdout-path = "serial0:115200n8";
@@ -251,23 +251,17 @@
 };
 
 &spi4 {
-	pinctrl-names = "default", "sleep";
-	pinctrl-0 = <&spi4_pins_a>;
-	pinctrl-1 = <&spi4_sleep_pins_a>;
 	status = "disabled";
 };
 
 &spi5 {
-	pinctrl-names = "default", "sleep";
-	pinctrl-0 = <&spi5_pins_a>;
-	pinctrl-1 = <&spi5_sleep_pins_a>;
 	status = "disabled";
 };
 
-&spi6 {
+&spi1 {
         pinctrl-names = "default", "sleep";
-        pinctrl-0 = <&spi6_pins_a>;
-        pinctrl-1 = <&spi6_sleep_pins_a>;
+        pinctrl-0 = <&spi1_pins_a>;
+        pinctrl-1 = <&spi1_sleep_pins_a>;
         status = "okay";
 };
 
@@ -353,6 +347,8 @@
         pinctrl-0 = <&usart1_pins_a &usart1_pins_b>;
         pinctrl-1 = <&usart1_sleep_pins_a &usart1_sleep_pins_b>;
         pinctrl-2 = <&usart1_idle_pins_a &usart1_idle_pins_b>;
+        /*st,hw-flow-ctrl;*/
+	/*linux,rs485-enabled-at-boot-time;*/
         status = "okay";
 };
 
@@ -361,7 +357,6 @@
 	pinctrl-0 = <&usart3_pins_b>;
 	pinctrl-1 = <&usart3_sleep_pins_b>;
 	pinctrl-2 = <&usart3_idle_pins_b>;
-        st,hw-flow-ctrl;
 	status = "okay";
 };
 
@@ -414,7 +409,8 @@
 
 
 /* Selected connectors used commenting/uncommenting the following line  */ 
-#include "phycore-stm32mp1-pi-hat-extension.dtsi"
+//#include "phycore-stm32mp1-pi-hat-extension.dtsi"
+#include "phycore-stm32mp1-pi-hat-redbear.dtsi"
 //#include "phycore-stm32mp1-uno-r3-extension.dtsi"
 //#include "phycore-stm32mp1-motor-control.dtsi"
 

@@ -990,7 +990,7 @@ index 0000000..327316b
 +                    dev_info(&client->dev, "backup switchover mode : %d\n", bsm);
 +
 +	        } else {
-+	            dev_warn(&client->dev, "invalid backup switchover mode value\n");
++	            dev_warn(&client->dev, "invalid backup switchover mode value %d\n");
 +	        }
 +        }
 +

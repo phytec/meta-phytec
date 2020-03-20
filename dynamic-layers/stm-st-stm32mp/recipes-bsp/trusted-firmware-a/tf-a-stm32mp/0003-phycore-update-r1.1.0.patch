@@ -127,7 +127,7 @@ new file mode 100644
 index 0000000..9eaf02f
 --- /dev/null
 +++ b/fdts/phycore-stm32mp1-som.dtsi
-@@ -0,0 +1,508 @@
+@@ -0,0 +1,507 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
 +/*
 + * Copyright (C) Phytec GmbH 2019-2020 - All Rights Reserved
@@ -442,7 +442,6 @@ index 0000000..9eaf02f
 +		CLK_UART6_HSI
 +		CLK_UART78_HSI
 +		CLK_SPDIF_PLL4P
-+		CLK_FDCAN_PLL4Q
 +		CLK_SAI1_PLL3Q
 +		CLK_SAI2_PLL3Q
 +		CLK_SAI3_PLL3Q

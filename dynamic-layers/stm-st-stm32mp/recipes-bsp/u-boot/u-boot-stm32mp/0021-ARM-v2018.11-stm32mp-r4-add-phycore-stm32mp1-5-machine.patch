@@ -70,7 +70,7 @@ new file mode 100644
 index 0000000..7c1dc88
 --- /dev/null
 +++ b/arch/arm/dts/phycore-stm32mp1-5-u-boot.dtsi
-@@ -0,0 +1,222 @@
+@@ -0,0 +1,221 @@
 +// SPDX-License-Identifier: GPL-2.0+ OR BSD-3-Clause
 +/*
 + * Copyright : STMicroelectronics 2018
@@ -205,7 +205,6 @@ index 0000000..7c1dc88
 +		CLK_UART6_HSI
 +		CLK_UART78_HSI
 +		CLK_SPDIF_PLL4P
-+		CLK_FDCAN_PLL4Q
 +		CLK_SAI1_PLL3Q
 +		CLK_SAI2_PLL3Q
 +		CLK_SAI3_PLL3Q

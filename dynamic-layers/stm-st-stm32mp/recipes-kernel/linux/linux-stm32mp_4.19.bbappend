@@ -2,18 +2,14 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
 SRC_URI += " \
     file://${LINUX_VERSION}/4.19.94/0032-ARM-stm32mp1-r3-add-phycore-stm32mp1xx-machines-support.patch \
+    file://${LINUX_VERSION}/4.19.94/0032-ARM-stm32mp1-r3-mmc-alias-support.patch \
 "
 
-#    file://${LINUX_VERSION}/4.19.94/0033-ARM-stm32mp1-r3-add-phycore-stm32mp1-3-machine.patch 
-#    file://${LINUX_VERSION}/4.19.94/0034-ARM-stm32mp1-r3-add-phycore-stm32mp1-4-machine.patch
-#    file://${LINUX_VERSION}/4.19.94/0035-ARM-stm32mp1-r3-add-phycore-stm32mp1-5-machine.patch
-#    file://${LINUX_VERSION}/4.19.94/0036-ARM-stm32mp1-r3-add-phycore-stm32mp1-6-machine.patch
-#    file://${LINUX_VERSION}/4.19.94/0037-ARM-stm32mp1-r3-add-phycore-stm32mp1-7-machine.patch
-
-
-#	file://${LINUX_VERSION}/4.19.94/dts/phyboard-stm32mp1-pinctrl.dtsi
-
 SRC_URI += " \
+	file://${LINUX_VERSION}/4.19.94/dts/phycore-stm32mp157cac-som.dtsi \
+        file://${LINUX_VERSION}/4.19.94/dts/phycore-stm32mp157-pinctrl.dtsi \
+        file://${LINUX_VERSION}/4.19.94/dts/phycore-stm32mp157cac-pinctrl.dtsi \
+	\
 	file://${LINUX_VERSION}/4.19.94/dts/phycore-stm32mp1-1.dts \
 	file://${LINUX_VERSION}/4.19.94/dts/phycore-stm32mp1-1-m4-examples.dts \
 	file://${LINUX_VERSION}/4.19.94/dts/phycore-stm32mp1-1-a7-examples.dts \
@@ -22,9 +18,6 @@ SRC_URI += " \
 	file://${LINUX_VERSION}/4.19.94/dts/phyboard-stm32mp1-alpha.dtsi \
 	file://${LINUX_VERSION}/4.19.94/dts/phyboard-stm32mp1-alpha-pinctrl.dtsi \
         file://${LINUX_VERSION}/4.19.94/dts/phycore-stm32mp1-alpha-pi-hat-extension.dtsi \
-	file://${LINUX_VERSION}/4.19.94/dts/phycore-stm32mp157cac-som.dtsi \
-	file://${LINUX_VERSION}/4.19.94/dts/phycore-stm32mp157-pinctrl.dtsi \
-	file://${LINUX_VERSION}/4.19.94/dts/phycore-stm32mp157cac-pinctrl.dtsi \
 	\
 	file://${LINUX_VERSION}/4.19.94/dts/phycore-stm32mp1-dsi-lcd-mb1407.dtsi \
 	file://${LINUX_VERSION}/4.19.94/dts/phycore-stm32mp1-peb-av02-lcd.dtsi \
@@ -33,6 +26,7 @@ SRC_URI += " \
 	file://${LINUX_VERSION}/4.19.94/dts/phycore-stm32mp1-motor-control.dtsi \
 	file://${LINUX_VERSION}/4.19.94/dts/phycore-stm32mp1-peb-av01-hdmi.dtsi \
         file://${LINUX_VERSION}/4.19.94/dts/phycore-stm32mp1-pi-hat-extension.dtsi \
+	file://${LINUX_VERSION}/4.19.94/dts/phycore-stm32mp1-pi-hat-redbear.dtsi \
         \
         file://${LINUX_VERSION}/4.19.94/dts/phycore-stm32mp1-3.dts \
         file://${LINUX_VERSION}/4.19.94/dts/phycore-stm32mp1-3-m4-examples.dts \
@@ -75,7 +69,6 @@ SRC_URI += "file://4.19/fragment-10-peb-hdmi.config;subdir=fragments"
 SRC_URI += "file://4.19/fragment-11-wifi-r8712u-support.config;subdir=fragments"
 SRC_URI += "file://4.19/fragment-12-add-dp83867-phy-support.config;subdir=fragments"
 SRC_URI += "file://4.19/fragment-13-add-pca953x-led-support.config;subdir=fragments"
-
 
 # Copy .dts and .dtsi from SRC_URI to the kernel boot/dts path
 # This should go to poky/meta/classes/kernel-devicetree.bbclass
