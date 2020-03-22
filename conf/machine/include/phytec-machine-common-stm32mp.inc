@@ -240,6 +240,11 @@ ST_KERNEL_LOADADDR ?= "0xC2000040"
 # Define the devicetree for Linux A7 examples
 LINUX_A7_EXAMPLES_DT ?= ""
 
+
+# Extra kernel bootargs
+EXTRA_KERNEL_ARGS ?= ""
+EXTRA_KERNEL_ARGS += "${@bb.utils.contains('MACHINE_FEATURES', 'hdmi', '${HDMI_EDID_KERNEL_ARGS}', '', d)}  "
+
 # =========================================================================
 # u-boot
 # =========================================================================

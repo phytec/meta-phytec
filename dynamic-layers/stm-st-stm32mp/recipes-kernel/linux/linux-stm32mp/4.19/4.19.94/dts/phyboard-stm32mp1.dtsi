@@ -8,7 +8,7 @@
 #include <dt-bindings/leds/leds-pca9532.h>
 
 / {
-        model = "Phytec GmbH phycore-stm32mp1 Dev Board";
+        model = "Phytec GmbH phycore-stm32mp1 Sargas Dev Board";
         compatible = "phytec,pcm939-1517-2", "st,stm32mp157";
 
 	aliases {
@@ -404,8 +404,8 @@
 
 /* Select display interface by commenting/uncommenting the following lines */ 
 //#include "phycore-stm32mp1-dsi-lcd-mb1407.dtsi"
-//#include "phycore-stm32mp1-peb-av01-hdmi.dtsi"
-#include "phycore-stm32mp1-peb-av02-lcd.dtsi"
+#include "phycore-stm32mp1-peb-av01-hdmi.dtsi"
+//#include "phycore-stm32mp1-peb-av02-lcd.dtsi"
 
 
 /* Selected connectors used commenting/uncommenting the following line  */ 

@@ -38,6 +38,14 @@ ALSA_ADDONS_INSTALL = "${@bb.utils.contains('COMBINED_FEATURES', 'alsa', '${ALSA
 BLUETOOTH_LIST          = " linux-firmware-bluetooth-bcm4343 "
 BLUETOOTH_IMAGE_INSTALL = "${@bb.utils.contains('MACHINE_FEATURES', 'bluetooth', '${BLUETOOTH_LIST}', '', d)} "
 
+
+#------------------
+#
+# hdmi edid
+#
+HDMI_EDID_LIST          = " linux-firmware-edid "
+HDMI_EDID_IMAGE_INSTALL = "${@bb.utils.contains('MACHINE_FEATURES', 'hdmi', '${HDMI_EDID_LIST}', '', d)}  "
+
 #------------------
 #
 # Image appends
@@ -51,4 +59,5 @@ MACHINE_EXTRA_RRECOMMENDS_append = " \
     ${OPTEE_IMAGE_INSTALL}    \
     ${ALSA_ADDONS_INSTALL}    \
     ${BLUETOOTH_IMAGE_INSTALL}\
+    ${HDMI_EDID_IMAGE_INSTALL}\
     "
