@@ -612,7 +612,7 @@ new file mode 100644
 index 0000000..314d5c1
 --- /dev/null
 +++ b/fdts/phycore-stm32mp157cac-som.dtsi
-@@ -0,0 +1,501 @@
+@@ -0,0 +1,526 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
 +/*
 + * Copyright (C) Phytec GmbH 2019-2020 - All Rights Reserved
@@ -958,6 +958,31 @@ index 0000000..314d5c1
 +
 +#include "stm32mp157c-security.dtsi"
 +/* Security specific */
++&bsec {
++        board_id: board_id@ec {
++                reg = <0xec 0x4>;
++                st,non-secure-otp;
++        };
++};
++
++&nvmem_layout {
++        nvmem-cells = <&part_number_otp>,
++                      <&monotonic_otp>,
++                      <&nand_otp>,
++                      <&uid_otp>,
++                      <&package_otp>,
++                      <&hw2_otp>,
++                      <&board_id>;
++
++        nvmem-cell-names = "part_number_otp",
++                           "monotonic_otp",
++                           "nand_otp",
++                           "uid_otp",
++                           "package_otp",
++                           "hw2_otp",
++                           "board_id";
++};
++
 +&etzpc {
 +	st,decprot = <
 +		DECPROT(STM32MP1_ETZPC_USART1_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
@@ -1119,7 +1144,7 @@ new file mode 100644
 index 0000000..3dc54b7
 --- /dev/null
 +++ b/fdts/phycore-stm32mp157fac-som.dtsi
-@@ -0,0 +1,501 @@
+@@ -0,0 +1,526 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
 +/*
 + * Copyright (C) Phytec GmbH 2019-2020 - All Rights Reserved
@@ -1464,6 +1489,31 @@ index 0000000..3dc54b7
 +
 +#include "stm32mp157c-security.dtsi"
 +/* Security specific */
++&bsec {
++        board_id: board_id@ec {
++                reg = <0xec 0x4>;
++                st,non-secure-otp;
++        };
++};
++
++&nvmem_layout {
++        nvmem-cells = <&part_number_otp>,
++                      <&monotonic_otp>,
++                      <&nand_otp>,
++                      <&uid_otp>,
++                      <&package_otp>,
++                      <&hw2_otp>,
++                      <&board_id>;
++
++        nvmem-cell-names = "part_number_otp",
++                           "monotonic_otp",
++                           "nand_otp",
++                           "uid_otp",
++                           "package_otp",
++                           "hw2_otp",
++                           "board_id";
++};
++
 +&etzpc {
 +	st,decprot = <
 +		DECPROT(STM32MP1_ETZPC_USART1_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
