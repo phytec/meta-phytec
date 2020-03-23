@@ -1087,3 +1087,15 @@ index 0000000..13d3583
 +		};
 +	};
 +};
+diff --git a/fdts/stm32mp157c-security.dtsi b/fdts/stm32mp157c-security.dtsi
+index b18c6c3..319c691 100644
+--- a/fdts/stm32mp157c-security.dtsi
++++ b/fdts/stm32mp157c-security.dtsi
+@@ -54,6 +54,7 @@
+ &bsec {
+ 	part_number_otp: part_number_otp@4 {
+ 		reg = <0x4 0x1>;
++                st,non-secure-otp;
+ 	};
+ 	monotonic_otp: monotonic_otp@10 {
+ 		reg = <0x10 0x4>;

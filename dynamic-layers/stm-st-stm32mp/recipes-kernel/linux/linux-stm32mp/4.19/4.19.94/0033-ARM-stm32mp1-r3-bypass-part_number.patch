@@ -1,0 +1,14 @@
+diff --git a/drivers/cpufreq/stm32-cpufreq.c b/drivers/cpufreq/stm32-cpufreq.c
+index f4a41e0..7c0b689 100644
+--- a/drivers/cpufreq/stm32-cpufreq.c
++++ b/drivers/cpufreq/stm32-cpufreq.c
+@@ -41,8 +41,7 @@ static int stm32_cpufreq_probe(struct platform_device *pdev)
+ 	/* Get chip info */
+ 	ret = nvmem_cell_read_u8(cpu_dev, "part_number", &part_number);
+ 	if (ret) {
+-		dev_err(&pdev->dev, "Failed to get chip info: %d\n", ret);
+-		return ret;
++		dev_warn(&pdev->dev, "Failed to get chip info: %d\n", ret);
+ 	}
+ 
+ 	supported_hw = BIT((part_number & 0x80) >> 7);

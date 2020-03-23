@@ -3,6 +3,7 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 SRC_URI += " \
     file://${LINUX_VERSION}/4.19.94/0032-ARM-stm32mp1-r3-add-phycore-stm32mp1xx-machines-support.patch \
     file://${LINUX_VERSION}/4.19.94/0032-ARM-stm32mp1-r3-mmc-alias-support.patch \
+    file://${LINUX_VERSION}/4.19.94/0033-ARM-stm32mp1-r3-bypass-part_number.patch \
 "
 
 SRC_URI += " \
