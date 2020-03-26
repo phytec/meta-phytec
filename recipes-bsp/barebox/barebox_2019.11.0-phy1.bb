@@ -95,7 +95,7 @@ fi
 
 nfsroot="/nfsroot/${global.hostname}"
 ip_route_get -b ${global.net.server} global.linux.bootargs.dyn.ip
-global.linux.bootargs.dyn.root="root=/dev/nfs nfsroot=$nfsroot,vers=3,udp"
+global.linux.bootargs.dyn.root="root=/dev/nfs nfsroot=$nfsroot,vers=3,tcp"
 """
     spiboot = """#!/bin/sh
 
