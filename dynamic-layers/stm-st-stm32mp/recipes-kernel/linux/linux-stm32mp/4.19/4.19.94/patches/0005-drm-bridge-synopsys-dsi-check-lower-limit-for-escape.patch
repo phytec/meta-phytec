@@ -1,0 +1,38 @@
+From 2060e3611c90a128a81d7ad5aa0099e35227f7d3 Mon Sep 17 00:00:00 2001
+From: Antonio Borneo <antonio.borneo@st.com>
+Date: Fri, 6 Dec 2019 12:28:18 +0100
+Subject: [PATCH 06/12] drm/bridge/synopsys: dsi: check lower limit for escape
+ clock div
+
+Accordingly to Synopsys documentation, a value 0 or 1 for escape
+clock divider stops the clock generation.
+
+Check the lower limit to guarantee the clock is generated.
+
+Signed-off-by: Antonio Borneo <antonio.borneo@st.com>
+---
+ drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c b/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c
+index a6f3ae8..c485966 100644
+--- a/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c
++++ b/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c
+@@ -524,9 +524,14 @@ static void dw_mipi_dsi_init(struct dw_mipi_dsi *dsi)
+ 	 *     (lane_mbps >> 3) / esc_clk_division < 20
+ 	 * which is:
+ 	 *     (lane_mbps >> 3) / 20 > esc_clk_division
++	 *
++	 * With esc_clk_division < 2 the clock is not generated
+ 	 */
+ 	u32 esc_clk_division = (dsi->lane_mbps >> 3) / 20 + 1;
+ 
++	if (esc_clk_division < 2)
++		esc_clk_division = 2;
++
+ 	dsi_write(dsi, DSI_PWR_UP, RESET);
+ 
+ 	/*
+-- 
+2.7.4
+

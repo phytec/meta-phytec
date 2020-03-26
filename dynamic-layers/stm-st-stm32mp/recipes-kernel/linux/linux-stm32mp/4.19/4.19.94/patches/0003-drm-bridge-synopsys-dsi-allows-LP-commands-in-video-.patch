@@ -1,0 +1,46 @@
+From 190450308c6b5e3e402d87a2a5934bddeac62e4c Mon Sep 17 00:00:00 2001
+From: Antonio Borneo <antonio.borneo@st.com>
+Date: Wed, 11 Dec 2019 15:11:36 +0100
+Subject: [PATCH 05/12] drm/bridge/synopsys: dsi: allows LP commands in video
+ mode
+
+Current code only sends LP commands in command mode.
+
+Allows sending LP commands also in video mode by setting the
+proper flag in DSI_VID_MODE_CFG.
+
+Signed-off-by: Antonio Borneo <antonio.borneo@st.com>
+Change-Id: Ib0fd92fec9af96af368639e625641c797cd13548
+---
+ drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c b/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c
+index 660b00f..a6f3ae8 100644
+--- a/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c
++++ b/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c
+@@ -86,6 +86,7 @@
+ #define VID_MODE_TYPE_NON_BURST_SYNC_EVENTS	0x1
+ #define VID_MODE_TYPE_BURST			0x2
+ #define VID_MODE_TYPE_MASK			0x3
++#define ENABLE_LOW_POWER_CMD		BIT(15)
+ 
+ #define DSI_VID_PKT_SIZE		0x3c
+ #define VID_PKT_SIZE(p)			((p) & 0x3fff)
+@@ -328,6 +329,13 @@ static void dw_mipi_message_config(struct dw_mipi_dsi *dsi,
+ 
+ 	dsi_write(dsi, DSI_LPCLK_CTRL, lpm ? 0 : PHY_TXREQUESTCLKHS);
+ 	dsi_write(dsi, DSI_CMD_MODE_CFG, val);
++
++	val = dsi_read(dsi, DSI_VID_MODE_CFG);
++	if (lpm)
++		val |= ENABLE_LOW_POWER_CMD;
++	else
++		val &= ~ENABLE_LOW_POWER_CMD;
++	dsi_write(dsi, DSI_VID_MODE_CFG, val);
+ }
+ 
+ static int dw_mipi_dsi_gen_pkt_hdr_write(struct dw_mipi_dsi *dsi, u32 hdr_val)
+-- 
+2.7.4
+

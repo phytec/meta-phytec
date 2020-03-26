@@ -1,0 +1,26 @@
+diff --git a/drivers/cpufreq/stm32-cpufreq.c b/drivers/cpufreq/stm32-cpufreq.c
+index 7c0b689..e0d0c4a 100644
+--- a/drivers/cpufreq/stm32-cpufreq.c
++++ b/drivers/cpufreq/stm32-cpufreq.c
+@@ -39,7 +39,7 @@ static int stm32_cpufreq_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	/* Get chip info */
+-	ret = nvmem_cell_read_u8(cpu_dev, "part_number", &part_number);
++	ret = nvmem_cell_read_u8(cpu_dev, "part_number_otp", &part_number);
+ 	if (ret) {
+ 		dev_warn(&pdev->dev, "Failed to get chip info: %d\n", ret);
+ 	}
+diff --git a/arch/arm/boot/dts/stm32mp157c.dtsi b/arch/arm/boot/dts/stm32mp157c.dtsi
+index ad3c38c..69fff32 100644
+--- a/arch/arm/boot/dts/stm32mp157c.dtsi
++++ b/arch/arm/boot/dts/stm32mp157c.dtsi
+@@ -24,7 +24,7 @@
+ 			clock-names = "cpu";
+ 			operating-points-v2 = <&cpu0_opp_table>;
+ 			nvmem-cells = <&part_number_otp>;
+-			nvmem-cell-names = "part_number";
++			nvmem-cell-names = "part_number_otp";
+ 		};
+ 
+ 		cpu1: cpu@1 {

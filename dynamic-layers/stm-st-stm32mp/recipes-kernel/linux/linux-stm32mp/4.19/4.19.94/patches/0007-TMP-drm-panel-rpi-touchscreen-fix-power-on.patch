@@ -1,0 +1,40 @@
+From cddad8764d68ec4a3667bbd3ab24c0f728c17a60 Mon Sep 17 00:00:00 2001
+From: Antonio Borneo <antonio.borneo@st.com>
+Date: Thu, 12 Dec 2019 09:51:26 +0100
+Subject: [PATCH 10/12] [TMP] drm/panel: rpi-touchscreen: fix power-on
+
+The comment is missleading, because say "Wait for nPWRDWN to go
+low", but actually it tests for a bit going high!
+The i2c device returns -ENXIO until the power-on sequence is
+completed.
+
+Check for error, beside testing for the bit high.
+
+Signed-off-by: Antonio Borneo <antonio.borneo@st.com>
+---
+ drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c b/drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c
+index 4dec237..150f9b4 100644
+--- a/drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c
++++ b/drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c
+@@ -272,12 +272,13 @@ static int rpi_touchscreen_noop(struct drm_panel *panel)
+ static int rpi_touchscreen_enable(struct drm_panel *panel)
+ {
+ 	struct rpi_touchscreen *ts = panel_to_ts(panel);
+-	int i;
++	int i, val;
+ 
+ 	rpi_touchscreen_i2c_write(ts, REG_POWERON, 1);
+ 	/* Wait for nPWRDWN to go low to indicate poweron is done. */
+ 	for (i = 0; i < 100; i++) {
+-		if (rpi_touchscreen_i2c_read(ts, REG_PORTB) & 1)
++		val = rpi_touchscreen_i2c_read(ts, REG_PORTB);
++		if (val >= 0 && (val & 1))
+ 			break;
+ 	}
+ 
+-- 
+2.7.4
+

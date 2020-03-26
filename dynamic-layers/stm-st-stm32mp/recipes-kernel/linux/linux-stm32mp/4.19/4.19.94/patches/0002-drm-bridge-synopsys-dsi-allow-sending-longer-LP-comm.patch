@@ -1,0 +1,36 @@
+From 64984858f567a747e1b06cd00aea0ee193a0b015 Mon Sep 17 00:00:00 2001
+From: Antonio Borneo <antonio.borneo@st.com>
+Date: Wed, 11 Dec 2019 15:37:58 +0100
+Subject: [PATCH 04/12] drm/bridge/synopsys: dsi: allow sending longer LP
+ commands
+
+Current code does not properly computes the max length of LP
+commands that can be send during H or V sync, and rely on static
+values.
+Limiting the max LP length to 4 byte during the V-sync is overly
+conservative.
+
+Relax the limit and allows longer LP commands (16 bytes) to be
+sent during V-sync.
+
+Signed-off-by: Antonio Borneo <antonio.borneo@st.com>
+---
+ drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c b/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c
+index fd79996..660b00f 100644
+--- a/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c
++++ b/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c
+@@ -564,7 +564,7 @@ static void dw_mipi_dsi_dpi_config(struct dw_mipi_dsi *dsi,
+ 	 * should be computed according to byte lane, lane number and only
+ 	 * if sending lp cmds in high speed is enable (PHY_TXREQUESTCLKHS)
+ 	 */
+-	dsi_write(dsi, DSI_DPI_LP_CMD_TIM, OUTVACT_LPCMD_TIME(4)
++	dsi_write(dsi, DSI_DPI_LP_CMD_TIM, OUTVACT_LPCMD_TIME(16)
+ 		  | INVACT_LPCMD_TIME(4));
+ }
+ 
+-- 
+2.7.4
+

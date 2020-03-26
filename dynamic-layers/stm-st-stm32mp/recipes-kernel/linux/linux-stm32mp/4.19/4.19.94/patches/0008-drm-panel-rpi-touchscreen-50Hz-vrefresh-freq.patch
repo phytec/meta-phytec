@@ -1,0 +1,13 @@
+diff --git a/drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c b/drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c
+index bf6e88b..085231d 100644
+--- a/drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c
++++ b/drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c
+@@ -212,7 +212,7 @@ static const struct drm_display_mode rpi_touchscreen_modes[] = {
+ 		.vsync_start = 480 + 7,
+ 		.vsync_end = 480 + 7 + 2,
+ 		.vtotal = 480 + 7 + 2 + 21,
+-		.vrefresh = 60,
++		.vrefresh = 50,
+ 	},
+ };
+ 

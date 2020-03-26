@@ -1,0 +1,35 @@
+From 879e981bcaa7489afd6449abb2eb642203d04039 Mon Sep 17 00:00:00 2001
+From: Antonio Borneo <antonio.borneo@st.com>
+Date: Thu, 12 Dec 2019 09:40:42 +0100
+Subject: [PATCH 09/12] drm/panel: rpi-touchscreen: retry i2c read during probe
+
+The MCU integrated in the panel does not provide a reset input to
+the host, relying completely on the power-on sequence. If the
+power is always-on, it's possible to reset the host while an i2c
+communication is not finalized yet. This will left the MCU i2c
+device in an unknown state, unable to reply to the first i2c
+transfer during driver probe, causing probe to fail.
+
+Retry once the i2c read in case it fails.
+
+Signed-off-by: Antonio Borneo <antonio.borneo@st.com>
+---
+ drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c b/drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c
+index 2c9c972..4dec237 100644
+--- a/drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c
++++ b/drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c
+@@ -381,6 +381,8 @@ static int rpi_touchscreen_probe(struct i2c_client *i2c,
+ 	ts->i2c = i2c;
+ 
+ 	ver = rpi_touchscreen_i2c_read(ts, REG_ID);
++	if (ver < 0)
++		ver = rpi_touchscreen_i2c_read(ts, REG_ID);
+ 	if (ver < 0) {
+ 		dev_err(dev, "Atmel I2C read failed: %d\n", ver);
+ 		return -ENODEV;
+-- 
+2.7.4
+

@@ -1,0 +1,14 @@
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c
+index dd45026..756f8e7 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c
+@@ -227,6 +227,9 @@ static int stm32mp1_set_mode(struct plat_stmmacenet_data *plat_dat)
+ 	/* Update PMCSETR (set register) */
+ 	return regmap_update_bits(dwmac->regmap, reg,
+ 				 dwmac->ops->syscfg_eth_mask, val);
++
++	regmap_read(dwmac->regmap, reg, &val);
++	printk(KERN_INFO "Reg:[0x%08x] SYSCFG_PMCSETR = 0x%08x ...\n",reg ,val);
+ }
+ 
+ static int stm32mcu_set_mode(struct plat_stmmacenet_data *plat_dat)
