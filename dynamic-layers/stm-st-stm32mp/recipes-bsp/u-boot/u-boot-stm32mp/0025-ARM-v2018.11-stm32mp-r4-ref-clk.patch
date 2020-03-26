@@ -1,0 +1,75 @@
+diff --git a/arch/arm/dts/phycore-stm32mp157-pinctrl.dtsi b/arch/arm/dts/phycore-stm32mp157-pinctrl.dtsi
+index 3a02c5b..6d8bf77 100644
+--- a/arch/arm/dts/phycore-stm32mp157-pinctrl.dtsi
++++ b/arch/arm/dts/phycore-stm32mp157-pinctrl.dtsi
+@@ -147,13 +147,18 @@
+ 						 <STM32_PINMUX('C', 2, AF11)>, /* ETH_RGMII_TXD2 */
+ 						 <STM32_PINMUX('E', 2, AF11)>, /* ETH_RGMII_TXD3 */
+ 						 <STM32_PINMUX('B', 11, AF11)>, /* ETH_RGMII_TX_CTL */
+-						 <STM32_PINMUX('A', 2, AF11)>, /* ETH_MDIO */
+ 						 <STM32_PINMUX('C', 1, AF11)>; /* ETH_MDC */
+ 					bias-disable;
+ 					drive-push-pull;
+ 					slew-rate = <2>;
+ 				};
+ 				pins2 {
++					pinmux = <STM32_PINMUX('A', 2, AF11)>; /* ETH_MDIO */
++					bias-disable;
++					drive-push-pull;
++					slew-rate = <0>;
++				};
++				pins3 {
+ 					pinmux = <STM32_PINMUX('C', 4, AF11)>, /* ETH_RGMII_RXD0 */
+ 						 <STM32_PINMUX('C', 5, AF11)>, /* ETH_RGMII_RXD1 */
+ 						 <STM32_PINMUX('H', 6, AF11)>, /* ETH_RGMII_RXD2 */
+diff --git a/board/st/stm32mp1/stm32mp1.c b/board/st/stm32mp1/stm32mp1.c
+index b86506d..fef8f19 100644
+--- a/board/st/stm32mp1/stm32mp1.c
++++ b/board/st/stm32mp1/stm32mp1.c
+@@ -67,7 +67,7 @@
+ 
+ #define SYSCFG_PMCSETR_ETH_SELMII	BIT(20)
+ 
+-#define SYSCFG_PMCSETR_ETH_SEL_MASK	GENMASK(23, 21)
++#define SYSCFG_PMCSETR_ETH_SEL_MASK	GENMASK(23, 16)
+ #define SYSCFG_PMCSETR_ETH_SEL_GMII_MII	(0 << 21)
+ #define SYSCFG_PMCSETR_ETH_SEL_RGMII	(1 << 21)
+ #define SYSCFG_PMCSETR_ETH_SEL_RMII	(4 << 21)
+@@ -463,8 +463,7 @@ int board_interface_eth_init(int interface_type, bool eth_clk_sel_reg,
+ 	}
+ 
+ 	/* clear and set ETH configuration bits */
+-	writel(SYSCFG_PMCSETR_ETH_SEL_MASK | SYSCFG_PMCSETR_ETH_SELMII |
+-	       SYSCFG_PMCSETR_ETH_REF_CLK_SEL | SYSCFG_PMCSETR_ETH_CLK_SEL,
++	writel(SYSCFG_PMCSETR_ETH_SEL_MASK,
+ 	       syscfg + SYSCFG_PMCCLRR);
+ 	writel(value, syscfg + SYSCFG_PMCSETR);
+ 
+diff --git a/board/st/stm32mp1/stm32mp1.c b/board/st/stm32mp1/stm32mp1.c
+index fef8f19..15bb56c 100644
+--- a/board/st/stm32mp1/stm32mp1.c
++++ b/board/st/stm32mp1/stm32mp1.c
+@@ -415,7 +415,7 @@ int board_interface_eth_init(int interface_type, bool eth_clk_sel_reg,
+ 			     bool eth_ref_clk_sel_reg)
+ {
+ 	u8 *syscfg;
+-	u32 value;
++	u32 tmp, value;
+ 
+ 	syscfg = (u8 *)syscon_get_first_range(STM32MP_SYSCON_SYSCFG);
+ 
+@@ -465,7 +465,13 @@ int board_interface_eth_init(int interface_type, bool eth_clk_sel_reg,
+ 	/* clear and set ETH configuration bits */
+ 	writel(SYSCFG_PMCSETR_ETH_SEL_MASK,
+ 	       syscfg + SYSCFG_PMCCLRR);
+-	writel(value, syscfg + SYSCFG_PMCSETR);
++
++	tmp = readl(syscfg + SYSCFG_PMCSETR);
++	tmp &= ~SYSCFG_PMCSETR_ETH_SEL_MASK; 
++	tmp |= value & SYSCFG_PMCSETR_ETH_SEL_MASK;
++	writel(tmp, syscfg + SYSCFG_PMCSETR);
++	debug("%s: Reg:[0x%08x] SYSCFG_PMCSETR = 0x%08x\n", __func__, 
++		(u32)(syscfg + SYSCFG_PMCSETR), (u32)tmp);
+ 
+ 	return 0;
+ }

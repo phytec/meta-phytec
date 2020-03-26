@@ -1,0 +1,53 @@
+diff --git a/drivers/net/phy/ti.c b/drivers/net/phy/ti.c
+index c2e7be1..de23788 100644
+--- a/drivers/net/phy/ti.c
++++ b/drivers/net/phy/ti.c
+@@ -258,24 +258,6 @@ static int dp83867_of_init(struct phy_device *phydev)
+ 	if (ofnode_read_bool(node, "enet-phy-lane-no-swap"))
+ 		dp83867->port_mirroring = DP83867_PORT_MIRRORING_DIS;
+ 
+-
+-	/* Clock output selection if muxing property is set */
+-	if (dp83867->clk_output_sel != DP83867_CLK_O_SEL_REF_CLK) {
+-		val = phy_read_mmd_indirect(phydev, DP83867_IO_MUX_CFG,
+-					    DP83867_DEVADDR, phydev->addr);
+-
+-		if (dp83867->clk_output_sel == DP83867_CLK_O_SEL_OFF) {
+-			val |= DP83867_IO_MUX_CFG_CLK_O_DISABLE;
+-		} else {
+-			val &= ~DP83867_IO_MUX_CFG_CLK_O_SEL_MASK;
+-			val |= (dp83867->clk_output_sel <<
+-				DP83867_IO_MUX_CFG_CLK_O_SEL_SHIFT);
+-		}
+-
+-		phy_write_mmd_indirect(phydev, DP83867_IO_MUX_CFG,
+-				       DP83867_DEVADDR, phydev->addr, val);
+-	}
+-
+ 	return 0;
+ }
+ #else
+@@ -419,6 +401,23 @@ static int dp83867_config(struct phy_device *phydev)
+ 	if (dp83867->port_mirroring != DP83867_PORT_MIRRORING_KEEP)
+ 		dp83867_config_port_mirroring(phydev);
+ 
++        /* Clock output selection if muxing property is set */
++        if (dp83867->clk_output_sel != DP83867_CLK_O_SEL_REF_CLK) {
++                val = phy_read_mmd_indirect(phydev, DP83867_IO_MUX_CFG,
++                                            DP83867_DEVADDR, phydev->addr);
++
++                if (dp83867->clk_output_sel == DP83867_CLK_O_SEL_OFF) {
++                        val |= DP83867_IO_MUX_CFG_CLK_O_DISABLE;
++                } else {
++                        val &= ~DP83867_IO_MUX_CFG_CLK_O_SEL_MASK;
++                        val |= (dp83867->clk_output_sel <<
++                                DP83867_IO_MUX_CFG_CLK_O_SEL_SHIFT);
++                }
++
++                phy_write_mmd_indirect(phydev, DP83867_IO_MUX_CFG,
++                                       DP83867_DEVADDR, phydev->addr, val);
++        }
++
+ 	/* Disable FORCE_LINK_GOOD */
+ 	val = phy_read(phydev, phydev->addr, MII_DP83867_PHYCTRL);
+ 	if (val & MII_DP83867_PHYCTRL_FORCE_LINK_GOOD) {

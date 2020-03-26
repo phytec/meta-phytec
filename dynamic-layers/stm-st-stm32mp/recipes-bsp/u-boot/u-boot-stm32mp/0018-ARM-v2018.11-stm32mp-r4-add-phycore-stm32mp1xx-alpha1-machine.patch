@@ -3313,7 +3313,7 @@ index 0000000..de00a81
 +                        reg = <1>;
 +                        interrupt-parent = <&gpiog>;
 +                        interrupts = <12 IRQ_TYPE_EDGE_FALLING>;
-+                        ti,rx-internal-delay = <DP83867_RGMIIDCTL_2_00_NS>;
++                        ti,rx-internal-delay = <DP83867_RGMIIDCTL_2_75_NS>;
 +                        ti,tx-internal-delay = <DP83867_RGMIIDCTL_2_00_NS>;
 +                        ti,fifo-depth = <DP83867_PHYCR_FIFO_DEPTH_4_B_NIB>;
 +                        ti,min-output-impedance;
@@ -3679,31 +3679,10 @@ index e837eb7..9fc4a76 100644
  }
  
 diff --git a/drivers/net/phy/ti.c b/drivers/net/phy/ti.c
-index 6db6edd..628c8a8 100644
+index 6db6edd..c2e7be1 100644
 --- a/drivers/net/phy/ti.c
 +++ b/drivers/net/phy/ti.c
-@@ -1,16 +1,19 @@
--// SPDX-License-Identifier: GPL-2.0
- /*
-  * TI PHY drivers
-  *
-+ * SPDX-License-Identifier:	GPL-2.0
-+ *
-  */
- #include <common.h>
- #include <phy.h>
- #include <linux/compat.h>
- #include <malloc.h>
- 
-+#include <fdtdec.h>
- #include <dm.h>
- #include <dt-bindings/net/ti-dp83867.h>
- 
-+DECLARE_GLOBAL_DATA_PTR;
- 
- /* TI DP83867 */
- #define DP83867_DEVADDR		0x1f
-@@ -31,6 +34,9 @@
+@@ -31,6 +31,9 @@
  #define DP83867_SW_RESET	BIT(15)
  #define DP83867_SW_RESTART	BIT(14)
  
@@ -3713,7 +3692,7 @@ index 6db6edd..628c8a8 100644
  /* MICR Interrupt bits */
  #define MII_DP83867_MICR_AN_ERR_INT_EN		BIT(15)
  #define MII_DP83867_MICR_SPEED_CHNG_INT_EN	BIT(14)
-@@ -54,6 +60,7 @@
+@@ -54,6 +57,7 @@
  
  /* PHY CTRL bits */
  #define DP83867_PHYCR_FIFO_DEPTH_SHIFT		14
@@ -3721,114 +3700,23 @@ index 6db6edd..628c8a8 100644
  #define DP83867_PHYCR_RESERVED_MASK	BIT(11)
  #define DP83867_MDI_CROSSOVER		5
  #define DP83867_MDI_CROSSOVER_AUTO	2
-@@ -93,9 +100,9 @@
+@@ -93,6 +97,7 @@
  
  #define DP83867_IO_MUX_CFG_IO_IMPEDANCE_MAX	0x0
  #define DP83867_IO_MUX_CFG_IO_IMPEDANCE_MIN	0x1f
 +#define DP83867_IO_MUX_CFG_CLK_O_DISABLE	BIT(6)
-+#define DP83867_IO_MUX_CFG_CLK_O_SEL_MASK	(0x1f << 8)
  #define DP83867_IO_MUX_CFG_CLK_O_SEL_SHIFT	8
--#define DP83867_IO_MUX_CFG_CLK_O_SEL_MASK	\
--		GENMASK(0x1f, DP83867_IO_MUX_CFG_CLK_O_SEL_SHIFT)
- 
- /* CFG4 bits */
- #define DP83867_CFG4_PORT_MIRROR_EN		BIT(0)
-@@ -111,8 +118,8 @@ struct dp83867_private {
- 	int tx_id_delay;
- 	int fifo_depth;
- 	int io_impedance;
--	bool rxctrl_strap_quirk;
- 	int port_mirroring;
-+	bool rxctrl_strap_quirk;
- 	int clk_output_sel;
- };
- 
-@@ -189,7 +196,7 @@ static int dp83867_config_port_mirroring(struct phy_device *phydev)
- 	u16 val;
- 
- 	val = phy_read_mmd_indirect(phydev, DP83867_CFG4, DP83867_DEVADDR,
--				    phydev->addr);
-+		 phydev->addr);
- 
- 	if (dp83867->port_mirroring == DP83867_PORT_MIRRORING_EN)
- 		val |= DP83867_CFG4_PORT_MIRROR_EN;
-@@ -197,7 +204,7 @@ static int dp83867_config_port_mirroring(struct phy_device *phydev)
- 		val &= ~DP83867_CFG4_PORT_MIRROR_EN;
- 
- 	phy_write_mmd_indirect(phydev, DP83867_CFG4, DP83867_DEVADDR,
--			       phydev->addr, val);
-+		phydev->addr, val);
- 
- 	return 0;
- }
-@@ -211,57 +218,57 @@ static int dp83867_config_port_mirroring(struct phy_device *phydev)
- static int dp83867_of_init(struct phy_device *phydev)
- {
- 	struct dp83867_private *dp83867 = phydev->priv;
--	ofnode node;
-+	struct udevice *dev = phydev->dev;
-+	int node = dev_of_offset(dev);
-+	const void *fdt = gd->fdt_blob;
- 	u16 val;
- 
- 	/* Optional configuration */
- 
--	/*
--	 * Keep the default value if ti,clk-output-sel is not set
-+	/* Keep the default value if ti,clk-output-sel is not set
+ #define DP83867_IO_MUX_CFG_CLK_O_SEL_MASK	\
+ 		GENMASK(0x1f, DP83867_IO_MUX_CFG_CLK_O_SEL_SHIFT)
+@@ -220,7 +225,6 @@ static int dp83867_of_init(struct phy_device *phydev)
+ 	 * Keep the default value if ti,clk-output-sel is not set
  	 * or to high
  	 */
-+	dp83867->clk_output_sel = fdtdec_get_uint(fdt, node,
-+						  "ti,clk-output-sel", DP83867_CLK_O_SEL_REF_CLK);
- 
--	dp83867->clk_output_sel =
--		ofnode_read_u32_default(node, "ti,clk-output-sel",
--					DP83867_CLK_O_SEL_REF_CLK);
 -
--	node = phy_get_ofnode(phydev);
--	if (!ofnode_valid(node))
--		return -EINVAL;
--
--	if (ofnode_read_bool(node, "ti,max-output-impedance"))
-+	if (fdtdec_get_bool(fdt, node, "ti,max-output-impedance"))
- 		dp83867->io_impedance = DP83867_IO_MUX_CFG_IO_IMPEDANCE_MAX;
--	else if (ofnode_read_bool(node, "ti,min-output-impedance"))
-+	else if (fdtdec_get_bool(fdt, node, "ti,min-output-impedance"))
- 		dp83867->io_impedance = DP83867_IO_MUX_CFG_IO_IMPEDANCE_MIN;
- 	else
- 		dp83867->io_impedance = -EINVAL;
- 
--	if (ofnode_read_bool(node, "ti,dp83867-rxctrl-strap-quirk"))
--		dp83867->rxctrl_strap_quirk = true;
--	dp83867->rx_id_delay = ofnode_read_u32_default(node,
--						       "ti,rx-internal-delay",
--						       -1);
-+	dp83867->rxctrl_strap_quirk = fdtdec_get_bool(fdt, node,
-+					"ti,dp83867-rxctrl-strap-quirk");
-+
-+	dp83867->rx_id_delay = fdtdec_get_uint(gd->fdt_blob, dev_of_offset(dev),
-+				 "ti,rx-internal-delay", -1);
- 
--	dp83867->tx_id_delay = ofnode_read_u32_default(node,
--						       "ti,tx-internal-delay",
--						       -1);
-+	dp83867->tx_id_delay = fdtdec_get_uint(gd->fdt_blob, dev_of_offset(dev),
-+				 "ti,tx-internal-delay", -1);
- 
--	dp83867->fifo_depth = ofnode_read_u32_default(node, "ti,fifo-depth",
--						      -1);
--	if (ofnode_read_bool(node, "enet-phy-lane-swap"))
-+	if (fdtdec_get_bool(fdt, node, "enet-phy-lane-swap"))
- 		dp83867->port_mirroring = DP83867_PORT_MIRRORING_EN;
- 
--	if (ofnode_read_bool(node, "enet-phy-lane-no-swap"))
-+	if (fdtdec_get_bool(fdt, node, "enet-phy-lane-no-swap"))
- 		dp83867->port_mirroring = DP83867_PORT_MIRRORING_DIS;
- 
-+	dp83867->fifo_depth = fdtdec_get_uint(gd->fdt_blob, dev_of_offset(dev),
-+				 "ti,fifo-depth", -1);
- 
- 	/* Clock output selection if muxing property is set */
+ 	dp83867->clk_output_sel =
+ 		ofnode_read_u32_default(node, "ti,clk-output-sel",
+ 					DP83867_CLK_O_SEL_REF_CLK);
+@@ -259,9 +263,15 @@ static int dp83867_of_init(struct phy_device *phydev)
  	if (dp83867->clk_output_sel != DP83867_CLK_O_SEL_REF_CLK) {
  		val = phy_read_mmd_indirect(phydev, DP83867_IO_MUX_CFG,
  					    DP83867_DEVADDR, phydev->addr);
@@ -3847,56 +3735,47 @@ index 6db6edd..628c8a8 100644
  		phy_write_mmd_indirect(phydev, DP83867_IO_MUX_CFG,
  				       DP83867_DEVADDR, phydev->addr, val);
  	}
-@@ -306,19 +313,24 @@ static int dp83867_config(struct phy_device *phydev)
- 	phy_write(phydev, MDIO_DEVAD_NONE, DP83867_CTRL,
- 		  val | DP83867_SW_RESTART);
- 
--	/* Mode 1 or 2 workaround */
-+	/* RX_DV/RX_CTRL strapped in mode 1 or mode 2 workaround */
- 	if (dp83867->rxctrl_strap_quirk) {
- 		val = phy_read_mmd_indirect(phydev, DP83867_CFG4,
--					    DP83867_DEVADDR, phydev->addr);
-+						DP83867_DEVADDR, phydev->addr);
- 		val &= ~BIT(7);
--		phy_write_mmd_indirect(phydev, DP83867_CFG4,
--				       DP83867_DEVADDR, phydev->addr, val);
-+		phy_write_mmd_indirect(phydev, DP83867_CFG4, DP83867_DEVADDR,
-+					phydev->addr, val);
+@@ -316,11 +326,14 @@ static int dp83867_config(struct phy_device *phydev)
  	}
  
  	if (phy_interface_is_rgmii(phydev)) {
-+		val = phy_read(phydev, MDIO_DEVAD_NONE, MII_DP83867_PHYCTRL);
-+		if (val < 0)
-+			return val;
-+		val &= ~DP83867_PHYCR_FIFO_DEPTH_MASK;
-+		val |= (dp83867->fifo_depth << DP83867_PHYCR_FIFO_DEPTH_SHIFT);
- 		ret = phy_write(phydev, MDIO_DEVAD_NONE, MII_DP83867_PHYCTRL,
+-		ret = phy_write(phydev, MDIO_DEVAD_NONE, MII_DP83867_PHYCTRL,
 -			(DP83867_MDI_CROSSOVER_AUTO << DP83867_MDI_CROSSOVER) |
 -			(dp83867->fifo_depth << DP83867_PHYCR_FIFO_DEPTH_SHIFT));
-+				val);
-+
- 		if (ret)
+-		if (ret)
++		val = phy_read(phydev, MDIO_DEVAD_NONE, MII_DP83867_PHYCTRL);
++		if (val < 0) {
++			ret = val;
  			goto err_out;
++		}
++		val &= ~DP83867_PHYCR_FIFO_DEPTH_MASK;
++		val |= (dp83867->fifo_depth << DP83867_PHYCR_FIFO_DEPTH_SHIFT);
++		val |= (DP83867_MDI_CROSSOVER_AUTO << DP83867_MDI_CROSSOVER);
  
-@@ -333,13 +345,11 @@ static int dp83867_config(struct phy_device *phydev)
+ 		/* The code below checks if "port mirroring" N/A MODE4 has been
+ 		 * enabled during power on bootstrap.
+@@ -331,15 +344,15 @@ static int dp83867_config(struct phy_device *phydev)
+ 		 * In this particular case one needs to check STRAP_STS1
+ 		 * register's bit 11 (marked as RESERVED).
  		 */
- 
+-
  		bs = phy_read_mmd_indirect(phydev, DP83867_STRAP_STS1,
--					   DP83867_DEVADDR, phydev->addr);
+ 					   DP83867_DEVADDR, phydev->addr);
 -		val = phy_read(phydev, MDIO_DEVAD_NONE, MII_DP83867_PHYCTRL);
 -		if (bs & DP83867_STRAP_STS1_RESERVED) {
-+						DP83867_DEVADDR, phydev->addr);
 +		if (bs & DP83867_STRAP_STS1_RESERVED)
  			val &= ~DP83867_PHYCR_RESERVED_MASK;
 -			phy_write(phydev, MDIO_DEVAD_NONE, MII_DP83867_PHYCTRL,
--				  val);
--		}
 +
-+		phy_write(phydev, MDIO_DEVAD_NONE, MII_DP83867_PHYCTRL, val);
++		ret = phy_write(phydev, MDIO_DEVAD_NONE, MII_DP83867_PHYCTRL,
+ 				  val);
+-		}
++		if (ret)
++			goto err_out;
  
  	} else if (phy_interface_is_sgmii(phydev)) {
  		phy_write(phydev, MDIO_DEVAD_NONE, MII_BMCR,
-@@ -406,6 +416,13 @@ static int dp83867_config(struct phy_device *phydev)
+@@ -406,6 +419,13 @@ static int dp83867_config(struct phy_device *phydev)
  	if (dp83867->port_mirroring != DP83867_PORT_MIRRORING_KEEP)
  		dp83867_config_port_mirroring(phydev);
  

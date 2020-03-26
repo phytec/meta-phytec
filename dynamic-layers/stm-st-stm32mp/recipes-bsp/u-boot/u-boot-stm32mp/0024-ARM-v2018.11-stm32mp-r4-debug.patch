@@ -1,0 +1,32 @@
+diff --git a/drivers/net/dwc_eth_qos.c b/drivers/net/dwc_eth_qos.c
+index fce9b03..048db27 100644
+--- a/drivers/net/dwc_eth_qos.c
++++ b/drivers/net/dwc_eth_qos.c
+@@ -26,6 +26,11 @@
+  *    supports a single RGMII PHY. This configuration also has SW control over
+  *    all clock and reset signals to the HW block.
+  */
++
++#define DEBUG
++#undef CONFIG_LOGLEVEL
++#define CONFIG_LOGLEVEL 8
++
+ #include <common.h>
+ #include <clk.h>
+ #include <dm.h>
+diff --git a/board/st/stm32mp1/stm32mp1.c b/board/st/stm32mp1/stm32mp1.c
+index 822b6d7..b86506d 100644
+--- a/board/st/stm32mp1/stm32mp1.c
++++ b/board/st/stm32mp1/stm32mp1.c
+@@ -2,6 +2,11 @@
+ /*
+  * Copyright (C) 2018, STMicroelectronics - All Rights Reserved
+  */
++
++#define DEBUG
++#undef CONFIG_LOGLEVEL
++#define CONFIG_LOGLEVEL 8
++
+ #include <config.h>
+ #include <common.h>
+ #include <adc.h>
