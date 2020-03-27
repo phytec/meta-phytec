@@ -2,7 +2,6 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
 SRC_URI_append = " \
     file://0001-kmsro-move-entry-points-from-etnaviv-to-kmsro.patch \
-    file://0002-mesa-fix-imx-gallium-driver.patch \
 "
 
 PACKAGE_ARCH_mx6 = "${MACHINE_SOCARCH}"

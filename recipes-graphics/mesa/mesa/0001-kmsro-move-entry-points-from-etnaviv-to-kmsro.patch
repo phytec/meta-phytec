@@ -1,7 +1,7 @@
-From a3274859b182718aaddef4c86ef163538f6b9a72 Mon Sep 17 00:00:00 2001
-From: Jonathan Marek <jonathan@marek.ca>
-Date: Thu, 1 Aug 2019 12:48:40 -0400
-Subject: [PATCH] kmsro: move entry points from etnaviv to kmsro
+From 8a69b020965f3dbcc509493d44c9122555da0c0d Mon Sep 17 00:00:00 2001
+From: Norbert Wesp <n.wesp@phytec.de>
+Date: Fri, 27 Mar 2020 10:08:58 +0100
+Subject: [zeus+] kmsro: move entry points from etnaviv to kmsro
 
 These drivers are kmsro drivers so they should be part of the kmsro #if
 
@@ -12,31 +12,29 @@ Reviewed-by: Eric Anholt <eric@anholt.net>
 
 %% original patch: 0001-kmsro-move-entry-points-from-etnaviv-to-kmsro.patch
 ---
- src/gallium/targets/dri/target.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ src/gallium/targets/dri/target.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/gallium/targets/dri/target.c b/src/gallium/targets/dri/target.c
-index 6b0ea78..8326151 100644
+index bae2f1ed002..f42be53906d 100644
 --- a/src/gallium/targets/dri/target.c
 +++ b/src/gallium/targets/dri/target.c
-@@ -77,14 +77,15 @@ DEFINE_LOADER_DRM_ENTRYPOINT(v3d)
- 
- #if defined(GALLIUM_VC4)
- DEFINE_LOADER_DRM_ENTRYPOINT(vc4)
-+#endif
-+
- #if defined(GALLIUM_KMSRO)
- DEFINE_LOADER_DRM_ENTRYPOINT(hx8357d)
- DEFINE_LOADER_DRM_ENTRYPOINT(pl111)
--#endif
-+DEFINE_LOADER_DRM_ENTRYPOINT(imx_drm)
- #endif
+@@ -85,7 +85,6 @@ DEFINE_LOADER_DRM_ENTRYPOINT(panfrost)
  
  #if defined(GALLIUM_ETNAVIV)
+ DEFINE_LOADER_DRM_ENTRYPOINT(armada_drm)
 -DEFINE_LOADER_DRM_ENTRYPOINT(imx_drm)
  DEFINE_LOADER_DRM_ENTRYPOINT(etnaviv)
  #endif
  
+@@ -106,6 +105,7 @@ DEFINE_LOADER_DRM_ENTRYPOINT(rockchip)
+ DEFINE_LOADER_DRM_ENTRYPOINT(st7586)
+ DEFINE_LOADER_DRM_ENTRYPOINT(st7735r)
+ DEFINE_LOADER_DRM_ENTRYPOINT(sun4i_drm)
++DEFINE_LOADER_DRM_ENTRYPOINT(imx_drm)
+ #endif
+ 
+ #if defined(GALLIUM_LIMA)
 -- 
-2.7.4
+2.17.1
 
