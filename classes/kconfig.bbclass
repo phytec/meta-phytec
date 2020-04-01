@@ -36,6 +36,15 @@ def find_cfgs(d):
             sources_list.append(os.path.join(d.getVar("WORKDIR", True), (base + ext)))
     return sources_list
 
+def get_absolut_defconfigs(d):
+    defconfigs=d.getVar("INTREE_DEFCONFIG", True).split()
+    arch = d.getVar('ARCH', True)
+    absdefconfs=[]
+    for defconfig in defconfigs:
+        absdefconfs.append(os.path.join(d.getVar("S", True),
+                           "arch", arch, "configs", defconfig))
+    return absdefconfs
+
 kconfig_do_configure() {
     # fixes extra + in /lib/modules/2.6.37+
     # $ scripts/setlocalversion . => +
@@ -54,8 +63,15 @@ kconfig_do_configure() {
         cp -f "$defconfig" "$config"
         oe_runmake -C ${S} ${CONFIG_COMMAND}
     elif [ ! -z "${INTREE_DEFCONFIG}" ]; then
-        bbnote "Using intree defconfig: ${INTREE_DEFCONFIG}"
-        oe_runmake -C ${S} ${INTREE_DEFCONFIG}
+        if [ 1 -eq ${@len(d.getVar("INTREE_DEFCONFIG", True).split())} ]; then
+            bbnote "Using intree defconfig: ${INTREE_DEFCONFIG}"
+            oe_runmake -C ${S} ${INTREE_DEFCONFIG}
+        else
+            bbnote "Merge intree defconfigs: ${INTREE_DEFCONFIG}"
+            defcfgs="${@' '.join(get_absolut_defconfigs(d))}"
+            ${S}/scripts/kconfig/merge_config.sh -m -O "${B}" $defcfgs
+            oe_runmake -C ${S} ${CONFIG_COMMAND}
+        fi
     else
         bbwarn "No defconfig provided. This will propably lead to errors."
     fi
