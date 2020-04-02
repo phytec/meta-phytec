@@ -1,0 +1,121 @@
+diff --git a/fdts/phycore-stm32mp1-1.dtsi b/fdts/phycore-stm32mp1-1.dtsi
+index 6af04d0..d57268d 100644
+--- a/fdts/phycore-stm32mp1-1.dtsi
++++ b/fdts/phycore-stm32mp1-1.dtsi
+@@ -14,7 +14,7 @@
+ 	aliases {
+ 		serial0 = &uart4;
+ 		serial1 = &usart3;
+-		serial2 = &uart7;
++		serial2 = &usart1;
+ 	};
+ 
+ 	chosen {
+@@ -209,12 +209,6 @@
+ 	status = "okay";
+ };
+ 
+-&uart7 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&uart7_pins_a>;
+-	status = "disabled";
+-};
+-
+ &usart3 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&usart3_pins_b>;
+@@ -302,7 +296,7 @@
+ 		CLK_UART6_HSI
+ 		CLK_UART78_HSI
+ 		CLK_SPDIF_PLL4P
+-		CLK_FDCAN_PLL4Q
++		CLK_FDCAN_HSE
+ 		CLK_SAI1_PLL3Q
+ 		CLK_SAI2_PLL3Q
+ 		CLK_SAI3_PLL3Q
+diff --git a/fdts/stm32mp157-pinctrl.dtsi b/fdts/stm32mp157-pinctrl.dtsi
+index a259473..47a5717 100644
+--- a/fdts/stm32mp157-pinctrl.dtsi
++++ b/fdts/stm32mp157-pinctrl.dtsi
+@@ -273,45 +273,41 @@
+ 				};
+ 			};
+ 
+-			uart7_pins_a: uart7-0 {
+-				pins1 {
+-					pinmux = <STM32_PINMUX('E', 8, AF7)>; /* USART7_TX */
+-					bias-disable;
+-					drive-push-pull;
+-					slew-rate = <0>;
+-				};
+-				pins2 {
+-					pinmux = <STM32_PINMUX('E', 7, AF7)>; /* USART7_RX */
+-					bias-disable;
+-				};
+-			};
++                        usart1_pins_b: usart1-0 {
++                                pins1 {
++                                        pinmux = <STM32_PINMUX('A', 12, AF7)>; /* USART1_RTS */
++                                        bias-disable;
++                                        drive-push-pull;
++                                        slew-rate = <0>;
++                                };
++                                pins2 {
++                                        pinmux = <STM32_PINMUX('A', 11, AF7)>; /* USART1_CTS_NSS */
++                                        bias-disable;
++                                };
++                        };
+ 
+ 			usart3_pins_a: usart3-0 {
+ 				pins1 {
+-					pinmux = <STM32_PINMUX('B', 10, AF7)>, /* USART3_TX */
+-						 <STM32_PINMUX('G', 8, AF8)>; /* USART3_RTS */
++					pinmux = <STM32_PINMUX('B', 10, AF7)>; /* USART3_TX */
+ 					bias-disable;
+ 					drive-push-pull;
+ 					slew-rate = <0>;
+ 				};
+ 				pins2 {
+-					pinmux = <STM32_PINMUX('B', 12, AF8)>, /* USART3_RX */
+-						 <STM32_PINMUX('I', 10, AF8)>; /* USART3_CTS_NSS */
++					pinmux = <STM32_PINMUX('B', 12, AF8)>; /* USART3_RX */
+ 					bias-disable;
+ 				};
+ 			};
+ 
+ 			usart3_pins_b: usart3-1 {
+ 				pins1 {
+-					pinmux = <STM32_PINMUX('B', 10, AF7)>, /* USART3_TX */
+-						 <STM32_PINMUX('G', 8, AF8)>; /* USART3_RTS */
++					pinmux = <STM32_PINMUX('B', 10, AF7)>; /* USART3_TX */
+ 					bias-disable;
+ 					drive-push-pull;
+ 					slew-rate = <0>;
+ 				};
+ 				pins2 {
+-					pinmux = <STM32_PINMUX('B', 12, AF8)>, /* USART3_RX */
+-						 <STM32_PINMUX('B', 13, AF7)>; /* USART3_CTS_NSS */
++					pinmux = <STM32_PINMUX('B', 12, AF8)>; /* USART3_RX */
+ 					bias-disable;
+ 				};
+ 			};
+@@ -336,6 +332,19 @@
+ 				status = "disabled";
+ 			};
+ 
++                        usart1_pins_a: usart1-0 {
++                                pins1 {
++                                        pinmux = <STM32_PINMUX('Z', 7, AF7)>; /* USART1_TX */
++                                        bias-disable;
++                                        drive-push-pull;
++                                        slew-rate = <0>;
++                                };
++                                pins2 {
++                                        pinmux = <STM32_PINMUX('Z', 6, AF7)>; /* USART1_RX */
++                                        bias-disable;
++                                };
++                        };
++
+ 			i2c4_pins_a: i2c4-0 {
+ 				pins {
+ 					pinmux = <STM32_PINMUX('Z', 4, AF6)>, /* I2C4_SCL */

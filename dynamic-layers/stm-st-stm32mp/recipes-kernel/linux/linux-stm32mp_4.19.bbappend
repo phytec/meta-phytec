@@ -2,6 +2,7 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
 SRC_URI += " \
     file://${LINUX_VERSION}/4.19.9/0065-ARM-stm32mp1-r0-rc1-add-phycore-stm32mp1xx-alpha1-machine.patch \
+    file://${LINUX_VERSION}/4.19.9/0066-linux-phycore-stm32mp1xx-alpha2.patch \
 "
 
 KERNEL_CONFIG_FRAGMENTS += "${WORKDIR}/fragments/4.19/fragment-06-rtc.config"

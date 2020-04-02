@@ -1,0 +1,347 @@
+diff --git a/arch/arm/boot/dts/phycore-stm32mp1-1.dtsi b/arch/arm/boot/dts/phycore-stm32mp1-1.dtsi
+index 921f325..e1d69d3 100644
+--- a/arch/arm/boot/dts/phycore-stm32mp1-1.dtsi
++++ b/arch/arm/boot/dts/phycore-stm32mp1-1.dtsi
+@@ -18,9 +18,8 @@
+ 		rtc0	= &i2c4_rtc;
+ 		rtc1	= &rtc;
+ 		serial0 = &uart4;
+-                serial1 = &uart7;
++                serial1 = &usart3;
+                 serial2 = &usart1;
+-                serial3 = &usart3;
+ 	};
+ 
+ 	chosen {
+@@ -65,9 +64,9 @@
+ 		st,no-lsfs-sc;
+ 	};
+ 
+-	reg_m_can1: regulator-mcan1 {
++	reg_m_can2: regulator-mcan2 {
+ 		compatible = "regulator-fixed";
+-		regulator-name = "mcan1-reg";
++		regulator-name = "mcan2-reg";
+ 		regulator-min-microvolt = <3300000>;
+ 		regulator-max-microvolt = <3300000>;
+ 		gpio = <&gpiog 1 GPIO_ACTIVE_HIGH>;
+@@ -75,11 +74,11 @@
+ 	};
+ };
+ 
+-&m_can1 {
++&m_can2 {
+         pinctrl-names = "default", "sleep";
+-        pinctrl-0 = <&m_can1_pins_a>;
+-        pinctrl-1 = <&m_can1_sleep_pins_a>;
+-	xceiver-supply = <&reg_m_can1>;
++        pinctrl-0 = <&m_can2_pins_a>;
++        pinctrl-1 = <&m_can2_sleep_pins_a>;
++	xceiver-supply = <&reg_m_can2>;
+         status = "okay";
+ };
+ 
+@@ -341,19 +340,13 @@
+ 	status = "okay";
+ };
+ 
+-&uart7 {
+-	pinctrl-names = "default", "sleep", "idle";
+-	pinctrl-0 = <&uart7_pins_a>;
+-	pinctrl-1 = <&uart7_sleep_pins_a>;
+-	pinctrl-2 = <&uart7_idle_pins_a>;
+-	status = "okay";
+-};
+ 
+ &usart1 {
+         pinctrl-names = "default", "sleep", "idle";
+-        pinctrl-0 = <&usart1_pins_a>;
+-        pinctrl-1 = <&usart1_sleep_pins_a>;
+-        pinctrl-2 = <&usart1_idle_pins_a>;
++        pinctrl-0 = <&usart1_pins_a &usart1_pins_b>;
++        pinctrl-1 = <&usart1_sleep_pins_a &usart1_sleep_pins_b>;
++        pinctrl-2 = <&usart1_idle_pins_a &usart1_idle_pins_b>;
++        st,hw-flow-ctrl;
+         status = "okay";
+ };
+ 
+@@ -362,7 +355,6 @@
+ 	pinctrl-0 = <&usart3_pins_b>;
+ 	pinctrl-1 = <&usart3_sleep_pins_b>;
+ 	pinctrl-2 = <&usart3_idle_pins_b>;
+-        st,hw-flow-ctrl;
+ 	status = "okay";
+ };
+ 
+@@ -373,6 +365,13 @@
+         vbus-supply = <&vbus_sw>;
+ };
+ 
++&usbh_ohci {
++	phys = <&usbphyc_port0>;
++	phy-names = "usb";
++	status = "okay";
++        vbus-supply = <&vbus_sw>;
++};
++
+ &usbotg_hs {
+ 	force-b-session-valid;
+ 	phys = <&usbphyc_port1 0>;
+@@ -408,7 +407,7 @@
+ 
+ 
+ /* Selected connectors used commenting/uncommenting the following line  */ 
+-//#include "phycore-stm32mp1-pi-hat-extension.dtsi"
++#include "phycore-stm32mp1-pi-hat-extension.dtsi"
+ //#include "phycore-stm32mp1-uno-r3-extension.dtsi"
+ //#include "phycore-stm32mp1-motor-control.dtsi"
+ 
+diff --git a/arch/arm/boot/dts/phycore-stm32mp1-pi-hat-extension.dtsi b/arch/arm/boot/dts/phycore-stm32mp1-pi-hat-extension.dtsi
+index fd27e09..e16b2dc 100644
+--- a/arch/arm/boot/dts/phycore-stm32mp1-pi-hat-extension.dtsi
++++ b/arch/arm/boot/dts/phycore-stm32mp1-pi-hat-extension.dtsi
+@@ -9,22 +9,24 @@
+ 	pinctrl-names = "default", "sleep";
+ 	pinctrl-0 = <&spi1_pins_a>;
+ 	pinctrl-1 = <&spi1_sleep_pins_a>;
+-	cs-gpios = <&gpiog 2 0>;
++	cs-gpios = <&gpioz 3 0>;
+         status = "okay";
+ 
+ 	spi@0 {
+-                compatible = "spidev";
++                compatible = "linux,spidev";
++                #address-cells = <1>;
++                #size-cells = <0>;
+                 spi-max-frequency = <10000000>;
+-                reg = <0>;
++                reg = <0>; /* CS #0 */
++        	status = "okay"; 
+         };
+ };
+ 
+-&sdmmc1 {
++&sdmmc3 {
+ 	pinctrl-names = "default", "opendrain", "sleep";
+-	pinctrl-0 = <&sdmmc1_b4_pins_a>;
+-	pinctrl-1 = <&sdmmc1_b4_od_pins_a>;
+-	pinctrl-2 = <&sdmmc1_b4_sleep_pins_a>;
+-	cd-gpios = <&gpiof 3 GPIO_ACTIVE_LOW>;  
++	pinctrl-0 = <&sdmmc3_b4_pins_a>;
++	pinctrl-1 = <&sdmmc3_b4_od_pins_a>;
++	pinctrl-2 = <&sdmmc3_b4_sleep_pins_a>; 
+ 	st,neg-edge;
+ 	bus-width = <4>;
+ 	max-frequency = <10000000>;
+diff --git a/arch/arm/boot/dts/phycore-stm32mp157-pinctrl.dtsi b/arch/arm/boot/dts/phycore-stm32mp157-pinctrl.dtsi
+index 6d569b8..85c6d79 100644
+--- a/arch/arm/boot/dts/phycore-stm32mp157-pinctrl.dtsi
++++ b/arch/arm/boot/dts/phycore-stm32mp157-pinctrl.dtsi
+@@ -773,23 +773,23 @@
+ 				};
+ 			};
+ 
+-			m_can1_pins_a: m-can1-0 {
++			m_can2_pins_a: m-can2-0 {
+ 				pins1 {
+-					pinmux = <STM32_PINMUX('A', 12, AF9)>; /* CAN1_TX */
++					pinmux = <STM32_PINMUX('B', 13, AF9)>; /* CAN2_TX */
+ 					slew-rate = <0>;
+ 					drive-push-pull;
+ 					bias-disable;
+ 				};
+ 				pins2 {
+-					pinmux = <STM32_PINMUX('A', 11, AF9)>; /* CAN1_RX */
++					pinmux = <STM32_PINMUX('B', 5, AF9)>; /* CAN2_RX */
+                                                 bias-disable;
+ 				};
+ 			};
+ 
+-			m_can1_sleep_pins_a: m_can1-sleep@0 {
++			m_can2_sleep_pins_a: m_can2-sleep@0 {
+ 				pins {
+-					pinmux = <STM32_PINMUX('A', 12, ANALOG)>, /* CAN1_TX */
+-						 <STM32_PINMUX('A', 11, ANALOG)>; /* CAN1_RX */
++					pinmux = <STM32_PINMUX('B', 13, ANALOG)>, /* CAN2_TX */
++						 <STM32_PINMUX('B', 5, ANALOG)>; /* CAN2_RX */
+ 				};
+ 			};
+ 
+@@ -1380,24 +1380,20 @@
+ 
+ 			usart3_pins_a: usart3-0 {
+ 				pins1 {
+-					pinmux = <STM32_PINMUX('B', 10, AF7)>, /* USART3_TX */
+-						 <STM32_PINMUX('G', 8, AF8)>; /* USART3_RTS */
++					pinmux = <STM32_PINMUX('B', 10, AF7)>; /* USART3_TX */
+ 					bias-disable;
+ 					drive-push-pull;
+ 					slew-rate = <0>;
+ 				};
+ 				pins2 {
+-					pinmux = <STM32_PINMUX('B', 12, AF8)>, /* USART3_RX */
+-						 <STM32_PINMUX('B', 13, AF7)>; /* USART3_CTS_NSS */
++					pinmux = <STM32_PINMUX('B', 12, AF8)>; /* USART3_RX */
+ 					bias-disable;
+ 				};
+ 			};
+ 
+ 			usart3_idle_pins_a: usart3-idle-0 {
+ 				pins1 {
+-					pinmux = <STM32_PINMUX('B', 10, ANALOG)>, /* USART3_TX */
+-						 <STM32_PINMUX('G', 8, ANALOG)>, /* USART3_RTS */
+-						 <STM32_PINMUX('I', 10, ANALOG)>; /* USART3_CTS_NSS */
++					pinmux = <STM32_PINMUX('B', 10, ANALOG)>; /* USART3_TX */
+ 				};
+ 				pins2 {
+ 					pinmux = <STM32_PINMUX('B', 12, AF8)>; /* USART3_RX */
+@@ -1408,32 +1404,26 @@
+ 			usart3_sleep_pins_a: usart3-sleep-0 {
+ 				pins {
+ 					pinmux = <STM32_PINMUX('B', 10, ANALOG)>, /* USART3_TX */
+-						 <STM32_PINMUX('G', 8, ANALOG)>, /* USART3_RTS */
+-						 <STM32_PINMUX('I', 10, ANALOG)>, /* USART3_CTS_NSS */
+ 						 <STM32_PINMUX('B', 12, ANALOG)>; /* USART3_RX */
+ 				};
+ 			};
+ 
+ 			usart3_pins_b: usart3-1 {
+ 				pins1 {
+-					pinmux = <STM32_PINMUX('B', 10, AF7)>, /* USART3_TX */
+-						 <STM32_PINMUX('G', 8, AF8)>; /* USART3_RTS */
++					pinmux = <STM32_PINMUX('B', 10, AF7)>; /* USART3_TX */
+ 					bias-disable;
+ 					drive-push-pull;
+ 					slew-rate = <0>;
+ 				};
+ 				pins2 {
+-					pinmux = <STM32_PINMUX('B', 12, AF8)>, /* USART3_RX */
+-						 <STM32_PINMUX('B', 13, AF7)>; /* USART3_CTS_NSS */
++					pinmux = <STM32_PINMUX('B', 12, AF8)>; /* USART3_RX */
+ 					bias-disable;
+ 				};
+ 			};
+ 
+ 			usart3_idle_pins_b: usart3-idle-1 {
+ 				pins1 {
+-					pinmux = <STM32_PINMUX('B', 10, ANALOG)>, /* USART3_TX */
+-						 <STM32_PINMUX('G', 8, ANALOG)>, /* USART3_RTS */
+-						 <STM32_PINMUX('B', 13, ANALOG)>; /* USART3_CTS_NSS */
++					pinmux = <STM32_PINMUX('B', 10, ANALOG)>; /* USART3_TX */
+ 				};
+ 				pins2 {
+ 					pinmux = <STM32_PINMUX('B', 12, AF8)>; /* USART3_RX */
+@@ -1444,12 +1434,37 @@
+ 			usart3_sleep_pins_b: usart3-sleep-1 {
+ 				pins {
+ 					pinmux = <STM32_PINMUX('B', 10, ANALOG)>, /* USART3_TX */
+-						 <STM32_PINMUX('G', 8, ANALOG)>, /* USART3_RTS */
+-						 <STM32_PINMUX('B', 13, ANALOG)>, /* USART3_CTS_NSS */
+ 						 <STM32_PINMUX('B', 12, ANALOG)>; /* USART3_RX */
+ 				};
+ 			};
+ 
++                        usart1_pins_b: usart1-0 {
++                                pins1 {
++                                        pinmux = <STM32_PINMUX('A', 12, AF7)>; /* USART1_RTS */
++                                        bias-disable;
++                                        drive-push-pull;
++                                        slew-rate = <0>;
++                                };
++                                pins2 {
++                                        pinmux = <STM32_PINMUX('A', 11, AF7)>; /* USART1_CTS_NSS */
++                                        bias-disable;
++                                };
++                        };
++
++                        usart1_idle_pins_b: usart1-idle-0 {
++                                pins {
++                                        pinmux = <STM32_PINMUX('A', 12, ANALOG)>, /* USART1_RTS */
++						 <STM32_PINMUX('A', 11, ANALOG)>; /* USART1_CTS_NSS */
++                                };
++                        };
++
++                        usart1_sleep_pins_b: usart1-sleep-0 {
++                                pins {
++                                        pinmux = <STM32_PINMUX('A', 12, ANALOG)>, /* USART1_RTS */
++						 <STM32_PINMUX('A', 11, ANALOG)>; /* USART1_CTS_NSS */
++                                };
++                        };
++
+ 			usbotg_hs_pins_a: usbotg_hs-0 {
+ 				pins {
+ 					pinmux = <STM32_PINMUX('A', 10, ANALOG)>; /* OTG_ID */
+@@ -1479,16 +1494,6 @@
+ 				status = "disabled";
+ 			};
+ 
+-			btreg: bt_reg_on-0 {
+-				pins {
+-					pinmux = <STM32_PINMUX('Z', 6, GPIO)>;
+-					drive-push-pull;
+-					bias-pull-up;
+-					output-high;
+-					slew-rate = <0>;
+-				};
+-			};
+-
+ 
+                         usart1_pins_a: usart1-0 {
+                                 pins1 {
+@@ -1540,7 +1545,7 @@
+ 			spi1_pins_a: spi1-0 {
+ 				pins1 {
+ 					pinmux = <STM32_PINMUX('Z', 0, AF5)>, /* SPI1_SCK */
+-						 <STM32_PINMUX('B', 5, AF5)>; /* SPI1_MOSI */
++						 <STM32_PINMUX('Z', 2, AF5)>; /* SPI1_MOSI */
+ 					bias-disable;
+ 					drive-push-pull;
+ 					slew-rate = <1>;
+@@ -1556,7 +1561,30 @@
+ 				pins {
+ 					pinmux = <STM32_PINMUX('Z', 0, ANALOG)>, /* SPI1_SCK */
+ 						 <STM32_PINMUX('Z', 1, ANALOG)>, /* SPI1_MISO */
+-						 <STM32_PINMUX('B', 5, ANALOG)>; /* SPI1_MOSI */
++						 <STM32_PINMUX('Z', 2, ANALOG)>; /* SPI1_MOSI */
++				};
++			};
++
++			spi6_pins_a: spi6-0 {
++				pins1 {
++					pinmux = <STM32_PINMUX('Z', 0, AF8)>, /* SPI6_SCK */
++						 <STM32_PINMUX('Z', 2, AF8)>; /* SPI6_MOSI */
++					bias-disable;
++					drive-push-pull;
++					slew-rate = <1>;
++				};
++
++				pins2 {
++					pinmux = <STM32_PINMUX('Z', 1, AF8)>; /* SPI6_MISO */
++					bias-disable;
++				};
++			};
++
++			spi6_sleep_pins_a: spi6-sleep-0 {
++				pins {
++					pinmux = <STM32_PINMUX('Z', 0, ANALOG)>, /* SPI6_SCK */
++						 <STM32_PINMUX('Z', 1, ANALOG)>, /* SPI6_MISO */
++						 <STM32_PINMUX('Z', 2, ANALOG)>; /* SPI6_MOSI */
+ 				};
+ 			};
+ 		};
+diff --git a/drivers/net/can/dev.c b/drivers/net/can/dev.c
+index 4af7ce2..3b3f88f 100644
+--- a/drivers/net/can/dev.c
++++ b/drivers/net/can/dev.c
+@@ -141,10 +141,8 @@ static int can_calc_bittiming(struct net_device *dev, struct can_bittiming *bt,
+ 	if (bt->sample_point) {
+ 		sample_point_nominal = bt->sample_point;
+ 	} else {
+-		if (bt->bitrate > 1000000)
++		if (bt->bitrate > 800000)
+ 			sample_point_nominal = 750;
+-                else if (bt->bitrate > 800000)
+-                        sample_point_nominal = 775;
+ 		else if (bt->bitrate > 500000)
+ 			sample_point_nominal = 800;
+ 		else
