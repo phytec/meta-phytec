@@ -106,7 +106,7 @@ global.bootm.oftree="/dev/m25p0.oftree"
 global.linux.bootargs.dyn.root="{_root}"
 """
 
-    if bb.utils.contains("MACHINE_FEATURES", "emmc", "True", "False", d):
+    if bb.utils.contains("MACHINE_FEATURES", "emmc", True, False, d):
         env_add(d, "boot/emmc", mmcboot.format(_kernel = kernelname,
                                                _mmcid = emmcid, _id = 0,
                                                _rootid = 2))
