@@ -11,6 +11,5 @@ SRC_URI += " \
 
 SRC_URI += " \
     file://0024-ARM-v2018.11-stm32mp-r4-fix-clk-muxing.patch \
-    file://0024-ARM-v2018.11-stm32mp-r4-debug.patch \
     file://0025-ARM-v2018.11-stm32mp-r4-ref-clk.patch \
 "

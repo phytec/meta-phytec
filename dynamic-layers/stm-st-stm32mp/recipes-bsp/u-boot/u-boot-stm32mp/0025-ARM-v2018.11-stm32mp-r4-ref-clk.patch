@@ -73,3 +73,16 @@ index fef8f19..15bb56c 100644
  
  	return 0;
  }
+diff --git a/drivers/net/phy/ti.c b/drivers/net/phy/ti.c
+index de23788..4a46675 100644
+--- a/drivers/net/phy/ti.c
++++ b/drivers/net/phy/ti.c
+@@ -437,7 +437,7 @@ static struct phy_driver DP83867_driver = {
+ 	.name = "TI DP83867",
+ 	.uid = 0x2000a231,
+ 	.mask = 0xfffffff0,
+-	.features = PHY_GBIT_FEATURES,
++	.features = PHY_BASIC_FEATURES,
+ 	.config = &dp83867_config,
+ 	.startup = &genphy_startup,
+ 	.shutdown = &genphy_shutdown,
