@@ -1,12 +1,24 @@
 diff --git a/drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c b/drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c
-index bf6e88b..085231d 100644
+index bf6e88b..a2a8cc6 100644
 --- a/drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c
 +++ b/drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c
-@@ -212,7 +212,7 @@ static const struct drm_display_mode rpi_touchscreen_modes[] = {
+@@ -203,16 +203,16 @@ static const struct drm_display_mode rpi_touchscreen_modes[] = {
+ 		/* Modeline comes from the Raspberry Pi firmware, with HFP=1
+ 		 * plugged in and clock re-computed from that.
+ 		 */
+-		.clock = 25979400 / 1000,
++		.clock = 25862069 / 1000,
+ 		.hdisplay = 800,
+ 		.hsync_start = 800 + 1,
+ 		.hsync_end = 800 + 1 + 2,
+-		.htotal = 800 + 1 + 2 + 46,
++		.htotal = 800 + 1 + 2 + 45,
+ 		.vdisplay = 480,
  		.vsync_start = 480 + 7,
  		.vsync_end = 480 + 7 + 2,
- 		.vtotal = 480 + 7 + 2 + 21,
+-		.vtotal = 480 + 7 + 2 + 21,
 -		.vrefresh = 60,
++		.vtotal = 480 + 7 + 2 + 20,
 +		.vrefresh = 50,
  	},
  };

@@ -404,7 +404,7 @@
 
 /* Select display interface by commenting/uncommenting the following lines */ 
 //#include "phycore-stm32mp1-dsi-lcd-mb1407.dtsi"
-#include "phycore-stm32mp1-dsi-lcd-mb1407.dtsi"
+#include "phycore-stm32mp1-dsi-rpi-official-display.dtsi"
 //#include "phycore-stm32mp1-peb-av01-hdmi.dtsi"
 //#include "phycore-stm32mp1-peb-av02-lcd.dtsi"
 

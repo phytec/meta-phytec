@@ -8,14 +8,26 @@
 &i2c1 {
         status = "okay";
 
-        touchscreen@55 {
+        touchscreen@38 {
                 compatible = "sitronix,st1633";
-                reg = <0x55>;
+                reg = <0x38>;
                 interrupts = <2 2>;
                 interrupt-parent = <&gpiof>;
                 interrupt-controller;
                 status = "okay";
         };
+
+	lcd@45 {
+		compatible = "raspberrypi,7inch-touchscreen-panel";
+		reg = <0x45>;
+		status = "okay";
+
+		port {
+			panel_in: endpoint {
+				remote-endpoint = <&dsi_out>;
+			};
+		};
+	};
 };
 
 &ltdc {
