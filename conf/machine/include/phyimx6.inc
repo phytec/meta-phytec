@@ -37,8 +37,9 @@ MACHINE_FEATURES = "apm usbgadget usbhost vfat"
 IMAGE_CLASSES += "wic-helper"
 IMAGE_BOOT_FILES = "zImage oftree ${KERNEL_DEVICETREE}"
 IMAGE_BOOT_FILES_secureboot = "fitImage.fitimg"
+BAREBOX_BINARY = "barebox.bin"
+BAREBOX_BINARY_secureboot = "barebox-s.bin"
 WKS_FILES_mx6 ?= "imx6-sdimage.wks"
-WKS_FILES_secureboot_mx6 ?= "imx6-secureboot-sdimage.wks"
 
 # default images to build
 IMAGE_FSTYPES ?= "tar.gz wic ubifs"
