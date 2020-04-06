@@ -3,7 +3,7 @@
 # boards that the user can directly dd to an SD card and boot.
 # This image contains twice boot and rootfs partitions for a redundance system.
 
-part BAREBOX --source rawcopy --sourceparams="file=barebox.bin,skip=1024" --ondisk mmc --no-table --align 1
+part BAREBOX --source rawcopy --sourceparams="file=${BAREBOX_BINARY},skip=1024" --ondisk mmc --no-table --align 1
 
 part --source bootimg-partition --fstype=vfat --label boot0 --ondisk mmc --active --align 4096 --size 20
 part / --source rootfs --fstype=ext4 --label root0 --ondisk mmc --align 1024 --use-uuid
