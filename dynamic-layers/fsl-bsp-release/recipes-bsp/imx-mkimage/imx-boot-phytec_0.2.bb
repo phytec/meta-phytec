@@ -1,6 +1,6 @@
 # Copyright 2017-2019 NXP
 
-require imx-mkimage_git.inc
+require recipes-bsp/imx-mkimage/imx-mkimage_git.inc
 
 DESCRIPTION = "Generate Boot Loader for i.MX 8 device"
 LICENSE = "GPLv2"
@@ -55,9 +55,6 @@ ATF_MACHINE_NAME_mx8mm = "bl31-imx8mm.bin"
 ATF_MACHINE_NAME_mx8mn = "bl31-imx8mn.bin"
 ATF_MACHINE_NAME_append = "${@bb.utils.contains('COMBINED_FEATURES', 'optee', '-optee', '', d)}"
 
-UBOOT_NAME = "u-boot-${MACHINE}.bin-${UBOOT_CONFIG}"
-BOOT_CONFIG_MACHINE = "${BOOT_NAME}-${MACHINE}-${UBOOT_CONFIG}.bin"
-
 TOOLS_NAME ?= "mkimage_imx8"
 
 SOC_TARGET       ?= "INVALID"
@@ -91,28 +88,32 @@ compile_mx8m() {
     done
     cp ${DEPLOY_DIR_IMAGE}/signed_dp_imx8m.bin               ${BOOT_STAGING}
     cp ${DEPLOY_DIR_IMAGE}/signed_hdmi_imx8m.bin             ${BOOT_STAGING}
-    cp ${DEPLOY_DIR_IMAGE}/u-boot-spl.bin-${MACHINE}-${UBOOT_CONFIG} \
-                                                             ${BOOT_STAGING}/u-boot-spl.bin
     cp ${DEPLOY_DIR_IMAGE}/${BOOT_TOOLS}/${UBOOT_DTB_NAME}   ${BOOT_STAGING}
-    cp ${DEPLOY_DIR_IMAGE}/${BOOT_TOOLS}/u-boot-nodtb.bin-${MACHINE}-${UBOOT_CONFIG} \
-                                                             ${BOOT_STAGING}/u-boot-nodtb.bin
     bbnote "\
 Using standard mkimage from u-boot-tools for FIT image builds. The standard \
 mkimage is compatible for this use, and using it saves us from having to \
 maintain a custom recipe."
     ln -sf ${STAGING_DIR_NATIVE}${bindir}/mkimage            ${BOOT_STAGING}/mkimage_uboot
     cp ${DEPLOY_DIR_IMAGE}/${BOOT_TOOLS}/${ATF_MACHINE_NAME} ${BOOT_STAGING}/bl31.bin
-    cp ${DEPLOY_DIR_IMAGE}/${UBOOT_NAME}                     ${BOOT_STAGING}/u-boot.bin
+    for type in ${UBOOT_CONFIG}; do
+        cp ${DEPLOY_DIR_IMAGE}/u-boot-spl.bin-${MACHINE}-${type} \
+                                                             ${BOOT_STAGING}/u-boot-spl.bin-${type}
+        cp ${DEPLOY_DIR_IMAGE}/${BOOT_TOOLS}/u-boot-nodtb.bin-${MACHINE}-${type} \
+                                                             ${BOOT_STAGING}/u-boot-nodtb.bin-${type}
+        cp ${DEPLOY_DIR_IMAGE}/u-boot-${MACHINE}.bin-${type} ${BOOT_STAGING}/u-boot.bin-${type}
+    done
 }
 compile_mx8() {
     bbnote 8QM boot binary build
     cp ${DEPLOY_DIR_IMAGE}/${BOOT_TOOLS}/${SC_FIRMWARE_NAME} ${BOOT_STAGING}/scfw_tcm.bin
     cp ${DEPLOY_DIR_IMAGE}/${BOOT_TOOLS}/${ATF_MACHINE_NAME} ${BOOT_STAGING}/bl31.bin
-    cp ${DEPLOY_DIR_IMAGE}/${UBOOT_NAME}                     ${BOOT_STAGING}/u-boot.bin
-    if [ -e ${DEPLOY_DIR_IMAGE}/u-boot-spl.bin-${MACHINE}-${UBOOT_CONFIG} ] ; then
-        cp ${DEPLOY_DIR_IMAGE}/u-boot-spl.bin-${MACHINE}-${UBOOT_CONFIG} \
-                                                             ${BOOT_STAGING}/u-boot-spl.bin
-    fi
+    for type in ${UBOOT_CONFIG}; do
+        cp ${DEPLOY_DIR_IMAGE}/u-boot-${MACHINE}.bin-${type} ${BOOT_STAGING}/u-boot.bin-${type}
+        if [ -e ${DEPLOY_DIR_IMAGE}/u-boot-spl.bin-${MACHINE}-${type} ] ; then
+            cp ${DEPLOY_DIR_IMAGE}/u-boot-spl.bin-${MACHINE}-${type} \
+                                                             ${BOOT_STAGING}/u-boot-spl.bin-${type}
+        fi
+    done
     cp ${DEPLOY_DIR_IMAGE}/imx8qm_m4_0_TCM_rpmsg_lite_pingpong_rtos_linux_remote_m40.bin \
                                                              ${BOOT_STAGING}/m4_image.bin
     cp ${DEPLOY_DIR_IMAGE}/imx8qm_m4_1_TCM_rpmsg_lite_pingpong_rtos_linux_remote_m41.bin \
@@ -125,11 +126,13 @@ compile_mx8x() {
     cp ${DEPLOY_DIR_IMAGE}/mx8qx-ahab-container.img          ${BOOT_STAGING}
     cp ${DEPLOY_DIR_IMAGE}/${BOOT_TOOLS}/${SC_FIRMWARE_NAME} ${BOOT_STAGING}/scfw_tcm.bin
     cp ${DEPLOY_DIR_IMAGE}/${BOOT_TOOLS}/${ATF_MACHINE_NAME} ${BOOT_STAGING}/bl31.bin
-    cp ${DEPLOY_DIR_IMAGE}/${UBOOT_NAME}                     ${BOOT_STAGING}/u-boot.bin
-    if [ -e ${DEPLOY_DIR_IMAGE}/u-boot-spl.bin-${MACHINE}-${UBOOT_CONFIG} ] ; then
-        cp ${DEPLOY_DIR_IMAGE}/u-boot-spl.bin-${MACHINE}-${UBOOT_CONFIG} \
-                                                             ${BOOT_STAGING}/u-boot-spl.bin
-    fi
+    for type in ${UBOOT_CONFIG}; do
+        cp ${DEPLOY_DIR_IMAGE}/u-boot-${MACHINE}.bin-${type} ${BOOT_STAGING}/u-boot.bin-${type}
+        if [ -e ${DEPLOY_DIR_IMAGE}/u-boot-spl.bin-${MACHINE}-${type} ] ; then
+            cp ${DEPLOY_DIR_IMAGE}/u-boot-spl.bin-${MACHINE}-${type} \
+                                                             ${BOOT_STAGING}/u-boot-spl.bin-${type}
+        fi
+    done
 }
 do_compile() {
     compile_${SOC_FAMILY}
@@ -139,25 +142,41 @@ do_compile() {
     fi
     # mkimage for i.MX8
     for target in ${IMXBOOT_TARGETS}; do
-        bbnote "building ${SOC_TARGET} - ${target}"
-        make SOC=${SOC_TARGET} ${target}
-        if [ -e "${BOOT_STAGING}/flash.bin" ]; then
-            cp ${BOOT_STAGING}/flash.bin ${S}/${BOOT_CONFIG_MACHINE}-${target}
-        fi
+        for type in ${UBOOT_CONFIG}; do
+            bbnote "building ${SOC_TARGET} - ${target} - ${type}"
+            allbins="u-boot.bin u-boot-nodtb.bin u-boot-spl.bin"
+            for bin in ${allbins} ; do
+		if [ -e "${BOOT_STAGING}/${bin}" ]; then
+                    rm ${BOOT_STAGING}/${bin}
+                fi
+                if [ -e "${BOOT_STAGING}/${bin}-${type}" ]; then
+                    ln -s ${bin}-${type} ${BOOT_STAGING}/${bin}
+                fi
+            done
+            make clean
+            make SOC=${SOC_TARGET} dtbs=${UBOOT_DTB_NAME} ${target}
+            if [ -e "${BOOT_STAGING}/flash.bin" ]; then
+                cp ${BOOT_STAGING}/flash.bin ${S}/${BOOT_NAME}-${MACHINE}-${type}.bin-${target}
+            fi
+        done
     done
 }
 
 do_install () {
     install -d ${D}/boot
     for target in ${IMXBOOT_TARGETS}; do
-        install -m 0644 ${S}/${BOOT_CONFIG_MACHINE}-${target} ${D}/boot/
+        for type in ${UBOOT_CONFIG}; do
+            install -m 0644 ${S}/${BOOT_NAME}-${MACHINE}-${type}.bin-${target} ${D}/boot/
+        done
     done
 }
 
 deploy_mx8m() {
     install -d ${DEPLOYDIR}/${BOOT_TOOLS}
-    install -m 0644 ${DEPLOY_DIR_IMAGE}/u-boot-spl.bin-${MACHINE}-${UBOOT_CONFIG} \
+    for type in ${UBOOT_CONFIG}; do
+        install -m 0644 ${DEPLOY_DIR_IMAGE}/u-boot-spl.bin-${MACHINE}-${type} \
                                                              ${DEPLOYDIR}/${BOOT_TOOLS}
+    done
     for ddr_firmware in ${DDR_FIRMWARE_NAME}; do
         install -m 0644 ${DEPLOY_DIR_IMAGE}/${ddr_firmware}  ${DEPLOYDIR}/${BOOT_TOOLS}
     done
@@ -173,20 +192,24 @@ deploy_mx8() {
     install -m 0644 ${BOOT_STAGING}/m4_image.bin             ${DEPLOYDIR}/${BOOT_TOOLS}
     install -m 0644 ${BOOT_STAGING}/m4_1_image.bin           ${DEPLOYDIR}/${BOOT_TOOLS}
     install -m 0755 ${S}/${TOOLS_NAME}                       ${DEPLOYDIR}/${BOOT_TOOLS}
-    if [ -e ${DEPLOY_DIR_IMAGE}/u-boot-spl.bin-${MACHINE}-${UBOOT_CONFIG} ] ; then
-        install -m 0644 ${DEPLOY_DIR_IMAGE}/u-boot-spl.bin-${MACHINE}-${UBOOT_CONFIG} \
+    for type in ${UBOOT_CONFIG}; do
+        if [ -e ${DEPLOY_DIR_IMAGE}/u-boot-spl.bin-${MACHINE}-${type} ] ; then
+            install -m 0644 ${DEPLOY_DIR_IMAGE}/u-boot-spl.bin-${MACHINE}-${type} \
                                                              ${DEPLOYDIR}/${BOOT_TOOLS}
-    fi
+        fi
+    done
 }
 deploy_mx8x() {
     install -d ${DEPLOYDIR}/${BOOT_TOOLS}
     install -m 0644 ${BOOT_STAGING}/mx8qx-ahab-container.img ${DEPLOYDIR}/${BOOT_TOOLS}
     install -m 0644 ${BOOT_STAGING}/m4_image.bin             ${DEPLOYDIR}/${BOOT_TOOLS}
     install -m 0755 ${S}/${TOOLS_NAME}                       ${DEPLOYDIR}/${BOOT_TOOLS}
-    if [ -e ${DEPLOY_DIR_IMAGE}/u-boot-spl.bin-${MACHINE}-${UBOOT_CONFIG} ] ; then
-        install -m 0644 ${DEPLOY_DIR_IMAGE}/u-boot-spl.bin-${MACHINE}-${UBOOT_CONFIG} \
+    for type in ${UBOOT_CONFIG}; do
+        if [ -e ${DEPLOY_DIR_IMAGE}/u-boot-spl.bin-${MACHINE}-${type} ] ; then
+            install -m 0644 ${DEPLOY_DIR_IMAGE}/u-boot-spl.bin-${MACHINE}-${type} \
                                                              ${DEPLOYDIR}/${BOOT_TOOLS}
-    fi
+        fi
+    done
 }
 do_deploy() {
     deploy_${SOC_FAMILY}
@@ -195,7 +218,10 @@ do_deploy() {
         install -m 0644 ${DEPLOY_DIR_IMAGE}/tee.bin          ${DEPLOYDIR}/${BOOT_TOOLS}
     fi
     # copy the tool mkimage to deploy path and sc fw, dcd and uboot
-    install -m 0644 ${DEPLOY_DIR_IMAGE}/${UBOOT_NAME}        ${DEPLOYDIR}/${BOOT_TOOLS}
+    for type in ${UBOOT_CONFIG}; do
+        install -m 0644 ${DEPLOY_DIR_IMAGE}/u-boot-${MACHINE}.bin-${type} \
+                                                             ${DEPLOYDIR}/${BOOT_TOOLS}
+    done
     # copy makefile (soc.mak) for reference
     install -m 0644 ${BOOT_STAGING}/soc.mak                  ${DEPLOYDIR}/${BOOT_TOOLS}
     # copy the generated boot image to deploy path
@@ -205,11 +231,14 @@ do_deploy() {
             IMAGE_IMXBOOT_TARGET="$target"
             echo "Set boot target as $IMAGE_IMXBOOT_TARGET"
         fi
-        install -m 0644 ${S}/${BOOT_CONFIG_MACHINE}-${target} ${DEPLOYDIR}
+        for type in ${UBOOT_CONFIG}; do
+            install -m 0644 ${S}/${BOOT_NAME}-${MACHINE}-${type}.bin-${target} \
+                                                             ${DEPLOYDIR}
+            # Link last type
+            ln -sf ${BOOT_NAME}-${MACHINE}-${type}.bin-${IMAGE_IMXBOOT_TARGET} \
+                                                             ${DEPLOYDIR}/${BOOT_NAME}
+        done
     done
-    cd ${DEPLOYDIR}
-    ln -sf ${BOOT_CONFIG_MACHINE}-${IMAGE_IMXBOOT_TARGET} ${BOOT_NAME}
-    cd -
 }
 addtask deploy before do_build after do_compile
 
