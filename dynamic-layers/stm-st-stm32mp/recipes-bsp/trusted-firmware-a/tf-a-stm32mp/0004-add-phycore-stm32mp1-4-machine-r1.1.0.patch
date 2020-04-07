@@ -245,7 +245,7 @@ index 2426d65..0000000
 -
 -&iwdg2 {
 -	timeout-sec = <32>;
--	status = "okay";
+-	status = "disabled";
 -};
 -
 -&pwr {
@@ -758,7 +758,7 @@ index 0000000..314d5c1
 +
 +&iwdg2 {
 +	timeout-sec = <32>;
-+	status = "okay";
++	status = "disabled";
 +};
 +
 +&pwr {
@@ -1290,7 +1290,7 @@ index 0000000..3dc54b7
 +
 +&iwdg2 {
 +	timeout-sec = <32>;
-+	status = "okay";
++	status = "disabled";
 +};
 +
 +&pwr {

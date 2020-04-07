@@ -605,7 +605,7 @@ index 0000000..d8d3fd2
 +
 +&iwdg2 {
 +        timeout-sec = <32>;
-+        status = "okay";
++        status = "disabled";
 +};
 +
 +&pwr {
