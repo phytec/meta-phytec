@@ -1,6 +1,7 @@
 # Common settings for PHYTEC's i.MX8 boards
 
 PREFERRED_PROVIDER_virtual/bootloader= "u-boot-imx"
+PREFERRED_PROVIDER_imx-boot="imx-boot-phytec"
 
 # Wic
 IMAGE_CLASSES += "wic-helper"
