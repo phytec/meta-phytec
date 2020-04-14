@@ -328,5 +328,3 @@
 #include "phycore-stm32mp1-pi-hat-extension.dtsi"
 //#include "phycore-stm32mp1-pi-hat-redbear.dtsi"
 //#include "phycore-stm32mp1-uno-r3-extension.dtsi"
-//#include "phycore-stm32mp1-motor-control.dtsi"
-

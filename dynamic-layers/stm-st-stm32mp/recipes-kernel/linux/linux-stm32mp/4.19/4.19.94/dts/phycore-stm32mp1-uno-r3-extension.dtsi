@@ -1,6 +1,76 @@
 // SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
 /*
  * Copyright (C) PHYTEC GmbH 2019 - All Rights Reserved
- * Author: Dom VOVARD <dom.vovard@linrt.com>.
+ * Author: Christophe PARANT <c.parant@phytec.fr>.
  */
 
+
+&timers4{
+	status = "okay";
+
+	/* USER CODE BEGIN timers4 */
+	/* USER CODE END timers4 */
+
+	pwm4: pwm{
+		pinctrl-names = "default", "sleep";
+		pinctrl-0 = <&tim4_pwm_pins_mx>;
+		pinctrl-1 = <&tim4_pwm_sleep_pins_mx>;
+		status = "okay";
+
+		/* USER CODE BEGIN timers4_pwm */
+		/* USER CODE END timers4_pwm */
+	};
+};
+
+&timers15{
+	status = "okay";
+
+	/* USER CODE BEGIN timers15 */
+	/* USER CODE END timers15 */
+
+	pwm15: pwm{
+		pinctrl-names = "default", "sleep";
+		pinctrl-0 = <&tim15_pwm_pins_mx>;
+		pinctrl-1 = <&tim15_pwm_sleep_pins_mx>;
+		status = "okay";
+
+		/* USER CODE BEGIN timers15_pwm */
+		/* USER CODE END timers15_pwm */
+	};
+};
+
+// Other Timers and ADCs for the Arduino Shield connector are settled in "phycore-stm32mp1-motor-control.dtsi"
+
+
+&pinctrl {
+
+    tim4_pwm_pins_mx: tim4_pwm_mx-0 {
+		pins {
+			pinmux = <STM32_PINMUX('B', 7, AF2)>; /* TIM4_CH2 */
+			bias-disable;
+			drive-push-pull;
+			slew-rate = <0>;
+		};
+    };
+
+    tim4_pwm_sleep_pins_mx: tim4_pwm_sleep_mx-0 {
+		pins {
+			pinmux = <STM32_PINMUX('B', 7, ANALOG)>; /* TIM4_CH2 */
+		};
+    };
+
+    tim15_pwm_pins_mx: tim15_pwm_mx-0 {
+		pins {
+			pinmux = <STM32_PINMUX('E', 5, AF4)>; /* TIM15_CH1 */
+			bias-disable;
+			drive-push-pull;
+			slew-rate = <0>;
+		};
+    };
+
+    tim15_pwm_sleep_pins_mx: tim15_pwm_sleep_mx-0 {
+		pins {
+			pinmux = <STM32_PINMUX('E', 5, ANALOG)>; /* TIM15_CH1 */
+		};
+    };
+};
