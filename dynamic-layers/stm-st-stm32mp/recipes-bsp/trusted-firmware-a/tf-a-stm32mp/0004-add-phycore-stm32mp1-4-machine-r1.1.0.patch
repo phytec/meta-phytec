@@ -1009,10 +1009,10 @@ index 0000000..314d5c1
 +	system_off_soc_mode = <STM32_PM_CSTOP_ALLOW_STANDBY_DDR_OFF>;
 +};
 +
-+&timers15 {
++&timers12 {
 +	secure-status = "okay";
-+	st,hsi-cal-input = <7>;
-+	st,csi_cal-input = <8>;
++	st,hsi-cal-input = <1>;
++	st,csi_cal-input = <2>;
 +};
 +
 +/* Low-power states of regulators */
@@ -1540,10 +1540,10 @@ index 0000000..3dc54b7
 +	system_off_soc_mode = <STM32_PM_CSTOP_ALLOW_STANDBY_DDR_OFF>;
 +};
 +
-+&timers15 {
++&timers12 {
 +	secure-status = "okay";
-+	st,hsi-cal-input = <7>;
-+	st,csi_cal-input = <8>;
++	st,hsi-cal-input = <1>;
++	st,csi_cal-input = <2>;
 +};
 +
 +/* Low-power states of regulators */
