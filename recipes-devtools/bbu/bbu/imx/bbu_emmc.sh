@@ -24,6 +24,8 @@ fi
 #          - 0x1 : Boot partition 0 enabled for boot
 #          - 0x2 : Boot partition 1 enabled for boot
 #          - 0x7 : User area enabled for boot
+BOOTPART0_ENABLED=$((1<<3))
+BOOTPART1_ENABLED=$((2<<3))
 
 emmcdev=`cat /proc/cmdline | awk -F'root=' '{print $2}'`
 emmcdev=${emmcdev::12}
@@ -36,12 +38,12 @@ if [ ! -e ${emmcdev}boot0 ]; then
 	exit 1
 fi
 
-partcfg=`mmc extcsd read $emmcdev | grep PARTITION_CONFIG | cut -d':' -f2`
-partcfg=${partcfg:1:4}
+partcfg=`mmc extcsd read $emmcdev | grep -oE "PARTITION_CONFIG: 0x.." | grep -oE "0x.."`
 bsize=`ls -l $1 | awk '{print $5}'`
 
-case "${partcfg}" in
-    "0x00") echo "Selected boot source: User area (default)"
+case 1 in
+    $((partcfg == 0)))
+            echo "Selected boot source: User area (default)"
             echo "Flashing ${emmcdev}"
             dd if=$1 of=${emmcdev} bs=512 skip=2 seek=2
             sync
@@ -53,7 +55,8 @@ case "${partcfg}" in
             fi
             echo "Successfully flashed user area"
     ;;
-    "0x08") echo "Selected boot source: boot0"
+    $(( ($partcfg & $BOOTPART0_ENABLED) != 0 )) )
+            echo "Selected boot source: boot0"
             echo "Flashing ${emmcdev}boot1"
             echo 0 > ${emmcdev/dev/sys/block}boot1/force_ro
             dd if=$1 of=${emmcdev}boot1
@@ -69,7 +72,8 @@ case "${partcfg}" in
             mmc bootpart enable 2 0 ${emmcdev}
             echo "Successfully flashed boot1"
     ;;
-    "0x10") echo "Selected boot source: boot1"
+    $(( ($partcfg & $BOOTPART1_ENABLED) != 0 )) )
+            echo "Selected boot source: boot1"
             echo "Flashing ${emmcdev}boot0"
             echo 0 > ${emmcdev/dev/sys/block}boot0/force_ro
             dd if=$1 of=${emmcdev}boot0
