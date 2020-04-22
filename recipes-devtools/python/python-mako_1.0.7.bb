@@ -1,6 +1,6 @@
 require python-mako.inc
 
-inherit setuptools
+inherit setuptools3
 
 RDEPENDS_${PN} = "python-threading \
                   python-netclient \
