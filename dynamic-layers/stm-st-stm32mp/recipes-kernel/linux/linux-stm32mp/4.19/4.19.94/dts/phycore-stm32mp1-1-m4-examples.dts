@@ -78,28 +78,15 @@
 			interrupt-names = "irq";
 			status = "okay";
 		};
-
-		m4_led: m4_led {
-			compatible = "rproc-srm-dev";
-			pinctrl-names = "rproc_default", "rproc_sleep";
-			pinctrl-0 = <&leds_orange_pins>;
-			pinctrl-1 = <&leds_orange_sleep_pins>;
-			status = "okay";
-		};
 	};
 };
 
-&m4_spi4 {
+&m4_spi1 {
 	pinctrl-names = "rproc_default";
-	pinctrl-0 = <&spi4_pins_a>;
+	pinctrl-0 = <&spi1_pins_a>;
 	status = "okay";
 };
 
-
-&m4_timers2 {
-	pinctrl-names = "rproc_default";
-	status = "okay";
-};
 
 &m4_timers1 {
 	pinctrl-names = "rproc_default";
@@ -110,26 +97,10 @@
 &pinctrl {
 	timer1_pins: pwm1-test-0 {
 		pins {
-			pinmux = <STM32_PINMUX('E', 9, AF1)>; /* TIM1_CH1 */
+			pinmux = <STM32_PINMUX('E', 14, AF1)>; /* TIM1_CH4 */
 			bias-pull-down;
 			drive-push-pull;
 			slew-rate = <0>;
-		};
-	};
-
-	leds_orange_pins: leds_orange_test-0 {
-		pins {
-			pinmux = <STM32_PINMUX('H', 7, GPIO)>;
-			bias-pull-up;
-			drive-push-pull;
-			output-low;
-			slew-rate = <0>;
-		};
-	};
-
-	leds_orange_sleep_pins: leds_orange_sleep_test-0 {
-		pins {
-			pinmux = <STM32_PINMUX('H', 7, ANALOG)>;
 		};
 	};
 };
