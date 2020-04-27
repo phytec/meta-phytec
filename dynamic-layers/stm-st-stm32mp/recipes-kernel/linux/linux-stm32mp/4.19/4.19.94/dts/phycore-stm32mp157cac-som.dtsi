@@ -127,11 +127,6 @@
                 status = "okay";
 		wakeup-source;
 
-
-                st,main-control-register = <0x04>;
-                st,vin-control-register = <0xc0>;
-                st,usb-control-register = <0x20>;
-
                 regulators {
                         compatible = "st,stpmic1-regulators";
 
@@ -332,7 +327,7 @@
 
 &iwdg2 {
         timeout-sec = <32>;
-        status = "disabled";
+        status = "okay";
 };
 
 &pwr {
