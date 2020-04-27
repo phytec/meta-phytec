@@ -178,17 +178,6 @@
 	status = "disabled";
 };
 
-&i2s2 {
-	clocks = <&rcc SPI2>, <&rcc SPI2_K>, <&rcc PLL3_Q>, <&rcc PLL3_R>;
-	clock-names = "pclk", "i2sclk", "x8k", "x11k";
-	pinctrl-names = "default", "sleep";
-	pinctrl-0 = <&i2s2_pins_a>;
-	pinctrl-1 = <&i2s2_pins_sleep_a>;
-	status = "disabled";
-
-	i2s2_port: port {
-	};
-};
 
 &sai2 {
 	clocks = <&rcc SAI2>, <&rcc PLL3_Q>, <&rcc PLL3_R>;
@@ -250,13 +239,6 @@
 	status = "okay";
 };
 
-&spi4 {
-	status = "disabled";
-};
-
-&spi5 {
-	status = "disabled";
-};
 
 &spi1 {
         pinctrl-names = "default", "sleep";
@@ -265,73 +247,6 @@
         status = "okay";
 };
 
-
-&timers1 {
-	/* spare dmas for other usage */
-	/delete-property/dmas;
-	/delete-property/dma-names;
-	pwm {
-		pinctrl-0 = <&pwm1_pins_a>;
-		pinctrl-1 = <&pwm1_sleep_pins_a>;
-		pinctrl-names = "default", "sleep";
-		status = "disabled";
-	};
-	timer@0 {
-		status = "disabled";
-	};
-};
-
-&timers3 {
-	/delete-property/dmas;
-	/delete-property/dma-names;
-	pwm {
-		pinctrl-0 = <&pwm3_pins_a>;
-		pinctrl-1 = <&pwm3_sleep_pins_a>;
-		pinctrl-names = "default", "sleep";
-		status = "disabled";
-	};
-	timer@2 {
-		status = "disabled";
-	};
-};
-
-&timers4 {
-	/delete-property/dmas;
-	/delete-property/dma-names;
-	pwm {
-		pinctrl-0 = <&pwm4_pins_a &pwm4_pins_b>;
-		pinctrl-1 = <&pwm4_sleep_pins_a &pwm4_sleep_pins_b>;
-		pinctrl-names = "default", "sleep";
-		status = "disabled";
-	};
-	timer@3 {
-		status = "disabled";
-	};
-};
-
-&timers5 {
-	/delete-property/dmas;
-	/delete-property/dma-names;
-	pwm {
-		pinctrl-0 = <&pwm5_pins_a>;
-		pinctrl-1 = <&pwm5_sleep_pins_a>;
-		pinctrl-names = "default", "sleep";
-		status = "disabled";
-	};
-	timer@4 {
-		status = "disabled";
-	};
-};
-
-&timers6 {
-	status = "okay";
-	/* spare dmas for other usage */
-	/delete-property/dmas;
-	/delete-property/dma-names;
-	timer@5 {
-		status = "disabled";
-	};
-};
 
 &uart4 {
 	pinctrl-names = "default", "sleep", "idle", "no_console_suspend";
@@ -404,14 +319,14 @@
 
 /* Select display interface by commenting/uncommenting the following lines */ 
 //#include "phycore-stm32mp1-dsi-lcd-mb1407.dtsi"
-#include "phycore-stm32mp1-dsi-rpi-official-display.dtsi"
+//#include "phycore-stm32mp1-dsi-rpi-official-display.dtsi"
 //#include "phycore-stm32mp1-peb-av01-hdmi.dtsi"
-//#include "phycore-stm32mp1-peb-av02-lcd.dtsi"
+#include "phycore-stm32mp1-peb-av02-lcd.dtsi"
 
 
 /* Selected connectors used commenting/uncommenting the following line  */ 
-//#include "phycore-stm32mp1-pi-hat-extension.dtsi"
-#include "phycore-stm32mp1-pi-hat-redbear.dtsi"
+#include "phycore-stm32mp1-pi-hat-extension.dtsi"
+//#include "phycore-stm32mp1-pi-hat-redbear.dtsi"
 //#include "phycore-stm32mp1-uno-r3-extension.dtsi"
 //#include "phycore-stm32mp1-motor-control.dtsi"
 
