@@ -1135,7 +1135,7 @@ index 0000000..f7cf88f
 +
 diff --git a/arch/arm/dts/phyboard-stm32mp1-alpha.dtsi b/arch/arm/dts/phyboard-stm32mp1-alpha.dtsi
 new file mode 100644
-index 0000000..b9cde48
+index 0000000..7f74d74
 --- /dev/null
 +++ b/arch/arm/dts/phyboard-stm32mp1-alpha.dtsi
 @@ -0,0 +1,412 @@
@@ -1553,7 +1553,7 @@ index 0000000..b9cde48
 +
 diff --git a/arch/arm/dts/phycore-stm32mp1-1-u-boot.dtsi b/arch/arm/dts/phycore-stm32mp1-1-u-boot.dtsi
 new file mode 100644
-index 0000000..7c1dc88
+index 0000000..15c8ca1
 --- /dev/null
 +++ b/arch/arm/dts/phycore-stm32mp1-1-u-boot.dtsi
 @@ -0,0 +1,221 @@
@@ -1831,7 +1831,7 @@ index 0000000..05dafaa
 +
 diff --git a/arch/arm/dts/phycore-stm32mp1-2-u-boot.dtsi b/arch/arm/dts/phycore-stm32mp1-2-u-boot.dtsi
 new file mode 100644
-index 0000000..7c1dc88
+index 0000000..8a53289
 --- /dev/null
 +++ b/arch/arm/dts/phycore-stm32mp1-2-u-boot.dtsi
 @@ -0,0 +1,221 @@
@@ -3013,10 +3013,10 @@ index 0000000..820ded5
 +};
 diff --git a/arch/arm/dts/phycore-stm32mp157cac-som.dtsi b/arch/arm/dts/phycore-stm32mp157cac-som.dtsi
 new file mode 100644
-index 0000000..de00a81
+index 0000000..1c31f31
 --- /dev/null
 +++ b/arch/arm/dts/phycore-stm32mp157cac-som.dtsi
-@@ -0,0 +1,393 @@
+@@ -0,0 +1,392 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
 +/*
 + * Copyright (C) PHYTEC GmbH 2019-2020 - All Rights Reserved
@@ -3138,10 +3138,8 @@ index 0000000..de00a81
 +                interrupt-controller;
 +                #interrupt-cells = <2>;
 +                status = "okay";
++		wakeup-source;
 +
-+                st,main-control-register = <0x04>;
-+                st,vin-control-register = <0xc0>;
-+                st,usb-control-register = <0x20>;
 +
 +                regulators {
 +                        compatible = "st,stpmic1-regulators";
@@ -3267,8 +3265,9 @@ index 0000000..de00a81
 +
 +                onkey {
 +                        compatible = "st,stpmic1-onkey";
-+                        interrupts = <IT_PONKEY_F 0>, <IT_PONKEY_R 1>;
++                        interrupts = <IT_PONKEY_F 0>, <IT_PONKEY_R 0>;
 +                        interrupt-names = "onkey-falling", "onkey-rising";
++			power-off-time-sec = <10>;
 +                        status = "okay";
 +                };
 +
@@ -3341,7 +3340,7 @@ index 0000000..de00a81
 +
 +&iwdg2 {
 +        timeout-sec = <32>;
-+        status = "disabled";
++        status = "okay";
 +};
 +
 +&pwr {
@@ -3411,10 +3410,10 @@ index 0000000..de00a81
 +};
 +
 diff --git a/arch/arm/dts/stm32mp157c.dtsi b/arch/arm/dts/stm32mp157c.dtsi
-index c94a1f2..6b9422a 100644
+index d56e0f9..56e434b 100644
 --- a/arch/arm/dts/stm32mp157c.dtsi
 +++ b/arch/arm/dts/stm32mp157c.dtsi
-@@ -1768,10 +1768,14 @@
+@@ -1818,10 +1818,14 @@
  			clock-names = "stmmaceth",
  				      "mac-clk-tx",
  				      "mac-clk-rx",
@@ -3628,10 +3627,10 @@ index 7635d7f..12089e3 100644
 +CONFIG_SPI_FLASH_DATAFLASH=y
 +CONFIG_MTD_PARTITIONS=y
 diff --git a/drivers/net/dwc_eth_qos.c b/drivers/net/dwc_eth_qos.c
-index 5b933fb..7316fc1 100644
+index d8887c1..fce9b03 100644
 --- a/drivers/net/dwc_eth_qos.c
 +++ b/drivers/net/dwc_eth_qos.c
-@@ -995,7 +995,9 @@ static int eqos_write_hwaddr(struct udevice *dev)
+@@ -1024,7 +1024,9 @@ static int eqos_write_hwaddr(struct udevice *dev)
  static int eqos_start(struct udevice *dev)
  {
  	struct eqos_priv *eqos = dev_get_priv(dev);
@@ -3641,7 +3640,7 @@ index 5b933fb..7316fc1 100644
  	ulong rate;
  	u32 val, tx_fifo_sz, rx_fifo_sz, tqs, rqs, pbl;
  	ulong last_rx_desc;
-@@ -1044,7 +1046,22 @@ static int eqos_start(struct udevice *dev)
+@@ -1073,7 +1075,22 @@ static int eqos_start(struct udevice *dev)
  	 * don't need to reconnect/reconfigure again
  	 */
  	if (!eqos->phy) {
