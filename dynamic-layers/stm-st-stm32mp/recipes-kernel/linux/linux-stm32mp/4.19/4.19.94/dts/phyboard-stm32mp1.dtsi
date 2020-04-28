@@ -317,14 +317,14 @@
 	status = "disabled";
 };
 
-/* Select display interface by commenting/uncommenting the following lines */ 
-//#include "phycore-stm32mp1-dsi-lcd-mb1407.dtsi"
-//#include "phycore-stm32mp1-dsi-rpi-official-display.dtsi"
-//#include "phycore-stm32mp1-peb-av01-hdmi.dtsi"
-#include "phycore-stm32mp1-peb-av02-lcd.dtsi"
+/* Select only one display interface by commenting/uncommenting the following lines */
+#include "phyboard-stm32mp1-peb-av02-lcd.dtsi"
+//#include "phyboard-stm32mp1-peb-av01-hdmi.dtsi"
+//#include "phyboard-stm32mp1-dsi-lcd-mb1407.dtsi"
+//#include "phyboard-stm32mp1-dsi-rpi-official-display.dtsi"
 
 
-/* Selected connectors used commenting/uncommenting the following line  */ 
-#include "phycore-stm32mp1-pi-hat-extension.dtsi"
-//#include "phycore-stm32mp1-pi-hat-redbear.dtsi"
-//#include "phycore-stm32mp1-uno-r3-extension.dtsi"
+/* Select specific connectors configuration used commenting/uncommenting the following line  */ 
+#include "phyboard-stm32mp1-pi-hat-extension.dtsi"
+//#include "phyboard-stm32mp1-uno-r3-extension.dtsi"
+//#include "phyboard-stm32mp1-pi-hat-redbear.dtsi"
