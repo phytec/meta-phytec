@@ -1,5 +1,5 @@
 diff --git a/fdts/phycore-stm32mp1-1.dts b/fdts/phycore-stm32mp1-1.dts
-index e315989..8d9ac7a 100644
+index e315989..f901e50 100644
 --- a/fdts/phycore-stm32mp1-1.dts
 +++ b/fdts/phycore-stm32mp1-1.dts
 @@ -6,7 +6,11 @@
@@ -16,7 +16,7 @@ index e315989..8d9ac7a 100644
  / {
  	model = "PHYTEC phyCORE-STM32MP1-1 SOM";
 diff --git a/fdts/phycore-stm32mp1-2.dts b/fdts/phycore-stm32mp1-2.dts
-index 829bd2a..0e8b07d 100644
+index 829bd2a..94ad49b 100644
 --- a/fdts/phycore-stm32mp1-2.dts
 +++ b/fdts/phycore-stm32mp1-2.dts
 @@ -6,7 +6,11 @@
@@ -33,7 +33,7 @@ index 829bd2a..0e8b07d 100644
  / {
  	model = "PHYTEC phyCORE-STM32MP1-2 SOM";
 diff --git a/fdts/phycore-stm32mp1-3.dts b/fdts/phycore-stm32mp1-3.dts
-index 9fd3388..5866dce 100644
+index 9fd3388..9d4e322 100644
 --- a/fdts/phycore-stm32mp1-3.dts
 +++ b/fdts/phycore-stm32mp1-3.dts
 @@ -6,7 +6,11 @@
@@ -51,7 +51,7 @@ index 9fd3388..5866dce 100644
         model = "PHYTEC phyCORE-STM32MP1-3 SOM";
 diff --git a/fdts/phycore-stm32mp1-4.dts b/fdts/phycore-stm32mp1-4.dts
 new file mode 100644
-index 0000000..024ed87
+index 0000000..45c0db1
 --- /dev/null
 +++ b/fdts/phycore-stm32mp1-4.dts
 @@ -0,0 +1,39 @@
@@ -96,7 +96,7 @@ index 0000000..024ed87
 +};
 diff --git a/fdts/phycore-stm32mp1-som.dtsi b/fdts/phycore-stm32mp1-som.dtsi
 deleted file mode 100644
-index 2426d65..0000000
+index 11dcdd6..0000000
 --- a/fdts/phycore-stm32mp1-som.dtsi
 +++ /dev/null
 @@ -1,507 +0,0 @@
@@ -607,12 +607,49 @@ index 2426d65..0000000
 -	};
 -};
 -
+diff --git a/fdts/phycore-stm32mp157-pinctrl.dtsi b/fdts/phycore-stm32mp157-pinctrl.dtsi
+index d9a0fad..e243487 100644
+--- a/fdts/phycore-stm32mp157-pinctrl.dtsi
++++ b/fdts/phycore-stm32mp157-pinctrl.dtsi
+@@ -300,30 +300,13 @@
+ 
+ 			usart3_pins_a: usart3-0 {
+ 				pins1 {
+-					pinmux = <STM32_PINMUX('B', 10, AF7)>, /* USART3_TX */
+-						 <STM32_PINMUX('G', 8, AF8)>; /* USART3_RTS */
++					pinmux = <STM32_PINMUX('B', 10, AF7)>; /* USART3_TX */
+ 					bias-disable;
+ 					drive-push-pull;
+ 					slew-rate = <0>;
+ 				};
+ 				pins2 {
+-					pinmux = <STM32_PINMUX('B', 12, AF8)>, /* USART3_RX */
+-						 <STM32_PINMUX('I', 10, AF8)>; /* USART3_CTS_NSS */
+-					bias-disable;
+-				};
+-			};
+-
+-			usart3_pins_b: usart3-1 {
+-				pins1 {
+-					pinmux = <STM32_PINMUX('B', 10, AF7)>, /* USART3_TX */
+-						 <STM32_PINMUX('G', 8, AF8)>; /* USART3_RTS */
+-					bias-disable;
+-					drive-push-pull;
+-					slew-rate = <0>;
+-				};
+-				pins2 {
+-					pinmux = <STM32_PINMUX('B', 12, AF8)>, /* USART3_RX */
+-						 <STM32_PINMUX('B', 13, AF7)>; /* USART3_CTS_NSS */
++					pinmux = <STM32_PINMUX('B', 12, AF8)>; /* USART3_RX */
+ 					bias-disable;
+ 				};
+ 			};
 diff --git a/fdts/phycore-stm32mp157cac-som.dtsi b/fdts/phycore-stm32mp157cac-som.dtsi
 new file mode 100644
-index 0000000..314d5c1
+index 0000000..baf3d70
 --- /dev/null
 +++ b/fdts/phycore-stm32mp157cac-som.dtsi
-@@ -0,0 +1,526 @@
+@@ -0,0 +1,525 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
 +/*
 + * Copyright (C) Phytec GmbH 2019-2020 - All Rights Reserved
@@ -654,10 +691,8 @@ index 0000000..314d5c1
 +		interrupt-controller;
 +		#interrupt-cells = <2>;
 +		status = "okay";
++		wakeup-source;
 +
-+		st,main-control-register = <0x04>;
-+		st,vin-control-register = <0xc0>;
-+		st,usb-control-register = <0x20>;
 +
 +		regulators {
 +			compatible = "st,stpmic1-regulators";
@@ -758,7 +793,7 @@ index 0000000..314d5c1
 +
 +&iwdg2 {
 +	timeout-sec = <32>;
-+	status = "disabled";
++	status = "okay";
 +};
 +
 +&pwr {
@@ -828,7 +863,8 @@ index 0000000..314d5c1
 +        no-sdio;
 +        st,neg-edge;
 +        bus-width = <8>;
-+        status = "disabled";        vmmc-supply = <&v3v3>;
++        status = "disabled";
++	vmmc-supply = <&v3v3>;
 +        vqmmc-supply = <&v3v3>;
 +        mmc-ddr-3_3v;
 +        status = "disabled";
@@ -842,7 +878,7 @@ index 0000000..314d5c1
 +
 +&usart3 {
 +	pinctrl-names = "default";
-+	pinctrl-0 = <&usart3_pins_b>;
++	pinctrl-0 = <&usart3_pins_a>;
 +	status = "disabled";
 +};
 +
@@ -1064,10 +1100,10 @@ index 0000000..314d5c1
 +		regulator-on-in-suspend;
 +	};
 +	standby-ddr-sr {
-+		regulator-off-in-suspend;
++		regulator-on-in-suspend;
 +	};
 +	standby-ddr-off {
-+		regulator-off-in-suspend;
++		regulator-on-in-suspend;
 +	};
 +};
 +
@@ -1141,7 +1177,7 @@ index 0000000..314d5c1
 +};
 diff --git a/fdts/phycore-stm32mp157fac-som.dtsi b/fdts/phycore-stm32mp157fac-som.dtsi
 new file mode 100644
-index 0000000..3dc54b7
+index 0000000..0c397dd
 --- /dev/null
 +++ b/fdts/phycore-stm32mp157fac-som.dtsi
 @@ -0,0 +1,526 @@
