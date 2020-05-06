@@ -12,7 +12,7 @@ LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://COPYING.MIT;md5=1117940313875d7598ccbb05f20129a7"
 
 SRC_URI = "git://git.phytec.de/phytec-eeprom-flashtool.git"
-SRCREV = "2042c88d05ef29cecc3c4c17b63edf021bc3ca1b"
+SRCREV = "b562fc6e40e53b5b59f8085d0d79267adfe36d0f"
 
 do_install () {
         install -d ${D}${bindir}/${PN}
