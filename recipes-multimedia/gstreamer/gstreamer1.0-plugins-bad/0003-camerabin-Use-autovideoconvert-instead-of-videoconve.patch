@@ -1,0 +1,77 @@
+From 267903dde4cb4086c4c96a67ef4ceb0620f2df0d Mon Sep 17 00:00:00 2001
+From: Martin Schwan <m.schwan@phytec.de>
+Date: Mon, 25 May 2020 10:04:59 +0200
+Subject: [PATCH sumo-next 2/2] camerabin: Use autovideoconvert instead of
+ videoconvert
+
+Suggested-by: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
+Signed-off-by: Martin Schwan <m.schwan@phytec.de>
+---
+ gst-libs/gst/basecamerabinsrc/gstcamerabinpreview.c | 2 +-
+ gst/camerabin2/gstviewfinderbin.c                   | 4 ++--
+ gst/camerabin2/gstwrappercamerabinsrc.c             | 6 +++---
+ 3 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/gst-libs/gst/basecamerabinsrc/gstcamerabinpreview.c b/gst-libs/gst/basecamerabinsrc/gstcamerabinpreview.c
+index 48ec2fe..91a67d6 100644
+--- a/gst-libs/gst/basecamerabinsrc/gstcamerabinpreview.c
++++ b/gst-libs/gst/basecamerabinsrc/gstcamerabinpreview.c
+@@ -140,7 +140,7 @@ gst_camerabin_create_preview_pipeline (GstElement * element,
+   data->pipeline = gst_pipeline_new ("preview-pipeline");
+   data->appsrc = gst_element_factory_make ("appsrc", "preview-appsrc");
+   data->appsink = gst_element_factory_make ("appsink", "preview-appsink");
+-  csp = gst_element_factory_make ("videoconvert", "preview-vconv");
++  csp = gst_element_factory_make ("autovideoconvert", "preview-vconv");
+   vscale = gst_element_factory_make ("videoscale", "preview-vscale");
+ 
+   if (!data->appsrc || !data->appsink || !csp || !vscale) {
+diff --git a/gst/camerabin2/gstviewfinderbin.c b/gst/camerabin2/gstviewfinderbin.c
+index 1d3da32..282ca1b 100644
+--- a/gst/camerabin2/gstviewfinderbin.c
++++ b/gst/camerabin2/gstviewfinderbin.c
+@@ -198,9 +198,9 @@ gst_viewfinder_bin_create_elements (GstViewfinderBin * vfbin)
+     gst_ghost_pad_set_target (GST_GHOST_PAD (vfbin->ghostpad), NULL);
+ 
+     /* add the elements, user wants them */
+-    csp = gst_element_factory_make ("videoconvert", "vfbin-csp");
++    csp = gst_element_factory_make ("autovideoconvert", "vfbin-csp");
+     if (!csp) {
+-      missing_element_name = "videoconvert";
++      missing_element_name = "autovideoconvert";
+       goto missing_element;
+     }
+     gst_bin_add (GST_BIN_CAST (vfbin), csp);
+diff --git a/gst/camerabin2/gstwrappercamerabinsrc.c b/gst/camerabin2/gstwrappercamerabinsrc.c
+index 6912946..45ae135 100644
+--- a/gst/camerabin2/gstwrappercamerabinsrc.c
++++ b/gst/camerabin2/gstwrappercamerabinsrc.c
+@@ -558,7 +558,7 @@ gst_wrapper_camera_bin_src_construct_pipeline (GstBaseCameraSrc * bcamsrc)
+                 "src-crop")))
+       goto done;
+ 
+-    if (!gst_camerabin_create_and_add_element (cbin, "videoconvert",
++    if (!gst_camerabin_create_and_add_element (cbin, "autovideoconvert",
+             "src-videoconvert"))
+       goto done;
+ 
+@@ -567,7 +567,7 @@ gst_wrapper_camera_bin_src_construct_pipeline (GstBaseCameraSrc * bcamsrc)
+ 
+       if (!gst_camerabin_add_element (cbin, self->video_filter))
+         goto done;
+-      if (!gst_camerabin_create_and_add_element (cbin, "videoconvert",
++      if (!gst_camerabin_create_and_add_element (cbin, "autovideoconvert",
+               "filter-videoconvert"))
+         goto done;
+     }
+@@ -639,7 +639,7 @@ gst_wrapper_camera_bin_src_construct_pipeline (GstBaseCameraSrc * bcamsrc)
+   if (!self->video_filter) {
+     if (self->app_vid_filter) {
+       self->video_filter = gst_object_ref (self->app_vid_filter);
+-      filter_csp = gst_element_factory_make ("videoconvert",
++      filter_csp = gst_element_factory_make ("autovideoconvert",
+           "filter-videoconvert");
+       gst_bin_add_many (cbin, self->video_filter, filter_csp, NULL);
+       src_csp = gst_bin_get_by_name (cbin, "src-videoconvert");
+-- 
+2.7.4
+
