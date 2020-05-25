@@ -1,0 +1,142 @@
+From 3f8962e984969881b057fd294f9f3f3e812f7c4c Mon Sep 17 00:00:00 2001
+From: VaL Doroshchuk <valentyn.doroshchuk@qt.io>
+Date: Tue, 25 Sep 2018 12:28:36 +0200
+Subject: [PATCH] imx: Fallback to copying data if mapping has not succeeded
+
+Some formats or data might be unsupported and not possible to use them in glTexDirectVIVMap.
+If glTexDirectVIVMap returns an error then need to upload data to memory
+created by the driver using glTexDirectVIV.
+If at least one such error has occurred, all next video frames will be copied via glTexDirectVIV
+without trying to map again.
+
+Task-number: QTBUG-50927
+Change-Id: I0715d4b244139b8d3f49d8bd2fc905f3fd55556c
+Reviewed-by: Christian Stromme <christian.stromme@qt.io>
+---
+ .../videonode/imx6/qsgvivantevideomaterial.cpp     | 74 ++++++++++++----------
+ .../videonode/imx6/qsgvivantevideomaterial.h       |  1 +
+ 2 files changed, 41 insertions(+), 34 deletions(-)
+
+diff --git a/src/plugins/videonode/imx6/qsgvivantevideomaterial.cpp b/src/plugins/videonode/imx6/qsgvivantevideomaterial.cpp
+index 465ccfa..4b68f47 100644
+--- a/src/plugins/videonode/imx6/qsgvivantevideomaterial.cpp
++++ b/src/plugins/videonode/imx6/qsgvivantevideomaterial.cpp
+@@ -103,7 +103,7 @@ void QSGVivanteVideoMaterial::setCurrentFrame(const QVideoFrame &frame, QSGVideo
+ {
+     QMutexLocker lock(&mFrameMutex);
+     mNextFrame = frame;
+-    mMappable = !flags.testFlag(QSGVideoNode::FrameFiltered);
++    mMappable = mMapError == GL_NO_ERROR && !flags.testFlag(QSGVideoNode::FrameFiltered);
+ 
+ #ifdef QT_VIVANTE_VIDEO_DEBUG
+     qDebug() << Q_FUNC_INFO << " new frame: " << frame;
+@@ -172,6 +172,7 @@ GLuint QSGVivanteVideoMaterial::vivanteMapping(QVideoFrame vF)
+         mWidth = vF.width();
+         mHeight = vF.height();
+         mFormat = vF.pixelFormat();
++        mMapError = GL_NO_ERROR;
+         clearTextures();
+     }
+ 
+@@ -236,7 +237,12 @@ GLuint QSGVivanteVideoMaterial::vivanteMapping(QVideoFrame vF)
+                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+                 glTexDirectInvalidateVIV_LOCAL(GL_TEXTURE_2D);
+ 
+-                return tmpTexId;
++                mMapError = glGetError();
++                if (mMapError == GL_NO_ERROR)
++                    return tmpTexId;
++
++                // Error occurred.
++                // Fallback to copying data.
+             } else {
+                 // Fastest path: already seen this logical address. Just
+                 // indicate that the data belonging to the texture has changed.
+@@ -244,40 +250,40 @@ GLuint QSGVivanteVideoMaterial::vivanteMapping(QVideoFrame vF)
+                 glTexDirectInvalidateVIV_LOCAL(GL_TEXTURE_2D);
+                 return mBitsToTextureMap.value(vF.bits());
+             }
++        }
++
++        // Cannot map. So copy.
++        if (!mTexDirectTexture) {
++            glGenTextures(1, &mTexDirectTexture);
++            glBindTexture(GL_TEXTURE_2D, mTexDirectTexture);
++            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
++            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
++            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
++            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
++            glTexDirectVIV_LOCAL(GL_TEXTURE_2D, mCurrentFrame.width(), mCurrentFrame.height(),
++                                 QSGVivanteVideoNode::getVideoFormat2GLFormatMap().value(mCurrentFrame.pixelFormat()),
++                                 (GLvoid **) &mTexDirectPlanes);
+         } else {
+-            // Cannot map. So copy.
+-            if (!mTexDirectTexture) {
+-                glGenTextures(1, &mTexDirectTexture);
+-                glBindTexture(GL_TEXTURE_2D, mTexDirectTexture);
+-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+-                glTexDirectVIV_LOCAL(GL_TEXTURE_2D, mCurrentFrame.width(), mCurrentFrame.height(),
+-                                     QSGVivanteVideoNode::getVideoFormat2GLFormatMap().value(mCurrentFrame.pixelFormat()),
+-                                     (GLvoid **) &mTexDirectPlanes);
+-            } else {
+-                glBindTexture(GL_TEXTURE_2D, mTexDirectTexture);
+-            }
+-            switch (mCurrentFrame.pixelFormat()) {
+-            case QVideoFrame::Format_YUV420P:
+-            case QVideoFrame::Format_YV12:
+-                memcpy(mTexDirectPlanes[0], mCurrentFrame.bits(0), mCurrentFrame.height() * mCurrentFrame.bytesPerLine(0));
+-                memcpy(mTexDirectPlanes[1], mCurrentFrame.bits(1), mCurrentFrame.height() * mCurrentFrame.bytesPerLine(1));
+-                memcpy(mTexDirectPlanes[2], mCurrentFrame.bits(2), mCurrentFrame.height() * mCurrentFrame.bytesPerLine(2));
+-                break;
+-            case QVideoFrame::Format_NV12:
+-            case QVideoFrame::Format_NV21:
+-                memcpy(mTexDirectPlanes[0], mCurrentFrame.bits(0), mCurrentFrame.height() * mCurrentFrame.bytesPerLine(0));
+-                memcpy(mTexDirectPlanes[1], mCurrentFrame.bits(1), mCurrentFrame.height() / 2 * mCurrentFrame.bytesPerLine(1));
+-                break;
+-            default:
+-                memcpy(mTexDirectPlanes[0], mCurrentFrame.bits(), mCurrentFrame.height() * mCurrentFrame.bytesPerLine());
+-                break;
+-            }
+-            glTexDirectInvalidateVIV_LOCAL(GL_TEXTURE_2D);
+-            return mTexDirectTexture;
++            glBindTexture(GL_TEXTURE_2D, mTexDirectTexture);
++        }
++        switch (mCurrentFrame.pixelFormat()) {
++        case QVideoFrame::Format_YUV420P:
++        case QVideoFrame::Format_YV12:
++            memcpy(mTexDirectPlanes[0], mCurrentFrame.bits(0), mCurrentFrame.height() * mCurrentFrame.bytesPerLine(0));
++            memcpy(mTexDirectPlanes[1], mCurrentFrame.bits(1), mCurrentFrame.height() / 2 * mCurrentFrame.bytesPerLine(1));
++            memcpy(mTexDirectPlanes[2], mCurrentFrame.bits(2), mCurrentFrame.height() / 2 * mCurrentFrame.bytesPerLine(2));
++            break;
++        case QVideoFrame::Format_NV12:
++        case QVideoFrame::Format_NV21:
++            memcpy(mTexDirectPlanes[0], mCurrentFrame.bits(0), mCurrentFrame.height() * mCurrentFrame.bytesPerLine(0));
++            memcpy(mTexDirectPlanes[1], mCurrentFrame.bits(1), mCurrentFrame.height() / 2 * mCurrentFrame.bytesPerLine(1));
++            break;
++        default:
++            memcpy(mTexDirectPlanes[0], mCurrentFrame.bits(), mCurrentFrame.height() * mCurrentFrame.bytesPerLine());
++            break;
+         }
++        glTexDirectInvalidateVIV_LOCAL(GL_TEXTURE_2D);
++        return mTexDirectTexture;
+     }
+     else {
+ #ifdef QT_VIVANTE_VIDEO_DEBUG
+diff --git a/src/plugins/videonode/imx6/qsgvivantevideomaterial.h b/src/plugins/videonode/imx6/qsgvivantevideomaterial.h
+index 862747f..adbd960 100644
+--- a/src/plugins/videonode/imx6/qsgvivantevideomaterial.h
++++ b/src/plugins/videonode/imx6/qsgvivantevideomaterial.h
+@@ -81,6 +81,7 @@ private:
+     QVideoFrame mCurrentFrame, mNextFrame;
+     GLuint mCurrentTexture;
+     bool mMappable;
++    GLenum mMapError = GL_NO_ERROR;
+ 
+     QMutex mFrameMutex;
+ 
+-- 
+2.7.4
+
