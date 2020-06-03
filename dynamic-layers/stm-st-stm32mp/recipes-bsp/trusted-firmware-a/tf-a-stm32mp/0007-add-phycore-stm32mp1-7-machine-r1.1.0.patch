@@ -1,6 +1,6 @@
 diff --git a/fdts/phycore-stm32mp1-7.dts b/fdts/phycore-stm32mp1-7.dts
 new file mode 100644
-index 0000000..f18b45e
+index 0000000..e971709
 --- /dev/null
 +++ b/fdts/phycore-stm32mp1-7.dts
 @@ -0,0 +1,40 @@
@@ -16,7 +16,7 @@ index 0000000..f18b45e
 +#include <dt-bindings/clock/stm32mp1-clksrc.h>
 +#include <dt-bindings/power/stm32mp1-power.h>
 +#include "phycore-stm32mp157cac-som.dtsi"
-+#include "stm32mp15-ddr3-1x4Gb-1066-binG.dtsi"
++#include "phycore-stm32mp15-ddr3-2x2Gb-1066-binG.dtsi"
 +
 +/ {
 +	model = "PHYTEC phyCORE-STM32MP1-7 SOM";
