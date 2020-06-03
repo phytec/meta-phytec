@@ -16,7 +16,7 @@ index e315989..f901e50 100644
  / {
  	model = "PHYTEC phyCORE-STM32MP1-1 SOM";
 diff --git a/fdts/phycore-stm32mp1-2.dts b/fdts/phycore-stm32mp1-2.dts
-index 829bd2a..94ad49b 100644
+index d908630..20e4bc4 100644
 --- a/fdts/phycore-stm32mp1-2.dts
 +++ b/fdts/phycore-stm32mp1-2.dts
 @@ -6,7 +6,11 @@
@@ -28,7 +28,7 @@ index 829bd2a..94ad49b 100644
 +#include <dt-bindings/clock/stm32mp1-clksrc.h>
 +#include <dt-bindings/power/stm32mp1-power.h>
 +#include "phycore-stm32mp157cac-som.dtsi"
-+#include "stm32mp15-ddr3-1x4Gb-1066-binG.dtsi"
++#include "stm32mp15-ddr3-2x4Gb-1066-binG.dtsi"
  
  / {
  	model = "PHYTEC phyCORE-STM32MP1-2 SOM";
