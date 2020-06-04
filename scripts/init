@@ -49,7 +49,7 @@ if [ -z "${TEMPLATECONF}" ]; then
 	install -d ${TEMPLATECONF}
 	# Modify bblayers.conf.sample and local.conf.sample in case of freescale-release
 	case "$RELEASE_UID" in
-		*FSL*)
+		*FSL* | *"IoTEdge-i.MX8"*)
                 # copy new EULA to meta-freescale
                 cp ${ROOTDIR}/sources/meta-fsl-bsp-release/imx/EULA.txt ${ROOTDIR}/sources/meta-freescale/EULA
 
