@@ -10,7 +10,7 @@
 #include "phyboard-stm32mp1-alpha.dtsi"
 
 / {
-        model = "Phytec GmbH phycore-stm32mp1-1 Alpha Dev Board";
+        model = "Phytec GmbH phycore-stm32mp1-1 Alpha1-Kit Dev Board";
         compatible = "phycore-stm32mp1-1", "phytec,pcm068-1534-0-005", "phytec,pcm939-1517-1-002", "st,stm32mp157";
 
 };
