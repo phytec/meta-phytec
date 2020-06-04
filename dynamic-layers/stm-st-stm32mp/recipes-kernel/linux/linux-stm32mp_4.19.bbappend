@@ -31,7 +31,10 @@ SRC_URI += " \
 	file://${LINUX_VERSION}/4.19.94/dts/phycore-stm32mp1-1.dts \
 	file://${LINUX_VERSION}/4.19.94/dts/phycore-stm32mp1-1-m4-examples.dts \
 	file://${LINUX_VERSION}/4.19.94/dts/phycore-stm32mp1-1-a7-examples.dts \
+	\
 	file://${LINUX_VERSION}/4.19.94/dts/phycore-stm32mp1-2.dts \
+	file://${LINUX_VERSION}/4.19.94/dts/phycore-stm32mp1-2-m4-examples.dts \
+	file://${LINUX_VERSION}/4.19.94/dts/phycore-stm32mp1-2-a7-examples.dts \
 	\
 	file://${LINUX_VERSION}/4.19.94/dts/phyboard-stm32mp1-alpha.dtsi \
 	file://${LINUX_VERSION}/4.19.94/dts/phyboard-stm32mp1-alpha-pinctrl.dtsi \
