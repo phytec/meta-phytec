@@ -99,7 +99,7 @@ def check_bootloader_keyring(d):
     # check for problematic certificate setups
     shasumSRK=write_command("sha256sum "+ d.getVar("BOOTLOADER_SIGN_SRKFUSE_PATH", True),'')
     if ((len(shasumSRK) >0) and (shasumSRK.split(' ',1)[0] == "0d5dbc6ed8b0a55414648b19727e217453c54d1527cef3a62784ae818c9777e7")):
-        bb.warn("!! CRITICAL SECURITY WARNING: You're using Phytec's Development Keyring fore Secure Boot in the bootloader. Please create your own!!")
+        bb.warn("!! CRITICAL SECURITY WARNING: You're using Phytec's Development Keyring for Secure Boot in the bootloader. Please create your own!!")
 
 do_patch_append_secureboot() {
     import os
