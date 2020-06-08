@@ -34,7 +34,7 @@
                 status = "okay";
         };
 
-	gpio-keys {
+	gpio_keys: gpio-keys {
 		compatible = "gpio-keys";
 		status = "okay";
 
@@ -76,7 +76,7 @@
         pinctrl-names = "default", "sleep";
         pinctrl-0 = <&m_can2_pins_a>;
         pinctrl-1 = <&m_can2_sleep_pins_a>;
-	 xceiver-supply = <&reg_m_can>;
+	xceiver-supply = <&reg_m_can>;
         status = "okay";
 };
 
@@ -244,7 +244,13 @@
         pinctrl-names = "default", "sleep";
         pinctrl-0 = <&spi1_pins_a>;
         pinctrl-1 = <&spi1_sleep_pins_a>;
+	cs-gpios = <&gpioz 3 0>;
         status = "okay";
+	spi@0 {
+                compatible = "linux,spidev";
+                spi-max-frequency = <10000000>;
+                reg = <0>;
+        };
 };
 
 
@@ -269,9 +275,9 @@
 
 &usart3 {
 	pinctrl-names = "default", "sleep", "idle";
-	pinctrl-0 = <&usart3_pins_b>;
-	pinctrl-1 = <&usart3_sleep_pins_b>;
-	pinctrl-2 = <&usart3_idle_pins_b>;
+	pinctrl-0 = <&usart3_pins_a>;
+	pinctrl-1 = <&usart3_sleep_pins_a>;
+	pinctrl-2 = <&usart3_idle_pins_a>;
 	status = "okay";
 };
 
@@ -327,4 +333,11 @@
 /* Select specific connectors configuration used commenting/uncommenting the following line  */ 
 #include "phyboard-stm32mp1-pi-hat-extension.dtsi"
 //#include "phyboard-stm32mp1-uno-r3-extension.dtsi"
+
+/* Select PEB-WLBT-05 Wifi and/or Bluetoooth module */
+#include "phyboard-stm32mp1-peb-wlbt-05-wifi.dtsi"
+#include "phyboard-stm32mp1-peb-wlbt-05-bluetooth-usart3.dtsi" //no CAN transceiver and no 2nd debug FTDI interfaces available on Baseboard 
+//#include "phyboard-stm32mp1-peb-wlbt-05-bluetooth-usart1.dtsi" // no RS232 transceiver available on Baseboard
+
+/* Select RedBear IoT pHAT module v1.0 wifi/bluetooth module */
 //#include "phyboard-stm32mp1-pi-hat-redbear.dtsi"

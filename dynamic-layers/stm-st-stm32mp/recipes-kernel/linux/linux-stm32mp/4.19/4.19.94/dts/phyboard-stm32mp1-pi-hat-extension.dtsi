@@ -2,17 +2,12 @@
 /*
  * Copyright (C) PHYTEC GmbH 2019 - All Rights Reserved
  * Author: Dom VOVARD <dom.vovard@linrt.com>.
+ * Device tree expansion file example to configure Raspberry PI HAT pinout
  */
 
 
 &spi1 {
         status = "okay";
-	cs-gpios = <&gpioz 3 0>;
-	spi@0 {
-                compatible = "linux,spidev";
-                spi-max-frequency = <10000000>;
-                reg = <0>;
-        };
 };
 
 &sdmmc3 {

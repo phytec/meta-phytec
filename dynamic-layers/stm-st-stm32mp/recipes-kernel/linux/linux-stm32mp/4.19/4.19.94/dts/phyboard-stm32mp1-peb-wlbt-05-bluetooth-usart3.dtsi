@@ -1,0 +1,33 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
+/*
+ * Copyright (C) PHYTEC GmbH 2019-2020 - All Rights Reserved
+ * Author: Christophe PARANT <c.parant@phytec.fr>.
+ * Devicetree expansion for PEB-WLBT-05 module - Bluetooth function using usart3
+ */
+
+&gpio_keys {
+	enter {
+		status = "disabled"; //disable PA14 (key enter) as input event
+	};
+};
+
+&m_can2 {
+        status = "disabled"; //disable CAN2 (TX pin used as USART3_CTS for bluetooth)
+};
+
+&usart3 {
+        status = "okay";
+	st,hw-flow-ctrl;
+	
+	/* redefine usart3 pinctrl with additional rts/cts pins */
+	pinctrl-names = "default", "sleep", "idle";
+	pinctrl-0 = <&usart3_pins_a &usart3_pins_b>;
+	pinctrl-1 = <&usart3_sleep_pins_a &usart3_sleep_pins_b>;
+	pinctrl-2 = <&usart3_idle_pins_a &usart3_idle_pins_b>;
+
+	bluetooth {
+		shutdown-gpios = <&gpioa 14 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+		compatible = "brcm,bcm43438-bt";
+		max-speed = <3000000>;
+	};
+};

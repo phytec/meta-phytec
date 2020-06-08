@@ -1,0 +1,45 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
+/*
+ * Copyright (C) PHYTEC GmbH 2019-2020 - All Rights Reserved
+ * Author: Christophe PARANT <c.parant@phytec.fr>.
+ * Devicetree expansion for PEB-WLBT-05 module - Wifi function
+ */
+
+
+/ {
+	gpio_led_wl: leds {
+		compatible = "gpio-leds";
+		status = "okay";
+
+		wl_reg {
+			gpios = <&gpioa 13 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+			linux,default-trigger = "default-on";
+		};
+	};
+};
+
+&gpio_keys {
+	home {
+		status = "disabled"; //disable PA13 (key home) as input event
+	};
+};
+
+
+&sdmmc3 {
+	arm,primecell-periphid = <0x10153180>;
+	pinctrl-names = "default", "opendrain", "sleep";
+	pinctrl-0 = <&sdmmc3_b4_pins_a>;
+	pinctrl-1 = <&sdmmc3_b4_od_pins_a>;
+	pinctrl-2 = <&sdmmc3_b4_sleep_pins_a>;
+	non-removable;
+	st,neg-edge;
+	bus-width = <4>;
+	max-frequency = <10000000>;
+	vmmc-supply = <&v3v3>;
+	status = "okay";
+
+	brcmf: bcrmf@1 {
+		reg = <1>;
+		compatible = "brcm,bcm4329-fmac";
+	};
+};

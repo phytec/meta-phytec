@@ -50,6 +50,9 @@ SRC_URI += " \
 	file://${LINUX_VERSION}/4.19.94/dts/phyboard-stm32mp1-peb-av01-hdmi.dtsi \
         file://${LINUX_VERSION}/4.19.94/dts/phyboard-stm32mp1-pi-hat-extension.dtsi \
 	file://${LINUX_VERSION}/4.19.94/dts/phyboard-stm32mp1-pi-hat-redbear.dtsi \
+	file://${LINUX_VERSION}/4.19.94/dts/phyboard-stm32mp1-peb-wlbt-05-wifi.dtsi \
+	file://${LINUX_VERSION}/4.19.94/dts/phyboard-stm32mp1-peb-wlbt-05-bluetooth-usart1.dtsi \
+	file://${LINUX_VERSION}/4.19.94/dts/phyboard-stm32mp1-peb-wlbt-05-bluetooth-usart3.dtsi \
         \
         file://${LINUX_VERSION}/4.19.94/dts/phycore-stm32mp1-3.dts \
         file://${LINUX_VERSION}/4.19.94/dts/phycore-stm32mp1-3-m4-examples.dts \
