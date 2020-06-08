@@ -1,6 +1,6 @@
 #@DESCRIPTION: Common Machine configuration for STM32 systems
 
-require conf/machine/include/phytec-machine-features-stm32mp.inc
+require conf/machine/include/st-machine-features-stm32mp.inc
 require conf/machine/include/phytec-machine-flashlayout-stm32mp.inc
 require conf/machine/include/phytec-machine-flashlayout-deleteall-stm32mp.inc
 
