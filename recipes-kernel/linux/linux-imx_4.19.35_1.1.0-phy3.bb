@@ -3,6 +3,7 @@
 
 inherit phygittag
 inherit buildinfo
+inherit fsl-vivante-kernel-driver-handler
 include linux-common.inc
 
 BRANCH = "v4.19.35_1.1.0-phy"
