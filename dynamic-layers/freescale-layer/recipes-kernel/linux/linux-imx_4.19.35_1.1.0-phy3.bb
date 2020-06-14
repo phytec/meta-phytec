@@ -4,7 +4,7 @@
 inherit phygittag
 inherit buildinfo
 inherit fsl-vivante-kernel-driver-handler
-include linux-common.inc
+include recipes-kernel/linux/linux-common.inc
 
 BRANCH = "v4.19.35_1.1.0-phy"
 GIT_URL = "git://git.phytec.de/${PN}"
