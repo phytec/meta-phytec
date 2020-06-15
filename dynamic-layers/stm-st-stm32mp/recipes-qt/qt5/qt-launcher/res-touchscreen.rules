@@ -1,0 +1,2 @@
+SUBSYSTEM=="input", KERNEL=="event[0-9]*", DRIVERS=="ti_am3359-tscadc", SYMLINK+="input/res-touchscreen"
+SUBSYSTEM=="input", KERNEL=="event[0-9]*", DRIVERS=="stmpe-ts", SYMLINK+="input/res-touchscreen"
