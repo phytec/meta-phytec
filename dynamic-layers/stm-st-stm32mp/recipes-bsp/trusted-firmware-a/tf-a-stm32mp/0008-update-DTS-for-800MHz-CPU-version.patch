@@ -1,0 +1,74 @@
+From 70f33a30f81ee9cffe6c3f28a9a01efa46d83004 Mon Sep 17 00:00:00 2001
+From: Christophe Parant <c.parant@phytec.fr>
+Date: Tue, 16 Jun 2020 10:30:26 +0200
+Subject: [PATCH] update DTS for 800MHz CPU version
+
+Enable PMIC as wakeup-source
+Delete unused st control-register properties (not used anymore in this OpenSTLinux version)
+Re-enable iwdg2 watchdog (was only disabled to investigate standby mode entering issue)
+Realign USART3 with previous pinctrl clean
+Keep enabled PMIC buck4 ouput voltage in standby mode as a workaround to standby mode reset issue (due to phyBOARD Enabled voltages circuit)
+---
+ fdts/phycore-stm32mp157fac-som.dtsi | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
+
+diff --git a/fdts/phycore-stm32mp157fac-som.dtsi b/fdts/phycore-stm32mp157fac-som.dtsi
+index 0c397dd..2be7d88 100644
+--- a/fdts/phycore-stm32mp157fac-som.dtsi
++++ b/fdts/phycore-stm32mp157fac-som.dtsi
+@@ -39,10 +39,8 @@
+ 		interrupt-controller;
+ 		#interrupt-cells = <2>;
+ 		status = "okay";
++		wakeup-source;
+ 
+-		st,main-control-register = <0x04>;
+-		st,vin-control-register = <0xc0>;
+-		st,usb-control-register = <0x20>;
+ 
+ 		regulators {
+ 			compatible = "st,stpmic1-regulators";
+@@ -143,7 +141,7 @@
+ 
+ &iwdg2 {
+ 	timeout-sec = <32>;
+-	status = "disabled";
++	status = "okay";
+ };
+ 
+ &pwr {
+@@ -213,7 +211,8 @@
+         no-sdio;
+         st,neg-edge;
+         bus-width = <8>;
+-        status = "disabled";        vmmc-supply = <&v3v3>;
++        status = "disabled";
++	vmmc-supply = <&v3v3>;
+         vqmmc-supply = <&v3v3>;
+         mmc-ddr-3_3v;
+         status = "disabled";
+@@ -227,7 +226,7 @@
+ 
+ &usart3 {
+ 	pinctrl-names = "default";
+-	pinctrl-0 = <&usart3_pins_b>;
++	pinctrl-0 = <&usart3_pins_a>;
+ 	status = "disabled";
+ };
+ 
+@@ -448,10 +447,10 @@
+ 		regulator-on-in-suspend;
+ 	};
+ 	standby-ddr-sr {
+-		regulator-off-in-suspend;
++		regulator-on-in-suspend;
+ 	};
+ 	standby-ddr-off {
+-		regulator-off-in-suspend;
++		regulator-on-in-suspend;
+ 	};
+ };
+ 
+-- 
+2.7.4
+

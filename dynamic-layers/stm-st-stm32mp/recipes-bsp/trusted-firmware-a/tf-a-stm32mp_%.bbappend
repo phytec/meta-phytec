@@ -7,4 +7,5 @@ SRC_URI += " \
         file://0005-add-phycore-stm32mp1-5-machine-r1.1.0.patch \
         file://0006-add-phycore-stm32mp1-6-machine-r1.1.0.patch \
         file://0007-add-phycore-stm32mp1-7-machine-r1.1.0.patch \
+        file://0008-update-DTS-for-800MHz-CPU-version.patch \
 "
