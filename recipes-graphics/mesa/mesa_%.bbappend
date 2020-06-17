@@ -1,9 +1,5 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
-SRC_URI_append = " \
-    file://0001-kmsro-move-entry-points-from-etnaviv-to-kmsro.patch \
-"
-
 PACKAGE_ARCH_mx6 = "${MACHINE_SOCARCH}"
 
 PACKAGECONFIG[kmsro] = ""
