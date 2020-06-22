@@ -2,19 +2,19 @@
 /*
  * Copyright (C) PHYTEC GmbH 2019-2020 - All Rights Reserved
  * Author: Christophe PARANT <c.parant@phytec.fr>.
- * Devicetree expansion for PEB-WLBT-05 module - Wifi function
+ * Devicetree expansion for PEB-WLBT-05 module - WLAN function
  */
 
 
 / {
-	gpio_led_wl: leds {
-		compatible = "gpio-leds";
-		status = "okay";
-
-		wl_reg {
-			gpios = <&gpioa 13 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
-			linux,default-trigger = "default-on";
-		};
+	reg_wlan_en: wlan_en {
+		compatible = "regulator-fixed";
+		regulator-name = "wlan_en";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		gpio = <&gpioa 13 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+		enable-active-high;
+		regulator-always-on;
 	};
 };
 
