@@ -4,6 +4,19 @@
  * Author: Dom VOVARD <dom.vovard@linrt.com>.
  */
 
+/ {
+	reg_hdmi_en: hdmi_en {
+		compatible = "regulator-fixed";
+		regulator-name = "hdmi_en";
+		regulator-min-microvolt = <1800000>;
+		regulator-max-microvolt = <1800000>;
+		gpio = <&gpiod 9 GPIO_ACTIVE_HIGH>;
+		startup-delay-us = <100>;
+		enable-active-high;
+		regulator-always-on;
+	};
+};
+
 &i2c1 {
         tda19988@70 {
                 compatible = "nxp,tda998x";
