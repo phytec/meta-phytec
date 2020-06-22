@@ -50,7 +50,7 @@ SRC_URI += " \
 	file://${LINUX_VERSION}/4.19.94/dts/phyboard-stm32mp1-peb-av01-hdmi.dtsi \
         file://${LINUX_VERSION}/4.19.94/dts/phyboard-stm32mp1-pi-hat-extension.dtsi \
 	file://${LINUX_VERSION}/4.19.94/dts/phyboard-stm32mp1-pi-hat-redbear.dtsi \
-	file://${LINUX_VERSION}/4.19.94/dts/phyboard-stm32mp1-peb-wlbt-05-wifi.dtsi \
+	file://${LINUX_VERSION}/4.19.94/dts/phyboard-stm32mp1-peb-wlbt-05-wlan.dtsi \
 	file://${LINUX_VERSION}/4.19.94/dts/phyboard-stm32mp1-peb-wlbt-05-bluetooth-usart1.dtsi \
 	file://${LINUX_VERSION}/4.19.94/dts/phyboard-stm32mp1-peb-wlbt-05-bluetooth-usart3.dtsi \
         \
@@ -97,6 +97,24 @@ SRC_URI += "file://4.19/fragment-11-wifi-r8712u-support.config;subdir=fragments"
 SRC_URI += "file://4.19/fragment-12-add-dp83867-phy-support.config;subdir=fragments"
 SRC_URI += "file://4.19/fragment-13-add-pca953x-led-support.config;subdir=fragments"
 SRC_URI += "file://4.19/fragment-14-RPI-screen.config;subdir=fragments"
+
+SRC_URI_class-devupstream = "git://git@git.phytec.de/linux-stm32mp;protocol=ssh;branch=v4.19.94-phy"
+SRCREV_class-devupstream = "9f79be9046b49885ccebd40ee3adcd947f812105"
+SRCREV_FORMAT_class-devupstream = "linux"
+PV_class-devupstream = "${LINUX_VERSION}+git+${SRCPV}"
+
+KERNEL_DEFCONFIG_class-devupstream  = "phycore_stm32mp1_defconfig"
+KERNEL_CONFIG_FRAGMENTS_class-devupstream = ""
+SRC_URI_remove_class-devupstream = "file://4.19/fragment-03-systemd.config;subdir=fragments"
+SRC_URI_remove_class-devupstream = "file://4.19/fragment-04-optee.config;subdir=fragments"
+SRC_URI_remove_class-devupstream = "file://4.19/fragment-05-modules.config;subdir=fragments"
+
+# ---------------------------------
+# Configure default preference to manage dynamic selection between tarball and git repository
+# ---------------------------------
+STM32MP_SOURCE_SELECTION ?= "tarball"
+
+DEFAULT_PREFERENCE = "${@bb.utils.contains('STM32MP_SOURCE_SELECTION', 'git.phytec', '-1', '1', d)}"
 
 # Copy .dts and .dtsi from SRC_URI to the kernel boot/dts path
 # This should go to poky/meta/classes/kernel-devicetree.bbclass
