@@ -260,8 +260,8 @@ INHERIT += "rm_work"
 # To generate debug image with all symbol
 #IMAGE_GEN_DEBUGFS = "1"
 
-# force the usage of debian package
-PACKAGE_CLASSES = "package_deb"
+# force the usage of ipk package
+PACKAGE_CLASSES = "package_ipk"
 
 # To enable archiver for recipes that are configured
 #ST_ARCHIVER_ENABLE = "1"
@@ -277,9 +277,9 @@ SDK_INCLUDE_TOOLCHAIN="1"
 PRSERV_HOST = "localhost:0"
 
 # =========================================================================
-# Configure STM32MP default version to github
+# Configure STM32MP default version to Phytec git repositories
 # =========================================================================
-#STM32MP_SOURCE_SELECTION_pn-linux-stm32mp = "github"
+#STM32MP_SOURCE_SELECTION_pn-linux-stm32mp = "git.phytec"
 #STM32MP_SOURCE_SELECTION_pn-optee-os-stm32mp = "github"
-#STM32MP_SOURCE_SELECTION_pn-tf-a-stm32mp = "github"
-#STM32MP_SOURCE_SELECTION_pn-u-boot-stm32mp = "github"
+#STM32MP_SOURCE_SELECTION_pn-tf-a-stm32mp = "git.phytec"
+#STM32MP_SOURCE_SELECTION_pn-u-boot-stm32mp = "git.phytec"
