@@ -283,3 +283,19 @@ PRSERV_HOST = "localhost:0"
 #STM32MP_SOURCE_SELECTION_pn-optee-os-stm32mp = "github"
 #STM32MP_SOURCE_SELECTION_pn-tf-a-stm32mp = "git.phytec"
 #STM32MP_SOURCE_SELECTION_pn-u-boot-stm32mp = "git.phytec"
+
+# =========================================================================
+# HDMI EDID firmware
+# =========================================================================
+# This firmware allows to set specific HDMI resolution (when EDID detection
+# is not working properly with the HDMI monitor)
+
+# Uncomment the following line to install the firmware.
+# EDID auto detection will not be used in that case.
+
+#IMAGE_INSTALL_append = " linux-firmware-edid"
+
+# Uncomment the following line to set the resolution.
+# Replace the resolution among the possibilities listed on target under /lib/firmware/edid
+
+#HDMI_EDID_KERNEL_ARGS = "drm_kms_helper.edid_firmware=HDMI-A-1:edid/1280x720.bin"
