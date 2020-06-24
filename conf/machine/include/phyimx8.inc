@@ -2,7 +2,6 @@
 
 PREFERRED_PROVIDER_virtual/bootloader= "u-boot-imx"
 PREFERRED_PROVIDER_imx-boot="imx-boot-phytec"
-PREFERRED_VERSION_linux-imx = "4.14.98-phy5"
 
 # Wic
 IMAGE_CLASSES += "wic-helper"
