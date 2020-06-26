@@ -20,6 +20,5 @@ S = "${WORKDIR}/git"
 INTREE_DEFCONFIG = "defconfig imx8_phytec_distro.config imx8_phytec_platform.config"
 
 COMPATIBLE_MACHINE  = "^("
-COMPATIBLE_MACHINE .= "phyboard-polis-imx8mm-2"
-COMPATIBLE_MACHINE .= "|phyboard-polis-imx8mm-3"
+COMPATIBLE_MACHINE .= "phyboard-polis-imx8mm-3"
 COMPATIBLE_MACHINE .= ")$"
