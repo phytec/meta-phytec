@@ -5,7 +5,7 @@ DESCRIPTION = "The linux-vanilla recipe provides a stable unpatched kernel.\
                besides adding configuration data is prohibited. Its purpose is\
                to evaluate features currently supported by the upstream kernel\
                for our products."
-LIC_FILES_CHKSUM = "file://COPYING;md5=bbea815ee2795b2f4230826c0c6b8814"
+LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 
 GIT_URL = "git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
@@ -13,8 +13,8 @@ SRC_URI = "${GIT_URL};branch=${BRANCH}"
 PR = "${INC_PR}.0"
 
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "1f6f316a537d4310747b08f89fb32565317b288b"
-BRANCH = "linux-5.0.y"
+SRCREV = "09fd4bcb610a34127afdb97a5df73364c3d7b01c"
+BRANCH = "linux-5.7.y"
 
 S = "${WORKDIR}/git"
 
