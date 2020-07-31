@@ -9,7 +9,7 @@ SRC_URI = "file://rkeeprom.py"
 
 S = "${WORKDIR}"
 
-RDEPENDS_${PN} = "python python-smbus python-argparse"
+RDEPENDS_${PN} = "python3-core python3-smbus2"
 
 do_install() {
 	install -d ${D}${bindir}

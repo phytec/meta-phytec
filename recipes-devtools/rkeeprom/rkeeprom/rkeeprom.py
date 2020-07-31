@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # Copyright 2017 Phytec Messtechnik GmbH
 # Author: Wadim Egorov <w.egorov@phytec.de>
 
