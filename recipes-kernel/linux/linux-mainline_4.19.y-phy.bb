@@ -12,8 +12,7 @@ SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
 PR = "${INC_PR}.0"
 
-# tag: v4.19
-SRCREV = "bebc6082da0a9f5d47a1ea2edc099bf671058bd4"
+SRCREV = "${AUTOREV}"
 
 S = "${WORKDIR}/git"
 
