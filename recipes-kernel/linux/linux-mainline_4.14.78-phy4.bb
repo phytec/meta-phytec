@@ -24,7 +24,6 @@ SRC_URI_append_ti33x = "\
 
 PR = "${INC_PR}.0"
 
-RDEPENDS_kernel-modules_rk3288 += "cryptodev-module"
 RDEPENDS_kernel-modules_ti33x += "\
     ${@bb.utils.contains('MACHINE_FEATURES', 'suspend', 'amx3-cm3', '', d)} \
     ${@bb.utils.contains('MACHINE_FEATURES', 'sgx', 'ti-sgx-ddk-km', '', d)} \
