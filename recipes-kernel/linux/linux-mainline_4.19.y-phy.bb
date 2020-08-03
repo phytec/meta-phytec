@@ -2,7 +2,6 @@
 # Author: Wadim Egorov <w.egorov@phytec.de>
 
 inherit phygittag
-inherit buildinfo
 include linux-common.inc
 
 DEFAULT_PREFERENCE = "-1"
