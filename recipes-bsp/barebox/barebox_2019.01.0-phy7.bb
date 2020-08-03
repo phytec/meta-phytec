@@ -150,6 +150,9 @@ python do_env_append_phyboard-segin-imx6ul() {
 #use this expansion when peb-wlbt-01 adapter is connected
 #. /env/expansions/imx6ul-phytec-peb-wlbt-01
 
+#use this expansion when peb-wlbt-05 adapter is connected
+#. /env/expansions/imx6ul-phytec-peb-wlbt-05
+
 # imx6ul-phytec-lcd: 7" display
 #of_display_timings -S /soc/aips-bus@2100000/lcdif@21c8000/display@di0/display-timings/ETM0700G0EDH6
 
@@ -203,6 +206,14 @@ of_fixup_status /soc/aips-bus@2000000/pwm@2088000/
 of_fixup_status /soc/aips-bus@2100000/usdhc@2194000
 of_fixup_status /regulator-wlan-en
 of_fixup_status -d /soc/aips-bus@2100000/adc@2198000
+""")
+    env_add(d, "expansions/imx6ul-phytec-peb-wlbt-05",
+"""#!/bin/sh
+of_fixup_status /soc/aips-bus@2100000/serial@21e8000
+of_fixup_status /regulator-bt-en
+of_fixup_status -d /user-leds
+of_fixup_status /soc/aips-bus@2100000/usdhc@2194000
+of_fixup_status /regulator-wl-en
 """)
     env_add(d, "expansions/imx6ul-phytec-vm010-col",
 """#!/bin/sh
@@ -337,6 +348,9 @@ python do_env_append_phyboard-segin-imx6ul-5() {
 
 #use this expansion when peb-wlbt-01 adapter is connected
 . /env/expansions/imx6ul-phytec-peb-wlbt-01
+
+#use this expansion when peb-wlbt-05 adapter is connected
+#. /env/expansions/imx6ul-phytec-peb-wlbt-05
 
 # imx6ul-phytec-lcd: 7" display
 #of_display_timings -S /soc/aips-bus@2100000/lcdif@21c8000/display@di0/display-timings/ETM0700G0EDH6
