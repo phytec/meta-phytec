@@ -17,7 +17,7 @@ S = "${WORKDIR}/git"
 PR = "${INC_PR}.0"
 
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "2269316b82fb16fa0a57b85c42cb318ef642f878"
+SRCREV = "c61bd7d985305f2d9c5f2a9a26df1d241d04ea52"
 
 python do_env_append() {
     env_add(d, "nv/allow_color", "false\n")
