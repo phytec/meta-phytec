@@ -358,15 +358,24 @@ python do_env_append_phyboard-segin-imx6ul-5() {
 }
 
 #Currently there is no rauc support for eMMC
-python do_env_append_phyboard-segin-imx6ul-7() {
+def env_rm_rauc(d):
     env_rm(d, "boot/system0")
     env_rm(d, "boot/system1")
     env_rm(d, "nv/bootchooser.targets")
     env_rm(d, "nv/bootchooser.system0.boot")
     env_rm(d, "nv/bootchooser.system1.boot")
     env_rm(d, "nv/bootchooser.state_prefix")
+    env_rm(d, "bin/rauc_init_nand")
     env_rm(d, "bin/rauc_flash_nand_from_mmc")
     env_rm(d, "bin/rauc_flash_nand_from_tftp")
+
+
+python do_env_append_phyboard-segin-imx6ul-7() {
+    env_rm_rauc(d)
+}
+
+python do_env_append_phyboard-segin-imx6ul-8() {
+    env_rm_rauc(d)
 }
 
 INTREE_DEFCONFIG = "imx_v7_defconfig"
