@@ -8,6 +8,10 @@ LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://${COREBASE}/meta/files/common-licenses/GPL-2.0;md5=801f80980d171dd6425610833a22dbe6"
 SECTION = "BSP"
 
+FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
+
+SRC_URI += "file://0001-Revert-imx8m-Add-DTB-pre-process-script-to-check-u-b.patch"
+
 IMX_EXTRA_FIRMWARE      = "firmware-imx-8 imx-sc-firmware imx-seco"
 IMX_EXTRA_FIRMWARE_mx8m = "firmware-imx-8m"
 IMX_EXTRA_FIRMWARE_mx8x = "imx-sc-firmware imx-seco"
