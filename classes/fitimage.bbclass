@@ -44,6 +44,9 @@ FITIMAGE_ENTRYPOINT  ??= "0x8000"
 FITIMAGE_RD_LOADADDRESS ??= ""
 FITIMAGE_RD_ENTRYPOINT ??= ""
 
+FITIMAGE_SIGN ??= "false"
+FITIMAGE_SIGN[type] = "boolean"
+
 # Create dependency list from images
 python __anonymous() {
     for slot in (d.getVar('FITIMAGE_SLOTS') or "").split():
