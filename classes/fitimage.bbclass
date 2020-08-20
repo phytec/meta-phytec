@@ -105,6 +105,7 @@ def fitimage_emit_section_kernel(d,fd,imgpath,imgsource,imgcomp):
     ENTRYPOINT = d.expand("${FITIMAGE_ENTRYPOINT}")
     LOADADDRESS = d.expand("${FITIMAGE_LOADADDRESS}")
     arch = d.getVar("TARGET_ARCH", True)
+    arch = "arm64" if arch == "aarch64" else arch
     fd.write('\t\t'     + 'kernel@%s {\n' % kernelcount)
     fd.write('\t\t\t'   +   'description = "Linux kernel";\n')
     fd.write('\t\t\t'   +   'data = /incbin/("%s/%s");\n' % (imgpath,imgsource))
@@ -125,6 +126,7 @@ def fitimage_emit_section_kernel(d,fd,imgpath,imgsource,imgcomp):
 def fitimage_emit_section_dtb(d,fd,dtb_file,dtb_path):
     dtb_csum = d.expand("${FITIMAGE_HASH}")
     arch = d.getVar("TARGET_ARCH", True)
+    arch = "arm64" if arch == "aarch64" else arch
     fd.write('\t\t'     + 'fdt@%s {\n' % dtb_file)
     fd.write('\t\t\t'   +   'description = "Flattened Device Tree blob";\n')
     fd.write('\t\t\t'   +   'data = /incbin/("%s/%s");\n' % (dtb_path, dtb_file))
@@ -143,6 +145,7 @@ def fitimage_emit_section_ramdisk(d,fd,img_file,img_path):
     ramdisk_count = "1"
     ramdisk_csum = d.expand("${FITIMAGE_HASH}")
     arch = d.getVar("TARGET_ARCH", True)
+    arch = "arm64" if arch == "aarch64" else arch
     ramdisk_ctype = "none"
     ramdisk_loadline = ""
     ramdisk_entryline = ""
