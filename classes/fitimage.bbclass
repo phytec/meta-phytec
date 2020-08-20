@@ -147,8 +147,8 @@ def fitimage_emit_section_ramdisk(d,fd,img_file,img_path):
     arch = d.getVar("TARGET_ARCH", True)
     arch = "arm64" if arch == "aarch64" else arch
     ramdisk_ctype = "none"
-    ramdisk_loadline = ""
-    ramdisk_entryline = ""
+    ramdisk_loadline = "load = <00000000>;"
+    ramdisk_entryline = "entry = <00000000>;"
 
     if len(d.expand("${FITIMAGE_RD_ENTRYPOINT}")) > 0:
         ramdisk_loadline = "load = <%s>;" % d.expand("${FITIMAGE_RD_ENTRYPOINT}")
