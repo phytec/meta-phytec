@@ -12,4 +12,4 @@ WKS_FILES_mx8 ?= "imx8-sdimage.wks"
 WKS_FILES_mx8m ?= "imx8m-sdimage.wks"
 
 # Default images to build
-IMAGE_FSTYPES_mx8 = "tar.gz wic"
+IMAGE_FSTYPES = "tar.gz wic"
