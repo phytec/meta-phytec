@@ -6,11 +6,7 @@ BBPATH = "${TOPDIR}"
 BBFILES ?= ""
 
 OEROOT := "##OEROOT##"
-BBLAYERS  ?= " \
-  ${OEROOT}/meta \
-  ${OEROOT}/meta-poky \
-  ${OEROOT}/../meta-openembedded/meta-oe \
-  ${OEROOT}/../meta-openembedded/meta-networking \
-  ${OEROOT}/../meta-openembedded/meta-python \
-  ${OEROOT}/../meta-openembedded/meta-multimedia \
-  "
+
+# In our BSPs active layers are defined by the manifest.xml for all BSPs. The
+# bblayers.conf gets created by the init_bblayers.py script.
+BBLAYERS ?= ""
