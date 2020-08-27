@@ -220,7 +220,12 @@ class BoardSupportPackage(object):
             if child.tag == "phytec":
                 release_info = child.attrib
             elif child.tag == "project":
-                projects.append(child.attrib)
+                if not child.findall("ignorebaselayer"):
+                    projects.append(child.attrib)
+                for sublayer in child.iter("sublayer"):
+                    subproject = sublayer.attrib
+                    subproject["path"] = os.path.join(child.attrib["path"], subproject["path"])
+                    projects.append(subproject)
 
         # import meta data, some keys need special treatments
         for key in list(release_info.keys()):
@@ -240,7 +245,8 @@ class BoardSupportPackage(object):
         for project in projects:
             for key in list(project.keys()):
                 if key == "path":
-                    path = os.path.split(project[key].rstrip('/'))[1]
+                    path = project[key].split('/')[1:]
+                    path = os.path.join(*path)
                     self.project_paths.append(path)
 
     def probe_selected_release(self):
