@@ -14,11 +14,9 @@ class BSP_BBLayer(BoardSupportPackage):
     def __init__(self):
         super(BSP_BBLayer, self).__init__()
         self.bblayers_conf = os.path.join(self.src.bsp_dir, "build/conf/bblayers.conf")
-        #layers in those project dirs will be controlled by the bblayers.conf.sample
-        self.project_filter = ["poky", "meta-openembedded", "meta-imx", "base"]
 
     def init_bblayers(self):
-        layers_to_add = set(self.project_paths).difference(self.project_filter)
+        layers_to_add = self.project_paths
         print("Layers to add:", layers_to_add)
         with open(self.bblayers_conf, "a") as f:
             f.write("BBLAYERS += \"\\\n")
@@ -33,8 +31,10 @@ class BSP_BBLayer(BoardSupportPackage):
 ##############
 
 def main():
-    parser = argparse.ArgumentParser(description='Init the bblayers.conf. Poky, meta-openembedded and meta-imx will be handled by the bblayers.conf.sample. The other layers will be added from the repo manifest.xml')
-
+    parser = argparse.ArgumentParser(description='This script dynamically creates '
+             'the bblayers.conf. Active layers are defined by all projects in the '
+             'manifest.xml and, in addition, the sublayers entries. Projects in '
+             'the manifest can be deactivated with the <ignorebaselayer/> tag.')
     args = parser.parse_args()
 
     bsp = BSP_BBLayer()
