@@ -5,6 +5,8 @@ inherit buildinfo
 require barebox.inc
 inherit barebox-environment-2
 
+include barebox-boot-scripts.inc
+
 LIC_FILES_CHKSUM = "file://COPYING;md5=057bf9e50e1ca857d0eb97bfe4ba8e5d"
 
 _XTRA_SETUP = "${@bb.utils.contains('DISTRO_FEATURES', 'secureboot', 'secureboot', 'none', d)}"
@@ -46,62 +48,12 @@ fi
 }
 
 python do_env_append_mx6ul() {
-    env_add(d, "boot/mmc",
-"""#!/bin/sh
+    kernelname = d.getVar("KERNEL_IMAGETYPE", True)
+    mmcid = "0"
+    emmcid = "1"
 
-[ -e /env/config-expansions ] && /env/config-expansions
+    env_add_boot_scripts(d, kernelname, mmcid, emmcid)
 
-global.bootm.image="/mnt/mmc/zImage"
-global.bootm.oftree="/mnt/mmc/oftree"
-global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootflags='data=journal'"
-""")
-    env_add(d, "boot/nand",
-"""#!/bin/sh
-
-[ -e /env/config-expansions ] && /env/config-expansions
-
-[ ! -e /dev/nand0.root.ubi ] && ubiattach /dev/nand0.root
-
-global.bootm.image="/dev/nand0.root.ubi.kernel"
-global.bootm.oftree="/dev/nand0.root.ubi.oftree"
-global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=root rootfstype=ubifs"
-""")
-    env_add(d, "boot/emmc",
-"""#!/bin/sh
-
-[ -e /env/config-expansions ] && /env/config-expansions
-
-global.bootm.image="/mnt/emmc/zImage"
-global.bootm.oftree="/mnt/emmc/oftree"
-global.linux.bootargs.dyn.root="root=/dev/mmcblk1p2 rootflags='discard,data=journal'"
-""")
-    env_add(d, "boot/net",
-"""#!/bin/sh
-
-[ -e /env/config-expansions ] && /env/config-expansions
-
-path="/mnt/tftp"
-
-global.bootm.image="${path}/${global.user}-linux-${global.hostname}"
-
-oftree="${path}/${global.user}-oftree-${global.hostname}"
-if [ -f "${oftree}" ]; then
-    global.bootm.oftree="$oftree"
-fi
-
-nfsroot="/nfsroot/${global.hostname}"
-ip_route_get -b ${global.net.server} global.linux.bootargs.dyn.ip
-global.linux.bootargs.dyn.root="root=/dev/nfs nfsroot=$nfsroot,vers=3,udp"
-""")
-    env_add(d, "boot/spi",
-"""#!/bin/sh
-
-[ -e /env/config-expansions ] && /env/config-expansions
-
-global.bootm.image="/dev/m25p0.kernel"
-global.bootm.oftree="/dev/m25p0.oftree"
-global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=root rootfstype=ubifs"
-""")
     env_add(d, "nv/dev.eth0.mode", "static")
     env_add(d, "nv/dev.eth0.ipaddr", "192.168.3.11")
     env_add(d, "nv/dev.eth0.netmask", "255.255.255.0")
@@ -110,31 +62,6 @@ global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=root rootfstype=ubifs"
     env_add(d, "nv/dev.eth0.linux.devname", "eth0")
     env_add(d, "nv/dhcp.vendor_id", "phytec")
 
-    #NAND boot scripts for RAUC
-    env_add(d, "boot/system0",
-"""#!/bin/sh
-
-[ -e /env/config-expansions ] && /env/config-expansions
-
-[ ! -e /dev/nand0.root.ubi ] && ubiattach /dev/nand0.root
-
-global.bootm.image="/dev/nand0.root.ubi.kernel0"
-global.bootm.oftree="/dev/nand0.root.ubi.oftree0"
-
-global.linux.bootargs.dyn.root="root=ubi0:root0 ubi.mtd=root rootfstype=ubifs"
-""")
-    env_add(d, "boot/system1",
-"""#!/bin/sh
-
-[ -e /env/config-expansions ] && /env/config-expansions
-
-[ ! -e /dev/nand0.root.ubi ] && ubiattach /dev/nand0.root
-
-global.bootm.image="/dev/nand0.root.ubi.kernel1"
-global.bootm.oftree="/dev/nand0.root.ubi.oftree1"
-
-global.linux.bootargs.dyn.root="root=ubi0:root1 ubi.mtd=root rootfstype=ubifs"
-""")
     env_add(d, "nv/bootchooser.targets", """system0 system1""")
     env_add(d, "nv/bootchooser.system0.boot", """system0""")
     env_add(d, "nv/bootchooser.system1.boot", """system1""")

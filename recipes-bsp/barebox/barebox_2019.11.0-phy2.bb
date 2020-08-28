@@ -8,6 +8,7 @@ inherit barebox-environment-2
 
 include barebox-secureboot.inc
 include barebox-protectionshield.inc
+include barebox-boot-scripts.inc
 
 GIT_URL = "git://git.phytec.de/barebox"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
@@ -45,7 +46,7 @@ fi
 }
 
 python do_env_append_mx6() {
-    kernelname = "zImage"
+    kernelname = d.getVar("KERNEL_IMAGETYPE", True)
     if "secureboot" in d.getVar("DISTRO_FEATURES", True):
         kernelname = "fitImage.fitimg"
     mmcid = "2"
@@ -60,75 +61,7 @@ python do_env_append_mx6() {
     if "phycard" in d.getVar("SOC_FAMILY"):
         dhcp_vendor = "phyCARD-i.MX6"
 
-    mmcboot = """#!/bin/sh
-
-detect mmc{_mmcid}
-
-[ -e /env/config-expansions ] && /env/config-expansions
-
-global.bootm.image="/mnt/mmc{_mmcid}.{_id}/{_kernel}"
-global.bootm.oftree="/mnt/mmc{_mmcid}.{_id}/oftree"
-global.linux.bootargs.dyn.root="root=/dev/mmcblk{_mmcid}p{_rootid} rootflags='data=journal'"
-"""
-    nandboot = """#!/bin/sh
-
-[ -e /env/config-expansions ] && /env/config-expansions
-
-[ ! -e /dev/nand0.root.ubi ] && ubiattach /dev/nand0.root
-
-global.bootm.image="/dev/nand0.root.ubi.kernel{_id}"
-global.bootm.oftree="/dev/nand0.root.ubi.oftree{_id}"
-global.linux.bootargs.dyn.root="root=ubi0:root{_id} ubi.mtd=root rootfstype=ubifs"
-"""
-    netboot = """#!/bin/sh
-
-[ -e /env/config-expansions ] && /env/config-expansions
-
-path="/mnt/tftp"
-
-global.bootm.image="${path}/${global.user}-linux-${global.hostname}"
-
-oftree="${path}/${global.user}-oftree-${global.hostname}"
-if [ -f "${oftree}" ]; then
-    global.bootm.oftree="$oftree"
-fi
-
-nfsroot="/nfsroot/${global.hostname}"
-ip_route_get -b ${global.net.server} global.linux.bootargs.dyn.ip
-global.linux.bootargs.dyn.root="root=/dev/nfs nfsroot=$nfsroot,vers=3,udp"
-"""
-    spiboot = """#!/bin/sh
-
-[ -e /env/config-expansions ] && /env/config-expansions
-
-global.bootm.image="/dev/m25p0.kernel"
-global.bootm.oftree="/dev/m25p0.oftree"
-global.linux.bootargs.dyn.root="{_root}"
-"""
-
-    if bb.utils.contains("MACHINE_FEATURES", "emmc", True, False, d):
-        env_add(d, "boot/emmc", mmcboot.format(_kernel = kernelname,
-                                               _mmcid = emmcid, _id = 0,
-                                               _rootid = 2))
-        env_add(d, "boot/system0", mmcboot.format(_kernel = kernelname,
-                                                  _mmcid = emmcid, _id = 0,
-                                                  _rootid = 2))
-        env_add(d, "boot/system1", mmcboot.format(_kernel = kernelname,
-                                                  _mmcid = emmcid, _id = 2,
-                                                  _rootid = 4))
-        spiroot = "root=/dev/mmcblk{_id}p2 rootflags='data=journal'"
-        spiroot = spiroot.format(_id = emmcid)
-    else:
-        env_add(d, "boot/nand", nandboot.format(_id = ""))
-        env_add(d, "boot/system0", nandboot.format(_id = 0))
-        env_add(d, "boot/system1", nandboot.format(_id = 1))
-        spiroot = "root=ubi0:root ubi.mtd=root rootfstype=ubifs"
-
-    env_add(d, "boot/mmc", mmcboot.format(_kernel = kernelname,
-                                          _mmcid = mmcid, _id = 0,
-                                          _rootid = 2))
-    env_add(d, "boot/net", netboot)
-    env_add(d, "boot/spi", spiboot.format(_root = spiroot))
+    env_add_boot_scripts(d, kernelname, mmcid, emmcid)
 
     env_add(d, "expansions/imx6qdl-mira-enable-lvds",
 """of_fixup_status /ldb/lvds-channel@0
