@@ -19,7 +19,7 @@ RDEPENDS_packagegroup-framework-sample-qt-minimal = "\
     liberation-fonts                \
     \
     qtdeclarative                   \
-    openstlinux-qt-eglfs            \
+    ${@bb.utils.contains('MACHINE_FEATURES', 'gpu', 'openstlinux-qt-eglfs', 'openstlinux-qt-linuxfb', d)} \
     "
 
 SUMMARY_packagegroup-framework-sample-qt-minimal-examples = "Framework qt components for examples"
