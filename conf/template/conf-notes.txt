@@ -13,19 +13,14 @@ Before building for the first time, you should take a look in the main
 configuration file 'conf/local.conf'. There you can tweak the build system
 settings and license configuration.
 
-Tested build phyCORE-STM32MP target for OpenSTLinux layer are:
+Default build target for this build configuration are:
 
-  - Officicial OpenSTLinux images:
       st-image-weston       -   OpenSTLinux weston image with basic Wayland support (require 'openstlinux-weston' distro)
-      st-image-core         -   OpenSTLinux core image (no distro required)
+      st-image-core         -   OpenSTLinux core image (compatible with all OpenSTLinux distro except with 'openstlinux-tiny')
 
-  - OpenSTLinux images from PHYTEC:
-      st-phytec-qt-demo-image    -   OpenSTLinux QT image with eglfs support (require 'openstlinux-eglfs Distro)
-      st-image-core-minimal      -   OpenSTLinux core minimal image (no distro required)
-
-
-Other available OpenSTLinux images proposed by ST as example only (not tested):
-      st-example-image-qt   -   ST example of image based on QT framework   (require 'openstlinux-eglfs' distro)
-      st-example-image-x11  -   ST example of image based on X11            (require 'openstlinux-x11' distro)
-      st-example-image-xfce -   ST example of image based on XFCE framework (require 'openstlinux-x11' distro)
-  and more images are available on meta-st-openstlinux/recipes-samples/images.
+Other available images proposed as example only:
+      st-image-core-minimal       -   PHYTEC OpenSTLinux core minimal image (require 'openstlinux-tiny' distro)
+      st-example-image-qt         -   OpenSTLinux example of image based on QT framework   (require 'openstlinux-eglfs' distro)
+      st-example-image-qt-minimal -   PHYTEC OpenSTLinux example of image based on QT minimal framework (require 'openstlinux-eglfs' distro)
+      st-example-image-x11        -   OpenSTLinux example of image based on X11            (require 'openstlinux-x11' distro)
+      st-example-image-xfce       -   OpenSTLinux example of image based on XFCE framework (require 'openstlinux-x11' distro)
