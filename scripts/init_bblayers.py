@@ -20,7 +20,7 @@ class BSP_BBLayer(BoardSupportPackage):
         print("Layers to add:", layers_to_add)
         with open(self.bblayers_conf, "a") as f:
             f.write("BBLAYERS += \"\\\n")
-            for l in sorted(layers_to_add):
+            for l in layers_to_add:
                 f.write("  ${OEROOT}/../%s \\\n" % l)
             f.write("  \"\n")
 
