@@ -395,14 +395,14 @@
 };
 
 /* Select display interface by commenting/uncommenting the following lines */ 
-//#include "phycore-stm32mp1-dsi-lcd-mb1407.dtsi"
-//#include "phycore-stm32mp1-dsi-rpi-official-display.dtsi"
-#include "phycore-stm32mp1-peb-av01-hdmi.dtsi"
-//#include "phycore-stm32mp1-peb-av02-lcd.dtsi"
+//#include "phyboard-stm32mp1-dsi-lcd-mb1407.dtsi"
+//#include "phyboard-stm32mp1-dsi-rpi-official-display.dtsi"
+//#include "phyboard-stm32mp1-peb-av01-hdmi.dtsi"
+#include "phyboard-stm32mp1-peb-av02-lcd.dtsi"
 
 
 /* Selected connectors used commenting/uncommenting the following line  */ 
-//#include "phycore-stm32mp1-pi-hat-extension.dtsi"
-//#include "phycore-stm32mp1-uno-r3-extension.dtsi"
-//#include "phycore-stm32mp1-motor-control.dtsi"
+//#include "phyboard-stm32mp1-alpha-pi-hat-extension.dtsi"
+//#include "phyboard-stm32mp1-uno-r3-extension.dtsi"
+//#include "phyboard-stm32mp1-motor-control.dtsi"
 
