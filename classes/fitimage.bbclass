@@ -230,7 +230,7 @@ def fitimage_emit_section_config(d,fd,dtb,kernelcount,ramdiskcount,setupcount,i)
        fd.write('\t\t\t\t' +   'algo = "%s,%s";\n' % (conf_csum, conf_encrypt))
        fd.write('\t\t\t\t' +   'key-name-hint = "%s";\n' % conf_sign_keyname[0])
        fd.write('\t\t\t\t' +   '%s\n' % sign_line)
-       fd.write('\t\t\t\t' +   'signer = "%s";\n' % d.getVar("FITIMAGE_SIGNER", True))
+       fd.write('\t\t\t\t' +   'signer-name = "%s";\n' % d.getVar("FITIMAGE_SIGNER", True))
        fd.write('\t\t\t\t' +   'signer-version = "%s";\n' % d.getVar("FITIMAGE_SIGNER_VERSION", True))
        fd.write('\t\t\t'   + '};\n')
     else:
