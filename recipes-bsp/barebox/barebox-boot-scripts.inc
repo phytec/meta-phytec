@@ -10,9 +10,11 @@ def env_add_boot_scripts(d, kernelname, mmcid, emmcid):
 
     [ -e /env/config-expansions ] && /env/config-expansions
 
+    global.bootm.appendroot=1
+    global.bootm.root_dev=/dev/mmc{mmcid}.{rootid}
     global.bootm.image="/mnt/mmc{mmcid}.{partid}/{kernel}"
     global.bootm.oftree="/mnt/mmc{mmcid}.{partid}/oftree"
-    global.linux.bootargs.dyn.root="root=/dev/mmcblk{mmcid}p{rootid} rootflags='data=journal'"
+    global.linux.bootargs.dyn.root="rootflags='data=journal'"
     """)
     nandboot = textwrap.dedent("""\
     #!/bin/sh
@@ -56,13 +58,13 @@ def env_add_boot_scripts(d, kernelname, mmcid, emmcid):
     if bb.utils.contains("MACHINE_FEATURES", "emmc", True, False, d):
         env_add(d, "boot/emmc", mmcboot.format(kernel=kernelname,
                                                mmcid=emmcid, partid=0,
-                                               rootid=2))
+                                               rootid=1))
         env_add(d, "boot/system0", mmcboot.format(kernel=kernelname,
                                                   mmcid=emmcid, partid=0,
-                                                  rootid=2))
+                                                  rootid=1))
         env_add(d, "boot/system1", mmcboot.format(kernel=kernelname,
                                                   mmcid=emmcid, partid=2,
-                                                  rootid=4))
+                                                  rootid=3))
         spiroot = "root=/dev/mmcblk{}p2 rootflags='data=journal'".format(emmcid)
     else:
         env_add(d, "boot/nand", nandboot.format(partid=""))
@@ -72,6 +74,6 @@ def env_add_boot_scripts(d, kernelname, mmcid, emmcid):
 
     env_add(d, "boot/mmc", mmcboot.format(kernel=kernelname,
                                           mmcid=mmcid, partid=0,
-                                          rootid=2))
+                                          rootid=1))
     env_add(d, "boot/net", netboot)
     env_add(d, "boot/spi", spiboot.format(root = spiroot))
