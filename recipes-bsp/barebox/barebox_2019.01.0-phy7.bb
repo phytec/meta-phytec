@@ -49,10 +49,10 @@ fi
 
 python do_env_append_mx6ul() {
     kernelname = d.getVar("KERNEL_IMAGETYPE", True)
-    mmcid = "0"
+    sdid = "0"
     emmcid = "1"
 
-    env_add_boot_scripts(d, kernelname, mmcid, emmcid)
+    env_add_boot_scripts(d, kernelname, sdid, emmcid)
 
     env_add(d, "nv/dev.eth0.mode", "static")
     env_add(d, "nv/dev.eth0.ipaddr", "192.168.3.11")

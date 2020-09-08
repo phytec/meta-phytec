@@ -49,19 +49,19 @@ python do_env_append_mx6() {
     kernelname = d.getVar("KERNEL_IMAGETYPE", True)
     if "secureboot" in d.getVar("DISTRO_FEATURES", True):
         kernelname = "fitImage.fitimg"
-    mmcid = "2"
+    sdid = "2"
     emmcid = None
     dhcp_vendor = "phyFLEX-i.MX6"
 
     if "phyboard" in d.getVar("SOC_FAMILY"):
-        mmcid = "0"
+        sdid = "0"
         emmcid = "3"
         dhcp_vendor = "phyCORE-i.MX6"
 
     if "phycard" in d.getVar("SOC_FAMILY"):
         dhcp_vendor = "phyCARD-i.MX6"
 
-    env_add_boot_scripts(d, kernelname, mmcid, emmcid)
+    env_add_boot_scripts(d, kernelname, sdid, emmcid)
 
     env_add(d, "expansions/imx6qdl-mira-enable-lvds",
 """of_fixup_status /ldb/lvds-channel@0
