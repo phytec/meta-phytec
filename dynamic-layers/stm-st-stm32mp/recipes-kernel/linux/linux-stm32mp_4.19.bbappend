@@ -99,7 +99,7 @@ SRC_URI += "file://4.19/fragment-13-add-pca953x-led-support.config;subdir=fragme
 SRC_URI += "file://4.19/fragment-14-RPI-screen.config;subdir=fragments"
 
 SRC_URI_class-devupstream = "git://git@git.phytec.de/linux-stm32mp;protocol=ssh;branch=v4.19.94-phy"
-SRCREV_class-devupstream = "9f79be9046b49885ccebd40ee3adcd947f812105"
+SRCREV_class-devupstream = "09a75abc78f0738ff2c19c87cc14cfde6a4cd33a"
 SRCREV_FORMAT_class-devupstream = "linux"
 PV_class-devupstream = "${LINUX_VERSION}+git+${SRCPV}"
 
