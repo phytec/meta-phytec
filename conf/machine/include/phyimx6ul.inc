@@ -14,13 +14,18 @@ PACKAGE_EXTRA_ARCHS_append = " ${MACHINE_SOCARCH}"
 
 #Bootloader
 PREFERRED_PROVIDER_virtual/bootloader ?= "barebox"
+
 # Kernel
 PREFERRED_PROVIDER_virtual/kernel ?= "linux-mainline"
 KERNEL_IMAGETYPE ?= "zImage"
+
 # Install modules in initramfs and roofs
 PACKAGE_INSTALL_append = " kernel-modules"
+
 # Ship kernel modules
-MACHINE_EXTRA_RRECOMMENDS = "kernel-modules firmware-imx-sdma-imx6q"
+MACHINE_EXTRA_RRECOMMENDS = "kernel-modules"
+MACHINE_EXTRA_RDEPENDS = "firmware-imx-sdma-imx6q"
+
 # dont install kernelimage to rootfs
 RDEPENDS_${KERNEL_PACKAGE_NAME}-base = ""
 

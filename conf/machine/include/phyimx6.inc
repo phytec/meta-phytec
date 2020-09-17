@@ -26,7 +26,8 @@ PREFERRED_PROVIDER_virtual/xserver ?= "xserver-xorg"
 #           ${XSERVER_DRIVER}"
 
 # Ship kernel modules
-MACHINE_EXTRA_RRECOMMENDS = "kernel-modules firmware-imx-sdma-imx6q"
+MACHINE_EXTRA_RRECOMMENDS = "kernel-modules"
+MACHINE_EXTRA_RDEPENDS = "firmware-imx-sdma-imx6q"
 
 SERIAL_CONSOLES = "115200;ttymxc0"
 
