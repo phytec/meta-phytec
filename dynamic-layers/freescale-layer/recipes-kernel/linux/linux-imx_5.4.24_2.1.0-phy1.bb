@@ -17,7 +17,7 @@ SRCREV = "14134394d72b5a4cd2a2825134e8928324512d26"
 
 S = "${WORKDIR}/git"
 
-INTREE_DEFCONFIG = "defconfig imx8_phytec_distro.config imx8_phytec_platform.config"
+INTREE_DEFCONFIG = "imx_v8_defconfig imx8_phytec_distro.config imx8_phytec_platform.config"
 
 COMPATIBLE_MACHINE  = "^("
 COMPATIBLE_MACHINE .= "phyboard-polis-imx8mm-3"
