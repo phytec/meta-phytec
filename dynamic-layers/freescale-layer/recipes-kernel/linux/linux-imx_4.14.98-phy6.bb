@@ -22,5 +22,4 @@ INTREE_DEFCONFIG = "defconfig"
 
 COMPATIBLE_MACHINE  = "^("
 COMPATIBLE_MACHINE .= "phycore-imx8-2"
-COMPATIBLE_MACHINE .= "|phyboard-polaris-imx8m-3"
 COMPATIBLE_MACHINE .= ")$"
