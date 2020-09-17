@@ -9,12 +9,12 @@ DEPENDS_append = " python dtc-native bison-native"
 
 LICENSE = "GPLv2+"
 LIC_FILES_CHKSUM = "file://Licenses/gpl-2.0.txt;md5=b234ee4d69f5fce4486a80fdaf4a4263"
-BRANCH = "v2019.04_1.1.0-phy"
+BRANCH = "v2020.04_2.1.0-phy"
 GIT_URL = "git://git.phytec.de/${PN}"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
 PR = "r0"
-SRCREV = "6567aa7d61eae9c6366a272b1a5f84d058f1d755"
+SRCREV = "ea72c3391d312e3fe0f3c657162ff7d7ce0dbc84"
 
 S = "${WORKDIR}/git"
 
