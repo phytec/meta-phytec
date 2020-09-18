@@ -51,6 +51,9 @@ MACHINE_EXTRA_RRECOMMENDS_append = " linux-examples-stm32mp1 "
 MACHINE_EXTRA_RRECOMMENDS_append = " m4fwcoredump "
 # Enable Software watchdog when sysvinit
 MACHINE_EXTRA_RRECOMMENDS_append = " ${@bb.utils.contains('DISTRO_FEATURES','sysvinit',' watchdog ','',d)} "
+# two firmware packages for the bcm43430 are available, current stm release has
+# been tested with the firmware package available upstream
+PREFERRED_RPROVIDER_linux-firmware-bcm43430 = "linux-firmware"
 
 # =========================================================================
 # Image
