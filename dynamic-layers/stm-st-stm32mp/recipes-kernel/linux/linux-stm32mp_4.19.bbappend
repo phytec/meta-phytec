@@ -20,7 +20,7 @@ SRC_URI += " \
     file://${LINUX_VERSION}/4.19.94/patches/0009-drm-panel-otm8009a-remove-hack-to-force-commands-in-.patch \
     file://${LINUX_VERSION}/4.19.94/patches/0010-drm-panel-otm8009a-allow-using-non-continuous-dsi-cl.patch \
     file://${LINUX_VERSION}/4.19.94/patches/0011-drm-panel-rm68200-allow-using-non-continuous-dsi-clo.patch \
-    file://${LINUX_VERSION}/4.19.94/patches/0012-add-support-for-st1633.diff \
+    file://${LINUX_VERSION}/4.19.94/patches/0012-add-support-for-st1633.patch \
 "
 
 SRC_URI += " \
