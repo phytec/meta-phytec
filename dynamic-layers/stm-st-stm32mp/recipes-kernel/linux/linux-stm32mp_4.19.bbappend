@@ -45,8 +45,6 @@ SRC_URI += " \
 	file://${LINUX_VERSION}/4.19.94/dts/phyboard-stm32mp1-peb-av02-lcd.dtsi \
 	file://${LINUX_VERSION}/4.19.94/dts/phyboard-stm32mp1-peb-av02-lcd-res.dtsi \
 	file://${LINUX_VERSION}/4.19.94/dts/phyboard-stm32mp1-uno-r3-extension.dtsi \
-	file://${LINUX_VERSION}/4.19.94/dts/phyboard-stm32mp1-motor-control.dtsi \
-	file://${LINUX_VERSION}/4.19.94/dts/phyboard-stm32mp1-motor-control-m4.dtsi \
 	file://${LINUX_VERSION}/4.19.94/dts/phyboard-stm32mp1-peb-av01-hdmi.dtsi \
         file://${LINUX_VERSION}/4.19.94/dts/phyboard-stm32mp1-pi-hat-extension.dtsi \
 	file://${LINUX_VERSION}/4.19.94/dts/phyboard-stm32mp1-pi-hat-redbear.dtsi \
