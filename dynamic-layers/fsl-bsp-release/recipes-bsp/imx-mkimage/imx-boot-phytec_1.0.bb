@@ -10,7 +10,9 @@ SECTION = "BSP"
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
-SRC_URI += "file://0001-Revert-imx8m-Add-DTB-pre-process-script-to-check-u-b.patch"
+SRC_URI += "file://0001-Revert-imx8m-Add-DTB-pre-process-script-to-check-u-b.patch \
+            file://0002-Fix-size-calculation-in-HAB-FIT-shellscripts.patch \
+           "
 
 IMX_EXTRA_FIRMWARE      = "firmware-imx-8 imx-sc-firmware imx-seco"
 IMX_EXTRA_FIRMWARE_mx8m = "firmware-imx-8m"
