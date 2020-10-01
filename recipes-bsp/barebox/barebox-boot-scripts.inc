@@ -8,6 +8,8 @@ def env_add_boot_scripts(d, kernelname, mmcid, emmcid):
     mmcboot = textwrap.dedent("""\
     #!/bin/sh
 
+    detect mmc{mmcid}
+
     [ -e /env/config-expansions ] && /env/config-expansions
 
     global.bootm.appendroot=1
