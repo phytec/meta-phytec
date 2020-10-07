@@ -11,8 +11,13 @@ PROVIDES = "virtual/bootloader"
 # Increase INC_PR everytime the include file is changed.
 INC_PR = "r7"
 
+FILESEXTRAPATHS_prepend := "${THISDIR}/barebox:"
 SRC_URI = "http://barebox.org/download/barebox-${PV}.tar.bz2"
 PATCHTOOL = "git"
+
+SRC_URI_append = " \
+    ${@oe.utils.conditional('DEBUG_BUILD','1','file://debugging.cfg','',d)} \
+"
 
 inherit kernel-arch deploy
 inherit kconfig
