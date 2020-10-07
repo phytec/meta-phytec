@@ -13,9 +13,6 @@ DEFAULT_PREFERENCE = "-1"
 
 GIT_URL = "git://git.pengutronix.de/git/barebox.git"
 SRC_URI = "${GIT_URL};branch=master"
-SRC_URI += "\
-    ${@oe.utils.conditional('DEBUG_BUILD','1','file://debugging.cfg','',d)} \
-"
 
 S = "${WORKDIR}/git"
 

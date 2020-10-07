@@ -7,9 +7,6 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=057bf9e50e1ca857d0eb97bfe4ba8e5d"
 
 GIT_URL = "git://git.phytec.de/barebox"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
-SRC_URI += "\
-    ${@oe.utils.conditional('DEBUG_BUILD','1','file://debugging.cfg','',d)} \
-"
 
 S = "${WORKDIR}/git"
 
