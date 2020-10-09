@@ -7,7 +7,7 @@ inherit barebox-environment-2
 
 include barebox-boot-scripts.inc
 
-LIC_FILES_CHKSUM = "file://COPYING;md5=057bf9e50e1ca857d0eb97bfe4ba8e5d"
+LIC_FILES_CHKSUM = "file://COPYING;md5=f5125d13e000b9ca1f0d3364286c4192"
 
 _XTRA_SETUP = "${@bb.utils.contains('DISTRO_FEATURES', 'secureboot', 'secureboot', 'none', d)}"
 include ${THISDIR}/barebox-${_XTRA_SETUP}.inc
@@ -20,7 +20,7 @@ S = "${WORKDIR}/git"
 PR = "${INC_PR}.0"
 
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "fdf246c075695bbbf3ea7afa4f54f2d93a673b90"
+SRCREV = "630e5953e31a32545117c0ea046f4216c483b274"
 
 python do_env_append() {
     env_add(d, "nv/allow_color", "false\n")
