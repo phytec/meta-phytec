@@ -78,17 +78,8 @@ python do_env_append_phyboard-segin-imx6ul() {
 #use this expansion when peb-wlbt-01 adapter is connected
 #. /env/expansions/imx6ul-phytec-peb-wlbt-01
 
-# imx6ul-phytec-lcd: 7" display
-#of_display_timings -S /soc/aips-bus@2100000/lcdif@21c8000/display@di0/display-timings/ETM0700G0EDH6
-
-# imx6ul-phytec-lcd: 5.7" display
-#of_display_timings -S /soc/aips-bus@2100000/lcdif@21c8000/display@di0/display-timings/ETMV570G2DHU
-
-# imx6ul-phytec-lcd: 4.3" display
-#of_display_timings -S /soc/aips-bus@2100000/lcdif@21c8000/display@di0/display-timings/ETM0430G0DH6
-
-# imx6ul-phytec-lcd: 3.5" display
-#of_display_timings -S /soc/aips-bus@2100000/lcdif@21c8000/display@di0/display-timings/ETM0350G0DH6
+#use this expansion when peb-wlbt-05 adapter is connected
+#. /env/expansions/imx6ul-phytec-peb-wlbt-05
 
 #use this bootarg if the VM010 Color is connected
 #. /env/expansions/imx6ul-phytec-vm010-col
@@ -113,7 +104,7 @@ of_fixup_status /user-leds
     env_add(d, "expansions/imx6ul-phytec-segin-peb-av-02",
 """
 of_fixup_status /soc/aips-bus@2100000/lcdif@21c8000/
-of_fixup_status /soc/aips-bus@2100000/lcdif@21c8000/display@di0
+of_fixup_status /panel-lcd
 of_fixup_status /backlight
 of_fixup_status /soc/aips-bus@2100000/i2c@21a0000/edt-ft5x06@38
 of_fixup_status /soc/aips-bus@2000000/pwm@2088000/
@@ -121,14 +112,22 @@ of_fixup_status /soc/aips-bus@2000000/pwm@2088000/
     env_add(d, "expansions/imx6ul-phytec-segin-peb-av-02-res",
 """
 of_fixup_status /soc/aips-bus@2100000/lcdif@21c8000/
-of_fixup_status /soc/aips-bus@2100000/lcdif@21c8000/display@di0
+of_fixup_status /panel-lcd
 of_fixup_status /backlight
-of_fixup_status /soc/aips-bus@2100000/i2c@21a0000/stmpe@44
+of_fixup_status /soc/aips-bus@2100000/i2c@21a0000/touchscreen@44
 of_fixup_status /soc/aips-bus@2000000/pwm@2088000/
 """)
     env_add(d, "expansions/imx6ul-phytec-peb-wlbt-01",
 """#!/bin/sh
 of_fixup_status /soc/aips-bus@2100000/usdhc@2194000
+of_fixup_status /regulator-wlan-en
+of_fixup_status -d /soc/aips-bus@2100000/adc@2198000
+""")
+    env_add(d, "expansions/imx6ul-phytec-peb-wlbt-05",
+"""#!/bin/sh
+of_fixup_status /soc/aips-bus@2100000/serial@21e8000
+of_fixup_status /soc/aips-bus@2100000/usdhc@2194000
+of_fixup_status /regulator-bt-en
 of_fixup_status /regulator-wlan-en
 of_fixup_status -d /soc/aips-bus@2100000/adc@2198000
 """)
@@ -266,17 +265,8 @@ python do_env_append_phyboard-segin-imx6ul-5() {
 #use this expansion when peb-wlbt-01 adapter is connected
 . /env/expansions/imx6ul-phytec-peb-wlbt-01
 
-# imx6ul-phytec-lcd: 7" display
-#of_display_timings -S /soc/aips-bus@2100000/lcdif@21c8000/display@di0/display-timings/ETM0700G0EDH6
-
-# imx6ul-phytec-lcd: 5.7" display
-#of_display_timings -S /soc/aips-bus@2100000/lcdif@21c8000/display@di0/display-timings/ETMV570G2DHU
-
-# imx6ul-phytec-lcd: 4.3" display
-#of_display_timings -S /soc/aips-bus@2100000/lcdif@21c8000/display@di0/display-timings/ETM0430G0DH6
-
-# imx6ul-phytec-lcd: 3.5" display
-#of_display_timings -S /soc/aips-bus@2100000/lcdif@21c8000/display@di0/display-timings/ETM0350G0DH6
+#use this expansion when peb-wlbt-05 adapter is connected
+#. /env/expansions/imx6ul-phytec-peb-wlbt-05
 
 #use this bootarg when the VM010 Color is connected
 #nv linux.bootargs.mt9v022="mt9v022.sensor_type=color"
