@@ -103,38 +103,38 @@ of_fixup_status /user-leds
 """)
     env_add(d, "expansions/imx6ul-phytec-segin-peb-av-02",
 """
-of_fixup_status /soc/aips-bus@2100000/lcdif@21c8000/
+of_fixup_status /soc/bus@2100000/lcdif@21c8000/
 of_fixup_status /panel-lcd
 of_fixup_status /backlight
-of_fixup_status /soc/aips-bus@2100000/i2c@21a0000/edt-ft5x06@38
-of_fixup_status /soc/aips-bus@2000000/pwm@2088000/
+of_fixup_status /soc/bus@2100000/i2c@21a0000/edt-ft5x06@38
+of_fixup_status /soc/bus@2000000/pwm@2088000/
 """)
     env_add(d, "expansions/imx6ul-phytec-segin-peb-av-02-res",
 """
-of_fixup_status /soc/aips-bus@2100000/lcdif@21c8000/
+of_fixup_status /soc/bus@2100000/lcdif@21c8000/
 of_fixup_status /panel-lcd
 of_fixup_status /backlight
-of_fixup_status /soc/aips-bus@2100000/i2c@21a0000/touchscreen@44
-of_fixup_status /soc/aips-bus@2000000/pwm@2088000/
+of_fixup_status /soc/bus@2100000/i2c@21a0000/touchscreen@44
+of_fixup_status /soc/bus@2000000/pwm@2088000/
 """)
     env_add(d, "expansions/imx6ul-phytec-peb-wlbt-01",
 """#!/bin/sh
-of_fixup_status /soc/aips-bus@2100000/usdhc@2194000
+of_fixup_status /soc/bus@2100000/usdhc@2194000
 of_fixup_status /regulator-wlan-en
-of_fixup_status -d /soc/aips-bus@2100000/adc@2198000
+of_fixup_status -d /soc/bus@2100000/adc@2198000
 """)
     env_add(d, "expansions/imx6ul-phytec-peb-wlbt-05",
 """#!/bin/sh
-of_fixup_status /soc/aips-bus@2100000/serial@21e8000
-of_fixup_status /soc/aips-bus@2100000/usdhc@2194000
+of_fixup_status /soc/bus@2100000/serial@21e8000
+of_fixup_status /soc/bus@2100000/usdhc@2194000
 of_fixup_status /regulator-bt-en
 of_fixup_status /regulator-wlan-en
-of_fixup_status -d /soc/aips-bus@2100000/adc@2198000
+of_fixup_status -d /soc/bus@2100000/adc@2198000
 """)
     env_add(d, "expansions/imx6ul-phytec-vm010-col",
 """#!/bin/sh
-CAM_PATH="/soc/aips-bus@2100000/i2c@21a0000/cam0@48"
-ENDPOINT_PATH="/soc/aips-bus@2100000/i2c@21a0000/cam0@48/port/endpoint"
+CAM_PATH="/soc/bus@2100000/i2c@21a0000/cam0@48"
+ENDPOINT_PATH="/soc/bus@2100000/i2c@21a0000/cam0@48/port/endpoint"
 
 of_property -f -s ${CAM_PATH} compatible "aptina,mt9v024"
 of_property -f -d ${CAM_PATH} assigned-clocks
@@ -145,8 +145,8 @@ of_fixup_status ${CAM_PATH}
 """)
     env_add(d, "expansions/imx6ul-phytec-vm010-bw",
 """#!/bin/sh
-CAM_PATH="/soc/aips-bus@2100000/i2c@21a0000/cam0@48"
-ENDPOINT_PATH="/soc/aips-bus@2100000/i2c@21a0000/cam0@48/port/endpoint"
+CAM_PATH="/soc/bus@2100000/i2c@21a0000/cam0@48"
+ENDPOINT_PATH="/soc/bus@2100000/i2c@21a0000/cam0@48/port/endpoint"
 
 of_property -f -s ${CAM_PATH} compatible "aptina,mt9v024m"
 of_property -f -d ${CAM_PATH} assigned-clocks
@@ -157,8 +157,8 @@ of_fixup_status ${CAM_PATH}
 """)
     env_add(d, "expansions/imx6ul-phytec-vm011-col",
 """#!/bin/sh
-CAM_PATH="/soc/aips-bus@2100000/i2c@21a0000/cam0@48"
-ENDPOINT_PATH="/soc/aips-bus@2100000/i2c@21a0000/cam0@48/port/endpoint"
+CAM_PATH="/soc/bus@2100000/i2c@21a0000/cam0@48"
+ENDPOINT_PATH="/soc/bus@2100000/i2c@21a0000/cam0@48/port/endpoint"
 
 of_property -f -s ${CAM_PATH} compatible "aptina,mt9p006"
 of_property -f -d ${ENDPOINT_PATH} link-frequencies
@@ -170,8 +170,8 @@ of_fixup_status ${CAM_PATH}
 """)
     env_add(d, "expansions/imx6ul-phytec-vm011-bw",
 """#!/bin/sh
-CAM_PATH="/soc/aips-bus@2100000/i2c@21a0000/cam0@48"
-ENDPOINT_PATH="/soc/aips-bus@2100000/i2c@21a0000/cam0@48/port/endpoint"
+CAM_PATH="/soc/bus@2100000/i2c@21a0000/cam0@48"
+ENDPOINT_PATH="/soc/bus@2100000/i2c@21a0000/cam0@48/port/endpoint"
 
 of_property -f -s ${CAM_PATH} compatible "aptina,mt9p006m"
 of_property -f -d ${ENDPOINT_PATH} link-frequencies
@@ -183,8 +183,8 @@ of_fixup_status ${CAM_PATH}
 """)
     env_add(d, "expansions/imx6ul-phytec-vm009",
 """#!/bin/sh
-CAM_PATH="/soc/aips-bus@2100000/i2c@21a0000/cam0@48"
-ENDPOINT_PATH="/soc/aips-bus@2100000/i2c@21a0000/cam0@48/port/endpoint"
+CAM_PATH="/soc/bus@2100000/i2c@21a0000/cam0@48"
+ENDPOINT_PATH="/soc/bus@2100000/i2c@21a0000/cam0@48/port/endpoint"
 
 of_property -f -s ${CAM_PATH} compatible "micron,mt9m111"
 of_property -f -s ${CAM_PATH} clock-names "mclk"
