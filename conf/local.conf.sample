@@ -64,6 +64,8 @@ BB_DISKMON_DIRS ??= "\
 #WKS_FILES_mx6 = "imx6-rauc-sdimage.wks"
 #WKS_FILES_mx6ul = "imx6-rauc-sdimage.wks"
 #WKS_FILES_mx8m = "imx8m-rauc-sdimage.wks"
+#WKS_FILES_mx8mn = "imx8mn-mp-rauc-sdimage.wks"
+#WKS_FILES_mx8mp = "imx8mn-mp-rauc-sdimage.wks"
 
 # Turn on debugging options of the kernel
 DEBUG_BUILD_pn-linux-mainline = "1"
