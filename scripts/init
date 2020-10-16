@@ -85,6 +85,20 @@ ${PHYTEC_DIR}/scripts/init_bblayers.py
 ${PHYTEC_DIR}/scripts/copy_site_conf.py
 ${PHYTEC_DIR}/scripts/init_machine.py
 
+container_usage() {
+	CONTAINER=$(sed -n 's:.*build_container="\([^"]*\).*:\1:p' ${ROOTDIR}/.repo/manifest.xml)
+	if [ ! -z "${CONTAINER}" ]; then
+		echo "A docker image can also be used as your build environment.\n"
+		echo "Set up your shell environment with:\n"
+		echo "    $ docker run --rm -it -v \${PWD}:/\${PWD} ${CONTAINER} --workdir=\${PWD} bash\n"
+		echo "Or start a build with:\n"
+		echo "    $ docker run --rm -it -v \${PWD}:/\${PWD} ${CONTAINER} --workdir=\${PWD} \\"
+		echo "      bash -c '. sources/poky/oe-init-build-env && bitbake phytec-headless-image'"
+		echo ""
+		echo ""
+	fi
+}
+
 echo ""
 echo "Before you start your work, please check your build/conf/local.conf for"
 echo "host specific configuration. Check the documentation especially for:"
@@ -98,3 +112,4 @@ echo ""
 echo "    $ . sources/poky/oe-init-build-env"
 echo ""
 echo ""
+container_usage
