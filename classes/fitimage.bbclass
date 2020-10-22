@@ -359,14 +359,14 @@ do_deploy() {
     printf 'Copying fit-image.its source file...'
     install -m 0644 ${S}/manifest.its ${DEPLOYDIR}/${its_base_name}.its
 
-    linux_bin_base_name="${PN}-${PV}-${PR}-${MACHINE}${IMAGE_VERSION_SUFFIX}"
     linux_bin_symlink_name="fitImage"
+    linux_bin_base_name="${linux_bin_symlink_name}-${PN}-${PV}-${PR}-${MACHINE}${IMAGE_VERSION_SUFFIX}"
     printf 'Copying fitImage file...'
-    install -m 0644 ${B}/fitImage ${DEPLOYDIR}/${linux_bin_base_name}.fitimg
+    install -m 0644 ${B}/fitImage ${DEPLOYDIR}/${linux_bin_base_name}
 
     cd ${DEPLOYDIR}
     ln -sf ${its_base_name}.its ${its_symlink_name}.its
-    ln -sf ${linux_bin_base_name}.fitimg ${linux_bin_symlink_name}.fitimg
+    ln -sf ${linux_bin_base_name} ${linux_bin_symlink_name}
 }
 addtask deploy after do_fitimagebundle before do_build
 
