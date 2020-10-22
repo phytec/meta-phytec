@@ -45,7 +45,7 @@ fi
 python do_env_append_mx6() {
     kernelname = d.getVar("KERNEL_IMAGETYPE", True)
     if "secureboot" in d.getVar("DISTRO_FEATURES", True):
-        kernelname = "fitImage.fitimg"
+        kernelname = "fitImage"
     sdid = "2"
     emmcid = None
     dhcp_vendor = "phyFLEX-i.MX6"
