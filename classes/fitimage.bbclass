@@ -39,8 +39,9 @@ deltask do_package_write_rpm
 
 DEPENDS = "phytec-dev-ca-native u-boot-mkimage-native dtc-native"
 FITIMAGE_HASH ??= "sha1"
-FITIMAGE_LOADADDRESS ??= "0x8000"
-FITIMAGE_ENTRYPOINT  ??= "0x8000"
+FITIMAGE_LOADADDRESS ??= ""
+FITIMAGE_ENTRYPOINT  ??= ""
+FITIMAGE_DTB_LOADADDRESS ??= ""
 FITIMAGE_RD_LOADADDRESS ??= ""
 FITIMAGE_RD_ENTRYPOINT ??= ""
 
@@ -102,8 +103,12 @@ def fitimage_emit_section_maint(d,fd,var):
 def fitimage_emit_section_kernel(d,fd,imgpath,imgsource,imgcomp):
     kernelcount = 1
     kernel_csum = d.expand("${FITIMAGE_HASH}")
-    ENTRYPOINT = d.expand("${FITIMAGE_ENTRYPOINT}")
-    LOADADDRESS = d.expand("${FITIMAGE_LOADADDRESS}")
+    kernel_entryline = ""
+    kernel_loadline = ""
+    if len(d.expand("${FITIMAGE_LOADADDRESS}")) > 0:
+        kernel_loadline = "load = <%s>;" % d.expand("${FITIMAGE_LOADADDRESS}")
+    if len(d.expand("${FITIMAGE_ENTRYPOINT}")) > 0:
+        kernel_entryline = "entry = <%s>;" % d.expand("${FITIMAGE_ENTRYPOINT}")
     arch = d.getVar("TARGET_ARCH", True)
     arch = "arm64" if arch == "aarch64" else arch
     fd.write('\t\t'     + 'kernel@%s {\n' % kernelcount)
@@ -113,8 +118,8 @@ def fitimage_emit_section_kernel(d,fd,imgpath,imgsource,imgcomp):
     fd.write('\t\t\t'   +   'arch = "%s";\n' % arch)
     fd.write('\t\t\t'   +   'os = "linux";\n')
     fd.write('\t\t\t'   +   'compression = "%s";\n' % imgcomp)
-    fd.write('\t\t\t'   +   'load = <%s>;\n' % LOADADDRESS)
-    fd.write('\t\t\t'   +   'entry = <%s>;\n' % ENTRYPOINT)
+    fd.write('\t\t\t'   +   '%s\n' % kernel_loadline)
+    fd.write('\t\t\t'   +   '%s\n' % kernel_entryline)
     fd.write('\t\t\t'   +   'hash@1 {\n')
     fd.write('\t\t\t\t' +     'algo = "%s";\n' % kernel_csum)
     fd.write('\t\t\t'   +   '};\n')
@@ -127,12 +132,18 @@ def fitimage_emit_section_dtb(d,fd,dtb_file,dtb_path):
     dtb_csum = d.expand("${FITIMAGE_HASH}")
     arch = d.getVar("TARGET_ARCH", True)
     arch = "arm64" if arch == "aarch64" else arch
+
+    dtb_loadline=""
+    if len(d.expand("${FITIMAGE_DTB_LOADADDRESS}")) > 0:
+        dtb_loadline = "load = <%s>;" % d.expand("${FITIMAGE_DTB_LOADADDRESS}")
+
     fd.write('\t\t'     + 'fdt@%s {\n' % dtb_file)
     fd.write('\t\t\t'   +   'description = "Flattened Device Tree blob";\n')
     fd.write('\t\t\t'   +   'data = /incbin/("%s/%s");\n' % (dtb_path, dtb_file))
     fd.write('\t\t\t'   +   'type = "flat_dt";\n')
     fd.write('\t\t\t'   +   'arch = "%s";\n' % arch)
     fd.write('\t\t\t'   +   'compression = "none";\n')
+    fd.write('\t\t\t'   +   '%s\n' % dtb_loadline)
     fd.write('\t\t\t'   +   'hash@1 {\n')
     fd.write('\t\t\t\t' +     'algo = "%s";\n' % dtb_csum)
     fd.write('\t\t\t'   +   '};\n')
