@@ -5,12 +5,11 @@ inherit buildinfo
 require barebox.inc
 inherit barebox-environment-2
 
+include barebox-secureboot.inc
+include barebox-protectionshield.inc
 include barebox-boot-scripts.inc
 
 LIC_FILES_CHKSUM = "file://COPYING;md5=f5125d13e000b9ca1f0d3364286c4192"
-
-_XTRA_SETUP = "${@bb.utils.contains('DISTRO_FEATURES', 'secureboot', 'secureboot', 'none', d)}"
-include ${THISDIR}/barebox-${_XTRA_SETUP}.inc
 
 GIT_URL = "git://git.phytec.de/barebox"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
@@ -46,6 +45,8 @@ fi
 
 python do_env_append_mx6ul() {
     kernelname = d.getVar("KERNEL_IMAGETYPE", True)
+    if "secureboot" in d.getVar("DISTRO_FEATURES", True):
+        kernelname = "fitImage"
     sdid = "0"
     emmcid = "1"
 
