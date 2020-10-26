@@ -21,4 +21,6 @@ INTREE_DEFCONFIG = "defconfig imx8_phytec_distro.config imx8_phytec_platform.con
 COMPATIBLE_MACHINE  = "^("
 COMPATIBLE_MACHINE .= "phyboard-polis-imx8mm-2"
 COMPATIBLE_MACHINE .= "|phyboard-polis-imx8mm-3"
+COMPATIBLE_MACHINE .= "|phygate-tauri-imx8mm-1"
+COMPATIBLE_MACHINE .= "|phygate-tauri-imx8mm-2"
 COMPATIBLE_MACHINE .= ")$"
