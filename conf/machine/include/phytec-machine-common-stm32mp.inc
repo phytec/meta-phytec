@@ -143,7 +143,7 @@ UBI_VOLNAME ?= "rootfs"
 #   Like that a same UBI partition can be used for severals NAND/NOR providers
 MULTIUBI_BUILD += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nand-2-256', 'nand_2_256', '', d)}"
 
-# UBI Args for NAND soldered by default on phyCORE-STM32mp1-6
+# UBI Args for 512MB NAND soldered by default on phyCORE-STM32MP1
 # Micron MT29F8G08ABACAWP
 # LEB = BLOCK_SIZE - (2 * page size): 64*2048 - (2*2048)
 MKUBIFS_ARGS_nand_2_256 = "--min-io-size 2048 --leb-size 126976 --max-leb-cnt 972 --space-fixup"
