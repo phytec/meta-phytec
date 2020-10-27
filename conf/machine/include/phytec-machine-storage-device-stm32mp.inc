@@ -80,7 +80,7 @@ DEVICE_START_OFFSET_NAND   ?= "0x00000000"
 DEVICE_ALIGNMENT_SIZE_NAND ?= "0x00040000"
 
 # Configure the list of boards that enable EMMC
-DEVICE_BOARD_ENABLE_NAND   += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nand-4-256', '${STM32MP_DT_FILES_PHYCORE}', '', d)}"
+DEVICE_BOARD_ENABLE_NAND   += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nand-2-256', '${STM32MP_DT_FILES_PHYCORE}', '', d)}"
 
 # -----------------------------------------------------------------------------
 # NOR
