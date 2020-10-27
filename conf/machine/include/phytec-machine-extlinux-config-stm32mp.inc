@@ -35,39 +35,22 @@ UBOOT_EXTLINUX_ROOT_target-sdcard = "root=PARTUUID=${DEVICE_PARTUUID_ROOTFS_SDCA
 UBOOT_EXTLINUX_ROOT_target-emmc = "root=PARTUUID=${DEVICE_PARTUUID_ROOTFS_EMMC}"
 # Define INITRD overrides for nand target
 UBOOT_EXTLINUX_INITRD_target-nand = ""
+
 # -----------------------------------------------------------------------------
-# Append specific examples configs
+# Configure additional target
 # -----------------------------------------------------------------------------
 # Enable UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG var that allows to configure
 # additional target:
 #   UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG = "extra-target"
-# Then define new label(s) to append to the label list from current target
-#   UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG[extra-target] = "newlabel1 newlabel2"
 # This will create new 'extlinux.conf' file with name 'extra-target_extlinux.conf'
-# that will use UBOOT_EXTLINUX_LABELS label list defined for current target plus
-# the 'newlabel1' and 'newlabel2' labels.
+# that will use UBOOT_EXTLINUX_LABELS label list defined for current target.
+#
+# New label(s) can be defined to append to the label list from current target:
+#   UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG[extra-target] = "newlabel1 newlabel2"
+# the 'newlabel1' and 'newlabel2' labels will be added in 'extra-target_extlinux.conf'
 # -----------------------------------------------------------------------------
 # Define additional extra targets to consider
 UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG_target-sdcard += "${STM32MP_DT_FILES_PHYCORE}"
 UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG_target-emmc += "${STM32MP_DT_FILES_PHYCORE}"
 UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG_target-nand += "${STM32MP_DT_FILES_PHYCORE}"
-# Define extra label configuration
-UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG[phycore-stm32mp1-3] += "phycore-stm32mp1-3-a7"
-UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG[phycore-stm32mp1-3] += "phycore-stm32mp1-3-m4"
-
-# -----------------------------------------------------------------------------
-# Configure A7 examples labels
-# -----------------------------------------------------------------------------
-# Define MENU DESCRIPTION overrides for new A7 labels
-UBOOT_EXTLINUX_MENU_DESCRIPTION_phycore-stm32mp1-3-a7 = "phycore-stm32mp1-3-a7-examples"
-# Define FDT overrides for new A7 labels
-UBOOT_EXTLINUX_FDT_phycore-stm32mp1-3-a7 = "/phycore-stm32mp1-3-a7-examples.dtb"
-
-# -----------------------------------------------------------------------------
-# Configure M4 examples labels
-# -----------------------------------------------------------------------------
-# Define MENU DESCRIPTION overrides for new M4 labels
-UBOOT_EXTLINUX_MENU_DESCRIPTION_phycore-stm32mp1-3-m4 = "phycore-stm32mp1-3-m4-examples"
-# Define FDT overrides for new M4 labels
-UBOOT_EXTLINUX_FDT_phycore-stm32mp1-3-m4 = "/phycore-stm32mp1-3-m4-examples.dtb"
 
