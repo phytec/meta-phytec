@@ -29,3 +29,7 @@ UBOOT_EXTLINUX_MENU_DESCRIPTION_phycore-stm32mp1-3-m4 = "phycore-stm32mp1-3-m4-e
 # Define FDT overrides for new M4 labels
 UBOOT_EXTLINUX_FDT_phycore-stm32mp1-3-m4 = "/phycore-stm32mp1-3-m4-examples.dtb"
 
+# -----------------------------------------------------------------------------
+# Define FDT override for Default label
+UBOOT_EXTLINUX_FDT_phycore-stm32mp1-3 = "/phycore-stm32mp1-3.dtb"
+# -----------------------------------------------------------------------------
