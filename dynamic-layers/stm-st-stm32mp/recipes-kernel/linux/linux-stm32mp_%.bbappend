@@ -1,3 +1,15 @@
+FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
+
+KERNEL_CONFIG_FRAGMENTS += "${WORKDIR}/fragments/5.4/fragment-06-rtc.config"
+KERNEL_CONFIG_FRAGMENTS += "${WORKDIR}/fragments/5.4/fragment-07-eeprom.config"
+KERNEL_CONFIG_FRAGMENTS += "${WORKDIR}/fragments/5.4/fragment-08-spi-nor.config"
+KERNEL_CONFIG_FRAGMENTS += "${WORKDIR}/fragments/5.4/fragment-09-audio.config"
+KERNEL_CONFIG_FRAGMENTS += "${WORKDIR}/fragments/5.4/fragment-10-peb-hdmi.config"
+KERNEL_CONFIG_FRAGMENTS += "${WORKDIR}/fragments/5.4/fragment-11-wifi-r8712u-support.config"
+KERNEL_CONFIG_FRAGMENTS += "${WORKDIR}/fragments/5.4/fragment-12-add-dp83867-phy-support.config"
+KERNEL_CONFIG_FRAGMENTS += "${WORKDIR}/fragments/5.4/fragment-13-add-pca953x-led-support.config"
+KERNEL_CONFIG_FRAGMENTS += "${WORKDIR}/fragments/5.4/fragment-14-RPI-screen.config"
+
 # ---------------------------------
 # Configure devupstream class usage
 # ---------------------------------
@@ -19,3 +31,13 @@ SRC_URI_class-devupstream += "file://${LINUX_VERSION}/fragment-03-systemd.config
 SRC_URI_class-devupstream += "file://${LINUX_VERSION}/fragment-04-optee.config;subdir=fragments"
 SRC_URI_class-devupstream += "file://${LINUX_VERSION}/fragment-05-modules.config;subdir=fragments"
 SRC_URI_class-devupstream += "file://${LINUX_VERSION}/fragment-06-signature.config;subdir=fragments"
+
+SRC_URI_class-devupstream += "file://5.4/fragment-06-rtc.config;subdir=fragments"
+SRC_URI_class-devupstream += "file://5.4/fragment-07-eeprom.config;subdir=fragments"
+SRC_URI_class-devupstream += "file://5.4/fragment-08-spi-nor.config;subdir=fragments"
+SRC_URI_class-devupstream += "file://5.4/fragment-09-audio.config;subdir=fragments"
+SRC_URI_class-devupstream += "file://5.4/fragment-10-peb-hdmi.config;subdir=fragments"
+SRC_URI_class-devupstream += "file://5.4/fragment-11-wifi-r8712u-support.config;subdir=fragments"
+SRC_URI_class-devupstream += "file://5.4/fragment-12-add-dp83867-phy-support.config;subdir=fragments"
+SRC_URI_class-devupstream += "file://5.4/fragment-13-add-pca953x-led-support.config;subdir=fragments"
+SRC_URI_class-devupstream += "file://5.4/fragment-14-RPI-screen.config;subdir=fragments"
