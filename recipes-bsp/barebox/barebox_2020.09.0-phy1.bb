@@ -229,12 +229,17 @@ python do_env_append_phyboard-segin-imx6ul-5() {
 """)
 }
 
+python do_env_append_phyboard-segin-imx6ul-6() {
+    env_add(d, "nv/linux.bootargs.cma", "cma=128M\n")
+}
+
 python do_env_append_phyboard-segin-imx6ul-7() {
     env_rm_rauc_nand_boot_scripts(d)
 }
 
 python do_env_append_phyboard-segin-imx6ul-8() {
     env_rm_rauc_nand_boot_scripts(d)
+    env_add(d, "nv/linux.bootargs.cma", "cma=128M\n")
 }
 
 INTREE_DEFCONFIG = "imx_v7_defconfig"
