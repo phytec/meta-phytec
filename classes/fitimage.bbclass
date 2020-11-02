@@ -28,14 +28,7 @@ LICENSE = "MIT"
 do_fetch[cleandirs] = "${S}"
 do_patch[noexec] = "1"
 do_compile[noexec] = "1"
-do_install[noexec] = "1"
-deltask do_populate_sysroot
-do_package[noexec] = "1"
 deltask do_package_qa
-do_packagedata[noexec] = "1"
-deltask do_package_write_ipk
-deltask do_package_write_deb
-deltask do_package_write_rpm
 
 DEPENDS = "phytec-dev-ca-native u-boot-mkimage-native dtc-native"
 FITIMAGE_HASH ??= "sha1"
