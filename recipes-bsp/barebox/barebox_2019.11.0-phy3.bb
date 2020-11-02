@@ -370,6 +370,10 @@ python do_env_append_phyboard-mira-imx6-3() {
     env_add_rauc_nand_boot_scripts(d)
 }
 
+python do_env_append_phyboard-mira-imx6-13() {
+    env_add_rauc_nand_boot_scripts(d)
+}
+
 INTREE_DEFCONFIG = "imx_v7_defconfig"
 
 COMPATIBLE_MACHINE  = "^("
