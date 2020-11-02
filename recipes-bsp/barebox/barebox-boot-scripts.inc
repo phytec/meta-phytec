@@ -74,11 +74,10 @@ def env_add_boot_scripts(d, kernelname, mmcid, emmcid):
         env_add(d, "boot/system1", nandboot.format(partid=1))
         spiroot = "root=ubi0:root ubi.mtd=root rootfstype=ubifs"
 
-    env_add(d, "boot/mmc", mmcboot.format(kernel=kernelname,
-                                          mmcid=mmcid, partid=0,
-                                          rootid=1))
+    env_add(d, "boot/mmc", mmcboot.format(kernel=kernelname, mmcid=mmcid,
+                                          partid=0, rootid=1))
     env_add(d, "boot/net", netboot)
-    env_add(d, "boot/spi", spiboot.format(root = spiroot))
+    env_add(d, "boot/spi", spiboot.format(root=spiroot))
 
 def env_add_rauc_nand_boot_scripts(d, nandflashsize=1024, kernelsize=16, dtbsize=1):
     import textwrap
