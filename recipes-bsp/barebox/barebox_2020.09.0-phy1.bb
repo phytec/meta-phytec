@@ -51,6 +51,7 @@ python do_env_append_mx6ul() {
     emmcid = "1"
 
     env_add_boot_scripts(d, kernelname, sdid, emmcid)
+    env_add_bootchooser(d)
 
     env_add(d, "nv/dev.eth0.mode", "static")
     env_add(d, "nv/dev.eth0.ipaddr", "192.168.3.11")
@@ -59,11 +60,6 @@ python do_env_append_mx6ul() {
     env_add(d, "nv/dev.eth0.serverip", "192.168.3.10")
     env_add(d, "nv/dev.eth0.linux.devname", "eth0")
     env_add(d, "nv/dhcp.vendor_id", "phytec")
-
-    env_add(d, "nv/bootchooser.targets", """system0 system1""")
-    env_add(d, "nv/bootchooser.system0.boot", """system0""")
-    env_add(d, "nv/bootchooser.system1.boot", """system1""")
-    env_add(d, "nv/bootchooser.state_prefix", """state.bootstate""")
 }
 
 python do_env_append_phyboard-segin-imx6ul() {
@@ -196,56 +192,15 @@ of_property -f -d ${ENDPOINT_PATH} link-frequencies
 of_fixup_status ${CAM_PATH}
 """)
 
-    #RAUC init scripts for NAND
-    env_add(d, "bin/rauc_init_nand",
-"""#!/bin/sh
-echo "Format /dev/nand0.root"
-
-ubiformat -q /dev/nand0.root
-ubiattach /dev/nand0.root
-ubimkvol -t static /dev/nand0.root.ubi kernel0 8M
-ubimkvol -t static /dev/nand0.root.ubi oftree0 1M
-ubimkvol /dev/nand0.root.ubi root0 244M
-ubimkvol -t static /dev/nand0.root.ubi kernel1 8M
-ubimkvol -t static /dev/nand0.root.ubi oftree1 1M
-ubimkvol /dev/nand0.root.ubi root1 0
-
-ubidetach 0
-""")
-    env_add(d, "bin/rauc_flash_nand_from_mmc",
-"""#!/bin/sh
-echo "Initialize NAND flash from MMC"
-[ ! -e /dev/nand0.root.ubi ] && ubiattach /dev/nand0.root
-ubiupdatevol /dev/nand0.root.ubi.kernel0 /mnt/mmc0.0/zImage
-ubiupdatevol /dev/nand0.root.ubi.kernel1 /mnt/mmc0.0/zImage
-ubiupdatevol /dev/nand0.root.ubi.oftree0 /mnt/mmc0.0/oftree
-ubiupdatevol /dev/nand0.root.ubi.oftree1 /mnt/mmc0.0/oftree
-cp /mnt/mmc0.0/root.ubifs /dev/nand0.root.ubi.root0
-cp /mnt/mmc0.0/root.ubifs /dev/nand0.root.ubi.root1
-""")
-    env_add(d, "bin/rauc_flash_nand_from_tftp",
-"""#!/bin/sh
-echo "Initialize NAND flash from TFTP"
-[ ! -e /dev/nand0.root.ubi ] && ubiattach /dev/nand0.root
-ubiupdatevol /dev/nand0.root.ubi.kernel0 /mnt/tftp/zImage
-ubiupdatevol /dev/nand0.root.ubi.kernel1 /mnt/tftp/zImage
-ubiupdatevol /dev/nand0.root.ubi.oftree0 /mnt/tftp/oftree
-ubiupdatevol /dev/nand0.root.ubi.oftree1 /mnt/tftp/oftree
-cp /mnt/tftp/root.ubifs /dev/nand0.root.ubi.root0
-cp /mnt/tftp/root.ubifs /dev/nand0.root.ubi.root1
-""")
+    env_add_rauc_nand_boot_scripts(d, nandflashsize=512)
 }
 
 #No RAUC support for the low-cost Segin due to small NAND
 python do_env_append_phyboard-segin-imx6ul-3() {
     env_rm(d, "boot/system0")
     env_rm(d, "boot/system1")
-    env_rm(d, "nv/bootchooser.targets")
-    env_rm(d, "nv/bootchooser.system0.boot")
-    env_rm(d, "nv/bootchooser.system1.boot")
-    env_rm(d, "nv/bootchooser.state_prefix")
-    env_rm(d, "bin/rauc_flash_nand_from_mmc")
-    env_rm(d, "bin/rauc_flash_nand_from_tftp")
+    env_rm_bootchooser(d)
+    env_rm_rauc_nand_boot_scripts(d)
 
     #Default CMA size (128 MB) is too big for the 256 MB RAM so it has to be
     #reduced to 64 MB.
@@ -275,15 +230,11 @@ python do_env_append_phyboard-segin-imx6ul-5() {
 }
 
 python do_env_append_phyboard-segin-imx6ul-7() {
-    env_rm(d, "bin/rauc_init_nand")
-    env_rm(d, "bin/rauc_flash_nand_from_mmc")
-    env_rm(d, "bin/rauc_flash_nand_from_tftp")
+    env_rm_rauc_nand_boot_scripts(d)
 }
 
 python do_env_append_phyboard-segin-imx6ul-8() {
-    env_rm(d, "bin/rauc_init_nand")
-    env_rm(d, "bin/rauc_flash_nand_from_mmc")
-    env_rm(d, "bin/rauc_flash_nand_from_tftp")
+    env_rm_rauc_nand_boot_scripts(d)
 }
 
 INTREE_DEFCONFIG = "imx_v7_defconfig"

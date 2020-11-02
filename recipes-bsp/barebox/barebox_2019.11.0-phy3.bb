@@ -59,6 +59,7 @@ python do_env_append_mx6() {
         dhcp_vendor = "phyCARD-i.MX6"
 
     env_add_boot_scripts(d, kernelname, sdid, emmcid)
+    env_add_bootchooser(d)
 
     env_add(d, "expansions/imx6qdl-mira-enable-lvds",
 """of_fixup_status /ldb/lvds-channel@0
@@ -366,50 +367,7 @@ python do_env_append_phyboard-mira-imx6-15() {
 
 #Enviroment changes for RAUC
 python do_env_append_phyboard-mira-imx6-3() {
-    env_add(d, "nv/bootchooser.state_prefix", """state""")
-    env_add(d, "nv/bootchooser.targets", """system0 system1""")
-    env_add(d, "nv/bootchooser.system0.boot", """system0""")
-    env_add(d, "nv/bootchooser.system1.boot", """system1""")
-    env_add(d, "nv/bootchooser.state_prefix", """state.bootstate""")
-    env_add(d, "bin/rauc_init_nand",
-"""#!/bin/sh
-#For 1GB NANDs (otherwise other partition sizes)
-ROOTFSSIZE=450M
-echo "Format /dev/nand0.root"
-
-ubiformat -q /dev/nand0.root
-ubiattach /dev/nand0.root
-ubimkvol -t static /dev/nand0.root.ubi kernel0 16M
-ubimkvol -t static /dev/nand0.root.ubi oftree0 1M
-ubimkvol /dev/nand0.root.ubi root0 ${ROOTFSSIZE}
-ubimkvol -t static /dev/nand0.root.ubi kernel1 16M
-ubimkvol -t static /dev/nand0.root.ubi oftree1 1M
-ubimkvol /dev/nand0.root.ubi root1 ${ROOTFSSIZE}
-
-ubidetach 0
-""")
-    env_add(d, "bin/rauc_flash_nand_from_mmc",
-"""#!/bin/sh
-echo "Initialize NAND flash from MMC"
-[ ! -e /dev/nand0.root.ubi ] && ubiattach /dev/nand0.root
-ubiupdatevol /dev/nand0.root.ubi.kernel0 /mnt/mmc0.0/zImage
-ubiupdatevol /dev/nand0.root.ubi.kernel1 /mnt/mmc0.0/zImage
-ubiupdatevol /dev/nand0.root.ubi.oftree0 /mnt/mmc0.0/oftree
-ubiupdatevol /dev/nand0.root.ubi.oftree1 /mnt/mmc0.0/oftree
-cp /mnt/mmc0.0/root.ubifs /dev/nand0.root.ubi.root0
-cp /mnt/mmc0.0/root.ubifs /dev/nand0.root.ubi.root1
-""")
-    env_add(d, "bin/rauc_flash_nand_from_tftp",
-"""#!/bin/sh
-echo "Initialize NAND flash from TFTP"
-[ ! -e /dev/nand0.root.ubi ] && ubiattach /dev/nand0.root
-ubiupdatevol /dev/nand0.root.ubi.kernel0 /mnt/tftp/zImage
-ubiupdatevol /dev/nand0.root.ubi.kernel1 /mnt/tftp/zImage
-ubiupdatevol /dev/nand0.root.ubi.oftree0 /mnt/tftp/oftree
-ubiupdatevol /dev/nand0.root.ubi.oftree1 /mnt/tftp/oftree
-cp /mnt/tftp/root.ubifs /dev/nand0.root.ubi.root0
-cp /mnt/tftp/root.ubifs /dev/nand0.root.ubi.root1
-""")
+    env_add_rauc_nand_boot_scripts(d)
 }
 
 INTREE_DEFCONFIG = "imx_v7_defconfig"

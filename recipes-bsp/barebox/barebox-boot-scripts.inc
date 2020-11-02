@@ -79,3 +79,69 @@ def env_add_boot_scripts(d, kernelname, mmcid, emmcid):
                                           rootid=1))
     env_add(d, "boot/net", netboot)
     env_add(d, "boot/spi", spiboot.format(root = spiroot))
+
+def env_add_rauc_nand_boot_scripts(d, nandflashsize=1024, kernelsize=16, dtbsize=1):
+    import textwrap
+
+    rauc_init_nand = textwrap.dedent("""\
+    #!/bin/sh
+    ROOTFSSIZE={rootfssize}M
+    KERNELSIZE={kernelsize}M
+    DTBSIZE={dtbsize}M
+    echo "Formatting /dev/nand0.root"
+
+    ubiformat -q /dev/nand0.root
+    ubiattach /dev/nand0.root
+    ubimkvol -t static /dev/nand0.root.ubi kernel0 ${{KERNELSIZE}}
+    ubimkvol -t static /dev/nand0.root.ubi oftree0 ${{DTBSIZE}}
+    ubimkvol /dev/nand0.root.ubi root0 ${{ROOTFSSIZE}}
+    ubimkvol -t static /dev/nand0.root.ubi kernel1 ${{KERNELSIZE}}
+    ubimkvol -t static /dev/nand0.root.ubi oftree1 ${{DTBSIZE}}
+    ubimkvol /dev/nand0.root.ubi root1 ${{ROOTFSSIZE}}
+
+    ubidetach 0
+    """)
+    rauc_flash_nand_from_mmc = textwrap.dedent("""\
+    #!/bin/sh
+    echo "Initializing NAND flash from MMC"
+    [ ! -e /dev/nand0.root.ubi ] && ubiattach /dev/nand0.root
+    ubiupdatevol /dev/nand0.root.ubi.kernel0 /mnt/mmc0.0/zImage
+    ubiupdatevol /dev/nand0.root.ubi.kernel1 /mnt/mmc0.0/zImage
+    ubiupdatevol /dev/nand0.root.ubi.oftree0 /mnt/mmc0.0/oftree
+    ubiupdatevol /dev/nand0.root.ubi.oftree1 /mnt/mmc0.0/oftree
+    cp /mnt/mmc0.0/root.ubifs /dev/nand0.root.ubi.root0
+    cp /mnt/mmc0.0/root.ubifs /dev/nand0.root.ubi.root1
+    """)
+    rauc_flash_nand_from_tftp = textwrap.dedent("""\
+    #!/bin/sh
+    echo "Initializing NAND flash from TFTP"
+    [ ! -e /dev/nand0.root.ubi ] && ubiattach /dev/nand0.root
+    ubiupdatevol /dev/nand0.root.ubi.kernel0 /mnt/tftp/zImage
+    ubiupdatevol /dev/nand0.root.ubi.kernel1 /mnt/tftp/zImage
+    ubiupdatevol /dev/nand0.root.ubi.oftree0 /mnt/tftp/oftree
+    ubiupdatevol /dev/nand0.root.ubi.oftree1 /mnt/tftp/oftree
+    cp /mnt/tftp/root.ubifs /dev/nand0.root.ubi.root0
+    cp /mnt/tftp/root.ubifs /dev/nand0.root.ubi.root1
+    """)
+    env_add(d, "bin/rauc_init_nand", rauc_init_nand.format(
+            rootfssize=nandflashsize // 2 - kernelsize - dtbsize,
+            kernelsize=kernelsize, dtbsize=dtbsize))
+    env_add(d, "bin/rauc_flash_nand_from_mmc", rauc_flash_nand_from_mmc)
+    env_add(d, "bin/rauc_flash_nand_from_tftp", rauc_flash_nand_from_tftp)
+
+def env_rm_rauc_nand_boot_scripts(d):
+    env_rm(d, "bin/rauc_init_nand")
+    env_rm(d, "bin/rauc_flash_nand_from_mmc")
+    env_rm(d, "bin/rauc_flash_nand_from_tftp")
+
+def env_add_bootchooser(d):
+    env_add(d, "nv/bootchooser.targets", """system0 system1""")
+    env_add(d, "nv/bootchooser.system0.boot", """system0""")
+    env_add(d, "nv/bootchooser.system1.boot", """system1""")
+    env_add(d, "nv/bootchooser.state_prefix", """state.bootstate""")
+
+def env_rm_bootchooser(d):
+    env_rm(d, "nv/bootchooser.targets")
+    env_rm(d, "nv/bootchooser.system0.boot")
+    env_rm(d, "nv/bootchooser.system1.boot")
+    env_rm(d, "nv/bootchooser.state_prefix")
