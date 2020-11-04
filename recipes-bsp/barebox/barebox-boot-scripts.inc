@@ -123,7 +123,7 @@ def env_add_rauc_nand_boot_scripts(d, nandflashsize=1024, kernelsize=16, dtbsize
     cp /mnt/tftp/root.ubifs /dev/nand0.root.ubi.root1
     """)
     env_add(d, "bin/rauc_init_nand", rauc_init_nand.format(
-            rootfssize=nandflashsize // 2 - kernelsize - dtbsize,
+            rootfssize=nandflashsize // 2 - kernelsize - dtbsize - 16,
             kernelsize=kernelsize, dtbsize=dtbsize))
     env_add(d, "bin/rauc_flash_nand_from_mmc", rauc_flash_nand_from_mmc)
     env_add(d, "bin/rauc_flash_nand_from_tftp", rauc_flash_nand_from_tftp)
