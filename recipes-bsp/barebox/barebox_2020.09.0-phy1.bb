@@ -60,6 +60,8 @@ python do_env_append_mx6ul() {
     env_add(d, "nv/dev.eth0.serverip", "192.168.3.10")
     env_add(d, "nv/dev.eth0.linux.devname", "eth0")
     env_add(d, "nv/dhcp.vendor_id", "phytec")
+
+    env_add(d, "nv/boot.watchdog_timeout", "60s");
 }
 
 python do_env_append_phyboard-segin-imx6ul() {
