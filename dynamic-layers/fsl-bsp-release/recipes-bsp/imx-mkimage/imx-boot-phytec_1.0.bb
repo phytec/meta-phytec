@@ -133,9 +133,9 @@ compile_mx8() {
                                                              ${BOOT_STAGING}/u-boot-spl.bin-${type}
         fi
     done
-    cp ${DEPLOY_DIR_IMAGE}/imx8qm_m4_0_TCM_power_mode_switch_m40.bin \
+    cp ${DEPLOY_DIR_IMAGE}/imx8qm_m4_TCM_power_mode_switch_m40.bin \
                                                              ${BOOT_STAGING}/m4_image.bin
-    cp ${DEPLOY_DIR_IMAGE}/imx8qm_m4_1_TCM_power_mode_switch_m41.bin \
+    cp ${DEPLOY_DIR_IMAGE}/imx8qm_m4_TCM_power_mode_switch_m41.bin \
                                                              ${BOOT_STAGING}/m4_1_image.bin
     cp ${DEPLOY_DIR_IMAGE}/${SECO_FIRMWARE_NAME}             ${BOOT_STAGING}
 }
