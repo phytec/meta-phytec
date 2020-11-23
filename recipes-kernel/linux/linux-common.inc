@@ -27,6 +27,7 @@ PATCHTOOL = "git"
 
 SRCTREECOVEREDTASKS ?= "do_unpack do_fetch"
 
+include linux-common-secureboot.inc
 # Copy .dts and .dtsi from SRC_URI to the kernel boot/dts path
 # This should go to poky/meta/classes/kernel-devicetree.bbclass
 # returns all the elements from the src uri that are .dts or .dtsi files
