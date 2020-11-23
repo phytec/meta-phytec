@@ -4,6 +4,7 @@ inherit phygittag
 require recipes-bsp/u-boot/u-boot.inc
 inherit python3native
 
+include u-boot-secureboot.inc
 PROVIDES += "u-boot"
 DEPENDS_append = " python dtc-native bison-native"
 
