@@ -43,6 +43,8 @@ M4_DEFAULT_IMAGE_mx8phantomdxl = "imx8dxl-phantom_m4_TCM_srtm_demo.bin"
 M4_DEFAULT_IMAGE_mx8dxl = "imx8dxl_m4_TCM_power_mode_switch.bin"
 M4_DEFAULT_IMAGE_mx8dx = "imx8qx_m4_TCM_power_mode_switch.bin"
 
+include imx-boot-phytec-secureboot.inc
+
 # This package aggregates output deployed by other packages,
 # so set the appropriate dependencies
 do_compile[depends] += " \
@@ -176,10 +178,10 @@ do_compile() {
             if [ "$target" = "flash_linux_m4_no_v2x" ]; then
                # Special target build for i.MX 8DXL with V2X off
                bbnote "building ${SOC_TARGET} - ${REV_OPTION} V2X=NO ${target}"
-               make SOC=${SOC_TARGET} dtbs=${UBOOT_DTB_NAME} ${REV_OPTION} V2X=NO  flash_linux_m4
+               make SOC=${SOC_TARGET} dtbs=${UBOOT_DTB_NAME} ${REV_OPTION} V2X=NO  flash_linux_m4 2>&1 | tee ${WORKDIR}/make_output_${SOC_TARGET}_${target}_${type}.log
             else
                bbnote "building ${SOC_TARGET} - ${REV_OPTION} ${target}"
-               make SOC=${SOC_TARGET} dtbs=${UBOOT_DTB_NAME} ${REV_OPTION} ${target}
+               make SOC=${SOC_TARGET} dtbs=${UBOOT_DTB_NAME} ${REV_OPTION} ${target} 2>&1 | tee ${WORKDIR}/make_output_${SOC_TARGET}_${target}_${type}.log
             fi
             if [ -e "${BOOT_STAGING}/flash.bin" ]; then
                 cp ${BOOT_STAGING}/flash.bin ${S}/${BOOT_NAME}-${MACHINE}-${type}.bin-${target}
