@@ -1,0 +1,194 @@
+# Signs imx-boot images with NXP's CST tool
+
+inherit hab
+
+SRC_URI_append_secureboot=" \
+                          file://csf_spl_template.txt \
+                          file://csf_fit_template.txt"
+DEPENDS_append_secureboot = " phytec-dev-ca-native nxp-cst-native"
+
+CSF_TEMPLATE_PATH_SPL="${WORKDIR}/csf_spl_template.txt"
+CSF_TEMPLATE_PATH_FIT="${WORKDIR}/csf_fit_template.txt"
+
+BL31_BIN_PATH="${BOOT_STAGING}/bl31.bin"
+
+
+# Hardcoded adddresses taken from imx-boot
+UBOOT_NODTB_BIN_ADDR="INVALID"
+ATF_BIN_ADDR="INVALID"
+
+UBOOT_NODTB_BIN_ADDR_mx8mm="0x40200000"
+ATF_BIN_ADDR_mx8mm="0x920000"
+
+# Extract the addresses we need from imx-mkimage output
+def get_hab_blocks_from_log(input_image_path, ubootimx_make_output):
+    import re
+    content = readfull(ubootimx_make_output)
+    spl = re.search('spl hab block:\s+(.*)', content).group(1).split()
+
+    spl_hab_block = dict()
+    spl_hab_block['addr'] = int(spl[0], 16)
+    spl_hab_block['offset'] = int(spl[1], 16)
+    spl_hab_block['size'] = int(spl[2], 16)
+    spl_hab_block['filename'] = input_image_path
+
+    sld = re.search('sld hab block:\s+(.*)', content).group(1).split()
+    sld_hab_block = dict()
+    sld_hab_block['addr'] = int(sld[0], 16)
+    sld_hab_block['offset'] = int(sld[1], 16)
+    sld_hab_block['size'] = int(sld[2], 16)
+    sld_hab_block['filename'] = input_image_path
+
+    csf_spl_offset = int(re.search('csf_off\s+(.*)', content).group(1), 16)
+    csf_fit_offset = int(re.search('sld_csf_off\s+(.*)', content).group(1), 16)
+
+    result = dict()
+    result['SPL_HAB_BLOCK'] = spl_hab_block
+    result['SLD_HAB_BLOCK'] = sld_hab_block
+
+    result['CSF_SPL_OFFSET'] = csf_spl_offset
+    result['CSF_FIT_OFFSET'] = csf_fit_offset
+
+    return result
+
+
+def sign_hab(d, input_image_path, output_image_path, imxboot_logfile, \
+             uboot_nodtb_bin_path, uboot_dtb_bin_path, bl31_bin_path):
+    import shutil
+    uboot_nodtb_bin_addr = d.getVar('UBOOT_NODTB_BIN_ADDR', True)
+    atf_bin_addr = d.getVar('ATF_BIN_ADDR', True)
+
+    if uboot_nodtb_bin_addr == 'INVALID' or atf_bin_addr == 'INVALID':
+        bb.fatal('Error: Required addresses for selected device are unknown.'
+                 'Cannot sign')
+
+    uboot_nodtb_bin_addr = int(uboot_nodtb_bin_addr, 16)
+    atf_bin_addr = int(atf_bin_addr, 16)
+
+    parsed_blocks = get_hab_blocks_from_log(input_image_path, imxboot_logfile)
+    csf_template_path_spl = d.getVar('CSF_TEMPLATE_PATH_SPL', True)
+    csf_template_path_fit = d.getVar('CSF_TEMPLATE_PATH_FIT', True)
+
+    spl_hab_block = parsed_blocks['SPL_HAB_BLOCK']
+    sld_hab_block = parsed_blocks['SLD_HAB_BLOCK']
+
+    # generate csf for SPL
+    template = readfull(csf_template_path_spl)
+    workdir = d.getVar('WORKDIR', True)
+
+    csf_spl_txt_path = os.path.join(workdir, 'csf_spl.txt')
+    csf_fit_txt_path = os.path.join(workdir, 'csf_fit.txt')
+
+    csf_spl_bin_path = os.path.join(workdir, 'csf_fit.bin.signed')
+    csf_fit_bin_path = os.path.join(workdir, 'csf_spl.bin.signed')
+
+    gen_csf(d, template, make_csf_hab_block([spl_hab_block]),
+            os.path.join(workdir, csf_spl_txt_path))
+
+    # generate csf for fit
+    ubootblock = dict()
+    ubootblock['filename'] = uboot_nodtb_bin_path
+    ubootblock['size'] = os.stat(ubootblock['filename']).st_size
+    ubootblock['addr'] = uboot_nodtb_bin_addr
+    ubootblock['offset'] = 0x00
+
+    # u-boot dtb for fit
+    dtbblock = dict()
+    dtbblock['filename'] = uboot_dtb_bin_path
+    dtbblock['size'] = os.stat(dtbblock['filename']).st_size
+    dtbblock['addr'] = ubootblock['addr']+ubootblock['size']
+    dtbblock['offset'] = 0x00
+
+    # ATF for fit
+    atfblock = dict()
+    atfblock['filename'] = bl31_bin_path
+    atfblock['size'] = os.stat(atfblock['filename']).st_size
+    atfblock['addr'] = atf_bin_addr
+    atfblock['offset'] = 0x0
+
+    hablist = [sld_hab_block, ubootblock, dtbblock, atfblock]
+    template = readfull(csf_template_path_fit)
+    gen_csf(d, template, make_csf_hab_block(hablist), csf_fit_txt_path)
+
+    # sign images
+    if execcmd('cst -i {0} -o {1}'.format(csf_spl_txt_path,
+                                          csf_spl_bin_path)) != 0:
+        raise Exception('Error: Failed to sign SPL binary')
+    if execcmd('cst -i {0} -o {1}'.format(csf_fit_txt_path,
+                                          csf_fit_bin_path)) != 0:
+        raise Exception('Error: Failed to sign FIT binary')
+
+    signed_spl_csf = readfull_bin(csf_spl_bin_path)
+    signed_fit_csf = readfull_bin(csf_fit_bin_path)
+
+    if not shutil.copyfile(input_image_path, output_image_path):
+        print('Failed to copy image')
+        return False
+
+    # Create signed flash binary
+    output_fd = open(output_image_path, 'r+b')
+    output_fd.seek(parsed_blocks['CSF_SPL_OFFSET'])
+    output_fd.write(signed_spl_csf)
+    output_fd.seek(parsed_blocks['CSF_FIT_OFFSET'])
+    output_fd.write(signed_fit_csf)
+    output_fd.close()
+
+
+python do_sign() {
+    if "secureboot" in d.getVar('DISTRO_FEATURES', True):
+        imxboot_targets = d.getVar('IMXBOOT_TARGETS', True).split()
+        uboot_configs = d.getVar('UBOOT_CONFIG', True).split()
+
+        if not oe.data.typed_value("BOOTLOADER_SIGN", d):
+            bb.note('Not signing bootloader image as signing disabled')
+            return
+
+        workdir = d.getVar('WORKDIR')
+        source_dir = d.getVar('S')
+        boot_name = d.getVar('BOOT_NAME')
+        machine = d.getVar('MACHINE')
+        soc_target = d.getVar('SOC_TARGET')
+        boot_staging = d.getVar('BOOT_STAGING')
+        uboot_dtb_name = d.getVar('UBOOT_DTB_NAME')
+
+        bl31_bin_path = d.getVar('BL31_BIN_PATH')
+        for target in imxboot_targets:
+            for uboot_config in uboot_configs:
+                img_name = '{0}-{1}-{2}.bin-{3}'.format(boot_name, machine,
+                                                        uboot_config, target)
+                make_name = 'make_output_{0}_{1}_{2}.log'.format(soc_target,
+                                                                 target,
+                                                                 uboot_config)
+                input_image_path = os.path.join(source_dir, img_name)
+                output_image_path = input_image_path + '-signed'
+                imxboot_logfile = os.path.join(workdir, make_name)
+                uboot_nodtb_bin_path = os.path.join(boot_staging,
+                                                    'u-boot-nodtb.bin-' +
+                                                    uboot_config)
+                uboot_dtb_bin_path = os.path.join(boot_staging, uboot_dtb_name)
+                sign_hab(d, input_image_path, output_image_path,
+                         imxboot_logfile, uboot_nodtb_bin_path,
+                         uboot_dtb_bin_path, bl31_bin_path)
+    else:
+        bb.note("Signing skipped - non secureboot build")
+}
+
+do_deploy_append_secureboot() {
+ for target in ${IMXBOOT_TARGETS}; do
+        #Use first "target" as IMAGE_IMXBOOT_TARGET
+        if [ "${IMAGE_IMXBOOT_TARGET}" = "" ]; then
+            IMAGE_IMXBOOT_TARGET="$target"
+            echo "Set boot target as $IMAGE_IMXBOOT_TARGET"
+        fi
+        for type in ${UBOOT_CONFIG}; do
+            sourcefile="${S}/${BOOT_NAME}-${MACHINE}-${type}.bin-${target}-signed"
+            if [ -f "${sourcefile}" ]; then
+                install -m 0644 "${sourcefile}" "${DEPLOYDIR}/"
+                ln -sf "${BOOT_NAME}-${MACHINE}-${type}.bin-${IMAGE_IMXBOOT_TARGET}-signed" \
+                                         		    "${DEPLOYDIR}/${BOOT_NAME}"
+            fi
+        done
+ done
+}
+
+addtask sign after do_compile before do_deploy
