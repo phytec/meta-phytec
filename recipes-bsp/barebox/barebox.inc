@@ -69,6 +69,9 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 FILES_${PN} = "${base_bootdir}"
 
 do_deploy () {
+    bbnote "Adding CRC32 checksum to barebox Image Metadata"
+    ${B}/scripts/bareboximd -c ${B}/${BAREBOX_BIN}
+
     bbnote "Deploying barebox"
     install -m 644 ${B}/${BAREBOX_BIN} ${DEPLOYDIR}/${BAREBOX_IMAGE_NAME}.bin
     ln -sf ${BAREBOX_IMAGE_NAME}.bin ${DEPLOYDIR}/${BAREBOX_BIN_LINK_NAME}
