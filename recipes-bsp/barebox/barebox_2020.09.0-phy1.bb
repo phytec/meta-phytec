@@ -105,6 +105,7 @@ of_fixup_status /user-leds
 of_fixup_status /soc/bus@2100000/lcdif@21c8000/
 of_fixup_status /panel-lcd
 of_fixup_status /backlight
+of_fixup_status /regulator-backlight-en
 of_fixup_status /soc/bus@2100000/i2c@21a0000/edt-ft5x06@38
 of_fixup_status /soc/bus@2000000/pwm@2088000/
 """)
@@ -113,6 +114,7 @@ of_fixup_status /soc/bus@2000000/pwm@2088000/
 of_fixup_status /soc/bus@2100000/lcdif@21c8000/
 of_fixup_status /panel-lcd
 of_fixup_status /backlight
+of_fixup_status /regulator-backlight-en
 of_fixup_status /soc/bus@2100000/i2c@21a0000/touchscreen@44
 of_fixup_status /soc/bus@2000000/pwm@2088000/
 """)
