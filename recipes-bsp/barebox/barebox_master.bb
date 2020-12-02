@@ -42,7 +42,7 @@ fi
 """)
 }
 
-INTREE_DEFCONFIG_ti33x = "am335x_defconfig"
+INTREE_DEFCONFIG_ti33x = "omap_defconfig"
 
 COMPATIBLE_MACHINE  = "^("
 COMPATIBLE_MACHINE .=  "beagleboneblack-1"
