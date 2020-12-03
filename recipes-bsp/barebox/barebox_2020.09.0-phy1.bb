@@ -21,6 +21,13 @@ PR = "${INC_PR}.0"
 # NOTE: Keep version in filename in sync with commit id!
 SRCREV = "630e5953e31a32545117c0ea046f4216c483b274"
 
+do_deploy_prepend() {
+    if [ -e ${B}/scripts/bareboximd ]; then
+        bbnote "Adding CRC32 checksum to barebox Image Metadata"
+        ${B}/scripts/bareboximd -c ${B}/${BAREBOX_BIN}
+    fi
+}
+
 python do_env_append() {
     env_add(d, "nv/allow_color", "false\n")
     env_add(d, "nv/linux.bootargs.base", "consoleblank=0\n")
