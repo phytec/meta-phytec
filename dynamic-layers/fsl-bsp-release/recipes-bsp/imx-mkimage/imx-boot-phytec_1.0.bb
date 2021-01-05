@@ -10,9 +10,7 @@ SECTION = "BSP"
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
-SRC_URI += "file://0001-Revert-imx8m-Add-DTB-pre-process-script-to-check-u-b.patch \
-            file://0002-Fix-size-calculation-in-HAB-FIT-shellscripts.patch \
-           "
+SRC_URI += "file://0002-Fix-size-calculation-in-HAB-FIT-shellscripts.patch "
 
 IMX_EXTRA_FIRMWARE      = "firmware-imx-8 imx-sc-firmware imx-seco"
 IMX_EXTRA_FIRMWARE_mx8m = "firmware-imx-8m"
@@ -159,34 +157,34 @@ compile_mx8x() {
 }
 
 do_compile() {
-    compile_${SOC_FAMILY}
     # Copy TEE binary to SoC target folder to mkimage
     if ${DEPLOY_OPTEE}; then
         cp ${DEPLOY_DIR_IMAGE}/tee.bin                       ${BOOT_STAGING}
     fi
     # mkimage for i.MX8
     for target in ${IMXBOOT_TARGETS}; do
-        for type in ${UBOOT_CONFIG}; do
+        for config in ${UBOOT_CONFIG}; do
+            compile_${SOC_FAMILY}
             allbins="u-boot.bin u-boot-nodtb.bin u-boot-spl.bin"
             for bin in ${allbins} ; do
                 if [ -e "${BOOT_STAGING}/${bin}" ]; then
                     rm ${BOOT_STAGING}/${bin}
                 fi
-                if [ -e "${BOOT_STAGING}/${bin}-${type}" ]; then
-                    ln -s ${bin}-${type} ${BOOT_STAGING}/${bin}
+                if [ -e "${BOOT_STAGING}/${bin}-${config}" ]; then
+                    ln -s ${bin}-${config} ${BOOT_STAGING}/${bin}
                 fi
             done
             make clean
             if [ "$target" = "flash_linux_m4_no_v2x" ]; then
                # Special target build for i.MX 8DXL with V2X off
                bbnote "building ${SOC_TARGET} - ${REV_OPTION} V2X=NO ${target}"
-               make SOC=${SOC_TARGET} dtbs=${UBOOT_DTB_NAME} ${REV_OPTION} V2X=NO  flash_linux_m4 2>&1 | tee ${WORKDIR}/make_output_${SOC_TARGET}_${target}_${type}.log
+               make SOC=${SOC_TARGET} dtbs=${UBOOT_DTB_NAME} ${REV_OPTION} V2X=NO  flash_linux_m4 2>&1 | tee ${WORKDIR}/make_output_${SOC_TARGET}_${target}_${config}.log
             else
                bbnote "building ${SOC_TARGET} - ${REV_OPTION} ${target}"
-               make SOC=${SOC_TARGET} dtbs=${UBOOT_DTB_NAME} ${REV_OPTION} ${target} 2>&1 | tee ${WORKDIR}/make_output_${SOC_TARGET}_${target}_${type}.log
+               make SOC=${SOC_TARGET} dtbs=${UBOOT_DTB_NAME} ${REV_OPTION} ${target} 2>&1 | tee ${WORKDIR}/make_output_${SOC_TARGET}_${target}_${config}.log
             fi
             if [ -e "${BOOT_STAGING}/flash.bin" ]; then
-                cp ${BOOT_STAGING}/flash.bin ${S}/${BOOT_NAME}-${MACHINE}-${type}.bin-${target}
+                cp ${BOOT_STAGING}/flash.bin ${S}/${BOOT_NAME}-${MACHINE}-${config}.bin-${target}
             fi
         done
     done
