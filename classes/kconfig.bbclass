@@ -152,7 +152,7 @@ python do_menuconfig() {
     bb.plain("To untaint the compile")
     bb.plain("    bitbake -c clean %s" % pn)
     bb.build.write_taint("do_compile", d)
-    oe_terminal("${SHELL} -c \"TERM=\"xterm-256color\";make %s; if [ \$? -ne 0 ]; then echo 'Command failed.'; printf 'Press any key to continue... '; read r; fi\"" % d.getVar('KCONFIG_CONFIG_COMMAND', True),
+    oe_terminal("/bin/sh -c \"TERM=\"xterm-256color\";make %s; if [ \$? -ne 0 ]; then echo 'Command failed.'; printf 'Press any key to continue... '; read r; fi\"" % d.getVar('KCONFIG_CONFIG_COMMAND', True),
         pn + ' Configuration', d)
 }
 do_menuconfig[dirs] = "${B}"
