@@ -1,0 +1,30 @@
+From 6353b74b9fb8da2aab2ba08d10254b63e27573e0 Mon Sep 17 00:00:00 2001
+From: Christoph Fritz <chf@fritzc.com>
+Date: Wed, 20 Jan 2021 14:19:54 +0100
+Subject: [PATCH] plat: imx8mn: use uart3 as console
+
+This patch changes uart console from uart2 to uart3 because that is
+where imx8mn-phycore-som has its stdout. So info and debug messages
+can get displayed.
+
+Signed-off-by: Christoph Fritz <chf@fritzc.com>
+---
+ plat/imx/imx8m/imx8mn/include/platform_def.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/plat/imx/imx8m/imx8mn/include/platform_def.h b/plat/imx/imx8m/imx8mn/include/platform_def.h
+index 967afbbee..9ce1067e9 100644
+--- a/plat/imx/imx8m/imx8mn/include/platform_def.h
++++ b/plat/imx/imx8m/imx8mn/include/platform_def.h
+@@ -51,7 +51,7 @@
+ 
+ #define HAB_RVT_BASE			U(0x00000900) /* HAB_RVT for i.MX8MM */
+ 
+-#define IMX_BOOT_UART_BASE		U(0x30890000)
++#define IMX_BOOT_UART_BASE		U(0x30880000)
+ #define IMX_BOOT_UART_CLK_IN_HZ		24000000 /* Select 24MHz oscillator */
+ 
+ #define PLAT_CRASH_UART_BASE		IMX_BOOT_UART_BASE
+-- 
+2.29.2
+
