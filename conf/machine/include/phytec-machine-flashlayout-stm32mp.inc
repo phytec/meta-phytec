@@ -70,6 +70,7 @@ FLASHLAYOUT_BOOTSCHEME_LABELS += "${BOOTSCHEME_LABELS}"
 FLASHLAYOUT_CONFIG_LABELS += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'emmc', 'emmc', '', d)}"
 FLASHLAYOUT_CONFIG_LABELS += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nor-emmc', 'nor-emmc', '', d)}"
 FLASHLAYOUT_CONFIG_LABELS += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nand-2-256', 'nand-2-256', '', d)}"
+FLASHLAYOUT_CONFIG_LABELS += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nand-2-64', 'nand-2-64', '', d)}"
 FLASHLAYOUT_CONFIG_LABELS += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nor-sdcard', 'nor-sdcard', '', d)}"
 FLASHLAYOUT_CONFIG_LABELS += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'sdcard', 'sdcard', '', d)}"
 
@@ -79,7 +80,7 @@ ST_EXAMPLE_IMAGE ??= "0"
 #FIXME need to manage overall device size to abort flashlayout creation in case of oversizing the storage devices
 
 # Remove NAND flashlayout when we are using st-example-image-* as rootfs too big for a NAND device size of 1 GBytes
-FLASHLAYOUT_CONFIG_LABELS_remove = "${@bb.utils.contains('ST_EXAMPLE_IMAGE', '1', 'nand-2-256', '', d)}"
+FLASHLAYOUT_CONFIG_LABELS_remove = "${@bb.utils.contains_any('ST_EXAMPLE_IMAGE', '1', [ 'nand-2-256', 'nand-2-64' ], '', d)}"
 
 # -----------------------------------------------------------------------------
 # Define label types for each config
@@ -139,13 +140,15 @@ FLASHLAYOUT_BOOT_SEQUENCE_NAND_OPTEE ?= "fsbl1-boot ssbl-boot fsbl1 ssbl ssbl2"
 
 FLASHLAYOUT_PARTITION_LABELS_optee_emmc         = "${FLASHLAYOUT_BOOT_SEQUENCE_OPTEE} teeh teed teex ${FLASHLAYOUT_PARTITION_IMAGES}"
 FLASHLAYOUT_PARTITION_LABELS_optee_nor-emmc     = "${FLASHLAYOUT_BOOT_SEQUENCE_OPTEE} env teeh teed teex empty ${FLASHLAYOUT_PARTITION_IMAGES}"
-FLASHLAYOUT_PARTITION_LABELS_optee_nand-4-256   = "${FLASHLAYOUT_BOOT_SEQUENCE_NAND_OPTEE} teeh teed teex ubifs"
+FLASHLAYOUT_PARTITION_LABELS_optee_nand-2-256   = "${FLASHLAYOUT_BOOT_SEQUENCE_NAND_OPTEE} teeh teed teex ubifs"
+FLASHLAYOUT_PARTITION_LABELS_optee_nand-2-64   = "${FLASHLAYOUT_BOOT_SEQUENCE_NAND_OPTEE} teeh teed teex ubifs"
 FLASHLAYOUT_PARTITION_LABELS_optee_nor-sdcard   = "${FLASHLAYOUT_BOOT_SEQUENCE_OPTEE} env teeh teed teex empty ${FLASHLAYOUT_PARTITION_IMAGES}"
 FLASHLAYOUT_PARTITION_LABELS_optee_sdcard       = "${FLASHLAYOUT_BOOT_SEQUENCE_OPTEE} teeh teed teex ${FLASHLAYOUT_PARTITION_IMAGES}"
 
 FLASHLAYOUT_PARTITION_LABELS_trusted_emmc       = "${FLASHLAYOUT_BOOT_SEQUENCE_TRUSTED} ${FLASHLAYOUT_PARTITION_IMAGES}"
 FLASHLAYOUT_PARTITION_LABELS_trusted_nor-emmc   = "${FLASHLAYOUT_BOOT_SEQUENCE_TRUSTED} env empty ${FLASHLAYOUT_PARTITION_IMAGES}"
-FLASHLAYOUT_PARTITION_LABELS_trusted_nand-4-256 = "${FLASHLAYOUT_BOOT_SEQUENCE_NAND_TRUSTED} ubifs"
+FLASHLAYOUT_PARTITION_LABELS_trusted_nand-2-256 = "${FLASHLAYOUT_BOOT_SEQUENCE_NAND_TRUSTED} ubifs"
+FLASHLAYOUT_PARTITION_LABELS_trusted_nand-2-64 = "${FLASHLAYOUT_BOOT_SEQUENCE_NAND_TRUSTED} ubifs"
 FLASHLAYOUT_PARTITION_LABELS_trusted_nor-sdcard = "${FLASHLAYOUT_BOOT_SEQUENCE_TRUSTED} env empty ${FLASHLAYOUT_PARTITION_IMAGES}"
 FLASHLAYOUT_PARTITION_LABELS_trusted_sdcard     = "${FLASHLAYOUT_BOOT_SEQUENCE_TRUSTED} ${FLASHLAYOUT_PARTITION_IMAGES}"
 
@@ -205,11 +208,13 @@ FLASHLAYOUT_PARTITION_ID_ubifs      = "0x21"
 
 FLASHLAYOUT_PARTITION_TYPE                  = "Binary"
 FLASHLAYOUT_PARTITION_TYPE_nand-2-256_fsbl1 = "Binary(2)"
+FLASHLAYOUT_PARTITION_TYPE_nand-2-64_fsbl1 = "Binary(2)"
 FLASHLAYOUT_PARTITION_TYPE_ubifs            = "System"
 
 FLASHLAYOUT_PARTITION_DEVICE_emmc       = "none:fsbl1-boot ssbl-boot,${DEVICE_EMMC}:default"
 FLASHLAYOUT_PARTITION_DEVICE_nor-emmc   = "none:fsbl1-boot ssbl-boot,${DEVICE_NOR}:default,${DEVICE_EMMC}:${FLASHLAYOUT_PARTITION_IMAGES}"
 FLASHLAYOUT_PARTITION_DEVICE_nand-2-256 = "none:fsbl1-boot ssbl-boot,${DEVICE_NAND}:default"
+FLASHLAYOUT_PARTITION_DEVICE_nand-2-64 = "none:fsbl1-boot ssbl-boot,${DEVICE_NAND}:default"
 FLASHLAYOUT_PARTITION_DEVICE_nor-sdcard = "none:fsbl1-boot ssbl-boot,${DEVICE_NOR}:default,${DEVICE_SDCARD}:${FLASHLAYOUT_PARTITION_IMAGES}"
 FLASHLAYOUT_PARTITION_DEVICE_sdcard     = "none:fsbl1-boot ssbl-boot,${DEVICE_SDCARD}:default"
 
@@ -229,13 +234,22 @@ FLASHLAYOUT_PARTITION_SIZE_teeh     = "256"
 FLASHLAYOUT_PARTITION_SIZE_teed     = "256"
 FLASHLAYOUT_PARTITION_SIZE_teex     = "256"
 FLASHLAYOUT_PARTITION_SIZE_empty    = "0"
-# Specific override for MTD partitions hard coded on U-Boot side
+
+# Specific Size override for MTD partitions hard coded on U-Boot side
 FLASHLAYOUT_PARTITION_SIZE_nand-2-256_fsbl1 = "2048"
 FLASHLAYOUT_PARTITION_SIZE_nand-2-256_ssbl  = "2048"
 FLASHLAYOUT_PARTITION_SIZE_nand-2-256_ssbl2 = "2048"
 FLASHLAYOUT_PARTITION_SIZE_nand-2-256_teeh  = "512"
 FLASHLAYOUT_PARTITION_SIZE_nand-2-256_teed  = "512"
 FLASHLAYOUT_PARTITION_SIZE_nand-2-256_teex  = "512"
+
+FLASHLAYOUT_PARTITION_SIZE_nand-2-64_fsbl1 = "2048"
+FLASHLAYOUT_PARTITION_SIZE_nand-2-64_ssbl  = "2048"
+FLASHLAYOUT_PARTITION_SIZE_nand-2-64_ssbl2 = "2048"
+FLASHLAYOUT_PARTITION_SIZE_nand-2-64_teeh  = "512"
+FLASHLAYOUT_PARTITION_SIZE_nand-2-64_teed  = "512"
+FLASHLAYOUT_PARTITION_SIZE_nand-2-64_teex  = "512"
+
 FLASHLAYOUT_PARTITION_SIZE_nor-sdcard_fsbl1 = "256"
 FLASHLAYOUT_PARTITION_SIZE_nor-sdcard_fsbl2 = "256"
 FLASHLAYOUT_PARTITION_SIZE_nor-sdcard_ssbl  = "2048"
@@ -262,7 +276,7 @@ FLASHLAYOUT_PARTITION_BIN2LOAD_ssbl2        = "bootloader/u-boot.stm32"
 FLASHLAYOUT_PARTITION_BIN2LOAD_teeh         = "optee/tee-header_v2.stm32"
 FLASHLAYOUT_PARTITION_BIN2LOAD_teed         = "optee/tee-pageable_v2.stm32"
 FLASHLAYOUT_PARTITION_BIN2LOAD_teex         = "optee/tee-pager_v2.stm32"
-FLASHLAYOUT_PARTITION_BIN2LOAD_ubifs        = "${IMAGE_LINK_NAME}_nand_2_256_multivolume.ubi"
+FLASHLAYOUT_PARTITION_BIN2LOAD_ubifs        = "${IMAGE_LINK_NAME}_${MULTIUBI_BUILD_NAME}_multivolume.ubi"
 
 # -----------------------------------------------------------------------------
 # Use the 'FLASHLAYOUT_PARTITION_REPLACE_PATTERNS' var to allow dynamic binary
