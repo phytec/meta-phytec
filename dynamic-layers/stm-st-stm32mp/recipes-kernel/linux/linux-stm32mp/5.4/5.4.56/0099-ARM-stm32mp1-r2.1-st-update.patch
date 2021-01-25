@@ -1,0 +1,615 @@
+From 1eb5853b3ed6640a2760c07490d54e34a13d249a Mon Sep 17 00:00:00 2001
+From: Christophe Parant <c.parant@phytec.fr>
+Date: Mon, 18 Jan 2021 17:20:40 +0100
+Subject: [PATCH] ARM v5.4-stm32mp-r2.1 st update
+
+---
+ .../devicetree/bindings/dma/stm32-dma.txt     |   7 +
+ arch/arm/boot/dts/stm32mp151.dtsi             |  28 ++--
+ .../boot/dts/stm32mp157f-dk2-a7-examples.dts  |   8 ++
+ .../boot/dts/stm32mp157f-ev1-a7-examples.dts  |   4 +
+ drivers/dma/stm32-dma.c                       |   7 +
+ drivers/net/phy/realtek.c                     |  61 +++++++-
+ drivers/tty/serial/stm32-usart.c              | 131 ++++++++++++------
+ drivers/tty/serial/stm32-usart.h              |   5 +-
+ 8 files changed, 188 insertions(+), 63 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/dma/stm32-dma.txt b/Documentation/devicetree/bindings/dma/stm32-dma.txt
+index 11ee1e9f85cc..5a8c0bb85fcb 100644
+--- a/Documentation/devicetree/bindings/dma/stm32-dma.txt
++++ b/Documentation/devicetree/bindings/dma/stm32-dma.txt
+@@ -88,6 +88,13 @@ channel: a phandle to the DMA controller plus the following four integer cells:
+ 	0: FIFO mode: with threshold level selectable with bit 0-1
+ 	1: Direct mode: each DMA request immediately initiates a transfer
+ 	   from/to the memory.
++ -bit 4: alternative DMA request/acknowledge protocol
++	0x0: Use standard DMA ACK management, where ACK signal is maintained
++	     up to the removal of request and transfer completion
++	0x1: Use alternative DMA ACK management, where ACK de-assertion does
++	     not wait for the de-assertion of the REQuest, ACK is only managed
++	     by transfer completion. This must only be used on channels
++	     managing transfers for STM32 USART/UART.
+  -bit 30-29: indicated SRAM Buffer size in (2^order)*PAGE_SIZE.
+ 	Order is given by those 2 bits starting at 0.
+ 	Valid only whether Intermediate M2M transfer is set.
+diff --git a/arch/arm/boot/dts/stm32mp151.dtsi b/arch/arm/boot/dts/stm32mp151.dtsi
+index f0211917bb68..91639561366c 100644
+--- a/arch/arm/boot/dts/stm32mp151.dtsi
++++ b/arch/arm/boot/dts/stm32mp151.dtsi
+@@ -535,8 +535,8 @@
+ 			clocks = <&rcc USART2_K>;
+ 			wakeup-source;
+ 			power-domains = <&pd_core>;
+-			dmas = <&dmamux1 43 0x400 0x5>,
+-			       <&dmamux1 44 0x400 0x1>;
++			dmas = <&dmamux1 43 0x400 0x15>,
++			       <&dmamux1 44 0x400 0x11>;
+ 			dma-names = "rx", "tx";
+ 			status = "disabled";
+ 		};
+@@ -548,8 +548,8 @@
+ 			clocks = <&rcc USART3_K>;
+ 			wakeup-source;
+ 			power-domains = <&pd_core>;
+-			dmas = <&dmamux1 45 0x400 0x5>,
+-			       <&dmamux1 46 0x400 0x1>;
++			dmas = <&dmamux1 45 0x400 0x15>,
++			       <&dmamux1 46 0x400 0x11>;
+ 			dma-names = "rx", "tx";
+ 			status = "disabled";
+ 		};
+@@ -561,8 +561,8 @@
+ 			clocks = <&rcc UART4_K>;
+ 			wakeup-source;
+ 			power-domains = <&pd_core>;
+-			dmas = <&dmamux1 63 0x400 0x5>,
+-			       <&dmamux1 64 0x400 0x1>;
++			dmas = <&dmamux1 63 0x400 0x15>,
++			       <&dmamux1 64 0x400 0x11>;
+ 			dma-names = "rx", "tx";
+ 			status = "disabled";
+ 		};
+@@ -574,8 +574,8 @@
+ 			clocks = <&rcc UART5_K>;
+ 			wakeup-source;
+ 			power-domains = <&pd_core>;
+-			dmas = <&dmamux1 65 0x400 0x5>,
+-			       <&dmamux1 66 0x400 0x1>;
++			dmas = <&dmamux1 65 0x400 0x15>,
++			       <&dmamux1 66 0x400 0x11>;
+ 			dma-names = "rx", "tx";
+ 			status = "disabled";
+ 		};
+@@ -696,8 +696,8 @@
+ 			clocks = <&rcc UART7_K>;
+ 			wakeup-source;
+ 			power-domains = <&pd_core>;
+-			dmas = <&dmamux1 79 0x400 0x5>,
+-			       <&dmamux1 80 0x400 0x1>;
++			dmas = <&dmamux1 79 0x400 0x15>,
++			       <&dmamux1 80 0x400 0x11>;
+ 			dma-names = "rx", "tx";
+ 			status = "disabled";
+ 		};
+@@ -709,8 +709,8 @@
+ 			clocks = <&rcc UART8_K>;
+ 			wakeup-source;
+ 			power-domains = <&pd_core>;
+-			dmas = <&dmamux1 81 0x400 0x5>,
+-			       <&dmamux1 82 0x400 0x1>;
++			dmas = <&dmamux1 81 0x400 0x15>,
++			       <&dmamux1 82 0x400 0x11>;
+ 			dma-names = "rx", "tx";
+ 			status = "disabled";
+ 		};
+@@ -794,8 +794,8 @@
+ 			clocks = <&rcc USART6_K>;
+ 			wakeup-source;
+ 			power-domains = <&pd_core>;
+-			dmas = <&dmamux1 71 0x400 0x5>,
+-			       <&dmamux1 72 0x400 0x1>;
++			dmas = <&dmamux1 71 0x400 0x15>,
++			       <&dmamux1 72 0x400 0x11>;
+ 			dma-names = "rx", "tx";
+ 			status = "disabled";
+ 		};
+diff --git a/arch/arm/boot/dts/stm32mp157f-dk2-a7-examples.dts b/arch/arm/boot/dts/stm32mp157f-dk2-a7-examples.dts
+index 339e24b91616..8dcb52fedb22 100644
+--- a/arch/arm/boot/dts/stm32mp157f-dk2-a7-examples.dts
++++ b/arch/arm/boot/dts/stm32mp157f-dk2-a7-examples.dts
+@@ -50,3 +50,11 @@
+ &timers12 {
+ 	status = "okay";
+ };
++
++&uart7 {
++	status = "okay";
++};
++
++&usart3 {
++	status = "okay";
++};
+diff --git a/arch/arm/boot/dts/stm32mp157f-ev1-a7-examples.dts b/arch/arm/boot/dts/stm32mp157f-ev1-a7-examples.dts
+index 17d92b7bebdb..3d51e48d14fe 100644
+--- a/arch/arm/boot/dts/stm32mp157f-ev1-a7-examples.dts
++++ b/arch/arm/boot/dts/stm32mp157f-ev1-a7-examples.dts
+@@ -51,3 +51,7 @@
+ &timers12 {
+ 	status = "okay";
+ };
++
++&usart3 {
++	status = "okay";
++};
+diff --git a/drivers/dma/stm32-dma.c b/drivers/dma/stm32-dma.c
+index e8bedbad125c..044012e15994 100644
+--- a/drivers/dma/stm32-dma.c
++++ b/drivers/dma/stm32-dma.c
+@@ -62,6 +62,7 @@
+ #define STM32_DMA_SCR_PSIZE_GET(n)	((n & STM32_DMA_SCR_PSIZE_MASK) >> 11)
+ #define STM32_DMA_SCR_DIR_MASK		GENMASK(7, 6)
+ #define STM32_DMA_SCR_DIR(n)		((n & 0x3) << 6)
++#define STM32_DMA_SCR_TRBUFF		BIT(20) /* Bufferable transfer for USART/UART */
+ #define STM32_DMA_SCR_CT		BIT(19) /* Target in double buffer */
+ #define STM32_DMA_SCR_DBM		BIT(18) /* Double Buffer Mode */
+ #define STM32_DMA_SCR_PINCOS		BIT(15) /* Peripheral inc offset size */
+@@ -143,6 +144,9 @@
+ #define STM32_DMA_DIRECT_MODE_MASK	BIT(2)
+ #define STM32_DMA_DIRECT_MODE_GET(n)	(((n) & STM32_DMA_DIRECT_MODE_MASK) \
+ 					 >> 2)
++#define STM32_DMA_ALT_ACK_MODE_MASK	BIT(4)
++#define STM32_DMA_ALT_ACK_MODE_GET(n)	(((n) & STM32_DMA_ALT_ACK_MODE_MASK) \
++					 >> 4)
+ #define STM32_DMA_MDMA_CHAIN_FTR_MASK	BIT(31)
+ #define STM32_DMA_MDMA_CHAIN_FTR_GET(n)	(((n) & STM32_DMA_MDMA_CHAIN_FTR_MASK) \
+ 					 >> 31)
+@@ -533,6 +537,7 @@ static int stm32_dma_terminate_all(struct dma_chan *c)
+ 	}
+ 
+ 	if (chan->desc) {
++		dma_cookie_complete(&chan->desc->vdesc.tx);
+ 		vchan_terminate_vdesc(&chan->desc->vdesc);
+ 		if (chan->busy)
+ 			stm32_dma_stop(chan);
+@@ -1942,6 +1947,8 @@ static void stm32_dma_set_config(struct stm32_dma_chan *chan,
+ 		STM32_DMA_SRAM_GRANULARITY;
+ 	if (STM32_DMA_DIRECT_MODE_GET(cfg->features))
+ 		chan->threshold = STM32_DMA_FIFO_THRESHOLD_NONE;
++	if (STM32_DMA_ALT_ACK_MODE_GET(cfg->features))
++		chan->chan_reg.dma_scr |= STM32_DMA_SCR_TRBUFF;
+ }
+ 
+ static struct dma_chan *stm32_dma_of_xlate(struct of_phandle_args *dma_spec,
+diff --git a/drivers/net/phy/realtek.c b/drivers/net/phy/realtek.c
+index fe26438500fc..5f1267b73aa5 100644
+--- a/drivers/net/phy/realtek.c
++++ b/drivers/net/phy/realtek.c
+@@ -47,6 +47,8 @@
+ #define RTL_LPADV_5000FULL			BIT(6)
+ #define RTL_LPADV_2500FULL			BIT(5)
+ 
++#define RTLGEN_SPEED_MASK			0x0630
++
+ #define RTL_GENERIC_PHYID			0x001cc800
+ 
+ MODULE_DESCRIPTION("Realtek PHY driver");
+@@ -288,6 +290,55 @@ static int rtl8366rb_config_init(struct phy_device *phydev)
+ 	return ret;
+ }
+ 
++/* get actual speed to cover the downshift case */
++static int rtlgen_get_speed(struct phy_device *phydev)
++{
++	int val;
++
++	if (!phydev->link)
++		return 0;
++
++	val = phy_read_paged(phydev, 0xa43, 0x12);
++	if (val < 0)
++		return val;
++
++	switch (val & RTLGEN_SPEED_MASK) {
++	case 0x0000:
++		phydev->speed = SPEED_10;
++		break;
++	case 0x0010:
++		phydev->speed = SPEED_100;
++		break;
++	case 0x0020:
++		phydev->speed = SPEED_1000;
++		break;
++	case 0x0200:
++		phydev->speed = SPEED_10000;
++		break;
++	case 0x0210:
++		phydev->speed = SPEED_2500;
++		break;
++	case 0x0220:
++		phydev->speed = SPEED_5000;
++		break;
++	default:
++		break;
++	}
++
++	return 0;
++}
++
++static int rtlgen_read_status(struct phy_device *phydev)
++{
++	int ret;
++
++	ret = genphy_read_status(phydev);
++	if (ret < 0)
++		return ret;
++
++	return rtlgen_get_speed(phydev);
++}
++
+ static int rtlgen_read_mmd(struct phy_device *phydev, int devnum, u16 regnum)
+ {
+ 	int ret;
+@@ -408,6 +459,8 @@ static int rtl8125_config_aneg(struct phy_device *phydev)
+ 
+ static int rtl8125_read_status(struct phy_device *phydev)
+ {
++	int ret;
++
+ 	if (phydev->autoneg == AUTONEG_ENABLE) {
+ 		int lpadv = phy_read_paged(phydev, 0xa5d, 0x13);
+ 
+@@ -422,7 +475,11 @@ static int rtl8125_read_status(struct phy_device *phydev)
+ 			phydev->lp_advertising, lpadv & RTL_LPADV_2500FULL);
+ 	}
+ 
+-	return genphy_read_status(phydev);
++	ret = genphy_read_status(phydev);
++	if (ret < 0)
++		return ret;
++
++	return rtlgen_get_speed(phydev);
+ }
+ 
+ static bool rtlgen_supports_2_5gbps(struct phy_device *phydev)
+@@ -520,6 +577,7 @@ static struct phy_driver realtek_drvs[] = {
+ 		PHY_ID_MATCH_EXACT(0x001cc916),
+ 		.name		= "RTL8211F Gigabit Ethernet",
+ 		.config_init	= &rtl8211f_config_init,
++		.read_status	= rtlgen_read_status,
+ 		.ack_interrupt	= &rtl8211f_ack_interrupt,
+ 		.config_intr	= &rtl8211f_config_intr,
+ 		.suspend	= genphy_suspend,
+@@ -529,6 +587,7 @@ static struct phy_driver realtek_drvs[] = {
+ 	}, {
+ 		.name		= "Generic FE-GE Realtek PHY",
+ 		.match_phy_device = rtlgen_match_phy_device,
++		.read_status	= rtlgen_read_status,
+ 		.suspend	= genphy_suspend,
+ 		.resume		= genphy_resume,
+ 		.read_page	= rtl821x_read_page,
+diff --git a/drivers/tty/serial/stm32-usart.c b/drivers/tty/serial/stm32-usart.c
+index 231fbb3684d8..ddcc8df21a27 100644
+--- a/drivers/tty/serial/stm32-usart.c
++++ b/drivers/tty/serial/stm32-usart.c
+@@ -341,14 +341,14 @@ static unsigned int stm32_usart_receive_chars_dma(struct uart_port *port)
+ 	 * DMA buffer is configured in cyclic mode and handles the rollback of
+ 	 * the buffer.
+ 	 */
+-	if (stm32_port->state.residue > stm32_port->last_res) {
++	if (stm32_port->rx_dma_state.residue > stm32_port->last_res) {
+ 		/* Conditional first part: from last_res to end of DMA buffer */
+ 		dma_size = stm32_port->last_res;
+ 		stm32_usart_push_buffer_dma(port, dma_size);
+ 		size = dma_size;
+ 	}
+ 
+-	dma_size = stm32_port->last_res - stm32_port->state.residue;
++	dma_size = stm32_port->last_res - stm32_port->rx_dma_state.residue;
+ 	stm32_usart_push_buffer_dma(port, dma_size);
+ 	size += dma_size;
+ 
+@@ -361,15 +361,15 @@ static void stm32_usart_receive_chars(struct uart_port *port,
+ 	struct tty_port *tport = &port->state->port;
+ 	struct stm32_port *stm32_port = to_stm32_port(port);
+ 	struct stm32_usart_offsets *ofs = &stm32_port->info->ofs;
++	enum dma_status rx_dma_status;
+ 	u32 sr;
+ 	unsigned int size;
+ 
+ 	if (stm32_usart_rx_dma_enabled(port) || force_dma_flush) {
+-		stm32_port->status =
+-			dmaengine_tx_status(stm32_port->rx_ch,
+-					    stm32_port->rx_ch->cookie,
+-					    &stm32_port->state);
+-		if (stm32_port->status == DMA_IN_PROGRESS) {
++		rx_dma_status = dmaengine_tx_status(stm32_port->rx_ch,
++						    stm32_port->rx_ch->cookie,
++						    &stm32_port->rx_dma_state);
++		if (rx_dma_status == DMA_IN_PROGRESS) {
+ 			/* Empty DMA buffer */
+ 			size = stm32_usart_receive_chars_dma(port);
+ 			sr = readl_relaxed(port->membase + ofs->isr);
+@@ -402,6 +402,32 @@ static void stm32_usart_receive_chars(struct uart_port *port,
+ 		tty_flip_buffer_push(tport);
+ }
+ 
++static void stm32_usart_tx_dma_terminate(struct stm32_port *stm32_port)
++{
++	dmaengine_terminate_async(stm32_port->tx_ch);
++	stm32_port->tx_dma_busy = false;
++}
++
++static bool stm32_usart_tx_dma_started(struct stm32_port *stm32_port)
++{
++	/*
++	 * We cannot use the function "dmaengine_tx_status" to know the
++	 * status of DMA. This function does not show if the "dma complete"
++	 * callback of the DMA transaction have been called. So we prefer
++	 * to use "tx_dma_busy" flag to prevent dual dma transaction at the
++	 * same time.
++	 */
++	return stm32_port->tx_dma_busy;
++}
++
++static bool stm32_usart_tx_dma_enabled(struct stm32_port *stm32_port)
++{
++	struct stm32_usart_offsets *ofs = &stm32_port->info->ofs;
++
++	return !!(readl_relaxed(stm32_port->port.membase + ofs->cr3)
++				& USART_CR3_DMAT);
++}
++
+ static void stm32_usart_tx_dma_complete(void *arg)
+ {
+ 	struct uart_port *port = arg;
+@@ -409,9 +435,8 @@ static void stm32_usart_tx_dma_complete(void *arg)
+ 	struct stm32_usart_offsets *ofs = &stm32port->info->ofs;
+ 	unsigned long flags;
+ 
+-	dmaengine_terminate_async(stm32port->tx_ch);
+ 	stm32_usart_clr_bits(port, ofs->cr3, USART_CR3_DMAT);
+-	stm32port->tx_dma_busy = false;
++	stm32_usart_tx_dma_terminate(stm32port);
+ 
+ 	/* Let's see if we have pending data to send */
+ 	spin_lock_irqsave(&port->lock, flags);
+@@ -461,10 +486,8 @@ static void stm32_usart_transmit_chars_pio(struct uart_port *port)
+ 	struct stm32_usart_offsets *ofs = &stm32_port->info->ofs;
+ 	struct circ_buf *xmit = &port->state->xmit;
+ 
+-	if (stm32_port->tx_dma_busy) {
++	if (stm32_usart_tx_dma_enabled(stm32_port))
+ 		stm32_usart_clr_bits(port, ofs->cr3, USART_CR3_DMAT);
+-		stm32_port->tx_dma_busy = false;
+-	}
+ 
+ 	while (!uart_circ_empty(xmit)) {
+ 		/* Check that TDR is empty before filling FIFO */
+@@ -491,10 +514,11 @@ static void stm32_usart_transmit_chars_dma(struct uart_port *port)
+ 	dma_cookie_t cookie;
+ 	unsigned int count, i, ret;
+ 
+-	if (stm32port->tx_dma_busy)
++	if (stm32_usart_tx_dma_started(stm32port)) {
++		if (!stm32_usart_tx_dma_enabled(stm32port))
++			stm32_usart_set_bits(port, ofs->cr3, USART_CR3_DMAT);
+ 		return;
+-
+-	stm32port->tx_dma_busy = true;
++	}
+ 
+ 	count = uart_circ_chars_pending(xmit);
+ 
+@@ -525,6 +549,14 @@ static void stm32_usart_transmit_chars_dma(struct uart_port *port)
+ 	if (!desc)
+ 		goto fallback_err;
+ 
++	/*
++	 * Take "tx_dma_busy" flag. This flag will be release when
++	 * dmaengine_terminate_async will be called. This flag helps
++	 * transmit_chars_dma to doesn't start another dma transaction
++	 * if the callback of the previous is not called.
++	 */
++	stm32port->tx_dma_busy = true;
++
+ 	desc->callback = stm32_usart_tx_dma_complete;
+ 	desc->callback_param = port;
+ 
+@@ -533,7 +565,7 @@ static void stm32_usart_transmit_chars_dma(struct uart_port *port)
+ 	ret = dma_submit_error(cookie);
+ 	if (ret) {
+ 		/* dma no yet started, safe to free resources */
+-		dmaengine_terminate_async(stm32port->tx_ch);
++		stm32_usart_tx_dma_terminate(stm32port);
+ 		goto fallback_err;
+ 	}
+ 
+@@ -556,14 +588,27 @@ static void stm32_usart_transmit_chars(struct uart_port *port)
+ 	struct stm32_port *stm32_port = to_stm32_port(port);
+ 	struct stm32_usart_offsets *ofs = &stm32_port->info->ofs;
+ 	struct circ_buf *xmit = &port->state->xmit;
++	u32 isr;
++	int ret;
+ 
+ 	if (port->x_char) {
+-		if (stm32_port->tx_dma_busy)
++		if (stm32_usart_tx_dma_started(stm32_port) &&
++		    stm32_usart_tx_dma_enabled(stm32_port))
+ 			stm32_usart_clr_bits(port, ofs->cr3, USART_CR3_DMAT);
++
++		/* Check that TDR is empty before filling FIFO */
++		ret =
++		readl_relaxed_poll_timeout_atomic(port->membase + ofs->isr,
++						  isr,
++						  (isr & USART_SR_TXE),
++						  10, 1000);
++		if (ret)
++			dev_warn(port->dev, "1 character may be erased\n");
++
+ 		writel_relaxed(port->x_char, port->membase + ofs->tdr);
+ 		port->x_char = 0;
+ 		port->icount.tx++;
+-		if (stm32_port->tx_dma_busy)
++		if (stm32_usart_tx_dma_started(stm32_port))
+ 			stm32_usart_set_bits(port, ofs->cr3, USART_CR3_DMAT);
+ 		return;
+ 	}
+@@ -703,10 +748,9 @@ static void stm32_usart_stop_tx(struct uart_port *port)
+ 	struct stm32_usart_offsets *ofs = &stm32_port->info->ofs;
+ 
+ 	stm32_usart_tx_interrupt_disable(port);
+-	if (stm32_port->tx_dma_busy) {
+-		dmaengine_terminate_async(stm32_port->tx_ch);
++	if (stm32_usart_tx_dma_started(stm32_port) &&
++	    stm32_usart_tx_dma_enabled(stm32_port))
+ 		stm32_usart_clr_bits(port, ofs->cr3, USART_CR3_DMAT);
+-	}
+ }
+ 
+ /* There are probably characters waiting to be transmitted. */
+@@ -714,7 +758,7 @@ static void stm32_usart_start_tx(struct uart_port *port)
+ {
+ 	struct circ_buf *xmit = &port->state->xmit;
+ 
+-	if (uart_circ_empty(xmit))
++	if (uart_circ_empty(xmit) && !port->x_char)
+ 		return;
+ 
+ 	stm32_usart_transmit_chars(port);
+@@ -729,11 +773,10 @@ static void stm32_usart_flush_buffer(struct uart_port *port)
+ 	if (stm32_port->tx_ch) {
+ 		/* Avoid deadlock with the DMA engine callback */
+ 		spin_unlock(&port->lock);
+-		dmaengine_terminate_async(stm32_port->tx_ch);
++		stm32_usart_tx_dma_terminate(stm32_port);
+ 		spin_lock(&port->lock);
+ 
+ 		stm32_usart_clr_bits(port, ofs->cr3, USART_CR3_DMAT);
+-		stm32_port->tx_dma_busy = false;
+ 	}
+ }
+ 
+@@ -794,7 +837,7 @@ static void stm32_usart_stop_rx(struct uart_port *port)
+ 	/* Disable DMA request line and RX DMA. */
+ 	if (stm32_port->rx_ch) {
+ 		stm32_usart_clr_bits(port, ofs->cr3, USART_CR3_DMAR);
+-		dmaengine_terminate_sync(stm32_port->rx_ch);
++		dmaengine_terminate_async(stm32_port->rx_ch);
+ 	}
+ 
+ 	stm32_usart_clr_bits(port, ofs->cr1, stm32_port->cr1_irq);
+@@ -866,7 +909,7 @@ static int stm32_usart_startup(struct uart_port *port)
+ 
+ 	/* RX FIFO Flush */
+ 	if (ofs->rqr != UNDEF_REG)
+-		stm32_usart_set_bits(port, ofs->rqr, USART_RQR_RXFRQ);
++		writel_relaxed(USART_RQR_RXFRQ, port->membase + ofs->rqr);
+ 
+ 	if (stm32_port->rx_ch) {
+ 		ret = stm32_usart_start_rx_dma_cyclic(port);
+@@ -890,6 +933,12 @@ static void stm32_usart_shutdown(struct uart_port *port)
+ 	u32 val, isr;
+ 	int ret;
+ 
++	if (stm32_usart_tx_dma_enabled(stm32_port))
++		stm32_usart_clr_bits(port, ofs->cr3, USART_CR3_DMAT);
++
++	if (stm32_usart_tx_dma_started(stm32_port))
++		stm32_usart_tx_dma_terminate(stm32_port);
++
+ 	/* Disable modem control interrupts */
+ 	stm32_usart_disable_ms(port);
+ 
+@@ -903,17 +952,14 @@ static void stm32_usart_shutdown(struct uart_port *port)
+ 					 isr, (isr & USART_SR_TC),
+ 					 10, 100000);
+ 
+-	/*
+-	 * Send the TC error message only when ISR_TC is not set and
+-	 * data stored in TDR / TX FIFO.
+-	 */
+-	if (ret && !(readl_relaxed(port->membase + ofs->isr) & USART_SR_TXE))
+-		dev_err(port->dev, "transmission complete not set\n");
++	/* Send the TC error message only when ISR_TC is not set */
++	if (ret)
++		dev_err(port->dev, "Transmission is not complete\n");
+ 
+ 	/* flush RX & TX FIFO */
+ 	if (ofs->rqr != UNDEF_REG)
+-		stm32_usart_set_bits(port, ofs->rqr,
+-				     USART_RQR_TXFRQ | USART_RQR_RXFRQ);
++		writel_relaxed(USART_RQR_TXFRQ | USART_RQR_RXFRQ,
++			       port->membase + ofs->rqr);
+ 
+ 	stm32_usart_clr_bits(port, ofs->cr1, val);
+ 
+@@ -977,20 +1023,17 @@ static void stm32_usart_set_termios(struct uart_port *port,
+ 						(isr & USART_SR_TC),
+ 						10, 100000);
+ 
+-	/*
+-	 * Send the TC error message only when ISR_TC is not set and
+-	 * data stored in TDR / TX FIFO.
+-	 */
+-	if (ret && !(readl_relaxed(port->membase + ofs->isr) & USART_SR_TXE))
+-		dev_err(port->dev, "transmission complete not set\n");
++	/* Send the TC error message only when ISR_TC is not set. */
++	if (ret)
++		dev_err(port->dev, "Transmission is not complete\n");
+ 
+ 	/* Stop serial port and reset value */
+ 	writel_relaxed(0, port->membase + ofs->cr1);
+ 
+ 	/* flush RX & TX FIFO */
+ 	if (ofs->rqr != UNDEF_REG)
+-		stm32_usart_set_bits(port, ofs->rqr,
+-				     USART_RQR_TXFRQ | USART_RQR_RXFRQ);
++		writel_relaxed(USART_RQR_TXFRQ | USART_RQR_RXFRQ,
++			       port->membase + ofs->rqr);
+ 
+ 	cr1 = USART_CR1_TE | USART_CR1_RE;
+ 	if (stm32_port->fifoen)
+@@ -1446,8 +1489,6 @@ static int stm32_usart_of_dma_tx_probe(struct stm32_port *stm32port,
+ 	struct dma_slave_config config;
+ 	int ret;
+ 
+-	stm32port->tx_dma_busy = false;
+-
+ 	stm32port->tx_buf = dma_alloc_coherent(&pdev->dev, TX_BUF_L,
+ 					       &stm32port->tx_dma_buf,
+ 					       GFP_KERNEL);
+@@ -1600,7 +1641,7 @@ static int stm32_usart_serial_remove(struct platform_device *pdev)
+ 	writel_relaxed(cr3, port->membase + ofs->cr3);
+ 
+ 	if (stm32_port->tx_ch) {
+-		dmaengine_terminate_async(stm32_port->tx_ch);
++		stm32_usart_tx_dma_terminate(stm32_port);
+ 		stm32_usart_of_dma_tx_remove(stm32_port, pdev);
+ 		dma_release_channel(stm32_port->tx_ch);
+ 	}
+diff --git a/drivers/tty/serial/stm32-usart.h b/drivers/tty/serial/stm32-usart.h
+index 6961cd9855f6..f4708007ec0e 100644
+--- a/drivers/tty/serial/stm32-usart.h
++++ b/drivers/tty/serial/stm32-usart.h
+@@ -261,7 +261,6 @@ struct stm32_port {
+ 	u32 cr1_irq;		 /* USART_CR1_RXNEIE or RTOIE */
+ 	u32 cr3_irq;		 /* USART_CR3_RXFTIE */
+ 	int last_res;
+-	bool tx_dma_busy;	 /* dma tx busy               */
+ 	bool throttled;		 /* port throttled            */
+ 	bool hw_flow_control;
+ 	bool fifoen;
+@@ -270,8 +269,8 @@ struct stm32_port {
+ 	bool wakeup_src;
+ 	int rdr_mask;		/* receive data register mask */
+ 	struct mctrl_gpios *gpios; /* modem control gpios */
+-	struct dma_tx_state state;
+-	enum dma_status status;
++	struct dma_tx_state rx_dma_state;
++	bool tx_dma_busy;	/* dma tx transaction in progress */
+ };
+ 
+ static struct stm32_port stm32_ports[STM32_MAX_PORTS];
+-- 
+2.17.1
+
