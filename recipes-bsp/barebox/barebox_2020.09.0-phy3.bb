@@ -19,7 +19,7 @@ S = "${WORKDIR}/git"
 PR = "${INC_PR}.0"
 
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "630e5953e31a32545117c0ea046f4216c483b274"
+SRCREV = "434ec430b312945d6f814ae3af3550323068d71b"
 
 do_deploy_prepend() {
     if [ -e ${B}/scripts/bareboximd ]; then
