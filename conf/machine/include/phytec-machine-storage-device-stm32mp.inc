@@ -79,7 +79,7 @@ DEVICE_BOARD_ENABLE_EMMC += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'emmc', '
 DEVICE_START_OFFSET_NAND   ?= "0x00000000"
 DEVICE_ALIGNMENT_SIZE_NAND ?= "0x00040000"
 
-# Configure the list of boards that enable EMMC
+# Configure the list of boards that enable NAND
 DEVICE_BOARD_ENABLE_NAND   += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nand-2-256', '${STM32MP_DT_FILES_PHYCORE}', '', d)}"
 
 # -----------------------------------------------------------------------------
@@ -87,8 +87,8 @@ DEVICE_BOARD_ENABLE_NAND   += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nand-2
 DEVICE_START_OFFSET_NOR    ?= "0x00000000"
 DEVICE_ALIGNMENT_SIZE_NOR  ?= "0x00010000"
 
-# Configure the list of boards that enable EMMC
-DEVICE_BOARD_ENABLE_NOR    += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nor-sdcard' , '${STM32MP_DT_FILES_PHYCORE}', '', d)}"
+# Configure the list of boards that enable NOR
+DEVICE_BOARD_ENABLE_NOR    += "${@bb.utils.contains_any('BOOTDEVICE_LABELS', [' nor-sdcard', 'nor-emmc' ], '${STM32MP_DT_FILES_PHYCORE}', '', d)}"
 
 # -----------------------------------------------------------------------------
 # SDCARD

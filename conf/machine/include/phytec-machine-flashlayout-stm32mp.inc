@@ -68,6 +68,7 @@ FLASHLAYOUT_BOOTSCHEME_LABELS += "${BOOTSCHEME_LABELS}"
 #   4) FLASHLAYOUT_CONFIG_LABELS
 # -----------------------------------------------------------------------------
 FLASHLAYOUT_CONFIG_LABELS += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'emmc', 'emmc', '', d)}"
+FLASHLAYOUT_CONFIG_LABELS += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nor-emmc', 'nor-emmc', '', d)}"
 FLASHLAYOUT_CONFIG_LABELS += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nand-2-256', 'nand-2-256', '', d)}"
 FLASHLAYOUT_CONFIG_LABELS += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nor-sdcard', 'nor-sdcard', '', d)}"
 FLASHLAYOUT_CONFIG_LABELS += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'sdcard', 'sdcard', '', d)}"
@@ -78,10 +79,7 @@ ST_EXAMPLE_IMAGE ??= "0"
 #FIXME need to manage overall device size to abort flashlayout creation in case of oversizing the storage devices
 
 # Remove NAND flashlayout when we are using st-example-image-* as rootfs too big for a NAND device size of 1 GBytes
-#FLASHLAYOUT_CONFIG_LABELS_remove = "${@bb.utils.contains('ST_EXAMPLE_IMAGE', '1', 'emmc', '', d)}"
 FLASHLAYOUT_CONFIG_LABELS_remove = "${@bb.utils.contains('ST_EXAMPLE_IMAGE', '1', 'nand-2-256', '', d)}"
-#FLASHLAYOUT_CONFIG_LABELS_remove = "${@bb.utils.contains('ST_EXAMPLE_IMAGE', '1', 'nor-sdcard', '', d)}"
-#FLASHLAYOUT_CONFIG_LABELS_remove = "${@bb.utils.contains('ST_EXAMPLE_IMAGE', '1', 'sdcard', '', d)}"
 
 # -----------------------------------------------------------------------------
 # Define label types for each config
@@ -140,11 +138,13 @@ FLASHLAYOUT_BOOT_SEQUENCE_NAND_TRUSTED ?= "fsbl1-boot ssbl-boot fsbl1 ssbl ssbl2
 FLASHLAYOUT_BOOT_SEQUENCE_NAND_OPTEE ?= "fsbl1-boot ssbl-boot fsbl1 ssbl ssbl2"
 
 FLASHLAYOUT_PARTITION_LABELS_optee_emmc         = "${FLASHLAYOUT_BOOT_SEQUENCE_OPTEE} teeh teed teex ${FLASHLAYOUT_PARTITION_IMAGES}"
+FLASHLAYOUT_PARTITION_LABELS_optee_nor-emmc     = "${FLASHLAYOUT_BOOT_SEQUENCE_OPTEE} env teeh teed teex empty ${FLASHLAYOUT_PARTITION_IMAGES}"
 FLASHLAYOUT_PARTITION_LABELS_optee_nand-4-256   = "${FLASHLAYOUT_BOOT_SEQUENCE_NAND_OPTEE} teeh teed teex ubifs"
 FLASHLAYOUT_PARTITION_LABELS_optee_nor-sdcard   = "${FLASHLAYOUT_BOOT_SEQUENCE_OPTEE} env teeh teed teex empty ${FLASHLAYOUT_PARTITION_IMAGES}"
 FLASHLAYOUT_PARTITION_LABELS_optee_sdcard       = "${FLASHLAYOUT_BOOT_SEQUENCE_OPTEE} teeh teed teex ${FLASHLAYOUT_PARTITION_IMAGES}"
 
 FLASHLAYOUT_PARTITION_LABELS_trusted_emmc       = "${FLASHLAYOUT_BOOT_SEQUENCE_TRUSTED} ${FLASHLAYOUT_PARTITION_IMAGES}"
+FLASHLAYOUT_PARTITION_LABELS_trusted_nor-emmc   = "${FLASHLAYOUT_BOOT_SEQUENCE_TRUSTED} env empty ${FLASHLAYOUT_PARTITION_IMAGES}"
 FLASHLAYOUT_PARTITION_LABELS_trusted_nand-4-256 = "${FLASHLAYOUT_BOOT_SEQUENCE_NAND_TRUSTED} ubifs"
 FLASHLAYOUT_PARTITION_LABELS_trusted_nor-sdcard = "${FLASHLAYOUT_BOOT_SEQUENCE_TRUSTED} env empty ${FLASHLAYOUT_PARTITION_IMAGES}"
 FLASHLAYOUT_PARTITION_LABELS_trusted_sdcard     = "${FLASHLAYOUT_BOOT_SEQUENCE_TRUSTED} ${FLASHLAYOUT_PARTITION_IMAGES}"
@@ -208,6 +208,7 @@ FLASHLAYOUT_PARTITION_TYPE_nand-2-256_fsbl1 = "Binary(2)"
 FLASHLAYOUT_PARTITION_TYPE_ubifs            = "System"
 
 FLASHLAYOUT_PARTITION_DEVICE_emmc       = "none:fsbl1-boot ssbl-boot,${DEVICE_EMMC}:default"
+FLASHLAYOUT_PARTITION_DEVICE_nor-emmc   = "none:fsbl1-boot ssbl-boot,${DEVICE_NOR}:default,${DEVICE_EMMC}:${FLASHLAYOUT_PARTITION_IMAGES}"
 FLASHLAYOUT_PARTITION_DEVICE_nand-2-256 = "none:fsbl1-boot ssbl-boot,${DEVICE_NAND}:default"
 FLASHLAYOUT_PARTITION_DEVICE_nor-sdcard = "none:fsbl1-boot ssbl-boot,${DEVICE_NOR}:default,${DEVICE_SDCARD}:${FLASHLAYOUT_PARTITION_IMAGES}"
 FLASHLAYOUT_PARTITION_DEVICE_sdcard     = "none:fsbl1-boot ssbl-boot,${DEVICE_SDCARD}:default"
@@ -242,6 +243,14 @@ FLASHLAYOUT_PARTITION_SIZE_nor-sdcard_env   = "512"
 FLASHLAYOUT_PARTITION_SIZE_nor-sdcard_teeh  = "256"
 FLASHLAYOUT_PARTITION_SIZE_nor-sdcard_teed  = "512"
 FLASHLAYOUT_PARTITION_SIZE_nor-sdcard_teex  = "256"
+
+FLASHLAYOUT_PARTITION_SIZE_nor-emmc_fsbl1 = "256"
+FLASHLAYOUT_PARTITION_SIZE_nor-emmc_fsbl2 = "256"
+FLASHLAYOUT_PARTITION_SIZE_nor-emmc_ssbl  = "2048"
+FLASHLAYOUT_PARTITION_SIZE_nor-emmc_env   = "512"
+FLASHLAYOUT_PARTITION_SIZE_nor-emmc_teeh  = "256"
+FLASHLAYOUT_PARTITION_SIZE_nor-emmc_teed  = "512"
+FLASHLAYOUT_PARTITION_SIZE_nor-emmc_teex  = "256"
 
 # Set binaries to use for each partition
 FLASHLAYOUT_PARTITION_BIN2LOAD_fsbl1-boot   = "arm-trusted-firmware/tf-a.stm32"
