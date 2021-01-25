@@ -177,7 +177,7 @@ EXTRA_IMAGECMD_ext4 = "-i 4096 -L ${@d.getVar('IMAGE_NAME_SUFFIX').replace('.', 
 
 # Allow debug on the platform with gdb and openocd tools
 EXTRA_IMAGEDEPENDS_append = " \
-    gdb-cross-arm \
+    gdb-cross-${TARGET_ARCH} \
     openocd-stm32mp-native \
     stm32wrapper4dbg-native \
     sdcard-raw-tools-native \
@@ -198,6 +198,11 @@ ST_TOOLS_FOR_SDK_PERL = " \
     nativesdk-perl-module-term-ansicolor \
     nativesdk-perl-module-encode \
     nativesdk-perl-module-encode-mime-header \
+"
+
+# For some scripts in kernel source code
+ST_TOOLS_FOR_SDK_PERL = " \
+    nativesdk-perl-module-file-spec-functions \
 "
 
 ST_TOOLS_FOR_SDK_append = " ${ST_TOOLS_FOR_SDK_PERL} "
@@ -256,8 +261,8 @@ TOOLCHAIN_HOST_TASK_remove_task-populate-sdk-ext = " ${ST_DEPENDENCIES_BUILD_FOR
 # uninative: basic tools for devtool
 TOOLCHAIN_HOST_TASK_remove_pn-buildtools-tarball = " ${ST_TOOLS_FOR_SDK_PERL} "
 
-TOOLCHAIN_TARGET_TASK += " bash-dev "
-TOOLCHAIN_TARGET_TASK_remove_pn-buildtools-tarball = " bash-dev "
+TOOLCHAIN_TARGET_TASK += " bash-dev libgomp-dev"
+TOOLCHAIN_TARGET_TASK_remove_pn-buildtools-tarball = " bash-dev libgomp-dev"
 
 # =========================================================================
 # Kernel
@@ -266,14 +271,18 @@ TOOLCHAIN_TARGET_TASK_remove_pn-buildtools-tarball = " bash-dev "
 PREFERRED_PROVIDER_virtual/kernel = "linux-stm32mp"
 
 # Kernel image type
-KERNEL_IMAGETYPE     =  "uImage"
+KERNEL_IMAGETYPE     =  "${@bb.utils.contains('MACHINE_FEATURES', 'fit', 'fitImage', 'uImage', d)}"
 KERNEL_ALT_IMAGETYPE =  " Image "
 KERNEL_ALT_IMAGETYPE =+ " vmlinux "
-KERNEL_ALT_IMAGETYPE =+ " zImage "
+KERNEL_ALT_IMAGETYPE =+ " ${@bb.utils.contains('MACHINE_FEATURES', 'fit', 'uImage', 'zImage', d)} "
+
 
 # Maxsize authorized for uncompressed kernel binary
 # Define to null to skip kernel image size check
 KERNEL_IMAGE_MAXSIZE ?= ""
+
+# For fit usage
+UBOOT_ENTRYPOINT = "0xC0800000"
 
 # List of device tree to install
 KERNEL_DEVICETREE ?= "${STM32MP_KERNEL_DEVICETREE}"
