@@ -60,6 +60,12 @@ STM32MP_DEVICETREE_append = " ${STM32MP_DT_FILES_PHYCORE} "
 # Enable Software watchdog when sysvinit
 MACHINE_EXTRA_RRECOMMENDS_append = " ${@bb.utils.contains('DISTRO_FEATURES','sysvinit',' watchdog ','',d)} "
 
+# Specify WIFI and Bluetooth firmwares to install
+# Two firmware packages for the bcm43430 are available, current stm release has
+# been tested with the firmware package available upstream
+WIFI_LIST += "linux-firmware-bcm43430"
+BLUETOOTH_LIST += "linux-firmware-bluetooth-bcm4343"
+
 # =========================================================================
 # Image
 # =========================================================================
