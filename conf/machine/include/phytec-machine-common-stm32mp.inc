@@ -151,6 +151,7 @@ UBI_VOLNAME ?= "rootfs"
 #      nor_<BlockSize>
 #   Like that a same UBI partition can be used for severals NAND/NOR providers
 MULTIUBI_BUILD += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nand-2-256', 'nand_2_256', '', d)}"
+MULTIUBI_BUILD += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nand-2-64', 'nand_2_64', '', d)}"
 
 # UBI Args for 512MB NAND soldered by default on phyCORE-STM32MP1
 # Micron MT29F8G08ABACAWP
@@ -159,13 +160,20 @@ MKUBIFS_ARGS_nand_2_256 = "--min-io-size 2048 --leb-size 126976 --max-leb-cnt 97
 UBINIZE_ARGS_nand_2_256 = "--min-io-size 2048 --peb-size 128KiB"
 EXTRA_UBIFS_SIZE_nand_2_256 = "2304"
 
+# UBI Args for 128MB NAND soldered by default on phyCORE-STM32MP1
+# Micron MT29F1G08ABAEAWP
+# LEB = BLOCK_SIZE - (2 * page size): 64*2048 - (2*2048)
+MKUBIFS_ARGS_nand_2_64 = "--min-io-size 2048 --leb-size 126976 --max-leb-cnt 972 --space-fixup"
+UBINIZE_ARGS_nand_2_64 = "--min-io-size 2048 --peb-size 128KiB"
+EXTRA_UBIFS_SIZE_nand_2_64 = "2304"
+
 ##############################################################################################################
 
 # Default FSTYPES requested
 WKS_IMAGE_FSTYPES ?= ""
 IMAGE_FSTYPES ?= "${WKS_IMAGE_FSTYPES} tar.xz ext4"
 # Append ubi FSTYPES to default ones for nand volumes
-IMAGE_FSTYPES += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nand-2-256', 'stmultiubi', '', d)}"
+IMAGE_FSTYPES += "${@bb.utils.contains_any('BOOTDEVICE_LABELS', [ 'nand-2-256', 'nand-2-64' ], 'stmultiubi', '', d)}"
 
 # Define specific EXT4 command line:
 #   - Create minimal inode number (as it is done by default in image_types.bbclass)
