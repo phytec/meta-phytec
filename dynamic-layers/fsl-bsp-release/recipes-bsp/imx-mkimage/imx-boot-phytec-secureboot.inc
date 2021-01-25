@@ -153,7 +153,8 @@ python do_sign() {
         soc_target = d.getVar('SOC_TARGET')
         boot_staging = d.getVar('BOOT_STAGING')
         uboot_dtb_name = d.getVar('UBOOT_DTB_NAME')
-
+        deploy_dir_image = d.getVar('DEPLOY_DIR_IMAGE')
+        boot_tools = d.getVar('BOOT_TOOLS')
         bl31_bin_path = d.getVar('BL31_BIN_PATH')
         for target in imxboot_targets:
             for uboot_config in uboot_configs:
@@ -168,7 +169,7 @@ python do_sign() {
                 uboot_nodtb_bin_path = os.path.join(boot_staging,
                                                     'u-boot-nodtb.bin-' +
                                                     uboot_config)
-                uboot_dtb_bin_path = os.path.join(boot_staging, uboot_dtb_name)
+                uboot_dtb_bin_path = os.path.join(deploy_dir_image, boot_tools, uboot_dtb_name)
                 sign_hab(d, input_image_path, output_image_path,
                          imxboot_logfile, uboot_nodtb_bin_path,
                          uboot_dtb_bin_path, bl31_bin_path)
