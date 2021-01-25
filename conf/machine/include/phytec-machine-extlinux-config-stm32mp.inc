@@ -6,8 +6,6 @@ UBOOT_EXTLINUX_CONSOLE = "console=${@d.getVar('SERIAL_CONSOLE').split()[1]},${@d
 UBOOT_EXTLINUX_FIT = "${@bb.utils.contains('MACHINE_FEATURES', 'fit', '1', '0', d)}"
 # Define default FDTDIR for all configs
 UBOOT_EXTLINUX_FDTDIR = "/"
-# Define default MENU DESCRIPTION for all configs
-UBOOT_EXTLINUX_MENU_DESCRIPTION = "OpenSTLinux"
 # Define default boot config for all config
 UBOOT_EXTLINUX_DEFAULT_LABEL ?= "OpenSTLinux"
 # Define default INITRD for all configs
@@ -39,6 +37,12 @@ UBOOT_EXTLINUX_ROOT_target-sdcard = "root=PARTUUID=${DEVICE_PARTUUID_ROOTFS_SDCA
 UBOOT_EXTLINUX_ROOT_target-emmc = "root=PARTUUID=${DEVICE_PARTUUID_ROOTFS_EMMC}"
 # Define INITRD overrides for nand target
 UBOOT_EXTLINUX_INITRD_target-nand = ""
+
+# -----------------------------------------------------------------------------
+# Configure default labels
+# -----------------------------------------------------------------------------
+# Define MENU_DESCRIPTION for rootfs label to default one to force selection
+UBOOT_EXTLINUX_MENU_DESCRIPTION_rootfs = "OpenSTLinux"
 
 # -----------------------------------------------------------------------------
 # Configure additional target
