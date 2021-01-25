@@ -60,6 +60,9 @@ STM32MP_DEVICETREE_append = " ${STM32MP_DT_FILES_PHYCORE} "
 # Enable Software watchdog when sysvinit
 MACHINE_EXTRA_RRECOMMENDS_append = " ${@bb.utils.contains('DISTRO_FEATURES','sysvinit',' watchdog ','',d)} "
 
+# Install edid firmware files for hdmi
+MACHINE_EXTRA_RRECOMMENDS_append = " ${@bb.utils.contains("MACHINE_FEATURES", "hdmi", "linux-firmware-edid", "", d)}"
+
 # Specify WIFI and Bluetooth firmwares to install
 # Two firmware packages for the bcm43430 are available, current stm release has
 # been tested with the firmware package available upstream
@@ -286,6 +289,14 @@ ST_KERNEL_LOADADDR ?= "0xC2000040"
 
 # Define the devicetree for Linux A7 examples
 LINUX_A7_EXAMPLES_DT ?= ""
+
+# Extra kernel bootargs
+EXTRA_KERNEL_ARGS ?= ""
+# Use HDMI EDID firmware to set a specific resolution (when "hdmi_resolution" env var defined on u-boot)
+# Example to set 1280x720: on u-boot, set the following var: hdmi_resolution=HDMI-A-1:edid/1280x720.bin
+HDMI_EDID_KERNEL_ARGS = "drm.edid_firmware=${hdmi_resolution}"
+EXTRA_KERNEL_ARGS += "${HDMI_EDID_KERNEL_ARGS}"
+
 
 # =========================================================================
 # u-boot
