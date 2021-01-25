@@ -314,7 +314,6 @@ EXTRA_KERNEL_ARGS ?= ""
 HDMI_EDID_KERNEL_ARGS = "drm.edid_firmware=${hdmi_resolution}"
 EXTRA_KERNEL_ARGS += "${HDMI_EDID_KERNEL_ARGS}"
 
-
 # =========================================================================
 # u-boot
 # =========================================================================
@@ -398,7 +397,7 @@ CUBE_M4_EXAMPLES_DT ?= ""
 
 # Define the name of default copro firmware executed @boot time
 # This name is cherry picked from list defined in m4projects-stm32mp1.bb
-DEFAULT_COPRO_FIRMWARE = "OpenAMP_TTY_echo"
+DEFAULT_COPRO_FIRMWARE ?= "OpenAMP_TTY_echo"
 
 # Define M4 example installation dir
 M4_INSTALLDIR = "${STM32MP_USERFS_MOUNTPOINT}"
