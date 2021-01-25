@@ -5,6 +5,7 @@ SRC_URI += " \
     file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0002-ARM-stm32mp1-phy1-NET.patch \
     file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0003-ARM-stm32mp1-phy1-DRM.patch \
     file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0004-ARM-stm32mp1-phy1-SOUND.patch \
+    file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0099-ARM-stm32mp1-r2.1-st-update.patch \
 "
 
 # -------------------------------------------------------------
@@ -36,7 +37,7 @@ SRC_URI += "file://${LINUX_VERSION}/fragment-14-RPI-screen.config;subdir=fragmen
 BBCLASSEXTEND = "devupstream:target"
 
 SRC_URI_class-devupstream = "git://git.phytec.de/linux-stm32mp;protocol=git;branch=v${LINUX_VERSION}-phy"
-SRCREV_class-devupstream = "da88b5126cfdd4ceb512662f592f115185a4bd86"
+SRCREV_class-devupstream = "a59c0445da03828a150512d9c8ccfc2c75ed8f72"
 
 # ---------------------------------
 # Configure default preference to manage dynamic selection between tarball and github
