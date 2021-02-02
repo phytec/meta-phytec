@@ -11,7 +11,9 @@ UBOOT_EXTLINUX_DEFAULT_LABEL ?= "OpenSTLinux"
 # Define default INITRD for all configs
 INITRD_SHORTNAME ??= ""
 UBOOT_EXTLINUX_INITRD ?= "${@bb.utils.contains('COMBINED_FEATURES', 'autoresize', '/${INITRD_SHORTNAME}', '', d)}"
-# Add additional kernel arguments if defined
+# Define extlinux kernel arguments
+UBOOT_EXTLINUX_KERNEL_ARGS ?= "rootwait rw"
+# Add additional kernel arguments
 UBOOT_EXTLINUX_KERNEL_ARGS += "${EXTRA_KERNEL_ARGS}"
 
 # -----------------------------------------------------------------------------
