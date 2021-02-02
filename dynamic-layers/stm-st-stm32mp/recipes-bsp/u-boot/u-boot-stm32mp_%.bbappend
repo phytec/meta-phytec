@@ -12,7 +12,7 @@ SRC_URI += " \
 BBCLASSEXTEND = "devupstream:target"
 
 SRC_URI_class-devupstream = "git://git.phytec.de/u-boot-stm32mp;protocol=git;branch=v2020.01-phy"
-SRCREV_class-devupstream = "ed7bd4ffc322d5fee375a3544e48fece493affbf"
+SRCREV_class-devupstream = "e82effddf34e1ec81c1bb02bd19e2d9d4185ca8b"
 
 # ---------------------------------
 # Configure default preference to manage dynamic selection between tarball and github
