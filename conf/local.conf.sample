@@ -74,6 +74,9 @@ DEBUG_BUILD_pn-linux-imx = "1"
 # Turn on debugging options of the barebox
 DEBUG_BUILD_pn-barebox = "1"
 
+# Include kernel sources in SDK
+TOOLCHAIN_TARGET_TASK_append = " kernel-devsrc"
+
 # The default package class of the distro yogurt is 'package_ipk'. The first
 # value is used as the package manager to build the image and sdk. To build
 # also tar packages use
