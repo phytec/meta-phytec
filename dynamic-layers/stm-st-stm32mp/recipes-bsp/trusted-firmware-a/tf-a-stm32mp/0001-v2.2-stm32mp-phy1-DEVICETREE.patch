@@ -1,6 +1,6 @@
-From 5bc6e03a0e144b3300c3c512fc025da9c28ffac1 Mon Sep 17 00:00:00 2001
+From a64dfc7d274f65a4e5e50d8dde3e5ea4a2f63c92 Mon Sep 17 00:00:00 2001
 From: Christophe Parant <c.parant@phytec.fr>
-Date: Wed, 6 Jan 2021 11:20:56 +0100
+Date: Tue, 2 Feb 2021 11:01:38 +0100
 Subject: [PATCH] v2.2 stm32mp phy1 DEVICETREE
 
 ---
@@ -13,8 +13,8 @@ Subject: [PATCH] v2.2 stm32mp phy1 DEVICETREE
  ...hycore-stm32mp15-ddr3-2x2Gb-1066-binG.dtsi | 120 ++++
  ...hycore-stm32mp15-ddr3-2x4Gb-1066-binG.dtsi | 120 ++++
  fdts/phycore-stm32mp15-pinctrl.dtsi           | 198 +++++++
- fdts/phycore-stm32mp15-som.dtsi               | 541 ++++++++++++++++++
- 10 files changed, 1243 insertions(+)
+ fdts/phycore-stm32mp15-som.dtsi               | 544 ++++++++++++++++++
+ 10 files changed, 1246 insertions(+)
  create mode 100644 fdts/phycore-stm32mp1-2.dts
  create mode 100644 fdts/phycore-stm32mp1-3.dts
  create mode 100644 fdts/phycore-stm32mp1-4.dts
@@ -28,7 +28,7 @@ Subject: [PATCH] v2.2 stm32mp phy1 DEVICETREE
 
 diff --git a/fdts/phycore-stm32mp1-2.dts b/fdts/phycore-stm32mp1-2.dts
 new file mode 100644
-index 00000000..23d14a4e
+index 000000000..23d14a4ea
 --- /dev/null
 +++ b/fdts/phycore-stm32mp1-2.dts
 @@ -0,0 +1,43 @@
@@ -77,7 +77,7 @@ index 00000000..23d14a4e
 +
 diff --git a/fdts/phycore-stm32mp1-3.dts b/fdts/phycore-stm32mp1-3.dts
 new file mode 100644
-index 00000000..14d01e50
+index 000000000..14d01e508
 --- /dev/null
 +++ b/fdts/phycore-stm32mp1-3.dts
 @@ -0,0 +1,47 @@
@@ -130,7 +130,7 @@ index 00000000..14d01e50
 +
 diff --git a/fdts/phycore-stm32mp1-4.dts b/fdts/phycore-stm32mp1-4.dts
 new file mode 100644
-index 00000000..d2972f49
+index 000000000..d2972f49e
 --- /dev/null
 +++ b/fdts/phycore-stm32mp1-4.dts
 @@ -0,0 +1,47 @@
@@ -183,7 +183,7 @@ index 00000000..d2972f49
 +
 diff --git a/fdts/phycore-stm32mp1-5.dts b/fdts/phycore-stm32mp1-5.dts
 new file mode 100644
-index 00000000..7eb51d42
+index 000000000..7eb51d423
 --- /dev/null
 +++ b/fdts/phycore-stm32mp1-5.dts
 @@ -0,0 +1,43 @@
@@ -232,7 +232,7 @@ index 00000000..7eb51d42
 +
 diff --git a/fdts/phycore-stm32mp1-6.dts b/fdts/phycore-stm32mp1-6.dts
 new file mode 100644
-index 00000000..405b921b
+index 000000000..405b921b0
 --- /dev/null
 +++ b/fdts/phycore-stm32mp1-6.dts
 @@ -0,0 +1,42 @@
@@ -280,7 +280,7 @@ index 00000000..405b921b
 +};
 diff --git a/fdts/phycore-stm32mp1-7.dts b/fdts/phycore-stm32mp1-7.dts
 new file mode 100644
-index 00000000..c172a372
+index 000000000..c172a3728
 --- /dev/null
 +++ b/fdts/phycore-stm32mp1-7.dts
 @@ -0,0 +1,42 @@
@@ -328,7 +328,7 @@ index 00000000..c172a372
 +};
 diff --git a/fdts/phycore-stm32mp15-ddr3-2x2Gb-1066-binG.dtsi b/fdts/phycore-stm32mp15-ddr3-2x2Gb-1066-binG.dtsi
 new file mode 100644
-index 00000000..8ed55a80
+index 000000000..8ed55a80e
 --- /dev/null
 +++ b/fdts/phycore-stm32mp15-ddr3-2x2Gb-1066-binG.dtsi
 @@ -0,0 +1,120 @@
@@ -454,7 +454,7 @@ index 00000000..8ed55a80
 +#include "stm32mp15-ddr.dtsi"
 diff --git a/fdts/phycore-stm32mp15-ddr3-2x4Gb-1066-binG.dtsi b/fdts/phycore-stm32mp15-ddr3-2x4Gb-1066-binG.dtsi
 new file mode 100644
-index 00000000..dd83ba02
+index 000000000..dd83ba029
 --- /dev/null
 +++ b/fdts/phycore-stm32mp15-ddr3-2x4Gb-1066-binG.dtsi
 @@ -0,0 +1,120 @@
@@ -580,7 +580,7 @@ index 00000000..dd83ba02
 +#include "stm32mp15-ddr.dtsi"
 diff --git a/fdts/phycore-stm32mp15-pinctrl.dtsi b/fdts/phycore-stm32mp15-pinctrl.dtsi
 new file mode 100644
-index 00000000..7c4abf02
+index 000000000..7c4abf02e
 --- /dev/null
 +++ b/fdts/phycore-stm32mp15-pinctrl.dtsi
 @@ -0,0 +1,198 @@
@@ -784,10 +784,10 @@ index 00000000..7c4abf02
 +};
 diff --git a/fdts/phycore-stm32mp15-som.dtsi b/fdts/phycore-stm32mp15-som.dtsi
 new file mode 100644
-index 00000000..b459d80d
+index 000000000..3b1ddf3aa
 --- /dev/null
 +++ b/fdts/phycore-stm32mp15-som.dtsi
-@@ -0,0 +1,541 @@
+@@ -0,0 +1,544 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
 +/*
 + * Copyright (C) Phytec GmbH 2019-2020 - All Rights Reserved
@@ -831,8 +831,8 @@ index 00000000..b459d80d
 +		DECPROT(STM32MP1_ETZPC_RNG1_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
 +		DECPROT(STM32MP1_ETZPC_HASH1_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
 +		DECPROT(STM32MP1_ETZPC_CRYP1_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
-+		DECPROT(STM32MP1_ETZPC_DDRCTRL_ID, DECPROT_S_RW, DECPROT_LOCK)
-+		DECPROT(STM32MP1_ETZPC_DDRPHYC_ID, DECPROT_S_RW, DECPROT_LOCK)
++		DECPROT(STM32MP1_ETZPC_DDRCTRL_ID, DECPROT_NS_R_S_W, DECPROT_LOCK)
++		DECPROT(STM32MP1_ETZPC_DDRPHYC_ID, DECPROT_NS_R_S_W, DECPROT_LOCK)
 +		DECPROT(STM32MP1_ETZPC_STGENC_ID, DECPROT_S_RW, DECPROT_LOCK)
 +		DECPROT(STM32MP1_ETZPC_BKPSRAM_ID, DECPROT_S_RW, DECPROT_LOCK)
 +		DECPROT(STM32MP1_ETZPC_IWDG1_ID, DECPROT_S_RW, DECPROT_LOCK)
@@ -1025,7 +1025,7 @@ index 00000000..b459d80d
 +				regulator-max-microvolt = <3300000>;
 +				regulator-always-on;
 +				standby-ddr-sr {
-+					regulator-on-in-suspend;
++					regulator-off-in-suspend;
 +				};
 +				standby-ddr-off {
 +					regulator-off-in-suspend;
@@ -1121,6 +1121,7 @@ index 00000000..b459d80d
 +	system_suspend_supported_soc_modes = <
 +		STM32_PM_CSLEEP_RUN
 +		STM32_PM_CSTOP_ALLOW_LP_STOP
++		STM32_PM_CSTOP_ALLOW_LPLV_STOP
 +		STM32_PM_CSTOP_ALLOW_STANDBY_DDR_SR
 +	>;
 +	system_off_soc_mode = <STM32_PM_CSTOP_ALLOW_STANDBY_DDR_OFF>;
@@ -1234,16 +1235,18 @@ index 00000000..b459d80d
 +	pinctrl-names = "default";
 +	pinctrl-0 = <&fmc_pins_mx>;
 +	status = "disabled";
-+	#address-cells = <1>;
-+	#size-cells = <0>;
 +
-+	nand: nand@0 {
-+		reg = <0>;
-+		nand-on-flash-bbt;
-+                nand-ecc-strength = <4>;
-+                nand-ecc-step-size = <512>;
-+		#address-cells = <1>;
-+		#size-cells = <1>;
++	nand-controller@4,0 {
++		status = "okay";
++
++	        nand: nand@0 {
++		        reg = <0>;
++		        nand-on-flash-bbt;
++		        nand-ecc-strength = <4>;
++		        nand-ecc-step-size = <512>;
++		        #address-cells = <1>;
++		        #size-cells = <1>;
++	        };
 +	};
 +};
 +
