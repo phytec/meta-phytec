@@ -37,7 +37,7 @@ SRC_URI += "file://${LINUX_VERSION}/fragment-14-RPI-screen.config;subdir=fragmen
 BBCLASSEXTEND = "devupstream:target"
 
 SRC_URI_class-devupstream = "git://git.phytec.de/linux-stm32mp;protocol=git;branch=v${LINUX_VERSION}-phy"
-SRCREV_class-devupstream = "a59c0445da03828a150512d9c8ccfc2c75ed8f72"
+SRCREV_class-devupstream = "7d824a481049283b319d1d510980cc532c8b1ad0"
 
 # ---------------------------------
 # Configure default preference to manage dynamic selection between tarball and github
