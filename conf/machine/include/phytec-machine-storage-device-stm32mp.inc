@@ -72,7 +72,7 @@ DEVICE_START_OFFSET_BOOT1_EMMC ?= "boot2"
 DEVICE_PARTUUID_ROOTFS_EMMC ?= "${@d.getVar(d.expand('DEVICE_PARTUUID_ROOTFS_${DEVICE_EMMC}')) or ''}"
 
 # Configure the list of boards that enable EMMC
-DEVICE_BOARD_ENABLE_EMMC += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'emmc', '${STM32MP_DT_FILES_PHYCORE}', '', d)}"
+DEVICE_BOARD_ENABLE_EMMC += "${@bb.utils.contains_any('BOOTDEVICE_LABELS', [ 'emmc', 'nor-emmc' ], '${STM32MP_DT_FILES_PHYCORE}', '', d)}"
 
 # -----------------------------------------------------------------------------
 # NAND
