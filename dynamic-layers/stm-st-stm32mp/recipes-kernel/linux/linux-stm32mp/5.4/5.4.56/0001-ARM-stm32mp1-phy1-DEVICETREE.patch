@@ -1,6 +1,6 @@
-From 4073071494a723f366ebc1d4be0933d29fd4876b Mon Sep 17 00:00:00 2001
+From 74e7906ecfd17cee6e52e0a39b7f91a9f511b0d2 Mon Sep 17 00:00:00 2001
 From: Christophe Parant <c.parant@phytec.fr>
-Date: Tue, 5 Jan 2021 14:52:19 +0100
+Date: Mon, 25 Jan 2021 16:04:54 +0100
 Subject: [PATCH 1/4] ARM stm32mp1 phy1 DEVICETREE
 
 ---
@@ -18,7 +18,7 @@ Subject: [PATCH 1/4] ARM stm32mp1 phy1 DEVICETREE
  .../dts/phyboard-stm32mp1-pi-hat-redbear.dtsi |  63 +++
  .../boot/dts/phyboard-stm32mp1-pinctrl.dtsi   | 508 ++++++++++++++++++
  .../phyboard-stm32mp1-uno-r3-extension.dtsi   |  76 +++
- arch/arm/boot/dts/phyboard-stm32mp1.dtsi      | 350 ++++++++++++
+ arch/arm/boot/dts/phyboard-stm32mp1.dtsi      | 349 ++++++++++++
  .../dts/phycore-stm32mp1-2-a7-examples.dts    |  24 +
  .../dts/phycore-stm32mp1-2-m4-examples.dts    | 175 ++++++
  arch/arm/boot/dts/phycore-stm32mp1-2.dts      |  48 ++
@@ -38,8 +38,8 @@ Subject: [PATCH 1/4] ARM stm32mp1 phy1 DEVICETREE
  .../dts/phycore-stm32mp1-7-m4-examples.dts    | 175 ++++++
  arch/arm/boot/dts/phycore-stm32mp1-7.dts      |  44 ++
  .../boot/dts/phycore-stm32mp15-pinctrl.dtsi   | 277 ++++++++++
- arch/arm/boot/dts/phycore-stm32mp15-som.dtsi  | 409 ++++++++++++++
- 35 files changed, 4033 insertions(+)
+ arch/arm/boot/dts/phycore-stm32mp15-som.dtsi  | 411 ++++++++++++++
+ 35 files changed, 4034 insertions(+)
  create mode 100644 arch/arm/boot/dts/phyboard-stm32mp1-dsi-lcd-mb1407.dtsi
  create mode 100644 arch/arm/boot/dts/phyboard-stm32mp1-dsi-rpi-official-display.dtsi
  create mode 100644 arch/arm/boot/dts/phyboard-stm32mp1-motor-control-m4.dtsi
@@ -1682,10 +1682,10 @@ index 000000000000..3c2d15f02177
 +};
 diff --git a/arch/arm/boot/dts/phyboard-stm32mp1.dtsi b/arch/arm/boot/dts/phyboard-stm32mp1.dtsi
 new file mode 100644
-index 000000000000..5764a12a715a
+index 000000000000..637a32e4d39e
 --- /dev/null
 +++ b/arch/arm/boot/dts/phyboard-stm32mp1.dtsi
-@@ -0,0 +1,350 @@
+@@ -0,0 +1,349 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
 +/*
 + * Copyright (C) PHYTEC GmbH 2019-2020 - All Rights Reserved
@@ -1984,7 +1984,6 @@ index 000000000000..5764a12a715a
 +};
 +
 +&usbotg_hs {
-+	force-b-session-valid;
 +	phys = <&usbphyc_port1 0>;
 +	phy-names = "usb2-phy";
 +	vbus-supply = <&vbus_otg>;
@@ -3906,10 +3905,10 @@ index 000000000000..cfa0c0960086
 +};
 diff --git a/arch/arm/boot/dts/phycore-stm32mp15-som.dtsi b/arch/arm/boot/dts/phycore-stm32mp15-som.dtsi
 new file mode 100644
-index 000000000000..32c057540cca
+index 000000000000..104f51e4aea2
 --- /dev/null
 +++ b/arch/arm/boot/dts/phycore-stm32mp15-som.dtsi
-@@ -0,0 +1,409 @@
+@@ -0,0 +1,411 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
 +/*
 + * Copyright (C) PHYTEC GmbH 2019-2020 - All Rights Reserved
@@ -4290,17 +4289,19 @@ index 000000000000..32c057540cca
 +        pinctrl-0 = <&fmc_pins_a>;
 +        pinctrl-1 = <&fmc_sleep_pins_a>;
 +        status = "disabled";
-+        #address-cells = <1>;
-+        #size-cells = <0>;
 +
-+        nand: nand@0 {
-+                reg = <0>;
-+                nand-on-flash-bbt;
-+                nand-ecc-strength = <4>;
-+                nand-ecc-step-size = <512>;
-+                #address-cells = <1>;
-+                #size-cells = <1>;
-+        };
++	nand-controller@4,0 {
++		status = "okay";
++
++		nand: nand@0 {
++			reg = <0>;
++			nand-on-flash-bbt;
++			nand-ecc-strength = <4>;
++			nand-ecc-step-size = <512>;
++			#address-cells = <1>;
++			#size-cells = <1>;
++		};
++	};
 +};
 +
 +&sdmmc2 {
