@@ -6,7 +6,7 @@ SECTION = "devel"
 
 require rs485test_0.2.bb
 
-inherit native deploy
+inherit deploy native
 
 do_compile() {
     ${CC} -Wall -Werror rs485test.c -o rs485test
