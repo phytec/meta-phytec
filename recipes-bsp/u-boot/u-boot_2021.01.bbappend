@@ -3,7 +3,6 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}/:"
 DEPENDS += "u-boot-mkimage-native"
 
 SRC_URI_append = " \
-  file://0001-FORUPSTREAM-phycore-rk3288-Remove-PMIC-related-stuff.patch \
   file://boot.cmd \
 "
 
