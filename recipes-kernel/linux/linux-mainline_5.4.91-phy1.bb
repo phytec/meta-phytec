@@ -7,7 +7,7 @@ include linux-common.inc
 
 LIC_FILES_CHKSUM = "file://COPYING;md5=bbea815ee2795b2f4230826c0c6b8814"
 
-GIT_URL = "git://git.phytec.de/${PN}"
+GIT_URL = "git://git.phytec.de/${BPN}"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
 PR = "${INC_PR}.0"

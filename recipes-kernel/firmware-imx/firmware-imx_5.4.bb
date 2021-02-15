@@ -14,7 +14,7 @@ LIC_FILES_CHKSUM = " \
     file://COPYING;md5=8cf95184c220e247b9917e7244124c5a \
 "
 
-SRC_URI = "${FSL_MIRROR}/${PN}-${PV}.bin;fsl-bin=true"
+SRC_URI = "${FSL_MIRROR}/${BPN}-${PV}.bin;fsl-bin=true"
 SRC_URI[md5sum] = "dae846ca2fc4504067f725f501491adf"
 SRC_URI[sha256sum] = "c5bd4bff48cce9715a5d6d2c190ff3cd2262c7196f7facb9b0eda231c92cc223"
 

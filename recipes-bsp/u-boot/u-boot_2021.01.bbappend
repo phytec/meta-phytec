@@ -1,4 +1,4 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}/:"
+FILESEXTRAPATHS_prepend := "${THISDIR}/${BPN}/:"
 
 DEPENDS += "u-boot-mkimage-native"
 

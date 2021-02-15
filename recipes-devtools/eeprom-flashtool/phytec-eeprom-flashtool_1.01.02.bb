@@ -15,11 +15,11 @@ SRC_URI = "git://git.phytec.de/phytec-eeprom-flashtool.git"
 SRCREV = "1e319ae7efcd8e2b6b322069d157abc4a5bb4763"
 
 do_install () {
-        install -d ${D}${bindir}/${PN}
-        install -m 0644 ${S}/README ${D}${bindir}/${PN}
-        install -m 0755 ${S}/phytec_eeprom_flashtool.py ${D}${bindir}/${PN}
-        install -d ${D}${bindir}/${PN}/configs
-        install -m 0644 ${S}/configs/* ${D}${bindir}/${PN}/configs
+        install -d ${D}${bindir}/${BPN}
+        install -m 0644 ${S}/README ${D}${bindir}/${BPN}
+        install -m 0755 ${S}/phytec_eeprom_flashtool.py ${D}${bindir}/${BPN}
+        install -d ${D}${bindir}/${BPN}/configs
+        install -m 0644 ${S}/configs/* ${D}${bindir}/${BPN}/configs
 }
 
 RDEPENDS_${PN} = "python3-pyyaml"
