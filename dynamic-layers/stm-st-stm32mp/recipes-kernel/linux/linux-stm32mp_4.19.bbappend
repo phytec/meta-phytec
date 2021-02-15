@@ -1,4 +1,4 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
+FILESEXTRAPATHS_prepend := "${THISDIR}/${BPN}:"
 
 SRC_URI += " \
     file://${LINUX_VERSION}/4.19.9/0065-ARM-stm32mp1-r0-rc1-add-phycore-stm32mp1xx-alpha1-machine.patch \
