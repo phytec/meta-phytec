@@ -15,12 +15,12 @@ SECTION = "BSP"
 
 inherit fsl-eula2-unpack2 pkgconfig deploy
 
-SRC_URI = "ftp://ftp.phytec.de/pub/Software/Linux/Driver/${PN}_${PV}.tar.gz"
+SRC_URI = "ftp://ftp.phytec.de/pub/Software/Linux/Driver/${BPN}_${PV}.tar.gz"
 
 SRC_URI[md5sum] = "9ee6ef2e2a28f0428455bd4869cfe965"
 SRC_URI[sha256sum] = "4bdbe5c36249e3c8eee7312c1b1fb61682bde8f5837067c95ee7844b0ec6f142"
 
-S = "${WORKDIR}/${PN}_${PV}"
+S = "${WORKDIR}/${BPN}_${PV}"
 BOARD_TYPE ?= "mek"
 SC_FIRMWARE_NAME ?= "mx8qm-mek-scfw-tcm.bin"
 SC_FIRMWARE_NAME_mx8qm = "mx8qm-${BOARD_TYPE}-scfw-tcm.bin"

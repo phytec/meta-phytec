@@ -7,7 +7,7 @@ include linux-common.inc
 
 DEFAULT_PREFERENCE = "-1"
 
-GIT_URL = "git://git.phytec.de/${PN}"
+GIT_URL = "git://git.phytec.de/${BPN}"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
 PR = "${INC_PR}.0"

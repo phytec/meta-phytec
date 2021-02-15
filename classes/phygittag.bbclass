@@ -30,7 +30,7 @@
 #    FILESEXTRAPATHS_prepend := "${THISDIR}/defconfigs:${THISDIR}/defconfigs/features:${THISDIR}/env:"
 #
 #    # Variable GIT_URL is also used in buildinfo.
-#    GIT_URL = "git://git.phytec.de/${PN}"
+#    GIT_URL = "git://git.phytec.de/${BPN}"
 #    SRC_URI = "${GIT_URL};branch=${BRANCH}"
 #    SRC_URI_append = " \
 #        file://commonenv \
@@ -64,7 +64,7 @@
 #     removing needed sources files in the variable SRC_URI. A correct example,
 #     but not useful example:
 #
-#          SRC_URI = "git://git.phytec.de/${PN};branch=${BRANCH}"
+#          SRC_URI = "git://git.phytec.de/${BPN};branch=${BRANCH}"
 #          SRC_URI_append = " \
 #              file://commonenv \
 #              file://environment \
