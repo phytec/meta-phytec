@@ -23,6 +23,9 @@ ATF_BIN_ADDR_mx8mm="0x920000"
 UBOOT_NODTB_BIN_ADDR_mx8mn="0x40200000"
 ATF_BIN_ADDR_mx8mn="0x960000"
 
+UBOOT_NODTB_BIN_ADDR_mx8mp="0x40200000"
+ATF_BIN_ADDR_mx8mp="0x970000"
+
 # Extract the addresses we need from imx-mkimage output
 def get_hab_blocks_from_log(input_image_path, ubootimx_make_output):
     import re
