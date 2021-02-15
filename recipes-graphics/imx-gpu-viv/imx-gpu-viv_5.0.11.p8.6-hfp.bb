@@ -51,11 +51,11 @@ PROVIDES += "virtual/libgles2 virtual/libgles1 virtual/egl virtual/libg2d virtua
 
 PR = "r0"
 
-SRC_URI = "${FSL_MIRROR}/${PN}-${PV}.bin;fsl-bin=true"
+SRC_URI = "${FSL_MIRROR}/${BPN}-${PV}.bin;fsl-bin=true"
 SRC_URI[md5sum] = "92fc34fc37b0865f61be1bd931f5166f"
 SRC_URI[sha256sum] = "caaabd59a259e29aa5b7f9d1d7f3fe71cff9336ba44904485d258baef276351f"
 
-S = "${WORKDIR}/${PN}-${PV}"
+S = "${WORKDIR}/${BPN}-${PV}"
 
 PACKAGES = " \
     imx-gpu-viv-demos-dbg imx-gpu-viv-demos \

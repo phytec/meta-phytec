@@ -7,7 +7,7 @@ inherit fsl-vivante-kernel-driver-handler
 include recipes-kernel/linux/linux-common.inc
 
 BRANCH = "v5.4.70_2.3.0-phy"
-GIT_URL = "git://git.phytec.de/${PN}"
+GIT_URL = "git://git.phytec.de/${BPN}"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 PR = "${INC_PR}.0"
 

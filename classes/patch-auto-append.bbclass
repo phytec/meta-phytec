@@ -3,8 +3,8 @@
 #
 #    # In a bbappend
 #    inherit patch-auto-append
-#    PATCH_AUTO_APPEND_DIRS_prepend := "${THISDIR}/${PN}"
-#    FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
+#    PATCH_AUTO_APPEND_DIRS_prepend := "${THISDIR}/${BPN}"
+#    FILESEXTRAPATHS_prepend := "${THISDIR}/${BPN}:"
 #
 # NOTES:
 #   - Use := instead of +=. Otherwise ${THISDIR} is not resolved to directory

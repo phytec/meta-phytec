@@ -20,7 +20,7 @@
 #     FILESEXTRAPATHS_prepend := "${THISDIR}/defconfigs:${THISDIR}/[...]"
 #
 #     GIT_TAG = "v2014.11.0-phy2"
-#     GIT_URL = "git://git.phytec.de/${PN}"
+#     GIT_URL = "git://git.phytec.de/${BPN}"
 #     SRC_URI = "${GIT_URL};branch=${BRANCH}"
 #     SRC_URI_append = " \
 #         file://commonenv \
@@ -37,7 +37,7 @@
 #
 #     FILESEXTRAPATHS_prepend := "${THISDIR}/defconfigs:${THISDIR}/[...]"
 #
-#     GIT_URL = "git://git.phytec.de/${PN}"
+#     GIT_URL = "git://git.phytec.de/${BPN}"
 #     SRC_URI = "${GIT_URL};branch=${BRANCH}"
 #     SRC_URI_append = " \
 #         file://commonenv \
@@ -133,7 +133,7 @@ You now have two possible workflows for your changes:
 1. Work inside the git repository:
 Copy and paste the following snippet to your "local.conf":
 
-SRC_URI_pn-{PN} = "git:///${{HOME}}/git/{PN};branch=${{BRANCH}}\"
+SRC_URI_pn-{PN} = "git:///${{HOME}}/git/{BPN};branch=${{BRANCH}}\"
 SRCREV_pn-{PN} = "${{AUTOREV}}"
 BRANCH_pn-{PN} = \"{branchname}\"
 

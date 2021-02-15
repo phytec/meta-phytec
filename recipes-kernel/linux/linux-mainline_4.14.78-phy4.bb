@@ -14,7 +14,7 @@ python () {
         raise bb.parse.SkipPackage("Disable 'preempt-rt' in DISTRO_FEATURES!")
 }
 
-GIT_URL = "git://git.phytec.de/${PN}"
+GIT_URL = "git://git.phytec.de/${BPN}"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 SRC_URI_append_ti33x = "\
     ${@bb.utils.contains('MACHINE_FEATURES', 'sgx', 'file://preempt_voluntary.cfg', '', d)} \
