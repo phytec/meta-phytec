@@ -2,8 +2,10 @@ inherit hab
 
 SRC_URI_append_secureboot = " file://csf_additional_images_template.txt \
                             "
+#value is not being set for mx8mp in meta-freescale, so set it here.
+UBOOT_ENTRYPOINT_mx8mp="0x40480000"
 LINUX_LOAD_ADDR="${UBOOT_ENTRYPOINT}"
-#true for most mx8*, at this point we only support m8xmm.
+#true for most mx8*.
 DTB_LOAD_ADDR="0x48000000"
 
 LINUX_IMAGE_PATH="${B}/${KERNEL_OUTPUT_DIR}/Image"
