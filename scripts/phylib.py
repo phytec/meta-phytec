@@ -251,7 +251,18 @@ class BoardSupportPackage(object):
 
     def probe_selected_release(self):
         repo_dir = self.src.get_repo_dir()
-        f = os.readlink(os.path.join(repo_dir, 'manifest.xml'))
+        if os.path.islink(os.path.join(repo_dir, 'manifest.xml')):
+            f = os.readlink(os.path.join(repo_dir, 'manifest.xml'))
+        else:
+            repo_manifest = open(os.path.join(repo_dir, 'manifest.xml'), 'r')
+            lines_manifest = repo_manifest.readlines()
+            repo_manifest.close()
+            for line in lines_manifest:
+                xline = line.split('"')
+                for elem in xline:
+                    if ".xml" in elem:
+                        phymanifest = elem
+            f = os.path.join(repo_dir, 'manifests/' + phymanifest)
         f = os.path.join(repo_dir, f)
         self.set_manifest(f)
 
