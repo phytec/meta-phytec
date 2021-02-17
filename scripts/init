@@ -32,7 +32,16 @@ if [ "$ROOTDIR" = "" ]; then
 fi
 
 # copy release notes to rootdir, if they are present in phy2octo
-RELEASE_UID=$(sed -n 's:.*release_uid="\([^"]*\).*:\1:p' ${ROOTDIR}/.repo/manifest.xml)
+REPO_MANIFEST="${ROOTDIR}/.repo/manifest.xml"
+if [ -L ${REPO_MANIFEST} ]; then
+        # file is a symbolic link
+	RELEASE_UID=$(sed -n 's:.*release_uid="\([^"]*\).*:\1:p' ${REPO_MANIFEST})
+else
+        # file is a regular file
+        INC_MANIFEST=`grep -o '".*\.xml"' ${REPO_MANIFEST} | sed 's/"//g'`
+        RELEASE_UID=$(sed -n 's:.*release_uid="\([^"]*\).*:\1:p' \
+		${ROOTDIR}/.repo/manifests/${INC_MANIFEST})
+fi
 RELEASE_NOTES="${ROOTDIR}/.repo/manifests/releasenotes/${RELEASE_UID}"
 if [ -e ${RELEASE_NOTES} ]; then
 	install -pm 0644 ${RELEASE_NOTES} ${ROOTDIR}/ReleaseNotes
