@@ -237,12 +237,14 @@ int main(int argc, char *argv[])
 		if (ret)
 			exit(-1);
 	} else {
-		printf("flags: %x\n", rs485ctrl_orig.flags);
-		printf("delay_rts_before_send: %d\n",
-					rs485ctrl_orig.delay_rts_before_send);
-		printf("delay_rts_after_send: %d\n",
-					rs485ctrl_orig.delay_rts_after_send);
+		rs485ctrl = rs485ctrl_orig;
 	}
+
+	printf("flags: %x\n", rs485ctrl.flags);
+	printf("delay_rts_before_send: %d\n",
+				rs485ctrl.delay_rts_before_send);
+	printf("delay_rts_after_send: %d\n",
+				rs485ctrl.delay_rts_after_send);
 
 	/* Set the port speed */
 	tcgetattr(fd, &ti);
