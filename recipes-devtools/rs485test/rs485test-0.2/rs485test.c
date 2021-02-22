@@ -23,6 +23,28 @@
 
 int verbose = 0;
 
+int set_rs485_ioctl(int fd, struct serial_rs485 *rs485ctrl)
+{
+	int ret;
+
+	ret = ioctl(fd, TIOCSRS485, rs485ctrl);
+	if (ret)
+		printf("Unable to set rs485 settings ret:(%i)\n", ret);
+
+	return ret;
+}
+
+int get_rs485_ioctl(int fd, struct serial_rs485 *rs485ctrl)
+{
+	int ret;
+
+	ret = ioctl(fd, TIOCGRS485, rs485ctrl);
+	if (ret)
+		printf("Unable to get rs485 settings ret:(%i)\n", ret);
+
+	return ret;
+}
+
 void printbuf(char *buf, int size, const char *info)
 {
 	int i;
@@ -205,16 +227,12 @@ int main(int argc, char *argv[])
 		rs485ctrl.delay_rts_before_send = 0;
 		rs485ctrl.delay_rts_after_send = 0;
 
-		ret = ioctl(fd, TIOCSRS485, &rs485ctrl);
-		if (ret) {
-			printf("%s: Unable to set rs485 settings ret:(%i)\n", dev, ret);
-			return -1;
-		}
+		ret = set_rs485_ioctl(fd, &rs485ctrl);
+		if (ret)
+			exit(-1);
 	} else {
-		ret = ioctl(fd, TIOCGRS485, &rs485ctrl);
-		if (ret) {
-			printf("%s: Unable to get rs485 settings ret:(%i)\n", dev, ret);
-		} else {
+		ret = get_rs485_ioctl(fd, &rs485ctrl);
+		if (!ret) {
 			printf("flags: %x\n", rs485ctrl.flags);
 			printf("delay_rts_before_send: %d\n", rs485ctrl.delay_rts_before_send);
 			printf("delay_rts_after_send: %d\n", rs485ctrl.delay_rts_after_send);
