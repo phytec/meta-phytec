@@ -185,6 +185,7 @@ int main(int argc, char *argv[])
 	int singleshoot = 0;
 
 	struct serial_rs485 rs485ctrl;
+	struct serial_rs485 rs485ctrl_orig;
 	int c, ret, fd;
 	struct termios ti;
 	speed_t speed = B115200;
@@ -222,6 +223,11 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 
+	/* save rs485 settings */
+	ret = get_rs485_ioctl(fd, &rs485ctrl_orig);
+	if (ret)
+		exit (-1);
+
 	if (setrs485 == 1) {
 		rs485ctrl.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND;
 		rs485ctrl.delay_rts_before_send = 0;
@@ -231,12 +237,11 @@ int main(int argc, char *argv[])
 		if (ret)
 			exit(-1);
 	} else {
-		ret = get_rs485_ioctl(fd, &rs485ctrl);
-		if (!ret) {
-			printf("flags: %x\n", rs485ctrl.flags);
-			printf("delay_rts_before_send: %d\n", rs485ctrl.delay_rts_before_send);
-			printf("delay_rts_after_send: %d\n", rs485ctrl.delay_rts_after_send);
-		}
+		printf("flags: %x\n", rs485ctrl_orig.flags);
+		printf("delay_rts_before_send: %d\n",
+					rs485ctrl_orig.delay_rts_before_send);
+		printf("delay_rts_after_send: %d\n",
+					rs485ctrl_orig.delay_rts_after_send);
 	}
 
 	/* Set the port speed */
@@ -256,6 +261,9 @@ int main(int argc, char *argv[])
 		ret = send(fd, singleshoot);
 	else
 		ret = receive(fd);
+
+	/* restore orginial rs485 settings */
+	set_rs485_ioctl(fd, &rs485ctrl_orig);
 
 	close(fd);
 
