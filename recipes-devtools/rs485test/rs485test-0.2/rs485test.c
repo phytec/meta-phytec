@@ -168,7 +168,8 @@ void print_help()
 {
 	printf("Usage rs485test [s] [m] -d DEVICE\n"
 		" -l [LENGTH] singelshoot\n"
-		" -s set RS485 settings\n"
+		" -s set RS485 half duplex\n"
+		" -f set RS485 full duplex\n"
 		" -m master mode\n"
 		" -v verbose\n"
 		" -d device like /dev/ttyS1\n"
@@ -180,7 +181,8 @@ int main(int argc, char *argv[])
 {
 	char dev[64];
 	int master = 0;
-	int setrs485 = 0;
+	int setrs485half = 0;
+	int setrs485full = 0;
 	int hasdev  = 0;
 	int singleshoot = 0;
 
@@ -190,14 +192,17 @@ int main(int argc, char *argv[])
 	struct termios ti;
 	speed_t speed = B115200;
 
-	while ((c = getopt (argc, argv, "vsmd:l:")) != -1)
+	while ((c = getopt (argc, argv, "vsfmd:l:")) != -1)
 		switch (c) {
 			case 'd':
 				snprintf(dev, sizeof(dev), "%s",optarg);
 				hasdev = 1;
 				break;
 			case 's':
-				setrs485 = 1;
+				setrs485half = 1;
+				break;
+			case 'f':
+				setrs485full = 1;
 				break;
 			case 'v':
 				verbose = 1;
@@ -216,6 +221,11 @@ int main(int argc, char *argv[])
 	if (!hasdev)
 		print_help();
 
+	if (setrs485half && setrs485full) {
+		printf("%s: Setting only half or full duplex possible. Not both\n");
+		return -1;
+	}
+
 	/* Open port */
 	fd = open(dev, O_RDWR);
 	if (fd < 0) {
@@ -228,8 +238,12 @@ int main(int argc, char *argv[])
 	if (ret)
 		exit (-1);
 
-	if (setrs485 == 1) {
-		rs485ctrl.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND;
+	if (setrs485half || setrs485full) {
+		if (setrs485half)
+			rs485ctrl.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND;
+		if (setrs485full)
+			rs485ctrl.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND |
+						SER_RS485_RX_DURING_TX;
 		rs485ctrl.delay_rts_before_send = 0;
 		rs485ctrl.delay_rts_after_send = 0;
 
