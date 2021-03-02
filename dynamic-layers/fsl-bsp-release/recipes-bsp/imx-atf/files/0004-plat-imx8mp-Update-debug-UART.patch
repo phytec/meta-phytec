@@ -1,0 +1,26 @@
+From e62c40bfebb79718702ad1a5d15a2327b9d9231f Mon Sep 17 00:00:00 2001
+From: Teresa Remmet <t.remmet@phytec.de>
+Date: Mon, 8 Feb 2021 10:04:29 +0100
+Subject: [PATCH] plat: imx8mp: Update debug UART
+
+Due to power domain changes within the new HW revision 1549.1a
+we had to change the debug UART from 2 to 1.
+
+Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
+---
+ plat/imx/imx8m/imx8mp/include/platform_def.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/plat/imx/imx8m/imx8mp/include/platform_def.h b/plat/imx/imx8m/imx8mp/include/platform_def.h
+index d32789c51234..7c2dd89b2696 100644
+--- a/plat/imx/imx8m/imx8mp/include/platform_def.h
++++ b/plat/imx/imx8m/imx8mp/include/platform_def.h
+@@ -51,7 +51,7 @@
+ 
+ #define HAB_RVT_BASE			U(0x00000900) /* HAB_RVT for i.MX8MM */
+ 
+-#define IMX_BOOT_UART_BASE		U(0x30890000)
++#define IMX_BOOT_UART_BASE		U(0x30860000)
+ #define IMX_BOOT_UART_CLK_IN_HZ		24000000 /* Select 24MHz oscillator */
+ 
+ #define PLAT_CRASH_UART_BASE		IMX_BOOT_UART_BASE

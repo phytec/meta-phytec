@@ -4,11 +4,12 @@ SRC_URI_append = "\
     file://0001-plat-imx8mm-use-uart3-as-console.patch \
     file://0002-plat-imx8mn-use-uart3-as-console.patch \
 "
-
 SRC_URI_append_phygate-tauri-l-imx8mm-2 = "\
     file://0003-plat-imx8mm-tauri-l-use-uart4-as-rs485.patch \
 "
-
+SRC_URI_append_phyboard-pollux-imx8mp-2 = " \
+    file://0004-plat-imx8mp-Update-debug-UART.patch \
+"
 # NOTE: Uncomment for debug build:
 #EXTRA_OEMAKE += " \
 #	DEBUG=1 \
