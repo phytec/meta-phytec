@@ -1,7 +1,6 @@
 # Copyright 2017-2020 NXP
 
 require recipes-bsp/imx-mkimage/imx-mkimage_git.inc
-require recipes-bsp/imx-seco/imx-seco.inc
 
 DESCRIPTION = "Generate Boot Loader for i.MX 8 device"
 LICENSE = "GPLv2"
