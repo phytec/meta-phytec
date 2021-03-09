@@ -2,7 +2,7 @@ DESCRIPTION = "Propriety firmware binaries needed for the Laird Sterling-LWB Wif
 LICENSE = "LICENSE.laird"
 LIC_FILES_CHKSUM = "file://LICENSE.laird;md5=ddab19c1a336cc25309c3de36ff9b4b0"
 
-SRC_URI = "ftp://ftp.phytec.de/pub/Software/Linux/Driver/Sterling-bcm43430_v1.1.zip "
+SRC_URI = "https://download.phytec.de/Software/Linux/Driver/Sterling-bcm43430_v1.1.zip "
 
 SRC_URI[md5sum] = "8213f4feee96560592746a8bea5f985c"
 SRC_URI[sha256sum] = "fe52f348c819f4cde62db3153b2c68ee5eaa828fe34a8857ecd0f6c2bb23bb93"

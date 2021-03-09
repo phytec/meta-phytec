@@ -13,7 +13,7 @@ S = "${WORKDIR}/mali-t760-libs_${PV}"
 SRC_URI[md5sum] = "59b392b5b976214d6321156fa4170517"
 SRC_URI[sha256sum] = "9740b604e408c94b5b8c152110ef8aed3920b876bcd9ef84193beb9f79f8f8ba"
 
-SRC_URI = "ftp://ftp.phytec.de/pub/Software/Linux/Driver/mali-t760/mali-t760-libs_${PV}.tar.gz"
+SRC_URI = "https://download.phytec.de/Software/Linux/Driver/mali-t760/mali-t760-libs_${PV}.tar.gz"
 
 PACKAGES = "${PN} ${PN}-dev ${PN}-dbg"
 
