@@ -54,7 +54,7 @@
 #     GIT_TAG = "v3.17.6-phy1"
 #     GIT_URL = "git://git.phytec.de/linux-mainline"
 #     SRCREV = "b866874890884ddf526b8225e706f46c5856c698"
-#     SRC_URI = "ftp://ftp.phytec.de/<dir>/linux-mainline-3.17.6-phy1.tar.gz"
+#     SRC_URI = "https://download.phytec.de/<dir>/linux-mainline-3.17.6-phy1.tar.gz"
 #     [...]
 #
 # The recipe author has to take care of the GIT_TAG and SRCREV variable. The
