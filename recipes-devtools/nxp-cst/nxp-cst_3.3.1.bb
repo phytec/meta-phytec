@@ -1,7 +1,7 @@
-DESCRIPTION = "The link to the ftp.phytec.de is only a placeholder. \
-        Please download the NXP cst tool from the \
+DESCRIPTION = "The link to the download.phytec.de server is only a \
+        placeholder. Please download the NXP cst tool from \
         https://www.nxp.com/webapp/Download?colCode=IMX_CST_TOOL \
-        and store as tar file in the yocto download folder"
+        and store it as tar file in the yocto download folder"
 
 LICENSE = "Proprietary"
 
@@ -16,7 +16,7 @@ LIC_FILES_CHKSUM = " \
 require nxp-cst.inc
 
 SRC_URI = " \
-        ftp://ftp.phytec.de/pub/cst-${PV}.tar;name=tarball \
+        https://download.phytec.de/cst-${PV}.tar;name=tarball \
 "
 
 SRC_URI[tarball.md5sum] = "2b17b55aa3d5527e26e80e057cd7c792"
