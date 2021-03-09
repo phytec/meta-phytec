@@ -15,7 +15,7 @@ SECTION = "BSP"
 
 inherit fsl-eula2-unpack2 pkgconfig deploy
 
-SRC_URI = "ftp://ftp.phytec.de/pub/Software/Linux/Driver/${BPN}_${PV}.tar.gz"
+SRC_URI = "https://download.phytec.de/Software/Linux/Driver/${BPN}_${PV}.tar.gz"
 
 SRC_URI[md5sum] = "9ee6ef2e2a28f0428455bd4869cfe965"
 SRC_URI[sha256sum] = "4bdbe5c36249e3c8eee7312c1b1fb61682bde8f5837067c95ee7844b0ec6f142"

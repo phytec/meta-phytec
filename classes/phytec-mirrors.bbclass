@@ -1,12 +1,12 @@
 MIRRORS += "\
-ftp://.*/.*     ftp://ftp.phytec.de/pub/Software/Linux/Yocto/SourceMirror/ \n \
-cvs://.*/.*     ftp://ftp.phytec.de/pub/Software/Linux/Yocto/SourceMirror/ \n \
-svn://.*/.*     ftp://ftp.phytec.de/pub/Software/Linux/Yocto/SourceMirror/ \n \
-git://.*/.*     ftp://ftp.phytec.de/pub/Software/Linux/Yocto/SourceMirror/ \n \
-gitsm://.*/.*   ftp://ftp.phytec.de/pub/Software/Linux/Yocto/SourceMirror/ \n \
-hg://.*/.*      ftp://ftp.phytec.de/pub/Software/Linux/Yocto/SourceMirror/ \n \
-bzr://.*/.*     ftp://ftp.phytec.de/pub/Software/Linux/Yocto/SourceMirror/ \n \
-osc://.*/.*     ftp://ftp.phytec.de/pub/Software/Linux/Yocto/SourceMirror/ \n \
-p4://.*/.*      ftp://ftp.phytec.de/pub/Software/Linux/Yocto/SourceMirror/ \n \
-https?$://.*/.*	ftp://ftp.phytec.de/pub/Software/Linux/Yocto/SourceMirror/ \n \
+ftp://.*/.*     https://download.phytec.de/Software/Linux/Yocto/SourceMirror/ \n \
+cvs://.*/.*     https://download.phytec.de/Software/Linux/Yocto/SourceMirror/ \n \
+svn://.*/.*     https://download.phytec.de/Software/Linux/Yocto/SourceMirror/ \n \
+git://.*/.*     https://download.phytec.de/Software/Linux/Yocto/SourceMirror/ \n \
+gitsm://.*/.*   https://download.phytec.de/Software/Linux/Yocto/SourceMirror/ \n \
+hg://.*/.*      https://download.phytec.de/Software/Linux/Yocto/SourceMirror/ \n \
+bzr://.*/.*     https://download.phytec.de/Software/Linux/Yocto/SourceMirror/ \n \
+osc://.*/.*     https://download.phytec.de/Software/Linux/Yocto/SourceMirror/ \n \
+p4://.*/.*      https://download.phytec.de/Software/Linux/Yocto/SourceMirror/ \n \
+https?$://.*/.*	https://download.phytec.de/Software/Linux/Yocto/SourceMirror/ \n \
 "
