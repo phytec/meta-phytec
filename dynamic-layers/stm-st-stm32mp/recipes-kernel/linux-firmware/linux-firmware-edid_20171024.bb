@@ -7,7 +7,7 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/GPL-2.0;md5=801f80980d171dd6425
 inherit allarch
 
 SRC_URI = " \
-    ftp://ftp.phytec.de/pub/Software/Linux/Driver/${BPN}_${PV}.tar.gz \
+    https://download.phytec.de/Software/Linux/Driver/${BPN}_${PV}.tar.gz \
 "
 SRC_URI[md5sum] = "4661ff009a30087d8a83bed74ba0668a"
 SRC_URI[sha256sum] = "09547c211ce25aba4cdf4f35b1cf65cc07676e61eaa5b8f9adaf7b43def74b52"
