@@ -75,6 +75,26 @@ if [ -z "${1}" ]; then
 else
 	set -- "${ROOTDIR}/${1}"
 fi
+
+if [ -f "${ROOTDIR}/build/conf/bblayers.conf" ] || [ -f "${ROOTDIR}/${1}/conf/bblayers.conf" ]; then
+        echo ""
+        echo "There already exists an initiated BSP. It could lead to errors in the BSP configuration"
+        echo "process if you continue from here. At least you have to check your build directory"
+        echo "for settings in bblayers.conf and local.conf, which will not be handled correctly in"
+        echo "all cases. It is advisable to start from an empty directory of call:"
+        echo "$ ./phyLinux clean"
+        echo "or to delete the complete build directory:"
+        echo "$ rm -rf ./build"
+        while true; do
+                read -p "Do you really want to continue from here? [y/n] " yn
+                case $yn in
+                        [Yy]* ) break;;
+                        [Nn]* ) exit;;
+                        * ) echo "Please answer [y]es or [n]o.";;
+                esac
+        done
+fi
+
 cd ${ROOTDIR}/sources/poky/
 . ./oe-init-build-env > /dev/null
 
