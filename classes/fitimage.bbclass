@@ -30,7 +30,7 @@ do_patch[noexec] = "1"
 do_compile[noexec] = "1"
 deltask do_package_qa
 
-DEPENDS = "phytec-dev-ca-native u-boot-mkimage-native dtc-native"
+DEPENDS = "u-boot-mkimage-native dtc-native"
 FITIMAGE_HASH ??= "sha1"
 FITIMAGE_LOADADDRESS ??= ""
 FITIMAGE_ENTRYPOINT  ??= ""
