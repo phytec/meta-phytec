@@ -12,7 +12,7 @@ LINUX_IMAGE_PATH="${B}/${KERNEL_OUTPUT_DIR}/Image"
 LINUX_IMAGE_PATH_SIGNED="${B}/${KERNEL_OUTPUT_DIR}/Image-signed"
 DTB_PATH="${B}/${KERNEL_OUTPUT_DIR}/dts/${KERNEL_DEVICETREE}"
 
-DEPENDS_append_secureboot = " phytec-dev-ca-native nxp-cst-native"
+DEPENDS_append_secureboot = " nxp-cst-native"
 
 CSF_TEMPLATE_PATH_ADDITIONAL="${WORKDIR}/csf_additional_images_template.txt"
 
