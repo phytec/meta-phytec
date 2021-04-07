@@ -1,5 +1,5 @@
 
-# The string 'gl' is in PACKAGECONFIG because "opengl" is in yogurt's
+# The string 'gl' is in PACKAGECONFIG because "opengl" is in ampliphy's
 # DISTRO_FEATURES. Since our boards only support egl/gles2 and not the full
 # opengl, we have to disable gl and enable gles2 by hand here.
 PACKAGECONFIG_GL_mx6ul = "no-opengl linuxfb"
