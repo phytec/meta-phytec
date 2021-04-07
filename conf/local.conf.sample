@@ -1,6 +1,6 @@
 MACHINE ?= "UNASSIGNED"
 
-DISTRO ?= "yogurt"
+DISTRO ?= "ampliphy"
 
 ########################
 # global configuration #
@@ -77,7 +77,7 @@ DEBUG_BUILD_pn-barebox = "1"
 # Include kernel sources in SDK
 TOOLCHAIN_TARGET_TASK_append = " kernel-devsrc"
 
-# The default package class of the distro yogurt is 'package_ipk'. The first
+# The default package class of the distro ampliphy is 'package_ipk'. The first
 # value is used as the package manager to build the image and sdk. To build
 # also tar packages use
 #PACKAGE_CLASSES = "package_ipk package_tar"
@@ -108,7 +108,7 @@ EXTRA_IMAGE_FEATURES += "debug-tweaks"
 ######################
 
 # certificate location for signing bundles
-#CERT_PATH = "${TOPDIR}/../sources/meta-yogurt/openssl-ca"
+#CERT_PATH = "${TOPDIR}/../sources/meta-ampliphy/openssl-ca"
 
 ####################
 # QT configuration #

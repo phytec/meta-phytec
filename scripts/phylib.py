@@ -160,7 +160,7 @@ class BoardSupportPackage(object):
         self.pdn = "UNASSIGNED"
         self.soc = "all"
         self.selected_machine = "UNASSIGNED"
-        self.selected_distro = "yogurt"
+        self.selected_distro = "ampliphy"
         self.supported_builds = []
         self.supported_configs = []
         self.local_conf = ""
@@ -201,7 +201,7 @@ class BoardSupportPackage(object):
 
             if self.src.machines[x]['SUPPORTEDIMAGE']:
                 for target in map(str.strip, self.src.machines[x]['SUPPORTEDIMAGE'].split(',')):
-                    distro = 'yogurt'
+                    distro = 'ampliphy'
                     var = target.split('/')
                     if len(var) > 1:
                         target = var[0]
