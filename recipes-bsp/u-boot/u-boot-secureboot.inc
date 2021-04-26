@@ -1,3 +1,5 @@
+UBOOT_ENABLE_ENV_SUPPORT ??= "true"
+
 kconfig_del() {
     bbnote "Removing all lines $1 prefixes in configs"
     for config in ${UBOOT_MACHINE}; do
@@ -23,11 +25,12 @@ kconfig_set() {
 }
 
 patch_ubootconfig () {
-    kconfig_del ENV_IS_ #do not allow any environment storage that is preset
     kconfig_set IMX_HAB y #enable HAB
-    kconfig_set ENV_IS_NOWHERE y #be explicit, we only want the built-in env storage. all others are unsigned and cannot be trusted.
-
-    #As this is a secureboot build, changed the kernel name from "Image" to "Image-signed" to avoid confusion.
+    if [ "${UBOOT_ENABLE_ENV_SUPPORT}" = "false" ] ; then
+        kconfig_del ENV_IS_ #do not allow any environment storage that is preset
+        kconfig_set ENV_IS_NOWHERE y #be explicit, we only want the built-in env storage. all others are unsigned and cannot be trusted.
+    fi
+    #As this is a secureboot build, change the kernel name from "Image" to "Image-signed" to avoid confusion.
     sed -e 's/image=Image\\0/image=Image-signed\\0/g' -i ${S}/include/configs/phycore_*.h
 }
 
