@@ -25,7 +25,6 @@ kconfig_set() {
 patch_ubootconfig () {
     kconfig_del ENV_IS_ #do not allow any environment storage that is preset
     kconfig_set IMX_HAB y #enable HAB
-    kconfig_set CSF_SIZE 0x2000 #must always be kept in sync with imx-boot-phytec mkimage value.
     kconfig_set ENV_IS_NOWHERE y #be explicit, we only want the built-in env storage. all others are unsigned and cannot be trusted.
 
     #As this is a secureboot build, changed the kernel name from "Image" to "Image-signed" to avoid confusion.
