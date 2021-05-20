@@ -12,6 +12,11 @@ def env_add_boot_scripts(d, kernelname, mmcid, emmcid):
 
     [ -e /env/config-expansions ] && /env/config-expansions
 
+    if [ -e /env/expansions/dt-overlays ] ; then
+        global overlays.path="/mnt/mmc{mmcid}.{rootid}/overlays/"
+        /env/expansions/dt-overlays
+    fi
+
     global.bootm.appendroot=1
     global.bootm.root_dev=/dev/mmc{mmcid}.{rootid}
     global.bootm.image="/mnt/mmc{mmcid}.{partid}/{kernel}"
@@ -24,6 +29,13 @@ def env_add_boot_scripts(d, kernelname, mmcid, emmcid):
     [ -e /env/config-expansions ] && /env/config-expansions
 
     [ ! -e /dev/nand0.root.ubi ] && ubiattach /dev/nand0.root
+
+    if [ -e /env/expansions/dt-overlays ] ; then
+        mkdir /mnt/rootfs
+        mount -t ubifs /dev/nand0.root.ubi.root{partid} /mnt/rootfs
+        global overlays.path="/mnt/rootfs/overlays/"
+        /env/expansions/dt-overlays
+    fi
 
     global.bootm.image="/dev/nand0.root.ubi.kernel{partid}"
     global.bootm.oftree="/dev/nand0.root.ubi.oftree{partid}"
@@ -41,6 +53,11 @@ def env_add_boot_scripts(d, kernelname, mmcid, emmcid):
     oftree="${path}/${global.user}-oftree-${global.hostname}"
     if [ -f "${oftree}" ]; then
         global.bootm.oftree="$oftree"
+    fi
+
+    if [ -e /env/expansions/dt-overlays ] ; then
+        global overlays.path="/mnt/nfs/overlays/"
+        /env/expansions/dt-overlays
     fi
 
     nfsroot="/home/${global.user}/nfsroot/${global.hostname}"
