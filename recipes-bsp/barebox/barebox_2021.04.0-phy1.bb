@@ -100,6 +100,23 @@ of_fixup_status /soc/aips-bus@2100000/i2c@21a0000/touchctrl@44
 of_fixup_status /soc/aips-bus@2100000/usdhc@2198000
 of_fixup_status /regulator-wlan-en
 """)
+    env_add(d, "expansions/dt-overlays",
+"""#!/bin/sh
+
+path="$global.overlays.path"
+
+if [ -e ${path}select ] ; then
+        readf ${path}select global.overlays.select
+fi
+
+for o in $global.overlays.select ; do
+        if [ -e ${path}${o} ] ; then
+            echo "Add ${path}${o} overlay"
+            of_overlay ${path}${o}
+        fi
+done
+""")
+    env_add(d, "nv/overlays.select", "")
     env_add(d, "nv/dev.eth0.mode", "static")
     env_add(d, "nv/dev.eth0.ipaddr", "192.168.3.11")
     env_add(d, "nv/dev.eth0.netmask", "255.255.255.0")
@@ -133,13 +150,6 @@ of_property -s -f "/panel-lcd" compatible "edt,etm0700g0edh6"
 
 # imx6qdl-phytec-lcd: 3.5" display (AC167 / AC101)
 #of_property -s -f "/panel-lcd" compatible "edt,etm0350g0dh6"
-
-
-#Enable VM-XXX on CSI0
-#of_camera_selection -a 0x48 -p 0 -b phyCAM-P VM-011-COL
-
-#Enable VM-XXX on CSI1
-#of_camera_selection -a 0x48 -p 1 -b phyCAM-P VM-011-COL
 """)
     # Enable 32 bit color depth for framebuffer emulation on phyFLEX-CarrierBoard
     env_add(d, "nv/linux.bootargs.fb", "imxdrm.legacyfb_depth=32\n");
@@ -173,9 +183,6 @@ python do_env_append_phyboard-mira-imx6() {
 
 # imx6qdl-phytec-lcd: 3.5" display (AC167 / AC101)
 #of_property -s -f "/panel-lcd" compatible "edt,etm0350g0dh6"
-
-#Enable VM-XXX on CSI0
-#of_camera_selection -a 0x48 -p 0 -b phyCAM-S+ VM-010-BW
 """)
     # Enable 32 bit color depth for framebuffer emulation on phyBOARD-Mira
     env_add(d, "nv/linux.bootargs.fb", "imxdrm.legacyfb_depth=32\n");
@@ -207,13 +214,9 @@ python do_env_append_phyboard-nunki-imx6() {
 
 # imx6qdl-phytec-lcd: 3.5" display (AC167 / AC101)
 #of_property -s -f "/panel-lcd" compatible "edt,etm0350g0dh6"
-
-#Enable VM-XXX on CSI0
-of_camera_selection -a 0x48 -p 0 -b phyCAM-P VM-010-BW
-
-#Enable VM-XXX on CSI1
-#of_camera_selection -a 0x48 -p 1 -b phyCAM-P VM-011-COL
 """)
+    # Enable VM-016 by default on phyBOARD-Nunki
+    env_add(d, "nv/overlays.select", "imx6-vm010-bw-0.dtbo\n");
     # Enable 32 bit color depth for framebuffer emulation on phyBOARD-Nunki
     env_add(d, "nv/linux.bootargs.fb", "imxdrm.legacyfb_depth=32\n");
 }
@@ -254,9 +257,6 @@ python do_env_append_phyboard-mira-imx6-6() {
 
 # imx6qdl-phytec-lcd: 3.5" display (AC167 / AC101)
 #of_property -s -f "/panel-lcd" compatible "edt,etm0350g0dh6"
-
-#Enable VM-XXX on CSI0
-#of_camera_selection -a 0x48 -p 0 -b phyCAM-S+ VM-010-BW
 """)
 }
 
@@ -288,9 +288,6 @@ python do_env_append_phyboard-mira-imx6-10() {
 
 # imx6qdl-phytec-lcd: 3.5" display (AC167 / AC101)
 #of_property -s -f "/panel-lcd" compatible "edt,etm0350g0dh6"
-
-#Enable VM-XXX on CSI0
-#of_camera_selection -a 0x48 -p 0 -b phyCAM-S+ VM-010-BW
 """)
 }
 
@@ -322,9 +319,6 @@ of_property -s -f "/panel-lcd" compatible "edt,etm0700g0edh6"
 
 # imx6qdl-phytec-lcd: 3.5" display (AC167 / AC101)
 #of_property -s -f "/panel-lcd" compatible "edt,etm0350g0dh6"
-
-#Enable VM-XXX on CSI0
-#of_camera_selection -a 0x48 -p 0 -b phyCAM-S+ VM-010-BW
 """)
 }
 
@@ -355,9 +349,6 @@ of_property -s -f "/panel-lcd" compatible "edt,etm0700g0dh6"
 
 # imx6qdl-phytec-lcd: 3.5" display (AC167 / AC101)
 #of_property -s -f "/panel-lcd" compatible "edt,etm0350g0dh6"
-
-#Enable VM-XXX on CSI0
-#of_camera_selection -a 0x48 -p 0 -b phyCAM-S+ VM-010-BW
 """)
 }
 
