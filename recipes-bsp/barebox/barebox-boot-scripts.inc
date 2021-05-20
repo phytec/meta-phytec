@@ -43,7 +43,7 @@ def env_add_boot_scripts(d, kernelname, mmcid, emmcid):
         global.bootm.oftree="$oftree"
     fi
 
-    nfsroot="/nfsroot/${global.hostname}"
+    nfsroot="/home/${global.user}/nfsroot/${global.hostname}"
     ip_route_get -b ${global.net.server} global.linux.bootargs.dyn.ip
     global.linux.bootargs.dyn.root="root=/dev/nfs nfsroot=$nfsroot,vers=3,tcp"
     """)
