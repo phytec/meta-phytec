@@ -52,7 +52,7 @@ python do_dtsfixup () {
         shutil.copyfile(dts, cptarget)
 }
 
-addtask dtsfixup after do_patch before do_compile
+addtask dtsfixup after do_symlink_kernsrc before do_compile
 
 def get_oftree(d):
     kdt = d.getVar('KERNEL_DEVICETREE', '')
