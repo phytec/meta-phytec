@@ -36,7 +36,7 @@ ASSUME_SHLIBS += "libwayland-egl.so:mali-t760-libs"
 
 #WIC
 IMAGE_CLASSES += "wic-helper"
-IMAGE_BOOT_FILES = "zImage;linuximage boot.scr oftree ${KERNEL_DEVICETREE}"
+IMAGE_BOOT_FILES = "zImage;linuximage boot.scr oftree ${KERNEL_DEVICETREE} ${EXTERNAL_KERNEL_DEVICETREE}"
 WKS_FILES_rk3288 ?= "rk3288-sdimage.wks"
 
 # default images to build
