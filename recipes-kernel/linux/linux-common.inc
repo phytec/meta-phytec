@@ -62,5 +62,7 @@ FIRST_DTS = "${@get_oftree(d)}"
 do_deploy_append() {
     install -m 644 ${B}/.config ${DEPLOYDIR}/${KERNEL_IMAGE_NAME}.config
     ln -sf ${KERNEL_IMAGE_NAME}.config ${DEPLOYDIR}/${KERNEL_IMAGETYPE}.config
-    ln -sf ${FIRST_DTS}  ${DEPLOYDIR}/oftree
+    if [ -z "${EXTERNAL_KERNEL_DEVICETREE}" ]; then
+        ln -sf ${FIRST_DTS}  ${DEPLOYDIR}/oftree
+    fi
 }
