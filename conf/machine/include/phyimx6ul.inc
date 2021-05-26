@@ -45,7 +45,7 @@ UBINIZE_ARGS = "-m 2048 -p 128KiB -s 2048 -O 2048"
 
 #WIC
 IMAGE_CLASSES += "wic-helper"
-IMAGE_BOOT_FILES = "zImage oftree ${KERNEL_DEVICETREE}"
+IMAGE_BOOT_FILES = "zImage oftree ${KERNEL_DEVICETREE} ${EXTERNAL_KERNEL_DEVICETREE}"
 IMAGE_BOOT_FILES_secureboot = "fitImage"
 BAREBOX_BINARY = "barebox.bin"
 BAREBOX_BINARY_secureboot = "barebox-s.bin"
