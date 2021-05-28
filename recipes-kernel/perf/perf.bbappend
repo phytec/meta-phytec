@@ -11,3 +11,5 @@ PACKAGECONFIG_remove_mx6ul = "scripting"
 PACKAGECONFIG_remove_mx8 = "scripting"
 PACKAGECONFIG_remove_rk3288 = "scripting"
 PACKAGECONFIG_remove_ti33x = "scripting"
+
+RDEPENDS_${PN}-tests += "bash"
