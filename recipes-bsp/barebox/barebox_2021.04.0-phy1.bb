@@ -12,6 +12,7 @@ include barebox-boot-scripts.inc
 
 GIT_URL = "git://git.phytec.de/barebox"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
+SRC_URI_append = "file://0001-of_dump-Add-a-simple-node-check-up.patch"
 
 S = "${WORKDIR}/git"
 
@@ -61,13 +62,23 @@ python do_env_append_mx6() {
     env_add_boot_scripts(d, kernelname, sdid, emmcid)
     env_add_bootchooser(d)
 
+    env_add(d, "expansions/imx6qdl-phytec-check-bus-nodepath",
+"""bus="bus"
+of_dump -e /soc/$bus@2000000
+
+if [ $? != 0 ]; then
+    echo "Changing node-name bus to aips-bus"
+    bus="aips-bus"
+fi
+""")
+
     env_add(d, "expansions/imx6qdl-mira-enable-lvds",
 """of_fixup_status /ldb/lvds-channel@0
-of_fixup_status /soc/bus@2100000/i2c@21a0000/touchctrl@44
+of_fixup_status /soc/$bus@2100000/i2c@21a0000/touchctrl@44
 """)
     env_add(d, "expansions/imx6qdl-nunki-enable-lvds",
 """of_fixup_status /ldb/lvds-channel@0
-of_fixup_status /soc/bus@2100000/i2c@21a0000/touchctrl@44
+of_fixup_status /soc/$bus@2100000/i2c@21a0000/touchctrl@44
 """)
     env_add(d, "expansions/imx6qdl-mira-peb-eval-01",
 """of_fixup_status /gpio-keys
@@ -77,27 +88,27 @@ of_fixup_status /user-leds
 """#!/bin/sh
 of_fixup_status /panel-lcd
 of_fixup_status /ldb/lvds-channel@0
-of_fixup_status /soc/bus@2100000/i2c@21a4000/polytouch@38
+of_fixup_status /soc/$bus@2100000/i2c@21a4000/polytouch@38
 """)
     env_add(d, "expansions/imx6qdl-phytec-lcd-res",
 """#!/bin/sh
 of_fixup_status /panel-lcd
 of_fixup_status /ldb/lvds-channel@0
-of_fixup_status /soc/bus@2100000/i2c@21a4000/touchctrl@41
+of_fixup_status /soc/$bus@2100000/i2c@21a4000/touchctrl@41
 """)
     env_add(d, "expansions/imx6qdl-phytec-lcd-018-peb-av-02",
 """of_fixup_status /panel-lcd
 of_fixup_status /display@di0
-of_fixup_status /soc/bus@2100000/i2c@21a0000/polytouch@38
+of_fixup_status /soc/$bus@2100000/i2c@21a0000/polytouch@38
 """)
     env_add(d, "expansions/imx6qdl-phytec-lcd-018-peb-av-02-res",
 """of_fixup_status /panel-lcd
 of_fixup_status /display@di0
-of_fixup_status /soc/bus@2100000/i2c@21a0000/touchctrl@44
+of_fixup_status /soc/$bus@2100000/i2c@21a0000/touchctrl@44
 """)
     env_add(d, "expansions/imx6qdl-phytec-peb-wlbt-05",
 """#!/bin/sh
-of_fixup_status /soc/bus@2100000/mmc@2198000
+of_fixup_status /soc/$bus@2100000/mmc@2198000
 of_fixup_status /regulator-wl-en
 of_fixup_status -d /gpio-keys
 of_fixup_status -d /user-leds
@@ -132,6 +143,8 @@ python do_env_append_phyflex-imx6() {
     env_add(d, "config-expansions",
 """#!/bin/sh
 
+. /env/expansions/imx6qdl-phytec-check-bus-nodepath
+
 #use this expansion when a capacitive touchscreen is connected
 . /env/expansions/imx6qdl-phytec-lcd
 
@@ -160,6 +173,8 @@ of_property -s -f "/panel-lcd" compatible "edt,etm0700g0edh6"
 python do_env_append_phyboard-mira-imx6() {
     env_add(d, "config-expansions",
 """#!/bin/sh
+
+. /env/expansions/imx6qdl-phytec-check-bus-nodepath
 
 . /env/expansions/imx6qdl-mira-peb-eval-01
 #. /env/expansions/imx6qdl-mira-enable-lvds
@@ -193,6 +208,8 @@ python do_env_append_phyboard-mira-imx6() {
 python do_env_append_phyboard-nunki-imx6() {
     env_add(d, "config-expansions",
 """#!/bin/sh
+
+. /env/expansions/imx6qdl-phytec-check-bus-nodepath
 
 #. /env/expansions/imx6qdl-nunki-enable-lvds
 
