@@ -63,11 +63,11 @@ python do_env_append_mx6() {
 
     env_add(d, "expansions/imx6qdl-mira-enable-lvds",
 """of_fixup_status /ldb/lvds-channel@0
-of_fixup_status /soc/aips-bus@2100000/i2c@21a0000/touchctrl@44
+of_fixup_status /soc/bus@2100000/i2c@21a0000/touchctrl@44
 """)
     env_add(d, "expansions/imx6qdl-nunki-enable-lvds",
 """of_fixup_status /ldb/lvds-channel@0
-of_fixup_status /soc/aips-bus@2100000/i2c@21a0000/touchctrl@44
+of_fixup_status /soc/bus@2100000/i2c@21a0000/touchctrl@44
 """)
     env_add(d, "expansions/imx6qdl-mira-peb-eval-01",
 """of_fixup_status /gpio-keys
@@ -77,23 +77,23 @@ of_fixup_status /user-leds
 """#!/bin/sh
 of_fixup_status /panel-lcd
 of_fixup_status /ldb/lvds-channel@0
-of_fixup_status /soc/aips-bus@2100000/i2c@21a4000/polytouch@38
+of_fixup_status /soc/bus@2100000/i2c@21a4000/polytouch@38
 """)
     env_add(d, "expansions/imx6qdl-phytec-lcd-res",
 """#!/bin/sh
 of_fixup_status /panel-lcd
 of_fixup_status /ldb/lvds-channel@0
-of_fixup_status /soc/aips-bus@2100000/i2c@21a4000/touchctrl@41
+of_fixup_status /soc/bus@2100000/i2c@21a4000/touchctrl@41
 """)
     env_add(d, "expansions/imx6qdl-phytec-lcd-018-peb-av-02",
 """of_fixup_status /panel-lcd
 of_fixup_status /display@di0
-of_fixup_status /soc/aips-bus@2100000/i2c@21a0000/polytouch@38
+of_fixup_status /soc/bus@2100000/i2c@21a0000/polytouch@38
 """)
     env_add(d, "expansions/imx6qdl-phytec-lcd-018-peb-av-02-res",
 """of_fixup_status /panel-lcd
 of_fixup_status /display@di0
-of_fixup_status /soc/aips-bus@2100000/i2c@21a0000/touchctrl@44
+of_fixup_status /soc/bus@2100000/i2c@21a0000/touchctrl@44
 """)
     env_add(d, "expansions/dt-overlays",
 """#!/bin/sh
