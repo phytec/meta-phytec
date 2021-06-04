@@ -10,7 +10,7 @@ DTB_LOAD_ADDR="0x48000000"
 
 LINUX_IMAGE_PATH="${B}/${KERNEL_OUTPUT_DIR}/Image"
 LINUX_IMAGE_PATH_SIGNED="${B}/${KERNEL_OUTPUT_DIR}/Image-signed"
-DTB_PATH="${B}/${KERNEL_OUTPUT_DIR}/dts/${KERNEL_DEVICETREE}"
+DTBS_PATH="${B}/${KERNEL_OUTPUT_DIR}/dts/"
 
 DEPENDS_append_secureboot = " nxp-cst-native"
 
@@ -26,7 +26,8 @@ python do_sign() {
         input_image_path = d.getVar('LINUX_IMAGE_PATH', True)
         output_image_path = d.getVar('LINUX_IMAGE_PATH_SIGNED', True)
 
-        dtb_image_path = d.getVar('DTB_PATH', True)
+        first_dtb_name = d.getVar('KERNEL_DEVICETREE', True).split()[0]
+        dtb_image_path = os.path.join(d.getVar('DTBS_PATH', True), first_dtb_name)
 
         linux_addr = int(d.getVar('LINUX_LOAD_ADDR'), 16)
         dtb_addr = int(d.getVar('DTB_LOAD_ADDR'), 16)
