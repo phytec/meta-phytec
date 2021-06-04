@@ -95,11 +95,6 @@ of_fixup_status /soc/aips-bus@2100000/i2c@21a0000/polytouch@38
 of_fixup_status /display@di0
 of_fixup_status /soc/aips-bus@2100000/i2c@21a0000/touchctrl@44
 """)
-    env_add(d, "expansions/imx6qdl-phytec-peb-wlbt-01",
-"""#!/bin/sh
-of_fixup_status /soc/aips-bus@2100000/usdhc@2198000
-of_fixup_status /regulator-wlan-en
-""")
     env_add(d, "expansions/dt-overlays",
 """#!/bin/sh
 
@@ -161,7 +156,6 @@ python do_env_append_phyboard-mira-imx6() {
 
 . /env/expansions/imx6qdl-mira-peb-eval-01
 #. /env/expansions/imx6qdl-mira-enable-lvds
-#. /env/expansions/imx6qdl-phytec-peb-wlbt-01
 
 #use this expansion when a capacitive touchscreen is connected
 #. /env/expansions/imx6qdl-phytec-lcd-018-peb-av-02
@@ -235,7 +229,6 @@ python do_env_append_phyboard-mira-imx6-6() {
 
 . /env/expansions/imx6qdl-mira-peb-eval-01
 #. /env/expansions/imx6qdl-mira-enable-lvds
-. /env/expansions/imx6qdl-phytec-peb-wlbt-01
 
 #use this expansion when a capacitive touchscreen is connected
 #. /env/expansions/imx6qdl-phytec-lcd-018-peb-av-02
@@ -266,7 +259,6 @@ python do_env_append_phyboard-mira-imx6-10() {
 
 . /env/expansions/imx6qdl-mira-peb-eval-01
 #. /env/expansions/imx6qdl-mira-enable-lvds
-. /env/expansions/imx6qdl-phytec-peb-wlbt-01
 
 #use this expansion when a capacitive touchscreen is connected
 #. /env/expansions/imx6qdl-phytec-lcd-018-peb-av-02
@@ -297,7 +289,6 @@ python do_env_append_phyboard-mira-imx6-11() {
 
 . /env/expansions/imx6qdl-mira-peb-eval-01
 #. /env/expansions/imx6qdl-mira-enable-lvds
-#. /env/expansions/imx6qdl-phytec-peb-wlbt-01
 
 #use this expansion when a capacitive touchscreen is connected
 . /env/expansions/imx6qdl-phytec-lcd-018-peb-av-02
@@ -327,7 +318,6 @@ python do_env_append_phyboard-mira-imx6-13() {
 """#!/bin/sh
 
 #. /env/expansions/imx6qdl-mira-enable-lvds
-#. /env/expansions/imx6qdl-phytec-peb-wlbt-01
 
 #use this expansion when a capacitive touchscreen is connected
 . /env/expansions/imx6qdl-phytec-lcd-018-peb-av-02
