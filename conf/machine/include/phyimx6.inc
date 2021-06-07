@@ -36,6 +36,7 @@ MACHINE_FEATURES = "apm usbgadget usbhost vfat"
 
 #WIC
 IMAGE_CLASSES += "wic-helper"
+EXTERNAL_KERNEL_DEVICETREE ??= ""
 IMAGE_BOOT_FILES = "zImage oftree ${KERNEL_DEVICETREE} ${EXTERNAL_KERNEL_DEVICETREE}"
 IMAGE_BOOT_FILES_secureboot = "fitImage.fitimg"
 BAREBOX_BINARY = "barebox.bin"
