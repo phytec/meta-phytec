@@ -1,0 +1,24 @@
+From c4b4358ff9756a1fa10f12748d875b82ebe5b907 Mon Sep 17 00:00:00 2001
+From: Christophe Parant <c.parant@phytec.fr>
+Date: Thu, 3 Jun 2021 08:58:55 +0200
+Subject: [PATCH 2/2] ARM stm32mp1 phy2 DEVICETREE
+
+---
+ arch/arm/boot/dts/phycore-stm32mp15-som.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm/boot/dts/phycore-stm32mp15-som.dtsi b/arch/arm/boot/dts/phycore-stm32mp15-som.dtsi
+index 104f51e4aea2..9abf9b809d0d 100644
+--- a/arch/arm/boot/dts/phycore-stm32mp15-som.dtsi
++++ b/arch/arm/boot/dts/phycore-stm32mp15-som.dtsi
+@@ -273,6 +273,7 @@
+         i2c4_rtc: rtc@52 {
+                 compatible = "microcrystal,rv3028";
+                 reg = <0x52>;
++                enable-level-switching-mode;
+                 status = "disabled";
+         };
+ };
+-- 
+2.17.1
+
