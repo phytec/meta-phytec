@@ -1,0 +1,87 @@
+From 0e98f65d9f5f409352ab0660a99c08f825b91240 Mon Sep 17 00:00:00 2001
+From: Fabian Godehardt <fg@emlix.com>
+Date: Thu, 3 Jun 2021 08:58:54 +0200
+Subject: [PATCH 1/2] ARM stm32mp1 phy2 RTC
+
+---
+ drivers/rtc/rtc-rv3028.c | 43 +++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 40 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/rtc/rtc-rv3028.c b/drivers/rtc/rtc-rv3028.c
+index bbdfebd70644..6873edce9a3e 100644
+--- a/drivers/rtc/rtc-rv3028.c
++++ b/drivers/rtc/rtc-rv3028.c
+@@ -73,6 +73,11 @@
+ 
+ #define RV3028_BACKUP_TCE		BIT(5)
+ #define RV3028_BACKUP_TCR_MASK		GENMASK(1,0)
++#define RV3028_BACKUP_BSM_DISABLE_DFLT	0x0
++#define RV3028_BACKUP_BSM_DISABLE	BIT(3)
++#define RV3028_BACKUP_BSM_DSM_ENABLE	BIT(2)
++#define RV3028_BACKUP_BSM_LSM_ENABLE	(BIT(2) | BIT(3))
++#define RV3028_BACKUP_BSM_MASK		GENMASK(3, 2)
+ 
+ #define OFFSET_STEP_PPT			953674
+ 
+@@ -598,7 +603,8 @@ static const struct regmap_config regmap_config = {
+ static int rv3028_probe(struct i2c_client *client)
+ {
+ 	struct rv3028_data *rv3028;
+-	int ret, status;
++	int ret, status, delay = 0;
++	unsigned int mode, mode_old;
+ 	u32 ohms;
+ 	struct nvmem_config nvmem_cfg = {
+ 		.name = "rv3028_nvram",
+@@ -692,6 +698,32 @@ static int rv3028_probe(struct i2c_client *client)
+ 		}
+ 	}
+ 
++	/* setup switching mode - write to EEPROM only if changed */
++	ret = regmap_read(rv3028->regmap, RV3028_BACKUP, &mode_old);
++	if (ret)
++		return ret;
++	mode_old &= RV3028_BACKUP_BSM_MASK;
++
++	if (device_property_present(&client->dev,
++				    "enable-direct-switching-mode")) {
++		mode = RV3028_BACKUP_BSM_DSM_ENABLE;
++		delay = 2;
++	} else if (device_property_present(&client->dev,
++					   "enable-level-switching-mode")) {
++		mode = RV3028_BACKUP_BSM_LSM_ENABLE;
++		delay = 16;
++	} else
++		mode = RV3028_BACKUP_BSM_DISABLE_DFLT;
++
++	if (mode != mode_old) {
++		ret = regmap_update_bits(rv3028->regmap, RV3028_BACKUP,
++					 RV3028_BACKUP_BSM_MASK, mode);
++		if (ret)
++			return ret;
++		if (delay)
++			mdelay(delay); /* wait for switchover */
++	}
++
+ 	ret = rtc_add_group(rv3028->rtc, &rv3028_attr_group);
+ 	if (ret)
+ 		return ret;
+@@ -705,8 +737,13 @@ static int rv3028_probe(struct i2c_client *client)
+ 
+ 	nvmem_cfg.priv = rv3028->regmap;
+ 	rtc_nvmem_register(rv3028->rtc, &nvmem_cfg);
+-	eeprom_cfg.priv = rv3028->regmap;
+-	rtc_nvmem_register(rv3028->rtc, &eeprom_cfg);
++
++	/* EEPROM access is valid only if switching mode is disabled */
++	if (mode == RV3028_BACKUP_BSM_DISABLE_DFLT
++	    || mode == RV3028_BACKUP_BSM_DISABLE) {
++		eeprom_cfg.priv = rv3028->regmap;
++		rtc_nvmem_register(rv3028->rtc, &eeprom_cfg);
++	}
+ 
+ 	rv3028->rtc->max_user_freq = 1;
+ 
+-- 
+2.17.1
+
