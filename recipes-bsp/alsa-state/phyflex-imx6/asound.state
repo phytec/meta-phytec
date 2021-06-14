@@ -577,8 +577,8 @@ state.OnboardTLV320AI {
 	control.41 {
 		iface MIXER
 		name 'PGA Capture Volume'
-		value.0 32
-		value.1 32
+		value.0 80
+		value.1 80
 		comment {
 			access 'read write'
 			type INTEGER
@@ -586,8 +586,8 @@ state.OnboardTLV320AI {
 			range '0 - 119'
 			dbmin 0
 			dbmax 5950
-			dbvalue.0 1600
-			dbvalue.1 1600
+			dbvalue.0 4000
+			dbvalue.1 4000
 		}
 	}
 	control.42 {
@@ -749,7 +749,7 @@ state.OnboardTLV320AI {
 	control.57 {
 		iface MIXER
 		name 'Right HP Mixer PGAL Bypass Switch'
-		value true
+		value false
 		comment {
 			access 'read write'
 			type BOOLEAN
@@ -839,7 +839,7 @@ state.OnboardTLV320AI {
 	control.66 {
 		iface MIXER
 		name 'Left HP Mixer PGAR Bypass Switch'
-		value true
+		value false
 		comment {
 			access 'read write'
 			type BOOLEAN
@@ -869,7 +869,7 @@ state.OnboardTLV320AI {
 	control.69 {
 		iface MIXER
 		name 'Right Line Mixer PGAL Bypass Switch'
-		value true
+		value false
 		comment {
 			access 'read write'
 			type BOOLEAN
@@ -959,7 +959,7 @@ state.OnboardTLV320AI {
 	control.78 {
 		iface MIXER
 		name 'Left Line Mixer PGAR Bypass Switch'
-		value true
+		value false
 		comment {
 			access 'read write'
 			type BOOLEAN
@@ -1055,7 +1055,7 @@ state.OnboardTLV320AI {
 	control.87 {
 		iface MIXER
 		name 'Right PGA Mixer Mic3R Switch'
-		value false
+		value true
 		comment {
 			access 'read write'
 			type BOOLEAN
@@ -1131,7 +1131,7 @@ state.OnboardTLV320AI {
 	control.94 {
 		iface MIXER
 		name 'Left PGA Mixer Mic3L Switch'
-		value false
+		value true
 		comment {
 			access 'read write'
 			type BOOLEAN
@@ -1151,7 +1151,7 @@ state.OnboardTLV320AI {
 	control.96 {
 		iface MIXER
 		name 'Right HPCOM Mux'
-		value 'differential of HPROUT'
+		value 'constant VCM'
 		comment {
 			access 'read write'
 			type ENUMERATED
@@ -1179,7 +1179,7 @@ state.OnboardTLV320AI {
 	control.98 {
 		iface MIXER
 		name 'Left HPCOM Mux'
-		value 'differential of HPLOUT'
+		value 'constant VCM'
 		comment {
 			access 'read write'
 			type ENUMERATED
