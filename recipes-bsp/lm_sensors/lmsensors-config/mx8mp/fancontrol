@@ -1,12 +1,10 @@
 # fancontrol configuration file for phyBOARD-Pollux-i.MX8MP
 INTERVAL=10
-DEVPATH=hwmon6=devices/platform/pwm-fan hwmon0=devices/virtual/thermal/thermal_zone0
-DEVNAME=hwmon6=pwmfan hwmon0=cpu_thermal
-FCTEMPS=hwmon6/pwm1=hwmon0/temp1_input
-MINTEMP=hwmon6/pwm1=60
-MAXTEMP=hwmon6/pwm1=70
-MINSTART=hwmon6/pwm1=90
-MINSTOP=hwmon6/pwm1=77
-MINPWM=hwmon6/pwm1=1
-MAXPWM=hwmon6/pwm1=255
-AVERAGE=hwmon6/pwm1=2
+FCTEMPS=/sys/devices/platform/pwm-fan/hwmon/[[:print:]]*/pwm1=/sys/devices/virtual/thermal/thermal_zone0/temp
+MINTEMP=/sys/devices/platform/pwm-fan/hwmon/[[:print:]]*/pwm1=60
+MAXTEMP=/sys/devices/platform/pwm-fan/hwmon/[[:print:]]*/pwm1=70
+MINSTART=/sys/devices/platform/pwm-fan/hwmon/[[:print:]]*/pwm1=90
+MINSTOP=/sys/devices/platform/pwm-fan/hwmon/[[:print:]]*/pwm1=77
+MINPWM=/sys/devices/platform/pwm-fan/hwmon/[[:print:]]*/pwm1=1
+MAXPWM=/sys/devices/platform/pwm-fan/hwmon/[[:print:]]*/pwm1=255
+AVERAGE=/sys/devices/platform/pwm-fan/hwmon/[[:print:]]*/pwm1=2
