@@ -1,0 +1,10 @@
+# fancontrol configuration file for phyBOARD-Polaris-i.MX8MQ
+INTERVAL=10
+FCTEMPS=/sys/devices/platform/gpio_fan/hwmon/[[:print:]]*/pwm1=/sys/devices/virtual/thermal/thermal_zone0/temp
+FCFANS=/sys/devices/platform/gpio_fan/hwmon/[[:print:]]*/pwm1=/sys/devices/platform/gpio_fan/hwmon/[[:print:]]*/fan1_input
+MINTEMP=/sys/devices/platform/gpio_fan/hwmon/[[:print:]]*/pwm1=60
+MAXTEMP=/sys/devices/platform/gpio_fan/hwmon/[[:print:]]*/pwm1=70
+MINSTART=/sys/devices/platform/gpio_fan/hwmon/[[:print:]]*/pwm1=1
+MINSTOP=/sys/devices/platform/gpio_fan/hwmon/[[:print:]]*/pwm1=1
+MINPWM=/sys/devices/platform/gpio_fan/hwmon/[[:print:]]*/pwm1=0
+MAXPWM=/sys/devices/platform/gpio_fan/hwmon/[[:print:]]*/pwm1=255
