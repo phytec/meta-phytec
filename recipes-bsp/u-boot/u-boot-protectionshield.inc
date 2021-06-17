@@ -31,6 +31,7 @@ patch_enable_password() {
     kconfig_set BOOTDELAY ${PROTECTION_SHIELD_BOOTLOADER_TIMEOUT}
     kconfig_set AUTOBOOT_KEYED y
     kconfig_set AUTOBOOT_PROMPT '"Enter password within %d seconds to stop autoboot and access console\\n"'
+    kconfig_set CMD_HASH y
     kconfig_set AUTOBOOT_ENCRYPTION y
     kconfig_set AUTOBOOT_STOP_STR_SHA256 "\"${PASSWORD_HASH}\""
 }
