@@ -30,3 +30,17 @@ PREFERRED_PROVIDER_virtual/libgl ?= "mesa"
 MACHINE_EXTRA_RRECOMMENDS_append_mx6q = " firmware-imx-vpu-mx6q"
 MACHINE_EXTRA_RRECOMMENDS_append_mx6dl = " firmware-imx-vpu-mx6dl"
 PREFERRED_VERSION_firmware-imx = "5.4"
+
+# Install devicetree overlays
+DT_OVERLAYS_INSTALL = " \
+    imx6-cam-0-lvds.dtbo \
+    imx6-vm009-0.dtbo \
+    imx6-vm010-bw-0.dtbo \
+    imx6-vm010-col-0.dtbo \
+    imx6-vm011-bw-0.dtbo \
+    imx6-vm011-col-0.dtbo \
+    imx6-vm012-bw-0.dtbo \
+    imx6-vm012-col-0.dtbo \
+    imx6-vm016-0.dtbo \
+    imx6-vm050-0.dtbo \
+"
