@@ -13,7 +13,7 @@ def env_add_boot_scripts(d, kernelname, mmcid, emmcid):
     [ -e /env/config-expansions ] && /env/config-expansions
 
     if [ -e /env/expansions/dt-overlays ] ; then
-        global overlays.path="/mnt/mmc{mmcid}.{rootid}/overlays/"
+        global overlays.path="/mnt/mmc{mmcid}.{rootid}/overlays"
         /env/expansions/dt-overlays
     fi
 
@@ -31,7 +31,7 @@ def env_add_boot_scripts(d, kernelname, mmcid, emmcid):
     if [ -e /env/expansions/dt-overlays ] ; then
         mkdir /mnt/rootfs
         mount -t ubifs /dev/nand0.root.ubi.root{partid} /mnt/rootfs
-        global overlays.path="/mnt/rootfs/overlays/"
+        global overlays.path="/mnt/rootfs/overlays"
         /env/expansions/dt-overlays
     fi
 
@@ -54,7 +54,7 @@ def env_add_boot_scripts(d, kernelname, mmcid, emmcid):
     fi
 
     if [ -e /env/expansions/dt-overlays ] ; then
-        global overlays.path="/mnt/nfs/overlays/"
+        global overlays.path="/mnt/nfs/overlays"
         /env/expansions/dt-overlays
     fi
 
