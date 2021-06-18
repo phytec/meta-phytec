@@ -118,8 +118,8 @@ of_fixup_status -d /user-leds
 
 path="$global.overlays.path"
 
-if [ -e ${path}select ] ; then
-        readf ${path}select global.overlays.select
+if [ -e ${path}/select ] ; then
+        readf ${path}/select global.overlays.select
 fi
 
 for o in $global.overlays.select ; do
