@@ -9,6 +9,10 @@ GIT_URL = "git://git.phytec.de/${BPN}"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 SRC_URI_append = " \
   file://0001-perf-Make-perf-able-to-build-with-latest-libbfd.patch \
+  file://0001-perf-tests-bp_account-Make-global-variable-static.patch \
+  file://0001-perf-cs-etm-Move-definition-of-traceid_list-global-v.patch \
+  file://0001-perf-bench-Share-some-global-variables-to-fix-build-.patch \
+  file://0001-libtraceevent-Fix-build-with-binutils-2.35.patch \
 "
 
 PR = "${INC_PR}.0"
