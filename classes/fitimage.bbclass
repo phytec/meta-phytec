@@ -104,7 +104,7 @@ def fitimage_emit_section_kernel(d,fd,imgpath,imgsource,imgcomp):
         kernel_entryline = "entry = <%s>;" % d.expand("${FITIMAGE_ENTRYPOINT}")
     arch = d.getVar("TARGET_ARCH", True)
     arch = "arm64" if arch == "aarch64" else arch
-    fd.write('\t\t'     + 'kernel@%s {\n' % kernelcount)
+    fd.write('\t\t'     + 'kernel-%s {\n' % kernelcount)
     fd.write('\t\t\t'   +   'description = "Linux kernel";\n')
     fd.write('\t\t\t'   +   'data = /incbin/("%s/%s");\n' % (imgpath,imgsource))
     fd.write('\t\t\t'   +   'type = "kernel";\n')
@@ -113,7 +113,7 @@ def fitimage_emit_section_kernel(d,fd,imgpath,imgsource,imgcomp):
     fd.write('\t\t\t'   +   'compression = "%s";\n' % imgcomp)
     fd.write('\t\t\t'   +   '%s\n' % kernel_loadline)
     fd.write('\t\t\t'   +   '%s\n' % kernel_entryline)
-    fd.write('\t\t\t'   +   'hash@1 {\n')
+    fd.write('\t\t\t'   +   'hash-1 {\n')
     fd.write('\t\t\t\t' +     'algo = "%s";\n' % kernel_csum)
     fd.write('\t\t\t'   +   '};\n')
     fd.write('\t\t'     + '};\n')
@@ -130,14 +130,14 @@ def fitimage_emit_section_dtb(d,fd,dtb_file,dtb_path):
     if len(d.expand("${FITIMAGE_DTB_LOADADDRESS}")) > 0:
         dtb_loadline = "load = <%s>;" % d.expand("${FITIMAGE_DTB_LOADADDRESS}")
 
-    fd.write('\t\t'     + 'fdt@%s {\n' % dtb_file)
+    fd.write('\t\t'     + 'fdt-%s {\n' % dtb_file)
     fd.write('\t\t\t'   +   'description = "Flattened Device Tree blob";\n')
     fd.write('\t\t\t'   +   'data = /incbin/("%s/%s");\n' % (dtb_path, dtb_file))
     fd.write('\t\t\t'   +   'type = "flat_dt";\n')
     fd.write('\t\t\t'   +   'arch = "%s";\n' % arch)
     fd.write('\t\t\t'   +   'compression = "none";\n')
     fd.write('\t\t\t'   +   '%s\n' % dtb_loadline)
-    fd.write('\t\t\t'   +   'hash@1 {\n')
+    fd.write('\t\t\t'   +   'hash-1 {\n')
     fd.write('\t\t\t\t' +     'algo = "%s";\n' % dtb_csum)
     fd.write('\t\t\t'   +   '};\n')
     fd.write('\t\t'     + '};\n')
@@ -172,7 +172,7 @@ def fitimage_emit_section_ramdisk(d,fd,img_file,img_path):
     elif ".xz" in img_file:
         ramdisk_ctype = "xz"
 
-    fd.write('\t\t'     + 'ramdisk@%s {\n' % ramdisk_count)
+    fd.write('\t\t'     + 'ramdisk-%s {\n' % ramdisk_count)
     fd.write('\t\t\t'   +   'description = "%s";\n' % img_file)
     fd.write('\t\t\t'   +   'data = /incbin/("%s/%s");\n' % (img_path, img_file))
     fd.write('\t\t\t'   +   'type = "ramdisk";\n')
@@ -181,7 +181,7 @@ def fitimage_emit_section_ramdisk(d,fd,img_file,img_path):
     fd.write('\t\t\t'   +   'compression = "%s";\n' % ramdisk_ctype )
     fd.write('\t\t\t'   +   '%s\n' % ramdisk_loadline)
     fd.write('\t\t\t'   +   '%s\n' % ramdisk_entryline)
-    fd.write('\t\t\t'   +   'hash@1 {\n')
+    fd.write('\t\t\t'   +   'hash-1 {\n')
     fd.write('\t\t\t\t' +     'algo = "%s";\n' % ramdisk_csum)
     fd.write('\t\t\t'   +   '};\n')
     fd.write('\t\t'     + '};\n')
@@ -197,24 +197,24 @@ def fitimage_emit_section_config(d,fd,dtb,kernelcount,ramdiskcount,setupcount,i)
 
 
     conf_desc="Linux kernel"
-    kernel_line="kernel = \"kernel@1\";"
+    kernel_line="kernel = \"kernel-1\";"
     fdt_line=""
     ramdisk_line=""
     setup_line=""
     default_line=""
     if len(dtb) > 0:
          conf_desc = conf_desc + ", FDT blob"
-         fdt_line="fdt = \"fdt@%s\";" % dtb
+         fdt_line="fdt = \"fdt-%s\";" % dtb
     if len(ramdiskcount) > 0:
          conf_desc = conf_desc + ", ramdisk"
-         ramdisk_line="ramdisk = \"ramdisk@%s\";" % ramdiskcount
+         ramdisk_line="ramdisk = \"ramdisk-%s\";" % ramdiskcount
     if len(setupcount) > 0:
          conf_desc = conf_desc + ", setup"
     if i  == 1:
-          default_line="default = \"conf@%s\";" % dtb
+          default_line="default = \"conf-%s\";" % dtb
 
     fd.write('\t\t'   + '%s\n' % default_line)
-    fd.write('\t\t'   + 'conf@%s {\n' % dtb)
+    fd.write('\t\t'   + 'conf-%s {\n' % dtb)
     fd.write('\t\t\t' +   'description = "%d %s";\n' % (i,conf_desc))
     fd.write('\t\t\t' +   '%s\n' % kernel_line)
     fd.write('\t\t\t' +   '%s\n' % fdt_line)
