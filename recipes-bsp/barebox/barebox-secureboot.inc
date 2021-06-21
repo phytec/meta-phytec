@@ -4,8 +4,13 @@ SRC_URI_append_secureboot = " \
         file://dynamic-config.cfg \
 "
 
-DEPENDS_append_secureboot = " nxp-cst-native dtc-native u-boot-mkimage-native"
-do_patch_secureboot[depends] += "dtc-native:do_populate_sysroot u-boot-mkimage-native:do_populate_sysroot"
+DEPENDS_append_secureboot = " nxp-cst-native dtc-native u-boot-mkimage-native bison-native"
+do_patch_secureboot[depends] += "\
+    nxp-cst-native:do_populate_sysroot \
+    dtc-native:do_populate_sysroot \
+    bison-native:do_populate_sysroot \
+    u-boot-mkimage-native:do_populate_sysroot \
+"
 
 BAREBOX_BIN_SIGNED ?= "images/${BAREBOX_BASE_BIN}-s.img"
 BAREBOX_BIN_SIGNEDUSB ?= "images/${BAREBOX_BASE_BIN}-us.img"
@@ -168,7 +173,15 @@ python do_create_dynamic_dtree_append_secureboot (){
         write_command("dtc -O dtb " +  pathDD + "/signature_node.dts",  pathDD + "/signature_node.dtb")
         path, file = os.path.split(d.getVar("FITIMAGE_SIGN_KEY_PATH", True))
         write_command("mkimage -f " +  pathDD + "/signature_creation.its -k " + path + " -K " + pathDD + "/signature_node.dtb -r " + pathDD + "/dummy.img", '')
-        write_command("dtc -I dtb " + pathDD + "/signature_node.dtb", d.getVar("FITIMAGE_PUBKEY_SIGNATURE_PATH", True))
+        write_command("dtc -I dtb " + pathDD + "/signature_node.dtb", pathDD + "/signature_node.tmp")
+        os.sync()
+        with open(pathDD + "/signature_node.tmp", 'r') as fin:
+            data = fin.readlines()
+        with open(d.getVar("FITIMAGE_PUBKEY_SIGNATURE_PATH", True), 'w') as fout:
+            for line in data :
+                if "dts-v1" not in line:
+                    fout.write(line)
+        os.sync()
 }
 addtask do_create_dynamic_dtree before do_configure after do_patch
 
