@@ -13,8 +13,8 @@ LIC_FILES_CHKSUM = "file://COPYING.MIT;md5=1117940313875d7598ccbb05f20129a7"
 
 SRC_URI = "https://github.com/phytec/phytec-eeprom-flashtool/archive/refs/tags/v${PV}.tar.gz"
 
-SRC_URI[md5sum] = "bec3b806fec99fe31dd4fd17f18972a5"
-SRC_URI[sha256sum] = "67ae7e2563dc9ad43e5731415310634e0a901670623570af83d03519fe6601a5"
+SRC_URI[md5sum] = "56cf456d67c7c13d0018caf6650c230a"
+SRC_URI[sha256sum] = "71e352484b6fa307e553fc8bb07cfc16dcec3833cc8746dae9e7caa71176a410"
 
 do_install () {
         install -d ${D}${bindir}/${BPN}
@@ -26,5 +26,4 @@ do_install () {
 }
 
 RDEPENDS_${PN} = "python3-pyyaml"
-RDEPENDS_${PN} += "python3-smbus2"
 RDEPENDS_${PN} += "python3-crc8"
