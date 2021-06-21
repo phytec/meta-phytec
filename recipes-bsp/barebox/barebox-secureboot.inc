@@ -47,7 +47,7 @@ def write_signature_creation(d):
      manifest.write('\t\t\t'    +     'type = "flat_dt";\n')
      manifest.write('\t\t\t'    +     'arch = "arm";\n')
      manifest.write('\t\t\t'    +      'compression = "none";\n')
-     manifest.write('\t\t\t'    +      'hash@1 {\n')
+     manifest.write('\t\t\t'    +      'hash-1 {\n')
      manifest.write('\t\t\t\t'  +        'algo = "%s";\n' % d.getVar("FITIMAGE_HASH", True))
      manifest.write('\t\t\t'    +      '};\n')
      manifest.write('\t\t'      +   '};\n')
