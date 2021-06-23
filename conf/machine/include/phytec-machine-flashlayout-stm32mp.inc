@@ -78,8 +78,9 @@ ST_EXAMPLE_IMAGE ??= "0"
 
 #FIXME need to manage overall device size to abort flashlayout creation in case of oversizing the storage devices
 
-# Remove NAND flashlayout when we are using st-example-image-* as rootfs too big for a NAND device size of 1 GBytes
-FLASHLAYOUT_CONFIG_LABELS_remove = "${@bb.utils.contains_any('ST_EXAMPLE_IMAGE', '1', [ 'nand-2-256', 'nand-2-64' ], '', d)}"
+# Remove NAND flashlayout when we are using st-example-image-* as rootfs too big for a NAND device size inferior or equal to 1 GBytes
+FLASHLAYOUT_CONFIG_LABELS_remove = "${@bb.utils.contains('ST_EXAMPLE_IMAGE', '1', 'nand-2-256', '', d)}"
+FLASHLAYOUT_CONFIG_LABELS_remove = "${@bb.utils.contains('ST_EXAMPLE_IMAGE', '1', 'nand-2-64', '', d)}"
 
 # -----------------------------------------------------------------------------
 # Define label types for each config
@@ -214,8 +215,6 @@ FLASHLAYOUT_PARTITION_ID_${STM32MP_FSBL1_NAME}-boot = "0x01"
 FLASHLAYOUT_PARTITION_ID_${STM32MP_SSBL1_NAME}-boot = "0x03"
 
 FLASHLAYOUT_PARTITION_TYPE                  = "Binary"
-FLASHLAYOUT_PARTITION_TYPE_nand-2-256_${STM32MP_FSBL1_NAME} = "Binary(2)"
-FLASHLAYOUT_PARTITION_TYPE_nand-2-64_${STM32MP_FSBL1_NAME} = "Binary(2)"
 FLASHLAYOUT_PARTITION_TYPE_ubifs            = "System"
 
 FLASHLAYOUT_PARTITION_COPY ?= "1"
