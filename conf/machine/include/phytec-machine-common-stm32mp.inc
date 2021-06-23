@@ -70,6 +70,114 @@ WIFI_LIST += "linux-firmware-bcm43430"
 BLUETOOTH_LIST += "linux-firmware-bluetooth-bcm4343"
 
 # =========================================================================
+# Bootloader raw partition configuration : data, label, size (Kbytes)
+# =========================================================================
+# -----------------------------------------------------------------------------
+# NOTE: There are few restrictions to follow:
+#       -   The partition for the first boot loader should follow the naming
+#           rule: fsbl*
+#       -   The partition for the secondary boot loader should follow the naming
+#           rule: ssbl or fip
+# -----------------------------------------------------------------------------
+STM32MP_FSBL1_DATA ?= "${@bb.utils.contains('MACHINE_FEATURES', 'fip', 'arm-trusted-firmware/tf-a-<TYPE>-<DEVICE>.stm32', 'arm-trusted-firmware/tf-a-<TYPE>-<BOOTSCHEME>.stm32', d)}"
+STM32MP_FSBL1_NAME ?= "fsbl1"
+STM32MP_FSBL1_SIZE ?= "256"
+STM32MP_FSBL2_DATA ?= "${STM32MP_FSBL1_DATA}"
+STM32MP_FSBL2_NAME ?= "fsbl2"
+STM32MP_FSBL2_SIZE ?= "${STM32MP_FSBL1_SIZE}"
+STM32MP_SSBL1_DATA ?= "${@bb.utils.contains('MACHINE_FEATURES', 'fip', 'fip/fip-<TYPE>-<BOOTSCHEME>${FIP_SIGN_SUFFIX}.bin', 'u-boot/u-boot-<TYPE>-trusted.stm32', d)}"
+STM32MP_SSBL1_NAME ?= "${@bb.utils.contains('MACHINE_FEATURES', 'fip', 'fip', 'ssbl', d)}"
+STM32MP_SSBL1_SIZE ?= "${@bb.utils.contains('MACHINE_FEATURES', 'fip', '4096', '2048', d)}"
+STM32MP_SSBL2_DATA ?= "${STM32MP_SSBL1_DATA}"
+STM32MP_SSBL2_NAME ?= "${@bb.utils.contains('MACHINE_FEATURES', 'fip', 'fip2', 'ssbl2', d)}"
+STM32MP_SSBL2_SIZE ?= "${STM32MP_SSBL1_SIZE}"
+STM32MP_UENV_DATA ?= ""
+STM32MP_UENV_NAME ?= "env"
+STM32MP_UENV_SIZE ?= "512"
+STM32MP_TEEH_DATA ?= "optee/tee-header_v2-<TYPE>.stm32"
+STM32MP_TEEH_NAME ?= "teeh"
+STM32MP_TEEH_SIZE ?= "256"
+STM32MP_TEED_DATA ?= "optee/tee-pageable_v2-<TYPE>.stm32"
+STM32MP_TEED_NAME ?= "teed"
+STM32MP_TEED_SIZE ?= "512"
+STM32MP_TEEX_DATA ?= "optee/tee-pager_v2-<TYPE>.stm32"
+STM32MP_TEEX_NAME ?= "teex"
+STM32MP_TEEX_SIZE ?= "256"
+
+# Specific override for NAND device type regarding partition sizes to follow
+# the hard coded configuration on U-Boot source code
+STM32MP_FSBL1_SIZE_UBOOT ?= "1024"
+STM32MP_TEEH_SIZE_UBOOT ?= "512"
+STM32MP_TEEX_SIZE_UBOOT ?= "512"
+
+# Bootloader Partitions configuration
+PARTITIONS_BOOTLOADER_CONFIG += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'emmc', 'emmc', '', d)}"
+PARTITIONS_BOOTLOADER_CONFIG += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nand-2-256', 'nand-2-256', '', d)}"
+PARTITIONS_BOOTLOADER_CONFIG += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nand-2-64', 'nand-2-64', '', d)}"
+PARTITIONS_BOOTLOADER_CONFIG += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nor-emmc', 'nor-emmc', '', d)}"
+PARTITIONS_BOOTLOADER_CONFIG += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'sdcard', 'sdcard', '', d)}"
+
+# <binary_name>,<partlabel>,<size>,<type>,<copy>
+PARTITIONS_BOOTLOADER_CONFIG[emmc] ?= "\
+    ${@ '${STM32MP_FSBL1_DATA},${STM32MP_FSBL1_NAME},${STM32MP_FSBL1_SIZE},Binary,1' if '${STM32MP_FSBL1_NAME}' else ''} \
+    ${@ '${STM32MP_FSBL2_DATA},${STM32MP_FSBL2_NAME},${STM32MP_FSBL2_SIZE},Binary,1' if '${STM32MP_FSBL2_NAME}' else ''} \
+    ${@ '${STM32MP_SSBL1_DATA},${STM32MP_SSBL1_NAME},${STM32MP_SSBL1_SIZE},Binary,1' if '${STM32MP_SSBL1_NAME}' else ''} \
+    "
+PARTITIONS_BOOTLOADER_CONFIG[nand-2-256] ?= "\
+    ${@ '${STM32MP_FSBL1_DATA},${STM32MP_FSBL1_NAME},${STM32MP_FSBL1_SIZE_UBOOT},Binary,2' if '${STM32MP_FSBL1_NAME}' else ''} \
+    ${@ '${STM32MP_SSBL1_DATA},${STM32MP_SSBL1_NAME},${STM32MP_SSBL1_SIZE},Binary,1' if '${STM32MP_SSBL1_NAME}' else ''} \
+    ${@ '${STM32MP_SSBL2_DATA},${STM32MP_SSBL2_NAME},${STM32MP_SSBL2_SIZE},Binary,1' if '${STM32MP_SSBL2_NAME}' else ''} \
+    "
+PARTITIONS_BOOTLOADER_CONFIG[nand-2-64] ?= "\
+    ${@ '${STM32MP_FSBL1_DATA},${STM32MP_FSBL1_NAME},${STM32MP_FSBL1_SIZE_UBOOT},Binary,2' if '${STM32MP_FSBL1_NAME}' else ''} \
+    ${@ '${STM32MP_SSBL1_DATA},${STM32MP_SSBL1_NAME},${STM32MP_SSBL1_SIZE},Binary,1' if '${STM32MP_SSBL1_NAME}' else ''} \
+    ${@ '${STM32MP_SSBL2_DATA},${STM32MP_SSBL2_NAME},${STM32MP_SSBL2_SIZE},Binary,1' if '${STM32MP_SSBL2_NAME}' else ''} \
+    "
+PARTITIONS_BOOTLOADER_CONFIG[nor-emmc] ?= "\
+    ${@ '${STM32MP_FSBL1_DATA},${STM32MP_FSBL1_NAME},${STM32MP_FSBL1_SIZE},Binary,1' if '${STM32MP_FSBL1_NAME}' else ''} \
+    ${@ '${STM32MP_FSBL2_DATA},${STM32MP_FSBL2_NAME},${STM32MP_FSBL2_SIZE},Binary,1' if '${STM32MP_FSBL2_NAME}' else ''} \
+    ${@ '${STM32MP_SSBL1_DATA},${STM32MP_SSBL1_NAME},${STM32MP_SSBL1_SIZE},Binary,1' if '${STM32MP_SSBL1_NAME}' else ''} \
+    ${@ '${STM32MP_UENV_DATA},${STM32MP_UENV_NAME},${STM32MP_UENV_SIZE},Binary,1' if '${STM32MP_UENV_NAME}' else ''} \
+    "
+PARTITIONS_BOOTLOADER_CONFIG[sdcard] ?= "\
+    ${@ '${STM32MP_FSBL1_DATA},${STM32MP_FSBL1_NAME},${STM32MP_FSBL1_SIZE},Binary,1' if '${STM32MP_FSBL1_NAME}' else ''} \
+    ${@ '${STM32MP_FSBL2_DATA},${STM32MP_FSBL2_NAME},${STM32MP_FSBL2_SIZE},Binary,1' if '${STM32MP_FSBL2_NAME}' else ''} \
+    ${@ '${STM32MP_SSBL1_DATA},${STM32MP_SSBL1_NAME},${STM32MP_SSBL1_SIZE},Binary,1' if '${STM32MP_SSBL1_NAME}' else ''} \
+    "
+# Optee Partitions configuration
+PARTITIONS_OPTEE_CONFIG += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'emmc', 'emmc', '', d)}"
+PARTITIONS_OPTEE_CONFIG += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nand-2-256', 'nand-2-256', '', d)}"
+PARTITIONS_OPTEE_CONFIG += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nand-2-64', 'nand-2-64', '', d)}"
+PARTITIONS_OPTEE_CONFIG += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nor-emmc', 'nor-emmc', '', d)}"
+PARTITIONS_OPTEE_CONFIG += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'sdcard', 'sdcard', '', d)}"
+
+# <binary_name>,<partlabel>,<size>,<type>,<copy>
+PARTITIONS_OPTEE_CONFIG[emmc] ?= "\
+    ${@ '${STM32MP_TEEH_DATA},${STM32MP_TEEH_NAME},${STM32MP_TEEH_SIZE},Binary,1' if '${STM32MP_TEEH_NAME}' else ''} \
+    ${@ '${STM32MP_TEED_DATA},${STM32MP_TEED_NAME},${STM32MP_TEED_SIZE},Binary,1' if '${STM32MP_TEED_NAME}' else ''} \
+    ${@ '${STM32MP_TEEX_DATA},${STM32MP_TEEX_NAME},${STM32MP_TEEX_SIZE},Binary,1' if '${STM32MP_TEEX_NAME}' else ''} \
+    "
+PARTITIONS_OPTEE_CONFIG[nand-2-256] ?= "\
+    ${@ '${STM32MP_TEEH_DATA},${STM32MP_TEEH_NAME},${STM32MP_TEEH_SIZE_UBOOT},Binary,1' if '${STM32MP_TEEH_NAME}' else ''} \
+    ${@ '${STM32MP_TEED_DATA},${STM32MP_TEED_NAME},${STM32MP_TEED_SIZE},Binary,1' if '${STM32MP_TEED_NAME}' else ''} \
+    ${@ '${STM32MP_TEEX_DATA},${STM32MP_TEEX_NAME},${STM32MP_TEEX_SIZE_UBOOT},Binary,1' if '${STM32MP_TEEX_NAME}' else ''} \
+    "
+PARTITIONS_OPTEE_CONFIG[nand-2-64] ?= "\
+    ${@ '${STM32MP_TEEH_DATA},${STM32MP_TEEH_NAME},${STM32MP_TEEH_SIZE_UBOOT},Binary,1' if '${STM32MP_TEEH_NAME}' else ''} \
+    ${@ '${STM32MP_TEED_DATA},${STM32MP_TEED_NAME},${STM32MP_TEED_SIZE},Binary,1' if '${STM32MP_TEED_NAME}' else ''} \
+    ${@ '${STM32MP_TEEX_DATA},${STM32MP_TEEX_NAME},${STM32MP_TEEX_SIZE_UBOOT},Binary,1' if '${STM32MP_TEEX_NAME}' else ''} \
+    "
+PARTITIONS_OPTEE_CONFIG[nor-emmc] ?= "\
+    ${@ '${STM32MP_TEEH_DATA},${STM32MP_TEEH_NAME},${STM32MP_TEEH_SIZE},Binary,1' if '${STM32MP_TEEH_NAME}' else ''} \
+    ${@ '${STM32MP_TEED_DATA},${STM32MP_TEED_NAME},${STM32MP_TEED_SIZE},Binary,1' if '${STM32MP_TEED_NAME}' else ''} \
+    ${@ '${STM32MP_TEEX_DATA},${STM32MP_TEEX_NAME},${STM32MP_TEEX_SIZE},Binary,1' if '${STM32MP_TEEX_NAME}' else ''} \
+    "
+PARTITIONS_OPTEE_CONFIG[sdcard] ?= "\
+    ${@ '${STM32MP_TEEH_DATA},${STM32MP_TEEH_NAME},${STM32MP_TEEH_SIZE},Binary,1' if '${STM32MP_TEEH_NAME}' else ''} \
+    ${@ '${STM32MP_TEED_DATA},${STM32MP_TEED_NAME},${STM32MP_TEED_SIZE},Binary,1' if '${STM32MP_TEED_NAME}' else ''} \
+    ${@ '${STM32MP_TEEX_DATA},${STM32MP_TEEX_NAME},${STM32MP_TEEX_SIZE},Binary,1' if '${STM32MP_TEEX_NAME}' else ''} \
+    "
+# =========================================================================
 # Image
 # =========================================================================
 # For sparse, align on 4096b
@@ -243,6 +351,11 @@ ST_TOOLS_FOR_SDK_append = " \
     nativesdk-svd-tools \
     "
 
+# Fip tool
+ST_TOOLS_FOR_SDK_append = " \
+    ${@bb.utils.contains('MACHINE_FEATURES', 'fip', 'nativesdk-${FIPTOOL_WRAPPER}', '', d)} \
+    "
+
 # Make sure to append mkimage to SDK for kernel uImage build
 ST_DEPENDENCIES_BUILD_FOR_SDK = " \
     ${@bb.utils.contains('KERNEL_IMAGETYPE', 'uImage', 'nativesdk-u-boot-mkimage', '', d)} \
@@ -345,29 +458,60 @@ MACHINE_EXTRA_RRECOMMENDS_append_stm32mp1common = " \
 # =========================================================================
 # trusted-firmware-a
 # =========================================================================
-# Add trusted-firmware-a serialboot to allow images programming
-EXTRA_IMAGEDEPENDS += "virtual/trusted-firmware-a-serialboot"
 # Add optionnaly trusted-firmware-a
 EXTRA_IMAGEDEPENDS += "${@bb.utils.contains_any('BOOTSCHEME_LABELS', 'optee trusted', 'virtual/trusted-firmware-a', '', d)}"
 
-# Define SECURE_PAYLOAD config to set for each TF_A_CONFIG
-TF_A_CONFIG_serialboot  = "AARCH32_SP=sp_min"
-TF_A_CONFIG_optee       = "AARCH32_SP=optee"
-TF_A_CONFIG_trusted     = "AARCH32_SP=sp_min"
+# Configure trusted-firmware-a build
+TF_A_CONFIG += "${@bb.utils.contains('BOOTSCHEME_LABELS', 'optee', 'optee', '', d)}"
+TF_A_CONFIG += "${@bb.utils.contains('BOOTSCHEME_LABELS', 'trusted', 'trusted', '', d)}"
+# Manage specific config settings
+TF_A_CONFIG_4LEGACY += "serialboot"
+TF_A_CONFIG_4FIP += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'emmc', 'emmc', '', d)}"
+TF_A_CONFIG_4FIP += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nand-2-256', 'nand', '', d)}"
+TF_A_CONFIG_4FIP += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nand-2-64', 'nand', '', d)}"
+TF_A_CONFIG_4FIP += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nor-emmc', 'nor', '', d)}"
+TF_A_CONFIG_4FIP += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'sdcard', 'sdcard', '', d)}"
+TF_A_CONFIG_4FIP += "uart"
+TF_A_CONFIG_4FIP += "usb"
+TF_A_CONFIG += "${@bb.utils.contains('MACHINE_FEATURES', 'fip', '${TF_A_CONFIG_4FIP}', '${TF_A_CONFIG_4LEGACY}', d)}"
 
-# Manage proper update for TF_A_CONFIG_* var
-tfaconfig_env[vardeps] += "${@bb.utils.contains('TF_A_CONFIG', 'serialboot', 'TF_A_CONFIG_serialboot', '', d)}"
-tfaconfig_env[vardeps] += "${@bb.utils.contains('TF_A_CONFIG', 'optee', 'TF_A_CONFIG_optee', '', d)}"
-tfaconfig_env[vardeps] += "${@bb.utils.contains('TF_A_CONFIG', 'trusted', 'TF_A_CONFIG_trusted', '', d)}"
+# Append SSP config to TF_A_CONFIG
+TF_A_SSP_ENABLE ?= "0"
+TF_A_CONFIG += "${@bb.utils.contains('TF_A_SSP_ENABLE', '1', 'uart-ssp usb-ssp', '', d)}"
 
-# List of TF-A device tree to use
-TF_A_DEVICETREE = "${STM32MP_DEVICETREE}"
+# Default configuration for signing trusted-firmware-a binary
+TF_A_SIGN_ENABLE ?= "0"
+
+# Configure the default MTD_START_OFFSET
+TF_A_MTD_START_OFFSET_NAND    ?= "0x00200000"
+TF_A_MTD_START_OFFSET_NOR     ?= "0x00080000"
 
 # =========================================================================
 # optee
 # =========================================================================
 # Map OPTEE configuration to device tree list
 OPTEE_CONF = "${STM32MP_DEVICETREE}"
+
+# =========================================================================
+# fip
+# =========================================================================
+# Configure fip build
+FIP_CONFIG += "${@bb.utils.contains('BOOTSCHEME_LABELS', 'optee', 'optee', '', d)}"
+FIP_CONFIG += "${@bb.utils.contains('BOOTSCHEME_LABELS', 'trusted', 'trusted', '', d)}"
+
+# Define config for each FIP_CONFIG
+FIP_CONFIG[optee]   ?= "optee"
+FIP_CONFIG[trusted] ?= "tfa"
+
+# List of device tree to use for fip binary creation
+FIP_DEVICETREE ?= "${STM32MP_DEVICETREE}"
+
+# Define fiptool wrapper name
+FIPTOOL_WRAPPER ?= "fiptool-stm32mp"
+
+# Manage specific config to sign FIP
+FIP_SIGN_ENABLE ?= "${@bb.utils.contains('TF_A_SIGN_ENABLE', '1', '1', '', d)}"
+FIP_SIGN_SUFFIX ?= "${@bb.utils.contains('FIP_SIGN_ENABLE', '1', '_Signed', '', d)}"
 
 # =========================================================================
 # Xserver
