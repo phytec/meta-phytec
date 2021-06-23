@@ -135,16 +135,12 @@ FLASHLAYOUT_PARTITION_LABELS_optee_emmc = "\
     "
 FLASHLAYOUT_PARTITION_LABELS_optee_nand-2-256 = "\
     ${FLASHLAYOUT_PROGRAMMER_SECTIONS} \
-    ${@' '.join(['%s' % l.split(',')[1] for l in d.getVarFlag('PARTITIONS_BOOTLOADER_CONFIG', 'nand-2-256').split()])} \
-    ${@bb.utils.contains('MACHINE_FEATURES', 'fip', '', ' '.join(['%s' % l.split(',')[1] for l in d.getVarFlag('PARTITIONS_OPTEE_CONFIG', 'nand-2-256').split()]), d)} \
+    ${@' '.join(['%s' % l.split(',')[1] for l in d.getVarFlag('PARTITIONS_BOOTLOADER_CONFIG', 'nand').split()])} \
+    ${@bb.utils.contains('MACHINE_FEATURES', 'fip', '', ' '.join(['%s' % l.split(',')[1] for l in d.getVarFlag('PARTITIONS_OPTEE_CONFIG', 'nand').split()]), d)} \
     ubifs \
     "
-FLASHLAYOUT_PARTITION_LABELS_optee_nand-2-64 = "\
-    ${FLASHLAYOUT_PROGRAMMER_SECTIONS} \
-    ${@' '.join(['%s' % l.split(',')[1] for l in d.getVarFlag('PARTITIONS_BOOTLOADER_CONFIG', 'nand-2-64').split()])} \
-    ${@bb.utils.contains('MACHINE_FEATURES', 'fip', '', ' '.join(['%s' % l.split(',')[1] for l in d.getVarFlag('PARTITIONS_OPTEE_CONFIG', 'nand-2-64').split()]), d)} \
-    ubifs \
-    "
+FLASHLAYOUT_PARTITION_LABELS_optee_nand-2-64 = "${FLASHLAYOUT_PARTITION_LABELS_optee_nand-2-256}"
+
 FLASHLAYOUT_PARTITION_LABELS_optee_nor-emmc = "\
     ${FLASHLAYOUT_PROGRAMMER_SECTIONS} \
     ${@' '.join(['%s' % l.split(',')[1] for l in d.getVarFlag('PARTITIONS_BOOTLOADER_CONFIG', 'nor-emmc').split()])} \
@@ -166,14 +162,11 @@ FLASHLAYOUT_PARTITION_LABELS_trusted_emmc = "\
     "
 FLASHLAYOUT_PARTITION_LABELS_trusted_nand-2-256 = "\
     ${FLASHLAYOUT_PROGRAMMER_SECTIONS} \
-    ${@' '.join(['%s' % l.split(',')[1] for l in d.getVarFlag('PARTITIONS_BOOTLOADER_CONFIG', 'nand-2-256').split()])} \
+    ${@' '.join(['%s' % l.split(',')[1] for l in d.getVarFlag('PARTITIONS_BOOTLOADER_CONFIG', 'nand').split()])} \
     ubifs \
     "
-FLASHLAYOUT_PARTITION_LABELS_trusted_nand-2-64 = "\
-    ${FLASHLAYOUT_PROGRAMMER_SECTIONS} \
-    ${@' '.join(['%s' % l.split(',')[1] for l in d.getVarFlag('PARTITIONS_BOOTLOADER_CONFIG', 'nand-2-64').split()])} \
-    ubifs \
-    "
+FLASHLAYOUT_PARTITION_LABELS_trusted_nand-2-64 = "${FLASHLAYOUT_PARTITION_LABELS_trusted_nand-2-256}"
+
 FLASHLAYOUT_PARTITION_LABELS_trusted_nor-emmc = "\
     ${FLASHLAYOUT_PROGRAMMER_SECTIONS} \
     ${@' '.join(['%s' % l.split(',')[1] for l in d.getVarFlag('PARTITIONS_BOOTLOADER_CONFIG', 'nor-emmc').split()])} \
