@@ -112,7 +112,8 @@ STM32MP_TEEX_SIZE_UBOOT ?= "512"
 
 # Bootloader Partitions configuration
 PARTITIONS_BOOTLOADER_CONFIG += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'emmc', 'emmc', '', d)}"
-PARTITIONS_BOOTLOADER_CONFIG += "${@bb.utils.contains_any('BOOTDEVICE_LABELS', ['nand-2-256', 'nand-2-64'], 'nand', '', d)}"
+PARTITIONS_BOOTLOADER_CONFIG += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nand-2-256', 'nand-2-256', '', d)}"
+PARTITIONS_BOOTLOADER_CONFIG += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nand-2-64', 'nand-2-64', '', d)}"
 PARTITIONS_BOOTLOADER_CONFIG += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nor-emmc', 'nor-emmc', '', d)}"
 PARTITIONS_BOOTLOADER_CONFIG += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'sdcard', 'sdcard', '', d)}"
 
@@ -122,11 +123,17 @@ PARTITIONS_BOOTLOADER_CONFIG[emmc] ?= "\
     ${@ '${STM32MP_FSBL2_DATA},${STM32MP_FSBL2_NAME},${STM32MP_FSBL2_SIZE},Binary,1' if '${STM32MP_FSBL2_NAME}' else ''} \
     ${@ '${STM32MP_SSBL1_DATA},${STM32MP_SSBL1_NAME},${STM32MP_SSBL1_SIZE},Binary,1' if '${STM32MP_SSBL1_NAME}' else ''} \
     "
-PARTITIONS_BOOTLOADER_CONFIG[nand] ?= "\
+PARTITIONS_BOOTLOADER_CONFIG[nand-2-256] ?= "\
     ${@ '${STM32MP_FSBL1_DATA},${STM32MP_FSBL1_NAME},${STM32MP_FSBL1_SIZE_UBOOT},Binary,2' if '${STM32MP_FSBL1_NAME}' else ''} \
     ${@ '${STM32MP_SSBL1_DATA},${STM32MP_SSBL1_NAME},${STM32MP_SSBL1_SIZE},Binary,1' if '${STM32MP_SSBL1_NAME}' else ''} \
     ${@ '${STM32MP_SSBL2_DATA},${STM32MP_SSBL2_NAME},${STM32MP_SSBL2_SIZE},Binary,1' if '${STM32MP_SSBL2_NAME}' else ''} \
     "
+PARTITIONS_BOOTLOADER_CONFIG[nand-2-64] ?= "\
+    ${@ '${STM32MP_FSBL1_DATA},${STM32MP_FSBL1_NAME},${STM32MP_FSBL1_SIZE_UBOOT},Binary,2' if '${STM32MP_FSBL1_NAME}' else ''} \
+    ${@ '${STM32MP_SSBL1_DATA},${STM32MP_SSBL1_NAME},${STM32MP_SSBL1_SIZE},Binary,1' if '${STM32MP_SSBL1_NAME}' else ''} \
+    ${@ '${STM32MP_SSBL2_DATA},${STM32MP_SSBL2_NAME},${STM32MP_SSBL2_SIZE},Binary,1' if '${STM32MP_SSBL2_NAME}' else ''} \
+    "
+
 PARTITIONS_BOOTLOADER_CONFIG[nor-emmc] ?= "\
     ${@ '${STM32MP_FSBL1_DATA},${STM32MP_FSBL1_NAME},${STM32MP_FSBL1_SIZE},Binary,1' if '${STM32MP_FSBL1_NAME}' else ''} \
     ${@ '${STM32MP_FSBL2_DATA},${STM32MP_FSBL2_NAME},${STM32MP_FSBL2_SIZE},Binary,1' if '${STM32MP_FSBL2_NAME}' else ''} \
@@ -140,7 +147,8 @@ PARTITIONS_BOOTLOADER_CONFIG[sdcard] ?= "\
     "
 # Optee Partitions configuration
 PARTITIONS_OPTEE_CONFIG += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'emmc', 'emmc', '', d)}"
-PARTITIONS_OPTEE_CONFIG += "${@bb.utils.contains_any('BOOTDEVICE_LABELS', ['nand-2-256', 'nand-2-64'], 'nand', '', d)}"
+PARTITIONS_OPTEE_CONFIG += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nand-2-256', 'nand-2-256', '', d)}"
+PARTITIONS_OPTEE_CONFIG += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nand-2-64', 'nand-2-64', '', d)}"
 PARTITIONS_OPTEE_CONFIG += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nor-emmc', 'nor-emmc', '', d)}"
 PARTITIONS_OPTEE_CONFIG += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'sdcard', 'sdcard', '', d)}"
 
@@ -150,7 +158,12 @@ PARTITIONS_OPTEE_CONFIG[emmc] ?= "\
     ${@ '${STM32MP_TEED_DATA},${STM32MP_TEED_NAME},${STM32MP_TEED_SIZE},Binary,1' if '${STM32MP_TEED_NAME}' else ''} \
     ${@ '${STM32MP_TEEX_DATA},${STM32MP_TEEX_NAME},${STM32MP_TEEX_SIZE},Binary,1' if '${STM32MP_TEEX_NAME}' else ''} \
     "
-PARTITIONS_OPTEE_CONFIG[nand] ?= "\
+PARTITIONS_OPTEE_CONFIG[nand-2-256] ?= "\
+    ${@ '${STM32MP_TEEH_DATA},${STM32MP_TEEH_NAME},${STM32MP_TEEH_SIZE_UBOOT},Binary,1' if '${STM32MP_TEEH_NAME}' else ''} \
+    ${@ '${STM32MP_TEED_DATA},${STM32MP_TEED_NAME},${STM32MP_TEED_SIZE},Binary,1' if '${STM32MP_TEED_NAME}' else ''} \
+    ${@ '${STM32MP_TEEX_DATA},${STM32MP_TEEX_NAME},${STM32MP_TEEX_SIZE_UBOOT},Binary,1' if '${STM32MP_TEEX_NAME}' else ''} \
+    "
+PARTITIONS_OPTEE_CONFIG[nand-2-64] ?= "\
     ${@ '${STM32MP_TEEH_DATA},${STM32MP_TEEH_NAME},${STM32MP_TEEH_SIZE_UBOOT},Binary,1' if '${STM32MP_TEEH_NAME}' else ''} \
     ${@ '${STM32MP_TEED_DATA},${STM32MP_TEED_NAME},${STM32MP_TEED_SIZE},Binary,1' if '${STM32MP_TEED_NAME}' else ''} \
     ${@ '${STM32MP_TEEX_DATA},${STM32MP_TEEX_NAME},${STM32MP_TEEX_SIZE_UBOOT},Binary,1' if '${STM32MP_TEEX_NAME}' else ''} \
@@ -441,16 +454,20 @@ UBOOT_SPLASH_IMAGE = "splash"
 # Enable MTDPART check for UBOOT_CONFIG
 UBOOT_MTDPART_CHECK_ENABLE ?= "${@bb.utils.contains_any('BOOTSCHEME_LABELS', 'optee trusted', d.getVarFlag('UBOOT_CONFIG', 'trusted').split(',')[0], '', d)}"
 # Set U-Boot MTD partition configurations
-UBOOT_MTDPART_NAND_BOOT    ?= "${@','.join(['%sk(%s)' % (align_size(d, 'NAND', l.split(',')[2], l.split(',')[4]), l.split(',')[1]) for l in d.getVarFlag('PARTITIONS_BOOTLOADER_CONFIG', 'nand').split()])}"
-UBOOT_MTDPART_NAND_TEE     ?= "${@','.join(['%sk(%s)' % (align_size(d, 'NAND', l.split(',')[2], l.split(',')[4]), l.split(',')[1]) for l in d.getVarFlag('PARTITIONS_OPTEE_CONFIG', 'nand').split()])}"
-UBOOT_MTDPART_NOR_BOOT     ?= "${@','.join(['%sk(%s)' % (align_size(d, 'NOR', l.split(',')[2], l.split(',')[4]), l.split(',')[1]) for l in d.getVarFlag('PARTITIONS_BOOTLOADER_CONFIG', 'nor-emmc').split()])}"
-UBOOT_MTDPART_NOR_TEE      ?= "${@','.join(['%sk(%s)' % (align_size(d, 'NOR', l.split(',')[2], l.split(',')[4]), l.split(',')[1]) for l in d.getVarFlag('PARTITIONS_OPTEE_CONFIG', 'nor-emmc').split()])}"
+UBOOT_MTDPART_NAND_2_256_BOOT ?= "${@','.join(['%sk(%s)' % (align_size(d, 'NAND', l.split(',')[2], l.split(',')[4]), l.split(',')[1]) for l in d.getVarFlag('PARTITIONS_BOOTLOADER_CONFIG', 'nand-2-256').split()])}"
+UBOOT_MTDPART_NAND_2_64_BOOT  ?= "${@','.join(['%sk(%s)' % (align_size(d, 'NAND', l.split(',')[2], l.split(',')[4]), l.split(',')[1]) for l in d.getVarFlag('PARTITIONS_BOOTLOADER_CONFIG', 'nand-2-64').split()])}"
+UBOOT_MTDPART_NAND_2_256_TEE  ?= "${@','.join(['%sk(%s)' % (align_size(d, 'NAND', l.split(',')[2], l.split(',')[4]), l.split(',')[1]) for l in d.getVarFlag('PARTITIONS_OPTEE_CONFIG', 'nand-2-256').split()])}"
+UBOOT_MTDPART_NAND_2_64_TEE   ?= "${@','.join(['%sk(%s)' % (align_size(d, 'NAND', l.split(',')[2], l.split(',')[4]), l.split(',')[1]) for l in d.getVarFlag('PARTITIONS_OPTEE_CONFIG', 'nand-2-64').split()])}"
+UBOOT_MTDPART_NOR_BOOT        ?= "${@','.join(['%sk(%s)' % (align_size(d, 'NOR', l.split(',')[2], l.split(',')[4]), l.split(',')[1]) for l in d.getVarFlag('PARTITIONS_BOOTLOADER_CONFIG', 'nor-emmc').split()])}"
+UBOOT_MTDPART_NOR_TEE         ?= "${@','.join(['%sk(%s)' % (align_size(d, 'NOR', l.split(',')[2], l.split(',')[4]), l.split(',')[1]) for l in d.getVarFlag('PARTITIONS_OPTEE_CONFIG', 'nor-emmc').split()])}"
 
-UBOOT_MTDPART_4LEGACY += "${@'CONFIG_MTDPARTS_NAND0_TEE=${UBOOT_MTDPART_NAND_TEE}' if bb.utils.contains_any('BOOTDEVICE_LABELS', ['nand-2-256', 'nand-2-64'], True, False, d) and bb.utils.contains('BOOTSCHEME_LABELS', 'optee', True, False, d) else ''}"
+UBOOT_MTDPART_4LEGACY += "${@'CONFIG_MTDPARTS_NAND0_TEE=${UBOOT_MTDPART_NAND_2_256_TEE}' if bb.utils.contains('BOOTDEVICE_LABELS', 'nand-2-256', True, False, d) and bb.utils.contains('BOOTSCHEME_LABELS', 'optee', True, False, d) else ''}"
+UBOOT_MTDPART_4LEGACY += "${@'CONFIG_MTDPARTS_NAND0_TEE=${UBOOT_MTDPART_NAND_2_64_TEE}' if bb.utils.contains('BOOTDEVICE_LABELS', 'nand-2-64', True, False, d) and bb.utils.contains('BOOTSCHEME_LABELS', 'optee', True, False, d) else ''}"
 UBOOT_MTDPART_4LEGACY += "${@'CONFIG_MTDPARTS_NOR0_TEE=${UBOOT_MTDPART_NOR_TEE}' if bb.utils.contains('BOOTDEVICE_LABELS', 'nor-emmc', True, False, d) and bb.utils.contains('BOOTSCHEME_LABELS', 'optee', True, False, d) else ''}"
 
 UBOOT_MTDPART_CHECK ?= "\
-    ${@bb.utils.contains_any('BOOTDEVICE_LABELS', ['nand-2-256' , 'nand-2-64'], 'CONFIG_MTDPARTS_NAND0_BOOT=${UBOOT_MTDPART_NAND_BOOT}', '', d)} \
+    ${@bb.utils.contains_any('BOOTDEVICE_LABELS', 'nand-2-256' , 'CONFIG_MTDPARTS_NAND0_BOOT=${UBOOT_MTDPART_NAND_2_256_BOOT}', '', d)} \
+    ${@bb.utils.contains_any('BOOTDEVICE_LABELS', 'nand-2-64', 'CONFIG_MTDPARTS_NAND0_BOOT=${UBOOT_MTDPART_NAND_2_64_BOOT}', '', d)} \
     ${@bb.utils.contains('BOOTDEVICE_LABELS', 'nor-emmc', 'CONFIG_MTDPARTS_NOR0_BOOT=${UBOOT_MTDPART_NOR_BOOT}', '', d)} \
     ${@bb.utils.contains('MACHINE_FEATURES', 'fip', '', '${UBOOT_MTDPART_4LEGACY}', d)} \
     "
