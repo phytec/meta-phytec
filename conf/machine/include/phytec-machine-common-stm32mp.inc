@@ -376,15 +376,12 @@ TOOLCHAIN_TARGET_TASK_remove_pn-buildtools-tarball = " bash-dev libgomp-dev"
 # =========================================================================
 # Kernel
 # =========================================================================
-# Select kernel version
-PREFERRED_PROVIDER_virtual/kernel = "linux-stm32mp"
 
 # Kernel image type
 KERNEL_IMAGETYPE     =  "${@bb.utils.contains('MACHINE_FEATURES', 'fit', 'fitImage', 'uImage', d)}"
 KERNEL_ALT_IMAGETYPE =  " Image "
 KERNEL_ALT_IMAGETYPE =+ " vmlinux "
 KERNEL_ALT_IMAGETYPE =+ " ${@bb.utils.contains('MACHINE_FEATURES', 'fit', 'uImage', 'zImage', d)} "
-
 
 # Maxsize authorized for uncompressed kernel binary
 # Define to null to skip kernel image size check
