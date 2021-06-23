@@ -59,9 +59,11 @@ python () {
 # -----------------------------------------------------------------------------
 # EMMC
 # Extra space is required to store 'Protective MBR' and 'Primary GPT Header'
-# Currently the required size is 17kBytes (i.e. 0x4400)
+# Currently the required size is 17 KiB (i.e. 0x4400)
 # We need to align this size to get the first offset to use
 DEVICE_START_OFFSET_EMMC    ?= "0x00080000"
+# 64 Gbit
+DEVICE_MAX_OFFSET_EMMC      ?= "0x200000000"
 DEVICE_ALIGNMENT_SIZE_EMMC  ?= "0x00080000"
 
 # Specific to EMMC, there are two boot partitions using specific offset to access
@@ -77,6 +79,11 @@ DEVICE_BOARD_ENABLE_EMMC += "${@bb.utils.contains_any('BOOTDEVICE_LABELS', [ 'em
 # -----------------------------------------------------------------------------
 # NAND
 DEVICE_START_OFFSET_NAND   ?= "0x00000000"
+# 4 Gbit
+DEVICE_MAX_OFFSET_NAND_2_256     ?= "0x20000000"
+# 1 Gbit
+DEVICE_MAX_OFFSET_NAND_2_64     ?= "0x8000000"
+DEVICE_MAX_OFFSET_NAND     ?= "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nand-2-256', '${DEVICE_MAX_OFFSET_NAND_2_256}', '${DEVICE_MAX_OFFSET_NAND_2_64}', d)}"
 DEVICE_ALIGNMENT_SIZE_NAND ?= "0x00040000"
 
 # Configure the list of boards that enable NAND
@@ -85,6 +92,8 @@ DEVICE_BOARD_ENABLE_NAND   += "${@bb.utils.contains_any('BOOTDEVICE_LABELS', [ '
 # -----------------------------------------------------------------------------
 # NOR
 DEVICE_START_OFFSET_NOR    ?= "0x00000000"
+# 128 Mbit
+DEVICE_MAX_OFFSET_NOR      ?= "0x01000000"
 DEVICE_ALIGNMENT_SIZE_NOR  ?= "0x00010000"
 
 # Configure the list of boards that enable NOR
@@ -93,16 +102,18 @@ DEVICE_BOARD_ENABLE_NOR    += "${@bb.utils.contains_any('BOOTDEVICE_LABELS', [ '
 # -----------------------------------------------------------------------------
 # SDCARD
 # Extra space is required to store 'Protective MBR' and 'Primary GPT Header'
-# Currently the required size is 17kBytes (i.e. 0x4400)
+# Currently the required size is 17 KiB (i.e. 0x4400)
 # We need to align this size to get the first offset to use
 DEVICE_START_OFFSET_SDCARD    ?= "0x00004400"
+# No limit for SDCARD
+DEVICE_MAX_OFFSET_SDCARD      ?= "none"
 DEVICE_ALIGNMENT_SIZE_SDCARD  ?= "0x00000200"
 
 # Configure the rootfs partition uid used in gpt partition table for SDCARD
 DEVICE_PARTUUID_ROOTFS_SDCARD ?= "${@d.getVar(d.expand('DEVICE_PARTUUID_ROOTFS_${DEVICE_SDCARD}')) or ''}"
 
 # Configure the list of boards that enable SDCARD
-DEVICE_BOARD_ENABLE_SDCARD    += "${@bb.utils.contains_any('BOOTDEVICE_LABELS', [ 'sdcard', 'nor-sdcard' ], '${STM32MP_DT_FILES_PHYCORE}', '', d)}"
+DEVICE_BOARD_ENABLE_SDCARD += "${@bb.utils.contains_any('BOOTDEVICE_LABELS', [ 'sdcard', 'nor-sdcard' ], '${STM32MP_DT_FILES_PHYCORE}', '', d)}"
 
 # -----------------------------------------------------------------------------
 # Fixed configuration from U-Boot source code
