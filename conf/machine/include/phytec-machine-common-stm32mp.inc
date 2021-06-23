@@ -31,8 +31,8 @@ BOOTDEVICE_LABELS ??= "emmc nor-emmc nand-2-256 nand-2-64 nor-sdcard sdcard"
 MACHINE_FEATURES = "usbhost usbgadget alsa screen ext2"
 MACHINE_FEATURES_append = " ${@bb.utils.contains('BOOTSCHEME_LABELS', 'optee', 'optee', '', d)} "
 MACHINE_FEATURES_append = " tpm2 "
+MACHINE_FEATURES_append = " ${@bb.utils.contains_any('BOOTDEVICE_LABELS',  ['emmc', 'sdcard'], 'autoresize', '', d)} "
 
-MACHINE_FEATURES_append = " autoresize "
 # Remove autoresize package from DISTRO_EXTRA_RRECOMMENDS to add it explicitly
 # in our bootfs image instead of rootfs
 DISTRO_EXTRA_RRECOMMENDS_remove = "${@bb.utils.contains('COMBINED_FEATURES', 'autoresize', '${AUTORESIZE}', '', d)}"
