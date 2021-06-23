@@ -194,17 +194,14 @@ FLASHLAYOUT_PARTITION_LABELS_trusted_sdcard = "\
 #           8) FLASHLAYOUT_PARTITION_xxx
 #           9) Default 'FLASHLAYOUT_PARTITION_xxx' to 'none' when not defined
 # -----------------------------------------------------------------------------
-FLASHLAYOUT_PARTITION_ENABLE            = "P"
+FLASHLAYOUT_PARTITION_ENABLE = "P"
 FLASHLAYOUT_PARTITION_ENABLE_${STM32MP_FSBL1_NAME}-boot = "-"
 FLASHLAYOUT_PARTITION_ENABLE_${STM32MP_SSBL1_NAME}-boot = "-"
-FLASHLAYOUT_PARTITION_ENABLE_empty      = "PE"
-FLASHLAYOUT_PARTITION_ENABLE_env        = "PED"
-# Due to association of u-boot and env, the ssbl partition need to be deleted
+FLASHLAYOUT_PARTITION_ENABLE_empty = "PE"
+FLASHLAYOUT_PARTITION_ENABLE_nor-emmc_${STM32MP_UENV_NAME} = "PED"
+# Need to make sure to delete partition that contains U-Boot env before update (gpt partitions only)
 FLASHLAYOUT_PARTITION_ENABLE_sdcard_${STM32MP_SSBL1_NAME} = "PD"
-FLASHLAYOUT_PARTITION_ENABLE_emmc_${STM32MP_SSBL1_NAME}   = "PD"
-# Due to potential swith between trused and optee, need to be delete teeh partitions
-FLASHLAYOUT_PARTITION_ENABLE_sdcard_teeh = "PD"
-FLASHLAYOUT_PARTITION_ENABLE_emmc_teeh   = "PD"
+FLASHLAYOUT_PARTITION_ENABLE_emmc_${STM32MP_SSBL1_NAME} = "PD"
 
 # -----------------------------------------------------------------------------
 # Partition ID
