@@ -10,23 +10,27 @@ def env_add_boot_scripts(d, kernelname, mmcid, emmcid):
 
     detect mmc{mmcid}
 
+    global.bootm.image="/mnt/mmc{mmcid}.{partid}/{kernel}"
+    global.bootm.oftree="/mnt/mmc{mmcid}.{partid}/oftree"
+    global.linux.bootargs.dyn.root="root=/dev/mmcblk{mmcid}p{rootid} rootflags='data=journal'"
+
     [ -e /env/config-expansions ] && /env/config-expansions
 
     if [ -e /env/expansions/dt-overlays ] ; then
         global overlays.path="/mnt/mmc{mmcid}.{rootid}/overlays"
         /env/expansions/dt-overlays
     fi
-
-    global.bootm.image="/mnt/mmc{mmcid}.{partid}/{kernel}"
-    global.bootm.oftree="/mnt/mmc{mmcid}.{partid}/oftree"
-    global.linux.bootargs.dyn.root="root=/dev/mmcblk{mmcid}p{rootid} rootflags='data=journal'"
     """)
     nandboot = textwrap.dedent("""\
     #!/bin/sh
 
-    [ -e /env/config-expansions ] && /env/config-expansions
-
     [ ! -e /dev/nand0.root.ubi ] && ubiattach /dev/nand0.root
+
+    global.bootm.image="/dev/nand0.root.ubi.kernel{partid}"
+    global.bootm.oftree="/dev/nand0.root.ubi.oftree{partid}"
+    global.linux.bootargs.dyn.root="root=ubi0:root{partid} ubi.mtd=root rootfstype=ubifs"
+
+    [ -e /env/config-expansions ] && /env/config-expansions
 
     if [ -e /env/expansions/dt-overlays ] ; then
         mkdir /mnt/rootfs
@@ -34,15 +38,9 @@ def env_add_boot_scripts(d, kernelname, mmcid, emmcid):
         global overlays.path="/mnt/rootfs/overlays"
         /env/expansions/dt-overlays
     fi
-
-    global.bootm.image="/dev/nand0.root.ubi.kernel{partid}"
-    global.bootm.oftree="/dev/nand0.root.ubi.oftree{partid}"
-    global.linux.bootargs.dyn.root="root=ubi0:root{partid} ubi.mtd=root rootfstype=ubifs"
     """)
     netboot = textwrap.dedent("""\
     #!/bin/sh
-
-    [ -e /env/config-expansions ] && /env/config-expansions
 
     path="/mnt/tftp"
 
@@ -53,23 +51,25 @@ def env_add_boot_scripts(d, kernelname, mmcid, emmcid):
         global.bootm.oftree="$oftree"
     fi
 
+    nfsroot="/home/${global.user}/nfsroot/${global.hostname}"
+    ip_route_get -b ${global.net.server} global.linux.bootargs.dyn.ip
+    global.linux.bootargs.dyn.root="root=/dev/nfs nfsroot=$nfsroot,vers=3,tcp"
+
+    [ -e /env/config-expansions ] && /env/config-expansions
+
     if [ -e /env/expansions/dt-overlays ] ; then
         global overlays.path="/mnt/nfs/overlays"
         /env/expansions/dt-overlays
     fi
-
-    nfsroot="/home/${global.user}/nfsroot/${global.hostname}"
-    ip_route_get -b ${global.net.server} global.linux.bootargs.dyn.ip
-    global.linux.bootargs.dyn.root="root=/dev/nfs nfsroot=$nfsroot,vers=3,tcp"
     """)
     spiboot = textwrap.dedent("""\
     #!/bin/sh
 
-    [ -e /env/config-expansions ] && /env/config-expansions
-
     global.bootm.image="/dev/m25p0.kernel"
     global.bootm.oftree="/dev/m25p0.oftree"
     global.linux.bootargs.dyn.root="{root}"
+
+    [ -e /env/config-expansions ] && /env/config-expansions
     """)
 
     if bb.utils.contains("MACHINE_FEATURES", "emmc", True, False, d):
