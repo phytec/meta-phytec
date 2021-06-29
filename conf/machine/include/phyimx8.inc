@@ -16,5 +16,10 @@ WKS_FILES_mx8m ?= "imx8m-sdimage.wks"
 WKS_FILES_mx8mn ?= "imx8mn-sdimage.wks"
 WKS_FILES_mx8mp ?= "imx8mn-sdimage.wks"
 
+# eMMC boot partition bootloader image offset
+IMX_BOOT_SEEK_EMMC_mx8m ?= "33"
+IMX_BOOT_SEEK_EMMC_mx8mn ?= "0"
+IMX_BOOT_SEEK_EMMC_mx8mp ?= "0"
+
 # Default images to build
 IMAGE_FSTYPES = "tar.gz wic"
