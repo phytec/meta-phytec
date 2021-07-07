@@ -222,7 +222,7 @@ int main(int argc, char *argv[])
 		print_help();
 
 	if (setrs485half && setrs485full) {
-		printf("%s: Setting only half or full duplex possible. Not both\n");
+		printf("Setting only half or full duplex possible. Not both\n");
 		return -1;
 	}
 
