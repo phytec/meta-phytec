@@ -1,15 +1,17 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
-SRC_URI_append = "\
-    file://0001-plat-imx8mm-use-uart3-as-console.patch \
-    file://0002-plat-imx8mn-use-uart3-as-console.patch \
-"
+# UART_BASE fits for phyBOARD-Polaris-i.MX8MQ and phyBOARD-Pollux-i.MX8MP
+UART_BASE = "0x30860000"
+UART_BASE_mx8mm = "0x30880000"
+UART_BASE_mx8mn = "0x30880000"
+
 SRC_URI_append_phygate-tauri-l-imx8mm-2 = "\
     file://0003-plat-imx8mm-tauri-l-use-uart4-as-rs485.patch \
 "
-SRC_URI_append_phyboard-pollux-imx8mp-2 = " \
-    file://0004-plat-imx8mp-Update-debug-UART.patch \
+EXTRA_OEMAKE += " \
+        IMX_BOOT_UART_BASE="${UART_BASE}" \
 "
+
 # NOTE: Uncomment for debug build:
 #EXTRA_OEMAKE += " \
 #	DEBUG=1 \
