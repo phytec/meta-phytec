@@ -1,6 +1,7 @@
 # Common settings for PHYTEC's i.MX8 boards
 
-PREFERRED_PROVIDER_virtual/bootloader= "u-boot-imx"
+PREFERRED_PROVIDER_virtual/bootloader ?= "u-boot-imx"
+PREFERRED_PROVIDER_virtual/kernel ?= "linux-imx"
 PREFERRED_PROVIDER_imx-boot="imx-boot-phytec"
 PREFERRED_PROVIDER_u-boot-fw-utils = "libubootenv"
 PREFERRED_PROVIDER_opencl-headers_imxgpu = "imx-gpu-viv"
