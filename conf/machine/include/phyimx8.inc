@@ -5,6 +5,8 @@ PREFERRED_PROVIDER_imx-boot="imx-boot-phytec"
 PREFERRED_PROVIDER_u-boot-fw-utils = "libubootenv"
 PREFERRED_PROVIDER_opencl-headers_imx = "imx-gpu-viv"
 
+MACHINE_FEATURES_remove = "nxp8987"
+
 # Wic
 IMAGE_CLASSES += "wic-helper"
 IMAGE_CLASSES += "wic-imx8-helper"
