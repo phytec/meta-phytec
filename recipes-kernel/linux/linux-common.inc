@@ -18,6 +18,7 @@ SRC_URI_append = " \
   ${@bb.utils.contains('DEBUG_BUILD', '1', 'file://debugging.cfg', '', d)} \
   ${@bb.utils.contains('MACHINE_FEATURES', 'tpm2', 'file://tpm2.cfg', '', d)} \
   file://0001-perf-Make-perf-able-to-build-with-latest-libbfd.patch \
+  ${@bb.utils.contains('MACHINE_FEATURES', 'caam', 'file://caam.cfg', '',   d)} \
 "
 
 INC_PR = "r0"
