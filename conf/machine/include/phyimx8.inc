@@ -23,3 +23,5 @@ IMX_BOOT_SEEK_EMMC_mx8mp ?= "0"
 
 # Default images to build
 IMAGE_FSTYPES = "tar.gz wic"
+
+MACHINE_FEATURES += " caam"
