@@ -4,13 +4,7 @@ SRC_URI_append_secureboot = " \
         file://dynamic-config.cfg \
 "
 
-DEPENDS_append_secureboot = " nxp-cst-native dtc-native u-boot-mkimage-native bison-native"
-do_patch_secureboot[depends] += "\
-    nxp-cst-native:do_populate_sysroot \
-    dtc-native:do_populate_sysroot \
-    bison-native:do_populate_sysroot \
-    u-boot-mkimage-native:do_populate_sysroot \
-"
+DEPENDS_append_secureboot = " bison-native nxp-cst-native"
 
 BAREBOX_BIN_SIGNED ?= "images/${BAREBOX_BASE_BIN}-s.img"
 BAREBOX_BIN_SIGNEDUSB ?= "images/${BAREBOX_BASE_BIN}-us.img"
@@ -183,6 +177,11 @@ python do_create_dynamic_dtree_append_secureboot (){
                     fout.write(line)
         os.sync()
 }
+
+do_create_dynamic_dtree[depends] += "\
+    dtc-native:do_populate_sysroot \
+    u-boot-mkimage-native:do_populate_sysroot \
+"
 addtask do_create_dynamic_dtree before do_configure after do_patch
 
 do_install_append_secureboot () {
