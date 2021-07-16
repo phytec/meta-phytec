@@ -470,11 +470,12 @@ of_fixup_status /soc/$bus@2000000/pwm@2088000/
 """)
     env_add(d, "expansions/imx6ul-phytec-peb-wlbt-05",
 """#!/bin/sh
-of_fixup_status /soc/$bus@2100000/serial@21e8000
-of_fixup_status /soc/$bus@2100000/usdhc@2194000
-of_fixup_status /regulator-bt-en
-of_fixup_status /regulator-wlan-en
+of_fixup_status /soc/$bus@2100000/mmc@2194000
 of_fixup_status -d /soc/$bus@2100000/adc@2198000
+of_fixup_status /regulator-wl-en
+of_fixup_status /soc/$bus@2100000/serial@21e8000
+of_fixup_status -d /soc/$bus@2000000/spba-bus@2000000/spi@2010000
+of_fixup_status -d /user-leds
 """)
     env_add(d, "expansions/imx6ul-phytec-vm010-col",
 """#!/bin/sh
