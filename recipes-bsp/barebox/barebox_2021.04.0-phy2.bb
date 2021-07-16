@@ -41,6 +41,16 @@ else
     go /dev/ram0
 fi
 """)
+
+    env_add(d, "expansions/imx6-phytec-check-bus-nodepath",
+"""bus="bus"
+of_dump -e /soc/$bus@2000000
+
+if [ $? != 0 ]; then
+    echo "Changing node-name bus to aips-bus"
+    bus="aips-bus"
+fi
+""")
 }
 
 python do_env_append_mx6() {
@@ -61,16 +71,6 @@ python do_env_append_mx6() {
 
     env_add_boot_scripts(d, kernelname, sdid, emmcid)
     env_add_bootchooser(d)
-
-    env_add(d, "expansions/imx6qdl-phytec-check-bus-nodepath",
-"""bus="bus"
-of_dump -e /soc/$bus@2000000
-
-if [ $? != 0 ]; then
-    echo "Changing node-name bus to aips-bus"
-    bus="aips-bus"
-fi
-""")
 
     env_add(d, "expansions/imx6qdl-mira-enable-lvds",
 """of_fixup_status /ldb/lvds-channel@0
@@ -146,7 +146,7 @@ python do_env_append_phyflex-imx6() {
     env_add(d, "config-expansions",
 """#!/bin/sh
 
-. /env/expansions/imx6qdl-phytec-check-bus-nodepath
+. /env/expansions/imx6-phytec-check-bus-nodepath
 
 #use this expansion when a capacitive touchscreen is connected
 . /env/expansions/imx6qdl-phytec-lcd
@@ -177,7 +177,7 @@ python do_env_append_phyboard-mira-imx6() {
     env_add(d, "config-expansions",
 """#!/bin/sh
 
-. /env/expansions/imx6qdl-phytec-check-bus-nodepath
+. /env/expansions/imx6-phytec-check-bus-nodepath
 
 . /env/expansions/imx6qdl-mira-peb-eval-01
 #. /env/expansions/imx6qdl-mira-enable-lvds
@@ -212,7 +212,7 @@ python do_env_append_phyboard-nunki-imx6() {
     env_add(d, "config-expansions",
 """#!/bin/sh
 
-. /env/expansions/imx6qdl-phytec-check-bus-nodepath
+. /env/expansions/imx6-phytec-check-bus-nodepath
 
 #. /env/expansions/imx6qdl-nunki-enable-lvds
 
@@ -419,6 +419,8 @@ python do_env_append_phyboard-segin-imx6ul() {
     env_add(d, "config-expansions",
 """#!/bin/sh
 
+. /env/expansions/imx6-phytec-check-bus-nodepath
+
 . /env/expansions/imx6ul-phytec-segin-peb-eval-01
 #use this expansion when a capacitive touchscreen is connected
 #. /env/expansions/imx6ul-phytec-segin-peb-av-02
@@ -453,21 +455,21 @@ of_fixup_status /user-leds
 """)
     env_add(d, "expansions/imx6ul-phytec-segin-peb-av-02",
 """
-of_fixup_status /soc/bus@2100000/lcdif@21c8000/
+of_fixup_status /soc/$bus@2100000/lcdif@21c8000/
 of_fixup_status /panel-lcd
 of_fixup_status /backlight
 of_fixup_status /regulator-backlight-en
-of_fixup_status /soc/bus@2100000/i2c@21a0000/edt-ft5x06@38
-of_fixup_status /soc/bus@2000000/pwm@2088000/
+of_fixup_status /soc/$bus@2100000/i2c@21a0000/edt-ft5x06@38
+of_fixup_status /soc/$bus@2000000/pwm@2088000/
 """)
     env_add(d, "expansions/imx6ul-phytec-segin-peb-av-02-res",
 """
-of_fixup_status /soc/bus@2100000/lcdif@21c8000/
+of_fixup_status /soc/$bus@2100000/lcdif@21c8000/
 of_fixup_status /panel-lcd
 of_fixup_status /backlight
 of_fixup_status /regulator-backlight-en
-of_fixup_status /soc/bus@2100000/i2c@21a0000/touchscreen@44
-of_fixup_status /soc/bus@2000000/pwm@2088000/
+of_fixup_status /soc/$bus@2100000/i2c@21a0000/touchscreen@44
+of_fixup_status /soc/$bus@2000000/pwm@2088000/
 """)
     env_add(d, "expansions/imx6ul-phytec-peb-wlbt-01",
 """#!/bin/sh
@@ -477,11 +479,11 @@ of_fixup_status -d /soc/bus@2100000/adc@2198000
 """)
     env_add(d, "expansions/imx6ul-phytec-peb-wlbt-05",
 """#!/bin/sh
-of_fixup_status /soc/bus@2100000/serial@21e8000
-of_fixup_status /soc/bus@2100000/usdhc@2194000
+of_fixup_status /soc/$bus@2100000/serial@21e8000
+of_fixup_status /soc/$bus@2100000/usdhc@2194000
 of_fixup_status /regulator-bt-en
 of_fixup_status /regulator-wlan-en
-of_fixup_status -d /soc/bus@2100000/adc@2198000
+of_fixup_status -d /soc/$bus@2100000/adc@2198000
 """)
     env_add(d, "expansions/imx6ul-phytec-vm010-col",
 """#!/bin/sh
