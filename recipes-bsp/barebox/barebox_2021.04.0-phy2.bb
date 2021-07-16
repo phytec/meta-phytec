@@ -427,9 +427,6 @@ python do_env_append_phyboard-segin-imx6ul() {
 #use this expansion when a resisitive touchscreen is connected
 #. /env/expansions/imx6ul-phytec-segin-peb-av-02-res
 
-#use this expansion when peb-wlbt-01 adapter is connected
-#. /env/expansions/imx6ul-phytec-peb-wlbt-01
-
 #use this expansion when peb-wlbt-05 adapter is connected
 #. /env/expansions/imx6ul-phytec-peb-wlbt-05
 
@@ -470,12 +467,6 @@ of_fixup_status /backlight
 of_fixup_status /regulator-backlight-en
 of_fixup_status /soc/$bus@2100000/i2c@21a0000/touchscreen@44
 of_fixup_status /soc/$bus@2000000/pwm@2088000/
-""")
-    env_add(d, "expansions/imx6ul-phytec-peb-wlbt-01",
-"""#!/bin/sh
-of_fixup_status /soc/bus@2100000/usdhc@2194000
-of_fixup_status /regulator-wlan-en
-of_fixup_status -d /soc/bus@2100000/adc@2198000
 """)
     env_add(d, "expansions/imx6ul-phytec-peb-wlbt-05",
 """#!/bin/sh
@@ -574,9 +565,6 @@ python do_env_append_phyboard-segin-imx6ul-5() {
 #. /env/expansions/imx6ul-phytec-segin-peb-av-02
 #use this expansion when a resisitive touchscreen is connected
 #. /env/expansions/imx6ul-phytec-segin-peb-av-02-res
-
-#use this expansion when peb-wlbt-01 adapter is connected
-. /env/expansions/imx6ul-phytec-peb-wlbt-01
 
 #use this expansion when peb-wlbt-05 adapter is connected
 #. /env/expansions/imx6ul-phytec-peb-wlbt-05
