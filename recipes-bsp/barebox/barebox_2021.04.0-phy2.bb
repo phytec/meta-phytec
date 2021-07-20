@@ -550,10 +550,6 @@ python do_env_append_phyboard-segin-imx6ul-3() {
     env_rm(d, "boot/system1")
     env_rm_bootchooser(d)
     env_rm_rauc_nand_boot_scripts(d)
-
-    #Default CMA size (128 MB) is too big for the 256 MB RAM so it has to be
-    #reduced to 64 MB.
-    env_add(d, "nv/linux.bootargs.cma", "cma=64M\n")
 }
 
 python do_env_append_phyboard-segin-imx6ul-5() {
@@ -575,17 +571,22 @@ python do_env_append_phyboard-segin-imx6ul-5() {
 """)
 }
 
-python do_env_append_phyboard-segin-imx6ul-6() {
-    env_add(d, "nv/linux.bootargs.cma", "cma=128M\n")
-}
-
 python do_env_append_phyboard-segin-imx6ul-7() {
     env_rm_rauc_nand_boot_scripts(d)
 }
 
 python do_env_append_phyboard-segin-imx6ul-8() {
     env_rm_rauc_nand_boot_scripts(d)
-    env_add(d, "nv/linux.bootargs.cma", "cma=128M\n")
+}
+
+#Reduce CMA size on phyboard-segin-imx6ul machines
+python do_env_append_phyboard-segin-imx6ul() {
+    # Segin machine type 3 has only 256MiB of RAM, set CMA to 64MiB
+    if "phyboard-segin-imx6ul-3" in d.getVar("MACHINE"):
+        env_add(d, "nv/linux.bootargs.cma", "cma=64M\n")
+    # All other machine types have 512MiB of RAM, set CMA to 128MiB
+    else:
+        env_add(d, "nv/linux.bootargs.cma", "cma=128M\n")
 }
 
 INTREE_DEFCONFIG = "imx_v7_defconfig"
