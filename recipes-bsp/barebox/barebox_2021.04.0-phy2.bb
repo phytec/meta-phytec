@@ -126,9 +126,9 @@ if [ -e ${path}/select ] ; then
 fi
 
 for o in $global.overlays.select ; do
-        if [ -e ${path}${o} ] ; then
-            echo "Add ${path}${o} overlay"
-            of_overlay ${path}${o}
+        if [ -e ${path}/${o} ] ; then
+            echo "Add ${path}/${o} overlay"
+            of_overlay ${path}/${o}
         fi
 done
 """)
