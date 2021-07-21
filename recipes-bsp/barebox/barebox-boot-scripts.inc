@@ -17,7 +17,7 @@ def env_add_boot_scripts(d, kernelname, mmcid, emmcid):
     [ -e /env/config-expansions ] && /env/config-expansions
 
     if [ -e /env/expansions/dt-overlays ] ; then
-        global overlays.path="/mnt/mmc{mmcid}.{rootid}/overlays"
+        global overlays.path="/mnt/mmc{mmcid}.{bbrootid}/overlays"
         /env/expansions/dt-overlays
     fi
     """)
@@ -75,13 +75,13 @@ def env_add_boot_scripts(d, kernelname, mmcid, emmcid):
     if bb.utils.contains("MACHINE_FEATURES", "emmc", True, False, d):
         env_add(d, "boot/emmc", mmcboot.format(kernel=kernelname,
                                                mmcid=emmcid, partid=0,
-                                               rootid=2))
+                                               rootid=2, bbrootid=1))
         env_add(d, "boot/system0", mmcboot.format(kernel=kernelname,
                                                   mmcid=emmcid, partid=0,
-                                                  rootid=2))
+                                                  rootid=2, bbrootid=1))
         env_add(d, "boot/system1", mmcboot.format(kernel=kernelname,
                                                   mmcid=emmcid, partid=2,
-                                                  rootid=4))
+                                                  rootid=4, bbrootid=3))
         spiroot = "root=/dev/mmcblk{}p2 rootflags='data=journal'".format(emmcid)
     else:
         env_add(d, "boot/nand", nandboot.format(partid=""))
@@ -90,7 +90,7 @@ def env_add_boot_scripts(d, kernelname, mmcid, emmcid):
         spiroot = "root=ubi0:root ubi.mtd=root rootfstype=ubifs"
 
     env_add(d, "boot/mmc", mmcboot.format(kernel=kernelname, mmcid=mmcid,
-                                          partid=0, rootid=2))
+                                          partid=0, rootid=2, bbrootid=1))
     env_add(d, "boot/net", netboot)
     env_add(d, "boot/spi", spiboot.format(root=spiroot))
 
