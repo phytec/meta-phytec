@@ -14,7 +14,6 @@ IMAGE_CLASSES += "wic-imx8-helper"
 IMAGE_BOOTFILES_DEPENDS ?= ""
 EXTERNAL_KERNEL_DEVICETREE ??= ""
 IMAGE_BOOT_FILES += "oftree ${EXTERNAL_KERNEL_DEVICETREE}"
-WKS_FILES_mx8 ?= "imx8-sdimage.wks"
 WKS_FILES_mx8m ?= "imx8m-sdimage.wks"
 
 # Set bootloader offset size for sd-card image
