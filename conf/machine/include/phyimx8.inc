@@ -16,8 +16,11 @@ EXTERNAL_KERNEL_DEVICETREE ??= ""
 IMAGE_BOOT_FILES += "oftree ${EXTERNAL_KERNEL_DEVICETREE}"
 WKS_FILES_mx8 ?= "imx8-sdimage.wks"
 WKS_FILES_mx8m ?= "imx8m-sdimage.wks"
-WKS_FILES_mx8mn ?= "imx8mn-sdimage.wks"
-WKS_FILES_mx8mp ?= "imx8mn-sdimage.wks"
+
+# Set bootloader offset size for sd-card image
+IMX_BOOT_SEEK_mx8m ?= "33"
+IMX_BOOT_SEEK_mx8mn ?= "32"
+IMX_BOOT_SEEK_mx8mp ?= "32"
 
 # eMMC boot partition bootloader image offset
 IMX_BOOT_SEEK_EMMC_mx8m ?= "33"
