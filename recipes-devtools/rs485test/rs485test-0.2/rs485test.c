@@ -188,7 +188,7 @@ int main(int argc, char *argv[])
 
 	struct serial_rs485 rs485ctrl;
 	struct serial_rs485 rs485ctrl_orig;
-	int c, ret, fd;
+	int c, ret, fd, save;
 	struct termios ti;
 	speed_t speed = B115200;
 
@@ -233,32 +233,35 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 
-	/* save rs485 settings */
-	ret = get_rs485_ioctl(fd, &rs485ctrl_orig);
-	if (ret)
-		exit (-1);
-
-	if (setrs485half || setrs485full) {
-		if (setrs485half)
-			rs485ctrl.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND;
-		if (setrs485full)
-			rs485ctrl.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND |
-						SER_RS485_RX_DURING_TX;
-		rs485ctrl.delay_rts_before_send = 0;
-		rs485ctrl.delay_rts_after_send = 0;
-
-		ret = set_rs485_ioctl(fd, &rs485ctrl);
-		if (ret)
-			exit(-1);
-	} else {
+	/* save rs485 settings if possible*/
+	save = get_rs485_ioctl(fd, &rs485ctrl_orig);
+	if (!save) {
 		rs485ctrl = rs485ctrl_orig;
-	}
 
-	printf("flags: %x\n", rs485ctrl.flags);
-	printf("delay_rts_before_send: %d\n",
-				rs485ctrl.delay_rts_before_send);
-	printf("delay_rts_after_send: %d\n",
-				rs485ctrl.delay_rts_after_send);
+		if  (setrs485half || setrs485full) {
+			if (setrs485half)
+				rs485ctrl.flags = SER_RS485_ENABLED |
+						  SER_RS485_RTS_ON_SEND;
+			if (setrs485full)
+				rs485ctrl.flags = SER_RS485_ENABLED |
+						  SER_RS485_RTS_ON_SEND |
+						  SER_RS485_RX_DURING_TX;
+			rs485ctrl.delay_rts_before_send = 0;
+			rs485ctrl.delay_rts_after_send = 0;
+
+			ret = set_rs485_ioctl(fd, &rs485ctrl);
+			if (ret)
+				exit(-1);
+		}
+
+		printf("flags: %x\n", rs485ctrl.flags);
+		printf("delay_rts_before_send: %d\n",
+					rs485ctrl.delay_rts_before_send);
+		printf("delay_rts_after_send: %d\n",
+					rs485ctrl.delay_rts_after_send);
+	} else {
+		printf("ioctl not supported. Will not change any settings.\n");
+	}
 
 	/* Set the port speed */
 	tcgetattr(fd, &ti);
@@ -278,8 +281,10 @@ int main(int argc, char *argv[])
 	else
 		ret = receive(fd);
 
-	/* restore orginial rs485 settings */
-	set_rs485_ioctl(fd, &rs485ctrl_orig);
+
+	/* restore orginial rs485 settings if available */
+	if (!save)
+		set_rs485_ioctl(fd, &rs485ctrl_orig);
 
 	close(fd);
 
