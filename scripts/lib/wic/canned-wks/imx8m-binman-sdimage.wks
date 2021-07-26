@@ -4,7 +4,7 @@
 
 part u-boot --source rawcopy --sourceparams="file=flash.bin" --ondisk mmc --no-table --offset ${IMX_BOOT_SEEK}
 part u-boot-itb --source rawcopy --sourceparams="file=u-boot.itb" --ondisk mmcblk --no-table --offset 384
-part --source bootimg-partition --fstype=vfat --label boot --ondisk mmc --active --offset 4096 --size 20
+part --source bootimg-partition --fstype=vfat --label boot --ondisk mmc --active --offset 4096 --size ${WKS_BOOTIMAGESIZE}
 part / --source rootfs --fstype=ext4 --label root --ondisk mmc --align 1024 --use-uuid
 
 bootloader --timeout=0
