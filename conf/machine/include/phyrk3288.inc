@@ -22,6 +22,7 @@ IMAGE_CLASSES += "wic-helper"
 EXTERNAL_KERNEL_DEVICETREE ??= ""
 IMAGE_BOOT_FILES = "zImage;linuximage oftree ${KERNEL_DEVICETREE} ${EXTERNAL_KERNEL_DEVICETREE}"
 WKS_FILES_rk3288 ?= "rk3288-sdimage.wks"
+WKS_BOOTIMAGESIZE ?= "20"
 
 # default images to build
 IMAGE_FSTYPES ?= "tar.gz wic"

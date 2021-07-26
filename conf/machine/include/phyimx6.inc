@@ -42,6 +42,8 @@ IMAGE_BOOT_FILES_secureboot = "fitImage"
 BAREBOX_BINARY = "barebox.bin"
 BAREBOX_BINARY_secureboot = "barebox-s.bin"
 WKS_FILES_mx6 ?= "imx6-sdimage.wks"
+WKS_BOOTIMAGESIZE ?= "20"
+WKS_BOOTIMAGESIZE_secureboot ?= "90"
 
 # default images to build
 IMAGE_FSTYPES ?= "tar.gz wic ubifs"
