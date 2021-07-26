@@ -1,7 +1,8 @@
 # This is a helper class for creating patitioned images with WIC for sd cards and emmc
 BAREBOX_BINARY ??= "barebox.bin"
+WKS_BOOTIMAGESIZE ??= "20"
 
-WICVARS_append = " BAREBOX_BINARY IMX_BOOT_SEEK"
+WICVARS_append = " BAREBOX_BINARY IMX_BOOT_SEEK WKS_BOOTIMAGESIZE"
 
 do_image_wic[depends] += "\
     dosfstools-native:do_populate_sysroot \
