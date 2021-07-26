@@ -15,6 +15,7 @@ IMAGE_BOOTFILES_DEPENDS ?= ""
 EXTERNAL_KERNEL_DEVICETREE ??= ""
 IMAGE_BOOT_FILES += "oftree ${EXTERNAL_KERNEL_DEVICETREE}"
 WKS_FILES_mx8m ?= "imx8m-sdimage.wks"
+WKS_BOOTIMAGESIZE ?= "50"
 
 # Set bootloader offset size for sd-card image
 IMX_BOOT_SEEK_mx8m ?= "33"
