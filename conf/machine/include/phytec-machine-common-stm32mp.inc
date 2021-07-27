@@ -428,6 +428,9 @@ PHY_EXPANSIONS += "${@bb.utils.contains('MACHINE_FEATURES', 'bluetooth', 'phyboa
 PHY_EXPANSIONS += "${@bb.utils.contains('MACHINE_FEATURES', 'bluetooth', 'phyboard-stm32mp1-peb-wlbt-05-bluetooth-usart1.dtbo', '', d)}"
 PHY_EXPANSIONS += "${@bb.utils.contains_any('MACHINE_FEATURES', 'wifi bluetooth', 'phyboard-stm32mp1-pi-hat-redbear.dtbo', '', d)}"
 
+# DT overlay to enable RS485 at boot time
+PHY_EXPANSIONS += "phyboard-stm32mp1-rs485.dtbo"
+
 # Set LOADADDR
 # Set this address to 0xC2000040, which is 0xC2000000 + 0x40.
 # 0xC2000000 is the memory address where U-Boot will copy from flash the file uImage and 0x40 is uImage header size (64Bytes).
