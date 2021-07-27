@@ -24,5 +24,8 @@ IMAGE_BOOT_FILES = "zImage;linuximage boot.scr oftree ${KERNEL_DEVICETREE} ${EXT
 WKS_FILES_rk3288 ?= "rk3288-sdimage.wks"
 WKS_BOOTIMAGESIZE ?= "20"
 
+# Device information used by RAUC and some of its dependencies
+EMMC_DEV_rk3288 ?= "1"
+
 # default images to build
 IMAGE_FSTYPES ?= "tar.gz wic"

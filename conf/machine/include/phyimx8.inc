@@ -22,6 +22,12 @@ IMX_BOOT_SEEK_EMMC_mx8m ?= "33"
 IMX_BOOT_SEEK_EMMC_mx8mn ?= "0"
 IMX_BOOT_SEEK_EMMC_mx8mp ?= "0"
 
+# Device information used by RAUC and some of its dependencies
+EMMC_DEV_mx8mq ?= "0"
+EMMC_DEV_mx8mm ?= "2"
+EMMC_DEV_mx8mn ?= "2"
+EMMC_DEV_mx8mp ?= "2"
+
 # Default images to build
 IMAGE_FSTYPES = "tar.gz wic"
 
