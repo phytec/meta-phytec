@@ -27,6 +27,9 @@ phyboard-stm32mp1-peb-wlbt-05-bluetooth-usart3.dtbo - Bluetooth feature enabled 
 phyboard-stm32mp1-peb-wlbt-05-bluetooth-usart1.dtbo - Bluetooth feature enabled - no RS232 transceiver available
 phyboard-stm32mp1-pi-hat-redbear.dtbo - WIFI or Bluetooth feature enabled
 
+# DT overlay to enable RS485 at boot time
+"phyboard-stm32mp1-rs485.dtbo"
+
 
 How to apply Devicetree Overlays
 --------------------------------
@@ -48,6 +51,3 @@ This will create the "overlay" u-boot env variable and in this case,
 the content of /boot/overlays/overlays.txt will be ignored.
 To use the overlays.txt file instead, remove the "overlay" env var with following command:
 - setenv overlay
-
-
-
