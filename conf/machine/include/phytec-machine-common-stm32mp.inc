@@ -409,6 +409,25 @@ STM32MP_KERNEL_DEVICETREE += "${@' '.join('%s.dtb' % d for d in '${STM32MP_DEVIC
 STM32MP_KERNEL_DEVICETREE += "${@' '.join('%s.dtb' % d for d in '${CUBE_M4_EXAMPLES_DT}'.split())}"
 STM32MP_KERNEL_DEVICETREE += "${@' '.join('%s.dtb' % d for d in '${LINUX_A7_EXAMPLES_DT}'.split())}"
 
+# List of device tree overlays to install
+# Displays
+PHY_EXPANSIONS += "phyboard-stm32mp1-peb-av02-lcd.dtbo"
+PHY_EXPANSIONS += "${@bb.utils.contains('MACHINE_FEATURES', 'hdmi', 'phyboard-stm32mp1-peb-av01-hdmi.dtbo', '', d)}"
+PHY_EXPANSIONS += "${@bb.utils.contains('MACHINE_FEATURES', 'mipi-dsi', 'phyboard-stm32mp1-dsi-lcd-mb1407.dtbo', '', d)}"
+PHY_EXPANSIONS += "${@bb.utils.contains('MACHINE_FEATURES', 'mipi-dsi', 'phyboard-stm32mp1-dsi-rpi-official-display.dtbo', '', d)}"
+
+# Configurations examples for the specific connectors
+PHY_EXPANSIONS += "phyboard-stm32mp1-pi-hat-extension.dtbo"
+PHY_EXPANSIONS += "phyboard-stm32mp1-uno-r3-extension.dtbo"
+PHY_EXPANSIONS += "phyboard-stm32mp1-motor-control.dtbo"
+PHY_EXPANSIONS += "phyboard-stm32mp1-motor-control-m4.dtbo"
+
+# Wireless expansions
+PHY_EXPANSIONS += "${@bb.utils.contains('MACHINE_FEATURES', 'wifi', 'phyboard-stm32mp1-peb-wlbt-05-wlan.dtbo', '', d)}"
+PHY_EXPANSIONS += "${@bb.utils.contains('MACHINE_FEATURES', 'bluetooth', 'phyboard-stm32mp1-peb-wlbt-05-bluetooth-usart3.dtbo', '', d)}"
+PHY_EXPANSIONS += "${@bb.utils.contains('MACHINE_FEATURES', 'bluetooth', 'phyboard-stm32mp1-peb-wlbt-05-bluetooth-usart1.dtbo', '', d)}"
+PHY_EXPANSIONS += "${@bb.utils.contains_any('MACHINE_FEATURES', 'wifi bluetooth', 'phyboard-stm32mp1-pi-hat-redbear.dtbo', '', d)}"
+
 # Set LOADADDR
 # Set this address to 0xC2000040, which is 0xC2000000 + 0x40.
 # 0xC2000000 is the memory address where U-Boot will copy from flash the file uImage and 0x40 is uImage header size (64Bytes).
