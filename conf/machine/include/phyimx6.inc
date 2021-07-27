@@ -45,5 +45,9 @@ WKS_FILES:mx6 ?= "imx6-sdimage.wks"
 WKS_BOOTIMAGESIZE ?= "20"
 WKS_BOOTIMAGESIZE:secureboot ?= "90"
 
+# Device information used by RAUC and some of its dependencies
+EMMC_DEV:mx6 ?= "3"
+NAND_DEV:mx6 ?= "0"
+
 # default images to build
 IMAGE_FSTYPES ?= "tar.gz wic ubifs"
