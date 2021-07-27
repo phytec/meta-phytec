@@ -5,7 +5,7 @@ UBOOT_EXTLINUX_CONSOLE = "console=${@d.getVar('SERIAL_CONSOLE').split()[1]},${@d
 # Define FIT option for extlinux file generation
 UBOOT_EXTLINUX_FIT = "${@bb.utils.contains('MACHINE_FEATURES', 'fit', '1', '0', d)}"
 # Define default FDTDIR for all configs
-UBOOT_EXTLINUX_FDTDIR = "/"
+UBOOT_EXTLINUX_FDTDIR = "${@bb.utils.contains('MACHINE_FEATURES', 'phy-expansions', '', '/', d)}"
 # Define default boot config for all config
 UBOOT_EXTLINUX_DEFAULT_LABEL ?= "OpenSTLinux"
 # Define default INITRD for all configs

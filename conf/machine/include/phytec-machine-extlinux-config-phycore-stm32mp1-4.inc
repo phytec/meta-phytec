@@ -31,5 +31,5 @@ UBOOT_EXTLINUX_FDT:phycore-stm32mp1-4-m4-examples = "/phycore-stm32mp1-4-m4-exam
 
 # -----------------------------------------------------------------------------
 # Define FDT override for Default label
-UBOOT_EXTLINUX_FDT:phycore-stm32mp1-4 = "/phycore-stm32mp1-4.dtb"
 # -----------------------------------------------------------------------------
+UBOOT_EXTLINUX_FDT:phycore-stm32mp1-4 = "${@bb.utils.contains('MACHINE_FEATURES', 'phy-expansions', '', '/phycore-stm32mp1-4.dtb', d)}"
