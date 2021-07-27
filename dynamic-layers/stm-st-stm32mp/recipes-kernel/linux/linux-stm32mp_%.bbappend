@@ -41,9 +41,9 @@ BBCLASSEXTEND = "devupstream:target"
 SRC_URI_class-devupstream = "git://git.phytec.de/linux-stm32mp;protocol=git;branch=v${LINUX_VERSION}-phy"
 SRCREV_class-devupstream = "c4b4358ff9756a1fa10f12748d875b82ebe5b907"
 
-# ---------------------------------
+# -----------------------------------------------------------------------------------
 # Configure default preference to manage dynamic selection between tarball and github
-# ---------------------------------
+# -----------------------------------------------------------------------------------
 STM32MP_SOURCE_SELECTION ?= "tarball"
 
 DEFAULT_PREFERENCE = "${@bb.utils.contains('STM32MP_SOURCE_SELECTION', 'git.phytec', '-1', '1', d)}"
@@ -63,3 +63,8 @@ SRC_URI_class-devupstream += "file://${LINUX_VERSION}/fragment-11-wifi-r8712u-su
 SRC_URI_class-devupstream += "file://${LINUX_VERSION}/fragment-12-add-dp83867-phy-support.config;subdir=fragments"
 SRC_URI_class-devupstream += "file://${LINUX_VERSION}/fragment-13-add-pca953x-led-support.config;subdir=fragments"
 SRC_URI_class-devupstream += "file://${LINUX_VERSION}/fragment-14-RPI-screen.config;subdir=fragments"
+
+# ------------------------------------------------------------------------
+# Build dtb with symbols to allow bootloader to apply device tree overlays
+# ------------------------------------------------------------------------
+KERNEL_EXTRA_ARGS += "${@bb.utils.contains('MACHINE_FEATURES', 'phy-expansions', "DTC_FLAGS='-@'", '', d)}"
