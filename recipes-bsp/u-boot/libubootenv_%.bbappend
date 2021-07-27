@@ -10,7 +10,7 @@ do_configure:append () {
 
 do_install:append () {
 	install -d ${D}${sysconfdir}
-	install -m 644 ${S}/../fw_env.config ${D}${sysconfdir}/fw_env.config
+	install -m 644 ${WORKDIR}/fw_env.config ${D}${sysconfdir}/fw_env.config
 }
 
 FILES:${PN} += "${sysconfdir}/fw_env.config"
