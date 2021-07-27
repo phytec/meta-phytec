@@ -40,5 +40,8 @@ EXTERNAL_KERNEL_DEVICETREE ??= ""
 IMAGE_BOOT_FILES = "zImage;linuximage boot.scr oftree ${KERNEL_DEVICETREE} ${EXTERNAL_KERNEL_DEVICETREE}"
 WKS_FILES_rk3288 ?= "rk3288-sdimage.wks"
 
+# Device information used by RAUC and some of its dependencies
+EMMC_DEV_rk3288 ?= "1"
+
 # default images to build
 IMAGE_FSTYPES ?= "tar.gz wic"

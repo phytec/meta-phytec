@@ -67,5 +67,9 @@ do_image_wic[depends] += "\
 "
 WKS_FILES_ti33x ?= "am335x-sdimage.wks"
 
+# Device information used by RAUC and some of its dependencies
+EMMC_DEV_ti33x ?= "1"
+NAND_DEV_ti33x ?= "0"
+
 # default images to build
 IMAGE_FSTYPES ?= "tar.gz wic ubifs ext4"
