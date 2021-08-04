@@ -66,7 +66,7 @@ ATF_MACHINE_NAME:mx8dxl = "bl31-imx8dxl.bin"
 ATF_MACHINE_NAME:mx8dx = "bl31-imx8dx.bin"
 ATF_MACHINE_NAME:append = "${@bb.utils.contains('MACHINE_FEATURES', 'optee', '-optee', '', d)}"
 
-TOOLS_NAME ?= "mkimage:imx8"
+TOOLS_NAME ?= "mkimage_imx8"
 
 SOC_TARGET       ?= "INVALID"
 SOC_TARGET:mx8qm  = "iMX8QM"

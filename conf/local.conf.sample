@@ -13,7 +13,7 @@ DISTRO ?= "ampliphy"
 
 # License Handling
 #  - Uncomment for i.MX6 proprietary GPU libraries
-#LICENSE_FLAGS_WHITELIST += "license-nxp_v14-june-2016:imx-gpu-viv"
+#LICENSE_FLAGS_WHITELIST += "license-nxp_v14-june-2016_imx-gpu-viv"
 #  - Uncomment for Freescale i.MX6 VPU firmware blobs
 #LICENSE_FLAGS_WHITELIST += "license-freescale_v12-march-2016_firmware-imx"
 
@@ -54,16 +54,16 @@ BB_DISKMON_DIRS ??= "\
 # The following line disables the autostart of the phytec-qtdemo by
 # default, but you can start the demo anytime using
 #  $ systemctl start phytec-qtdemo.service
-#SYSTEMD_AUTO_ENABLE_pn-phytec-qtdemo = "disable"
+#SYSTEMD_AUTO_ENABLE:pn-phytec-qtdemo = "disable"
 
 # You can disable and enable FSTYPES as you wish. e.g. 'ext4'.
 # This variable is ordering dependend.
 #IMAGE_FSTYPES = "tar.gz wic ubifs emmc"
 
 # Select a preconfigured A/B system setup for SD/eMMC images.
-#WKS_FILES_mx6 = "imx6-rauc-sdimage.wks"
-#WKS_FILES_mx6ul = "imx6-rauc-sdimage.wks"
-#WKS_FILES_mx8m = "imx8m-rauc-sdimage.wks"
+#WKS_FILES:mx6 = "imx6-rauc-sdimage.wks"
+#WKS_FILES:mx6ul = "imx6-rauc-sdimage.wks"
+#WKS_FILES:mx8m = "imx8m-rauc-sdimage.wks"
 
 # Turn on debugging options of the kernel
 DEBUG_BUILD:pn-linux-mainline = "1"
@@ -114,7 +114,7 @@ EXTRA_IMAGE_FEATURES += "debug-tweaks"
 
 # We disable qt widgets per default to save about 10 MB of storage. If
 # you need qt widget support, you can enable it with this line
-#DISTRO_FEATURES_append = " qtwidgets"
+#DISTRO_FEATURES:append = " qtwidgets"
 
 CONF_VERSION = "1"
 
