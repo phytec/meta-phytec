@@ -27,5 +27,5 @@ do_install() {
 	install -m 0644 ${WORKDIR}/am335x-pcm060-scale-data.bin ${D}${base_libdir}/firmware/
 }
 
-RPROVIDES_${PN} = "amx3-cm3"
-FILES_${PN} += "${base_libdir}/firmware"
+RPROVIDES:${PN} = "amx3-cm3"
+FILES:${PN} += "${base_libdir}/firmware"

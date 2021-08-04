@@ -29,13 +29,13 @@ BOOTDEVICE_LABELS ??= "emmc nor-emmc nand-2-256 nand-2-64 nor-sdcard sdcard"
 # =========================================================================
 # Default machine feature
 MACHINE_FEATURES = "usbhost usbgadget alsa screen ext2"
-MACHINE_FEATURES_append = " ${@bb.utils.contains('BOOTSCHEME_LABELS', 'optee', 'optee', '', d)} "
-MACHINE_FEATURES_append = " tpm2 "
-MACHINE_FEATURES_append = " ${@bb.utils.contains_any('BOOTDEVICE_LABELS',  ['emmc', 'sdcard'], 'autoresize', '', d)} "
+MACHINE_FEATURES:append = " ${@bb.utils.contains('BOOTSCHEME_LABELS', 'optee', 'optee', '', d)} "
+MACHINE_FEATURES:append = " tpm2 "
+MACHINE_FEATURES:append = " ${@bb.utils.contains_any('BOOTDEVICE_LABELS',  ['emmc', 'sdcard'], 'autoresize', '', d)} "
 
 # Remove autoresize package from DISTRO_EXTRA_RRECOMMENDS to add it explicitly
 # in our bootfs image instead of rootfs
-DISTRO_EXTRA_RRECOMMENDS_remove = "${@bb.utils.contains('COMBINED_FEATURES', 'autoresize', '${AUTORESIZE}', '', d)}"
+DISTRO_EXTRA_RRECOMMENDS:remove = "${@bb.utils.contains('COMBINED_FEATURES', 'autoresize', '${AUTORESIZE}', '', d)}"
 
 # Default serial consoles (TTYs) to enable using getty
 # Before kernel 4.18, serial console are ttyS3 but after is ttySTM0
@@ -43,7 +43,7 @@ SERIAL_CONSOLES = "115200;ttySTM0"
 SERIAL_CONSOLE = "115200 ttySTM0"
 
 # Don't include kernels in standard images
-RDEPENDS_${KERNEL_PACKAGE_NAME}-base = ""
+RDEPENDS:${KERNEL_PACKAGE_NAME}-base = ""
 
 # Ship all kernel modules by default
 MACHINE_EXTRA_RRECOMMENDS = " kernel-modules"
@@ -52,16 +52,16 @@ MACHINE_EXTRA_RRECOMMENDS = " kernel-modules"
 STM32MP_DT_FILES_PHYCORE ??= ""
 
 # Set default supported device tree list
-STM32MP_DEVICETREE_append = " ${STM32MP_DT_FILES_PHYCORE} "
+STM32MP_DEVICETREE:append = " ${STM32MP_DT_FILES_PHYCORE} "
 
 # =========================================================================
 # Machine specific packages
 # =========================================================================
 # Enable Software watchdog when sysvinit
-MACHINE_EXTRA_RRECOMMENDS_append = " ${@bb.utils.contains('DISTRO_FEATURES','sysvinit',' watchdog ','',d)} "
+MACHINE_EXTRA_RRECOMMENDS:append = " ${@bb.utils.contains('DISTRO_FEATURES','sysvinit',' watchdog ','',d)} "
 
 # Install edid firmware files for hdmi
-MACHINE_EXTRA_RRECOMMENDS_append = " ${@bb.utils.contains("MACHINE_FEATURES", "hdmi", "linux-firmware-edid", "", d)}"
+MACHINE_EXTRA_RRECOMMENDS:append = " ${@bb.utils.contains("MACHINE_FEATURES", "hdmi", "linux-firmware-edid", "", d)}"
 
 # Specify WIFI and Bluetooth firmwares to install
 # Two firmware packages for the bcm43430 are available, current stm release has
@@ -248,7 +248,7 @@ PARTITIONS_CONFIG[userfs]   ?= "${STM32MP_USERFS_IMAGE},${STM32MP_USERFS_LABEL},
 IMAGE_CLASSES += "image_types-stubi"
 
 # Define two empty volumes to manage U-Boot config beginning of multivolume UBIFS
-STM32MP_UBI_VOLUME_prepend = "uboot_config:256:empty uboot_config_r:256:empty "
+STM32MP_UBI_VOLUME:prepend = "uboot_config:256:empty uboot_config_r:256:empty "
 
 # Define UBI volume label to use in kernel command line to mount UBI file system
 UBI_VOLNAME ?= "rootfs"
@@ -290,10 +290,10 @@ IMAGE_FSTYPES += "${@bb.utils.contains_any('BOOTDEVICE_LABELS', [ 'nand-2-256', 
 #     So use IMAGE_NAME_SUFFIX name by removing the '.' and truncing to 16 caracters
 #   - Deactivate metadata_csum and dir_index (hashed b-trees): update not supported
 #     by U-Boot
-EXTRA_IMAGECMD_ext4 = "-i 4096 -L ${@d.getVar('IMAGE_NAME_SUFFIX').replace('.', '', 1)[:16]} -O ^metadata_csum,^dir_index"
+EXTRA_IMAGECMD:ext4 = "-i 4096 -L ${@d.getVar('IMAGE_NAME_SUFFIX').replace('.', '', 1)[:16]} -O ^metadata_csum,^dir_index"
 
 # Allow debug on the platform with gdb and openocd tools
-EXTRA_IMAGEDEPENDS_append = " \
+EXTRA_IMAGEDEPENDS:append = " \
     gdb-cross-${TARGET_ARCH} \
     openocd-stm32mp-native \
     stm32wrapper4dbg-native \
@@ -322,38 +322,38 @@ ST_TOOLS_FOR_SDK_PERL = " \
     nativesdk-perl-module-file-spec-functions \
 "
 
-ST_TOOLS_FOR_SDK_append = " ${ST_TOOLS_FOR_SDK_PERL} "
+ST_TOOLS_FOR_SDK:append = " ${ST_TOOLS_FOR_SDK_PERL} "
 
 # For support of python module for optee-os
-ST_TOOLS_FOR_SDK_append = " \
+ST_TOOLS_FOR_SDK:append = " \
     nativesdk-python3-pyelftools \
     nativesdk-python3-pycryptodomex \
     nativesdk-python3-pycrypto \
 "
 
 # For support of string convertion (iconv) in SDK
-ST_TOOLS_FOR_SDK_append = " \
+ST_TOOLS_FOR_SDK:append = " \
     nativesdk-glibc-gconv-utf-16 \
     nativesdk-glibc-gconv-utf-32 \
     "
 # For support wayland-scanner in SDK
-ST_TOOLS_FOR_SDK_append = " \
+ST_TOOLS_FOR_SDK:append = " \
     nativesdk-wayland \
     "
 
 # For Kernel yaml dependency
-ST_TOOLS_FOR_SDK_remove = " \
+ST_TOOLS_FOR_SDK:remove = " \
     nativesdk-libyaml \
     nativesdk-libyaml-dev \
     "
 
 # For CMSIS-SVD file parser with GDB
-ST_TOOLS_FOR_SDK_append = " \
+ST_TOOLS_FOR_SDK:append = " \
     nativesdk-svd-tools \
     "
 
 # Fip tool
-ST_TOOLS_FOR_SDK_append = " \
+ST_TOOLS_FOR_SDK:append = " \
     ${@bb.utils.contains('MACHINE_FEATURES', 'fip', 'nativesdk-${FIPTOOL_WRAPPER}', '', d)} \
     "
 
@@ -363,28 +363,28 @@ ST_DEPENDENCIES_BUILD_FOR_SDK = " \
     ${@bb.utils.contains('KERNEL_ALT_IMAGETYPE', 'uImage', 'nativesdk-u-boot-mkimage', '', d)} \
   "
 # Make sure to append openssl to SDK for kernel-module and scripts build
-ST_DEPENDENCIES_BUILD_FOR_SDK_append = " nativesdk-openssl-dev "
+ST_DEPENDENCIES_BUILD_FOR_SDK:append = " nativesdk-openssl-dev "
 
 # Make sure to append bison to SDK for u-boot build
-ST_DEPENDENCIES_BUILD_FOR_SDK_append = " \
+ST_DEPENDENCIES_BUILD_FOR_SDK:append = " \
     ${@bb.utils.contains('EXTRA_IMAGEDEPENDS', 'u-boot-stm32mp', 'nativesdk-bison', '', d)} \
   "
 
 # for populate_sdk, we will have all the tools
-TOOLCHAIN_HOST_TASK_append = " ${ST_TOOLS_FOR_SDK} "
-TOOLCHAIN_HOST_TASK_append = " ${ST_DEPENDENCIES_BUILD_FOR_SDK} "
+TOOLCHAIN_HOST_TASK:append = " ${ST_TOOLS_FOR_SDK} "
+TOOLCHAIN_HOST_TASK:append = " ${ST_DEPENDENCIES_BUILD_FOR_SDK} "
 # for populate_sdk_ext, the tools are not desired as mandatory tools (aka basic
 # tools for devtool)
-TOOLCHAIN_HOST_TASK_remove_task-populate-sdk-ext = " ${ST_TOOLS_FOR_SDK} "
-TOOLCHAIN_HOST_TASK_remove_task-populate-sdk-ext = " ${ST_DEPENDENCIES_BUILD_FOR_SDK} "
+TOOLCHAIN_HOST_TASK:remove:task-populate-sdk-ext = " ${ST_TOOLS_FOR_SDK} "
+TOOLCHAIN_HOST_TASK:remove:task-populate-sdk-ext = " ${ST_DEPENDENCIES_BUILD_FOR_SDK} "
 # buildtools is used only by populate_sdk_ext
 # populate_sdk_ext = buildtools + uninative + layer
 # buildtools: sdk part of esdk (like sdk generated by populate_sdk)
 # uninative: basic tools for devtool
-TOOLCHAIN_HOST_TASK_remove_pn-buildtools-tarball = " ${ST_TOOLS_FOR_SDK_PERL} "
+TOOLCHAIN_HOST_TASK:remove:pn-buildtools-tarball = " ${ST_TOOLS_FOR_SDK_PERL} "
 
 TOOLCHAIN_TARGET_TASK += " bash-dev libgomp-dev"
-TOOLCHAIN_TARGET_TASK_remove_pn-buildtools-tarball = " bash-dev libgomp-dev"
+TOOLCHAIN_TARGET_TASK:remove:pn-buildtools-tarball = " bash-dev libgomp-dev"
 
 # =========================================================================
 # Kernel
@@ -433,7 +433,7 @@ EXTRA_IMAGEDEPENDS += "virtual/bootloader"
 # Define default U-Boot config
 UBOOT_CONFIG += "${@bb.utils.contains_any('BOOTSCHEME_LABELS', 'optee trusted', 'trusted', '', d)}"
 # The 'basic' config is only available for stm32mp1 machines
-UBOOT_CONFIG_append_stm32mp1common = " basic "
+UBOOT_CONFIG:append:stm32mp1common = " basic "
 
 # Select u-boot binary that needs specific devicetree suffix (from UBOOT_DEVICETREE)
 # For legacy mode keep the 'u-boot.stm32' but for FIP feature we need both
@@ -472,9 +472,9 @@ UBOOT_MTDPART_CHECK ?= "\
     ${@bb.utils.contains('MACHINE_FEATURES', 'fip', '', '${UBOOT_MTDPART_4LEGACY}', d)} \
     "
 
-PREFERRED_PROVIDER_u-boot-fw-utils_stm32mp1common = "libubootenv"
+PREFERRED_PROVIDER_u-boot-fw-utils:stm32mp1common = "libubootenv"
 
-MACHINE_EXTRA_RRECOMMENDS_append_stm32mp1common = " \
+MACHINE_EXTRA_RRECOMMENDS:append:stm32mp1common = " \
     u-boot-fw-config-stm32mp \
 "
 

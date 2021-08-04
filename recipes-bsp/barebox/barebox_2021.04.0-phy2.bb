@@ -12,7 +12,7 @@ include barebox-boot-scripts.inc
 
 GIT_URL = "git://git.phytec.de/barebox"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
-SRC_URI_append = "file://0001-of_dump-Add-a-simple-node-check-up.patch"
+SRC_URI:append = "file://0001-of_dump-Add-a-simple-node-check-up.patch"
 
 S = "${WORKDIR}/git"
 
@@ -21,7 +21,7 @@ PR = "${INC_PR}.0"
 # NOTE: Keep version in filename in sync with commit id!
 SRCREV = "85714efb09754c01c6a08a7e7fc2037fded4a69e"
 
-python do_env_append() {
+python do_env:append() {
     env_add(d, "nv/allow_color", "false\n")
     env_add(d, "nv/linux.bootargs.base", "consoleblank=0\n")
     env_add(d, "nv/linux.bootargs.rootfs", "rootwait ro fsck.repair=yes\n")
@@ -53,7 +53,7 @@ fi
 """)
 }
 
-python do_env_append_mx6() {
+python do_env:append:mx6() {
     kernelname = d.getVar("KERNEL_IMAGETYPE", True)
     if "secureboot" in d.getVar("DISTRO_FEATURES", True):
         kernelname = "fitImage"
@@ -142,7 +142,7 @@ done
     env_add(d, "nv/dhcp.vendor_id", "barebox-{}".format(dhcp_vendor))
 }
 
-python do_env_append_phyflex-imx6() {
+python do_env:append:phyflex-imx6() {
     env_add(d, "config-expansions",
 """#!/bin/sh
 
@@ -173,7 +173,7 @@ of_property -s -f "/panel-lcd" compatible "edt,etm0700g0edh6"
     env_add(d, "nv/linux.bootargs.fb", "imxdrm.legacyfb_depth=32\n");
 }
 
-python do_env_append_phyboard-mira-imx6() {
+python do_env:append:phyboard-mira-imx6() {
     env_add(d, "config-expansions",
 """#!/bin/sh
 
@@ -208,7 +208,7 @@ python do_env_append_phyboard-mira-imx6() {
     env_add(d, "nv/linux.bootargs.fb", "imxdrm.legacyfb_depth=32\n");
 }
 
-python do_env_append_phyboard-nunki-imx6() {
+python do_env:append_phyboard-nunki-imx6() {
     env_add(d, "config-expansions",
 """#!/bin/sh
 
@@ -243,15 +243,15 @@ python do_env_append_phyboard-nunki-imx6() {
     env_add(d, "nv/linux.bootargs.fb", "imxdrm.legacyfb_depth=32\n");
 }
 
-python do_env_append_phyflex-imx6-4() {
+python do_env:append:phyflex-imx6-4() {
     env_add(d, "nv/linux.bootargs.cma", "cma=256M\n")
 }
 
-python do_env_append_phyboard-mira-imx6-4() {
+python do_env:append:phyboard-mira-imx6-4() {
     env_add(d, "nv/linux.bootargs.cma", "cma=64M\n")
 }
 
-python do_env_append_phyboard-mira-imx6-6() {
+python do_env:append:phyboard-mira-imx6-6() {
     env_add(d, "config-expansions",
 """#!/bin/sh
 
@@ -282,7 +282,7 @@ python do_env_append_phyboard-mira-imx6-6() {
 """)
 }
 
-python do_env_append_phyboard-mira-imx6-10() {
+python do_env:append:phyboard-mira-imx6-10() {
     env_add(d, "config-expansions",
 """#!/bin/sh
 
@@ -313,7 +313,7 @@ python do_env_append_phyboard-mira-imx6-10() {
 """)
 }
 
-python do_env_append_phyboard-mira-imx6-11() {
+python do_env:append:phyboard-mira-imx6-11() {
     env_add(d, "config-expansions",
 """#!/bin/sh
 
@@ -344,7 +344,7 @@ of_property -s -f "/panel-lcd" compatible "edt,etm0700g0edh6"
 """)
 }
 
-python do_env_append_phyboard-mira-imx6-13() {
+python do_env:append:phyboard-mira-imx6-13() {
     env_add(d, "config-expansions",
 """#!/bin/sh
 
@@ -374,27 +374,27 @@ of_property -s -f "/panel-lcd" compatible "edt,etm0700g0dh6"
 """)
 }
 
-python do_env_append_phyboard-mira-imx6-15() {
+python do_env:append:phyboard-mira-imx6-15() {
     env_add(d, "nv/linux.bootargs.cma", "cma=64M\n")
 }
 
 #Enviroment changes for RAUC
-python do_env_append_phyboard-mira-imx6-3() {
+python do_env:append:phyboard-mira-imx6-3() {
     env_add_rauc_nand_boot_scripts(d)
 }
 
-python do_env_append_phyboard-mira-imx6-13() {
+python do_env:append:phyboard-mira-imx6-13() {
     env_add_rauc_nand_boot_scripts(d)
 }
 
-do_deploy_prepend_mx6ul() {
+do_deploy:prepend:mx6ul() {
     if [ -e ${B}/scripts/bareboximd ]; then
         bbnote "Adding CRC32 checksum to barebox Image Metadata"
         ${B}/scripts/bareboximd -c ${B}/${BAREBOX_BIN}
     fi
 }
 
-python do_env_append_mx6ul() {
+python do_env:append:mx6ul() {
     kernelname = d.getVar("KERNEL_IMAGETYPE", True)
     if "secureboot" in d.getVar("DISTRO_FEATURES", True):
         kernelname = "fitImage"
@@ -415,7 +415,7 @@ python do_env_append_mx6ul() {
     env_add(d, "nv/boot.watchdog_timeout", "60s");
 }
 
-python do_env_append_phyboard-segin-imx6ul() {
+python do_env:append:phyboard-segin-imx6ul() {
     env_add(d, "config-expansions",
 """#!/bin/sh
 
@@ -545,7 +545,7 @@ of_fixup_status ${CAM_PATH}
 }
 
 #No RAUC support for the low-cost Segin due to small NAND
-python do_env_append_phyboard-segin-imx6ul-3() {
+python do_env:append:phyboard-segin-imx6ul-3() {
     env_rm(d, "boot/system0")
     env_rm(d, "boot/system1")
     env_rm_bootchooser(d)
@@ -556,7 +556,7 @@ python do_env_append_phyboard-segin-imx6ul-3() {
     env_add(d, "nv/linux.bootargs.cma", "cma=64M\n")
 }
 
-python do_env_append_phyboard-segin-imx6ul-5() {
+python do_env:append:phyboard-segin-imx6ul-5() {
     env_rm(d, "config-expansions")
     env_add(d, "config-expansions",
 """#!/bin/sh
@@ -575,15 +575,15 @@ python do_env_append_phyboard-segin-imx6ul-5() {
 """)
 }
 
-python do_env_append_phyboard-segin-imx6ul-6() {
+python do_env:append:phyboard-segin-imx6ul-6() {
     env_add(d, "nv/linux.bootargs.cma", "cma=128M\n")
 }
 
-python do_env_append_phyboard-segin-imx6ul-7() {
+python do_env:append:phyboard-segin-imx6ul-7() {
     env_rm_rauc_nand_boot_scripts(d)
 }
 
-python do_env_append_phyboard-segin-imx6ul-8() {
+python do_env:append:phyboard-segin-imx6ul-8() {
     env_rm_rauc_nand_boot_scripts(d)
     env_add(d, "nv/linux.bootargs.cma", "cma=128M\n")
 }

@@ -27,12 +27,12 @@
 #    inherit buildinfo
 #    require barebox.inc
 #
-#    FILESEXTRAPATHS_prepend := "${THISDIR}/defconfigs:${THISDIR}/defconfigs/features:${THISDIR}/env:"
+#    FILESEXTRAPATHS:prepend := "${THISDIR}/defconfigs:${THISDIR}/defconfigs/features:${THISDIR}/env:"
 #
 #    # Variable GIT_URL is also used in buildinfo.
 #    GIT_URL = "git://git.phytec.de/${BPN}"
 #    SRC_URI = "${GIT_URL};branch=${BRANCH}"
-#    SRC_URI_append = " \
+#    SRC_URI:append = " \
 #        file://commonenv \
 #        file://environment \
 #    "
@@ -59,13 +59,13 @@
 #     repository.
 #
 #  2) The git url have to be set with "SRC_URI =". All other source files in
-#     the recipe and bbappends should be included with "SRC_URI_append =". This
+#     the recipe and bbappends should be included with "SRC_URI:append =". This
 #     allows a developer to overwrite the git url in his local.conf without
 #     removing needed sources files in the variable SRC_URI. A correct example,
 #     but not useful example:
 #
 #          SRC_URI = "git://git.phytec.de/${BPN};branch=${BRANCH}"
-#          SRC_URI_append = " \
+#          SRC_URI:append = " \
 #              file://commonenv \
 #              file://environment \
 #          "
@@ -88,7 +88,7 @@ GIT_TAG = "v${_PV_FILE}"
 #
 # If a developer sets
 #
-#      SRCREV_pn-barebox = "${AUTOREV}"
+#      SRCREV:pn-barebox = "${AUTOREV}"
 #
 # in his local.conf, SRCREV will be the string "AUTOINC". Later the string
 # AUTOINC is replaced with the real commit id when bitbake fetches the source

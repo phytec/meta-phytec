@@ -19,4 +19,4 @@ SRC_URI = " \
 SRC_URI[tarball.md5sum] = "6c2d4c26d9da23f3014a8a26850b316f"
 SRC_URI[tarball.sha256sum] = "097a70ad6233225053c51281c220179a7c72275e1075bdf3373651367a69276c"
 
-INSANE_SKIP_${PN} += "already-stripped"
+INSANE_SKIP:${PN} += "already-stripped"

@@ -311,7 +311,7 @@ def write_manifest(d):
     fd.close()
 
 
-do_unpack_append() {
+do_unpack:append() {
     write_manifest(d)
 }
 

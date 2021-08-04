@@ -2,13 +2,13 @@ require barebox_${PV}.bb
 
 SUMMERY = "barebox host tools"
 PROVIDES = "${PN}"
-FILESEXTRAPATHS_prepend := "${THISDIR}/barebox/:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/barebox/:"
 
 DEPENDS += "libusb-native openssl-native zlib-native"
 
 inherit deploy pkgconfig
 
-do_patch_append() {
+do_patch:append() {
     bb.build.exec_func('do_fix_pkg_config', d)
 }
 
@@ -16,7 +16,7 @@ do_fix_pkg_config() {
 	find ${S}/scripts/ -name Makefile -print0 | xargs -0 sed -i 's/pkg-config/pkg-config-native/g'
 }
 
-do_configure_append() {
+do_configure:append() {
     kconfig_set ARCH_IMX_IMXIMAGE y
     kconfig_set ARCH_IMX_IMXIMAGE_SSL_SUPPORT y
     kconfig_set ARCH_IMX_USBLOADER y

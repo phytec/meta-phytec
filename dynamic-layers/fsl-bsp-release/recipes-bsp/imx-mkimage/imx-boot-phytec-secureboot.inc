@@ -2,10 +2,10 @@
 
 inherit hab
 
-SRC_URI_append_secureboot=" \
+SRC_URI:append:secureboot=" \
                           file://csf_spl_template.txt \
                           file://csf_fit_template.txt"
-DEPENDS_append_secureboot = " nxp-cst-native"
+DEPENDS:append:secureboot = " nxp-cst-native"
 
 CSF_TEMPLATE_PATH_SPL="${WORKDIR}/csf_spl_template.txt"
 CSF_TEMPLATE_PATH_FIT="${WORKDIR}/csf_fit_template.txt"
@@ -17,17 +17,17 @@ BL31_BIN_PATH="${BOOT_STAGING}/bl31.bin"
 UBOOT_NODTB_BIN_ADDR="INVALID"
 ATF_BIN_ADDR="INVALID"
 
-UBOOT_NODTB_BIN_ADDR_mx8m="0x40200000"
-ATF_BIN_ADDR_mx8m="0x910000"
+UBOOT_NODTB_BIN_ADDR:mx8m="0x40200000"
+ATF_BIN_ADDR:mx8m="0x910000"
 
-UBOOT_NODTB_BIN_ADDR_mx8mm="0x40200000"
-ATF_BIN_ADDR_mx8mm="0x920000"
+UBOOT_NODTB_BIN_ADDR:mx8mm="0x40200000"
+ATF_BIN_ADDR:mx8mm="0x920000"
 
-UBOOT_NODTB_BIN_ADDR_mx8mn="0x40200000"
-ATF_BIN_ADDR_mx8mn="0x960000"
+UBOOT_NODTB_BIN_ADDR:mx8mn="0x40200000"
+ATF_BIN_ADDR:mx8mn="0x960000"
 
-UBOOT_NODTB_BIN_ADDR_mx8mp="0x40200000"
-ATF_BIN_ADDR_mx8mp="0x970000"
+UBOOT_NODTB_BIN_ADDR:mx8mp="0x40200000"
+ATF_BIN_ADDR:mx8mp="0x970000"
 
 # Extract the addresses we need from imx-mkimage output
 def get_hab_blocks_from_log(input_image_path, ubootimx_make_output):
@@ -183,7 +183,7 @@ python do_sign() {
         bb.note("Signing skipped - non secureboot build")
 }
 
-do_deploy_append_secureboot() {
+do_deploy:append:secureboot() {
  for target in ${IMXBOOT_TARGETS}; do
         #Use first "target" as IMAGE_IMXBOOT_TARGET
         if [ "${IMAGE_IMXBOOT_TARGET}" = "" ]; then

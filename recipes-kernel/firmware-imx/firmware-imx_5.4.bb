@@ -39,14 +39,14 @@ do_install () {
 
 
 # Use same license scheme as in recipe linux-firmware
-FILES_${PN}-freescale-imx-license = "/lib/firmware/LICENCE.freescale-v12-march-2016"
+FILES:${PN}-freescale-imx-license = "/lib/firmware/LICENCE.freescale-v12-march-2016"
 
-LICENSE_${PN}-vpu-mx6q = "LICENCE.freescale-v12-march-2016"
-FILES_${PN}-vpu-mx6q = "/lib/firmware/vpu_fw_imx6q.bin"
-RDEPENDS_${PN}-vpu-mx6q += "${PN}-freescale-imx-license"
+LICENSE:${PN}-vpu-mx6q = "LICENCE.freescale-v12-march-2016"
+FILES:${PN}-vpu-mx6q = "/lib/firmware/vpu_fw_imx6q.bin"
+RDEPENDS:${PN}-vpu-mx6q += "${PN}-freescale-imx-license"
 
-LICENSE_${PN}-vpu-mx6dl = "LICENCE.freescale-v12-march-2016"
-FILES_${PN}-vpu-mx6dl = "/lib/firmware/vpu_fw_imx6d.bin"
-RDEPENDS_${PN}-vpu-mx6dl += "${PN}-freescale-imx-license"
+LICENSE:${PN}-vpu-mx6dl = "LICENCE.freescale-v12-march-2016"
+FILES:${PN}-vpu-mx6dl = "/lib/firmware/vpu_fw_imx6d.bin"
+RDEPENDS:${PN}-vpu-mx6dl += "${PN}-freescale-imx-license"
 
 COMPATIBLE_MACHINE = "phy.*imx6.*"

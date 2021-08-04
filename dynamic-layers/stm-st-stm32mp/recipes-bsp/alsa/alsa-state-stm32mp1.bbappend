@@ -1,4 +1,4 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/${BPN}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${BPN}:"
 
 SRC_URI += " \
     file://asound-stm32mp1-phyboard-sargas.state   \
@@ -7,7 +7,7 @@ SRC_URI += " \
 
 SUPPORTED_SARGAS_MACHINE_IDS ?= "1 2 3 4 5 6 7"
 
-do_install_append() {
+do_install:append() {
     # follow the st style of handling alsa config
     for id in ${SUPPORTED_SARGAS_MACHINE_IDS};
     do

@@ -8,7 +8,7 @@ MACHINE_FEATURES = "kernel26 usbgadget usbhost vfat ext2 screen alsa ethernet ca
 
 # Sub-architecture support adapted fom fsl-arm
 MACHINE_SOCARCH = "${TUNE_PKGARCH}-ti33x"
-PACKAGE_EXTRA_ARCHS_append = " ${MACHINE_SOCARCH}"
+PACKAGE_EXTRA_ARCHS:append = " ${MACHINE_SOCARCH}"
 
 # Bootloader
 PREFERRED_PROVIDER_virtual/bootloader ?= "barebox"
@@ -21,12 +21,12 @@ PREFERRED_PROVIDER_virtual/kernel ?= "linux-mainline"
 PREFERRED_PROVIDER_amx3-cm3 ?= "amx3-cm3-phy"
 KERNEL_IMAGETYPE ?= "zImage"
 # Install modules in initramfs and rootfs
-PACKAGE_INSTALL_append = " kernel-modules"
+PACKAGE_INSTALL:append = " kernel-modules"
 KERNEL_MODULE_AUTOLOAD += " cryptodev"
 
 SERIAL_CONSOLES ?= "115200;ttyO0"
 # dont install kernelimage to rootfs
-RDEPENDS_${KERNEL_PACKAGE_NAME}-base = ""
+RDEPENDS:${KERNEL_PACKAGE_NAME}-base = ""
 
 # rootfs images
 # Use the expected value of the ubifs filesystem's volume name in the kernel
@@ -65,7 +65,7 @@ IMAGE_TYPEDEP_wic ??= "ubifs"
 do_image_wic[depends] += "\
     virtual/prebootloader:do_deploy \
 "
-WKS_FILES_ti33x ?= "am335x-sdimage.wks"
+WKS_FILES:ti33x ?= "am335x-sdimage.wks"
 WKS_BOOTIMAGESIZE ?= "20"
 
 # default images to build

@@ -10,7 +10,7 @@ SERIAL_CONSOLES ?= "115200;ttymxc0"
 
 # Sub-architecture support
 MACHINE_SOCARCH = "${TUNE_PKGARCH}-mx6ul"
-PACKAGE_EXTRA_ARCHS_append = " ${MACHINE_SOCARCH}"
+PACKAGE_EXTRA_ARCHS:append = " ${MACHINE_SOCARCH}"
 
 #Bootloader
 PREFERRED_PROVIDER_virtual/bootloader ?= "barebox"
@@ -20,14 +20,14 @@ PREFERRED_PROVIDER_virtual/kernel ?= "linux-mainline"
 KERNEL_IMAGETYPE ?= "zImage"
 
 # Install modules in initramfs and roofs
-PACKAGE_INSTALL_append = " kernel-modules"
+PACKAGE_INSTALL:append = " kernel-modules"
 
 # Ship kernel modules
 MACHINE_EXTRA_RRECOMMENDS = "kernel-modules"
 MACHINE_EXTRA_RDEPENDS = "firmware-imx-sdma-imx6q"
 
 # dont install kernelimage to rootfs
-RDEPENDS_${KERNEL_PACKAGE_NAME}-base = ""
+RDEPENDS:${KERNEL_PACKAGE_NAME}-base = ""
 
 # cpu feature overwrite support
 MACHINEOVERRIDES .= ":imxpxp"
@@ -47,12 +47,12 @@ UBINIZE_ARGS = "-m 2048 -p 128KiB -s 2048 -O 2048"
 IMAGE_CLASSES += "wic-helper"
 EXTERNAL_KERNEL_DEVICETREE ??= ""
 IMAGE_BOOT_FILES = "zImage oftree ${KERNEL_DEVICETREE} ${EXTERNAL_KERNEL_DEVICETREE}"
-IMAGE_BOOT_FILES_secureboot = "fitImage"
+IMAGE_BOOT_FILES:secureboot = "fitImage"
 BAREBOX_BINARY = "barebox.bin"
-BAREBOX_BINARY_secureboot = "barebox-s.bin"
-WKS_FILES_mx6ul ?= "imx6-sdimage.wks"
+BAREBOX_BINARY:secureboot = "barebox-s.bin"
+WKS_FILES:mx6ul ?= "imx6-sdimage.wks"
 WKS_BOOTIMAGESIZE ?= "20"
-WKS_BOOTIMAGESIZE_secureboot ?= "60"
+WKS_BOOTIMAGESIZE:secureboot ?= "60"
 
 # default images to build
 IMAGE_FSTYPES ?= "tar.gz wic ubifs"
@@ -60,14 +60,14 @@ IMAGE_FSTYPES ?= "tar.gz wic ubifs"
 # Avoid pulling package 'gstreamer1.0-plugins-bad-meta' into the image
 # 'core-image-sato', because the recipe gstreamer1.0-plugins-bad depends on
 # virtual/libgles2.
-RRECOMMENDS_gst-examples-bin_remove_pn-gst-examples = "gstreamer1.0-plugins-bad-meta"
+RRECOMMENDS:gst-examples-bin:remove:pn-gst-examples = "gstreamer1.0-plugins-bad-meta"
 
 # XServer
 PREFERRED_PROVIDER_virtual/xserver ?= "xserver-xorg"
 # We don't support a Xserver yet.
 # Don't build the X server with xwayland support. It depends on libepoxy
 # (OpenGL function pointer management library) that depends on EGL.
-PACKAGECONFIG_remove_pn-xserver-xorg = "xwayland"
+PACKAGECONFIG:remove:pn-xserver-xorg = "xwayland"
 
 # Disable gstreamer plugins by default
-PACKAGECONFIG_pn-gstreamer1.0-plugins-imx = ""
+PACKAGECONFIG:pn-gstreamer1.0-plugins-imx = ""

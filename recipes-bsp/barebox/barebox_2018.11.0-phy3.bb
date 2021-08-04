@@ -15,7 +15,7 @@ PR = "${INC_PR}.0"
 # NOTE: Keep version in filename in sync with commit id and barebox-ipl!
 SRCREV = "164a092e574a6fec7a00332d2f16a407aa7d7d8e"
 
-python do_env_append() {
+python do_env:append() {
     env_add(d, "bin/far",
 """#!/bin/sh
 # barebox script far (="Fetch And Reset"):
@@ -34,7 +34,7 @@ fi
 """)
 }
 
-python do_env_append_ti33x() {
+python do_env:append:ti33x() {
     env_add(d, "expansions/am335x-maia-peb-c-004", "of_fixup_status /ocp/mmc@47810000\n")
     env_add(d, "expansions/am335x-phytec-lcd-018-pcm-953",
 """of_fixup_status /panel
@@ -88,7 +88,7 @@ of_fixup_status /ocp/mmc@47810000/wlcore@2
     env_add(d, "nv/net.gateway", """192.168.3.10""")
 }
 
-python do_env_append_phycore-am335x() {
+python do_env:append:phycore-am335x() {
     env_add(d, "init/config-expansions",
 """#!/bin/sh
 #use this expansion when a capacitive touchscreen is connected
@@ -111,7 +111,7 @@ python do_env_append_phycore-am335x() {
 """)
 }
 
-python do_env_append_phyboard-wega-am335x-2() {
+python do_env:append:phyboard-wega-am335x-2() {
     env_add(d, "init/config-expansions",
 """#!/bin/sh
 #use this expansion when a capacitive touchscreen is connected
@@ -138,7 +138,7 @@ of_display_timings -S /panel/display-timings/ETM0700G0EDH6_WEGA
 """)
 }
 
-python do_env_append_phycore-am335x-7() {
+python do_env:append:phycore-am335x-7() {
     env_add(d, "init/config-expansions",
 """#!/bin/sh
 #use this expansion when a capacitive touchscreen is connected
@@ -158,7 +158,7 @@ python do_env_append_phycore-am335x-7() {
 """)
 }
 
-python do_env_append_phyboard-wega-am335x-1() {
+python do_env:append:phyboard-wega-am335x-1() {
     env_add(d, "init/config-expansions",
 """#!/bin/sh
 
@@ -171,7 +171,7 @@ global linux.bootargs.video="video=HDMI-A-1:1024x768-32@60"
 """)
 }
 
-python do_env_append_phyboard-wega-am335x-3() {
+python do_env:append:phyboard-wega-am335x-3() {
     env_add(d, "init/config-expansions",
 """#!/bin/sh
 
@@ -184,7 +184,7 @@ global linux.bootargs.video="video=HDMI-A-1:1024x768-32@60"
 """)
 }
 
-python do_env_append_phyboard-wega-r2-am335x-1() {
+python do_env:append_phyboard-wega-r2-am335x-1() {
     env_add(d, "init/config-expansions",
 """#!/bin/sh
 
@@ -197,7 +197,7 @@ global linux.bootargs.video="video=HDMI-A-1:1024x768-32@60"
 """)
 }
 
-python do_env_append_phycore-emmc-am335x-1() {
+python do_env:append:phycore-emmc-am335x-1() {
     env_add(d, "boot/spi",
 """#!/bin/sh
 
@@ -209,7 +209,7 @@ global.linux.bootargs.dyn.root="root=/dev/mmcblk1p2 rootflags='data=journal'"
 """)
 }
 
-python do_env_append_beagleboneblack-1() {
+python do_env:append_beagleboneblack-1() {
     env_add(d, "boot/mmc",
 """#!/bin/sh
 
@@ -240,7 +240,7 @@ fi
 }
 
 #Enviroment changes for RAUC
-python do_env_append_phycore-r2-am335x-1() {
+python do_env:append:phycore-r2-am335x-1() {
     env_add(d, "boot/nand2",
 """#!/bin/sh
 
@@ -300,7 +300,7 @@ cp /mnt/tftp/root.ubifs /dev/nand0.root.ubi.root2
 ubidetach /dev/nand0.root
 """)
 }
-python do_env_append_phycore-emmc-am335x-1() {
+python do_env:append:phycore-emmc-am335x-1() {
     env_add(d, "boot/emmc2",
 """#!/bin/sh
 

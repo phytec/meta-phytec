@@ -13,7 +13,7 @@ PREFERRED_PROVIDER_virtual/bootloader ?= "u-boot"
 SPL_BINARY = "spl/u-boot-spl-dtb.bin"
 
 # Install modules in initramfs and rootfs
-PACKAGE_INSTALL_append = " kernel-modules"
+PACKAGE_INSTALL:append = " kernel-modules"
 
 SERIAL_CONSOLES = "115200;ttyS2"
 
@@ -21,7 +21,7 @@ SERIAL_CONSOLES = "115200;ttyS2"
 IMAGE_CLASSES += "wic-helper"
 EXTERNAL_KERNEL_DEVICETREE ??= ""
 IMAGE_BOOT_FILES = "zImage;linuximage oftree ${KERNEL_DEVICETREE} ${EXTERNAL_KERNEL_DEVICETREE}"
-WKS_FILES_rk3288 ?= "rk3288-sdimage.wks"
+WKS_FILES:rk3288 ?= "rk3288-sdimage.wks"
 WKS_BOOTIMAGESIZE ?= "20"
 
 # default images to build

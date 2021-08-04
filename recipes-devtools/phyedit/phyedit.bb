@@ -19,6 +19,6 @@ do_install() {
 	install -m 0755 phyedit ${D}${bindir}
 }
 
-FILES_${PN} = "${bindir}"
+FILES:${PN} = "${bindir}"
 
 COMPATIBLE_MACHINE = "ti33x"

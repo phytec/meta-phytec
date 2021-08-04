@@ -1,6 +1,6 @@
-EXTRAPATHS_prepend := "${THISDIR}/barebox:"
+EXTRAPATHS:prepend := "${THISDIR}/barebox:"
 
-SRC_URI_append = " \
+SRC_URI:append = " \
     ${@bb.utils.contains('DISTRO_FEATURES', 'protectionshield','file://set-password.cfg', '', d)} \
 "
 
@@ -26,15 +26,15 @@ def set_shield_password(d):
     set_root_password(d,hashvalue)
 
 
-do_patch_append_shieldlow (){
+do_patch:append_shieldlow (){
     set_shield_password(d)
 }
 
-do_patch_append_shieldmedium (){
+do_patch:append_shieldmedium (){
     set_shield_password(d)
 }
 
-python do_patch_append_shieldhigh () {
+python do_patch:append_shieldhigh () {
     import binascii
     #random hash
     hashvalue = binascii.hexlify(os.urandom(64)).decode('ascii')

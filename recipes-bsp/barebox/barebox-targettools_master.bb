@@ -2,13 +2,13 @@ require barebox_${PV}.bb
 
 SUMMERY = "barebox userspace tools"
 PROVIDES = "${PN}"
-FILESEXTRAPATHS_prepend := "${THISDIR}/barebox/:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/barebox/:"
 
 PR = "${INC_PR}.0"
 
 export TARGETCFLAGS="${TARGET_CC_ARCH} ${TOOLCHAIN_OPTIONS} ${CFLAGS} ${LDFLAGS}"
 
-do_configure_append() {
+do_configure:append() {
     # Compile target tools for barebox
     kconfig_set BAREBOXENV_TARGET y
     kconfig_set BAREBOXCRC32_TARGET y
@@ -31,7 +31,7 @@ do_install () {
 
 PACKAGE_ARCH = "${TUNE_PKGARCH}"
 
-FILES_${PN} = "${base_sbindir}"
+FILES:${PN} = "${base_sbindir}"
 
 do_deploy () {
 }

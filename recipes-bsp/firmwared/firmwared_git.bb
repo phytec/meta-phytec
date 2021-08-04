@@ -20,14 +20,14 @@ DEPENDS = "glib-2.0 systemd"
 
 inherit pkgconfig autotools systemd
 
-SYSTEMD_SERVICE_${PN} = "firmwared.service"
+SYSTEMD_SERVICE:${PN} = "firmwared.service"
 
-do_configure_prepend() {
+do_configure:prepend() {
     ( cd ${S}
     ${S}/autogen.sh )
 }
 
-do_install_append() {
+do_install:append() {
     install -d ${D}${systemd_unitdir}/system
     install -m 0644 ${WORKDIR}/firmwared.service ${D}${systemd_unitdir}/system
     sed -i -e 's,@BINDIR@,${bindir},g' ${D}${systemd_unitdir}/system/firmwared.service

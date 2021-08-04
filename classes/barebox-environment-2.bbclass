@@ -7,8 +7,8 @@
 ENV_VERBOSE ??= "0"
 
 python do_env() {
-    # Here add your env_add() and env_rm() calls via do_env_append or
-    # do_env_prepend. Examples:
+    # Here add your env_add() and env_rm() calls via do_env:append or
+    # do_env:prepend. Examples:
     #    env_add(d, "nv/linux.bootargs.rootfs", "rootwait ro fsck.repair=yes\n")
     #    env_rm(d, "nv/allow_color")
 }
@@ -16,7 +16,7 @@ addtask env after do_patch before do_env_write
 
 # BBClass internal function code:
 
-do_configure_append() {
+do_configure:append() {
     # Add environment directory
     kconfig_set DEFAULT_ENVIRONMENT_PATH "\".env-extra\""
 }

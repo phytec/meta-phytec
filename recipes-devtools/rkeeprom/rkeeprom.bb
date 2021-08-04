@@ -9,13 +9,13 @@ SRC_URI = "file://rkeeprom.py"
 
 S = "${WORKDIR}"
 
-RDEPENDS_${PN} = "python3-core python3-smbus2"
+RDEPENDS:${PN} = "python3-core python3-smbus2"
 
 do_install() {
 	install -d ${D}${bindir}
 	install -m 0755 rkeeprom.py ${D}${bindir}
 }
 
-FILES_${PN} = "${bindir}"
+FILES:${PN} = "${bindir}"
 
 COMPATIBLE_MACHINE = "rk3288"

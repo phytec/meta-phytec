@@ -25,6 +25,6 @@ do_install() {
 	cp -r *.bin ${D}${nonarch_base_libdir}/firmware/edid/
 }
 
-FILES_${PN} += " \
+FILES:${PN} += " \
 	${nonarch_base_libdir}/firmware/ \
 "

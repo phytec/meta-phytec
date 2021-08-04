@@ -45,14 +45,14 @@ set_autoboot_password_random() {
     patch_enable_password "$(head -c 64 /dev/urandom | tr -d '\0')"
 }
 
-do_patch_append_shieldlow () {
+do_patch:append_shieldlow () {
     bb.build.exec_func("set_autoboot_password_root", d)
 }
 
-do_patch_append_shieldmedium () {
+do_patch:append_shieldmedium () {
     bb.build.exec_func("set_autoboot_password_root", d)
 }
 
-do_patch_append_shieldhigh() {
+do_patch:append_shieldhigh() {
     bb.build.exec_func("set_autoboot_password_random", d)
 }

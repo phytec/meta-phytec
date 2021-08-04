@@ -20,7 +20,7 @@ inherit tune_features_check
 REQUIRED_TUNE_FEATURES = "arm vfp thumb callconvention-hard"
 
 TARGET_PRODUCT_omap-a15 = "jacinto6evm"
-TARGET_PRODUCT_ti33x = "ti335x"
+TARGET_PRODUCT:ti33x = "ti335x"
 TARGET_PRODUCT_ti43x = "ti437x"
 
 INITSCRIPT_NAME = "rc.pvr"
@@ -32,21 +32,21 @@ PR = "r32"
 PROVIDES += "virtual/egl virtual/libgles1 virtual/libgles2 omap5-sgx-ddk-um-linux"
 
 DEPENDS += "libdrm udev libgbm wayland libffi"
-RDEPENDS_${PN} += "libdrm libudev libgbm wayland libffi libdrm-omap"
+RDEPENDS:${PN} += "libdrm libudev libgbm wayland libffi libdrm-omap"
 
-RPROVIDES_${PN} = "libegl libgles1 libgles2 omap5-sgx-ddk-um-linux"
-RPROVIDES_${PN}-dev = "libegl-dev libgles1-dev libgles2-dev omap5-sgx-ddk-um-linux-dev"
-RPROVIDES_${PN}-dbg = "libegl-dbg libgles1-dbg libgles2-dbg omap5-sgx-ddk-um-linux-dbg"
+RPROVIDES:${PN} = "libegl libgles1 libgles2 omap5-sgx-ddk-um-linux"
+RPROVIDES:${PN}-dev = "libegl-dev libgles1-dev libgles2-dev omap5-sgx-ddk-um-linux-dev"
+RPROVIDES:${PN}-dbg = "libegl-dbg libgles1-dbg libgles2-dbg omap5-sgx-ddk-um-linux-dbg"
 
-RPROVIDES_${PN} += "libGLESv2.so.1"
+RPROVIDES:${PN} += "libGLESv2.so.1"
 
-RREPLACES_${PN} = "libegl libgles1 libgles2 omap5-sgx-ddk-um-linux"
-RREPLACES_${PN}-dev = "libegl-dev libgles1-dev libgles2-dev omap5-sgx-ddk-um-linux-dev"
-RREPLACES_${PN}-dbg = "libegl-dbg libgles1-dbg libgles2-dbg omap5-sgx-ddk-um-linux-dbg"
+RREPLACES:${PN} = "libegl libgles1 libgles2 omap5-sgx-ddk-um-linux"
+RREPLACES:${PN}-dev = "libegl-dev libgles1-dev libgles2-dev omap5-sgx-ddk-um-linux-dev"
+RREPLACES:${PN}-dbg = "libegl-dbg libgles1-dbg libgles2-dbg omap5-sgx-ddk-um-linux-dbg"
 
-RCONFLICTS_${PN} = "libegl libgles1 libgles2 omap5-sgx-ddk-um-linux"
-RCONFLICTS_${PN}-dev = "libegl-dev libgles1-dev libgles2-dev omap5-sgx-ddk-um-linux-dev"
-RCONFLICTS_${PN}-dbg = "libegl-dbg libgles1-dbg libgles2-dbg omap5-sgx-ddk-um-linux-dbg"
+RCONFLICTS:${PN} = "libegl libgles1 libgles2 omap5-sgx-ddk-um-linux"
+RCONFLICTS:${PN}-dev = "libegl-dev libgles1-dev libgles2-dev omap5-sgx-ddk-um-linux-dev"
+RCONFLICTS:${PN}-dbg = "libegl-dbg libgles1-dbg libgles2-dbg omap5-sgx-ddk-um-linux-dbg"
 
 S = "${WORKDIR}/git"
 
@@ -62,21 +62,21 @@ do_install () {
     chown -R root.root ${D}
 }
 
-FILES_${PN} =  "${bindir}/*"
-FILES_${PN} += " ${libdir}/*"
-FILES_${PN} +=  "${includedir}/*"
-FILES_${PN} +=  "${sysconfdir}/*"
+FILES:${PN} =  "${bindir}/*"
+FILES:${PN} += " ${libdir}/*"
+FILES:${PN} +=  "${includedir}/*"
+FILES:${PN} +=  "${sysconfdir}/*"
 
 PACKAGES =+ "${PN}-plugins"
-FILES_${PN}-plugins = "${libdir}/libsrv_init.so ${libdir}/libsrv_um.so ${libdir}/libglslcompiler.so ${libdir}/libPVRScopeServices.so ${libdir}/libGLESv2.so ${libdir}/libGLES_CM.so ${libdir}/libpvrDRMWSEGL.so  ${libdir}/libpvrGBMWSEGL.so  ${libdir}/libpvrws_WAYLAND.so"
-RDEPENDS_${PN} += "${PN}-plugins"
+FILES:${PN}-plugins = "${libdir}/libsrv_init.so ${libdir}/libsrv_um.so ${libdir}/libglslcompiler.so ${libdir}/libPVRScopeServices.so ${libdir}/libGLESv2.so ${libdir}/libGLES_CM.so ${libdir}/libpvrDRMWSEGL.so  ${libdir}/libpvrGBMWSEGL.so  ${libdir}/libpvrws_WAYLAND.so"
+RDEPENDS:${PN} += "${PN}-plugins"
 
-ALLOW_EMPTY_${PN}-plugins = "1"
+ALLOW_EMPTY:${PN}-plugins = "1"
 
 INHIBIT_PACKAGE_STRIP = "1"
 INHIBIT_SYSROOT_STRIP = "1"
 
-INSANE_SKIP_${PN} += "dev-so ldflags useless-rpaths already-stripped"
-INSANE_SKIP_${PN}-plugins = "dev-so"
+INSANE_SKIP:${PN} += "dev-so ldflags useless-rpaths already-stripped"
+INSANE_SKIP:${PN}-plugins = "dev-so"
 
 CLEANBROKEN = "1"

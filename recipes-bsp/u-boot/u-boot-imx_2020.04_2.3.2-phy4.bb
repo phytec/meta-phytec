@@ -8,7 +8,7 @@ include u-boot-secureboot.inc
 include u-boot-protectionshield.inc
 
 PROVIDES += "u-boot"
-DEPENDS_append = " python dtc-native bison-native"
+DEPENDS:append = " python dtc-native bison-native"
 
 LICENSE = "GPLv2+"
 LIC_FILES_CHKSUM = "file://Licenses/gpl-2.0.txt;md5=b234ee4d69f5fce4486a80fdaf4a4263"
@@ -23,7 +23,7 @@ S = "${WORKDIR}/git"
 
 BOOT_TOOLS = "imx-boot-tools"
 
-do_deploy_append_mx8m () {
+do_deploy:append:mx8m () {
     # Deploy the u-boot-nodtb.bin and fsl-imx8mq-XX.dtb, to be packaged in boot binary by imx-boot
     if [ -n "${UBOOT_CONFIG}" ]
     then
@@ -56,4 +56,4 @@ COMPATIBLE_MACHINE .= "|phygate-tauri-l-imx8mm-2"
 COMPATIBLE_MACHINE .= "|phyboard-pollux-imx8mp-2"
 COMPATIBLE_MACHINE .= ")$"
 
-UBOOT_NAME_mx8 = "u-boot-${MACHINE}.bin-${UBOOT_CONFIG}"
+UBOOT_NAME:mx8 = "u-boot-${MACHINE}.bin-${UBOOT_CONFIG}"

@@ -1,11 +1,11 @@
 require barebox_${PV}.bb
 require barebox-ipl.inc
 
-SRC_URI_append = " file://netboot.cfg"
+SRC_URI:append = " file://netboot.cfg"
 
 PR = "${INC_PR}.1"
 
-do_deploy_append () {
+do_deploy:append () {
     # deploy spi boot images
     spiimg=$(echo ${BAREBOX_IPL_BIN} | sed 's/.img/.spi.img/')
     if [ -e ${B}/$spiimg ] ; then

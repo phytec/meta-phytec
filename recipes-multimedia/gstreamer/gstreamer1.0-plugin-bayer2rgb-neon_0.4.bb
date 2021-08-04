@@ -21,5 +21,5 @@ inherit pkgconfig autotools
 
 DEPENDS += "bayer2rgb-neon gstreamer1.0-plugins-base gstreamer1.0"
 
-FILES_${PN} += "${libdir}/gstreamer-*/*.so"
-FILES_${PN}-dbg += "${libdir}/gstreamer-*/.debug"
+FILES:${PN} += "${libdir}/gstreamer-*/*.so"
+FILES:${PN}-dbg += "${libdir}/gstreamer-*/.debug"

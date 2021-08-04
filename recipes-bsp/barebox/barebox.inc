@@ -11,11 +11,11 @@ PROVIDES = "virtual/bootloader"
 # Increase INC_PR everytime the include file is changed.
 INC_PR = "r7"
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/barebox:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/barebox:"
 SRC_URI = "http://barebox.org/download/barebox-${PV}.tar.bz2"
 PATCHTOOL = "git"
 
-SRC_URI_append = " \
+SRC_URI:append = " \
     ${@oe.utils.conditional('DEBUG_BUILD','1','file://debugging.cfg','',d)} \
 "
 
@@ -24,7 +24,7 @@ inherit kconfig
 
 # Barebox doesn't seperate arm 32bit and 64bit. So we have to set
 # ARCH to arm for 64bit.
-ARCH_aarch64 = "arm"
+ARCH:aarch64 = "arm"
 
 # verbose build 0/1
 VERBOSE_BUILD ?= "0"
@@ -39,7 +39,7 @@ BAREBOX_IMAGE_NAME ?= "barebox-${MACHINE}-${PKGV}-${PKGR}${IMAGE_VERSION_SUFFIX}
 BAREBOX_IMAGE_NAME[vardepsexclude] += "IMAGE_VERSION_SUFFIX"
 BAREBOX_BIN_LINK_NAME ?= "barebox.bin"
 
-do_configure_append() {
+do_configure:append() {
     # Don't compile target tools for barebox here
     kconfig_set BAREBOXENV_TARGET n
     kconfig_set BAREBOXCRC32_TARGET n
@@ -66,7 +66,7 @@ do_install[prefuncs] += "package_get_auto_pr"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
-FILES_${PN} = "${base_bootdir}"
+FILES:${PN} = "${base_bootdir}"
 
 do_deploy () {
     bbnote "Deploying barebox"

@@ -2,7 +2,7 @@
 BAREBOX_BINARY ??= "barebox.bin"
 WKS_BOOTIMAGESIZE ??= "20"
 
-WICVARS_append = " BAREBOX_BINARY IMX_BOOT_SEEK WKS_BOOTIMAGESIZE"
+WICVARS:append = " BAREBOX_BINARY IMX_BOOT_SEEK WKS_BOOTIMAGESIZE"
 
 do_image_wic[depends] += "\
     dosfstools-native:do_populate_sysroot \
@@ -11,12 +11,12 @@ do_image_wic[depends] += "\
     virtual/bootloader:do_deploy \
 "
 
-IMAGE_CMD_wic_append () {
+IMAGE_CMD:wic:append () {
 	mv "$out${IMAGE_NAME_SUFFIX}.wic" "$out${IMAGE_NAME_SUFFIX}.sdcard"
 	ln -fs "${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.sdcard" "${IMGDEPLOYDIR}/${IMAGE_LINK_NAME}.sdcard"
 }
 
-IMAGE_CMD_emmc () {
+IMAGE_CMD:emmc () {
 	if [ -e ${IMGDEPLOYDIR}/${IMAGE_NAME}.rootfs.sdcard ]; then
 		SDIMG=${IMGDEPLOYDIR}/${IMAGE_NAME}.rootfs.sdcard
 	else

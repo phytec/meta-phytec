@@ -1,10 +1,10 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/barebox:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/barebox:"
 
-SRC_URI_append_secureboot = " \
+SRC_URI:append:secureboot = " \
         file://dynamic-config.cfg \
 "
 
-DEPENDS_append_secureboot = " bison-native nxp-cst-native"
+DEPENDS:append:secureboot = " bison-native nxp-cst-native"
 
 BAREBOX_BIN_SIGNED ?= "images/${BAREBOX_BASE_BIN}-s.img"
 BAREBOX_BIN_SIGNEDUSB ?= "images/${BAREBOX_BASE_BIN}-us.img"
@@ -100,7 +100,7 @@ def check_bootloader_keyring(d):
     if ((len(shasumSRK) >0) and (shasumSRK.split(' ',1)[0] == "0d5dbc6ed8b0a55414648b19727e217453c54d1527cef3a62784ae818c9777e7")):
         bb.warn("!! CRITICAL SECURITY WARNING: You're using Phytec's Development Keyring for Secure Boot in the bootloader. Please create your own!!")
 
-do_patch_append_secureboot() {
+do_patch:append:secureboot() {
     import os
     import subprocess
 
@@ -153,7 +153,7 @@ do_patch_append_secureboot() {
 python do_create_dynamic_dtree(){
 }
 
-python do_create_dynamic_dtree_append_secureboot (){
+python do_create_dynamic_dtree:append:secureboot (){
     import os
 
     pathDD = d.getVar("WORKDIR", True)
@@ -184,7 +184,7 @@ do_create_dynamic_dtree[depends] += "\
 "
 addtask do_create_dynamic_dtree before do_configure after do_patch
 
-do_install_append_secureboot () {
+do_install:append:secureboot () {
     if [ "${PN}" = "barebox" ] ; then
         bbnote "Installing signed barebox image on target rootfs"
         install ${B}/${BAREBOX_BIN_SIGNED} ${D}${base_bootdir}/${BAREBOX_IMAGE_NAME}-s.bin
@@ -194,7 +194,7 @@ do_install_append_secureboot () {
     fi
 }
 
-do_deploy_append_secureboot () {
+do_deploy:append:secureboot () {
     if [ "${PN}" = "barebox" ] ; then
         bbnote "Deploying signed barebox"
         install -m 644 ${B}/${BAREBOX_BIN_SIGNED} ${DEPLOYDIR}/${BAREBOX_IMAGE_NAME}-s.bin

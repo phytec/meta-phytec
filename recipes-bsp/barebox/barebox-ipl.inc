@@ -9,7 +9,7 @@ do_env[noexec] = "1"
 do_env_write[noexec] = "1"
 
 # Set include folder explicitly, because ${PN} of IPL recipe is not "barebox".
-FILESEXTRAPATHS_prepend := "${THISDIR}/barebox/:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/barebox/:"
 
 # Pre Bootloader 
 BAREBOX_IPL_BIN ?= "barebox.bin"
@@ -23,8 +23,8 @@ do_install () {
 	install -m 644 ${B}/${BAREBOX_IPL_BIN} ${D}${base_bootdir}/${BAREBOX_IPL_IMAGE_NAME}.img
 	ln -sf ${BAREBOX_IPL_IMAGE_NAME}.img ${D}${base_bootdir}/${BAREBOX_IPL_BIN_LINK_NAME}
 }
-FILES_${PN} = ""
-FILES_${PN} = "${base_bootdir}"
+FILES:${PN} = ""
+FILES:${PN} = "${base_bootdir}"
 
 # Overwrites do_deploy in barebox.inc
 do_deploy () {

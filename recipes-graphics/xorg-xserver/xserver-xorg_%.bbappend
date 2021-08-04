@@ -1,7 +1,7 @@
 # Avoid dependency virtual/gl when buliding core-image-sato
-PACKAGECONFIG_remove_imx = "dri"
-PACKAGECONFIG_remove_imx = "glx"
-PACKAGECONFIG_remove_ti33x = "dri"
-PACKAGECONFIG_remove_ti33x = "glx"
-PACKAGECONFIG_remove_rk3288 = "dri"
-PACKAGECONFIG_remove_rk3288 = "glx"
+PACKAGECONFIG:remove:imx = "dri"
+PACKAGECONFIG:remove:imx = "glx"
+PACKAGECONFIG:remove:ti33x = "dri"
+PACKAGECONFIG:remove:ti33x = "glx"
+PACKAGECONFIG:remove:rk3288 = "dri"
+PACKAGECONFIG:remove:rk3288 = "glx"

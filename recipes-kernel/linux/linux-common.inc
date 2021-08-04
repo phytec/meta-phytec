@@ -10,8 +10,8 @@ CVE_VERSION = "${@d.getVar("PV").split('-')[0]}"
 inherit kernel
 inherit kconfig
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/linux-common:"
-SRC_URI_append = " \
+FILESEXTRAPATHS:prepend := "${THISDIR}/linux-common:"
+SRC_URI:append = " \
   ${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'file://lxc.cfg', '', d)} \
   ${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'file://docker.cfg', '', d)} \
   ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'file://systemd.cfg', '', d)} \
@@ -60,7 +60,7 @@ def get_oftree(d):
 
 KERNEL_IMAGE_NAME = "${KERNEL_IMAGETYPE}-${PN}-${PKGV}-${PKGR}-${MACHINE}${IMAGE_VERSION_SUFFIX}"
 FIRST_DTS = "${@get_oftree(d)}"
-do_deploy_append() {
+do_deploy:append() {
     install -m 644 ${B}/.config ${DEPLOYDIR}/${KERNEL_IMAGE_NAME}.config
     ln -sf ${KERNEL_IMAGE_NAME}.config ${DEPLOYDIR}/${KERNEL_IMAGETYPE}.config
     if [ -z "${EXTERNAL_KERNEL_DEVICETREE}" ]; then

@@ -11,10 +11,10 @@ PREFERRED_PROVIDER_virtual/bootloader ?= "barebox"
 PREFERRED_PROVIDER_virtual/kernel ?= "linux-mainline"
 KERNEL_IMAGETYPE ?= "zImage"
 # Install modules in initramfs and roofs
-PACKAGE_INSTALL_append = " kernel-modules"
+PACKAGE_INSTALL:append = " kernel-modules"
 
 # dont install kernelimage to rootfs
-RDEPENDS_${KERNEL_PACKAGE_NAME}-base = ""
+RDEPENDS:${KERNEL_PACKAGE_NAME}-base = ""
 
 # XServer
 PREFERRED_PROVIDER_virtual/xserver ?= "xserver-xorg"
@@ -38,12 +38,12 @@ MACHINE_FEATURES = "apm usbgadget usbhost vfat caam"
 IMAGE_CLASSES += "wic-helper"
 EXTERNAL_KERNEL_DEVICETREE ??= ""
 IMAGE_BOOT_FILES = "zImage oftree ${KERNEL_DEVICETREE} ${EXTERNAL_KERNEL_DEVICETREE}"
-IMAGE_BOOT_FILES_secureboot = "fitImage"
+IMAGE_BOOT_FILES:secureboot = "fitImage"
 BAREBOX_BINARY = "barebox.bin"
-BAREBOX_BINARY_secureboot = "barebox-s.bin"
-WKS_FILES_mx6 ?= "imx6-sdimage.wks"
+BAREBOX_BINARY:secureboot = "barebox-s.bin"
+WKS_FILES:mx6 ?= "imx6-sdimage.wks"
 WKS_BOOTIMAGESIZE ?= "20"
-WKS_BOOTIMAGESIZE_secureboot ?= "90"
+WKS_BOOTIMAGESIZE:secureboot ?= "90"
 
 # default images to build
 IMAGE_FSTYPES ?= "tar.gz wic ubifs"

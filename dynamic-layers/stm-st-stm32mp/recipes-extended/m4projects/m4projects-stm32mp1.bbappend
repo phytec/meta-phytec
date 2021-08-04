@@ -1,4 +1,4 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 GIT_URL = "git://git.phytec.de/STM32CubeMP1"
 BRANCH = "1.3.0-phy"

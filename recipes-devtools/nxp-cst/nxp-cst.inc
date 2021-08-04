@@ -14,5 +14,5 @@ do_install() {
     install -m 0755 ${B}/${NXP_CST_BASE_PATH}/keys/hab4_pki_tree.sh ${D}${bindir}/hab4_pki_tree.sh
 }
 
-FILES_${PN} = "${bindir}"
+FILES:${PN} = "${bindir}"
 BBCLASSEXTEND = "native"

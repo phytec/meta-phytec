@@ -15,6 +15,6 @@ SRC_URI = "http://www.pengutronix.de/software/memedit/downloads/memedit-0.9.tar.
 SRC_URI[md5sum] = "fd8eb827c3072baf8678d9d33e5d6458"
 SRC_URI[sha256sum] = "3ec778338d0d4f2351ad291b607ea1a4ac2391763cbf7870ff5357305c4a86ae"
 
-do_configure_prepend () {
+do_configure:prepend () {
 	( cd ${S}; ${S}/bootstrap )
 }

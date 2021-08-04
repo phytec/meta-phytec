@@ -25,5 +25,5 @@ do_install () {
         install -m 0644 configs/* ${D}${bindir}/${BPN}/configs
 }
 
-RDEPENDS_${PN} = "python3-pyyaml"
-RDEPENDS_${PN} += "python3-crc8"
+RDEPENDS:${PN} = "python3-pyyaml"
+RDEPENDS:${PN} += "python3-crc8"

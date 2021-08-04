@@ -11,7 +11,7 @@ FLASHLAYOUT_CONFIG_LABELS_deleteall = "phycore"
 # -----------------------------------------------------------------------------
 # Define label types for each config
 # -----------------------------------------------------------------------------
-FLASHLAYOUT_TYPE_LABELS_deleteall_phycore = "${STM32MP_DT_FILES_PHYCORE}"
+FLASHLAYOUT_TYPE_LABELS_deleteall:phycore = "${STM32MP_DT_FILES_PHYCORE}"
 
 # -----------------------------------------------------------------------------
 # Define partitions to consider for flashlayout file generation
@@ -43,4 +43,4 @@ FLASHLAYOUT_PARTITION_OFFSET_deleteall_emmcboot1 = "${DEVICE_START_OFFSET_BOOT1_
 # all memory devices on board. There are no specific 'deleteall' bootloaders
 # so we need to manage specific override for FLASHLAYOUT_PROGRAMMER_SECTIONS binaries
 BOOTSCHEME_REPLACE = "${@'optee' if bb.utils.contains('BOOTSCHEME_LABELS', 'optee', True, False, d) and not bb.utils.contains('BOOTSCHEME_LABELS', 'trusted', True, False, d) else 'trusted'}"
-FLASHLAYOUT_PARTITION_REPLACE_PATTERNS_${STM32MP_SSBL1_NAME}-boot_append = " deleteall;${BOOTSCHEME_REPLACE}"
+FLASHLAYOUT_PARTITION_REPLACE_PATTERNS_${STM32MP_SSBL1_NAME}-boot:append = " deleteall;${BOOTSCHEME_REPLACE}"

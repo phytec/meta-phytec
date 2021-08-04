@@ -37,7 +37,7 @@ patch_ubootconfig () {
     sed -e 's/image=Image\\0/image=Image-signed\\0/g' -i ${S}/include/configs/phycore_*.h
 }
 
-do_patch_append_secureboot () {
+do_patch:append:secureboot () {
     bb.build.exec_func("patch_ubootconfig", d)
 }
 

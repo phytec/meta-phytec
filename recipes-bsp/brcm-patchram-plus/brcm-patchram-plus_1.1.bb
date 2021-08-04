@@ -13,7 +13,7 @@ S = "${WORKDIR}/brcm_patchram-brcm_patchram_plus_${PV}"
 
 CLEANBROKEN ="1"
 
-do_install_append() {
+do_install:append() {
 	install -d ${D}/usr/bin
 	install -m 755 brcm_patchram_plus ${D}/usr/bin
 }

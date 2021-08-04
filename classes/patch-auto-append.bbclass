@@ -3,8 +3,8 @@
 #
 #    # In a bbappend
 #    inherit patch-auto-append
-#    PATCH_AUTO_APPEND_DIRS_prepend := "${THISDIR}/${BPN}"
-#    FILESEXTRAPATHS_prepend := "${THISDIR}/${BPN}:"
+#    PATCH_AUTO_APPEND_DIRS:prepend := "${THISDIR}/${BPN}"
+#    FILESEXTRAPATHS:prepend := "${THISDIR}/${BPN}:"
 #
 # NOTES:
 #   - Use := instead of +=. Otherwise ${THISDIR} is not resolved to directory
@@ -32,4 +32,4 @@ def _list_patches_in_dirs(d):
 
     return " ".join(src_uri_patches)
 
-SRC_URI_append = " ${@_list_patches_in_dirs(d)}"
+SRC_URI:append = " ${@_list_patches_in_dirs(d)}"

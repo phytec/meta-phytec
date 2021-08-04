@@ -1,4 +1,4 @@
-IMAGE_CMD_emmc_append () {
+IMAGE_CMD:emmc:append () {
 	if [ -e ${EMMCIMG} ]; then
 		# copy the MLO to address 0x0 and keep the partition table
 		dd if=${DEPLOY_DIR_IMAGE}/${BAREBOX_IPL_BIN_LINK_NAME} of=${EMMCIMG} bs=446 count=1 conv=notrunc

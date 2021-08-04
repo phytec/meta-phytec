@@ -1,9 +1,9 @@
 inherit hab
 
-SRC_URI_append_secureboot = " file://csf_additional_images_template.txt \
+SRC_URI:append:secureboot = " file://csf_additional_images_template.txt \
                             "
 #value is not being set for mx8mp in meta-freescale, so set it here.
-UBOOT_ENTRYPOINT_mx8mp="0x40480000"
+UBOOT_ENTRYPOINT:mx8mp="0x40480000"
 LINUX_LOAD_ADDR="${UBOOT_ENTRYPOINT}"
 #true for most mx8*.
 DTB_LOAD_ADDR="0x48000000"
@@ -12,7 +12,7 @@ LINUX_IMAGE_PATH="${B}/${KERNEL_OUTPUT_DIR}/Image"
 LINUX_IMAGE_PATH_SIGNED="${B}/${KERNEL_OUTPUT_DIR}/Image-signed"
 DTBS_PATH="${B}/${KERNEL_OUTPUT_DIR}/dts/"
 
-DEPENDS_append_secureboot = " nxp-cst-native"
+DEPENDS:append:secureboot = " nxp-cst-native"
 
 CSF_TEMPLATE_PATH_ADDITIONAL="${WORKDIR}/csf_additional_images_template.txt"
 
@@ -101,7 +101,7 @@ python do_sign() {
         padding_fd.close()
 }
 
-do_deploy_append_secureboot() {
+do_deploy:append:secureboot() {
     if [ -f "${LINUX_IMAGE_PATH_SIGNED}" ] ; then
         base_name="${imageType}-${KERNEL_IMAGE_NAME}-signed"
         install -m 0644 "${LINUX_IMAGE_PATH_SIGNED}" "${DEPLOYDIR}/${base_name}.bin"

@@ -17,12 +17,12 @@
 #     inherit buildinfo
 #     require barebox.inc
 #
-#     FILESEXTRAPATHS_prepend := "${THISDIR}/defconfigs:${THISDIR}/[...]"
+#     FILESEXTRAPATHS:prepend := "${THISDIR}/defconfigs:${THISDIR}/[...]"
 #
 #     GIT_TAG = "v2014.11.0-phy2"
 #     GIT_URL = "git://git.phytec.de/${BPN}"
 #     SRC_URI = "${GIT_URL};branch=${BRANCH}"
-#     SRC_URI_append = " \
+#     SRC_URI:append = " \
 #         file://commonenv \
 #         file://environment \
 #     "
@@ -35,11 +35,11 @@
 #     inherit buildinfo
 #     require barebox.inc
 #
-#     FILESEXTRAPATHS_prepend := "${THISDIR}/defconfigs:${THISDIR}/[...]"
+#     FILESEXTRAPATHS:prepend := "${THISDIR}/defconfigs:${THISDIR}/[...]"
 #
 #     GIT_URL = "git://git.phytec.de/${BPN}"
 #     SRC_URI = "${GIT_URL};branch=${BRANCH}"
-#     SRC_URI_append = " \
+#     SRC_URI:append = " \
 #         file://commonenv \
 #         file://environment \
 #     "
@@ -80,7 +80,7 @@
 # But this is ok:
 #
 #     SRC_URI = "git://git@git.phytec.de/barebox;protocol=ssh;branch=${BRANCH}"
-#     SRC_URI_append = " file://no-default-env-compiled-in.cfg"
+#     SRC_URI:append = " file://no-default-env-compiled-in.cfg"
 #
 #
 # Some notes:
@@ -133,9 +133,9 @@ You now have two possible workflows for your changes:
 1. Work inside the git repository:
 Copy and paste the following snippet to your "local.conf":
 
-SRC_URI_pn-{PN} = "git:///${{HOME}}/git/{BPN};branch=${{BRANCH}}\"
-SRCREV_pn-{PN} = "${{AUTOREV}}"
-BRANCH_pn-{PN} = \"{branchname}\"
+SRC_URI:pn-{PN} = "git:///${{HOME}}/git/{BPN};branch=${{BRANCH}}\"
+SRCREV:pn-{PN} = "${{AUTOREV}}"
+BRANCH:pn-{PN} = \"{branchname}\"
 
 After that you can recompile and deploy the package with
 
@@ -150,8 +150,8 @@ externalsrc.bbclass. To use it copy and paste the following snippet to your
 "local.conf":
 
 INHERIT += "externalsrc"
-EXTERNALSRC_pn-{PN} = "${{HOME}}/git/{PN}"
-EXTERNALSRC_BUILD_pn-{PN} = "${{HOME}}/git/{PN}"
+EXTERNALSRC:pn-{PN} = "${{HOME}}/git/{PN}"
+EXTERNALSRC_BUILD:pn-{PN} = "${{HOME}}/git/{PN}"
 
 Note: All the compiling is done in the EXTERNALSRC directory. Everytime
 you build an Image, the package will be recompiled and build.

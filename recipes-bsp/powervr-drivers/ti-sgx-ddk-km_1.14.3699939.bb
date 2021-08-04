@@ -7,7 +7,7 @@ inherit module
 
 COMPATIBLE_MACHINE = "ti33x|ti43x|omap-a15"
 
-MACHINE_KERNEL_PR_append = "2"
+MACHINE_KERNEL_PR:append = "2"
 PR = "${MACHINE_KERNEL_PR}"
 
 INHIBIT_PACKAGE_STRIP = "1"
@@ -18,9 +18,9 @@ DEPENDS = "virtual/kernel"
 
 PROVIDES = "omapdrm-pvr"
 
-RPROVIDES_${PN} = "omapdrm-pvr"
-RREPLACES_${PN} = "omapdrm-pvr"
-RCONFLICTS_${PN} = "omapdrm-pvr"
+RPROVIDES:${PN} = "omapdrm-pvr"
+RREPLACES:${PN} = "omapdrm-pvr"
+RCONFLICTS:${PN} = "omapdrm-pvr"
 
 BRANCH = "ti-img-sgx/${PV}/k4.14"
 
@@ -36,7 +36,7 @@ S = "${WORKDIR}/git"
 SRCREV = "76da7d73976f0a5dc04fdc84a3af899d6c2b1fe2"
 
 TARGET_PRODUCT_omap-a15 = "jacinto6evm"
-TARGET_PRODUCT_ti33x = "ti335x"
+TARGET_PRODUCT:ti33x = "ti335x"
 TARGET_PRODUCT_ti43x = "ti437x"
 
 PARALLEL_MAKE = ""
@@ -44,7 +44,7 @@ PARALLEL_MAKE = ""
 EXTRA_OEMAKE += 'KERNELDIR="${STAGING_KERNEL_DIR}" TARGET_PRODUCT=${TARGET_PRODUCT}'
 
 
-do_compile_prepend() {
+do_compile:prepend() {
     cd ${S}/eurasia_km/eurasiacon/build/linux2/omap_linux
 }
 

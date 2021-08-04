@@ -20,7 +20,7 @@ PR = "${INC_PR}.0"
 
 SRCREV = "9688b49cd3bc0b61a019e8e1311236c9975a0777"
 
-python do_env_append() {
+python do_env:append() {
     env_add(d, "nv/allow_color", "false\n")
     env_add(d, "nv/linux.bootargs.base", "consoleblank=0\n")
     env_add(d, "nv/linux.bootargs.rootfs", "rootwait ro fsck.repair=yes\n")
@@ -42,7 +42,7 @@ fi
 """)
 }
 
-INTREE_DEFCONFIG_ti33x = "omap_defconfig"
+INTREE_DEFCONFIG:ti33x = "omap_defconfig"
 
 COMPATIBLE_MACHINE  = "^("
 COMPATIBLE_MACHINE .=  "beagleboneblack-1"
@@ -66,7 +66,7 @@ COMPATIBLE_MACHINE .= "|phycore-r2-am335x-6"
 COMPATIBLE_MACHINE .= "|phycore-emmc-am335x-1"
 
 
-INTREE_DEFCONFIG_mx6ul = "imx_v7_defconfig"
+INTREE_DEFCONFIG:mx6ul = "imx_v7_defconfig"
 
 COMPATIBLE_MACHINE .= "|phyboard-segin-imx6ul-2"
 COMPATIBLE_MACHINE .= "|phyboard-segin-imx6ul-3"

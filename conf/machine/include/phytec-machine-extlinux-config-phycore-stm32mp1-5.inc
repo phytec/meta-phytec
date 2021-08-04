@@ -17,19 +17,19 @@ UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG[phycore-stm32mp1-5] += "phycore-stm32mp1-5-m
 # Configure A7 examples labels
 # -----------------------------------------------------------------------------
 # Define MENU DESCRIPTION overrides for new A7 labels
-UBOOT_EXTLINUX_MENU_DESCRIPTION_phycore-stm32mp1-5-a7-examples = "phycore-stm32mp1-5-a7-examples"
+UBOOT_EXTLINUX_MENU_DESCRIPTION:phycore-stm32mp1-5-a7-examples = "phycore-stm32mp1-5-a7-examples"
 # Define FDT overrides for new A7 labels
-UBOOT_EXTLINUX_FDT_phycore-stm32mp1-5-a7-examples = "/phycore-stm32mp1-5-a7-examples.dtb"
+UBOOT_EXTLINUX_FDT:phycore-stm32mp1-5-a7-examples = "/phycore-stm32mp1-5-a7-examples.dtb"
 
 # -----------------------------------------------------------------------------
 # Configure M4 examples labels
 # -----------------------------------------------------------------------------
 # Define MENU DESCRIPTION overrides for new M4 labels
-UBOOT_EXTLINUX_MENU_DESCRIPTION_phycore-stm32mp1-5-m4-examples = "phycore-stm32mp1-5-m4-examples"
+UBOOT_EXTLINUX_MENU_DESCRIPTION:phycore-stm32mp1-5-m4-examples = "phycore-stm32mp1-5-m4-examples"
 # Define FDT overrides for new M4 labels
-UBOOT_EXTLINUX_FDT_phycore-stm32mp1-5-m4-examples = "/phycore-stm32mp1-5-m4-examples.dtb"
+UBOOT_EXTLINUX_FDT:phycore-stm32mp1-5-m4-examples = "/phycore-stm32mp1-5-m4-examples.dtb"
 
 # -----------------------------------------------------------------------------
 # Define FDT override for Default label
-UBOOT_EXTLINUX_FDT_phycore-stm32mp1-5 = "/phycore-stm32mp1-5.dtb"
+UBOOT_EXTLINUX_FDT:phycore-stm32mp1-5 = "/phycore-stm32mp1-5.dtb"
 # -----------------------------------------------------------------------------
