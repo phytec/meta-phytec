@@ -6,6 +6,7 @@ inherit python3native
 
 include u-boot-secureboot.inc
 include u-boot-protectionshield.inc
+include u-boot-rauc.inc
 
 PROVIDES += "u-boot"
 DEPENDS_append = " python dtc-native bison-native"
