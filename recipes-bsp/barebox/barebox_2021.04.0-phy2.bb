@@ -243,14 +243,6 @@ python do_env:append_phyboard-nunki-imx6() {
     env_add(d, "nv/linux.bootargs.fb", "imxdrm.legacyfb_depth=32\n");
 }
 
-python do_env:append:phyflex-imx6-4() {
-    env_add(d, "nv/linux.bootargs.cma", "cma=256M\n")
-}
-
-python do_env:append:phyboard-mira-imx6-4() {
-    env_add(d, "nv/linux.bootargs.cma", "cma=64M\n")
-}
-
 python do_env:append:phyboard-mira-imx6-6() {
     env_add(d, "config-expansions",
 """#!/bin/sh
@@ -372,10 +364,6 @@ of_property -s -f "/panel-lcd" compatible "edt,etm0700g0dh6"
 # imx6qdl-phytec-lcd: 3.5" display (AC167 / AC101)
 #of_property -s -f "/panel-lcd" compatible "edt,etm0350g0dh6"
 """)
-}
-
-python do_env:append:phyboard-mira-imx6-15() {
-    env_add(d, "nv/linux.bootargs.cma", "cma=64M\n")
 }
 
 #Enviroment changes for RAUC
@@ -586,6 +574,26 @@ python do_env:append:phyboard-segin-imx6ul-7() {
 python do_env:append:phyboard-segin-imx6ul-8() {
     env_rm_rauc_nand_boot_scripts(d)
     env_add(d, "nv/linux.bootargs.cma", "cma=128M\n")
+}
+
+#Reduce CMA size on phyboard-mira-imx6 machines with 256MiB of RAM
+python do_env:append:phyboard-mira-imx6() {
+    # Mira machine types 4 and 15 have only 256MiB of RAM, set CMA to 64MiB
+    if d.getVar("MACHINE") in ("phyboard-mira-imx6-4", "phyboard-mira-imx6-15"):
+        env_add(d, "nv/linux.bootargs.cma", "cma=64M\n")
+}
+
+#Reduce CMA size on phyflex-imx6 machines with less than 512MiB of RAM
+python do_env:append:phyflex-imx6() {
+    # phyFLEX machine types 5 and 8 have only 512MiB of RAM, set CMA to 128MiB
+    if d.getVar("MACHINE") in ("phyflex-imx6-5", "phyflex-imx6-8"):
+        env_add(d, "nv/linux.bootargs.cma", "cma=128M\n")
+    # phyFLEX machine type 9 has only 256MiB of RAM, set CMA to 64MiB
+    if "phyflex-imx6-9" in d.getVar("MACHINE"):
+        env_add(d, "nv/linux.bootargs.cma", "cma=64M\n")
+    # phyFLEX machine type 10 has only 128MiB of RAM, set CMA to 32MiB
+    if "phyflex-imx6-10" in d.getVar("MACHINE"):
+        env_add(d, "nv/linux.bootargs.cma", "cma=32M\n")
 }
 
 INTREE_DEFCONFIG = "imx_v7_defconfig"
