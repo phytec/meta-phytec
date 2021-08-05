@@ -5,7 +5,3 @@ PACKAGECONFIG_remove_ti33x = "dri"
 PACKAGECONFIG_remove_ti33x = "glx"
 PACKAGECONFIG_remove_rk3288 = "dri"
 PACKAGECONFIG_remove_rk3288 = "glx"
-
-FILESEXTRAPATHS_prepend := "${THISDIR}/xserver-xorg:"
-SRC_URI_append_mx6 = " file://0001-hw-xwayland-Makefile.am-fix-build-without-glx.patch"
-SRC_URI_append_mx6ul = " file://0001-hw-xwayland-Makefile.am-fix-build-without-glx.patch"
