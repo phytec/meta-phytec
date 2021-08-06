@@ -108,6 +108,14 @@ EXTRA_IMAGE_FEATURES += "debug-tweaks"
 # certificate location for signing bundles
 #CERT_PATH = "${TOPDIR}/../sources/meta-ampliphy/openssl-ca"
 
+# Boot the A/B system with RAUC by default using the bootchooser framework in
+# barebox. This option is especially useful when a device is using NAND as its
+# main flash storage as there is no autodetection for this. For eMMC devices,
+# you should not need to set this manually, as the decision whether to boot the
+# A/B system by default is made based on the WKS file name. If WKS_FILES
+# contains "rauc", this is turned on automatically.
+#DORAUCBOOT:pn-barebox = "1"
+
 ####################
 # QT configuration #
 ####################
