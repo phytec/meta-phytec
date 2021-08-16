@@ -15,7 +15,7 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=bbea815ee2795b2f4230826c0c6b8814"
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "ee3ea5d3a0f25c17ca7d843cfa3fcb544dc05a4a"
+SRCREV = "891c52f7140130da7c9546241a028d780b75714a"
 
 S = "${WORKDIR}/git"
 
