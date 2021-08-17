@@ -60,6 +60,9 @@ BB_DISKMON_DIRS ??= "\
 # This variable is ordering dependend.
 #IMAGE_FSTYPES = "tar.gz wic ubifs emmc"
 
+# To change the variable for any imx8 machine:
+#IMAGE_FSTYPES_mx8 = "tar.gz wic ubifs emmc"
+
 # Select a preconfigured A/B system setup for SD/eMMC images.
 #WKS_FILES_mx6 = "imx6-rauc-sdimage.wks"
 #WKS_FILES_mx6ul = "imx6-rauc-sdimage.wks"
