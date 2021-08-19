@@ -50,6 +50,7 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 COMPATIBLE_MACHINE = "^("
 COMPATIBLE_MACHINE .= "phyboard-polaris-imx8m-3"
+COMPATIBLE_MACHINE .= "|phyboard-polaris-imx8m-4"
 COMPATIBLE_MACHINE .= "|phyboard-polis-imx8mm-4"
 COMPATIBLE_MACHINE .= "|phyboard-polis-imx8mn-1"
 COMPATIBLE_MACHINE .= "|phygate-tauri-l-imx8mm-1"
