@@ -4,7 +4,7 @@ include conf/machine/include/soc-family.inc
 SOC_FAMILY .= "imx:mx6ul"
 
 DEFAULTTUNE ?= "cortexa7thf-neon-vfpv4"
-include conf/machine/include/tune-cortexa7.inc
+include conf/machine/include/arm/armv7a/tune-cortexa7.inc
 
 SERIAL_CONSOLES ?= "115200;ttymxc0"
 

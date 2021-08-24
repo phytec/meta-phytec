@@ -2,7 +2,7 @@
 DEFAULTTUNE ?= "cortexa9thf-neon"
 
 include conf/machine/include/phyimx6.inc
-include conf/machine/include/tune-cortexa9.inc
+include conf/machine/include/arm/armv7a/tune-cortexa9.inc
 
 SERIAL_CONSOLES ?= "115200;ttymxc3"
 
