@@ -69,11 +69,11 @@ BB_DISKMON_DIRS ??= "\
 #WKS_FILES:mx8m = "imx8m-rauc-sdimage.wks"
 
 # Turn on debugging options of the kernel
-DEBUG_BUILD:pn-linux-mainline = "1"
+#DEBUG_BUILD:pn-linux-mainline = "1"
 # Turn on debugging options of the imx kernel
-DEBUG_BUILD:pn-linux-imx = "1"
+#DEBUG_BUILD:pn-linux-imx = "1"
 # Turn on debugging options of the barebox
-DEBUG_BUILD:pn-barebox = "1"
+#DEBUG_BUILD:pn-barebox = "1"
 
 # Include kernel sources in SDK
 TOOLCHAIN_TARGET_TASK:append = " kernel-devsrc"
