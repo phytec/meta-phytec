@@ -428,6 +428,10 @@ PHY_EXPANSIONS += "${@bb.utils.contains('MACHINE_FEATURES', 'bluetooth', 'phyboa
 PHY_EXPANSIONS += "${@bb.utils.contains('MACHINE_FEATURES', 'bluetooth', 'phyboard-stm32mp1-peb-wlbt-05-bluetooth-usart1.dtbo', '', d)}"
 PHY_EXPANSIONS += "${@bb.utils.contains_any('MACHINE_FEATURES', 'wifi bluetooth', 'phyboard-stm32mp1-pi-hat-redbear.dtbo', '', d)}"
 
+# phyCAM-P
+PHY_EXPANSIONS += "phyboard-stm32mp1-phycam-vm010-bw.dtbo"
+PHY_EXPANSIONS += "phyboard-stm32mp1-phycam-vm010-col.dtbo"
+
 # DT overlay to enable RS485 at boot time
 PHY_EXPANSIONS += "phyboard-stm32mp1-rs485.dtbo"
 
