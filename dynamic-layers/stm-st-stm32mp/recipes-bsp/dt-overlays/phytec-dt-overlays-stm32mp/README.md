@@ -1,7 +1,7 @@
 Introduction
 ------------
 
-Device tree overlays are used to enable/disable phyBOARD-Sargas expansion boards.
+Device tree overlays are used to enable/disable phyBOARD-Sargas expansion boards and accessories.
 DT Overlays are applied on u-boot via boot.scr script.
 
 
@@ -11,9 +11,9 @@ The following device tree overlays are located in /boot/overlays directory.
 
 # Displays (select only one display interface at a time)
 phyboard-stm32mp1-peb-av02-lcd.dtbo
-phyboard-stm32mp1-peb-av01-hdmi.dtbo - HDMI feature enabled
-phyboard-stm32mp1-dsi-lcd-mb1407.dtbo - MIPI-DSI feature enabled
-phyboard-stm32mp1-dsi-rpi-official-display.dtbo - MIPI-DSI feature enabled
+phyboard-stm32mp1-peb-av01-hdmi.dtbo - if HDMI feature enabled
+phyboard-stm32mp1-dsi-lcd-mb1407.dtbo - if MIPI-DSI feature enabled
+phyboard-stm32mp1-dsi-rpi-official-display.dtbo - if MIPI-DSI feature enabled
 
 # Configurations examples for the specific connectors
 phyboard-stm32mp1-pi-hat-extension.dtbo
@@ -22,13 +22,17 @@ phyboard-stm32mp1-motor-control.dtbo - not compatible with PEB-AV01/02
 phyboard-stm32mp1-motor-control-m4.dtbo - not compatible with PEB-AV01/02
 
 # Wireless expansions
-phyboard-stm32mp1-peb-wlbt-05-wlan.dtbo - WIFI feature enabled
-phyboard-stm32mp1-peb-wlbt-05-bluetooth-usart3.dtbo - Bluetooth feature enabled - no CAN transceiver and no 2nd debug FTDI available
-phyboard-stm32mp1-peb-wlbt-05-bluetooth-usart1.dtbo - Bluetooth feature enabled - no RS232 transceiver available
-phyboard-stm32mp1-pi-hat-redbear.dtbo - WIFI or Bluetooth feature enabled
+phyboard-stm32mp1-peb-wlbt-05-wlan.dtbo - if WIFI feature enabled
+phyboard-stm32mp1-peb-wlbt-05-bluetooth-usart3.dtbo - if Bluetooth feature enabled - no CAN transceiver and no 2nd debug FTDI available
+phyboard-stm32mp1-peb-wlbt-05-bluetooth-usart1.dtbo - if Bluetooth feature enabled - no RS232 transceiver available
+phyboard-stm32mp1-pi-hat-redbear.dtbo - if WIFI or Bluetooth feature enabled
+
+# phyCAM-P
+phyboard-stm32mp1-phycam-vm010-bw.dtbo
+phyboard-stm32mp1-phycam-vm010-col.dtbo
 
 # DT overlay to enable RS485 at boot time
-"phyboard-stm32mp1-rs485.dtbo"
+phyboard-stm32mp1-rs485.dtbo
 
 
 How to apply Devicetree Overlays
