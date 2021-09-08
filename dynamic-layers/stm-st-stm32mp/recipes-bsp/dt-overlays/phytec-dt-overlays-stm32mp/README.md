@@ -28,8 +28,10 @@ phyboard-stm32mp1-peb-wlbt-05-bluetooth-usart1.dtbo - if Bluetooth feature enabl
 phyboard-stm32mp1-pi-hat-redbear.dtbo - if WIFI or Bluetooth feature enabled
 
 # phyCAM-P
-phyboard-stm32mp1-phycam-vm010-bw.dtbo
-phyboard-stm32mp1-phycam-vm010-col.dtbo
+phyboard-stm32mp1-phycam-vm010-bw.dtbo          - phyCAM-P VM-010 B&W connected with 8bits data bus
+phyboard-stm32mp1-phycam-vm010-col.dtbo         - phyCAM-P VM-010 COL connected with 8bits data bus
+phyboard-stm32mp1-phycam-vm010-bw-10bits.dtbo   - phyCAM-P VM-010 B&W connected with 10bits data bus
+phyboard-stm32mp1-phycam-vm010-col-10bits.dtbo  - phyCAM-P VM-010 COL connected with 10bits data bus
 
 # DT overlay to enable RS485 at boot time
 phyboard-stm32mp1-rs485.dtbo
