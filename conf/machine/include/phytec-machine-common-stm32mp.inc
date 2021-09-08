@@ -437,6 +437,8 @@ PHY_EXPANSIONS += "${@bb.utils.contains_any('MACHINE_FEATURES', 'wifi bluetooth'
 # phyCAM-P
 PHY_EXPANSIONS += "phyboard-stm32mp1-phycam-vm010-bw.dtbo"
 PHY_EXPANSIONS += "phyboard-stm32mp1-phycam-vm010-col.dtbo"
+PHY_EXPANSIONS += "phyboard-stm32mp1-phycam-vm010-bw-10bits.dtbo"
+PHY_EXPANSIONS += "phyboard-stm32mp1-phycam-vm010-col-10bits.dtbo"
 
 # DT overlay to enable RS485 at boot time
 PHY_EXPANSIONS += "phyboard-stm32mp1-rs485.dtbo"
