@@ -22,6 +22,42 @@ def execcmd(name):
     result = subprocess.run(cmd)
     return result.returncode
 
+def create_csf_template():
+    return (
+    '''[Header]
+    Version = 4.3
+    Hash Algorithm = sha256
+    Engine = CAAM
+    Engine Configuration = 0
+    Certificate Format = X509
+    Signature Format = CMS'''
+    '\n\n'
+    '''[Install SRK]
+        # Index of the key location in the SRK table to be installed
+        File = "{SRK_TABLE_PATH}"
+        Source index = 0'''
+    '\n\n'
+    '''[Install CSFK]
+        # Key used to authenticate the CSF data
+        File = "{INSTALL_CSFK_PATH}"'''
+    '\n\n'
+    '''[Authenticate CSF]'''
+    '\n\n'
+    '''[Install Key]
+        # Key slot index used to authenticate the key to be installed
+        Verification index = 0
+        # Target key slot in HAB key store where key will be installed
+        Target index = 2
+        # Key to install
+        File = "{INSTALL_KEY_PATH}"'''
+    '\n\n'
+    '''[Authenticate Data]
+        # Key slot index used to authenticate the image data
+        Verification index = 2
+        # Authenticate Start Address, Offset, Length and file
+        Blocks = {HAB_BLOCKS}
+    ''')
+
 
 # Helper that formats the blocks in the passed list so they can be passed to NXP's cst tool
 def make_csf_hab_block(blocks: list):
