@@ -38,63 +38,15 @@ python do_sign() {
             bb.fatal('Failed to copy Linux image while trying to create signature')
 
         image_header_size = get_linux_image_size(input_image_path)
-        padding_fd = open(output_image_path, 'ab')
-        current_pos = padding_fd.tell()
-        padding_remaining = image_header_size - current_pos
-        for i in range(0, padding_remaining):
-            padding_fd.write(b'\x00')
-
-        if padding_fd.tell() != image_header_size:
-            bb.fatal('Error: Unexpected position of file descriptor while'
-                     ' trying to sign Linux image')
-
-        # generate ivt for padded image
-        headermagic = 0x412000D1
-        loadaddr = linux_addr
-        # self ptr to the IVT. it follows the paddded image immediately, so we know the address easily
-        selfptr = loadaddr+image_header_size
-        # csf follows ivt immediately. ivt is always 32 bytes, so just add it
-        csfptr = selfptr+32
-        ivt = gen_ivt(headermagic, loadaddr, 0x0, 0x0, 0x0, selfptr, csfptr, 0x0)
-
-        padding_fd.write(ivt)
-        padding_fd.flush()
-        padded_ivt_size = padding_fd.tell()  # size in bytes of our image
-
         dtb_size = os.stat(dtb_image_path).st_size
+        # hab block dtb
+        dtbblock = dict()
+        dtbblock['addr'] = dtb_addr
+        dtbblock['offset'] = 0x00
+        dtbblock['size'] = dtb_size
+        dtbblock['filename'] = dtb_image_path
 
-        # hab block linux
-        linuxblock = dict()
-        linuxblock['addr'] = linux_addr
-        linuxblock['offset'] = 0x00
-        linuxblock['size'] = padded_ivt_size
-        linuxblock['filename'] = output_image_path
-
-        # hab block fdt
-        fdtblock = dict()
-        fdtblock['addr'] = dtb_addr
-        fdtblock['offset'] = 0x00
-        fdtblock['size'] = dtb_size
-        fdtblock['filename'] = dtb_image_path
-
-        workdir = d.getVar('WORKDIR', True)
-
-        csf_additional_images_path = os.path.join(workdir,
-                                                  'csf_additional_images.txt')
-        csf_additional_images_path_bin = os.path.join(workdir,
-                                                      'csf_additional_images.bin.signed')
-
-        template = create_csf_template()
-        gen_csf(d, template, make_csf_hab_block([linuxblock, fdtblock]), csf_additional_images_path)
-
-        if execcmd('cst -i {0} -o {1}'.format(
-                                            csf_additional_images_path,
-                                            csf_additional_images_path_bin)) != 0:
-            raise Exception('Error: Failed to sign additional images binary')
-
-        signed_additional_images_csf = readfull_bin(csf_additional_images_path_bin)
-        padding_fd.write(signed_additional_images_csf)
-        padding_fd.close()
+        sign_inplace(d, output_image_path, image_header_size, linux_addr, [dtbblock])
 }
 
 do_deploy:append:secureboot() {

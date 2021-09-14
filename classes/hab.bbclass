@@ -108,3 +108,52 @@ def get_linux_image_size(image_path):
         header = struct.Struct('<IIQQ')
         unpacked = header.unpack(data)
         return unpacked[3]
+
+# Signs an image using NXP's cst tool. Appends IVT and CSF to the end of the image
+#
+# image_path: Path of the image to be signed. It will be padded (if necessary)
+# padding_offset: The offset (from file start) until zeros must be appended to the file. If the file
+# is already aligned to a 4096 byte boundary, this is equal to the file's size
+# loadaddr: load address for IVT
+# additional_blocks: list of dicts of files that must be signed too. The CSF will be appended to 'image_path'
+def sign_inplace(d, image_path : str, padding_offset : int, loadaddr : int, additional_blocks : list):
+    fd = open(image_path, 'ab')
+    current_pos = fd.tell()
+    padding_remaining = padding_offset - current_pos
+    for i in range(0, padding_remaining):
+        fd.write(b'\x00')
+
+    headermagic = 0x412000D1
+    # self ptr to the IVT. it follows the paddded image immediately, so we know the address easily
+    selfptr = loadaddr+fd.tell()
+    # csf follows ivt immediately. ivt is always 32 bytes, so just add it
+    csfptr = selfptr+32
+    ivt = gen_ivt(headermagic, loadaddr, 0x0, 0x0, 0x0, selfptr, csfptr, 0x0)
+
+    fd.write(ivt)
+    fd.flush()
+
+    current_pos = fd.tell()
+
+    # hab block for our image
+    imageblock = dict()
+    imageblock['addr'] = loadaddr
+    imageblock['offset'] = 0x00
+    imageblock['size'] = current_pos
+    imageblock['filename'] = image_path
+
+    workdir = d.getVar('WORKDIR', True)
+    csf_image_path = os.path.join(workdir, 'csf_image.txt')
+    csf_image_path_bin = os.path.join(workdir, 'csf_image.bin.signed')
+
+    blocks = []
+    blocks.append(imageblock)
+    blocks.extend(additional_blocks)
+
+    gen_csf(d, create_csf_template(), make_csf_hab_block(blocks), csf_image_path)
+    if execcmd('cst -i {0} -o {1}'.format(csf_image_path, csf_image_path_bin)) != 0:
+            raise Exception('Error: Failed to sign image')
+
+    signed_image_csf = readfull_bin(csf_image_path_bin)
+    fd.write(signed_image_csf)
+    fd.close()
