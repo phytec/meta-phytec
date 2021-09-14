@@ -166,26 +166,12 @@ def fitimage_emit_section_ramdisk(d,fd,img_file,img_path):
     if len(d.expand("${FITIMAGE_RD_LOADADDRESS}")) > 0:
         ramdisk_loadline = "load = <%s>;" % d.expand("${FITIMAGE_RD_LOADADDRESS}")
 
-    if ".gz" in img_file:
-        ramdisk_ctype = "gzip"
-    elif ".bz2" in img_file:
-        ramdisk_ctype = "bzip2"
-    elif ".lzma" in img_file:
-        ramdisk_ctype = "lzma"
-    elif ".lzo" in img_file:
-        ramdisk_ctype = "lzo"
-    elif ".lz4" in img_file:
-        ramdisk_ctype = "lz4"
-    elif ".xz" in img_file:
-        ramdisk_ctype = "xz"
-
     fd.write('\t\t'     + 'ramdisk-%s {\n' % ramdisk_count)
     fd.write('\t\t\t'   +   'description = "%s";\n' % img_file)
     fd.write('\t\t\t'   +   'data = /incbin/("%s/%s");\n' % (img_path, img_file))
     fd.write('\t\t\t'   +   'type = "ramdisk";\n')
     fd.write('\t\t\t'   +   'arch = "%s";\n' % arch)
     fd.write('\t\t\t'   +   'os = "linux";\n')
-    fd.write('\t\t\t'   +   'compression = "%s";\n' % ramdisk_ctype )
     fd.write('\t\t\t'   +   '%s\n' % ramdisk_loadline)
     fd.write('\t\t\t'   +   '%s\n' % ramdisk_entryline)
     fd.write('\t\t\t'   +   'hash-1 {\n')
