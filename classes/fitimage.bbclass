@@ -24,6 +24,8 @@
 #    FITIMAGE_CERT_FILE ?= "development-1.cert.pem"
 
 LICENSE = "MIT"
+inherit hab
+inherit deploy
 
 do_fetch[cleandirs] = "${S}"
 do_patch[noexec] = "1"
@@ -31,15 +33,20 @@ do_compile[noexec] = "1"
 deltask do_package_qa
 
 DEPENDS = "u-boot-mkimage-native dtc-native"
-FITIMAGE_HASH ??= "sha1"
+FITIMAGE_HASH ??= "sha256"
 FITIMAGE_LOADADDRESS ??= ""
+FITIMAGE_LOADADDRESS:mx8m ?= "0x48000000"
 FITIMAGE_ENTRYPOINT  ??= ""
+FITIMAGE_ENTRYPOINT:mx8m ?= "0x48000000"
 FITIMAGE_DTB_LOADADDRESS ??= ""
 FITIMAGE_RD_LOADADDRESS ??= ""
 FITIMAGE_RD_ENTRYPOINT ??= ""
 
 FITIMAGE_SIGN ??= "false"
 FITIMAGE_SIGN[type] = "boolean"
+
+FITIMAGE_SIGN_ENGINE ??= "software"
+FITIMAGE_SIGN_ENGINE:mx8m ??= "nxphab"
 
 # Create dependency list from images
 python __anonymous() {
@@ -76,7 +83,7 @@ B = "${WORKDIR}/build"
 def fitimage_emit_fit_header(d,fd):
      import shutil
      fd.write('/dts-v1/;\n\n/ {\n')
-     fd.write(d.expand('\tdescription = "Barebox fitImage for ${DISTRO_NAME}/${PV}/${MACHINE}";\n'))
+     fd.write(d.expand('\tdescription = "fitImage for ${DISTRO_NAME}/${PV}/${MACHINE}";\n'))
      fd.write('\t#address-cells = <1>;\n')
 
 #
@@ -155,9 +162,9 @@ def fitimage_emit_section_ramdisk(d,fd,img_file,img_path):
     ramdisk_entryline = "entry = <00000000>;"
 
     if len(d.expand("${FITIMAGE_RD_ENTRYPOINT}")) > 0:
-        ramdisk_loadline = "load = <%s>;" % d.expand("${FITIMAGE_RD_ENTRYPOINT}")
+        ramdisk_entryline = "entry = <%s>;" % d.expand("${FITIMAGE_RD_ENTRYPOINT}")
     if len(d.expand("${FITIMAGE_RD_LOADADDRESS}")) > 0:
-        ramdisk_entryline = "entry = <%s>;" % d.expand("${FITIMAGE_RD_LOADADDRESS}")
+        ramdisk_loadline = "load = <%s>;" % d.expand("${FITIMAGE_RD_LOADADDRESS}")
 
     if ".gz" in img_file:
         ramdisk_ctype = "gzip"
@@ -310,13 +317,12 @@ def write_manifest(d):
     fitimage_emit_section_maint(d,fd,'fitend')
     fd.close()
 
-
 do_unpack:append() {
     write_manifest(d)
 }
 
 do_fitimagebundle () {
-    if ${@['false', 'true'][oe.data.typed_value('FITIMAGE_SIGN', d)]}; then
+    if [ "${FITIMAGE_SIGN}" = "true" -a "${FITIMAGE_SIGN_ENGINE}" = "software" ] ; then
         if [ -e ${FITIMAGE_SIGN_KEY_PATH} ] ; then
             path_key=$(dirname "${FITIMAGE_SIGN_KEY_PATH}")
             printf '/dts-v1/;\n\n/ {\n};\n' > pubkey.dts
@@ -340,7 +346,17 @@ do_fitimagebundle () {
 do_fitimagebundle[dirs] = "${B}"
 addtask fitimagebundle after do_configure before do_build
 
-inherit deploy
+python do_signhab() {
+    if oe.data.typed_value('FITIMAGE_SIGN', d) and d.getVar('FITIMAGE_SIGN_ENGINE') == 'nxphab':
+        loadaddr = int(d.getVar('UBOOT_ENTRYPOINT'), 16)
+        build_dir = d.getVar("B", True)
+        image_path = os.path.join(build_dir, 'fitImage')
+        image_size = os.stat(image_path).st_size
+        aligned_size = (image_size + 0x1000 - 1) & ~(0x1000 - 1)
+
+        sign_inplace(d, image_path, aligned_size, loadaddr, [])
+}
+addtask signhab after do_fitimagebundle before do_deploy
 
 do_deploy[vardepsexclude] += "IMAGE_VERSION_SUFFIX"
 do_deploy() {
