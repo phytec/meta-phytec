@@ -1,7 +1,5 @@
 inherit hab
 
-SRC_URI_append_secureboot = " file://csf_additional_images_template.txt \
-                            "
 #value is not being set for mx8mp in meta-freescale, so set it here.
 UBOOT_ENTRYPOINT_mx8mp="0x40480000"
 LINUX_LOAD_ADDR="${UBOOT_ENTRYPOINT}"
@@ -13,8 +11,6 @@ LINUX_IMAGE_PATH_SIGNED="${B}/${KERNEL_OUTPUT_DIR}/Image-signed"
 DTBS_PATH="${B}/${KERNEL_OUTPUT_DIR}/dts/"
 
 DEPENDS_append_secureboot = " nxp-cst-native"
-
-CSF_TEMPLATE_PATH_ADDITIONAL="${WORKDIR}/csf_additional_images_template.txt"
 
 python do_sign() {
     if "secureboot" in d.getVar('DISTRO_FEATURES', True):
@@ -88,7 +84,7 @@ python do_sign() {
         csf_additional_images_path_bin = os.path.join(workdir,
                                                       'csf_additional_images.bin.signed')
 
-        template = readfull(d.getVar('CSF_TEMPLATE_PATH_ADDITIONAL', True))
+        template = create_csf_template()
         gen_csf(d, template, make_csf_hab_block([linuxblock, fdtblock]), csf_additional_images_path)
 
         if execcmd('cst -i {0} -o {1}'.format(
