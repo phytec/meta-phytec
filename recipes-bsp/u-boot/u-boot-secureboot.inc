@@ -33,8 +33,21 @@ patch_ubootconfig () {
     kconfig_set ENV_ACCESS_IGNORE_FORCE y
     kconfig_set CMD_ENV_CALLBACK y
     kconfig_set CMD_ENV_FLAGS y
-    #As this is a secureboot build, change the kernel name from "Image" to "Image-signed" to avoid confusion.
-    sed -e 's/image=Image\\0/image=Image-signed\\0/g' -i ${S}/include/configs/phycore_*.h
+    kconfig_set CMD_GO n
+    kconfig_set CMD_MEMORY n
+
+    if [ "${FITIMAGE_SIGN}" = "true" ]; then
+        kconfig_set FIT y
+        kconfig_set FIT_ENABLE_SHA256_SUPPORT y
+        kconfig_set FIT_BEST_MATCH y
+        kconfig_set FIT_VERBOSE n
+        kconfig_set LEGACY_IMAGE_FORMAT n
+
+        sed -e 's/dofitboot=0\\0/dofitboot=1\\0/g' -i ${S}/include/configs/phycore_*.h
+        sed -e 's/image=Image\\0/image=fitImage\\0/g' -i ${S}/include/configs/phycore_*.h
+    else
+        sed -e 's/image=Image\\0/image=Image-signed\\0/g' -i ${S}/include/configs/phycore_*.h
+    fi
 }
 
 do_patch_append_secureboot () {
