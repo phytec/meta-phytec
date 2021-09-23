@@ -19,7 +19,7 @@ SRC_URI = " \
         https://download.phytec.de/cst-${PV}.tar;name=tarball \
 "
 
-SRC_URI[tarball.md5sum] = "2b17b55aa3d5527e26e80e057cd7c792"
-SRC_URI[tarball.sha256sum] = "95b74019f39b9398260e4eb59012dc6da72d3b309d4488bad2e1fef8eaa3e34b"
+SRC_URI[tarball.md5sum] = "830965fe59a0e9c505fd18c7d2e60dbd"
+SRC_URI[tarball.sha256sum] = "8cf41fb146298a9caa14e3db9aec1c7e0f0279ddc51ee3f7d76770287032e7a3"
 
 INSANE_SKIP_${PN} += "already-stripped"
