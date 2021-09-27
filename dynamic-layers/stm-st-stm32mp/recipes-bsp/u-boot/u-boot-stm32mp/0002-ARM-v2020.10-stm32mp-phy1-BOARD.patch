@@ -1,0 +1,40 @@
+From 976e87fdd95bb3d854882fd56e631867d21b9930 Mon Sep 17 00:00:00 2001
+From: Christophe Parant <c.parant@phytec.fr>
+Date: Thu, 23 Sep 2021 16:55:12 +0200
+Subject: [PATCH 2/3] ARM v2020.10 stm32mp phy1 BOARD
+
+---
+ board/st/stm32mp1/stm32mp1.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/board/st/stm32mp1/stm32mp1.c b/board/st/stm32mp1/stm32mp1.c
+index 9a02e14ba5..81e773ebd2 100644
+--- a/board/st/stm32mp1/stm32mp1.c
++++ b/board/st/stm32mp1/stm32mp1.c
+@@ -689,17 +689,20 @@ int board_late_init(void)
+ 		fdt_compat = fdt_getprop(gd->fdt_blob, 0, "compatible",
+ 					 &fdt_compat_len);
+ 		if (fdt_compat && fdt_compat_len) {
++			buf_len = sizeof(dtb_name);
+ 			if (strncmp(fdt_compat, "st,", 3) != 0) {
+ 				env_set("board_name", fdt_compat);
++
++				strncpy(dtb_name, fdt_compat, buf_len);
++				buf_len -= strlen(fdt_compat);
+ 			} else {
+ 				env_set("board_name", fdt_compat + 3);
+ 
+-				buf_len = sizeof(dtb_name);
+ 				strncpy(dtb_name, fdt_compat + 3, buf_len);
+ 				buf_len -= strlen(fdt_compat + 3);
+-				strncat(dtb_name, ".dtb", buf_len);
+-				env_set("fdtfile", dtb_name);
+ 			}
++			strncat(dtb_name, ".dtb", buf_len);
++			env_set("fdtfile", dtb_name);
+ 		}
+ 		ret = uclass_get_device_by_driver(UCLASS_MISC,
+ 						  DM_GET_DRIVER(stm32mp_bsec),
+-- 
+2.17.1
+

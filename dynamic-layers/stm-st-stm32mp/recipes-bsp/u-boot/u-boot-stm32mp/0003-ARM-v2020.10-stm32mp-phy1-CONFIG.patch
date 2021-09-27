@@ -1,0 +1,41 @@
+From f00e0993a6ceb4d54de4df0f66c1e1166cecb520 Mon Sep 17 00:00:00 2001
+From: Christophe Parant <c.parant@phytec.fr>
+Date: Thu, 23 Sep 2021 16:57:35 +0200
+Subject: [PATCH 3/3] ARM v2020.10 stm32mp phy1 CONFIG
+
+---
+ configs/stm32mp15_trusted_defconfig | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/configs/stm32mp15_trusted_defconfig b/configs/stm32mp15_trusted_defconfig
+index 5b4cfc4ca3..3250636779 100644
+--- a/configs/stm32mp15_trusted_defconfig
++++ b/configs/stm32mp15_trusted_defconfig
+@@ -79,18 +79,23 @@ CONFIG_SYS_MTDPARTS_RUNTIME=y
+ CONFIG_MTD_RAW_NAND=y
+ CONFIG_NAND_STM32_FMC2=y
+ CONFIG_MTD_SPI_NAND=y
++CONFIG_MTD_PARTITIONS=y
+ CONFIG_DM_SPI_FLASH=y
+ CONFIG_SPI_FLASH_MACRONIX=y
+ CONFIG_SPI_FLASH_SPANSION=y
+ CONFIG_SPI_FLASH_STMICRO=y
+ CONFIG_SPI_FLASH_WINBOND=y
+-# CONFIG_SPI_FLASH_USE_4K_SECTORS is not set
++CONFIG_SPI_FLASH_USE_4K_SECTORS=y
+ CONFIG_SPI_FLASH_MTD=y
++CONFIG_SPI_FLASH_SUPPORT=y
++CONFIG_SPI_FLASH_DATAFLASH=y
+ CONFIG_PHY_REALTEK=y
+ CONFIG_DM_ETH=y
+ CONFIG_DWC_ETH_QOS=y
++CONFIG_NET_RANDOM_ETHADDR=y
+ CONFIG_PHY=y
+ CONFIG_PHY_STM32_USBPHYC=y
++CONFIG_PHY_TI=y
+ CONFIG_PINCONF=y
+ CONFIG_PINCTRL_STMFX=y
+ CONFIG_DM_PMIC=y
+-- 
+2.17.1
+
