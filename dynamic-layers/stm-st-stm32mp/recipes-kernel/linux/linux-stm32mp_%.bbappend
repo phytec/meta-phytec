@@ -1,13 +1,12 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/${BPN}:"
 
 SRC_URI += " \
-    file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0001-ARM-stm32mp1-phy1-DEVICETREE.patch \
-    file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0002-ARM-stm32mp1-phy1-NET.patch \
-    file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0003-ARM-stm32mp1-phy1-DRM.patch \
-    file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0004-ARM-stm32mp1-phy1-SOUND.patch \
-    file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0005-ARM-stm32mp1-phy2-RTC.patch \
-    file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0006-ARM-stm32mp1-phy2-DEVICETREE.patch \
-    file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0099-ARM-stm32mp1-r2.1-st-update.patch \
+    file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0001-ARM-5.10.10-stm32mp1-phy1-DT-OVERLAY.patch \
+    file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0002-ARM-5.10.10-stm32mp1-phy1-DEVICETREE.patch \
+    file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0003-ARM-5.10.10-stm32mp1-phy1-DRM.patch \
+    file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0004-ARM-5.10.10-stm32mp1-phy1-SOUND.patch \
+    file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0005-ARM-5.10.10-stm32mp1-phy1-RTC.patch \
+    file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0006-ARM-5.10.10-stm32mp1-phy1-MEDIA.patch \
 "
 
 # -------------------------------------------------------------
@@ -41,7 +40,7 @@ SRC_URI += "file://${LINUX_VERSION}/fragment-15-camera-mt9v032.config;subdir=fra
 BBCLASSEXTEND = "devupstream:target"
 
 SRC_URI_class-devupstream = "git://git.phytec.de/linux-stm32mp;protocol=git;branch=v${LINUX_VERSION}-phy"
-SRCREV_class-devupstream = "c4b4358ff9756a1fa10f12748d875b82ebe5b907"
+SRCREV_class-devupstream = "faccf9049ca974aa2489a09ab0959f8a206e5920"
 
 # -----------------------------------------------------------------------------------
 # Configure default preference to manage dynamic selection between tarball and github
