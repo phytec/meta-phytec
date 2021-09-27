@@ -1,0 +1,293 @@
+From b6f3b4f9aaaba0bef8a6db1310f8206454e1f6d7 Mon Sep 17 00:00:00 2001
+From: Christophe Parant <c.parant@phytec.fr>
+Date: Thu, 23 Sep 2021 17:18:51 +0200
+Subject: [PATCH 6/6] ARM 5.10.10 stm32mp1 phy1 MEDIA
+
+---
+ drivers/media/i2c/mt9v032.c               | 121 +++++++++++++++++++---
+ drivers/media/platform/stm32/stm32-dcmi.c |  12 +++
+ 2 files changed, 116 insertions(+), 17 deletions(-)
+
+diff --git a/drivers/media/i2c/mt9v032.c b/drivers/media/i2c/mt9v032.c
+index 5bd3ae82992f..7892fa694142 100644
+--- a/drivers/media/i2c/mt9v032.c
++++ b/drivers/media/i2c/mt9v032.c
+@@ -168,6 +168,7 @@ struct mt9v032_model_data {
+ 	unsigned int pclk_reg;
+ 	unsigned int aec_max_shutter_reg;
+ 	const struct v4l2_ctrl_config * const aec_max_shutter_v4l2_ctrl;
++	unsigned int row_noise;
+ };
+ 
+ struct mt9v032_model_info {
+@@ -181,6 +182,16 @@ static const struct mt9v032_model_version mt9v032_versions[] = {
+ 	{ MT9V034_CHIP_ID_REV1, "MT9V024/MT9V034 rev1" },
+ };
+ 
++static const u32 mt9v032_color_fmts[] = {
++	MEDIA_BUS_FMT_SGRBG8_1X8,
++	MEDIA_BUS_FMT_SGRBG10_1X10,
++};
++
++static const u32 mt9v032_monochrome_fmts[] = {
++	MEDIA_BUS_FMT_Y8_1X8,
++	MEDIA_BUS_FMT_Y10_1X10,
++};
++
+ struct mt9v032 {
+ 	struct v4l2_subdev subdev;
+ 	struct media_pad pad;
+@@ -207,10 +218,13 @@ struct mt9v032 {
+ 	struct mt9v032_platform_data *pdata;
+ 	const struct mt9v032_model_info *model;
+ 	const struct mt9v032_model_version *version;
++	const u32 *fmts;
++	int num_fmts;
+ 
+ 	u32 sysclk;
+ 	u16 aec_agc;
+ 	u16 hblank;
++	bool row_noise_corr;
+ 	struct {
+ 		struct v4l2_ctrl *test_pattern;
+ 		struct v4l2_ctrl *test_pattern_color;
+@@ -336,8 +350,11 @@ static int __mt9v032_set_power(struct mt9v032 *mt9v032, bool on)
+ 			return ret;
+ 	}
+ 
+-	/* Disable the noise correction algorithm and restore the controls. */
+-	ret = regmap_write(map, MT9V032_ROW_NOISE_CORR_CONTROL, 0);
++	/* Configure the noise correction algorithm and restore the controls. */
++	ret = regmap_write(map, MT9V032_ROW_NOISE_CORR_CONTROL,
++			   mt9v032->row_noise_corr ?
++			   mt9v032->model->data->row_noise : 0);
++
+ 	if (ret < 0)
+ 		return ret;
+ 
+@@ -424,16 +441,28 @@ static int mt9v032_s_stream(struct v4l2_subdev *subdev, int enable)
+ 	return regmap_update_bits(map, MT9V032_CHIP_CONTROL, mode, mode);
+ }
+ 
++static const u32 mt9v032_find_datafmt(struct mt9v032 *mt9v032, u32 code)
++{
++	const u32 *fmt = mt9v032->fmts;
++	int i;
++
++	for (i=0; i < mt9v032->num_fmts; i++)
++		if (fmt[i] == code)
++			return fmt[i];
++
++	return fmt[1];
++}
++
+ static int mt9v032_enum_mbus_code(struct v4l2_subdev *subdev,
+ 				  struct v4l2_subdev_pad_config *cfg,
+ 				  struct v4l2_subdev_mbus_code_enum *code)
+ {
+ 	struct mt9v032 *mt9v032 = to_mt9v032(subdev);
+ 
+-	if (code->index > 0)
++	if (code->index >= mt9v032->num_fmts)
+ 		return -EINVAL;
+ 
+-	code->code = mt9v032->format.code;
++	code->code = mt9v032->fmts[code->index];
+ 	return 0;
+ }
+ 
+@@ -504,7 +533,7 @@ static int mt9v032_set_format(struct v4l2_subdev *subdev,
+ 	unsigned int vratio;
+ 
+ 	__crop = __mt9v032_get_pad_crop(mt9v032, cfg, format->pad,
+-					format->which);
++					V4L2_SUBDEV_FORMAT_ACTIVE);
+ 
+ 	/* Clamp the width and height to avoid dividing by zero. */
+ 	width = clamp(ALIGN(format->format.width, 2),
+@@ -524,6 +553,8 @@ static int mt9v032_set_format(struct v4l2_subdev *subdev,
+ 	__format->width = __crop->width / hratio;
+ 	__format->height = __crop->height / vratio;
+ 
++	__format->code = mt9v032_find_datafmt(mt9v032, format->format.code);
++
+ 	if (format->which == V4L2_SUBDEV_FORMAT_ACTIVE) {
+ 		mt9v032->hratio = hratio;
+ 		mt9v032->vratio = vratio;
+@@ -541,11 +572,19 @@ static int mt9v032_get_selection(struct v4l2_subdev *subdev,
+ {
+ 	struct mt9v032 *mt9v032 = to_mt9v032(subdev);
+ 
+-	if (sel->target != V4L2_SEL_TGT_CROP)
++	switch (sel->target) {
++	case V4L2_SEL_TGT_CROP_BOUNDS:
++		sel->r.left = MT9V032_COLUMN_START_DEF;
++		sel->r.top = MT9V032_ROW_START_DEF;
++		sel->r.width = MT9V032_WINDOW_WIDTH_MAX;
++		sel->r.height = MT9V032_WINDOW_HEIGHT_MAX;
++		return 0;
++	case V4L2_SEL_TGT_CROP:
++		sel->r = *__mt9v032_get_pad_crop(mt9v032, cfg, sel->pad, sel->which);
++		return 0;
++	default:
+ 		return -EINVAL;
+-
+-	sel->r = *__mt9v032_get_pad_crop(mt9v032, cfg, sel->pad, sel->which);
+-	return 0;
++	}
+ }
+ 
+ static int mt9v032_set_selection(struct v4l2_subdev *subdev,
+@@ -637,6 +676,10 @@ static int mt9v032_set_selection(struct v4l2_subdev *subdev,
+  * Maximum shutter width used for AEC.
+  */
+ #define V4L2_CID_AEC_MAX_SHUTTER_WIDTH	(V4L2_CID_USER_BASE | 0x1007)
++/*
++ * Row Noize Correction enable.
++ */
++#define V4L2_CID_ROW_NOISE_CORRECTION	(V4L2_CID_USER_BASE | 0x1008)
+ 
+ static int mt9v032_s_ctrl(struct v4l2_ctrl *ctrl)
+ {
+@@ -728,6 +771,9 @@ static int mt9v032_s_ctrl(struct v4l2_ctrl *ctrl)
+ 		return regmap_write(map,
+ 				    mt9v032->model->data->aec_max_shutter_reg,
+ 				    ctrl->val);
++	case V4L2_CID_ROW_NOISE_CORRECTION:
++		mt9v032->row_noise_corr = ctrl->val;
++		break;
+ 	}
+ 
+ 	return 0;
+@@ -808,6 +854,16 @@ static const struct v4l2_ctrl_config mt9v032_aegc_controls[] = {
+ 		.step		= 1,
+ 		.def		= 2,
+ 		.flags		= 0,
++	}, {
++		.ops		= &mt9v032_ctrl_ops,
++		.id		= V4L2_CID_ROW_NOISE_CORRECTION,
++		.type		= V4L2_CTRL_TYPE_BOOLEAN,
++		.name		= "Row Noise Correction",
++		.min		= 0,
++		.max		= 1,
++		.step		= 1,
++		.def		= 0,
++		.flags		= 0,
+ 	}
+ };
+ 
+@@ -864,6 +920,30 @@ static int mt9v032_set_power(struct v4l2_subdev *subdev, int on)
+ 	return ret;
+ }
+ 
++#ifdef CONFIG_VIDEO_ADV_DEBUG
++static int mt9v032_g_register(struct v4l2_subdev *sd,
++			      struct v4l2_dbg_register *reg)
++{
++	struct mt9v032 *mt9v032 = to_mt9v032(sd);
++	int val, ret;
++
++	ret = regmap_read(mt9v032->regmap, reg->reg, &val);
++	if (ret < 0)
++		return ret;
++
++	reg->val = val;
++	return 0;
++}
++
++static int mt9v032_s_register(struct v4l2_subdev *sd,
++			      struct v4l2_dbg_register const *reg)
++{
++	struct mt9v032 *mt9v032 = to_mt9v032(sd);
++
++	return regmap_write(mt9v032->regmap, reg->reg, reg->val);
++}
++#endif
++
+ /* -----------------------------------------------------------------------------
+  * V4L2 subdev internal operations
+  */
+@@ -930,10 +1010,7 @@ static int mt9v032_open(struct v4l2_subdev *subdev, struct v4l2_subdev_fh *fh)
+ 
+ 	format = v4l2_subdev_get_try_format(subdev, fh->pad, 0);
+ 
+-	if (mt9v032->model->color)
+-		format->code = MEDIA_BUS_FMT_SGRBG10_1X10;
+-	else
+-		format->code = MEDIA_BUS_FMT_Y10_1X10;
++	format->code = mt9v032_find_datafmt(mt9v032, 0);
+ 
+ 	format->width = MT9V032_WINDOW_WIDTH_DEF;
+ 	format->height = MT9V032_WINDOW_HEIGHT_DEF;
+@@ -950,6 +1027,10 @@ static int mt9v032_close(struct v4l2_subdev *subdev, struct v4l2_subdev_fh *fh)
+ 
+ static const struct v4l2_subdev_core_ops mt9v032_subdev_core_ops = {
+ 	.s_power	= mt9v032_set_power,
++#ifdef CONFIG_VIDEO_ADV_DEBUG
++	.s_register	= mt9v032_s_register,
++	.g_register	= mt9v032_g_register,
++#endif
+ };
+ 
+ static const struct v4l2_subdev_video_ops mt9v032_subdev_video_ops = {
+@@ -1144,10 +1225,14 @@ static int mt9v032_probe(struct i2c_client *client,
+ 	mt9v032->crop.width = MT9V032_WINDOW_WIDTH_DEF;
+ 	mt9v032->crop.height = MT9V032_WINDOW_HEIGHT_DEF;
+ 
+-	if (mt9v032->model->color)
+-		mt9v032->format.code = MEDIA_BUS_FMT_SGRBG10_1X10;
+-	else
+-		mt9v032->format.code = MEDIA_BUS_FMT_Y10_1X10;
++	if (mt9v032->model->color) {
++		mt9v032->fmts = mt9v032_color_fmts;
++		mt9v032->num_fmts = ARRAY_SIZE(mt9v032_color_fmts);
++	} else {
++		mt9v032->fmts = mt9v032_monochrome_fmts;
++		mt9v032->num_fmts = ARRAY_SIZE(mt9v032_monochrome_fmts);
++	}
++	mt9v032->format.code = mt9v032_find_datafmt(mt9v032, 0);
+ 
+ 	mt9v032->format.width = MT9V032_WINDOW_WIDTH_DEF;
+ 	mt9v032->format.height = MT9V032_WINDOW_HEIGHT_DEF;
+@@ -1208,6 +1293,7 @@ static const struct mt9v032_model_data mt9v032_model_data[] = {
+ 		.pclk_reg = MT9V032_PIXEL_CLOCK,
+ 		.aec_max_shutter_reg = MT9V032_AEC_MAX_SHUTTER_WIDTH,
+ 		.aec_max_shutter_v4l2_ctrl = &mt9v032_aec_max_shutter_width,
++		.row_noise = MT9V032_ROW_NOISE_CORR_ENABLE,
+ 	}, {
+ 		/* MT9V024, MT9V034 */
+ 		.min_row_time = 690,
+@@ -1219,6 +1305,7 @@ static const struct mt9v032_model_data mt9v032_model_data[] = {
+ 		.pclk_reg = MT9V034_PIXEL_CLOCK,
+ 		.aec_max_shutter_reg = MT9V034_AEC_MAX_SHUTTER_WIDTH,
+ 		.aec_max_shutter_v4l2_ctrl = &mt9v034_aec_max_shutter_width,
++		.row_noise = MT9V034_ROW_NOISE_CORR_ENABLE,
+ 	},
+ };
+ 
+diff --git a/drivers/media/platform/stm32/stm32-dcmi.c b/drivers/media/platform/stm32/stm32-dcmi.c
+index 60ef8a65f16c..37afe7d2dfd5 100644
+--- a/drivers/media/platform/stm32/stm32-dcmi.c
++++ b/drivers/media/platform/stm32/stm32-dcmi.c
+@@ -1635,6 +1635,18 @@ static const struct dcmi_format dcmi_formats[] = {
+ 		.fourcc = V4L2_PIX_FMT_SRGGB8,
+ 		.mbus_code = MEDIA_BUS_FMT_SRGGB8_1X8,
+ 		.bpp = 1,
++	}, {
++		.fourcc = V4L2_PIX_FMT_SGRBG10,
++		.mbus_code = MEDIA_BUS_FMT_SGRBG10_1X10,
++		.bpp = 2,
++	}, {
++		.fourcc = V4L2_PIX_FMT_GREY,
++		.mbus_code = MEDIA_BUS_FMT_Y8_1X8,
++		.bpp = 1,
++	}, {
++		.fourcc = V4L2_PIX_FMT_Y10,
++		.mbus_code = MEDIA_BUS_FMT_Y10_1X10,
++		.bpp = 2,
+ 	},
+ };
+ 
+-- 
+2.17.1
+
