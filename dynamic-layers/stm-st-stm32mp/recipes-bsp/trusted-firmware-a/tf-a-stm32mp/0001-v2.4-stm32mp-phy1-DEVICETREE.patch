@@ -1,7 +1,7 @@
-From a64dfc7d274f65a4e5e50d8dde3e5ea4a2f63c92 Mon Sep 17 00:00:00 2001
+From 9e76ee1d872b205bebf96e496b9cab915b23f494 Mon Sep 17 00:00:00 2001
 From: Christophe Parant <c.parant@phytec.fr>
-Date: Tue, 2 Feb 2021 11:01:38 +0100
-Subject: [PATCH] v2.2 stm32mp phy1 DEVICETREE
+Date: Mon, 31 May 2021 12:44:54 +0200
+Subject: [PATCH] v2.4 stm32mp phy1 DEVICETREE
 
 ---
  fdts/phycore-stm32mp1-2.dts                   |  43 ++
