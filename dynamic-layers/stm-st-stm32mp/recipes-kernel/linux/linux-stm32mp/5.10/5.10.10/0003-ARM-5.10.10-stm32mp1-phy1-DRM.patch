@@ -1,0 +1,84 @@
+From ec1b3d3108ebbdb420b2a31b8a0dbe18ff9b2d1f Mon Sep 17 00:00:00 2001
+From: Christophe Parant <c.parant@phytec.fr>
+Date: Thu, 23 Sep 2021 17:15:02 +0200
+Subject: [PATCH 3/6] ARM 5.10.10 stm32mp1 phy1 DRM
+
+---
+ .../drm/panel/panel-raspberrypi-touchscreen.c | 43 ++++++++++++++++++-
+ 1 file changed, 41 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c b/drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c
+index 5e9ccefb88f6..a74242eae09b 100644
+--- a/drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c
++++ b/drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c
+@@ -196,6 +196,42 @@ struct rpi_touchscreen {
+ };
+ 
+ static const struct drm_display_mode rpi_touchscreen_modes[] = {
++	{
++		/* Modeline for 25862069 clock */
++		.clock = 25862069 / 1000,
++		.hdisplay = 800,
++		.hsync_start = 800 + 1,
++		.hsync_end = 800 + 1 + 2,
++		.htotal = 800 + 1 + 2 + 45,
++		.vdisplay = 480,
++		.vsync_start = 480 + 7,
++		.vsync_end = 480 + 7 + 2,
++		.vtotal = 480 + 7 + 2 + 20,
++	},
++	{
++		/* (800 + 200) * (480 + 20) * 50 = 25000000 */
++		.clock = 25000000 / 1000,
++		.hdisplay = 800,
++		.hsync_start = 800 + 154,
++		.hsync_end = 800 + 154 + 2,
++		.htotal = 800 + 154 + 2 + 42,
++		.vdisplay = 480,
++		.vsync_start = 480 + 1,
++		.vsync_end = 480 + 1 + 2,
++		.vtotal = 480 + 1 + 2 + 17,
++	},
++	{
++		/* (800 + 100) * (480 + 70) * 50 = 24750000 */
++		.clock = 24750000 / 1000,
++		.hdisplay = 800,
++		.hsync_start = 800 + 54,
++		.hsync_end = 800 + 54 + 2,
++		.htotal = 800 + 54 + 2 + 44,
++		.vdisplay = 480,
++		.vsync_start = 480 + 49,
++		.vsync_end = 480 + 49 + 2,
++		.vtotal = 480 + 49 + 2 + 19,
++	},
+ 	{
+ 		/* Modeline comes from the Raspberry Pi firmware, with HFP=1
+ 		 * plugged in and clock re-computed from that.
+@@ -268,12 +304,13 @@ static int rpi_touchscreen_noop(struct drm_panel *panel)
+ static int rpi_touchscreen_enable(struct drm_panel *panel)
+ {
+ 	struct rpi_touchscreen *ts = panel_to_ts(panel);
+-	int i;
++	int i, val;
+ 
+ 	rpi_touchscreen_i2c_write(ts, REG_POWERON, 1);
+ 	/* Wait for nPWRDWN to go low to indicate poweron is done. */
+ 	for (i = 0; i < 100; i++) {
+-		if (rpi_touchscreen_i2c_read(ts, REG_PORTB) & 1)
++		val = rpi_touchscreen_i2c_read(ts, REG_PORTB);
++		if (val >= 0 && (val & 1))
+ 			break;
+ 	}
+ 
+@@ -377,6 +414,8 @@ static int rpi_touchscreen_probe(struct i2c_client *i2c,
+ 	ts->i2c = i2c;
+ 
+ 	ver = rpi_touchscreen_i2c_read(ts, REG_ID);
++	if (ver < 0)
++		ver = rpi_touchscreen_i2c_read(ts, REG_ID);
+ 	if (ver < 0) {
+ 		dev_err(dev, "Atmel I2C read failed: %d\n", ver);
+ 		return -ENODEV;
+-- 
+2.17.1
+
