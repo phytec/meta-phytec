@@ -104,6 +104,7 @@ def env_add_rauc_nand_boot_scripts(d, nandflashsize=1024, kernelsize=16, dtbsize
     ROOTFSSIZE={rootfssize}M
     KERNELSIZE={kernelsize}M
     DTBSIZE={dtbsize}M
+    echo "WARNING! This script is deprecated. Please use "rauc-flash-nand" in a Linux environment!"
     echo "Formatting /dev/nand0.root"
 
     ubiformat -q /dev/nand0.root
@@ -119,6 +120,7 @@ def env_add_rauc_nand_boot_scripts(d, nandflashsize=1024, kernelsize=16, dtbsize
     """)
     rauc_flash_nand_from_mmc = textwrap.dedent("""\
     #!/bin/sh
+    echo "WARNING! This script is deprecated. Please use "rauc-flash-nand" in a Linux environment!"
     echo "Initializing NAND flash from MMC"
     [ ! -e /dev/nand0.root.ubi ] && ubiattach /dev/nand0.root
     ubiupdatevol /dev/nand0.root.ubi.kernel0 /mnt/mmc0.0/zImage
@@ -130,6 +132,7 @@ def env_add_rauc_nand_boot_scripts(d, nandflashsize=1024, kernelsize=16, dtbsize
     """)
     rauc_flash_nand_from_tftp = textwrap.dedent("""\
     #!/bin/sh
+    echo "WARNING! This script is deprecated. Please use "rauc-flash-nand" in a Linux environment!"
     echo "Initializing NAND flash from TFTP"
     [ ! -e /dev/nand0.root.ubi ] && ubiattach /dev/nand0.root
     ubiupdatevol /dev/nand0.root.ubi.kernel0 /mnt/tftp/zImage
