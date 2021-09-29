@@ -640,4 +640,6 @@ COMPATIBLE_MACHINE .= "|phyboard-segin-imx6ul-5"
 COMPATIBLE_MACHINE .= "|phyboard-segin-imx6ul-6"
 COMPATIBLE_MACHINE .= "|phyboard-segin-imx6ul-7"
 COMPATIBLE_MACHINE .= "|phyboard-segin-imx6ul-8"
+
+COMPATIBLE_MACHINE .= "|phygate-tauri-s-imx6ul-1"
 COMPATIBLE_MACHINE .= ")$"
