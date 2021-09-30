@@ -401,6 +401,9 @@ python do_env_append_mx6ul() {
     env_add(d, "nv/dhcp.vendor_id", "phytec")
 
     env_add(d, "nv/boot.watchdog_timeout", "60s");
+
+    # Disable the cpuidle function by default
+    env_add(d, "nv/linux.bootargs.cpuidle", "cpuidle.off=1");
 }
 
 python do_env_append_phyboard-segin-imx6ul() {
