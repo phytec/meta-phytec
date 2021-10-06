@@ -10,6 +10,9 @@ SRC_URI_append_phygate-tauri-l-imx8mm-2 = "\
 SRC_URI_append_phyboard-pollux-imx8mp-2 = " \
     file://0004-plat-imx8mp-Update-debug-UART.patch \
 "
+SRC_URI_append_phyboard-pollux-imx8mp-3 = " \
+    file://0004-plat-imx8mp-Update-debug-UART.patch \
+"
 # NOTE: Uncomment for debug build:
 #EXTRA_OEMAKE += " \
 #	DEBUG=1 \
