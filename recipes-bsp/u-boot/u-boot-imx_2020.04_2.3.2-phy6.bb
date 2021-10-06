@@ -57,6 +57,7 @@ COMPATIBLE_MACHINE .= "|phyboard-polis-imx8mn-1"
 COMPATIBLE_MACHINE .= "|phygate-tauri-l-imx8mm-1"
 COMPATIBLE_MACHINE .= "|phygate-tauri-l-imx8mm-2"
 COMPATIBLE_MACHINE .= "|phyboard-pollux-imx8mp-2"
+COMPATIBLE_MACHINE .= "|phyboard-pollux-imx8mp-3"
 COMPATIBLE_MACHINE .= ")$"
 
 UBOOT_NAME_mx8 = "u-boot-${MACHINE}.bin-${UBOOT_CONFIG}"
