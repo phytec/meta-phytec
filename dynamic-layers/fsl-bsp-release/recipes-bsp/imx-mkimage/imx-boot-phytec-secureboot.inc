@@ -11,11 +11,13 @@ CSF_TEMPLATE_PATH_SPL="${WORKDIR}/csf_spl_template.txt"
 CSF_TEMPLATE_PATH_FIT="${WORKDIR}/csf_fit_template.txt"
 
 BL31_BIN_PATH="${BOOT_STAGING}/bl31.bin"
+BL32_BIN_PATH="${BOOT_STAGING}/tee.bin"
 
 
 # Hardcoded adddresses taken from imx-boot
 UBOOT_NODTB_BIN_ADDR="INVALID"
 ATF_BIN_ADDR="INVALID"
+TEE_BIN_ADDR="INVALID"
 
 UBOOT_NODTB_BIN_ADDR:mx8m="0x40200000"
 ATF_BIN_ADDR:mx8m="0x910000"
@@ -28,6 +30,8 @@ ATF_BIN_ADDR:mx8mn="0x960000"
 
 UBOOT_NODTB_BIN_ADDR:mx8mp="0x40200000"
 ATF_BIN_ADDR:mx8mp="0x970000"
+
+TEE_BIN_ADDR:mx8mm="0xbe000000"
 
 # Extract the addresses we need from imx-mkimage output
 def get_hab_blocks_from_log(input_image_path, ubootimx_make_output):
@@ -62,7 +66,7 @@ def get_hab_blocks_from_log(input_image_path, ubootimx_make_output):
 
 
 def sign_hab(d, input_image_path, output_image_path, imxboot_logfile, \
-             uboot_nodtb_bin_path, uboot_dtb_bin_path, bl31_bin_path):
+             uboot_nodtb_bin_path, uboot_dtb_bin_path, bl31_bin_path, bl32_bin_path):
     import shutil
     uboot_nodtb_bin_addr = d.getVar('UBOOT_NODTB_BIN_ADDR', True)
     atf_bin_addr = d.getVar('ATF_BIN_ADDR', True)
@@ -116,6 +120,22 @@ def sign_hab(d, input_image_path, output_image_path, imxboot_logfile, \
     atfblock['offset'] = 0x0
 
     hablist = [sld_hab_block, ubootblock, dtbblock, atfblock]
+
+    # TEE is optional
+    if os.path.isfile(bl32_bin_path):
+        tee_bin_addr = d.getVar('TEE_BIN_ADDR', True)
+        if tee_bin_addr == 'INVALID':
+            bb.fatal('Error: Signed TEE not supported for this device (address not known)')
+        tee_bin_addr = int(tee_bin_addr, 16)
+        # TEE for fit
+        teeblock = dict()
+        teeblock['filename'] = bl32_bin_path
+        teeblock['size'] = os.stat(teeblock['filename']).st_size
+        teeblock['addr'] = tee_bin_addr
+        teeblock['offset'] = 0x0
+
+        hablist.append(teeblock)
+
     template = readfull(csf_template_path_fit)
     gen_csf(d, template, make_csf_hab_block(hablist), csf_fit_txt_path)
 
@@ -162,6 +182,7 @@ python do_sign() {
         deploy_dir_image = d.getVar('DEPLOY_DIR_IMAGE')
         boot_tools = d.getVar('BOOT_TOOLS')
         bl31_bin_path = d.getVar('BL31_BIN_PATH')
+        bl32_bin_path = d.getVar('BL32_BIN_PATH')
         for target in imxboot_targets:
             for uboot_config in uboot_configs:
                 img_name = '{0}-{1}-{2}.bin-{3}'.format(boot_name, machine,
@@ -178,7 +199,7 @@ python do_sign() {
                 uboot_dtb_bin_path = os.path.join(deploy_dir_image, boot_tools, uboot_dtb_name)
                 sign_hab(d, input_image_path, output_image_path,
                          imxboot_logfile, uboot_nodtb_bin_path,
-                         uboot_dtb_bin_path, bl31_bin_path)
+                         uboot_dtb_bin_path, bl31_bin_path, bl32_bin_path)
     else:
         bb.note("Signing skipped - non secureboot build")
 }
