@@ -19,9 +19,6 @@ LICENSE = "Laird"
 NO_GENERIC_LICENSE[Laird] = "LICENSE"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=53d3628b28a0bc3caea61587feade5f9"
 
-RDEPENDS_${PN} = "linux-firmware-bcm43430"
-RDEPENDS_${PN} += "linux-firmware-bcm4339"
-
 do_configure[noexec] = "1"
 do_compile[noexec] = "1"
 
