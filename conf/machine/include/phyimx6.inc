@@ -10,8 +10,6 @@ PREFERRED_PROVIDER_virtual/bootloader ?= "barebox"
 # Kernel
 PREFERRED_PROVIDER_virtual/kernel ?= "linux-mainline"
 KERNEL_IMAGETYPE ?= "zImage"
-# Install modules in initramfs and roofs
-PACKAGE_INSTALL_append = " kernel-modules"
 
 # dont install kernelimage to rootfs
 RDEPENDS_${KERNEL_PACKAGE_NAME}-base = ""
