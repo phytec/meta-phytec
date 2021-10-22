@@ -13,7 +13,7 @@ PR = "${INC_PR}.0"
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "e2bcded993e2e1cbe1b8edeb98409c26e682286c"
+SRCREV = "b016b9b0901c615eb2d5fc50b93346bd266562ce"
 
 S = "${WORKDIR}/git"
 
