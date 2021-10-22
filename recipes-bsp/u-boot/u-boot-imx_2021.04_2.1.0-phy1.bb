@@ -13,12 +13,12 @@ DEPENDS:append = " python dtc-native bison-native"
 
 LICENSE = "GPLv2+"
 LIC_FILES_CHKSUM = "file://Licenses/gpl-2.0.txt;md5=b234ee4d69f5fce4486a80fdaf4a4263"
-BRANCH = "v2020.04_2.3.2-phy"
+BRANCH = "v2021.04_2.1.0-phy"
 GIT_URL = "git://git.phytec.de/${BPN}"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
 PR = "r0"
-SRCREV = "f392da68cd036522235675e43aff45c788f72156"
+SRCREV = "0065219d21f5bddccedd26c01a9617b7153a87d9"
 
 S = "${WORKDIR}/git"
 
@@ -49,11 +49,9 @@ do_deploy:append:mx8m () {
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 COMPATIBLE_MACHINE = "^("
-COMPATIBLE_MACHINE .= "phyboard-polaris-imx8m-3"
-COMPATIBLE_MACHINE .= "|phyboard-polaris-imx8m-4"
-COMPATIBLE_MACHINE .= "|phyboard-polis-imx8mn-1"
-COMPATIBLE_MACHINE .= "|phyboard-pollux-imx8mp-2"
-COMPATIBLE_MACHINE .= "|phyboard-pollux-imx8mp-3"
+COMPATIBLE_MACHINE .= "phyboard-polis-imx8mm-4"
+COMPATIBLE_MACHINE .= "|phygate-tauri-l-imx8mm-1"
+COMPATIBLE_MACHINE .= "|phygate-tauri-l-imx8mm-2"
 COMPATIBLE_MACHINE .= ")$"
 
 UBOOT_NAME:mx8 = "u-boot-${MACHINE}.bin-${UBOOT_CONFIG}"
