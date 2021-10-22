@@ -49,7 +49,8 @@ do_deploy_append_mx8m () {
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 COMPATIBLE_MACHINE = "^("
-COMPATIBLE_MACHINE .= "phyboard-polaris-imx8m-3"
+COMPATIBLE_MACHINE .= "phyboard-zeta-imx7d-1"
+COMPATIBLE_MACHINE .= "|phyboard-polaris-imx8m-3"
 COMPATIBLE_MACHINE .= "|phyboard-polaris-imx8m-4"
 COMPATIBLE_MACHINE .= "|phyboard-polis-imx8mn-1"
 COMPATIBLE_MACHINE .= "|phyboard-pollux-imx8mp-2"
