@@ -18,9 +18,11 @@ SRCREV = "7e0c78083aa828c2cde115fb93ef69715a642f64"
 S = "${WORKDIR}/git"
 
 INTREE_DEFCONFIG = "imx_v8_defconfig imx8_phytec_distro.config imx8_phytec_platform.config"
+INTREE_DEFCONFIG_mx7 = "imx7_phyboard_zeta_defconfig"
 
 COMPATIBLE_MACHINE  = "^("
-COMPATIBLE_MACHINE .= "phyboard-polaris-imx8m-3"
+COMPATIBLE_MACHINE .= "phyboard-zeta-imx7d-1"
+COMPATIBLE_MACHINE .= "|phyboard-polaris-imx8m-3"
 COMPATIBLE_MACHINE .= "|phyboard-polaris-imx8m-4"
 COMPATIBLE_MACHINE .= "|phyboard-polis-imx8mm-3"
 COMPATIBLE_MACHINE .= "|phyboard-polis-imx8mm-4"
