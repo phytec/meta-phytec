@@ -29,9 +29,21 @@ do_install() {
 	install -d ${D}${nonarch_base_libdir}/firmware/brcm/
 
 	install -m 644 ${S}${FIRMWARE_PATH}/BCM43430A1.hcd ${D}${nonarch_base_libdir}/firmware/brcm/
+	install -m 644 ${S}${FIRMWARE_PATH}/brcmfmac43430-sdio.bin ${D}${nonarch_base_libdir}/firmware/brcm/
+	install -m 644 ${S}${FIRMWARE_PATH}/brcmfmac43430-sdio.clm_blob ${D}${nonarch_base_libdir}/firmware/brcm/
 	install -m 644 ${S}${FIRMWARE_PATH}/brcmfmac43430-sdio.txt ${D}${nonarch_base_libdir}/firmware/brcm/
+
 	install -m 644 ${S}${FIRMWARE_PATH}/BCM4335C0.hcd ${D}${nonarch_base_libdir}/firmware/brcm/
+	install -m 644 ${S}${FIRMWARE_PATH}/brcmfmac4339-sdio.bin ${D}${nonarch_base_libdir}/firmware/brcm/
 	install -m 644 ${S}${FIRMWARE_PATH}/brcmfmac4339-sdio.txt ${D}${nonarch_base_libdir}/firmware/brcm/
 }
 
-FILES_${PN} = "${nonarch_base_libdir}/firmware/brcm/*"
+FILES_${PN}_append = " \
+	${nonarch_base_libdir}/firmware/brcm/BCM43430A1.hcd \
+	${nonarch_base_libdir}/firmware/brcm/brcmfmac43430-sdio.bin \
+	${nonarch_base_libdir}/firmware/brcm/brcmfmac43430-sdio.clm_blob \
+	${nonarch_base_libdir}/firmware/brcm/brcmfmac43430-sdio.txt \
+	${nonarch_base_libdir}/firmware/brcm/BCM4335C0.hcd \
+	${nonarch_base_libdir}/firmware/brcm/brcmfmac4339-sdio.bin \
+	${nonarch_base_libdir}/firmware/brcm/brcmfmac4339-sdio.txt \
+"
