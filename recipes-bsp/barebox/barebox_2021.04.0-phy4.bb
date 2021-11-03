@@ -51,6 +51,24 @@ if [ $? != 0 ]; then
     bus="aips-bus"
 fi
 """)
+
+    env_add(d, "expansions/dt-overlays",
+"""#!/bin/sh
+
+path="$global.overlays.path"
+
+if [ -e ${path}/select ] ; then
+    readf ${path}/select global.overlays.select
+fi
+
+for o in $global.overlays.select ; do
+    if [ -e ${path}/${o} ] ; then
+        echo "Add ${path}/${o} overlay"
+        of_overlay ${path}/${o}
+    fi
+done
+""")
+    env_add(d, "nv/overlays.select", "")
 }
 
 python do_env:append:mx6() {
@@ -116,23 +134,6 @@ of_fixup_status /soc/$bus@2100000/serial@21ec000/bluetooth
 of_fixup_status -d /user-leds
 of_property -s -f -e $global.bootm.oftree /soc/$bus@2100000/serial@21ec000 pinctrl-0 </soc/$bus@2000000/pinctrl@20e0000/uart3grp_bt>
 """)
-    env_add(d, "expansions/dt-overlays",
-"""#!/bin/sh
-
-path="$global.overlays.path"
-
-if [ -e ${path}/select ] ; then
-        readf ${path}/select global.overlays.select
-fi
-
-for o in $global.overlays.select ; do
-        if [ -e ${path}/${o} ] ; then
-            echo "Add ${path}/${o} overlay"
-            of_overlay ${path}/${o}
-        fi
-done
-""")
-    env_add(d, "nv/overlays.select", "")
     env_add(d, "nv/dev.eth0.mode", "static")
     env_add(d, "nv/dev.eth0.ipaddr", "192.168.3.11")
     env_add(d, "nv/dev.eth0.netmask", "255.255.255.0")
@@ -420,21 +421,6 @@ python do_env:append:phyboard-segin-imx6ul() {
 
 #use this expansion when peb-wlbt-05 adapter is connected
 #. /env/expansions/imx6ul-phytec-peb-wlbt-05
-
-#use this bootarg if the VM010 Color is connected
-#. /env/expansions/imx6ul-phytec-vm010-col
-
-#use this bootarg if the VM010 Monochrome is connected
-#. /env/expansions/imx6ul-phytec-vm010-bw
-
-#use this bootarg if the VM011 Color is connected
-#. /env/expansions/imx6ul-phytec-vm011-col
-
-#use this bootarg if the VM011 Monochrome is connected
-#. /env/expansions/imx6ul-phytec-vm011-bw
-
-#use this bootarg if the VM009 is connected
-#. /env/expansions/imx6ul-phytec-vm009
 """)
     env_add(d, "expansions/imx6ul-phytec-segin-peb-eval-01",
 """
@@ -468,69 +454,6 @@ of_fixup_status /soc/$bus@2100000/serial@21e8000
 of_fixup_status -d /soc/$bus@2000000/spba-bus@2000000/spi@2010000
 of_fixup_status -d /user-leds
 """)
-    env_add(d, "expansions/imx6ul-phytec-vm010-col",
-"""#!/bin/sh
-CAM_PATH="/soc/bus@2100000/i2c@21a0000/cam0@48"
-ENDPOINT_PATH="/soc/bus@2100000/i2c@21a0000/cam0@48/port/endpoint"
-
-of_property -f -s ${CAM_PATH} compatible "aptina,mt9v024"
-of_property -f -d ${CAM_PATH} assigned-clocks
-of_property -f -d ${CAM_PATH} assigned-clock-parents
-of_property -f -d ${CAM_PATH} assigned-clock-rates
-
-of_fixup_status ${CAM_PATH}
-""")
-    env_add(d, "expansions/imx6ul-phytec-vm010-bw",
-"""#!/bin/sh
-CAM_PATH="/soc/bus@2100000/i2c@21a0000/cam0@48"
-ENDPOINT_PATH="/soc/bus@2100000/i2c@21a0000/cam0@48/port/endpoint"
-
-of_property -f -s ${CAM_PATH} compatible "aptina,mt9v024m"
-of_property -f -d ${CAM_PATH} assigned-clocks
-of_property -f -d ${CAM_PATH} assigned-clock-parents
-of_property -f -d ${CAM_PATH} assigned-clock-rates
-
-of_fixup_status ${CAM_PATH}
-""")
-    env_add(d, "expansions/imx6ul-phytec-vm011-col",
-"""#!/bin/sh
-CAM_PATH="/soc/bus@2100000/i2c@21a0000/cam0@48"
-ENDPOINT_PATH="/soc/bus@2100000/i2c@21a0000/cam0@48/port/endpoint"
-
-of_property -f -s ${CAM_PATH} compatible "aptina,mt9p006"
-of_property -f -d ${ENDPOINT_PATH} link-frequencies
-of_property -f -s ${ENDPOINT_PATH} input-clock-frequency <50000000>
-of_property -f -s ${ENDPOINT_PATH} pixel-clock-frequency <50000000>
-of_property -f -s ${ENDPOINT_PATH} pclk-sample <0>
-
-of_fixup_status ${CAM_PATH}
-""")
-    env_add(d, "expansions/imx6ul-phytec-vm011-bw",
-"""#!/bin/sh
-CAM_PATH="/soc/bus@2100000/i2c@21a0000/cam0@48"
-ENDPOINT_PATH="/soc/bus@2100000/i2c@21a0000/cam0@48/port/endpoint"
-
-of_property -f -s ${CAM_PATH} compatible "aptina,mt9p006m"
-of_property -f -d ${ENDPOINT_PATH} link-frequencies
-of_property -f -s ${ENDPOINT_PATH} input-clock-frequency <50000000>
-of_property -f -s ${ENDPOINT_PATH} pixel-clock-frequency <50000000>
-of_property -f -s ${ENDPOINT_PATH} pclk-sample <0>
-
-of_fixup_status ${CAM_PATH}
-""")
-    env_add(d, "expansions/imx6ul-phytec-vm009",
-"""#!/bin/sh
-CAM_PATH="/soc/bus@2100000/i2c@21a0000/cam0@48"
-ENDPOINT_PATH="/soc/bus@2100000/i2c@21a0000/cam0@48/port/endpoint"
-
-of_property -f -s ${CAM_PATH} compatible "micron,mt9m111"
-of_property -f -s ${CAM_PATH} clock-names "mclk"
-of_property -f -s ${CAM_PATH} phytec,invert-pixclk
-of_property -f -s ${CAM_PATH} phytec,allow-10bit
-of_property -f -d ${ENDPOINT_PATH} link-frequencies
-
-of_fixup_status ${CAM_PATH}
-""")
 
     env_add_rauc_nand_boot_scripts(d, nandflashsize=512)
 }
@@ -560,9 +483,6 @@ python do_env:append:phyboard-segin-imx6ul-5() {
 
 #use this expansion when peb-wlbt-05 adapter is connected
 #. /env/expansions/imx6ul-phytec-peb-wlbt-05
-
-#use this bootarg when the VM010 Color is connected
-#nv linux.bootargs.mt9v022="mt9v022.sensor_type=color"
 """)
 }
 
