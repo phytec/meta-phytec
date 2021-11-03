@@ -72,3 +72,13 @@ PACKAGECONFIG_remove_pn-xserver-xorg = "xwayland"
 
 # Disable gstreamer plugins by default
 PACKAGECONFIG_pn-gstreamer1.0-plugins-imx = ""
+
+# Install devicetree overlays
+DT_OVERLAYS_INSTALL = " \
+    imx6ul-vm009.dtbo \
+    imx6ul-vm010-bw.dtbo \
+    imx6ul-vm010-col.dtbo \
+    imx6ul-vm011-bw.dtbo \
+    imx6ul-vm011-col.dtbo \
+    imx6ul-vm016.dtbo \
+"
