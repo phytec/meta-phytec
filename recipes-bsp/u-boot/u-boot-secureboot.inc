@@ -35,6 +35,7 @@ patch_ubootconfig () {
     kconfig_set CMD_ENV_FLAGS y
     kconfig_set CMD_GO n
     kconfig_set CMD_MEMORY n
+    kconfig_set CMD_PROVISION_KEY n
 
     if [ "${FITIMAGE_SIGN}" = "true" ]; then
         kconfig_set FIT y
