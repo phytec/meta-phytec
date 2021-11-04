@@ -31,7 +31,7 @@ ATF_BIN_ADDR:mx8mn="0x960000"
 UBOOT_NODTB_BIN_ADDR:mx8mp="0x40200000"
 ATF_BIN_ADDR:mx8mp="0x970000"
 
-TEE_BIN_ADDR:mx8mm="0xbe000000"
+TEE_BIN_ADDR:mx8mm="0x56000000"
 TEE_BIN_ADDR:mx8mn="0x56000000"
 
 # Extract the addresses we need from imx-mkimage output
