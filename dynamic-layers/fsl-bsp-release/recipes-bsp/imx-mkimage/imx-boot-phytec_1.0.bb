@@ -98,6 +98,9 @@ SOC_FAMILY_mx8x = "mx8x"
 REV_OPTION ?= ""
 REV_OPTION_mx8qxpc0 = "REV=C0"
 
+TEE_LOAD_ADDRESS ?= ""
+TEE_LOAD_ADDRESS_mx8mm = "TEE_LOAD_ADDR=0x56000000"
+
 compile_mx8m() {
     bbnote 8MQ/8MM boot binary build
     for ddr_firmware in ${DDR_FIRMWARE_NAME}; do
@@ -177,10 +180,10 @@ do_compile() {
             if [ "$target" = "flash_linux_m4_no_v2x" ]; then
                # Special target build for i.MX 8DXL with V2X off
                bbnote "building ${SOC_TARGET} - ${REV_OPTION} V2X=NO ${target}"
-               make SOC=${SOC_TARGET} dtbs=${UBOOT_DTB_NAME} ${REV_OPTION} V2X=NO  flash_linux_m4 2>&1 | tee ${WORKDIR}/make_output_${SOC_TARGET}_${target}_${config}.log
+               make SOC=${SOC_TARGET} dtbs=${UBOOT_DTB_NAME} ${REV_OPTION} ${TEE_LOAD_ADDRESS} V2X=NO  flash_linux_m4 2>&1 | tee ${WORKDIR}/make_output_${SOC_TARGET}_${target}_${config}.log
             else
                bbnote "building ${SOC_TARGET} - ${REV_OPTION} ${target}"
-               make SOC=${SOC_TARGET} dtbs=${UBOOT_DTB_NAME} ${REV_OPTION} ${target} 2>&1 | tee ${WORKDIR}/make_output_${SOC_TARGET}_${target}_${config}.log
+               make SOC=${SOC_TARGET} dtbs=${UBOOT_DTB_NAME} ${REV_OPTION} ${TEE_LOAD_ADDRESS} ${target} 2>&1 | tee ${WORKDIR}/make_output_${SOC_TARGET}_${target}_${config}.log
             fi
             if [ -e "${BOOT_STAGING}/flash.bin" ]; then
                 cp ${BOOT_STAGING}/flash.bin ${S}/${BOOT_NAME}-${MACHINE}-${config}.bin-${target}
