@@ -16,7 +16,7 @@ SRCREV = "7960bba2bd03b12003ea483c61eba1bc7aa16dd0"
 
 S = "${WORKDIR}/git"
 
-INTREE_DEFCONFIG = "imx_v6_v7_defconfig"
+INTREE_DEFCONFIG = "imx_v6_v7_defconfig imx6_phytec_distro.config imx6_phytec_machine.config imx6_phytec_platform.config"
 
 COMPATIBLE_MACHINE  = "^("
 COMPATIBLE_MACHINE .=  "phyboard-segin-imx6ul-2"
