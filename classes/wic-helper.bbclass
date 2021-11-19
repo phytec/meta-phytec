@@ -28,7 +28,7 @@ IMAGE_CMD_emmc () {
 	EMMCIMG=${IMGDEPLOYDIR}/${IMAGE_NAME}.rootfs.emmc
 	cp ${SDIMG} ${EMMCIMG}
 
-	ln -sf ${EMMCIMG} ${IMGDEPLOYDIR}/${IMAGE_LINK_NAME}.emmc
+	ln -sf ${EMMCIMG} ${IMAGE_LINK_NAME}.emmc
 }
 
 IMAGE_TYPEDEP_emmc = "wic"
