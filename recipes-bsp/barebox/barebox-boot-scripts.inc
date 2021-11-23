@@ -2,8 +2,6 @@ inherit barebox-environment-2
 inherit buildinfo
 inherit phygittag
 
-DORAUCBOOT ??= "0"
-
 def env_add_boot_scripts(d, kernelname, mmcid, emmcid):
     import textwrap
 
@@ -158,7 +156,8 @@ def env_add_bootchooser(d):
     env_add(d, "nv/bootchooser.system0.boot", """system0""")
     env_add(d, "nv/bootchooser.system1.boot", """system1""")
     env_add(d, "nv/bootchooser.state_prefix", """state.bootstate""")
-    if d.getVar("DORAUCBOOT") == "1" or "rauc" in d.getVar("WKS_FILES"):
+    if "rauc" in d.getVar("DISTRO_FEATURES").split():
+        bb.note("Setting default boot target to \"bootchooser\"")
         env_add(d, "nv/boot.default", "bootchooser")
 
 def env_rm_bootchooser(d):
@@ -166,5 +165,5 @@ def env_rm_bootchooser(d):
     env_rm(d, "nv/bootchooser.system0.boot")
     env_rm(d, "nv/bootchooser.system1.boot")
     env_rm(d, "nv/bootchooser.state_prefix")
-    if d.getVar("DORAUCBOOT") == "1" or "rauc" in d.getVar("WKS_FILES"):
+    if "rauc" in d.getVar("DISTRO_FEATURES").split():
         env_rm(d, "nv/boot.default")
