@@ -40,6 +40,7 @@ IMAGE_BOOT_FILES:secureboot = "fitImage"
 BAREBOX_BINARY = "barebox.bin"
 BAREBOX_BINARY:secureboot = "barebox-s.bin"
 WKS_FILES:mx6 ?= "imx6-sdimage.wks"
+WKS_FILES:mx6_update ?= "imx6-rauc-sdimage.wks"
 WKS_BOOTIMAGESIZE ?= "20"
 WKS_BOOTIMAGESIZE:secureboot ?= "90"
 
