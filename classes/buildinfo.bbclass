@@ -115,7 +115,7 @@ python do_buildinfo() {
     # Some more variables for buildinfo text.
     git_url = d.getVar("GIT_URL", True)
     pv = d.getVar("PV", True)
-    pn = d.getVar("PN", True)
+    pn = d.getVar("BPN", True)
 
     bb.plain("""
 (mini) HOWTO: Use a local git repository to build {PN}:
@@ -133,7 +133,7 @@ You now have two possible workflows for your changes:
 1. Work inside the git repository:
 Copy and paste the following snippet to your "local.conf":
 
-SRC_URI:pn-{PN} = "git:///${{HOME}}/git/{BPN};branch=${{BRANCH}}\"
+SRC_URI:pn-{PN} = "git:///${{HOME}}/git/{PN};branch=${{BRANCH}}\"
 SRCREV:pn-{PN} = "${{AUTOREV}}"
 BRANCH:pn-{PN} = \"{branchname}\"
 
