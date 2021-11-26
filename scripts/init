@@ -95,7 +95,17 @@ if [ -f "${ROOTDIR}/build/conf/bblayers.conf" ] || [ -f "${ROOTDIR}/${1}/conf/bb
         done
 fi
 
-cd ${ROOTDIR}/sources/poky/
+
+# source poky/oe-core build environment script.
+# Use poky script if repository is given, otherwise fallback to oe-core script.
+if [ -e "${ROOTDIR}/sources/poky" ]; then
+	cd ${ROOTDIR}/sources/poky/
+elif [ -e "${ROOTDIR}/sources/oe-core" ]; then
+	cd ${ROOTDIR}/sources/oe-core/
+else
+	echo >&2 "poky/oe-core build environment script not found."
+	exit 1
+fi
 . ./oe-init-build-env > /dev/null
 
 ${PHYTEC_DIR}/scripts/init_bblayers.py
