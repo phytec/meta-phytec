@@ -1,0 +1,25 @@
+From b591275b0d4dbfbd6d046c079b14030dfc9df24c Mon Sep 17 00:00:00 2001
+From: Christophe Parant <c.parant@phytec.fr>
+Date: Fri, 26 Nov 2021 11:23:06 +0100
+Subject: [PATCH] ARM v2020.10 stm32mp phy2 DEVICETREE
+
+---
+ arch/arm/dts/phycore-stm32mp15-som.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/dts/phycore-stm32mp15-som.dtsi b/arch/arm/dts/phycore-stm32mp15-som.dtsi
+index fe0acd85c4..bdc037bf9a 100644
+--- a/arch/arm/dts/phycore-stm32mp15-som.dtsi
++++ b/arch/arm/dts/phycore-stm32mp15-som.dtsi
+@@ -303,7 +303,7 @@
+         phy-handle = <&phy0>;
+         nvmem-cells = <&ethernet_mac_address>;
+         nvmem-cell-names = "mac-address";
+-        st,eth-clk-sel = "true";
++        st,eth_clk_sel = "true";
+ 	clock-names = "stmmaceth",
+ 		      "mac-clk-tx",
+ 		      "mac-clk-rx",
+-- 
+2.17.1
+
