@@ -1,0 +1,107 @@
+From d2fee7e0336702a9b300ecf4cf39739d2221c723 Mon Sep 17 00:00:00 2001
+From: Christophe Parant <c.parant@phytec.fr>
+Date: Fri, 26 Nov 2021 14:19:26 +0100
+Subject: [PATCH] v2.4 stm32mp phy2 DEVICETREE
+
+---
+ fdts/phycore-stm32mp1-2-fw-config.dts | 8 ++++++++
+ fdts/phycore-stm32mp1-3-fw-config.dts | 8 ++++++++
+ fdts/phycore-stm32mp1-4-fw-config.dts | 8 ++++++++
+ fdts/phycore-stm32mp1-5-fw-config.dts | 8 ++++++++
+ fdts/phycore-stm32mp1-6-fw-config.dts | 8 ++++++++
+ fdts/phycore-stm32mp1-7-fw-config.dts | 8 ++++++++
+ 6 files changed, 48 insertions(+)
+ create mode 100644 fdts/phycore-stm32mp1-2-fw-config.dts
+ create mode 100644 fdts/phycore-stm32mp1-3-fw-config.dts
+ create mode 100644 fdts/phycore-stm32mp1-4-fw-config.dts
+ create mode 100644 fdts/phycore-stm32mp1-5-fw-config.dts
+ create mode 100644 fdts/phycore-stm32mp1-6-fw-config.dts
+ create mode 100644 fdts/phycore-stm32mp1-7-fw-config.dts
+
+diff --git a/fdts/phycore-stm32mp1-2-fw-config.dts b/fdts/phycore-stm32mp1-2-fw-config.dts
+new file mode 100644
+index 000000000..470f7f712
+--- /dev/null
++++ b/fdts/phycore-stm32mp1-2-fw-config.dts
+@@ -0,0 +1,8 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) Phytec GmbH 2021 - All Rights Reserved
++ * Author: Christophe PARANT <c.parant@phytec.fr>.
++ */
++
++
++#include "stm32mp15-ddr-1g-fw-config.dts"
+diff --git a/fdts/phycore-stm32mp1-3-fw-config.dts b/fdts/phycore-stm32mp1-3-fw-config.dts
+new file mode 100644
+index 000000000..470f7f712
+--- /dev/null
++++ b/fdts/phycore-stm32mp1-3-fw-config.dts
+@@ -0,0 +1,8 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) Phytec GmbH 2021 - All Rights Reserved
++ * Author: Christophe PARANT <c.parant@phytec.fr>.
++ */
++
++
++#include "stm32mp15-ddr-1g-fw-config.dts"
+diff --git a/fdts/phycore-stm32mp1-4-fw-config.dts b/fdts/phycore-stm32mp1-4-fw-config.dts
+new file mode 100644
+index 000000000..470f7f712
+--- /dev/null
++++ b/fdts/phycore-stm32mp1-4-fw-config.dts
+@@ -0,0 +1,8 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) Phytec GmbH 2021 - All Rights Reserved
++ * Author: Christophe PARANT <c.parant@phytec.fr>.
++ */
++
++
++#include "stm32mp15-ddr-1g-fw-config.dts"
+diff --git a/fdts/phycore-stm32mp1-5-fw-config.dts b/fdts/phycore-stm32mp1-5-fw-config.dts
+new file mode 100644
+index 000000000..470f7f712
+--- /dev/null
++++ b/fdts/phycore-stm32mp1-5-fw-config.dts
+@@ -0,0 +1,8 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) Phytec GmbH 2021 - All Rights Reserved
++ * Author: Christophe PARANT <c.parant@phytec.fr>.
++ */
++
++
++#include "stm32mp15-ddr-1g-fw-config.dts"
+diff --git a/fdts/phycore-stm32mp1-6-fw-config.dts b/fdts/phycore-stm32mp1-6-fw-config.dts
+new file mode 100644
+index 000000000..be3f7652e
+--- /dev/null
++++ b/fdts/phycore-stm32mp1-6-fw-config.dts
+@@ -0,0 +1,8 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) Phytec GmbH 2021 - All Rights Reserved
++ * Author: Christophe PARANT <c.parant@phytec.fr>.
++ */
++
++
++#include "stm32mp15-ddr-512m-fw-config.dts"
+diff --git a/fdts/phycore-stm32mp1-7-fw-config.dts b/fdts/phycore-stm32mp1-7-fw-config.dts
+new file mode 100644
+index 000000000..be3f7652e
+--- /dev/null
++++ b/fdts/phycore-stm32mp1-7-fw-config.dts
+@@ -0,0 +1,8 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) Phytec GmbH 2021 - All Rights Reserved
++ * Author: Christophe PARANT <c.parant@phytec.fr>.
++ */
++
++
++#include "stm32mp15-ddr-512m-fw-config.dts"
+-- 
+2.17.1
+
