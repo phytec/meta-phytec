@@ -29,3 +29,12 @@ PROJECTS_LIST = " \
 	STM32MP15-phyBOARD-Sargas/Applications/OpenAMP/OpenAMP_TTY_echo \
         ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'STM32MP15-phyBOARD-Sargas/Demonstrations/AI_Character_Recognition', '', d)} \
 "
+
+# Default Project list when using specific config for STM32CubeMX generated project
+PROJECTS_LIST_stm32mpcommonmx = " \
+	STM32MP15-phyBOARD-Sargas/Examples/GPIO/GPIO_EXTI \
+	STM32MP15-phyBOARD-Sargas/Examples/UART/UART_Receive_Transmit_Console \
+	STM32MP15-phyBOARD-Sargas/Applications/OpenAMP/OpenAMP_raw \
+	STM32MP15-phyBOARD-Sargas/Applications/OpenAMP/OpenAMP_TTY_echo \
+        ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'STM32MP15-phyBOARD-Sargas/Demonstrations/AI_Character_Recognition', '', d)} \
+"
