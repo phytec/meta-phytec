@@ -126,3 +126,7 @@ CONF_VERSION = "1"
 # Uncomment to accept NXP EULA (needed, if any NXP / freescale layer is used)
 # EULA can then be found under ../sources/meta-freescale/EULA
 #ACCEPT_FSL_EULA = "1"
+
+# A TISDK BSP requires per default an external toolchain
+# Provide a default path that is compatible to our TISDK docker image
+TOOLCHAIN_BASE ?= "/opt/PHYTEC_BSPs"
