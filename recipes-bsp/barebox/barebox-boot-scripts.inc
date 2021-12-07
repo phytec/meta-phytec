@@ -78,10 +78,10 @@ def env_add_boot_scripts(d, kernelname, mmcid, emmcid):
                                                rootid=2, bbrootid=1))
         env_add(d, "boot/system0", mmcboot.format(kernel=kernelname,
                                                   mmcid=emmcid, partid=0,
-                                                  rootid=2, bbrootid=1))
+                                                  rootid=5, bbrootid=4))
         env_add(d, "boot/system1", mmcboot.format(kernel=kernelname,
-                                                  mmcid=emmcid, partid=2,
-                                                  rootid=4, bbrootid=3))
+                                                  mmcid=emmcid, partid=1,
+                                                  rootid=6, bbrootid=5))
         spiroot = "root=/dev/mmcblk{}p2 rootflags='data=journal'".format(emmcid)
     else:
         env_add(d, "boot/nand", nandboot.format(partid=""))
