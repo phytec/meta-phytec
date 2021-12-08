@@ -26,8 +26,8 @@ IMAGE_CMD:emmc () {
 			SDIMG=${IMGDEPLOYDIR}/${IMAGE_NAME}.rootfs.wic
 		fi
 	fi
-	EMMCIMG=${IMGDEPLOYDIR}/${IMAGE_NAME}.rootfs.emmc
-	cp ${SDIMG} ${EMMCIMG}
+	EMMCIMG=${IMAGE_NAME}.rootfs.emmc
+	cp ${SDIMG} ${IMGDEPLOYDIR}/${EMMCIMG}
 
 	ln -sf ${EMMCIMG} ${IMGDEPLOYDIR}/${IMAGE_LINK_NAME}.emmc
 }
