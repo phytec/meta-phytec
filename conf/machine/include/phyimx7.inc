@@ -21,8 +21,11 @@ UBINIZE_ARGS = "-m 2048 -p 128KiB -s 2048 -O 2048"
 IMAGE_BOOT_FILES = "zImage ${KERNEL_DEVICETREE}"
 WKS_FILES_mx7 ?= "imx7-sdimage.wks"
 
+# Device information used by RAUC and some of its dependencies
+EMMC_DEV_mx7 ?= "2"
+
 # Default images to build
-IMAGE_FSTYPES = "tar.xz wic ubifs"
+IMAGE_FSTYPES = "tar.gz wic ubifs"
 
 RRECOMMENDS_gst-examples-bin_remove_pn-gst-examples = "gstreamer1.0-plugins-bad-meta"
 PREFERRED_PROVIDER_virtual/xserver ?= "xserver-xorg"
