@@ -2,7 +2,7 @@ DESCRIPTION = "A Freescale tool to profile memory controller bandwidth on i.MX6"
 LICENSE = "GPLv2+"
 LIC_FILES_CHKSUM = "file://mmdc.c;beginline=5;endline=12;md5=49e09642208485988b5c22074c896653"
 
-SRC_URI = "git://github.com/FrankBau/mmdc;protocol=https \
+SRC_URI = "git://github.com/FrankBau/mmdc;protocol=https;branch=master \
            file://0001-mmdc.c-Fix-revision-check-against-old-kernel-version.patch \
            file://0002-Makefile-fix-build-error-for-clean-task.patch \
            "
