@@ -8,7 +8,7 @@ LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://COPYING;md5=393a5ca445f6965873eca0259a17f833"
 
 PV = "5.5+git${SRCPV}"
-SRC_URI = "git://github.com/NXPmicro/imx-kobs.git;protocol=https \
+SRC_URI = "git://github.com/NXPmicro/imx-kobs.git;protocol=https;branch=master \
            file://0001-Slot-switch.patch \
            file://0001-mtd-write-boot-streams-separately.patch \
 "
