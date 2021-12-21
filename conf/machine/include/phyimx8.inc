@@ -11,7 +11,6 @@ MACHINE_FEATURES:remove = "nxp8987"
 # Wic
 IMAGE_CLASSES += "wic-helper"
 IMAGE_CLASSES += "wic-imx8-helper"
-IMAGE_BOOTFILES_DEPENDS ?= ""
 EXTERNAL_KERNEL_DEVICETREE ??= ""
 IMAGE_BOOT_FILES += "oftree ${EXTERNAL_KERNEL_DEVICETREE}"
 WKS_FILES:mx8m ?= "imx8m-sdimage.wks"
