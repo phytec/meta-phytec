@@ -413,8 +413,10 @@ python do_env_append_phyboard-segin-imx6ul() {
 . /env/expansions/imx6ul-phytec-segin-peb-eval-01
 #use this expansion when a capacitive touchscreen is connected
 #. /env/expansions/imx6ul-phytec-segin-peb-av-02
-#use this expansion when a resisitive touchscreen is connected
-#. /env/expansions/imx6ul-phytec-segin-peb-av-02-res
+#use this expansion when a resisitive touchscreen with stmpe touchcontroller is connected
+#. /env/expansions/imx6ul-phytec-segin-peb-av-02-res-stmpe
+#use this expansion when a resisitive touchscreen with tsc2004 touchcontroller is connected
+#. /env/expansions/imx6ul-phytec-segin-peb-av-02-res-tsc2004
 
 #use this expansion when peb-wlbt-05 adapter is connected
 #. /env/expansions/imx6ul-phytec-peb-wlbt-05
@@ -439,8 +441,19 @@ of_fixup_status /soc/$bus@2100000/lcdif@21c8000/
 of_fixup_status /panel-lcd
 of_fixup_status /backlight
 of_fixup_status /regulator-backlight-en
-of_fixup_status /soc/$bus@2100000/i2c@21a0000/touchscreen@44
 of_fixup_status /soc/$bus@2000000/pwm@2088000/
+""")
+    env_add(d, "expansions/imx6ul-phytec-segin-peb-av-02-res-tsc2004",
+"""
+. /env/expansions/imx6ul-phytec-segin-peb-av-02-res
+of_fixup_status -d /soc/$bus@2100000/i2c@21a0000/touchscreen@44
+of_fixup_status /soc/$bus@2100000/i2c@21a0000/touchscreen@49
+""")
+    env_add(d, "expansions/imx6ul-phytec-segin-peb-av-02-res-stmpe",
+"""
+. /env/expansions/imx6ul-phytec-segin-peb-av-02-res
+of_fixup_status -d /soc/$bus@2100000/i2c@21a0000/touchscreen@49
+of_fixup_status /soc/$bus@2100000/i2c@21a0000/touchscreen@44
 """)
     env_add(d, "expansions/imx6ul-phytec-peb-wlbt-05",
 """#!/bin/sh
