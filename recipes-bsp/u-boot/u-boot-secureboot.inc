@@ -44,7 +44,7 @@ patch_ubootconfig () {
         kconfig_set FIT_VERBOSE n
         kconfig_set LEGACY_IMAGE_FORMAT n
 
-        sed -e 's/dofitboot=0\\0/dofitboot=1\\0/g' -i ${S}/include/configs/phycore_*.h
+        sed -i "s/\(setenv dofitboot \)[01]/\11/" ${S}/include/configs/phycore_*.h
         sed -e 's/image=Image\\0/image=fitImage\\0/g' -i ${S}/include/configs/phycore_*.h
     else
         sed -e 's/image=Image\\0/image=Image-signed\\0/g' -i ${S}/include/configs/phycore_*.h
