@@ -17,6 +17,7 @@ IMAGE_BOOT_FILES += "oftree ${EXTERNAL_KERNEL_DEVICETREE} bootenv.txt"
 WKS_FILES_mx8m ?= "imx8m-sdimage.wks"
 WKS_FILES_mx8m_update ?= "imx8m-rauc-sdimage.wks"
 WKS_BOOTIMAGESIZE ?= "50"
+WIC_CREATE_EXTRA_ARGS_remove = "--no-fstab-update"
 
 # Set bootloader offset size for sd-card image
 IMX_BOOT_SEEK_mx8m ?= "33"
