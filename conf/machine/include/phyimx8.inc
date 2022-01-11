@@ -17,6 +17,7 @@ IMAGE_BOOT_FILES:secureboot:mx8m = "fitImage"
 WKS_FILES:mx8m ?= "imx8m-sdimage.wks"
 WKS_FILES:mx8m:update ?= "imx8m-rauc-sdimage.wks"
 WKS_BOOTIMAGESIZE ?= "50"
+WIC_CREATE_EXTRA_ARGS:remove = "--no-fstab-update"
 
 # MMC user area bootloader image offset
 BOOTLOADER_SEEK:mx8m ?= "33"
