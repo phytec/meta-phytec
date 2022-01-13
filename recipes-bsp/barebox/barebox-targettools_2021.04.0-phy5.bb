@@ -17,11 +17,14 @@ do_configure:append() {
     kconfig_set IMD_TARGET y
 }
 
+do_compile () {
+	oe_runmake scripts
+}
+
 do_install () {
-    # remove all stuff from the barebox build
-    rm -rf ${D}/
     mkdir -p ${B}/
 
+    bbnote "Installing barebox targettools on target rootfs"
     install -d ${D}${base_sbindir}
     install -m 744 ${B}/scripts/bareboxenv-target ${D}${base_sbindir}/bareboxenv
     install -m 744 ${B}/scripts/bareboxcrc32-target ${D}${base_sbindir}/bareboxcrc32

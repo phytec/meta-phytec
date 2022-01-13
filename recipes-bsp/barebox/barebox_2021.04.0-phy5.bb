@@ -377,7 +377,7 @@ python do_env:append:phyboard-mira-imx6-13() {
 }
 
 do_deploy:prepend:mx6ul() {
-    if [ -e ${B}/scripts/bareboximd ]; then
+    if [ "${PN}" = "barebox" ] ; then
         bbnote "Adding CRC32 checksum to barebox Image Metadata"
         ${B}/scripts/bareboximd -c ${B}/${BAREBOX_BIN}
     fi
