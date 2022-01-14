@@ -49,6 +49,8 @@ patch_ubootconfig () {
     else
         sed -e 's/image=Image\\0/image=Image-signed\\0/g' -i ${S}/include/configs/phycore_*.h
     fi
+    # For now, disable extensions and overlays until we can sign/verify them
+    sed 's/mmc_load_overlay=/no_extensions=1\\0no_overlays=1\\0mmc_load_overlay=/g' -i ${S}/include/configs/phycore_*.h
 }
 
 do_patch:append:secureboot () {
