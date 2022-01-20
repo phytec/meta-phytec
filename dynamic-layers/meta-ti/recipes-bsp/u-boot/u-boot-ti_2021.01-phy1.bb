@@ -9,10 +9,10 @@ BRANCH = "v2021.01-phy"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/u-boot:"
-SRC_URI_append_phyboard-electra-1 = "\
+SRC_URI_append_phyboard-electra-am64xx-1 = "\
     file://0001-HACK-board-phycore_am64xx-Add-Set-CLKOUT0-to-25MHz.patch \
 "
-SRC_URI_append_phyboard-electra-1-k3r5 = "\
+SRC_URI_append_phyboard-electra-am64xx-1-k3r5 = "\
     file://0001-HACK-board-phycore_am64xx-Add-Set-CLKOUT0-to-25MHz.patch \
 "
 
@@ -27,6 +27,6 @@ do_deploy_append_k3r5 () {
 }
 
 COMPATIBLE_MACHINE = "^("
-COMPATIBLE_MACHINE .= "phyboard-electra-1"
-COMPATIBLE_MACHINE .= "|phyboard-electra-1-k3r5"
+COMPATIBLE_MACHINE .= "phyboard-electra-am64xx-1"
+COMPATIBLE_MACHINE .= "|phyboard-electra-am64xx-1-k3r5"
 COMPATIBLE_MACHINE .= ")$"
