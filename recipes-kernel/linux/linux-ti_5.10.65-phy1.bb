@@ -36,5 +36,5 @@ FILES_${KERNEL_PACKAGE_NAME}-devicetree += "/${KERNEL_IMAGEDEST}/*.itb"
 INTREE_DEFCONFIG = "am64xx_phytec_defconfig"
 
 COMPATIBLE_MACHINE  = "^("
-COMPATIBLE_MACHINE .=  "phyboard-electra-1"
+COMPATIBLE_MACHINE .=  "phyboard-electra-am64xx-1"
 COMPATIBLE_MACHINE .= ")$"
