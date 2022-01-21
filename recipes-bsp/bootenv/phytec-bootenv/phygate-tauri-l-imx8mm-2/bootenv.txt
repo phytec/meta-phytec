@@ -1,0 +1,1 @@
+overlays=imx8mm-phygate-tauri-rs232-rs485.dtbo
