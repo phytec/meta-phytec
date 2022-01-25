@@ -44,6 +44,11 @@ WKS_FILES:mx6_update ?= "imx6-rauc-sdimage.wks"
 WKS_BOOTIMAGESIZE ?= "20"
 WKS_BOOTIMAGESIZE:secureboot ?= "90"
 
+# MMC user area bootloader image offset
+BOOTLOADER_SEEK:mx6 ?= "1"
+# eMMC boot partition bootloader image offset
+BOOTLOADER_SEEK_EMMC:mx6 ?= "0"
+
 # Device information used by RAUC and some of its dependencies
 EMMC_DEV:mx6 ?= "3"
 NAND_DEV:mx6 ?= "0"
