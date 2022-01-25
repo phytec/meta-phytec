@@ -19,15 +19,14 @@ WKS_FILES_mx8m_update ?= "imx8m-rauc-sdimage.wks"
 WKS_BOOTIMAGESIZE ?= "50"
 WIC_CREATE_EXTRA_ARGS_remove = "--no-fstab-update"
 
-# Set bootloader offset size for sd-card image
-IMX_BOOT_SEEK_mx8m ?= "33"
-IMX_BOOT_SEEK_mx8mn ?= "32"
-IMX_BOOT_SEEK_mx8mp ?= "32"
-
+# MMC user area bootloader image offset
+BOOTLOADER_SEEK_mx8m ?= "33"
+BOOTLOADER_SEEK_mx8mn ?= "32"
+BOOTLOADER_SEEK_mx8mp ?= "32"
 # eMMC boot partition bootloader image offset
-IMX_BOOT_SEEK_EMMC_mx8m ?= "33"
-IMX_BOOT_SEEK_EMMC_mx8mn ?= "0"
-IMX_BOOT_SEEK_EMMC_mx8mp ?= "0"
+BOOTLOADER_SEEK_EMMC_mx8m ?= "33"
+BOOTLOADER_SEEK_EMMC_mx8mn ?= "0"
+BOOTLOADER_SEEK_EMMC_mx8mp ?= "0"
 
 # Device information used by RAUC and some of its dependencies
 EMMC_DEV_mx8mq ?= "0"

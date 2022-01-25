@@ -2,7 +2,7 @@
 BAREBOX_BINARY ??= "barebox.bin"
 WKS_BOOTIMAGESIZE ??= "20"
 
-WICVARS_append = " BAREBOX_BINARY IMX_BOOT_SEEK WKS_BOOTIMAGESIZE"
+WICVARS_append = " BAREBOX_BINARY BOOTLOADER_SEEK WKS_BOOTIMAGESIZE"
 
 do_image_wic[depends] += "\
     dosfstools-native:do_populate_sysroot \
