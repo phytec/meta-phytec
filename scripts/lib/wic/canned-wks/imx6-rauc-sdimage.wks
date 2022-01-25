@@ -3,7 +3,7 @@
 # boards that the user can directly dd to an SD card and boot.
 # This image contains twice boot and rootfs partitions for a redundance system.
 
-part BAREBOX --source rawcopy --sourceparams="file=${BAREBOX_BINARY},skip=1024" --ondisk mmc --no-table --align 1
+part BAREBOX --source rawcopy --sourceparams="file=${BAREBOX_BINARY},skip=1024" --ondisk mmc --no-table --align ${BOOTLOADER_SEEK}
 
 include rauc-sdimage.wks.inc
 
