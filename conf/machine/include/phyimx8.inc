@@ -17,15 +17,14 @@ WKS_FILES:mx8m ?= "imx8m-sdimage.wks"
 WKS_FILES:mx8m_update ?= "imx8m-rauc-sdimage.wks"
 WKS_BOOTIMAGESIZE ?= "50"
 
-# Set bootloader offset size for sd-card image
-IMX_BOOT_SEEK:mx8m ?= "33"
-IMX_BOOT_SEEK:mx8mn ?= "32"
-IMX_BOOT_SEEK:mx8mp ?= "32"
-
+# MMC user area bootloader image offset
+BOOTLOADER_SEEK:mx8m ?= "33"
+BOOTLOADER_SEEK:mx8mn ?= "32"
+BOOTLOADER_SEEK:mx8mp ?= "32"
 # eMMC boot partition bootloader image offset
-IMX_BOOT_SEEK_EMMC:mx8m ?= "33"
-IMX_BOOT_SEEK_EMMC:mx8mn ?= "0"
-IMX_BOOT_SEEK_EMMC:mx8mp ?= "0"
+BOOTLOADER_SEEK_EMMC:mx8m ?= "33"
+BOOTLOADER_SEEK_EMMC:mx8mn ?= "0"
+BOOTLOADER_SEEK_EMMC:mx8mp ?= "0"
 
 # Device information used by RAUC and some of its dependencies
 EMMC_DEV:mx8mq ?= "0"
