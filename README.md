@@ -4,7 +4,6 @@ meta-phytec
 This is the official hardware support layer for PHYTEC Boards.
 Meta-phytec is a distribution independent layer and delivers bootloader
 and kernel to our customers.
-The layer is distributed under the MIT license if not noted otherwise.
 If you are interested in a fully tested and configured Linux
 distribution, consider installing
 [meta-yogurt](git://git.phytec.de/meta-yogurt)
@@ -25,6 +24,21 @@ Please try to do the following first:
   [Yocto mailing list archives](https://lists.yoctoproject.org/pipermail/yocto/)
   to see if other people have run into similar
   problems or had similar questions answered.
+
+License
+=======
+
+This layer is distributed under the MIT license if not noted otherwise.
+This includes all recipes, configuration files and meta data created by
+Phytec. Source code included in the tree is distributed under the
+license stated in the corresponding recipe or as mentioned in the code.
+There is some work of others companies included or referenced.
+Attribution is kept as required. The receipt meta data is mostly MIT,
+if not noted otherwise. The binaries and code compiled for the target
+rootfs is distributed under the vendors license. The licenses are
+provided in the /licenses subdirectory to be collected by bitbake.
+Please be aware that you need to agree to the specific vendor licenses
+if you use the proprietary code for your product.
 
 Maintainer
 ==========
