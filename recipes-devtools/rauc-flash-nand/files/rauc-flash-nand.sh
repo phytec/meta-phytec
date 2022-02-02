@@ -1,6 +1,6 @@
 #!/bin/sh
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2021 PHYTEC Messtechnik GmbH
+# Copyright (c) 2022 PHYTEC Messtechnik GmbH
 # Author: Martin Schwan <m.schwan@phytec.de>
 
 usage() {
@@ -81,24 +81,26 @@ USABLE_MEBIBYTES=$(expr $AVAIL_BYTES \* 9 / 10 / 1024 / 1024)
 
 SIZE_KERNEL=16
 SIZE_DTB=1
-SIZE_ROOTFS=$(expr $USABLE_MEBIBYTES / 2 - $SIZE_KERNEL - $SIZE_DTB)
+SIZE_CONFIG=16
+SIZE_ROOTFS=$(expr $USABLE_MEBIBYTES / 2 - $SIZE_KERNEL - $SIZE_DTB - $SIZE_CONFIG)
 
 echo "Creating UBI volumes"
 ubimkvol -t static -N kernel0 -s ${SIZE_KERNEL}MiB $UBI_DEV
 ubimkvol -t static -N oftree0 -s ${SIZE_DTB}MiB $UBI_DEV
-ubimkvol -t dynamic -N root0 -s ${SIZE_ROOTFS}MiB $UBI_DEV
 ubimkvol -t static -N kernel1 -s ${SIZE_KERNEL}MiB $UBI_DEV
 ubimkvol -t static -N oftree1 -s ${SIZE_DTB}MiB $UBI_DEV
+ubimkvol -t dynamic -N config -s ${SIZE_CONFIG}MiB $UBI_DEV
+ubimkvol -t dynamic -N root0 -s ${SIZE_ROOTFS}MiB $UBI_DEV
 ubimkvol -t dynamic -N root1 -s ${SIZE_ROOTFS}MiB $UBI_DEV
 
 if [ $WRITE_FILES -eq 1 ]; then
 	echo "Writing files to UBI volumes"
 	ubiupdatevol ${UBI_DEV}_0 $KERNEL
 	ubiupdatevol ${UBI_DEV}_1 $DTB
-	ubiupdatevol ${UBI_DEV}_2 $ROOTFS
-	ubiupdatevol ${UBI_DEV}_3 $KERNEL
-	ubiupdatevol ${UBI_DEV}_4 $DTB
+	ubiupdatevol ${UBI_DEV}_2 $KERNEL
+	ubiupdatevol ${UBI_DEV}_3 $DTB
 	ubiupdatevol ${UBI_DEV}_5 $ROOTFS
+	ubiupdatevol ${UBI_DEV}_6 $ROOTFS
 fi
 
 echo "Detaching MTD device $MTD_DEV"
