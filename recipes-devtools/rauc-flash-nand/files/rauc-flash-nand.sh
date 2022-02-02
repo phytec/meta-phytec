@@ -58,6 +58,10 @@ fi
 MTD_DEV=/dev/$(cat /proc/mtd | grep root | cut -d ':' -f 1)
 MTD_DEV_NUM=$(echo $MTD_DEV | grep -Eo '[0-9]+$')
 UBI_DEV=/dev/ubi$MTD_DEV_NUM
+if [ -z "$MTD_DEV_NUM" ]; then
+	echo "ERROR: Could not find a NAND device!"
+	exit 1
+fi
 
 echo "Formatting MTD device $MTD_DEV"
 ubiformat -q $MTD_DEV
