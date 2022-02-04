@@ -39,6 +39,9 @@ FITIMAGE_LOADADDRESS_mx8m ?= "0x48000000"
 FITIMAGE_ENTRYPOINT  ??= ""
 FITIMAGE_ENTRYPOINT_mx8m ?= "0x48000000"
 FITIMAGE_DTB_LOADADDRESS ??= ""
+FITIMAGE_DTB_OVERLAY_LOADADDRESS ??= ""
+FITIMAGE_DTB_LOADADDRESS_mx8m ??= "0x49F00000"
+FITIMAGE_DTB_OVERLAY_LOADADDRESS_mx8m ??= "0x49FC0000"
 FITIMAGE_RD_LOADADDRESS ??= ""
 FITIMAGE_RD_ENTRYPOINT ??= ""
 
@@ -150,6 +153,31 @@ def fitimage_emit_section_dtb(d,fd,dtb_file,dtb_path):
     fd.write('\t\t'     + '};\n')
 
 #
+# Emit the fitImage ITS DTB overlay section
+#
+def fitimage_emit_section_dtb_overlay(d,fd,dtb_file,dtb_path):
+    dtb_csum = d.expand("${FITIMAGE_HASH}")
+    arch = d.getVar("TARGET_ARCH", True)
+    arch = "arm64" if arch == "aarch64" else arch
+
+    dtb_loadline=""
+    if len(d.expand("${FITIMAGE_DTB_OVERLAY_LOADADDRESS}")) > 0:
+        dtb_loadline = "load = <%s>;" % d.expand("${FITIMAGE_DTB_OVERLAY_LOADADDRESS}")
+
+    fd.write('\t\t'     + 'fdt-%s {\n' % dtb_file)
+    fd.write('\t\t\t'   +   'description = "Flattened Device Tree Overlay blob";\n')
+    fd.write('\t\t\t'   +   'data = /incbin/("%s/%s");\n' % (dtb_path, dtb_file))
+    fd.write('\t\t\t'   +   'type = "flat_dt";\n')
+    fd.write('\t\t\t'   +   'arch = "%s";\n' % arch)
+    fd.write('\t\t\t'   +   'compression = "none";\n')
+    fd.write('\t\t\t'   +   '%s\n' % dtb_loadline)
+    fd.write('\t\t\t'   +   'hash-1 {\n')
+    fd.write('\t\t\t\t' +     'algo = "%s";\n' % dtb_csum)
+    fd.write('\t\t\t'   +   '};\n')
+    fd.write('\t\t'     + '};\n')
+
+
+#
 # Emit the fitImage ITS ramdisk section
 #
 def fitimage_emit_section_ramdisk(d,fd,img_file,img_path):
@@ -204,10 +232,10 @@ def fitimage_emit_section_config(d,fd,dtb,kernelcount,ramdiskcount,setupcount,i)
     if len(setupcount) > 0:
          conf_desc = conf_desc + ", setup"
     if i  == 1:
-          default_line="default = \"conf-%s\";" % dtb
+          default_line="default = \"%s\";" % dtb
 
     fd.write('\t\t'   + '%s\n' % default_line)
-    fd.write('\t\t'   + 'conf-%s {\n' % dtb)
+    fd.write('\t\t'   + '%s {\n' % dtb)
     fd.write('\t\t\t' +   'description = "%d %s";\n' % (i,conf_desc))
     fd.write('\t\t\t' +   '%s\n' % kernel_line)
     fd.write('\t\t\t' +   '%s\n' % fdt_line)
@@ -235,6 +263,39 @@ def fitimage_emit_section_config(d,fd,dtb,kernelcount,ramdiskcount,setupcount,i)
 
     fd.write('\t\t'  + '};\n')
 
+#
+# Emits a device tree overlay config section
+#
+def fitimage_emit_section_config_fdto(d,fd,dtb):
+    conf_csum = d.expand("${FITIMAGE_HASH}")
+    conf_encrypt = d.getVar("FITIMAGE_SIGNATURE_ENCRYPTION", True) or ""
+    path, filename = os.path.split(d.getVar("FITIMAGE_SIGN_KEY_PATH", True) or "")
+    conf_sign_keyname = filename.split('.')
+
+
+    conf_desc="Device Tree Overlay"
+    if len(dtb) > 0:
+         fdt_line="fdt = \"fdt-%s\";" % dtb
+
+    fd.write('\t\t'   + '%s {\n' % dtb)
+    fd.write('\t\t\t' +   'description = "%s";\n' % (conf_desc))
+    fd.write('\t\t\t' +   '%s\n' % fdt_line)
+
+    if len(conf_sign_keyname) > 0:
+       sign_line="sign-images = \"fdt\""
+
+       fd.write('\t\t\t'   + 'signature-1 {\n')
+       fd.write('\t\t\t\t' +   'algo = "%s,%s";\n' % (conf_csum, conf_encrypt))
+       fd.write('\t\t\t\t' +   'key-name-hint = "%s";\n' % conf_sign_keyname[0])
+       fd.write('\t\t\t\t' +   '%s;\n' % sign_line)
+       fd.write('\t\t\t\t' +   'signer-name = "%s";\n' % d.getVar("FITIMAGE_SIGNER", True))
+       fd.write('\t\t\t\t' +   'signer-version = "%s";\n' % d.getVar("FITIMAGE_SIGNER_VERSION", True))
+       fd.write('\t\t\t'   + '};\n')
+    else:
+       bb.warn(d.expand("${FITIMAGE_SIGN_KEY_PATH} No Key File for signing FIT Image => FIT Image don't get a signature"))
+
+    fd.write('\t\t'  + '};\n')
+
 def write_manifest(d):
     import shutil
 
@@ -242,6 +303,7 @@ def write_manifest(d):
     path = d.expand("${S}")
     kernelcount=1
     DTBS = ""
+    DTBOS = ""
     ramdiskcount = ""
     setupcount = ""
 
@@ -282,6 +344,14 @@ def write_manifest(d):
                 if len(dtb_path) ==0:
                    dtb_path = d.getVar("DEPLOY_DIR_IMAGE")
                 fitimage_emit_section_dtb(d,fd,dtb_file,dtb_path)
+         elif imgtype == 'fdto':
+                imgsource = d.getVarFlag('FITIMAGE_SLOT_%s' % slot, 'file')
+                for dtb in (imgsource or "").split():
+                    dtb_path, dtb_file = os.path.split(dtb)
+                    DTBOS = DTBOS + " " + dtb_file
+                    if len(dtb_path) ==0:
+                        dtb_path = d.getVar("DEPLOY_DIR_IMAGE")
+                    fitimage_emit_section_dtb_overlay(d,fd,dtb_file,dtb_path)
          elif imgtype == 'ramdisk':
             ramdiskcount = "1"
             if slotflags and 'fstype' in slotflags:
@@ -298,6 +368,8 @@ def write_manifest(d):
     for dtb in (DTBS or "").split():
         fitimage_emit_section_config(d,fd,dtb,kernelcount,ramdiskcount,setupcount,i)
         i = i +1
+    for dtb in (DTBOS or "").split():
+        fitimage_emit_section_config_fdto(d,fd,dtb)
 
     fitimage_emit_section_maint(d,fd,'sectend')
     fitimage_emit_section_maint(d,fd,'fitend')
