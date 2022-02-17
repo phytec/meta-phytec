@@ -17,7 +17,7 @@ SRC_URI_append_phyboard-electra-am64xx-1-k3r5 = "\
 "
 
 PR = "r0"
-SRCREV = "15f0de551506c07e31c678ad4bd713452f6eb5fc"
+SRCREV = "d41a57f8241cfc7f74162777f7a2a28055ab5186"
 
 SPL_UART_BINARY_k3r5 = "u-boot-spl.bin"
 
