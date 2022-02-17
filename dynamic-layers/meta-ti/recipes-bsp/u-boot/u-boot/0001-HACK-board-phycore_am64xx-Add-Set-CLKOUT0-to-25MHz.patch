@@ -1,4 +1,4 @@
-From eaf12c514fc97d287c8cf678b71c4d6fbd8f782b Mon Sep 17 00:00:00 2001
+From 0832a165ae405ddbf5f2f421cb8d18e612fa2b6e Mon Sep 17 00:00:00 2001
 From: Wadim Egorov <w.egorov@phytec.de>
 Date: Thu, 23 Dec 2021 17:57:08 +0100
 Subject: [PATCH] HACK: board: phycore_am64xx: Add Set CLKOUT0 to 25MHz
@@ -14,10 +14,10 @@ Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
  1 file changed, 6 insertions(+)
 
 diff --git a/board/phytec/phycore_am64xx/phycore-am64xx.c b/board/phytec/phycore_am64xx/phycore-am64xx.c
-index 76d1621e40..678708923a 100644
+index b4c1da1143..f479185d24 100644
 --- a/board/phytec/phycore_am64xx/phycore-am64xx.c
 +++ b/board/phytec/phycore_am64xx/phycore-am64xx.c
-@@ -57,5 +57,11 @@ void spl_board_init(void)
+@@ -57,6 +57,12 @@ void spl_board_init(void)
  	val = readl(CTRLMMR_USB0_PHY_CTRL);
  	val &= ~(CORE_VOLTAGE);
  	writel(val, CTRLMMR_USB0_PHY_CTRL);
@@ -29,6 +29,7 @@ index 76d1621e40..678708923a 100644
 +	writel(0x11, 0x43008010);       /* CLK_EN = 1, CLK_SEL = 1 */
  }
  #endif
+ 
 -- 
 2.25.1
 
