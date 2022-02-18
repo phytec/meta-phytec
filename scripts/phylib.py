@@ -99,8 +99,9 @@ class Sourcecode(object):
     def poky_version(self):
         if self._poky_version:
             return self._poky_version
+        repo = 'poky' if self.is_poky() else 'oe-core'
         p = subprocess.Popen(["git", "tag", "-l", "yocto-*", "--merged", "HEAD"],
-                            cwd=os.path.join(self.bsp_dir, "sources", "poky"),
+                            cwd=os.path.join(self.bsp_dir, "sources", repo),
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         (out, error) = p.communicate()
         if p.returncode != 0:
@@ -116,6 +117,17 @@ class Sourcecode(object):
         taglist_sorted.sort()
         self._poky_version = taglist_sorted[-1]
         return self._poky_version
+
+    def is:poky(self):
+        sources = os.path.join(self.bsp_dir, 'sources')
+        return os.path.exists(os.path.join(sources, 'poky'))
+
+    def get_init_env(self):
+        sources = os.path.join(self.bsp_dir, 'sources')
+        if self.is_poky():
+            return os.path.join(sources, 'poky/oe-init-build-env')
+        else:
+            return os.path.join(sources, 'oe-core/oe-init-build-env')
 
     def search_for_bsp_dir(self):
         path = os.path.normpath(os.getcwd())
