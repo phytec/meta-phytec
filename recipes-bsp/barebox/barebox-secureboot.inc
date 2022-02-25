@@ -112,6 +112,8 @@ do_patch_append_secureboot() {
     # noch Verzeinis Pruefen ansonsten anlegen
     file = open(pathCFG,"w")
 
+    file.write("# CONFIG_CMD_OF_OVERLAY is not set\n")
+
     if oe.data.typed_value("BOOTLOADER_SIGN", d):
         check_bootloader_keyring(d)
         #activated HAB
