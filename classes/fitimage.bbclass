@@ -51,6 +51,9 @@ FITIMAGE_SIGN[type] = "boolean"
 FITIMAGE_SIGN_ENGINE ??= "software"
 FITIMAGE_SIGN_ENGINE_mx8m ??= "nxphab"
 
+FITIMAGE_NO_DTB_OVERLAYS ??= "false"
+FITIMAGE_NO_DTB_OVERLAYS[type] = "boolean"
+
 # Create dependency list from images
 python __anonymous() {
     for slot in (d.getVar('FITIMAGE_SLOTS') or "").split():
