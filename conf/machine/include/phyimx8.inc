@@ -10,11 +10,12 @@ MACHINE_FEATURES:remove = "nxp8987"
 
 # Wic
 IMAGE_CLASSES += "wic-helper"
-IMAGE_CLASSES += "wic-imx8-helper"
+IMAGE_CLASSES:mx8m-nxp-bsp += "wic-imx8-helper"
 EXTERNAL_KERNEL_DEVICETREE ??= ""
 IMAGE_BOOT_FILES += "oftree ${EXTERNAL_KERNEL_DEVICETREE}"
 IMAGE_BOOT_FILES:secureboot:mx8m = "fitImage bootenv.txt"
-WKS_FILES:mx8m-generic-bsp ?= "imx8m-sdimage.wks"
+WKS_FILES:mx8m-nxp-bsp ?= "imx8m-sdimage.wks"
+WKS_FILES:mx8m-mainline-bsp ?= "imx8m-binman-sdimage.wks"
 WKS_FILES:mx8m-nxp-bsp_update ?= "imx8m-rauc-sdimage.wks"
 WKS_BOOTIMAGESIZE ?= "50"
 
