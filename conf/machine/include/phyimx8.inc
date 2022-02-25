@@ -14,24 +14,24 @@ IMAGE_CLASSES += "wic-imx8-helper"
 EXTERNAL_KERNEL_DEVICETREE ??= ""
 IMAGE_BOOT_FILES += "oftree ${EXTERNAL_KERNEL_DEVICETREE}"
 IMAGE_BOOT_FILES:secureboot:mx8m = "fitImage bootenv.txt"
-WKS_FILES:mx8m ?= "imx8m-sdimage.wks"
-WKS_FILES:mx8m_update ?= "imx8m-rauc-sdimage.wks"
+WKS_FILES:mx8m-generic-bsp ?= "imx8m-sdimage.wks"
+WKS_FILES:mx8m-nxp-bsp_update ?= "imx8m-rauc-sdimage.wks"
 WKS_BOOTIMAGESIZE ?= "50"
 
 # MMC user area bootloader image offset
-BOOTLOADER_SEEK:mx8m ?= "33"
-BOOTLOADER_SEEK:mx8mn ?= "32"
-BOOTLOADER_SEEK:mx8mp ?= "32"
+BOOTLOADER_SEEK:mx8m-generic-bsp ?= "33"
+BOOTLOADER_SEEK:mx8mn-generic-bsp ?= "32"
+BOOTLOADER_SEEK:mx8mp-generic-bsp ?= "32"
 # eMMC boot partition bootloader image offset
-BOOTLOADER_SEEK_EMMC:mx8m ?= "33"
-BOOTLOADER_SEEK_EMMC:mx8mn ?= "0"
-BOOTLOADER_SEEK_EMMC:mx8mp ?= "0"
+BOOTLOADER_SEEK_EMMC:mx8m-generic-bsp ?= "33"
+BOOTLOADER_SEEK_EMMC:mx8mn-generic-bsp ?= "0"
+BOOTLOADER_SEEK_EMMC:mx8mp-generic-bsp ?= "0"
 
 # Device information used by RAUC and some of its dependencies
-EMMC_DEV:mx8mq ?= "0"
-EMMC_DEV:mx8mm ?= "2"
-EMMC_DEV:mx8mn ?= "2"
-EMMC_DEV:mx8mp ?= "2"
+EMMC_DEV:mx8mq-generic-bsp ?= "0"
+EMMC_DEV:mx8mm-generic-bsp ?= "2"
+EMMC_DEV:mx8mn-generic-bsp ?= "2"
+EMMC_DEV:mx8mp-generic-bsp ?= "2"
 
 # Default images to build
 IMAGE_FSTYPES = "tar.gz wic"

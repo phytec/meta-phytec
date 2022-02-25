@@ -1,7 +1,5 @@
 inherit hab
 
-#value is not being set for mx8mp in meta-freescale, so set it here.
-UBOOT_ENTRYPOINT:mx8mp="0x40480000"
 LINUX_LOAD_ADDR="${UBOOT_ENTRYPOINT}"
 #true for most mx8*.
 DTB_LOAD_ADDR="0x48000000"

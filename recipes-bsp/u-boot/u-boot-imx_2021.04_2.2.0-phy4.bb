@@ -24,7 +24,7 @@ S = "${WORKDIR}/git"
 
 BOOT_TOOLS = "imx-boot-tools"
 
-do_deploy:append:mx8m () {
+do_deploy:append:mx8m-nxp-bsp () {
     # Deploy the u-boot-nodtb.bin and fsl-imx8mq-XX.dtb, to be packaged in boot binary by imx-boot
     if [ -n "${UBOOT_CONFIG}" ]
     then
@@ -54,4 +54,4 @@ COMPATIBLE_MACHINE .= "|phyboard-polis-imx8mn-1"
 COMPATIBLE_MACHINE .= "|phygate-tauri-l-imx8mm-2"
 COMPATIBLE_MACHINE .= ")$"
 
-UBOOT_NAME:mx8 = "u-boot-${MACHINE}.bin-${UBOOT_CONFIG}"
+UBOOT_NAME:mx8-nxp-bsp = "u-boot-${MACHINE}.bin-${UBOOT_CONFIG}"
