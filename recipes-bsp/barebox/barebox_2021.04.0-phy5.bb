@@ -52,7 +52,8 @@ if [ $? != 0 ]; then
 fi
 """)
 
-    env_add(d, "expansions/dt-overlays",
+    if "secureboot" not in d.getVar("DISTRO_FEATURES", True):
+        env_add(d, "expansions/dt-overlays",
 """#!/bin/sh
 
 path="$global.overlays.path"
@@ -68,7 +69,7 @@ for o in $global.overlays.select ; do
     fi
 done
 """)
-    env_add(d, "nv/overlays.select", "")
+        env_add(d, "nv/overlays.select", "")
 }
 
 python do_env:append:mx6() {
@@ -238,10 +239,11 @@ python do_env:append_phyboard-nunki-imx6() {
 # imx6qdl-phytec-lcd: 3.5" display (AC167 / AC101)
 #of_property -s -f "/panel-lcd" compatible "edt,etm0350g0dh6"
 """)
-    # Enable VM-016 by default on phyBOARD-Nunki
-    env_add(d, "nv/overlays.select", "imx6-vm010-bw-0.dtbo\n");
-    # Enable 32 bit color depth for framebuffer emulation on phyBOARD-Nunki
-    env_add(d, "nv/linux.bootargs.fb", "imxdrm.legacyfb_depth=32\n");
+    if "secureboot" not in d.getVar("DISTRO_FEATURES", True):
+        # Enable VM-016 by default on phyBOARD-Nunki
+        env_add(d, "nv/overlays.select", "imx6-vm010-bw-0.dtbo\n");
+        # Enable 32 bit color depth for framebuffer emulation on phyBOARD-Nunki
+        env_add(d, "nv/linux.bootargs.fb", "imxdrm.legacyfb_depth=32\n");
 }
 
 python do_env:append:phyboard-mira-imx6-6() {
