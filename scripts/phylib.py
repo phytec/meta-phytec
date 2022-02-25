@@ -118,7 +118,7 @@ class Sourcecode(object):
         self._poky_version = taglist_sorted[-1]
         return self._poky_version
 
-    def is:poky(self):
+    def is_poky(self):
         sources = os.path.join(self.bsp_dir, 'sources')
         return os.path.exists(os.path.join(sources, 'poky'))
 
