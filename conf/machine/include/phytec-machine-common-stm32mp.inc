@@ -436,6 +436,12 @@ TOOLCHAIN_TARGET_TASK += " bash-dev libgomp-dev"
 TOOLCHAIN_TARGET_TASK_remove_pn-buildtools-tarball = " bash-dev libgomp-dev"
 
 # =========================================================================
+# Debug trace
+# =========================================================================
+# acitvate/desactive the debug and trace on boot stage: tf-a, optee, u-boot and kernel
+ST_DEBUG_TRACE ?= "1"
+
+# =========================================================================
 # Kernel
 # =========================================================================
 
@@ -501,6 +507,9 @@ EXTRA_KERNEL_ARGS ?= ""
 # Example to set 1280x720: on u-boot, set the following var: hdmi_resolution=HDMI-A-1:edid/1280x720.bin
 HDMI_EDID_KERNEL_ARGS = "drm.edid_firmware=${hdmi_resolution}"
 EXTRA_KERNEL_ARGS += "${HDMI_EDID_KERNEL_ARGS}"
+# bootargs to remove trace on kernel
+ST_CMD_LINE_DEBUG_TRACE ?= "loglevel=1 quiet"
+EXTRA_KERNEL_ARGS += "${@bb.utils.contains('ST_DEBUG_TRACE', '1', '', '${ST_CMD_LINE_DEBUG_TRACE}', d)}"
 
 # =========================================================================
 # u-boot
@@ -555,6 +564,7 @@ PREFERRED_PROVIDER_u-boot-fw-utils_stm32mp1common = "libubootenv"
 MACHINE_EXTRA_RRECOMMENDS_append_stm32mp1common = " \
     u-boot-fw-config-stm32mp \
 "
+ST_UBOOT_DEBUG_TRACE ?= "${@bb.utils.contains('ST_DEBUG_TRACE', '1', '1', '0', d)}"
 
 # =========================================================================
 # trusted-firmware-a
@@ -587,11 +597,15 @@ TF_A_SIGN_ENABLE ?= "0"
 TF_A_MTD_START_OFFSET_NAND    ?= "0x00200000"
 TF_A_MTD_START_OFFSET_NOR     ?= "0x00080000"
 
+ST_TF_A_DEBUG_TRACE ?= "${@bb.utils.contains('ST_DEBUG_TRACE', '1', '1', '0', d)}"
+
 # =========================================================================
 # optee
 # =========================================================================
 # Map OPTEE configuration to device tree list
 OPTEE_CONF = "${STM32MP_DEVICETREE}"
+
+ST_OPTEE_DEBUG_TRACE ?= "${@bb.utils.contains('ST_DEBUG_TRACE', '1', '1', '0', d)}"
 
 # =========================================================================
 # fip
