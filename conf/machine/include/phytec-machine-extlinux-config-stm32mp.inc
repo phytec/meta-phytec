@@ -15,6 +15,8 @@ UBOOT_EXTLINUX_INITRD ?= "${@bb.utils.contains('COMBINED_FEATURES', 'autoresize'
 UBOOT_EXTLINUX_KERNEL_ARGS ?= "rootwait rw"
 # Add additional kernel arguments
 UBOOT_EXTLINUX_KERNEL_ARGS += "${EXTRA_KERNEL_ARGS}"
+# Define default SPLASH SCREEN
+UBOOT_EXTLINUX_SPLASH ?= "${UBOOT_SPLASH_LANDSCAPE_IMAGE}"
 
 # -----------------------------------------------------------------------------
 # Configurations
