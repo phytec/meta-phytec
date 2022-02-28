@@ -9,8 +9,8 @@ UBOOT_EXTLINUX_FDTDIR = "${@bb.utils.contains('MACHINE_FEATURES', 'phy-expansion
 # Define default boot config for all config
 UBOOT_EXTLINUX_DEFAULT_LABEL ?= "OpenSTLinux"
 # Define default INITRD for all configs
-INITRD_SHORTNAME ??= ""
-UBOOT_EXTLINUX_INITRD ?= "${@bb.utils.contains('COMBINED_FEATURES', 'autoresize', '/${INITRD_SHORTNAME}', '', d)}"
+INITRD_IMAGE ??= ""
+UBOOT_EXTLINUX_INITRD ?= "${@bb.utils.contains('COMBINED_FEATURES', 'initrd', '/${INITRD_IMAGE}', '', d)}"
 # Define extlinux kernel arguments
 UBOOT_EXTLINUX_KERNEL_ARGS ?= "rootwait rw"
 # Add additional kernel arguments

@@ -31,11 +31,15 @@ BOOTDEVICE_LABELS ??= "emmc nor-emmc nand-2-256 nand-2-64 nor-sdcard sdcard"
 MACHINE_FEATURES = "usbhost usbgadget alsa screen ext2"
 MACHINE_FEATURES_append = " ${@bb.utils.contains('BOOTSCHEME_LABELS', 'optee', 'optee', '', d)} "
 MACHINE_FEATURES_append = " tpm2 "
+
+# Configure autoresize for any of the 'ext4' storage devices (through InitRD image)
 MACHINE_FEATURES_append = " ${@bb.utils.contains_any('BOOTDEVICE_LABELS',  ['emmc', 'sdcard'], 'autoresize', '', d)} "
 
-# Remove autoresize package from DISTRO_EXTRA_RRECOMMENDS to add it explicitly
-# in our bootfs image instead of rootfs
-DISTRO_EXTRA_RRECOMMENDS_remove = "${@bb.utils.contains('COMBINED_FEATURES', 'autoresize', '${AUTORESIZE}', '', d)}"
+# Enable installation of INITRD image on bootfs side
+MACHINE_FEATURES_append = " initrd "
+# Remove InitRD package install from DISTRO_EXTRA_RRECOMMENDS to add it explicitly
+# in our bootfs image (this avoid dependency loops as rootfs depends on bootfs...)
+DISTRO_EXTRA_RRECOMMENDS_remove = " ${@bb.utils.contains('COMBINED_FEATURES', 'initrd', '${INITRD_PACKAGE}', '', d)} "
 
 # Default serial consoles (TTYs) to enable using getty
 # Before kernel 4.18, serial console are ttyS3 but after is ttySTM0
