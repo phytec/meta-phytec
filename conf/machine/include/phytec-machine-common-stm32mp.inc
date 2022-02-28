@@ -396,6 +396,11 @@ ST_TOOLS_FOR_SDK:append = " \
     nativesdk-svd-tools \
     "
 
+# For Trusted Application development using OP-TEE TA SDK
+ST_TOOLS_FOR_SDK_append = " \
+    nativesdk-optee-sdk \
+    "
+
 # Fip tool
 ST_TOOLS_FOR_SDK:append = " \
     ${@bb.utils.contains('MACHINE_FEATURES', 'fip', 'nativesdk-${FIPTOOL_WRAPPER}', '', d)} \
