@@ -1,7 +1,7 @@
 # Common settings for phytecs imx6ul boards
 include conf/machine/include/soc-family.inc
 
-SOC_FAMILY .= "imx:mx6ul"
+SOC_FAMILY .= "imx-generic-bsp:mx6ul-generic-bsp"
 
 DEFAULTTUNE ?= "cortexa7thf-neon-vfpv4"
 include conf/machine/include/arm/armv7a/tune-cortexa7.inc
@@ -47,19 +47,19 @@ IMAGE_BOOT_FILES = "zImage oftree ${KERNEL_DEVICETREE} ${EXTERNAL_KERNEL_DEVICET
 IMAGE_BOOT_FILES:secureboot = "fitImage"
 BAREBOX_BINARY = "barebox.bin"
 BAREBOX_BINARY:secureboot = "barebox-s.bin"
-WKS_FILES:mx6ul ?= "imx6-sdimage.wks"
-WKS_FILES:mx6ul_update ?= "imx6-rauc-sdimage.wks"
+WKS_FILES:mx6ul-generic-bsp ?= "imx6-sdimage.wks"
+WKS_FILES:mx6ul-generic-bsp_update ?= "imx6-rauc-sdimage.wks"
 WKS_BOOTIMAGESIZE ?= "20"
 WKS_BOOTIMAGESIZE:secureboot ?= "60"
 
 # MMC user area bootloader image offset
-BOOTLOADER_SEEK:mx6ul ?= "1"
+BOOTLOADER_SEEK:mx6ul-generic-bsp ?= "1"
 # eMMC boot partition bootloader image offset
-BOOTLOADER_SEEK_EMMC:mx6ul ?= "0"
+BOOTLOADER_SEEK_EMMC:mx6ul-generic-bsp ?= "0"
 
 # Device information used by RAUC and some of its dependencies
-EMMC_DEV:mx6ul ?= "1"
-NAND_DEV:mx6ul ?= "0"
+EMMC_DEV:mx6ul-generic-bsp ?= "1"
+NAND_DEV:mx6ul-generic-bsp ?= "0"
 
 # default images to build
 IMAGE_FSTYPES ?= "tar.gz wic ubifs"

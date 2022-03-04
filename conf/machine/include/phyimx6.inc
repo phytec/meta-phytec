@@ -2,7 +2,7 @@
 
 include conf/machine/include/soc-family.inc
 
-SOC_FAMILY = "imx:mx6"
+SOC_FAMILY = "imx-generic-bsp:mx6-generic-bsp"
 
 #Bootloader
 PREFERRED_PROVIDER_virtual/bootloader ?= "barebox"
@@ -39,19 +39,19 @@ IMAGE_BOOT_FILES = "zImage oftree ${KERNEL_DEVICETREE} ${EXTERNAL_KERNEL_DEVICET
 IMAGE_BOOT_FILES:secureboot = "fitImage"
 BAREBOX_BINARY = "barebox.bin"
 BAREBOX_BINARY:secureboot = "barebox-s.bin"
-WKS_FILES:mx6 ?= "imx6-sdimage.wks"
-WKS_FILES:mx6_update ?= "imx6-rauc-sdimage.wks"
+WKS_FILES:mx6-generic-bsp ?= "imx6-sdimage.wks"
+WKS_FILES:mx6-generic-bsp_update ?= "imx6-rauc-sdimage.wks"
 WKS_BOOTIMAGESIZE ?= "20"
 WKS_BOOTIMAGESIZE:secureboot ?= "90"
 
 # MMC user area bootloader image offset
-BOOTLOADER_SEEK:mx6 ?= "1"
+BOOTLOADER_SEEK:mx6-generic-bsp ?= "1"
 # eMMC boot partition bootloader image offset
-BOOTLOADER_SEEK_EMMC:mx6 ?= "0"
+BOOTLOADER_SEEK_EMMC:mx6-generic-bsp ?= "0"
 
 # Device information used by RAUC and some of its dependencies
-EMMC_DEV:mx6 ?= "3"
-NAND_DEV:mx6 ?= "0"
+EMMC_DEV:mx6-generic-bsp ?= "3"
+NAND_DEV:mx6-generic-bsp ?= "0"
 
 # default images to build
 IMAGE_FSTYPES ?= "tar.gz wic ubifs"

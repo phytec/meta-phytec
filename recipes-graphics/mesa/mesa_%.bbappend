@@ -1,6 +1,6 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/${BPN}:"
 
-PACKAGE_ARCH:mx6 = "${MACHINE_SOCARCH}"
+PACKAGE_ARCH:mx6-generic-bsp = "${MACHINE_SOCARCH}"
 
 # use Etnaviv gallium driver for imxgpu3d machines
 # gpu needs to be covered by MACHINE_SOCARCH

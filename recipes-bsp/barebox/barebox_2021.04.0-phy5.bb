@@ -72,7 +72,7 @@ done
         env_add(d, "nv/overlays.select", "")
 }
 
-python do_env:append:mx6() {
+python do_env:append:mx6-generic-bsp() {
     kernelname = d.getVar("KERNEL_IMAGETYPE", True)
     if "secureboot" in d.getVar("DISTRO_FEATURES", True):
         kernelname = "fitImage"
@@ -378,14 +378,14 @@ python do_env:append:phyboard-mira-imx6-13() {
     env_add_rauc_nand_boot_scripts(d)
 }
 
-do_deploy:prepend:mx6ul() {
+do_deploy:prepend:mx6ul-generic-bsp() {
     if [ "${PN}" = "barebox" ] ; then
         bbnote "Adding CRC32 checksum to barebox Image Metadata"
         ${B}/scripts/bareboximd -c ${B}/${BAREBOX_BIN}
     fi
 }
 
-python do_env:append:mx6ul() {
+python do_env:append:mx6ul-generic-bsp() {
     kernelname = d.getVar("KERNEL_IMAGETYPE", True)
     if "secureboot" in d.getVar("DISTRO_FEATURES", True):
         kernelname = "fitImage"

@@ -66,7 +66,7 @@ COMPATIBLE_MACHINE .= "|phycore-r2-am335x-6"
 COMPATIBLE_MACHINE .= "|phycore-emmc-am335x-1"
 
 
-INTREE_DEFCONFIG:mx6ul = "imx_v7_defconfig"
+INTREE_DEFCONFIG:mx6ul-generic-bsp = "imx_v7_defconfig"
 
 COMPATIBLE_MACHINE .= "|phyboard-segin-imx6ul-2"
 COMPATIBLE_MACHINE .= "|phyboard-segin-imx6ul-3"
