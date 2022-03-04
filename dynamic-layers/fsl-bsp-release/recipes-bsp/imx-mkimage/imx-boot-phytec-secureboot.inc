@@ -19,21 +19,21 @@ UBOOT_NODTB_BIN_ADDR="INVALID"
 ATF_BIN_ADDR="INVALID"
 TEE_BIN_ADDR="INVALID"
 
-UBOOT_NODTB_BIN_ADDR:mx8m="0x40200000"
-ATF_BIN_ADDR:mx8m="0x910000"
+UBOOT_NODTB_BIN_ADDR:mx8m-nxp-bsp="0x40200000"
+ATF_BIN_ADDR:mx8m-nxp-bsp="0x910000"
 
-UBOOT_NODTB_BIN_ADDR:mx8mm="0x40200000"
-ATF_BIN_ADDR:mx8mm="0x920000"
+UBOOT_NODTB_BIN_ADDR:mx8mm-nxp-bsp="0x40200000"
+ATF_BIN_ADDR:mx8mm-nxp-bsp="0x920000"
 
-UBOOT_NODTB_BIN_ADDR:mx8mn="0x40200000"
-ATF_BIN_ADDR:mx8mn="0x960000"
+UBOOT_NODTB_BIN_ADDR:mx8mn-nxp-bsp="0x40200000"
+ATF_BIN_ADDR:mx8mn-nxp-bsp="0x960000"
 
-UBOOT_NODTB_BIN_ADDR:mx8mp="0x40200000"
-ATF_BIN_ADDR:mx8mp="0x970000"
+UBOOT_NODTB_BIN_ADDR:mx8mp-nxp-bsp="0x40200000"
+ATF_BIN_ADDR:mx8mp-nxp-bsp="0x970000"
 
-TEE_BIN_ADDR:mx8mm="0x56000000"
-TEE_BIN_ADDR:mx8mn="0x56000000"
-TEE_BIN_ADDR:mx8mp="0x56000000"
+TEE_BIN_ADDR:mx8mm-nxp-bsp="0x56000000"
+TEE_BIN_ADDR:mx8mn-nxp-bsp="0x56000000"
+TEE_BIN_ADDR:mx8mp-nxp-bsp="0x56000000"
 
 # Extract the addresses we need from imx-mkimage output
 def get_hab_blocks_from_log(input_image_path, ubootimx_make_output):
