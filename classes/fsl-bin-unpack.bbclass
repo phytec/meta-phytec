@@ -11,14 +11,14 @@
 FSL_MIRROR = "http://www.freescale.com/lgfiles/NMG/MAD/YOCTO"
 
 python fsl_bin_do_unpack() {
-    src_uri = (d.getVar('SRC_URI', True) or "").split()
+    src_uri = (d.getVar('SRC_URI') or "").split()
     if len(src_uri) == 0:
         return
 
     localdata = bb.data.createCopy(d)
     bb.data.update_data(localdata)
 
-    rootdir = localdata.getVar('WORKDIR', True)
+    rootdir = localdata.getVar('WORKDIR')
     fetcher = bb.fetch2.Fetch(src_uri, localdata)
 
     for url in fetcher.ud.values():

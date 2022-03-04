@@ -31,7 +31,7 @@ do_env[cleandirs] += "${_ENV_DIR}"
 python do_env_write() {
     from os.path import join, dirname
     from shutil import rmtree
-    env_path = join(d.getVar('S', True), ".env-extra")
+    env_path = join(d.getVar('S'), ".env-extra")
     tree = _env_read(d)
 
     # Remove directory so there are no stall files
@@ -58,7 +58,7 @@ python do_env_write() {
 
     do_tree(env_path, tree)
 
-    if d.getVar("ENV_VERBOSE", True) == "1":
+    if d.getVar("ENV_VERBOSE") == "1":
         _env_print(d)
 }
 addtask env_write after do_env before do_configure
@@ -66,7 +66,7 @@ addtask env_write after do_env before do_configure
 def _env_read(d):
     import os.path
     import json
-    env_file = d.getVar('_ENV_FILE', True)
+    env_file = d.getVar('_ENV_FILE')
     try:
         with open(env_file, "r") as f:
             content = f.read()
@@ -81,7 +81,7 @@ def _env_read(d):
 
 def _env_write(d, tree):
     import json
-    env_file = d.getVar('_ENV_FILE', True)
+    env_file = d.getVar('_ENV_FILE')
 
     content = json.dumps(tree)
     # RACY: use posix-atomic rename instead.

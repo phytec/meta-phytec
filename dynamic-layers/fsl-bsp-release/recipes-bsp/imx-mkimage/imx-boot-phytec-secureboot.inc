@@ -70,8 +70,8 @@ def get_hab_blocks_from_log(input_image_path, ubootimx_make_output):
 def sign_hab(d, input_image_path, output_image_path, imxboot_logfile, \
              uboot_nodtb_bin_path, uboot_dtb_bin_path, bl31_bin_path, bl32_bin_path):
     import shutil
-    uboot_nodtb_bin_addr = d.getVar('UBOOT_NODTB_BIN_ADDR', True)
-    atf_bin_addr = d.getVar('ATF_BIN_ADDR', True)
+    uboot_nodtb_bin_addr = d.getVar('UBOOT_NODTB_BIN_ADDR')
+    atf_bin_addr = d.getVar('ATF_BIN_ADDR')
 
     if uboot_nodtb_bin_addr == 'INVALID' or atf_bin_addr == 'INVALID':
         bb.fatal('Error: Required addresses for selected device are unknown.'
@@ -81,15 +81,15 @@ def sign_hab(d, input_image_path, output_image_path, imxboot_logfile, \
     atf_bin_addr = int(atf_bin_addr, 16)
 
     parsed_blocks = get_hab_blocks_from_log(input_image_path, imxboot_logfile)
-    csf_template_path_spl = d.getVar('CSF_TEMPLATE_PATH_SPL', True)
-    csf_template_path_fit = d.getVar('CSF_TEMPLATE_PATH_FIT', True)
+    csf_template_path_spl = d.getVar('CSF_TEMPLATE_PATH_SPL')
+    csf_template_path_fit = d.getVar('CSF_TEMPLATE_PATH_FIT')
 
     spl_hab_block = parsed_blocks['SPL_HAB_BLOCK']
     sld_hab_block = parsed_blocks['SLD_HAB_BLOCK']
 
     # generate csf for SPL
     template = readfull(csf_template_path_spl)
-    workdir = d.getVar('WORKDIR', True)
+    workdir = d.getVar('WORKDIR')
 
     csf_spl_txt_path = os.path.join(workdir, 'csf_spl.txt')
     csf_fit_txt_path = os.path.join(workdir, 'csf_fit.txt')
@@ -125,7 +125,7 @@ def sign_hab(d, input_image_path, output_image_path, imxboot_logfile, \
 
     # TEE is optional
     if os.path.isfile(bl32_bin_path):
-        tee_bin_addr = d.getVar('TEE_BIN_ADDR', True)
+        tee_bin_addr = d.getVar('TEE_BIN_ADDR')
         if tee_bin_addr == 'INVALID':
             bb.fatal('Error: Signed TEE not supported for this device (address not known)')
         tee_bin_addr = int(tee_bin_addr, 16)
@@ -166,9 +166,9 @@ def sign_hab(d, input_image_path, output_image_path, imxboot_logfile, \
 
 
 python do_sign() {
-    if "secureboot" in d.getVar('DISTRO_FEATURES', True):
-        imxboot_targets = d.getVar('IMXBOOT_TARGETS', True).split()
-        uboot_configs = d.getVar('UBOOT_CONFIG', True).split()
+    if "secureboot" in d.getVar('DISTRO_FEATURES'):
+        imxboot_targets = d.getVar('IMXBOOT_TARGETS').split()
+        uboot_configs = d.getVar('UBOOT_CONFIG').split()
 
         if not oe.data.typed_value("BOOTLOADER_SIGN", d):
             bb.note('Not signing bootloader image as signing disabled')

@@ -6,20 +6,20 @@
 #                           TUNE_FEATURES.
 
 python () {
-    required_tune_features = d.getVar('REQUIRED_TUNE_FEATURES', True)
+    required_tune_features = d.getVar('REQUIRED_TUNE_FEATURES')
     if required_tune_features:
         required_tune_features = required_tune_features.split()
-        tune_features = (d.getVar('TUNE_FEATURES', True) or "").split()
+        tune_features = (d.getVar('TUNE_FEATURES') or "").split()
         for f in required_tune_features:
             if f in tune_features:
                 continue
             else:
                 raise bb.parse.SkipPackage("missing required tune feature '%s' (not in TUNE_FEATURES)" % f)
 
-    conflict_tune_features = d.getVar('CONFLICT_TUNE_FEATURES', True)
+    conflict_tune_features = d.getVar('CONFLICT_TUNE_FEATURES')
     if conflict_tune_features:
         conflict_tune_features = conflict_tune_features.split()
-        tune_features = (d.getVar('TUNE_FEATURES', True) or "").split()
+        tune_features = (d.getVar('TUNE_FEATURES') or "").split()
         for f in conflict_tune_features:
             if f in tune_features:
                 raise bb.parse.SkipPackage("conflicting tune feature '%s' (in TUNE_FEATURES)" % f)

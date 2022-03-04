@@ -15,7 +15,7 @@ BAREBOX_LINK_NAME ?= "barebox"
 def write_signature_node(d):
      import shutil
 
-     path = d.getVar("WORKDIR", True)
+     path = d.getVar("WORKDIR")
 
      try:
         manifest = open('%s/signature_node.dts' % path, 'w')
@@ -28,9 +28,9 @@ def write_signature_node(d):
 def write_signature_creation(d):
      import shutil
      import os
-     path_manifest = d.getVar("WORKDIR", True)
+     path_manifest = d.getVar("WORKDIR")
 
-     path, file = os.path.split(d.getVar("FITIMAGE_SIGN_KEY_PATH", True))
+     path, file = os.path.split(d.getVar("FITIMAGE_SIGN_KEY_PATH"))
      str_keynamehint = file.split('.')
 
      try:
@@ -47,7 +47,7 @@ def write_signature_creation(d):
      manifest.write('\t\t\t'    +     'arch = "arm";\n')
      manifest.write('\t\t\t'    +      'compression = "none";\n')
      manifest.write('\t\t\t'    +      'hash-1 {\n')
-     manifest.write('\t\t\t\t'  +        'algo = "%s";\n' % d.getVar("FITIMAGE_HASH", True))
+     manifest.write('\t\t\t\t'  +        'algo = "%s";\n' % d.getVar("FITIMAGE_HASH"))
      manifest.write('\t\t\t'    +      '};\n')
      manifest.write('\t\t'      +   '};\n')
      manifest.write('\t'        + '};\n')
@@ -57,11 +57,11 @@ def write_signature_creation(d):
      manifest.write('\t\t\t'    +      'description = "Boot Linux kernel with FDT blob";\n')
      manifest.write('\t\t\t'    +      'fdt = "fdt-1";\n')
      manifest.write('\t\t\t'    +      'signature-1 {\n')
-     manifest.write('\t\t\t\t'  +        'algo = "%s,%s";\n' % (d.getVar("FITIMAGE_HASH", True), d.getVar("FITIMAGE_SIGNATURE_ENCRYPTION", True)))
+     manifest.write('\t\t\t\t'  +        'algo = "%s,%s";\n' % (d.getVar("FITIMAGE_HASH"), d.getVar("FITIMAGE_SIGNATURE_ENCRYPTION")))
      manifest.write('\t\t\t\t'  +        'key-name-hint = "%s";\n' % str_keynamehint[0])
      manifest.write('\t\t\t\t'  +        'sign-images = "fdt";\n')
-     manifest.write('\t\t\t\t'  +        'signer = "%s";\n' %  d.getVar("FITIMAGE_SIGNER", True))
-     manifest.write('\t\t\t\t'  +        'signer-version = " %s";\n' % d.getVar("FITIMAGE_SIGNER_VERSION", True))
+     manifest.write('\t\t\t\t'  +        'signer = "%s";\n' %  d.getVar("FITIMAGE_SIGNER"))
+     manifest.write('\t\t\t\t'  +        'signer-version = " %s";\n' % d.getVar("FITIMAGE_SIGNER_VERSION"))
      manifest.write('\t\t\t'    +      '};\n')
      manifest.write('\t\t'      +   '};\n')
      manifest.write('\t'        + '};\n')
@@ -88,7 +88,7 @@ def write_command(name,out):
 
 def check_fitimage_keyring(d):
     # check for problematic certificate setups
-    shasum = write_command("sha256sum " + d.getVar("FITIMAGE_SIGN_KEY_PATH",True),'')
+    shasum = write_command("sha256sum " + d.getVar("FITIMAGE_SIGN_KEY_PATH"),'')
     if ((len(shasum) > 0) and (shasum.split(' ',1)[0] == "6f92252aab834bbe8090e92c44f051b2c40db8e3953c8c26c04c14e7ae2db7d8")) or \
         ((len(shasum) > 0) and (shasum.split(' ',1)[0] == "1e3eb95fe6a7d1e45db761bff6eedafb9291661480e1a1ad10eb6f5b8b9961c1")):
             bb.warn("!! CRITICAL SECURITY WARNING: You're using Phytec's Development Keyring for Secure Boot in the fit-image. Please create your own!!")
@@ -96,7 +96,7 @@ def check_fitimage_keyring(d):
 
 def check_bootloader_keyring(d):
     # check for problematic certificate setups
-    shasumSRK=write_command("sha256sum "+ d.getVar("BOOTLOADER_SIGN_SRKFUSE_PATH", True),'')
+    shasumSRK=write_command("sha256sum "+ d.getVar("BOOTLOADER_SIGN_SRKFUSE_PATH"),'')
     if ((len(shasumSRK) >0) and (shasumSRK.split(' ',1)[0] == "0d5dbc6ed8b0a55414648b19727e217453c54d1527cef3a62784ae818c9777e7")):
         bb.warn("!! CRITICAL SECURITY WARNING: You're using Phytec's Development Keyring for Secure Boot in the bootloader. Please create your own!!")
 
@@ -104,10 +104,10 @@ do_patch:append:secureboot() {
     import os
     import subprocess
 
-    pathCFG = d.getVar("WORKDIR", True) + "/dynamic-config.cfg"
+    pathCFG = d.getVar("WORKDIR") + "/dynamic-config.cfg"
 
-    if not os.path.exists(d.getVar("WORKDIR", True)):
-        os.makedirs(d.getVar("WORKDIR", True))
+    if not os.path.exists(d.getVar("WORKDIR")):
+        os.makedirs(d.getVar("WORKDIR"))
 
     # noch Verzeinis Pruefen ansonsten anlegen
     file = open(pathCFG,"w")
@@ -119,9 +119,9 @@ do_patch:append:secureboot() {
         #activated HAB
         file.write("CONFIG_HAB=y\n")
         file.write("CONFIG_HABV4=y\n")
-        file.write('CONFIG_HABV4_TABLE_BIN="%s"\n' % d.getVar("BOOTLOADER_SIGN_SRKFUSE_PATH", True))
-        file.write('CONFIG_HABV4_CSF_CRT_PEM="%s"\n' % d.getVar("BOOTLOADER_SIGN_CSF_PATH", True))
-        file.write('CONFIG_HABV4_IMG_CRT_PEM="%s"\n' % d.getVar("BOOTLOADER_SIGN_IMG_PATH", True))
+        file.write('CONFIG_HABV4_TABLE_BIN="%s"\n' % d.getVar("BOOTLOADER_SIGN_SRKFUSE_PATH"))
+        file.write('CONFIG_HABV4_CSF_CRT_PEM="%s"\n' % d.getVar("BOOTLOADER_SIGN_CSF_PATH"))
+        file.write('CONFIG_HABV4_IMG_CRT_PEM="%s"\n' % d.getVar("BOOTLOADER_SIGN_IMG_PATH"))
         #add hab command for burning fuses
         file.write("CONFIG_CMD_HAB=y\n")
         #signing images
@@ -141,7 +141,7 @@ do_patch:append:secureboot() {
         file.write("CONFIG_BOOTM_FITIMAGE=y\n")
         file.write("CONFIG_BOOTM_FITIMAGE_SIGNATURE=y\n")
         file.write("CONFIG_BOOTM_FORCE_SIGNED_IMAGES=y\n")
-        file.write('CONFIG_BOOTM_FITIMAGE_PUBKEY="%s"\n' % d.getVar("FITIMAGE_PUBKEY_SIGNATURE_PATH", True) )
+        file.write('CONFIG_BOOTM_FITIMAGE_PUBKEY="%s"\n' % d.getVar("FITIMAGE_PUBKEY_SIGNATURE_PATH") )
         file.write("CONFIG_CRYPTO_RSA=y\n")
         file.write("CONFIG_SHA1=y\n")
         file.write("CONFIG_SHA256=y\n")
@@ -158,7 +158,7 @@ python do_create_dynamic_dtree(){
 python do_create_dynamic_dtree:append:secureboot (){
     import os
 
-    pathDD = d.getVar("WORKDIR", True)
+    pathDD = d.getVar("WORKDIR")
     if not os.path.exists(pathDD):
         os.makedirs(pathDD)
 
@@ -167,13 +167,13 @@ python do_create_dynamic_dtree:append:secureboot (){
         write_signature_node(d)
         write_signature_creation(d)
         write_command("dtc -O dtb " +  pathDD + "/signature_node.dts",  pathDD + "/signature_node.dtb")
-        path, file = os.path.split(d.getVar("FITIMAGE_SIGN_KEY_PATH", True))
+        path, file = os.path.split(d.getVar("FITIMAGE_SIGN_KEY_PATH"))
         write_command("mkimage -f " +  pathDD + "/signature_creation.its -k " + path + " -K " + pathDD + "/signature_node.dtb -r " + pathDD + "/dummy.img", '')
         write_command("dtc -I dtb " + pathDD + "/signature_node.dtb", pathDD + "/signature_node.tmp")
         os.sync()
         with open(pathDD + "/signature_node.tmp", 'r') as fin:
             data = fin.readlines()
-        with open(d.getVar("FITIMAGE_PUBKEY_SIGNATURE_PATH", True), 'w') as fout:
+        with open(d.getVar("FITIMAGE_PUBKEY_SIGNATURE_PATH"), 'w') as fout:
             for line in data :
                 if "dts-v1" not in line:
                     fout.write(line)

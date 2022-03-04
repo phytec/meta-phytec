@@ -43,8 +43,8 @@ def find_dtss(d):
 
 python do_dtsfixup () {
     import shutil
-    srcdir = d.getVar('STAGING_KERNEL_DIR', True)
-    arch = d.getVar('ARCH', True)
+    srcdir = d.getVar('STAGING_KERNEL_DIR')
+    arch = d.getVar('ARCH')
     for dts in find_dtss(d):
         cptarget=os.path.join(srcdir, "arch", arch, "boot", "dts",
                              os.path.basename(dts))

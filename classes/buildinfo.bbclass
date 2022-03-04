@@ -99,23 +99,23 @@
 
 python do_buildinfo() {
     # Check: Are variables defined in recipe?
-    if d.getVar("GIT_URL", True) is None or d.getVar("GIT_TAG", True) is None or \
-        d.getVar("SRCREV", True) is None:
+    if d.getVar("GIT_URL") is None or d.getVar("GIT_TAG") is None or \
+        d.getVar("SRCREV") is None:
         bb.fatal("Package recipe doesn't provide the variable GIT_URL, GIT_TAG and "
                  "SRCREV."
                  "Task needs both to compile the build info. Fix the recipe!")
 
     # Generate a meaningful branch name for developer's repository.
-    branch_name = d.getVar("GIT_TAG", True) + "-local-development"
+    branch_name = d.getVar("GIT_TAG") + "-local-development"
 
     # SRCREV which contains a tag name or a specific commit id is used to
     # checkout the git branch.
-    checkout_rev = d.getVar("SRCREV", True)
+    checkout_rev = d.getVar("SRCREV")
 
     # Some more variables for buildinfo text.
-    git_url = d.getVar("GIT_URL", True)
-    pv = d.getVar("PV", True)
-    pn = d.getVar("BPN", True)
+    git_url = d.getVar("GIT_URL")
+    pv = d.getVar("PV")
+    pn = d.getVar("BPN")
 
     bb.plain("""
 (mini) HOWTO: Use a local git repository to build {PN}:

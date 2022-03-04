@@ -5,7 +5,7 @@
 # the picture size should match the lcd resolution
 
 python do_add_logo () {
-    logo = os.path.join(d.getVar('STAGING_KERNEL_DIR', True),
+    logo = os.path.join(d.getVar('STAGING_KERNEL_DIR'),
                         "drivers/video/logo/logo_linux_clut224.ppm")
     for s in src_patches(d, True):
         if s.endswith(('.bmp', '.ppm', '.png')):

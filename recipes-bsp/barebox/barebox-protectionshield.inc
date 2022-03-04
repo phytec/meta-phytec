@@ -7,7 +7,7 @@ SRC_URI:append = " \
 PROTECTION_SHIELD_ROOT_PASSWORD ??= "root"
 
 def set_root_password(d, hashvalue):
-    pathS = d.getVar("S", True)
+    pathS = d.getVar("S")
     fn = "passwdfile"
     pathFN = pathS + "/" + fn
     if not os.path.exists(pathS):
@@ -21,7 +21,7 @@ def set_root_password(d, hashvalue):
 
 def set_shield_password(d):
     import hashlib
-    passwd = d.getVar('PROTECTION_SHIELD_ROOT_PASSWORD', True) or ""
+    passwd = d.getVar('PROTECTION_SHIELD_ROOT_PASSWORD') or ""
     hashvalue = hashlib.sha512(passwd.encode()).hexdigest()
     set_root_password(d,hashvalue)
 

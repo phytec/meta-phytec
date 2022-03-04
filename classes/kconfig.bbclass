@@ -33,15 +33,15 @@ def find_cfgs(d):
     for s in sources:
         base, ext = os.path.splitext(os.path.basename(s))
         if ext and ext in [".cfg"]:
-            sources_list.append(os.path.join(d.getVar("WORKDIR", True), (base + ext)))
+            sources_list.append(os.path.join(d.getVar("WORKDIR"), (base + ext)))
     return sources_list
 
 def get_absolut_defconfigs(d):
-    defconfigs=d.getVar("INTREE_DEFCONFIG", True).split()
-    arch = d.getVar('ARCH', True)
+    defconfigs=d.getVar("INTREE_DEFCONFIG").split()
+    arch = d.getVar('ARCH')
     absdefconfs=[]
     for defconfig in defconfigs:
-        absdefconfs.append(os.path.join(d.getVar("S", True),
+        absdefconfs.append(os.path.join(d.getVar("S"),
                            "arch", arch, "configs", defconfig))
     return absdefconfs
 
@@ -63,7 +63,7 @@ kconfig_do_configure() {
         cp -f "$defconfig" "$config"
         oe_runmake -C ${S} ${CONFIG_COMMAND}
     elif [ ! -z "${INTREE_DEFCONFIG}" ]; then
-        if [ 1 -eq ${@len(d.getVar("INTREE_DEFCONFIG", True).split())} ]; then
+        if [ 1 -eq ${@len(d.getVar("INTREE_DEFCONFIG").split())} ]; then
             bbnote "Using intree defconfig: ${INTREE_DEFCONFIG}"
             oe_runmake -C ${S} ${INTREE_DEFCONFIG}
         else
@@ -103,8 +103,8 @@ addtask configure after do_unpack do_patch before do_compile
 # meta/classes/base.bbclass.
 def py_oe_runmake(d, cmd):
     import subprocess
-    statement = "%s %s %s" % (d.getVar("MAKE", True) or '',
-                d.getVar("EXTRA_OEMAKE", True) or '',
+    statement = "%s %s %s" % (d.getVar("MAKE") or '',
+                d.getVar("EXTRA_OEMAKE") or '',
                 cmd)
     bb.note(statement)
     exitcode = subprocess.call(statement, shell=True)
@@ -119,9 +119,9 @@ def py_oe_runmake(d, cmd):
 # into his/her layer.
 python do_savedefconfig() {
     import shutil
-    workdir = d.getVar("WORKDIR", True)
+    workdir = d.getVar("WORKDIR")
     workdir_defconfig = os.path.join(workdir, "defconfig.temp")
-    B = d.getVar("B", True)
+    B = d.getVar("B")
 
     bb.plain("Saving defconfig to %s" % (workdir_defconfig,))
     py_oe_runmake(d, "savedefconfig")
@@ -144,7 +144,7 @@ python do_menuconfig() {
     # to fix this we should integrate menuconfig in the devtool
     # tainting is really not a viable solution as users dont want to
     # rebuild the package all the time after calling menuconfig
-    pn = d.getVar("PN", True)
+    pn = d.getVar("PN")
     bb.plain("You called menuconfig and tainted %s. If your change should be" % pn)
     bb.plain("applied in future, call:")
     bb.plain("    bitbake -c diffconfig %s" % pn)
@@ -152,7 +152,7 @@ python do_menuconfig() {
     bb.plain("To untaint the compile")
     bb.plain("    bitbake -c clean %s" % pn)
     bb.build.write_taint("do_compile", d)
-    oe_terminal("/bin/sh -c \"TERM=\"xterm-256color\";make %s; if [ \$? -ne 0 ]; then echo 'Command failed.'; printf 'Press any key to continue... '; read r; fi\"" % d.getVar('KCONFIG_CONFIG_COMMAND', True),
+    oe_terminal("/bin/sh -c \"TERM=\"xterm-256color\";make %s; if [ \$? -ne 0 ]; then echo 'Command failed.'; printf 'Press any key to continue... '; read r; fi\"" % d.getVar('KCONFIG_CONFIG_COMMAND'),
         pn + ' Configuration', d)
 }
 do_menuconfig[dirs] = "${B}"

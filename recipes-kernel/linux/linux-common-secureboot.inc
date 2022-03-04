@@ -11,22 +11,22 @@ DTBS_PATH="${B}/${KERNEL_OUTPUT_DIR}/dts/"
 DEPENDS:append:secureboot = " nxp-cst-native"
 
 python do_sign() {
-    if "secureboot" in d.getVar('DISTRO_FEATURES', True):
+    if "secureboot" in d.getVar('DISTRO_FEATURES'):
         if oe.data.typed_value('FITIMAGE_SIGN', d):
             bb.note('Skipping signing of kernel and dtb as FIT image will'
                     ' be signed')
             return
         import shutil
-        input_image_path = d.getVar('LINUX_IMAGE_PATH', True)
-        output_image_path = d.getVar('LINUX_IMAGE_PATH_SIGNED', True)
+        input_image_path = d.getVar('LINUX_IMAGE_PATH')
+        output_image_path = d.getVar('LINUX_IMAGE_PATH_SIGNED')
 
-        first_dtb_name = d.getVar('KERNEL_DEVICETREE', True).split()[0]
-        dtb_image_path = os.path.join(d.getVar('DTBS_PATH', True), first_dtb_name)
+        first_dtb_name = d.getVar('KERNEL_DEVICETREE').split()[0]
+        dtb_image_path = os.path.join(d.getVar('DTBS_PATH'), first_dtb_name)
 
         linux_addr = int(d.getVar('LINUX_LOAD_ADDR'), 16)
         dtb_addr = int(d.getVar('DTB_LOAD_ADDR'), 16)
 
-        kernelimgtype = d.getVar('KERNEL_IMAGETYPE', True)
+        kernelimgtype = d.getVar('KERNEL_IMAGETYPE')
         if kernelimgtype != 'Image':
             bb.fatal('Image type not supported for secureboot')
 

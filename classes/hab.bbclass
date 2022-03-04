@@ -87,13 +87,13 @@ def gen_ivt(signature: int, loadaddr: int, res1: int, dcdptr: int,
 def gen_csf(d, template_content: str, blocks: str, outfile):
     import hashlib
     template_content = template_content.replace('{HAB_BLOCKS}', blocks)
-    srk_table_path = d.getVar('BOOTLOADER_SIGN_SRKFUSE_PATH', True)
+    srk_table_path = d.getVar('BOOTLOADER_SIGN_SRKFUSE_PATH')
     hash_sha256 = hashlib.sha256(readfull_bin(srk_table_path)).hexdigest()
     if hash_sha256 == '0d5dbc6ed8b0a55414648b19727e217453c54d1527cef3a62784ae818c9777e7':
         bb.warn("!! CRITICAL SECURITY WARNING: You're using Phytec's Development Keyring for signatures. Please create your own keys!!")
     template_content = template_content.replace('{SRK_TABLE_PATH}', srk_table_path)
-    template_content = template_content.replace('{INSTALL_CSFK_PATH}', d.getVar('BOOTLOADER_SIGN_CSF_PATH', True))
-    template_content = template_content.replace('{INSTALL_KEY_PATH}', d.getVar('BOOTLOADER_SIGN_IMG_PATH', True))
+    template_content = template_content.replace('{INSTALL_CSFK_PATH}', d.getVar('BOOTLOADER_SIGN_CSF_PATH'))
+    template_content = template_content.replace('{INSTALL_KEY_PATH}', d.getVar('BOOTLOADER_SIGN_IMG_PATH'))
 
     with open(outfile, 'w') as outfd:
         outfd.write(template_content)
@@ -142,7 +142,7 @@ def sign_inplace(d, image_path : str, padding_offset : int, loadaddr : int, addi
     imageblock['size'] = current_pos
     imageblock['filename'] = image_path
 
-    workdir = d.getVar('WORKDIR', True)
+    workdir = d.getVar('WORKDIR')
     csf_image_path = os.path.join(workdir, 'csf_image.txt')
     csf_image_path_bin = os.path.join(workdir, 'csf_image.bin.signed')
 

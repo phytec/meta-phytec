@@ -52,7 +52,7 @@ if [ $? != 0 ]; then
 fi
 """)
 
-    if "secureboot" not in d.getVar("DISTRO_FEATURES", True):
+    if "secureboot" not in d.getVar("DISTRO_FEATURES"):
         env_add(d, "expansions/dt-overlays",
 """#!/bin/sh
 
@@ -73,8 +73,8 @@ done
 }
 
 python do_env:append:mx6-generic-bsp() {
-    kernelname = d.getVar("KERNEL_IMAGETYPE", True)
-    if "secureboot" in d.getVar("DISTRO_FEATURES", True):
+    kernelname = d.getVar("KERNEL_IMAGETYPE")
+    if "secureboot" in d.getVar("DISTRO_FEATURES"):
         kernelname = "fitImage"
     sdid = "2"
     emmcid = None
@@ -239,7 +239,7 @@ python do_env:append_phyboard-nunki-imx6() {
 # imx6qdl-phytec-lcd: 3.5" display (AC167 / AC101)
 #of_property -s -f "/panel-lcd" compatible "edt,etm0350g0dh6"
 """)
-    if "secureboot" not in d.getVar("DISTRO_FEATURES", True):
+    if "secureboot" not in d.getVar("DISTRO_FEATURES"):
         # Enable VM-016 by default on phyBOARD-Nunki
         env_add(d, "nv/overlays.select", "imx6-vm010-bw-0.dtbo\n");
         # Enable 32 bit color depth for framebuffer emulation on phyBOARD-Nunki
@@ -386,8 +386,8 @@ do_deploy:prepend:mx6ul-generic-bsp() {
 }
 
 python do_env:append:mx6ul-generic-bsp() {
-    kernelname = d.getVar("KERNEL_IMAGETYPE", True)
-    if "secureboot" in d.getVar("DISTRO_FEATURES", True):
+    kernelname = d.getVar("KERNEL_IMAGETYPE")
+    if "secureboot" in d.getVar("DISTRO_FEATURES"):
         kernelname = "fitImage"
     sdid = "0"
     emmcid = "1"

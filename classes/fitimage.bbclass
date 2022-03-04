@@ -115,7 +115,7 @@ def fitimage_emit_section_kernel(d,fd,imgpath,imgsource,imgcomp):
         kernel_loadline = "load = <%s>;" % d.expand("${FITIMAGE_LOADADDRESS}")
     if len(d.expand("${FITIMAGE_ENTRYPOINT}")) > 0:
         kernel_entryline = "entry = <%s>;" % d.expand("${FITIMAGE_ENTRYPOINT}")
-    arch = d.getVar("TARGET_ARCH", True)
+    arch = d.getVar("TARGET_ARCH")
     arch = "arm64" if arch == "aarch64" else arch
     fd.write('\t\t'     + 'kernel-%s {\n' % kernelcount)
     fd.write('\t\t\t'   +   'description = "Linux kernel";\n')
@@ -136,7 +136,7 @@ def fitimage_emit_section_kernel(d,fd,imgpath,imgsource,imgcomp):
 #
 def fitimage_emit_section_dtb(d,fd,dtb_file,dtb_path):
     dtb_csum = d.expand("${FITIMAGE_HASH}")
-    arch = d.getVar("TARGET_ARCH", True)
+    arch = d.getVar("TARGET_ARCH")
     arch = "arm64" if arch == "aarch64" else arch
 
     dtb_loadline=""
@@ -160,7 +160,7 @@ def fitimage_emit_section_dtb(d,fd,dtb_file,dtb_path):
 #
 def fitimage_emit_section_dtb_overlay(d,fd,dtb_file,dtb_path):
     dtb_csum = d.expand("${FITIMAGE_HASH}")
-    arch = d.getVar("TARGET_ARCH", True)
+    arch = d.getVar("TARGET_ARCH")
     arch = "arm64" if arch == "aarch64" else arch
 
     dtb_loadline=""
@@ -186,7 +186,7 @@ def fitimage_emit_section_dtb_overlay(d,fd,dtb_file,dtb_path):
 def fitimage_emit_section_ramdisk(d,fd,img_file,img_path):
     ramdisk_count = "1"
     ramdisk_csum = d.expand("${FITIMAGE_HASH}")
-    arch = d.getVar("TARGET_ARCH", True)
+    arch = d.getVar("TARGET_ARCH")
     arch = "arm64" if arch == "aarch64" else arch
     ramdisk_ctype = "none"
     ramdisk_loadline = "load = <00000000>;"
@@ -215,8 +215,8 @@ def fitimage_emit_section_ramdisk(d,fd,img_file,img_path):
 #
 def fitimage_emit_section_config(d,fd,dtb,kernelcount,ramdiskcount,setupcount,i):
     conf_csum = d.expand("${FITIMAGE_HASH}")
-    conf_encrypt = d.getVar("FITIMAGE_SIGNATURE_ENCRYPTION", True) or ""
-    path, filename = os.path.split(d.getVar("FITIMAGE_SIGN_KEY_PATH", True) or "")
+    conf_encrypt = d.getVar("FITIMAGE_SIGNATURE_ENCRYPTION") or ""
+    path, filename = os.path.split(d.getVar("FITIMAGE_SIGN_KEY_PATH") or "")
     conf_sign_keyname = filename.split('.')
 
 
@@ -258,8 +258,8 @@ def fitimage_emit_section_config(d,fd,dtb,kernelcount,ramdiskcount,setupcount,i)
        fd.write('\t\t\t\t' +   'algo = "%s,%s";\n' % (conf_csum, conf_encrypt))
        fd.write('\t\t\t\t' +   'key-name-hint = "%s";\n' % conf_sign_keyname[0])
        fd.write('\t\t\t\t' +   '%s\n' % sign_line)
-       fd.write('\t\t\t\t' +   'signer-name = "%s";\n' % d.getVar("FITIMAGE_SIGNER", True))
-       fd.write('\t\t\t\t' +   'signer-version = "%s";\n' % d.getVar("FITIMAGE_SIGNER_VERSION", True))
+       fd.write('\t\t\t\t' +   'signer-name = "%s";\n' % d.getVar("FITIMAGE_SIGNER"))
+       fd.write('\t\t\t\t' +   'signer-version = "%s";\n' % d.getVar("FITIMAGE_SIGNER_VERSION"))
        fd.write('\t\t\t'   + '};\n')
     else:
        bb.warn(d.expand("${FITIMAGE_SIGN_KEY_PATH} No Key File for signing FIT Image => FIT Image don't get a signature"))
@@ -271,8 +271,8 @@ def fitimage_emit_section_config(d,fd,dtb,kernelcount,ramdiskcount,setupcount,i)
 #
 def fitimage_emit_section_config_fdto(d,fd,dtb):
     conf_csum = d.expand("${FITIMAGE_HASH}")
-    conf_encrypt = d.getVar("FITIMAGE_SIGNATURE_ENCRYPTION", True) or ""
-    path, filename = os.path.split(d.getVar("FITIMAGE_SIGN_KEY_PATH", True) or "")
+    conf_encrypt = d.getVar("FITIMAGE_SIGNATURE_ENCRYPTION") or ""
+    path, filename = os.path.split(d.getVar("FITIMAGE_SIGN_KEY_PATH") or "")
     conf_sign_keyname = filename.split('.')
 
 
@@ -291,8 +291,8 @@ def fitimage_emit_section_config_fdto(d,fd,dtb):
        fd.write('\t\t\t\t' +   'algo = "%s,%s";\n' % (conf_csum, conf_encrypt))
        fd.write('\t\t\t\t' +   'key-name-hint = "%s";\n' % conf_sign_keyname[0])
        fd.write('\t\t\t\t' +   '%s;\n' % sign_line)
-       fd.write('\t\t\t\t' +   'signer-name = "%s";\n' % d.getVar("FITIMAGE_SIGNER", True))
-       fd.write('\t\t\t\t' +   'signer-version = "%s";\n' % d.getVar("FITIMAGE_SIGNER_VERSION", True))
+       fd.write('\t\t\t\t' +   'signer-name = "%s";\n' % d.getVar("FITIMAGE_SIGNER"))
+       fd.write('\t\t\t\t' +   'signer-version = "%s";\n' % d.getVar("FITIMAGE_SIGNER_VERSION"))
        fd.write('\t\t\t'   + '};\n')
     else:
        bb.warn(d.expand("${FITIMAGE_SIGN_KEY_PATH} No Key File for signing FIT Image => FIT Image don't get a signature"))
@@ -360,7 +360,7 @@ def write_manifest(d):
             if slotflags and 'fstype' in slotflags:
                img_fstype = slotflags.get('fstype')
             img_file = "%s-%s.%s" % (d.getVar('FITIMAGE_SLOT_%s' % slot), machine, img_fstype)
-            img_path = d.getVar("DEPLOY_DIR_IMAGE", True)
+            img_path = d.getVar("DEPLOY_DIR_IMAGE")
             fitimage_emit_section_ramdisk(d,fd,img_file,img_path)
     fitimage_emit_section_maint(d,fd,'sectend')
     #
@@ -410,7 +410,7 @@ addtask fitimagebundle after do_configure before do_build
 python do_signhab() {
     if oe.data.typed_value('FITIMAGE_SIGN', d) and d.getVar('FITIMAGE_SIGN_ENGINE') == 'nxphab':
         loadaddr = int(d.getVar('UBOOT_ENTRYPOINT'), 16)
-        build_dir = d.getVar("B", True)
+        build_dir = d.getVar("B")
         image_path = os.path.join(build_dir, 'fitImage')
         image_size = os.stat(image_path).st_size
         aligned_size = (image_size + 0x1000 - 1) & ~(0x1000 - 1)
