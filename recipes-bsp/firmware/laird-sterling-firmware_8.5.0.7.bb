@@ -26,6 +26,9 @@ S = "${WORKDIR}"
 FIRMWARE_PATH = "${nonarch_base_libdir}/firmware/brcm"
 
 do_install() {
+    # Clear country code entry
+    sed -i 's:\(ccode=\).\+:\1:' ${S}${FIRMWARE_PATH}/*-sdio.txt
+
     install -d ${D}${nonarch_base_libdir}/firmware/brcm/
 
     install -m 644 ${S}${FIRMWARE_PATH}/BCM43430A1.hcd ${D}${nonarch_base_libdir}/firmware/brcm/
