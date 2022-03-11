@@ -4,7 +4,7 @@ DESCRIPTION = "The barebox is a bootloader designed for embedded systems. It \
                PowerPC and others."
 HOMEPAGE = "http://www.barebox.org"
 SECTION = "bootloaders"
-LICENSE = "GPL-2.0"
+LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM ?= "file://COPYING;md5=f5125d13e000b9ca1f0d3364286c4192"
 DEPENDS += "lzop-native coreutils-native bison-native"
 PROVIDES = "virtual/bootloader"

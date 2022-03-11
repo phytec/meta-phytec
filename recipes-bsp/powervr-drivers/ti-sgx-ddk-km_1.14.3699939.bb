@@ -1,6 +1,6 @@
 DESCRIPTION =  "Kernel drivers for the PowerVR SGX chipset found in the TI SoCs"
 HOMEPAGE = "https://git.ti.com/graphics/omap5-sgx-ddk-linux"
-LICENSE = "MIT | GPLv2"
+LICENSE = "MIT | GPL-2.0-only"
 LIC_FILES_CHKSUM = "file://eurasia_km/README;beginline=13;endline=22;md5=74506d9b8e5edbce66c2747c50fcef12"
 
 inherit module

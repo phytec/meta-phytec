@@ -2,7 +2,7 @@
 # Author: Stefan Mueller-Klieser <s.mueller-klieser@phytec.de>
 DESCRIPTION = "Linux Kernel Phytec common base"
 SECTION = "kernel"
-LICENSE = "GPLv2"
+LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM ?= "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 
 CVE_VERSION = "${@d.getVar("PV").split('-')[0]}"

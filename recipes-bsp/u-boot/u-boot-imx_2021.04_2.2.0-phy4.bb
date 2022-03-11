@@ -11,7 +11,7 @@ include u-boot-rauc.inc
 PROVIDES += "u-boot"
 DEPENDS:append = " python dtc-native bison-native"
 
-LICENSE = "GPLv2+"
+LICENSE = "GPL-2.0-or-later"
 LIC_FILES_CHKSUM = "file://Licenses/gpl-2.0.txt;md5=b234ee4d69f5fce4486a80fdaf4a4263"
 BRANCH = "v2021.04_2.2.0-phy"
 GIT_URL = "git://git.phytec.de/${BPN}"

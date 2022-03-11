@@ -3,7 +3,7 @@ DESCRIPTION = "Gstreamer plugin using the bayer2rgb-neon library for fast color 
 SECTION = "multimedia"
 HOMEPAGE = "https://git.phytec.de/gst-bayer2rgb-neon"
 
-LICENSE = "GPLv3"
+LICENSE = "GPL-3.0-only"
 LIC_FILES_CHKSUM = "file://COPYING;md5=d32239bcb673463ab874e80d47fae504"
 
 BRANCH = "master"

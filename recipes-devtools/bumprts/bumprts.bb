@@ -1,5 +1,5 @@
 DESCRIPTION = "bumbRTS is a test app for uart flow control testing"
-LICENSE = "GPLv2"
+LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM = "file://COPYING.GPLv2;md5=751419260aa954499f7abaabaa882bbe"
 SECTION = "devel"
 

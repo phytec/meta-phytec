@@ -2,7 +2,7 @@ SUMMARY = "fbtest"
 DESCRIPTION = " This program supports you with adjusting display settings."
 HOMEPAGE = "http://www.pengutronix.de/"
 
-LICENSE = "GPLv2"
+LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM = "file://COPYING;md5=ea5bed2f60d357618ca161ad539f7c0a"
 
 PR = "r1"
