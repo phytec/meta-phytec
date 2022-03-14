@@ -193,23 +193,8 @@ IMAGE_ROOTFS_ALIGNMENT ?= "4"
 # Enable licence summary and configure License content generation
 ENABLE_IMAGE_LICENSE_SUMMARY ?= "1"
 
-# Partitions configuration
-IMAGE_CLASSES += "st-partitions-image"
-
-# Define image to use for extra partitions
-STM32MP_BOOTFS_IMAGE ?= "st-image-bootfs"
-STM32MP_BOOTFS_LABEL ?= "boot"
-STM32MP_BOOTFS_MOUNTPOINT ?= "/boot"
-STM32MP_USERFS_IMAGE ?= "st-image-userfs"
-STM32MP_USERFS_LABEL ?= "userfs"
-STM32MP_USERFS_MOUNTPOINT ?= "/usr/local"
-STM32MP_VENDORFS_IMAGE ?= "st-image-vendorfs"
-STM32MP_VENDORFS_LABEL ?= "vendorfs"
-STM32MP_VENDORFS_MOUNTPOINT ?= "/vendor"
-
 # Define image partition size (supposed to be set as max size in image recipe)
-# Proposed value for bootfs is 64MB
-BOOTFS_PARTITION_SIZE ?= "65536"
+
 # Proposed value for rootfs should fit our highest constraint: NAND size (1GiB)
 # For optee bootscheme we have the maximum partitions:
 #   FSBL1 + SSBL + SSBL2 + TEEH + TEED + TEEX + Multivolume UBI = NAND size
@@ -226,29 +211,82 @@ BOOTFS_PARTITION_SIZE ?= "65536"
 #   rootfs < 746.8MiB
 # Proposed value for rootfs is 746MiB
 # Define max size for ROOTFS image being built to this value
-IMAGE_ROOTFS_MAXSIZE ?= "763904"
+STM32MP_ROOTFS_MAXSIZE_NAND ?= "763904"
 # And configure the ROOTFS_PARTITION_SIZE variable accordingly
-ROOTFS_PARTITION_SIZE ?= "${IMAGE_ROOTFS_MAXSIZE}"
-# Proposed value for userfs is 128MB (4*32MB)
-USERFS_PARTITION_SIZE ?= "131072"
-# Proposed value for vendorfs is 16MB
-VENDORFS_PARTITION_SIZE ?= "16384"
+IMAGE_ROOTFS_MAXSIZE ?= "${STM32MP_ROOTFS_MAXSIZE_NAND}"
+
+# Partitions configuration
+IMAGE_CLASSES += "st-partitions-image"
 
 # Enable use of extra partition(s)
 ST_BOOTFS   ?= "1"
 ST_VENDORFS ?= "1"
 ST_USERFS   ?= "1"
 
-# Partitions configuration
-PARTITIONS_CONFIG += "${@bb.utils.contains('ST_BOOTFS', '1', 'bootfs', '', d)}"
-PARTITIONS_CONFIG += "${@bb.utils.contains('ST_VENDORFS', '1', 'vendorfs', '', d)}"
-PARTITIONS_CONFIG += "rootfs"
-PARTITIONS_CONFIG += "${@bb.utils.contains('ST_USERFS', '1', 'userfs', '', d)}"
+PARTITIONS_IMAGES += "${@bb.utils.contains('ST_BOOTFS', '1', 'bootfs', '', d)}"
+PARTITIONS_IMAGES += "${@bb.utils.contains('ST_VENDORFS', '1', 'vendorfs', '', d)}"
+PARTITIONS_IMAGES += "rootfs"
+PARTITIONS_IMAGES += "${@bb.utils.contains('ST_USERFS', '1', 'userfs', '', d)}"
 
-PARTITIONS_CONFIG[bootfs]   ?= "${STM32MP_BOOTFS_IMAGE},${STM32MP_BOOTFS_LABEL},${STM32MP_BOOTFS_MOUNTPOINT},${BOOTFS_PARTITION_SIZE},System"
-PARTITIONS_CONFIG[vendorfs] ?= "${STM32MP_VENDORFS_IMAGE},${STM32MP_VENDORFS_LABEL},${STM32MP_VENDORFS_MOUNTPOINT},${VENDORFS_PARTITION_SIZE},FileSystem"
-PARTITIONS_CONFIG[rootfs]   ?= "${IMAGE_BASENAME},rootfs,,${ROOTFS_PARTITION_SIZE},FileSystem"
-PARTITIONS_CONFIG[userfs]   ?= "${STM32MP_USERFS_IMAGE},${STM32MP_USERFS_LABEL},${STM32MP_USERFS_MOUNTPOINT},${USERFS_PARTITION_SIZE},FileSystem"
+# Define image to use for extra partitions
+STM32MP_BOOTFS_IMAGE      ?= "st-image-bootfs"
+STM32MP_BOOTFS_LABEL      ?= "boot"
+STM32MP_BOOTFS_MOUNTPOINT ?= "/boot"
+# Proposed value for bootfs is 64MB
+STM32MP_BOOTFS_SIZE       ?= "65536"
+STM32MP_ROOTFS_IMAGE      ?= "${IMAGE_BASENAME}"
+STM32MP_ROOTFS_LABEL      ?= "rootfs"
+# Configure the rootfs size with IMAGE_ROOTFS_MAXSIZE variable
+STM32MP_ROOTFS_SIZE       ?= "${IMAGE_ROOTFS_MAXSIZE}"
+STM32MP_USERFS_IMAGE      ?= "st-image-userfs"
+STM32MP_USERFS_LABEL      ?= "userfs"
+STM32MP_USERFS_MOUNTPOINT ?= "/usr/local"
+# Proposed value for userfs is 128MB
+STM32MP_USERFS_SIZE         ?= "131072"
+STM32MP_VENDORFS_IMAGE      ?= "st-image-vendorfs"
+STM32MP_VENDORFS_LABEL      ?= "vendorfs"
+STM32MP_VENDORFS_MOUNTPOINT ?= "/vendor"
+# Proposed value for vendorfs is 16MB
+STM32MP_VENDORFS_SIZE       ?= "16384"
+
+# <image_name>,<partition_label>,<mountpoint>,<size>,<type>
+PARTITIONS_IMAGES[bootfs]   ?= "${STM32MP_BOOTFS_IMAGE},${STM32MP_BOOTFS_LABEL},${STM32MP_BOOTFS_MOUNTPOINT},${STM32MP_BOOTFS_SIZE},System"
+PARTITIONS_IMAGES[vendorfs] ?= "${STM32MP_VENDORFS_IMAGE},${STM32MP_VENDORFS_LABEL},${STM32MP_VENDORFS_MOUNTPOINT},${STM32MP_VENDORFS_SIZE},FileSystem"
+PARTITIONS_IMAGES[rootfs]   ?= "${STM32MP_ROOTFS_IMAGE},${STM32MP_ROOTFS_LABEL},,${STM32MP_ROOTFS_SIZE},FileSystem"
+PARTITIONS_IMAGES[userfs]   ?= "${STM32MP_USERFS_IMAGE},${STM32MP_USERFS_LABEL},${STM32MP_USERFS_MOUNTPOINT},${STM32MP_USERFS_SIZE},FileSystem"
+
+# =========================================================================
+# Image partition configuration : data, label, size (Kbytes)
+# =========================================================================
+STM32MP_UBIFS_DATA ?= "${IMAGE_LINK_NAME}_<CONFIG>_multivolume.ubi"
+STM32MP_UBIFS_NAME ?= "ubifs"
+STM32MP_UBIFS_SIZE ?= ""
+
+# Partitions configuration
+PARTITIONS_CONFIG += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'emmc', 'emmc', '', d)}"
+PARTITIONS_CONFIG += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nand-2-256', 'nand-2-256', '', d)}"
+PARTITIONS_CONFIG += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nand-2-64', 'nand-2-64', '', d)}"
+PARTITIONS_CONFIG += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nor-emmc', 'nor-emmc', '', d)}"
+PARTITIONS_CONFIG += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'sdcard', 'sdcard', '', d)}"
+
+PARTITIONS_SUFFIX ?= "ext4"
+
+# <binary_name>,<partlabel>,<size>,<type>,<copy>
+PARTITIONS_CONFIG[emmc] ?= "\
+    ${@' '.join(['%s' % partImage2partConfig(config, '${PARTITIONS_SUFFIX}', d) for config in d.getVar('PARTITIONS_IMAGES').split()])} \
+    "
+PARTITIONS_CONFIG[nand-2-256] ?= "\
+    ${STM32MP_UBIFS_DATA},${STM32MP_UBIFS_NAME},${STM32MP_UBIFS_SIZE},System,1 \
+    "
+PARTITIONS_CONFIG[nand-2-64] ?= "\
+    ${STM32MP_UBIFS_DATA},${STM32MP_UBIFS_NAME},${STM32MP_UBIFS_SIZE},System,1 \
+    "
+PARTITIONS_CONFIG[nor-emmc] ?= "\
+    ${@' '.join(['%s' % partImage2partConfig(config, '${PARTITIONS_SUFFIX}', d) for config in d.getVar('PARTITIONS_IMAGES').split()])} \
+    "
+PARTITIONS_CONFIG[sdcard] ?= "\
+    ${@' '.join(['%s' % partImage2partConfig(config, '${PARTITIONS_SUFFIX}', d) for config in d.getVar('PARTITIONS_IMAGES').split()])} \
+    "
 
 # UBI Configuration
 IMAGE_CLASSES += "image_types-stubi"
