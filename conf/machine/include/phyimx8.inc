@@ -16,7 +16,7 @@ IMAGE_BOOT_FILES += "oftree ${EXTERNAL_KERNEL_DEVICETREE}"
 IMAGE_BOOT_FILES:secureboot:mx8m-nxp-bsp = "fitImage bootenv.txt"
 WKS_FILES:mx8m-nxp-bsp ?= "imx8m-sdimage.wks"
 WKS_FILES:mx8m-mainline-bsp ?= "imx8m-binman-sdimage.wks"
-WKS_FILES:mx8m-nxp-bsp_update ?= "imx8m-rauc-sdimage.wks"
+WKS_FILES:mx8m-nxp-bsp:update ?= "imx8m-rauc-sdimage.wks"
 WKS_BOOTIMAGESIZE ?= "50"
 
 # MMC user area bootloader image offset
