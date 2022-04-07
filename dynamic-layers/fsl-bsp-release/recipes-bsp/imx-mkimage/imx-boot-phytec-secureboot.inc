@@ -142,11 +142,9 @@ def sign_hab(d, input_image_path, output_image_path, imxboot_logfile, \
     gen_csf(d, template, make_csf_hab_block(hablist), csf_fit_txt_path)
 
     # sign images
-    if execcmd('cst -i {0} -o {1}'.format(csf_spl_txt_path,
-                                          csf_spl_bin_path)) != 0:
+    if not cst_sign(d, csf_spl_txt_path, csf_spl_bin_path):
         raise Exception('Error: Failed to sign SPL binary')
-    if execcmd('cst -i {0} -o {1}'.format(csf_fit_txt_path,
-                                          csf_fit_bin_path)) != 0:
+    if not cst_sign(d, csf_fit_txt_path, csf_fit_bin_path):
         raise Exception('Error: Failed to sign FIT binary')
 
     signed_spl_csf = readfull_bin(csf_spl_bin_path)

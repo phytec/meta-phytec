@@ -113,6 +113,13 @@ def get_linux_image_size(image_path):
         unpacked = header.unpack(data)
         return unpacked[3]
 
+
+def cst_sign(d, input_csf_path : str, output_image_path : str):
+    pkcs11_module_path = d.getVar("PKCS11_MODULE_PATH", True)
+    if pkcs11_module_path != None and pkcs11_module_path != "":
+        os.environ["PKCS11_MODULE_PATH"] = pkcs11_module_path
+    return execcmd('cst -i {0} -o {1}'.format(input_csf_path, output_image_path)) == 0
+
 # Signs an image using NXP's cst tool. Appends IVT and CSF to the end of the image
 #
 # image_path: Path of the image to be signed. It will be padded (if necessary)
@@ -155,8 +162,9 @@ def sign_inplace(d, image_path : str, padding_offset : int, loadaddr : int, addi
     blocks.extend(additional_blocks)
 
     gen_csf(d, create_csf_template(), make_csf_hab_block(blocks), csf_image_path)
-    if execcmd('cst -i {0} -o {1}'.format(csf_image_path, csf_image_path_bin)) != 0:
-            raise Exception('Error: Failed to sign image')
+
+    if not cst_sign(d, csf_image_path, csf_image_path_bin):
+        raise Exception("Failed to sign image: {0}".format(image_path))
 
     signed_image_csf = readfull_bin(csf_image_path_bin)
     fd.write(signed_image_csf)
