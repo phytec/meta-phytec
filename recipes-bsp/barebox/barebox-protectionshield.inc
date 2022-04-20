@@ -26,15 +26,15 @@ def set_shield_password(d):
     set_root_password(d,hashvalue)
 
 
-do_patch:append_shieldlow (){
+do_patch:append:shieldlow (){
     set_shield_password(d)
 }
 
-do_patch:append_shieldmedium (){
+do_patch:append:shieldmedium (){
     set_shield_password(d)
 }
 
-python do_patch:append_shieldhigh () {
+python do_patch:append:shieldhigh () {
     import binascii
     #random hash
     hashvalue = binascii.hexlify(os.urandom(64)).decode('ascii')
