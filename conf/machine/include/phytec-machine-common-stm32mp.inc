@@ -200,23 +200,23 @@ ENABLE_IMAGE_LICENSE_SUMMARY ?= "1"
 # Define image partition size (supposed to be set as max size in image recipe)
 
 # Proposed value for rootfs should fit our highest constraint: NAND size (1GiB)
-# For optee bootscheme we have the maximum partitions:
-#   FSBL1 + SSBL + SSBL2 + TEEH + TEED + TEEX + Multivolume UBI = NAND size
-#   Multivolume UBI = 1GiB - (2MiB + 2MiB + 2MiB + 512KiB + 512KiB + 512KiB) = 1016.5MiB
+# With FIP, we have the maximum partitions:
+#   FSBL1 + FIP + FIP2 + Multivolume UBI = NAND size
+#   Multivolume UBI = 1GiB - (2MiB + 4MiB + 4MiB) = 1014MiB
 # With multivolume UBI split:
 #   Multivolume UBI > uboot_config + uboot_config_r + bootfs + vendorfs + rootfs + userfs + UBI Overhead
 # From http://www.linux-mtd.infradead.org/doc/ubi.html#L_overhead, we compute
 # the UBI overhead for our NAND:
-#   (20*4096/1024 + 4) * 256KiB + (256KiB - 248KiB) * (1016.5MiB/256KiB - 20*4096/1024 - 4) = 53360KiB
+#   (20*4096/1024 + 4) * 256KiB + (256KiB - 248KiB) * (1014MiB/256KiB - 20*4096/1024 - 4) = 53280KiB
 # In addition, for each UBIFS, our NAND consummed 9 extra eraseblocks
 # So:
 #   rootfs < Multivolume UBI - (uboot_config + uboot_config_r + bootfs + vendorfs + userfs + UBI Overhead + 4 * 9*eraseblocks)
-#   rootfs < 1016.5MiB - (256KiB + 256KiB + 64MiB + 16MiB + 128MiB + 53360KiB + 4 * 9 * 256KiB)
-#   rootfs < 746.8MiB
-# Proposed value for rootfs is 746MiB
+#   rootfs < 1014MiB - (256KiB + 256KiB + 64MiB + 16MiB + 128MiB + 53280KiB + 4 * 9 * 256KiB)
+#   rootfs < 744.5MiB
+# Proposed value for rootfs is 744.5MiB
 # Define max size for ROOTFS image being built to this value
-STM32MP_ROOTFS_MAXSIZE_NAND ?= "763904"
-# And configure the ROOTFS_PARTITION_SIZE variable accordingly
+STM32MP_ROOTFS_MAXSIZE_NAND ?= "762336"
+# And configure the IMAGE_ROOTFS_MAXSIZE variable accordingly
 IMAGE_ROOTFS_MAXSIZE ?= "${STM32MP_ROOTFS_MAXSIZE_NAND}"
 
 # Partitions configuration
