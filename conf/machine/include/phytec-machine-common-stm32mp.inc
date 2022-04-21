@@ -679,3 +679,22 @@ M4_PACKAGE_4USERFS = "${@bb.utils.contains('ST_USERFS','1','1','0',d)}"
 # Variable for using vendor directory instead of usr
 GCNANO_USERLAND_USE_VENDOR_DIR = "${@bb.utils.contains('ST_VENDORFS','1','1','0',d)}"
 GCNANO_USERLAND_VENDOR_DIR = "${STM32MP_VENDORFS_MOUNTPOINT}"
+
+# =========================================================================
+# WIC for sdcard raw image
+# =========================================================================
+WIC_CREATE_EXTRA_ARGS = "--no-fstab-update"
+WKS_FILE_DEPENDS ?= " \
+    virtual/bootloader \
+    virtual/trusted-firmware-a \
+    ${@bb.utils.contains('BOOTSCHEME_LABELS', 'optee', 'virtual/optee-os', '', d)} \
+    st-image-bootfs \
+    ${@bb.utils.contains('ST_VENDORFS','1','st-image-vendorfs', '', d)} \
+    ${@bb.utils.contains('ST_USERFS','1','st-image-userfs', '', d)} \
+"
+TRUSTED_WIC_FILE = "${@bb.utils.contains('MACHINE_FEATURES','fip','stm32mp1-sdimage.wks.in','stm32mp1-noFIP-sdimage.wks.in',d)}"
+# OPTEE WIC FILE is not provided as OPTEE is not supported yet with the phycore-stm32mp1 BSP
+OPTEE_WIC_FILE = ""
+
+WKS_IMAGE_FSTYPES += "wic wic.bz2 wic.bmap"
+WKS_FILE += "${@bb.utils.contains('BOOTSCHEME_LABELS', 'optee', '${OPTEE_WIC_FILE}', '${TRUSTED_WIC_FILE}', d)}"
