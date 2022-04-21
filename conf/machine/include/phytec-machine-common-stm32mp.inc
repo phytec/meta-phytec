@@ -41,6 +41,9 @@ MACHINE_FEATURES_append = " initrd "
 # in our bootfs image (this avoid dependency loops as rootfs depends on bootfs...)
 DISTRO_EXTRA_RRECOMMENDS_remove = " ${@bb.utils.contains('COMBINED_FEATURES', 'initrd', '${INITRD_PACKAGE}', '', d)} "
 
+# Use FIP image for boot loaders
+MACHINE_FEATURES += "fip"
+
 # Default serial consoles (TTYs) to enable using getty
 # Before kernel 4.18, serial console are ttyS3 but after is ttySTM0
 SERIAL_CONSOLES = "115200;ttySTM0"
