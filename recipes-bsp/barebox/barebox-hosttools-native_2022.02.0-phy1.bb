@@ -4,17 +4,9 @@ SUMMERY = "barebox host tools"
 PROVIDES = "${PN}"
 FILESEXTRAPATHS:prepend := "${THISDIR}/barebox/:"
 
-DEPENDS += "libusb-native openssl-native zlib-native"
+DEPENDS += "libusb1-native openssl-native zlib-native "
 
 inherit deploy pkgconfig
-
-do_patch:append() {
-    bb.build.exec_func('do_fix_pkg_config', d)
-}
-
-do_fix_pkg_config() {
-	find ${S}/scripts/ -name Makefile -print0 | xargs -0 sed -i 's/pkg-config/pkg-config-native/g'
-}
 
 do_configure:append() {
     kconfig_set ARCH_IMX_IMXIMAGE y
@@ -23,6 +15,17 @@ do_configure:append() {
 }
 
 do_compile() {
+    # To build the USB loaders, pkg-config needs to know about libusb-1.0
+    export PKG_CONFIG_LIBDIR="${STAGING_DIR_NATIVE}${libdir}/pkgconfig:${STAGING_DIR_NATIVE}/usr/share/pkgconfig"
+    export PKG_CONFIG_SYSROOT_DIR=
+    export PKG_CONFIG_PATH="${STAGING_DIR_NATIVE}"
+
+    unset LDFLAGS
+    unset CFLAGS
+    unset CPPFLAGS
+    unset CXXFLAGS
+    unset MACHINE
+
     oe_runmake scripts
 }
 
