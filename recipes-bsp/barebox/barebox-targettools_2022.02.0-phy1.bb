@@ -9,16 +9,11 @@ PR = "${INC_PR}.0"
 export userccflags="${TARGET_CC_ARCH} ${TOOLCHAIN_OPTIONS} ${CFLAGS} ${LDFLAGS}"
 
 do_configure:append() {
-    # Compile target tools for barebox
-    kconfig_set BAREBOXENV_TARGET y
-    kconfig_set BAREBOXCRC32_TARGET y
-    kconfig_set KERNEL_INSTALL_TARGET y
-    kconfig_set IMD y
-    kconfig_set IMD_TARGET y
+    oe_runmake ARCH=sandbox targettools_defconfig
 }
 
 do_compile () {
-	oe_runmake scripts
+    oe_runmake scripts
 }
 
 do_install () {

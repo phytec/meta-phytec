@@ -12,14 +12,13 @@ include barebox-boot-scripts.inc
 
 GIT_URL = "git://git.phytec.de/barebox"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
-SRC_URI:append = "file://0001-of_dump-Add-a-simple-node-check-up.patch"
 
 S = "${WORKDIR}/git"
 
 PR = "${INC_PR}.0"
 
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "7b1f85c4a3c33850fb3d41b39bec22af23e95f7d"
+SRCREV = "7fe12e65d770f7e657e683849681f339a996418b"
 
 python do_env:append() {
     env_add(d, "nv/allow_color", "false\n")
@@ -39,16 +38,6 @@ if [ $? != 0 ]; then
     echo "Error: Cannot fetch file \"barebox.bin\" from host!"
 else
     go /dev/ram0
-fi
-""")
-
-    env_add(d, "expansions/imx6-phytec-check-bus-nodepath",
-"""bus="bus"
-of_dump -e /soc/$bus@2000000
-
-if [ $? != 0 ]; then
-    echo "Changing node-name bus to aips-bus"
-    bus="aips-bus"
 fi
 """)
 
@@ -93,47 +82,47 @@ python do_env:append:mx6-generic-bsp() {
 
     env_add(d, "expansions/imx6qdl-mira-enable-lvds",
 """of_fixup_status /ldb/lvds-channel@0
-of_fixup_status /soc/$bus@2100000/i2c@21a0000/touchctrl@44
+of_fixup_status /soc/bus@2100000/i2c@21a0000/touchctrl@44
 """)
     env_add(d, "expansions/imx6qdl-nunki-enable-lvds",
 """of_fixup_status /ldb/lvds-channel@0
-of_fixup_status /soc/$bus@2100000/i2c@21a0000/touchctrl@44
+of_fixup_status /soc/bus@2100000/i2c@21a0000/touchctrl@44
 """)
     env_add(d, "expansions/imx6qdl-mira-peb-eval-01",
 """of_fixup_status /gpio-keys
 of_fixup_status /user-leds
-of_property -s -f -e $global.bootm.oftree /soc/$bus@2100000/serial@21ec000 pinctrl-0 </soc/$bus@2000000/pinctrl@20e0000/uart3grp>
+of_property -s -f -e $global.bootm.oftree /soc/bus@2100000/serial@21ec000 pinctrl-0 </soc/bus@2000000/pinctrl@20e0000/uart3grp>
 """)
     env_add(d, "expansions/imx6qdl-phytec-lcd",
 """#!/bin/sh
 of_fixup_status /panel-lcd
 of_fixup_status /ldb/lvds-channel@0
-of_fixup_status /soc/$bus@2100000/i2c@21a4000/polytouch@38
+of_fixup_status /soc/bus@2100000/i2c@21a4000/polytouch@38
 """)
     env_add(d, "expansions/imx6qdl-phytec-lcd-res",
 """#!/bin/sh
 of_fixup_status /panel-lcd
 of_fixup_status /ldb/lvds-channel@0
-of_fixup_status /soc/$bus@2100000/i2c@21a4000/touchctrl@41
+of_fixup_status /soc/bus@2100000/i2c@21a4000/touchctrl@41
 """)
     env_add(d, "expansions/imx6qdl-phytec-lcd-018-peb-av-02",
 """of_fixup_status /panel-lcd
 of_fixup_status /display@di0
-of_fixup_status /soc/$bus@2100000/i2c@21a0000/polytouch@38
+of_fixup_status /soc/bus@2100000/i2c@21a0000/polytouch@38
 """)
     env_add(d, "expansions/imx6qdl-phytec-lcd-018-peb-av-02-res",
 """of_fixup_status /panel-lcd
 of_fixup_status /display@di0
-of_fixup_status /soc/$bus@2100000/i2c@21a0000/touchctrl@44
+of_fixup_status /soc/bus@2100000/i2c@21a0000/touchctrl@44
 """)
     env_add(d, "expansions/imx6qdl-phytec-peb-wlbt-05",
 """#!/bin/sh
-of_fixup_status /soc/$bus@2100000/mmc@2198000
+of_fixup_status /soc/bus@2100000/mmc@2198000
 of_fixup_status /regulator-wl-en
 of_fixup_status -d /gpio-keys
-of_fixup_status /soc/$bus@2100000/serial@21ec000/bluetooth
+of_fixup_status /soc/bus@2100000/serial@21ec000/bluetooth
 of_fixup_status -d /user-leds
-of_property -s -f -e $global.bootm.oftree /soc/$bus@2100000/serial@21ec000 pinctrl-0 </soc/$bus@2000000/pinctrl@20e0000/uart3grp_bt>
+of_property -s -f -e $global.bootm.oftree /soc/bus@2100000/serial@21ec000 pinctrl-0 </soc/bus@2000000/pinctrl@20e0000/uart3grp_bt>
 """)
     env_add(d, "nv/dev.eth0.mode", "static")
     env_add(d, "nv/dev.eth0.ipaddr", "192.168.3.11")
@@ -147,8 +136,6 @@ of_property -s -f -e $global.bootm.oftree /soc/$bus@2100000/serial@21ec000 pinct
 python do_env:append:phyflex-imx6() {
     env_add(d, "config-expansions",
 """#!/bin/sh
-
-. /env/expansions/imx6-phytec-check-bus-nodepath
 
 #use this expansion when a capacitive touchscreen is connected
 . /env/expansions/imx6qdl-phytec-lcd
@@ -178,8 +165,6 @@ of_property -s -f "/panel-lcd" compatible "edt,etm0700g0edh6"
 python do_env:append:phyboard-mira-imx6() {
     env_add(d, "config-expansions",
 """#!/bin/sh
-
-. /env/expansions/imx6-phytec-check-bus-nodepath
 
 . /env/expansions/imx6qdl-mira-peb-eval-01
 #. /env/expansions/imx6qdl-mira-enable-lvds
@@ -213,8 +198,6 @@ python do_env:append:phyboard-mira-imx6() {
 python do_env:append_phyboard-nunki-imx6() {
     env_add(d, "config-expansions",
 """#!/bin/sh
-
-. /env/expansions/imx6-phytec-check-bus-nodepath
 
 #. /env/expansions/imx6qdl-nunki-enable-lvds
 
@@ -378,7 +361,7 @@ python do_env:append:phyboard-mira-imx6-13() {
     env_add_rauc_nand_boot_scripts(d)
 }
 
-do_deploy:prepend:mx6ul-generic-bsp() {
+do_deploy:prepend() {
     if [ "${PN}" = "barebox" ] ; then
         bbnote "Adding CRC32 checksum to barebox Image Metadata"
         ${B}/scripts/bareboximd -c ${B}/${BAREBOX_BIN}
@@ -413,8 +396,6 @@ python do_env:append:phyboard-segin-imx6ul() {
     env_add(d, "config-expansions",
 """#!/bin/sh
 
-. /env/expansions/imx6-phytec-check-bus-nodepath
-
 . /env/expansions/imx6ul-phytec-segin-peb-eval-01
 #use this expansion when a capacitive touchscreen is connected
 #. /env/expansions/imx6ul-phytec-segin-peb-av-02
@@ -433,40 +414,40 @@ of_fixup_status /user-leds
 """)
     env_add(d, "expansions/imx6ul-phytec-segin-peb-av-02",
 """
-of_fixup_status /soc/$bus@2100000/lcdif@21c8000/
+of_fixup_status /soc/bus@2100000/lcdif@21c8000/
 of_fixup_status /panel-lcd
 of_fixup_status /backlight
 of_fixup_status /regulator-backlight-en
-of_fixup_status /soc/$bus@2100000/i2c@21a0000/edt-ft5x06@38
-of_fixup_status /soc/$bus@2000000/pwm@2088000/
+of_fixup_status /soc/bus@2100000/i2c@21a0000/edt-ft5x06@38
+of_fixup_status /soc/bus@2000000/pwm@2088000/
 """)
     env_add(d, "expansions/imx6ul-phytec-segin-peb-av-02-res",
 """
-of_fixup_status /soc/$bus@2100000/lcdif@21c8000/
+of_fixup_status /soc/bus@2100000/lcdif@21c8000/
 of_fixup_status /panel-lcd
 of_fixup_status /backlight
 of_fixup_status /regulator-backlight-en
-of_fixup_status /soc/$bus@2000000/pwm@2088000/
+of_fixup_status /soc/bus@2000000/pwm@2088000/
 """)
     env_add(d, "expansions/imx6ul-phytec-segin-peb-av-02-res-tsc2004",
 """
 . /env/expansions/imx6ul-phytec-segin-peb-av-02-res
-of_fixup_status -d /soc/$bus@2100000/i2c@21a0000/touchscreen@44
-of_fixup_status /soc/$bus@2100000/i2c@21a0000/touchscreen@49
+of_fixup_status -d /soc/bus@2100000/i2c@21a0000/touchscreen@44
+of_fixup_status /soc/bus@2100000/i2c@21a0000/touchscreen@49
 """)
     env_add(d, "expansions/imx6ul-phytec-segin-peb-av-02-res-stmpe",
 """
 . /env/expansions/imx6ul-phytec-segin-peb-av-02-res
-of_fixup_status -d /soc/$bus@2100000/i2c@21a0000/touchscreen@49
-of_fixup_status /soc/$bus@2100000/i2c@21a0000/touchscreen@44
+of_fixup_status -d /soc/bus@2100000/i2c@21a0000/touchscreen@49
+of_fixup_status /soc/bus@2100000/i2c@21a0000/touchscreen@44
 """)
     env_add(d, "expansions/imx6ul-phytec-peb-wlbt-05",
 """#!/bin/sh
-of_fixup_status /soc/$bus@2100000/mmc@2194000
-of_fixup_status -d /soc/$bus@2100000/adc@2198000
+of_fixup_status /soc/bus@2100000/mmc@2194000
+of_fixup_status -d /soc/bus@2100000/adc@2198000
 of_fixup_status /regulator-wl-en
-of_fixup_status /soc/$bus@2100000/serial@21e8000
-of_fixup_status -d /soc/$bus@2000000/spba-bus@2000000/spi@2010000
+of_fixup_status /soc/bus@2100000/serial@21e8000
+of_fixup_status -d /soc/bus@2000000/spba-bus@2000000/spi@2010000
 of_fixup_status -d /user-leds
 """)
 
