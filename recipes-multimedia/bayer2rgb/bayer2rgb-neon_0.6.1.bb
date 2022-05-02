@@ -12,8 +12,7 @@ SRC_URI = "git://git.phytec.de/${BPN};branch=${BRANCH}"
 S = "${WORKDIR}/git"
 
 # NOTE: Keep sha1sum in sync with recipe version and git tag
-SRCREV = "f7e81439634088f261926719d4061c77e27c14fc"
-PV = "0.4+git${SRCPV}"
+SRCREV = "15feb1115b4828488cc36d09f625e23e8b6a0ec5"
 
 PR = "r0"
 
