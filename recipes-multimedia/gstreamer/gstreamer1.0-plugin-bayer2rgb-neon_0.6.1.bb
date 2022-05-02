@@ -12,8 +12,7 @@ SRC_URI = "git://git.phytec.de/gst-bayer2rgb-neon;branch=${BRANCH}"
 S = "${WORKDIR}/git"
 
 # NOTE: Keep sha1sum in sync with recipe version and git tag
-SRCREV = "db6a8ee3ffb873e4f1f018c5fcc4440ac3ea2e85"
-PV = "0.4+git${SRCPV}"
+SRCREV = "69c3d779ceefe500ac5eae8e1e217a17f6d9bf38"
 
 PR = "r0"
 
