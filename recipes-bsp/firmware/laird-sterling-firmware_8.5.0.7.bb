@@ -1,4 +1,4 @@
-SUMMARY = "Laird Sterling LWB firmware files for braodcom (cypress) 2.4G and 5G radio module"
+SUMMARY = "Laird Sterling LWB firmware files for broadcom (cypress) 2.4G and 5G radio module"
 SECTION = "kernel"
 
 inherit allarch
