@@ -15,6 +15,10 @@ SRC_URI[laird.sha256sum] = "12ccc8931ce0ed90cab897ab6d165a97db021271d99fe03b5495
 SRC_URI[laird5G.md5sum] = "2b10109554f8677aeb942c7f74d39383"
 SRC_URI[laird5G.sha256sum] = "bd609b249b176500f03cf21c76a88356d09ee4d8a1623ced2f781c8bd32b3f9c"
 
+RCONFLICTS:${PN} = "linux-firmware-bcm43430 linux-firmware-bcm4339"
+RREPLACES:${PN} = "linux-firmware-bcm43430 linux-firmware-bcm4339"
+RPROVIDES:${PN} = "linux-firmware-bcm43430 linux-firmware-bcm4339"
+
 LICENSE = "Laird"
 NO_GENERIC_LICENSE[Laird] = "LICENSE"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=53d3628b28a0bc3caea61587feade5f9"
