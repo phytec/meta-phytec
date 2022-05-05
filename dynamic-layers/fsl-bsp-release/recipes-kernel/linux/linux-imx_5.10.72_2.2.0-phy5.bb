@@ -20,6 +20,10 @@ S = "${WORKDIR}/git"
 INTREE_DEFCONFIG = "imx_v8_defconfig imx8_phytec_distro.config imx8_phytec_platform.config"
 INTREE_DEFCONFIG_mx7 = "imx7_phyboard_zeta_defconfig"
 
+module_conf_imx8-media-dev_mx8mp = "install imx8-media-dev /sbin/modprobe ar0521 ; /sbin/modprobe ar0144 ; /sbin/modprobe --ignore-install imx8-media-dev"
+
+KERNEL_MODULE_PROBECONF_mx8mp += "imx8-media-dev"
+
 RDEPENDS_${KERNEL_PACKAGE_NAME}-base_mx8m = ""
 
 COMPATIBLE_MACHINE  = "^("
