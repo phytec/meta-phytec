@@ -1,0 +1,35 @@
+{
+	"dewarpConfigArray" :[
+		{
+			"source_image":{
+				"width"  : 1280,
+				"height" : 800
+			},
+
+			"?dewarpType": "FISHEYE_DEWARP, LENS_CORRECTION, FISHEYE_EXPAND, SPLIT_SCREEN",
+			"dewarpType": "FISHEYE_DEWARP",
+
+			"scale": {
+				"roix"   : 0,
+				"roiy"   : 0,
+				"factor" : 1.0
+			},
+
+			"split": {
+				"horizon_line"      : 400,
+				"vertical_line_up"  : 640,
+				"vertical_line_down": 640
+			},
+
+			"bypass" : false,
+			"hflip"  : false,
+			"vflip"  : false,
+
+			"camera_matrix"   : [5.9542763413163539e+002,0.0,6.3184214870040842e+002,0.0,5.9565403976020934e+002,3.8023857960198745e+002,0.0,0.0,1.0],
+			"distortion_coeff": [-3.1138538860543418e-002,-7.6896648849955705e-003,-8.8859742698841021e-004,1.4309791478893984e-003,0.0,0.0,0.0,0.0],
+			"perspective"     : [1.0, 0, 0, 0, 1, 0, 0, 0, 1]
+
+		}
+	]
+
+}
