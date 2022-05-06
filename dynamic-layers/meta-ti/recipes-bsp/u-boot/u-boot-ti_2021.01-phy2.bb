@@ -9,10 +9,10 @@ BRANCH = "v2021.01-phy"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/u-boot:"
-SRC_URI:append_phyboard-electra-am64xx-1 = "\
+SRC_URI:append:phyboard-electra-am64xx-1 = "\
     file://0001-HACK-board-phycore_am64xx-Add-Set-CLKOUT0-to-25MHz.patch \
 "
-SRC_URI:append_phyboard-electra-am64xx-1-k3r5 = "\
+SRC_URI:append:phyboard-electra-am64xx-1-k3r5 = "\
     file://0001-HACK-board-phycore_am64xx-Add-Set-CLKOUT0-to-25MHz.patch \
 "
 
@@ -21,7 +21,7 @@ SRCREV = "d41a57f8241cfc7f74162777f7a2a28055ab5186"
 
 SPL_UART_BINARY_k3r5 = "u-boot-spl.bin"
 
-do_deploy:append_k3r5 () {
+do_deploy:append:k3r5 () {
 	mv ${DEPLOYDIR}/tiboot3.bin ${DEPLOYDIR}/tiboot3-r5spl.bin || true
 	mv ${DEPLOYDIR}/u-boot-spl.bin ${DEPLOYDIR}/u-boot-spl-r5spl.bin || true
 }
