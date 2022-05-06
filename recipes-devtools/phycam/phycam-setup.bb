@@ -9,6 +9,10 @@ SRC_URI = " \
     file://90-phycam.rules \
 "
 
+SRC_URI:append:mx6ul-generic-bsp = " \
+    file://setup-pipeline-csi1.sh \
+"
+
 SRC_URI:append:mx8mp-generic-bsp = " \
     file://setup-pipeline-csi1.sh \
     file://setup-pipeline-csi2.sh \
