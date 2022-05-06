@@ -5,7 +5,7 @@ UART_BASE = "0x30860000"
 UART_BASE:mx8mm-generic-bsp = "0x30880000"
 UART_BASE:mx8mn-generic-bsp = "0x30880000"
 
-SRC_URI:append_phygate-tauri-l-imx8mm-2 = "\
+SRC_URI:append:phygate-tauri-l-imx8mm-2 = "\
     file://0003-plat-imx8mm-tauri-l-use-uart4-as-rs485.patch \
 "
 EXTRA_OEMAKE += " \

@@ -195,7 +195,7 @@ python do_env:append:phyboard-mira-imx6() {
     env_add(d, "nv/linux.bootargs.fb", "imxdrm.legacyfb_depth=32\n");
 }
 
-python do_env:append_phyboard-nunki-imx6() {
+python do_env:append:phyboard-nunki-imx6() {
     env_add(d, "config-expansions",
 """#!/bin/sh
 
