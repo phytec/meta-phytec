@@ -184,7 +184,7 @@ global linux.bootargs.video="video=HDMI-A-1:1024x768-32@60"
 """)
 }
 
-python do_env:append_phyboard-wega-r2-am335x-1() {
+python do_env:append:phyboard-wega-r2-am335x-1() {
     env_add(d, "init/config-expansions",
 """#!/bin/sh
 
@@ -209,7 +209,7 @@ global.linux.bootargs.dyn.root="root=/dev/mmcblk1p2 rootflags='data=journal'"
 """)
 }
 
-python do_env:append_beagleboneblack-1() {
+python do_env:append:beagleboneblack-1() {
     env_add(d, "boot/mmc",
 """#!/bin/sh
 
