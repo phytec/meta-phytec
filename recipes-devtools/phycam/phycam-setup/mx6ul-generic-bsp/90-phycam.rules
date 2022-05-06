@@ -1,0 +1,34 @@
+# phyCAM VM-009 (mt9m111) CSI1
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="mt9m111*", \
+	KERNELS=="21a0000.i2c", \
+	SYMLINK+="cam-csi1", \
+
+# phyCAM VM-010 (mt9v024) CSI1
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="mt9v032*", \
+	KERNELS=="21a0000.i2c", \
+	SYMLINK+="cam-csi1", \
+
+# phyCAM VM-011 (mt9p031) CSI1
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="mt9p031*", \
+	KERNELS=="21a0000.i2c", \
+	SYMLINK+="cam-csi1", \
+
+# phyCAM VM-016 (ar0144) CSI1
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="ar0144*", \
+	KERNELS=="21a0000.i2c", \
+	SYMLINK+="cam-csi1", \
+
+# CSI1 ISI Video Device
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="csi capture", \
+	DRIVERS=="imx7-csi", \
+	SYMLINK+="video-csi1"
