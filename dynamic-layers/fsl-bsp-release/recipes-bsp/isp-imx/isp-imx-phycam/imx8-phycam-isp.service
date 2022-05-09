@@ -1,0 +1,18 @@
+[Unit]
+Description=i.MX 8 MPlus phyCAM ISP Service
+StartLimitIntervalSec=500
+StartLimitBurst=40
+
+[Service]
+Type=simple
+User=root
+ExecStart=/opt/imx8-isp/bin/run_isp.sh
+WorkingDirectory=/opt/imx8-isp/bin/
+KillSignal=SIGINT
+TimeoutStopSec=5
+Restart=on-failure
+RestartSec=5s
+RestartPreventExitStatus=6
+
+[Install]
+WantedBy=multi-user.target
