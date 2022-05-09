@@ -1,0 +1,1079 @@
+From e666d86655a90e91f5534f24358feb93b9718e91 Mon Sep 17 00:00:00 2001
+From: Stefan Riedmueller <s.riedmueller@phytec.de>
+Date: Fri, 28 Jan 2022 16:34:34 +0100
+Subject: [PATCH] units/isi/drv: Add phyCAM driver
+
+Add a generic phyCAM driver to support both VM-017 and VM-016 PHYTEC
+cameras.
+
+Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
+---
+ build-all-isp.sh                    |   1 +
+ units/isi/CMakeLists.txt            |   5 +-
+ units/isi/drv/phyCAM/CMakeLists.txt |  92 +++
+ units/isi/drv/phyCAM/phycam.c       | 873 ++++++++++++++++++++++++++++
+ units/isi/drv/phyCAM/phycam_log.h   |  45 ++
+ 5 files changed, 1014 insertions(+), 2 deletions(-)
+ create mode 100755 units/isi/drv/phyCAM/CMakeLists.txt
+ create mode 100644 units/isi/drv/phyCAM/phycam.c
+ create mode 100644 units/isi/drv/phyCAM/phycam_log.h
+
+diff --git a/build-all-isp.sh b/build-all-isp.sh
+index 6ae45f8b6743..60b305e930ef 100755
+--- a/build-all-isp.sh
++++ b/build-all-isp.sh
+@@ -116,6 +116,7 @@ fi
+ cp -a appshell/build/generated/${BUILD_DIR}/lib/*.so* ${ISP_LIB_DIR}
+ cp -a appshell/build/generated/${BUILD_TYPE}/bin/OV2775* ${ISP_BIN_DIR}
+ cp -a appshell/build/generated/${BUILD_TYPE}/bin/ov2775* ${ISP_BIN_DIR}
++cp -a appshell/build/generated/${BUILD_TYPE}/bin/phycam* ${ISP_BIN_DIR}
+ cp -a appshell/build/generated/${BUILD_TYPE}/bin/isp_media_server ${ISP_BIN_DIR}
+ cp -a appshell/build/generated/${BUILD_TYPE}/bin/*_test ${ISP_BIN_DIR}
+ cp -a appshell/build/generated/${BUILD_DIR}/bin/Sensor0_Entry.cfg ${ISP_BIN_DIR}/Sensor0_Entry.cfg.ov2775
+diff --git a/units/isi/CMakeLists.txt b/units/isi/CMakeLists.txt
+index 6ae0075dfb85..17c365470d7f 100644
+--- a/units/isi/CMakeLists.txt
++++ b/units/isi/CMakeLists.txt
+@@ -82,8 +82,9 @@ include(${UNITS_TOP_DIRECTORY}/targets.cmake)
+ # add sensor driver modules here
+ #add_subdirectory( drv/OV2715 )
+ #add_subdirectory( drv/OV2710 )
+-add_subdirectory( drv/OV2775 )
+-add_subdirectory( drv/OS08a20 )
++#add_subdirectory( drv/OV2775 )
++#add_subdirectory( drv/OS08a20 )
++add_subdirectory( drv/phyCAM )
+ #add_subdirectory( drv/OV5630 )
+ ###add_subdirectory( drv/OV8810 )
+ #add_subdirectory( drv/OV14825 )
+diff --git a/units/isi/drv/phyCAM/CMakeLists.txt b/units/isi/drv/phyCAM/CMakeLists.txt
+new file mode 100755
+index 000000000000..f032a3dd3bc6
+--- /dev/null
++++ b/units/isi/drv/phyCAM/CMakeLists.txt
+@@ -0,0 +1,92 @@
++cmake_minimum_required(VERSION 2.6)
++
++# define module name & interface version
++set (module phycam)
++
++# define interface version
++set (${module}_INTERFACE_CURRENT  1)
++set (${module}_INTERFACE_REVISION 0)
++set (${module}_INTERFACE_AGE      0)
++
++# we want to compile all .c files as default
++file(GLOB libsources phycam.c )
++
++# set public headers, these get installed
++file(GLOB pub_headers *.h)
++
++# define include paths
++include_directories(
++    ${LIB_ROOT}/${CMAKE_BUILD_TYPE}/include
++    )
++
++# module specific defines
++###add_definitions(-Wno-error=unused-function)
++
++# add lib to build env
++#add_library(${module}_static STATIC ${libsources})
++add_library(${module}_shared SHARED ${libsources})
++
++#SET_TARGET_PROPERTIES(${module}_static PROPERTIES OUTPUT_NAME     ${module})
++#SET_TARGET_PROPERTIES(${module}_static PROPERTIES LINK_FLAGS      -static)
++#SET_TARGET_PROPERTIES(${module}_static PROPERTIES FRAMEWORK       TRUE PUBLIC_HEADER "${pub_headers}")
++
++SET_TARGET_PROPERTIES(${module}_shared PROPERTIES OUTPUT_NAME     ${module})
++SET_TARGET_PROPERTIES(${module}_shared PROPERTIES LINK_FLAGS      -shared)
++SET_TARGET_PROPERTIES(${module}_shared PROPERTIES SOVERSION       ${${module}_INTERFACE_CURRENT})
++SET_TARGET_PROPERTIES(${module}_shared PROPERTIES VERSION         ${${module}_INTERFACE_CURRENT}.${${module}_INTERFACE_REVISION}.${${module}_INTERFACE_AGE})
++SET_TARGET_PROPERTIES(${module}_shared PROPERTIES FRAMEWORK       TRUE PUBLIC_HEADER "${pub_headers}")
++
++# add convenience target: put sensor driver into the 'bin' output dir as well
++if ( NOT ANDROID )
++add_custom_target(${module}.drv
++                  ALL
++                  COMMAND ${CMAKE_COMMAND} -E copy ${LIB_ROOT}/${CMAKE_BUILD_TYPE}/lib/lib${module}.so.${${module}_INTERFACE_CURRENT} ${LIB_ROOT}/${CMAKE_BUILD_TYPE}/bin/${module}.drv
++                  DEPENDS ${module}_shared
++                  COMMENT "Copying ${module} driver module"
++                  )
++endif()
++
++# define lib dependencies
++#target_link_libraries(${module}_static
++#                      ${platform_libs}
++#                      ${base_libs}
++#                      ${drv_libs}
++#                      isi_shared
++#                      )
++
++#target_link_libraries(${module}_shared
++#                      ${platform_libs}
++#                      ${base_libs}
++#                      ${drv_libs}
++#                      isi_shared
++#                      )
++
++# define stuff to install
++#install(TARGETS ${module}_static
++#        PUBLIC_HEADER   DESTINATION ${CMAKE_INSTALL_PREFIX}/include/${module}
++#        ARCHIVE         DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
++#        )
++
++install(TARGETS ${module}_shared
++        PUBLIC_HEADER   DESTINATION ${CMAKE_INSTALL_PREFIX}/include/${module}
++        ARCHIVE         DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/${module}
++        LIBRARY         DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/${module}
++        )
++
++# install the sensor driver as well, but to 'bin' location!
++install(FILES       ${LIB_ROOT}/${CMAKE_BUILD_TYPE}/lib/lib${module}.so.${${module}_INTERFACE_CURRENT}
++        DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
++        RENAME      ${module}.drv
++        )
++
++if( DEFINED APPSHELL_TOP_COMPILE)
++add_custom_target(copy_shell_libs_${module} ALL
++       COMMENT "##Copy libs to shell libs"
++       COMMAND ${CMAKE_COMMAND} -E copy ${LIB_ROOT}/${CMAKE_BUILD_TYPE}/lib/lib${module}.so ${CMAKE_HOME_DIRECTORY}/shell_libs/${APPMODE}/ispcore/${PLATFORM}/lib${module}.so
++       #COMMAND ${CMAKE_COMMAND} -E copy_directory ${LIB_ROOT}/${CMAKE_BUILD_TYPE}/include/${module} ${CMAKE_HOME_DIRECTORY}/shell_libs/include/units_headers/${module}
++)
++add_dependencies(copy_shell_libs_${module} ${module}_shared)
++endif( DEFINED APPSHELL_TOP_COMPILE)
++
++# create common targets for this module
++include(${UNITS_TOP_DIRECTORY}/targets.cmake)
+diff --git a/units/isi/drv/phyCAM/phycam.c b/units/isi/drv/phyCAM/phycam.c
+new file mode 100644
+index 000000000000..2db88712039c
+--- /dev/null
++++ b/units/isi/drv/phyCAM/phycam.c
+@@ -0,0 +1,873 @@
++#include <ebase/types.h>
++#include <ebase/builtins.h>
++#include <common/return_codes.h>
++#include <common/misc.h>
++#include <sys/ioctl.h>
++#include <fcntl.h>
++#include "isi.h"
++#include "isi_iss.h"
++#include "isi_priv.h"
++#include "vvsensor.h"
++
++#include "phycam_log.h"
++
++#include <sys/ioctl.h>
++#include <sys/mman.h>
++#include <fcntl.h>
++#include <linux/videodev2.h>
++#include <linux/v4l2-subdev.h>
++
++typedef struct PhyCam_Context_s
++{
++    IsiSensorContext_t IsiCtx;
++    struct vvcam_mode_info_s SensorMode;
++    IsiSensorAeInfo_t AeInfo;
++    IsiSensorIntTime_t IntTime;
++    IsiSensorGain_t SensorGain;
++
++    uint32_t SensorModeCount;
++    bool_t Configured;
++    bool_t Streaming;
++
++} PhyCam_Context_t;
++
++static RESULT PhyCam_IsiSensorSetPowerIss(IsiSensorHandle_t handle, bool_t on)
++{
++    PhyCam_Context_t *pPhyCamCtx = (PhyCam_Context_t *) handle;
++    HalContext_t *pHalCtx;
++    int32_t enable = on;
++    int ret = 0;
++    RESULT result = RET_SUCCESS;
++
++    if (pPhyCamCtx == NULL || pPhyCamCtx->IsiCtx.HalHandle == NULL) {
++        return RET_NULL_POINTER;
++    }
++
++    pHalCtx = (HalContext_t *) pPhyCamCtx->IsiCtx.HalHandle;
++
++    ALOGD("%s (enter)", __func__);
++
++    ret = ioctl(pHalCtx->sensor_fd, VVSENSORIOC_S_POWER, &enable);
++    if (ret != 0) {
++        ALOGE("%s: sensor set power error!", __func__);
++        result = RET_FAILURE;
++    }
++
++    ALOGD("%s (exit) result = %d", __func__, result);
++    return (result);
++}
++
++static RESULT PhyCam_IsiSetSensorModeIss(IsiSensorHandle_t handle,
++                                         IsiSensorMode_t *pMode);
++
++static RESULT PhyCam_IsiCreateSensorIss(IsiSensorInstanceConfig_t * pConfig)
++{
++    PhyCam_Context_t *pPhyCamCtx;
++    RESULT result = RET_SUCCESS;
++
++    ALOGD("%s (enter)", __func__);
++
++    if (!pConfig || !pConfig->pSensor || !pConfig->HalHandle)
++        return (RET_NULL_POINTER);
++
++    pPhyCamCtx = (PhyCam_Context_t *) malloc(sizeof(PhyCam_Context_t));
++    if (!pPhyCamCtx) {
++        ALOGE("%s: Can't allocate phyCAM context", __func__);
++        return (RET_OUTOFMEM);
++    }
++
++    memset(pPhyCamCtx, 0, sizeof(PhyCam_Context_t));
++    pPhyCamCtx->IsiCtx.HalHandle = pConfig->HalHandle;
++    pPhyCamCtx->IsiCtx.pSensor = pConfig->pSensor;
++    pConfig->hSensor = (IsiSensorHandle_t) pPhyCamCtx;
++
++    pPhyCamCtx->Configured = BOOL_FALSE;
++    pPhyCamCtx->Streaming = BOOL_FALSE;
++    pPhyCamCtx->SensorMode.index = pConfig->SensorModeIndex;
++
++    IsiSensorMode_t SensorMode;
++    SensorMode.index = pConfig->SensorModeIndex;
++    result = PhyCam_IsiSetSensorModeIss(pPhyCamCtx, &SensorMode);
++    if (result != RET_SUCCESS) {
++        ALOGE("%s set sensor mode error\n", __func__);
++        return RET_FAILURE;
++    }
++
++    ALOGD("%s (exit)", __func__);
++    return (result);
++}
++
++static RESULT PhyCam_IsiSensorSetStreamingIss(IsiSensorHandle_t handle,
++                                              bool_t on);
++
++static RESULT PhyCam_IsiReleaseSensorIss(IsiSensorHandle_t handle)
++{
++    PhyCam_Context_t *pPhyCamCtx = (PhyCam_Context_t *) handle;
++
++    ALOGD("%s (enter)", __func__);
++
++    if (pPhyCamCtx == NULL)
++        return (RET_WRONG_HANDLE);
++
++    (void)PhyCam_IsiSensorSetStreamingIss(pPhyCamCtx, BOOL_FALSE);
++    (void)PhyCam_IsiSensorSetPowerIss(pPhyCamCtx, BOOL_FALSE);
++
++    MEMSET(pPhyCamCtx, 0, sizeof(PhyCam_Context_t));
++    free(pPhyCamCtx);
++    pPhyCamCtx = NULL;
++
++    ALOGD("%s (exit)", __func__);
++    return (RET_SUCCESS);
++}
++
++static RESULT PhyCam_IsiRegisterReadIss(IsiSensorHandle_t handle,
++                                        const uint32_t address,
++                                        uint32_t *p_value)
++{
++    PhyCam_Context_t *pPhyCamCtx = (PhyCam_Context_t *) handle;
++    HalContext_t *pHalCtx;
++    struct vvcam_sccb_data_s sccb_data;
++    int32_t ret = 0;
++    RESULT result = RET_SUCCESS;
++
++    ALOGD("%s (enter)", __func__);
++
++    if (pPhyCamCtx == NULL || pPhyCamCtx->IsiCtx.HalHandle == NULL) {
++        return RET_NULL_POINTER;
++    }
++
++    pHalCtx = (HalContext_t *) pPhyCamCtx->IsiCtx.HalHandle;
++
++    sccb_data.addr = address;
++    sccb_data.data = 0;
++    ret = ioctl(pHalCtx->sensor_fd, VVSENSORIOC_READ_REG, &sccb_data);
++    if (ret != 0) {
++        ALOGE("%s: read sensor register error!", __func__);
++        result = RET_FAILURE;
++    }
++
++    *p_value = sccb_data.data;
++
++    ALOGD("%s (exit) result = %d", __func__, result);
++    return (result);
++}
++
++static RESULT PhyCam_IsiRegisterWriteIss(IsiSensorHandle_t handle,
++                                         const uint32_t address,
++                                         const uint32_t value)
++{
++    PhyCam_Context_t *pPhyCamCtx = (PhyCam_Context_t *) handle;
++    HalContext_t *pHalCtx;
++    struct vvcam_sccb_data_s sccb_data;
++    int ret = 0;
++    RESULT result = RET_SUCCESS;
++
++    ALOGD("%s (enter)", __func__);
++
++    if (pPhyCamCtx == NULL || pPhyCamCtx->IsiCtx.HalHandle == NULL) {
++        return RET_NULL_POINTER;
++    }
++
++    pHalCtx = (HalContext_t *) pPhyCamCtx->IsiCtx.HalHandle;
++
++    sccb_data.addr = address;
++    sccb_data.data = value;
++
++    ret = ioctl(pHalCtx->sensor_fd, VVSENSORIOC_WRITE_REG, &sccb_data);
++    if (ret != 0) {
++        ALOGE("%s: write sensor register error!", __func__);
++        result = RET_FAILURE;
++    }
++
++    ALOGD("%s (exit) result = %d", __func__, result);
++    return (result);
++}
++
++static RESULT PhyCam_UpdateIsiAEInfo(PhyCam_Context_t *pPhyCamCtx)
++{
++    IsiSensorAeInfo_t *pAeInfo = &pPhyCamCtx->AeInfo;
++    struct vvcam_ae_info_s *mode_ae_info = &pPhyCamCtx->SensorMode.ae_info;
++    uint32_t exp_line_ns = pPhyCamCtx->SensorMode.ae_info.one_line_exp_time_ns;
++
++    ALOGD("%s (enter)", __func__);
++
++    pAeInfo->oneLineExpTime = (exp_line_ns * 1024) / 1000;
++    pAeInfo->maxIntTime.linearInt =
++        mode_ae_info->max_integration_line * pAeInfo->oneLineExpTime;
++    pAeInfo->minIntTime.linearInt =
++        mode_ae_info->min_integration_line * pAeInfo->oneLineExpTime;
++
++    pAeInfo->maxAGain.linearGainParas = mode_ae_info->max_again;
++    pAeInfo->minAGain.linearGainParas = mode_ae_info->min_again;
++    pAeInfo->maxDGain.linearGainParas = mode_ae_info->max_dgain;
++    pAeInfo->minDGain.linearGainParas = mode_ae_info->min_dgain;
++
++    pAeInfo->gainStep = mode_ae_info->gain_step;
++    pAeInfo->currFps = mode_ae_info->cur_fps;
++    pAeInfo->maxFps = mode_ae_info->max_fps;
++    pAeInfo->minFps = mode_ae_info->min_fps;
++    pAeInfo->minAfps = mode_ae_info->min_afps;
++    pAeInfo->hdrRatio[0] = mode_ae_info->hdr_ratio.ratio_l_s;
++    pAeInfo->hdrRatio[1] = mode_ae_info->hdr_ratio.ratio_s_vs;
++
++    pAeInfo->intUpdateDlyFrm = mode_ae_info->int_update_delay_frm;
++    pAeInfo->gainUpdateDlyFrm = mode_ae_info->gain_update_delay_frm;
++
++    ALOGD("%s (exit)", __func__);
++    return RET_SUCCESS;
++}
++
++static RESULT PhyCam_IsiGetSensorModeIss(IsiSensorHandle_t handle,
++                                         IsiSensorMode_t *pMode)
++{
++    PhyCam_Context_t *pPhyCamCtx = (PhyCam_Context_t *) handle;
++    HalContext_t *pHalCtx;
++    struct vvcam_mode_info_s sensor_mode;
++    int ret;
++
++    ALOGD("%s (enter)", __func__);
++
++    if (pPhyCamCtx == NULL) {
++        return (RET_WRONG_HANDLE);
++    }
++
++    pHalCtx = (HalContext_t *) pPhyCamCtx->IsiCtx.HalHandle;
++
++    memset(&sensor_mode, 0, sizeof(struct vvcam_mode_info_s));
++    ret = ioctl(pHalCtx->sensor_fd, VVSENSORIOC_G_SENSOR_MODE, &sensor_mode);
++    if (ret != 0) {
++        ALOGE("%s get sensor mode failed", __func__);
++        return RET_FAILURE;
++    }
++    memcpy(&pPhyCamCtx->SensorMode, &sensor_mode,
++           sizeof(struct vvcam_mode_info_s));
++    memcpy(pMode, &(pPhyCamCtx->SensorMode), sizeof(IsiSensorMode_t));
++
++    PhyCam_UpdateIsiAEInfo(pPhyCamCtx);
++
++    ALOGD("%s (exit)", __func__);
++
++    return ( RET_SUCCESS );
++}
++
++static RESULT PhyCam_IsiSetSensorModeIss(IsiSensorHandle_t handle,
++                                         IsiSensorMode_t *pMode)
++{
++    PhyCam_Context_t *pPhyCamCtx = (PhyCam_Context_t *) handle;
++    HalContext_t *pHalCtx;
++    int ret;
++
++    ALOGD("%s (enter)", __func__);
++
++    if (pMode == NULL)
++        return (RET_NULL_POINTER);
++
++    if (pPhyCamCtx == NULL)
++        return (RET_WRONG_HANDLE);
++
++    pHalCtx = (HalContext_t *) pPhyCamCtx->IsiCtx.HalHandle;
++
++    struct vvcam_mode_info_s sensor_mode;
++    memset(&sensor_mode, 0, sizeof(struct vvcam_mode_info_s));
++    sensor_mode.index = pMode->index;
++
++    ret = ioctl(pHalCtx->sensor_fd, VVSENSORIOC_S_SENSOR_MODE, &sensor_mode);
++    if (ret != 0) {
++        ALOGE("%s set sensor mode error\n", __func__);
++        return RET_FAILURE;
++    }
++
++    memset(&sensor_mode, 0, sizeof(struct vvcam_mode_info_s));
++    ret = ioctl(pHalCtx->sensor_fd, VVSENSORIOC_G_SENSOR_MODE, &sensor_mode);
++    if (ret != 0) {
++        ALOGE("%s get sensor mode failed", __func__);
++        return RET_FAILURE;
++    }
++
++    memcpy(&pPhyCamCtx->SensorMode, &sensor_mode,
++           sizeof(struct vvcam_mode_info_s));
++
++    ALOGD("%s (exit)", __func__);
++
++    return ( RET_SUCCESS );
++}
++
++static RESULT PhyCam_IsiHalQuerySensorIss(HalHandle_t  HalHandle,
++                                          IsiSensorModeInfoArray_t *pSensorMode)
++{
++    HalContext_t *pHalCtx = HalHandle;
++    int ret = 0;
++
++    ALOGD("%s (enter)", __func__);
++
++    if ( pHalCtx == NULL ) {
++        return RET_NULL_POINTER;
++    }
++
++    ret = ioctl(pHalCtx->sensor_fd, VVSENSORIOC_QUERY, pSensorMode);
++    if (ret != 0) {
++        ALOGE("%s: Failed to querry sensor modes!", __func__);
++        return(RET_FAILURE);
++    }
++
++    ALOGD("%s (exit)", __func__);
++
++    return RET_SUCCESS;
++}
++
++static RESULT PhyCam_IsiQuerySensorIss(IsiSensorHandle_t handle,
++                                       IsiSensorModeInfoArray_t *pSensorInfo)
++{
++    PhyCam_Context_t *pPhyCamCtx = (PhyCam_Context_t *) handle;
++    HalContext_t *pHalCtx;
++    RESULT result = RET_SUCCESS;
++
++    ALOGD("%s (enter)", __func__);
++
++    if (pPhyCamCtx == NULL || pPhyCamCtx->IsiCtx.HalHandle == NULL) {
++        return RET_NULL_POINTER;
++    }
++
++    pHalCtx = (HalContext_t *) pPhyCamCtx->IsiCtx.HalHandle;
++
++    result = PhyCam_IsiHalQuerySensorIss(pHalCtx, pSensorInfo);
++
++    pPhyCamCtx->SensorModeCount = pSensorInfo->count;
++
++    ALOGD("%s (exit) result = %d", __func__, result);
++    return result;
++}
++
++static RESULT PhyCam_IsiGetCapsIss(IsiSensorHandle_t handle,
++                                   IsiSensorCaps_t * pIsiSensorCaps)
++{
++    PhyCam_Context_t *pPhyCamCtx = (PhyCam_Context_t *) handle;
++
++    ALOGD("%s (enter)", __func__);
++
++    if (pPhyCamCtx == NULL)
++        return (RET_WRONG_HANDLE);
++
++    if (pIsiSensorCaps == NULL) {
++        return (RET_NULL_POINTER);
++    }
++
++    pIsiSensorCaps->FieldSelection = ISI_FIELDSEL_BOTH;
++    pIsiSensorCaps->YCSequence = ISI_YCSEQ_YCBYCR;
++    pIsiSensorCaps->Conv422 = ISI_CONV422_NOCOSITED;
++    pIsiSensorCaps->HPol = ISI_HPOL_REFPOS;
++    pIsiSensorCaps->VPol = ISI_VPOL_NEG;
++    pIsiSensorCaps->Edge = ISI_EDGE_RISING;
++    pIsiSensorCaps->supportModeNum = pPhyCamCtx->SensorModeCount;
++    pIsiSensorCaps->currentMode = pPhyCamCtx->SensorMode.index;
++
++    ALOGD("%s (exit)", __func__);
++    return (RET_SUCCESS);
++}
++
++static RESULT PhyCam_IsiSetupSensorIss(IsiSensorHandle_t handle,
++                                       const IsiSensorCaps_t * pSensorCaps)
++{
++    PhyCam_Context_t *pPhyCamCtx = (PhyCam_Context_t *) handle;
++
++    ALOGD("%s (enter)", __func__);
++
++    if (!pPhyCamCtx) {
++        ALOGE("%s: Invalid sensor handle (NULL pointer detected)", __func__);
++        return (RET_WRONG_HANDLE);
++    }
++
++    if (!pSensorCaps) {
++        ALOGE("%s: Invalid configuration (NULL pointer detected)", __func__);
++        return (RET_NULL_POINTER);
++    }
++
++    if (pPhyCamCtx->Streaming != BOOL_FALSE) {
++        return RET_WRONG_STATE;
++    }
++
++    pPhyCamCtx->Configured = BOOL_TRUE;
++
++    ALOGD("%s: (exit)", __func__);
++    return (RET_SUCCESS);
++}
++
++static RESULT PhyCam_IsiGetSensorRevisionIss(IsiSensorHandle_t handle,
++                                             uint32_t * p_value)
++{
++    /* DUMMY */
++
++    ALOGW("%s (enter)", __func__);
++    ALOGW("%s (exit)", __func__);
++    return (RET_SUCCESS);
++}
++
++static RESULT PhyCam_IsiCheckSensorConnectionIss(IsiSensorHandle_t handle)
++{
++    /* DUMMY */
++
++    ALOGW("%s (enter)", __func__);
++    ALOGW("%s (exit)", __func__);
++    return (RET_SUCCESS);
++}
++
++static RESULT PhyCam_IsiSensorSetStreamingIss(IsiSensorHandle_t handle,
++                                              bool_t on)
++{
++    PhyCam_Context_t *pPhyCamCtx = (PhyCam_Context_t *) handle;
++    HalContext_t *pHalCtx;
++    int ret = 0;
++
++    ALOGD("%s (enter)", __func__);
++
++    if (pPhyCamCtx == NULL || pPhyCamCtx->IsiCtx.HalHandle == NULL) {
++        return RET_NULL_POINTER;
++    }
++
++    if (pPhyCamCtx->Configured != BOOL_TRUE)
++        return RET_WRONG_STATE;
++
++    pHalCtx = (HalContext_t *) pPhyCamCtx->IsiCtx.HalHandle;
++
++    /* Stream on is handled from the MIPI-CSI2 driver */
++    if (!on) {
++        int32_t enable = (uint32_t) on;
++        ret = ioctl(pHalCtx->sensor_fd, VVSENSORIOC_S_STREAM, &enable);
++        if (ret != 0) {
++            return (RET_FAILURE);
++        }
++    }
++
++    pPhyCamCtx->Streaming = on;
++
++    ALOGD("%s (exit)", __func__);
++    return (RET_SUCCESS);
++}
++
++static RESULT PhyCam_IsiGetAeInfoIss(IsiSensorHandle_t handle,
++                                     IsiSensorAeInfo_t *pAeInfo)
++{
++    PhyCam_Context_t *pPhyCamCtx = (PhyCam_Context_t *) handle;
++
++    ALOGD("%s (enter)", __func__);
++
++    if (pPhyCamCtx == NULL || pAeInfo == NULL) {
++        return RET_NULL_POINTER;
++    }
++
++    memcpy(pAeInfo, &pPhyCamCtx->AeInfo, sizeof(IsiSensorAeInfo_t));
++
++    ALOGD("%s (exit)", __func__);
++    return (RET_SUCCESS);
++}
++
++static RESULT PhyCam_IsiSetHdrRatioIss(IsiSensorHandle_t handle,
++                                       uint8_t hdrRatioNum,
++                                       uint32_t HdrRatio[])
++{
++    /* DUMMY */
++
++    ALOGW("%s (enter)", __func__);
++    ALOGW("%s (exit)", __func__);
++    return (RET_SUCCESS);
++}
++
++static RESULT PhyCam_IsiGetIntegrationTimeIss(IsiSensorHandle_t handle,
++                                              IsiSensorIntTime_t *pIntTime)
++{
++    PhyCam_Context_t *pPhyCamCtx = (PhyCam_Context_t *) handle;
++
++    ALOGD("%s: (enter)", __func__);
++
++    if (!pPhyCamCtx) {
++        ALOGE("%s: Invalid sensor handle (NULL pointer detected)", __func__);
++        return (RET_WRONG_HANDLE);
++    }
++
++    if (!pIntTime)
++        return (RET_NULL_POINTER);
++
++    memcpy(pIntTime, &pPhyCamCtx->IntTime, sizeof(IsiSensorIntTime_t));
++
++    ALOGD("%s: (exit)", __func__);
++    return (RET_SUCCESS);
++}
++
++static RESULT PhyCam_IsiSetIntegrationTimeIss (IsiSensorHandle_t handle,
++                                               IsiSensorIntTime_t *pIntTime)
++{
++    PhyCam_Context_t *pPhyCamCtx = (PhyCam_Context_t *) handle;
++    HalContext_t *pHalCtx;
++    uint32_t linear_int;
++    int ret;
++
++    ALOGD("%s: (enter)", __func__);
++
++    if (pPhyCamCtx == NULL || pPhyCamCtx->IsiCtx.HalHandle == NULL) {
++        ALOGE("%s: Invalid sensor handle (NULL pointer detected)", __func__);
++        return (RET_WRONG_HANDLE);
++    }
++
++    if (pIntTime->expoFrmType != ISI_EXPO_FRAME_TYPE_1FRAME)
++        return (RET_INVALID_PARM);
++
++    pHalCtx = (HalContext_t *) pPhyCamCtx->IsiCtx.HalHandle;
++
++    linear_int = pIntTime->IntegrationTime.linearInt;
++    ret = ioctl(pHalCtx->sensor_fd, VVSENSORIOC_S_EXP, &linear_int);
++    ALOGD("%s: new integration time: %u 0x%08x\n", __func__,
++          linear_int, linear_int);
++    if (ret != 0) {
++        ALOGE("%s: set sensor integration time error", __func__);
++        return RET_FAILURE;
++    }
++
++    pPhyCamCtx->IntTime = *pIntTime;
++
++    ALOGD("%s: (exit)", __func__);
++    return (RET_SUCCESS);
++}
++
++static RESULT PhyCam_IsiGetGainIss(IsiSensorHandle_t handle,
++                                   IsiSensorGain_t *pGain)
++{
++    PhyCam_Context_t *pPhyCamCtx = (PhyCam_Context_t *) handle;
++
++    ALOGD("%s: (enter)", __func__);
++
++    if (pPhyCamCtx == NULL) {
++        ALOGE("%s: Invalid sensor handle (NULL pointer detected)", __func__);
++        return (RET_WRONG_HANDLE);
++    }
++
++    if (pGain == NULL) {
++        return (RET_NULL_POINTER);
++    }
++
++    memcpy(pGain, &pPhyCamCtx->SensorGain, sizeof(IsiSensorGain_t));
++
++    ALOGD("%s: (exit)", __func__);
++    return (RET_SUCCESS);
++}
++
++static RESULT PhyCam_IsiSetGainIss(IsiSensorHandle_t handle,
++                                   IsiSensorGain_t *pGain)
++{
++    PhyCam_Context_t *pPhyCamCtx = (PhyCam_Context_t *) handle;
++    HalContext_t *pHalCtx;
++    uint32_t gain;
++    int ret;
++
++    ALOGD("%s: (enter)", __func__);
++
++    if (pPhyCamCtx == NULL || pPhyCamCtx->IsiCtx.HalHandle == NULL) {
++        return RET_NULL_POINTER;
++    }
++
++    if (pGain->expoFrmType != ISI_EXPO_FRAME_TYPE_1FRAME)
++        return (RET_INVALID_PARM);
++
++    pHalCtx = (HalContext_t *) pPhyCamCtx->IsiCtx.HalHandle;
++
++    gain = pGain->gain.linearGainParas;
++    ret = ioctl(pHalCtx->sensor_fd, VVSENSORIOC_S_GAIN, &gain);
++    ALOGD("%s: new gain: %u 0x%08x\n", __func__, gain, gain);
++    if (ret != 0) {
++        ALOGE("%s: set sensor gain error", __func__);
++        return RET_FAILURE;
++    }
++
++    pPhyCamCtx->SensorGain = *pGain;
++
++    ALOGD("%s: (enter)", __func__);
++    return (RET_SUCCESS);
++}
++
++static RESULT PhyCam_IsiGetSensorFpsIss(IsiSensorHandle_t handle,
++                                        uint32_t * pfps)
++{
++    PhyCam_Context_t *pPhyCamCtx = (PhyCam_Context_t *) handle;
++    HalContext_t *pHalCtx;
++    int ret;
++
++    ALOGD("%s: (enter)", __func__);
++
++    if (pPhyCamCtx == NULL || pPhyCamCtx->IsiCtx.HalHandle == NULL) {
++        ALOGE("%s: Invalid sensor handle (NULL pointer detected)", __func__);
++        return RET_NULL_POINTER;
++    }
++
++    pHalCtx = (HalContext_t *) pPhyCamCtx->IsiCtx.HalHandle;
++
++    ret = ioctl(pHalCtx->sensor_fd, VVSENSORIOC_G_FPS, pfps);
++    ALOGD("%s: FPS: %u 0x%08x\n", __func__, *pfps, *pfps);
++    if (ret != 0) {
++        ALOGE("%s: get sensor FPS error", __func__);
++        return RET_FAILURE;
++    }
++
++    ALOGD("%s: (exit)", __func__);
++    return (RET_SUCCESS);
++}
++
++static RESULT PhyCam_IsiSetSensorFpsIss(IsiSensorHandle_t handle, uint32_t fps)
++{
++    PhyCam_Context_t *pPhyCamCtx = (PhyCam_Context_t *) handle;
++    HalContext_t *pHalCtx;
++    int ret;
++
++    ALOGD("%s: %u (enter)", __func__, fps);
++
++    if (pPhyCamCtx == NULL || pPhyCamCtx->IsiCtx.HalHandle == NULL) {
++        ALOGE("%s: Invalid sensor handle (NULL pointer detected)", __func__);
++        return RET_NULL_POINTER;
++    }
++
++    pHalCtx = (HalContext_t *) pPhyCamCtx->IsiCtx.HalHandle;
++
++    ret = ioctl(pHalCtx->sensor_fd, VVSENSORIOC_S_FPS, &fps);
++    ALOGD("%s: FPS: %u 0x%08x\n", __func__, fps, fps);
++    if (ret != 0) {
++        ALOGE("%s: set sensor FPS error", __func__);
++        return RET_FAILURE;
++    }
++
++    ALOGD("%s: (exit)", __func__);
++    return (RET_SUCCESS);
++}
++
++static RESULT PhyCam_IsiSetSensorAfpsLimitsIss(IsiSensorHandle_t handle,
++                                               uint32_t minAfps)
++{
++    PhyCam_Context_t *pPhyCamCtx = (PhyCam_Context_t *) handle;
++
++    ALOGW("%s (enter)", __func__);
++
++    if ((minAfps > pPhyCamCtx->SensorMode.ae_info.max_fps) ||
++        (minAfps < pPhyCamCtx->SensorMode.ae_info.min_fps))
++        return RET_FAILURE;
++    pPhyCamCtx->SensorMode.ae_info.min_afps = minAfps;
++
++    ALOGW("%s (exit)", __func__);
++    return (RET_SUCCESS);
++}
++
++static RESULT PhyCam_IsiGetSensorIspStatusIss(IsiSensorHandle_t handle,
++                                              IsiSensorIspStatus_t *pIspStatus)
++{
++    ALOGD("%s (enter)", __func__);
++    pIspStatus->useSensorAWB = false;
++    pIspStatus->useSensorBLC = false;
++    ALOGD("%s (exit)", __func__);
++    return (RET_SUCCESS);
++}
++
++static RESULT PhyCam_IsiGetAeStartExposureIss(IsiSensorHandle_t handle,
++                                              uint64_t *pExposure)
++{
++    PhyCam_Context_t *pPhyCamCtx = (PhyCam_Context_t *) handle;
++    HalContext_t *pHalCtx;
++    struct vvcam_mode_info_s sensor_mode;
++    int ret;
++
++    ALOGD("%s (enter)", __func__);
++
++    if (pPhyCamCtx == NULL) {
++        return (RET_WRONG_HANDLE);
++    }
++
++    pHalCtx = (HalContext_t *) pPhyCamCtx->IsiCtx.HalHandle;
++
++    memset(&sensor_mode, 0, sizeof(struct vvcam_mode_info_s));
++    ret = ioctl(pHalCtx->sensor_fd, VVSENSORIOC_G_SENSOR_MODE, &sensor_mode);
++    if (ret != 0) {
++        ALOGE("%s get sensor mode failed", __func__);
++        return RET_FAILURE;
++    }
++
++    *pExposure = sensor_mode.ae_info.start_exposure;
++
++    ALOGD("%s start_exposure = %lu", __func__, *pExposure);
++    ALOGD("%s (exit)", __func__);
++    return (RET_SUCCESS);
++}
++
++static RESULT PhyCam_IsiSetAeStartExposureIss(IsiSensorHandle_t handle,
++                                              uint64_t exposure)
++{
++    /* DUMMY */
++
++    ALOGW("%s (enter)", __func__);
++    ALOGW("%s (exit)", __func__);
++    return (RET_SUCCESS);
++}
++
++static RESULT PhyCam_IsiSensorSetBlcIss(IsiSensorHandle_t handle,
++                                        IsiSensorBlc_t *pBlc)
++{
++    /* DUMMY */
++
++    ALOGW("%s (enter)", __func__);
++    ALOGW("%s (exit)", __func__);
++    return (RET_SUCCESS);
++}
++
++static RESULT PhyCam_IsiSensorSetWBIss(IsiSensorHandle_t handle,
++                                       IsiSensorWB_t *pWb)
++{
++    PhyCam_Context_t *pPhyCamCtx = (PhyCam_Context_t *) handle;
++    HalContext_t *pHalCtx;
++    int ret = 0;
++
++    ALOGD("%s (enter)", __func__);
++
++    if (pPhyCamCtx == NULL || pPhyCamCtx->IsiCtx.HalHandle == NULL) {
++        return RET_NULL_POINTER;
++    }
++
++    pHalCtx = (HalContext_t *) pPhyCamCtx->IsiCtx.HalHandle;
++
++    ALOGD("%s: new r gain: %u 0x%08x\n", __func__, pWb->r_gain, pWb->r_gain);
++    ALOGD("%s: new gr gain: %u 0x%08x\n", __func__, pWb->gr_gain, pWb->gr_gain);
++    ALOGD("%s: new gb gain: %u 0x%08x\n", __func__, pWb->gb_gain, pWb->gb_gain);
++    ALOGD("%s: new b gain: %u 0x%08x\n", __func__, pWb->b_gain, pWb->b_gain);
++
++    ret = ioctl(pHalCtx->sensor_fd, VVSENSORIOC_S_WB, pWb);
++    if (ret != 0) {
++        ALOGE("%s: set sensor white balance error", __func__);
++        return RET_FAILURE;
++    }
++
++    ALOGD("%s (exit)", __func__);
++    return (RET_SUCCESS);
++}
++
++static RESULT PhyCam_IsiSensorGetExpandCurveIss(IsiSensorHandle_t handle,
++                                                IsiSensorExpandCurve_t *pExpCur)
++{
++    /* DUMMY */
++
++    ALOGW("%s (enter)", __func__);
++    ALOGW("%s (exit)", __func__);
++    return (RET_SUCCESS);
++}
++
++static RESULT PhyCam_IsiActivateTestPattern(IsiSensorHandle_t handle,
++                                            IsiSensorTpgMode_e tpgMode)
++{
++    /* DUMMY */
++
++    ALOGW("%s (enter) testpattern: %d", __func__, tpgMode);
++    ALOGW("%s (exit)", __func__);
++    return (RET_SUCCESS);
++}
++
++static RESULT PhyCam_IsiFocusSetupIss(IsiSensorHandle_t handle)
++{
++    /* DUMMY */
++
++    ALOGW("%s (enter)", __func__);
++    ALOGW("%s (exit)", __func__);
++    return (RET_SUCCESS);
++}
++
++static RESULT PhyCam_IsiFocusReleaseIss(IsiSensorHandle_t handle)
++{
++    /* DUMMY */
++
++    ALOGW("%s (enter)", __func__);
++    ALOGW("%s (exit)", __func__);
++    return (RET_SUCCESS);
++}
++
++static RESULT PhyCam_IsiFocusSetIss(IsiSensorHandle_t handle,
++                                    IsiFocusPos_t *pPos)
++{
++    /* DUMMY */
++
++    ALOGW("%s (enter)", __func__);
++    ALOGW("%s (exit)", __func__);
++    return (RET_SUCCESS);
++}
++
++static RESULT PhyCam_IsiFocusGetIss(IsiSensorHandle_t handle,
++                                    IsiFocusPos_t *pPos)
++{
++    /* DUMMY */
++
++    ALOGW("%s (enter)", __func__);
++    ALOGW("%s (exit)", __func__);
++    return (RET_SUCCESS);
++}
++
++static RESULT PhyCam_IsiGetFocusCalibrateIss(IsiSensorHandle_t handle,
++                                             IsiFoucsCalibAttr_t *pFocusCalib)
++{
++    /* DUMMY */
++
++    ALOGW("%s (enter)", __func__);
++    ALOGW("%s (exit)", __func__);
++    return (RET_SUCCESS);
++}
++
++static RESULT PhyCam_IsiGetSensorIss(IsiSensor_t *pIsiSensor)
++{
++    static const char SensorName[16] = "PhyCam";
++    ALOGD("%s (enter)", __func__);
++
++    if ( pIsiSensor == NULL )
++        return (RET_NULL_POINTER);
++
++    pIsiSensor->pszName = SensorName;
++    pIsiSensor->pIsiSensorSetPowerIss = PhyCam_IsiSensorSetPowerIss;
++    pIsiSensor->pIsiCreateSensorIss = PhyCam_IsiCreateSensorIss;
++    pIsiSensor->pIsiReleaseSensorIss = PhyCam_IsiReleaseSensorIss;
++
++    pIsiSensor->pIsiRegisterReadIss = PhyCam_IsiRegisterReadIss;
++    pIsiSensor->pIsiRegisterWriteIss = PhyCam_IsiRegisterWriteIss;
++
++    pIsiSensor->pIsiGetSensorModeIss = PhyCam_IsiGetSensorModeIss;
++    pIsiSensor->pIsiSetSensorModeIss = PhyCam_IsiSetSensorModeIss;
++    pIsiSensor->pIsiQuerySensorIss = PhyCam_IsiQuerySensorIss;
++    pIsiSensor->pIsiGetCapsIss = PhyCam_IsiGetCapsIss;
++    pIsiSensor->pIsiSetupSensorIss = PhyCam_IsiSetupSensorIss;
++    pIsiSensor->pIsiGetSensorRevisionIss = PhyCam_IsiGetSensorRevisionIss;
++    pIsiSensor->pIsiCheckSensorConnectionIss = PhyCam_IsiCheckSensorConnectionIss;
++    pIsiSensor->pIsiSensorSetStreamingIss = PhyCam_IsiSensorSetStreamingIss;
++
++    pIsiSensor->pIsiGetAeInfoIss = PhyCam_IsiGetAeInfoIss;
++    pIsiSensor->pIsiSetHdrRatioIss = PhyCam_IsiSetHdrRatioIss;
++    pIsiSensor->pIsiGetIntegrationTimeIss = PhyCam_IsiGetIntegrationTimeIss;
++    pIsiSensor->pIsiSetIntegrationTimeIss = PhyCam_IsiSetIntegrationTimeIss;
++    pIsiSensor->pIsiGetGainIss = PhyCam_IsiGetGainIss;
++    pIsiSensor->pIsiSetGainIss = PhyCam_IsiSetGainIss;
++    pIsiSensor->pIsiGetSensorFpsIss = PhyCam_IsiGetSensorFpsIss;
++    pIsiSensor->pIsiSetSensorFpsIss = PhyCam_IsiSetSensorFpsIss;
++    pIsiSensor->pIsiSetSensorAfpsLimitsIss = PhyCam_IsiSetSensorAfpsLimitsIss;
++    pIsiSensor->pIsiGetSensorIspStatusIss = PhyCam_IsiGetSensorIspStatusIss;
++    pIsiSensor->pIsiGetAeStartExposureIss = PhyCam_IsiGetAeStartExposureIss;
++    pIsiSensor->pIsiSetAeStartExposureIss = PhyCam_IsiSetAeStartExposureIss;
++
++    pIsiSensor->pIsiSensorSetBlcIss = PhyCam_IsiSensorSetBlcIss;
++    pIsiSensor->pIsiSensorSetWBIss = PhyCam_IsiSensorSetWBIss;
++    pIsiSensor->pIsiSensorGetExpandCurveIss = PhyCam_IsiSensorGetExpandCurveIss;
++    pIsiSensor->pIsiActivateTestPatternIss = PhyCam_IsiActivateTestPattern;
++
++    pIsiSensor->pIsiFocusSetupIss = PhyCam_IsiFocusSetupIss;
++    pIsiSensor->pIsiFocusReleaseIss = PhyCam_IsiFocusReleaseIss;
++    pIsiSensor->pIsiFocusSetIss = PhyCam_IsiFocusSetIss;
++    pIsiSensor->pIsiFocusGetIss = PhyCam_IsiFocusGetIss;
++    pIsiSensor->pIsiGetFocusCalibrateIss = PhyCam_IsiGetFocusCalibrateIss;
++
++    ALOGD("%s (exit)", __func__);
++    return (RET_SUCCESS);
++}
++
++/*****************************************************************************
++* each sensor driver need declare this struct for isi load
++*****************************************************************************/
++IsiCamDrvConfig_t IsiCamDrvConfig = {
++    .CameraDriverID = 0,
++    .pIsiHalQuerySensor = PhyCam_IsiHalQuerySensorIss,
++    .pfIsiGetSensorIss = PhyCam_IsiGetSensorIss
++};
+diff --git a/units/isi/drv/phyCAM/phycam_log.h b/units/isi/drv/phyCAM/phycam_log.h
+new file mode 100644
+index 000000000000..6d4385bf5f33
+--- /dev/null
++++ b/units/isi/drv/phyCAM/phycam_log.h
+@@ -0,0 +1,45 @@
++#ifndef _PHYCAM_LOG_H_
++#define _PHYCAM_LOG_H_
++
++#include <stdio.h>
++#include <stdlib.h>
++
++enum {
++    ISP_LOG_LEVEL_NONE = 0, //No debug information is output.
++    ISP_LOG_LEVEL_ERROR ,   //Logs all fatal errors.
++    ISP_LOG_LEVEL_WARNING,  //Logs all warnings.
++    ISP_LOG_LEVEL_FIXME,    //Logs all "fixme" messages. (Reserved)
++    ISP_LOG_LEVEL_INFO,     //Logs all informational messages.
++    ISP_LOG_LEVEL_DEBUG,    //Logs all debug messages.
++    ISP_LOG_LEVEL_LOG,      //Logs all log messages.     (Reserved)
++    ISP_LOG_LEVEL_TRACE,    //Logs all trace messages.   (Reserved)
++    ISP_LOG_LEVEL_VERBOSE,  //Logs all level messages.
++};
++
++static int isp_log_level() {
++    char* szLogLevel = getenv("ISP_LOG_LEVEL");
++    if (szLogLevel)
++        return atoi(szLogLevel);
++    else
++        return ISP_LOG_LEVEL_WARNING;
++}
++
++#define LOGTAG "phyCAM"
++#define __ALOG_INT(format, ...) "[%s] " format "\033[0m%s", LOGTAG, __VA_ARGS__
++
++#define ALOGV(...)\
++    if (isp_log_level() >= ISP_LOG_LEVEL_VERBOSE) printf("\033[1;30;35mVERBOSE : " __ALOG_INT(__VA_ARGS__, "\n"))  // white
++
++#define ALOGD(...)\
++    if (isp_log_level() >= ISP_LOG_LEVEL_DEBUG) printf("\033[1;30;36mDEBUG  : " __ALOG_INT(__VA_ARGS__, "\n"))  // white
++
++#define ALOGI(...)\
++    if (isp_log_level() >= ISP_LOG_LEVEL_INFO) printf("\033[1;30;32mINFO   : " __ALOG_INT(__VA_ARGS__, "\n"))  // green
++
++#define ALOGW(...)\
++    if (isp_log_level() >= ISP_LOG_LEVEL_WARNING) printf("\033[1;30;33mWARN   : " __ALOG_INT(__VA_ARGS__, "\n"))  // yellow
++
++#define ALOGE(...)\
++    if (isp_log_level() >= ISP_LOG_LEVEL_ERROR) printf("\033[1;30;31mERROR  : " __ALOG_INT(__VA_ARGS__, "\n"))  // red
++
++#endif  // _PHYCAM_LOG_H_
+-- 
+2.25.1
+
