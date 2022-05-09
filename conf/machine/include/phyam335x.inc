@@ -61,7 +61,7 @@ EXTERNAL_KERNEL_DEVICETREE ??= ""
 IMAGE_BOOT_FILES = "barebox.bin MLO zImage oftree ${KERNEL_DEVICETREE} ${EXTERNAL_KERNEL_DEVICETREE}"
 #copy ubifs image to sdcard
 IMAGE_BOOT_FILES += "${IMGDEPLOYDIR}/${IMAGE_NAME}.rootfs.ubifs;${IMAGE_LINK_NAME}.ubifs"
-IMAGE_TYPEDEP_wic ??= "ubifs"
+IMAGE_TYPEDEP:wic ??= "ubifs"
 do_image_wic[depends] += "\
     virtual/prebootloader:do_deploy \
 "

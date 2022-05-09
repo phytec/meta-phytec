@@ -369,7 +369,7 @@ ST_TOOLS_FOR_SDK_PERL = " \
 "
 
 # For some scripts in kernel source code
-ST_TOOLS_FOR_SDK_PERL_append = " \
+ST_TOOLS_FOR_SDK_PERL:append = " \
     nativesdk-perl-module-file-spec-functions \
 "
 
@@ -404,7 +404,7 @@ ST_TOOLS_FOR_SDK:append = " \
     "
 
 # For Trusted Application development using OP-TEE TA SDK
-ST_TOOLS_FOR_SDK_append = " \
+ST_TOOLS_FOR_SDK:append = " \
     nativesdk-optee-sdk \
     "
 
