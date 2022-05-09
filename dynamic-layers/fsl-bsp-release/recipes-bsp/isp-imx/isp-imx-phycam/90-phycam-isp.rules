@@ -1,0 +1,25 @@
+# phyCAM ISP CSI1
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="vvcam-isp.0", \
+	SYMLINK+="isp-csi1"
+
+# phyCAM ISP CSI2
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="vvcam-isp.1", \
+	SYMLINK+="isp-csi2"
+
+# CSI1 ISP Video Device
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="viv_v4l20", \
+	DRIVERS=="vvcam-video", \
+	SYMLINK+="video-csi1"
+
+# CSI2 ISP Video Device
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="viv_v4l21", \
+	DRIVERS=="vvcam-video", \
+	SYMLINK+="video-csi2"
