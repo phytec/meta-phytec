@@ -22,6 +22,10 @@ INTREE_DEFCONFIG_mx7 = "imx7_phyboard_zeta_defconfig"
 
 RDEPENDS:${KERNEL_PACKAGE_NAME}-base:mx8m-nxp-bsp = ""
 
+module_conf_imx8-media-dev:mx8mp-nxp-bsp = "install imx8-media-dev /sbin/modprobe ar0521 ; /sbin/modprobe ar0144 ; /sbin/modprobe --ignore-install imx8-media-dev"
+
+KERNEL_MODULE_PROBECONF:mx8mp-nxp-bsp += "imx8-media-dev"
+
 COMPATIBLE_MACHINE  = "^("
 COMPATIBLE_MACHINE .= "phyboard-zeta-imx7d-1"
 COMPATIBLE_MACHINE .= "|phyboard-polaris-imx8m-3"
