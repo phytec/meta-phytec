@@ -18,7 +18,7 @@ RDEPENDS:${KERNEL_PACKAGE_NAME}-base = ""
 PREFERRED_PROVIDER_virtual/xserver ?= "xserver-xorg"
 # We don't support a Xserver yet.
 #XSERVER_DRIVER = "xf86-video-fbdev"
-#XSERVER_DRIVER_mx6 = "xf86-video-imxfb-vivante"
+#XSERVER_DRIVER:mx6 = "xf86-video-imxfb-vivante"
 #XSERVER = "xserver-xorg \
 #           xf86-input-evdev \
 #           ${XSERVER_DRIVER}"
