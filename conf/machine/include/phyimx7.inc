@@ -12,7 +12,7 @@ UBINIZE_ARGS = "-m 2048 -p 128KiB -s 2048 -O 2048"
 
 # WIC
 IMAGE_BOOT_FILES = "zImage ${KERNEL_DEVICETREE}"
-WKS_FILES_mx7 ?= "imx7-sdimage.wks"
+WKS_FILES:mx7 ?= "imx7-sdimage.wks"
 
 # MMC user area bootloader image offset
 BOOTLOADER_SEEK:mx7 ?= "1"
