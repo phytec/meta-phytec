@@ -18,7 +18,7 @@ SRCREV = "59910661589e0f5c57fd820855bc75ea76b2b0c5"
 S = "${WORKDIR}/git"
 
 INTREE_DEFCONFIG = "imx_v8_defconfig imx8_phytec_distro.config imx8_phytec_platform.config"
-INTREE_DEFCONFIG_mx7 = "imx7_phyboard_zeta_defconfig"
+INTREE_DEFCONFIG:mx7 = "imx7_phyboard_zeta_defconfig"
 
 RDEPENDS:${KERNEL_PACKAGE_NAME}-base:mx8m-nxp-bsp = ""
 
