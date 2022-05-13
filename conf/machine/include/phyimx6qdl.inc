@@ -44,3 +44,11 @@ DT_OVERLAYS_INSTALL = " \
     imx6-vm016-0.dtbo \
     imx6-vm050-0.dtbo \
 "
+
+DT_OVERLAYS_INSTALL:append:phyboard-mira-imx6 = " \
+    imx6-phy-adin1300.dtbo \
+"
+
+DT_OVERLAYS_INSTALL:append:phyboard-nunki-imx6 = " \
+    imx6-phy-adin1300.dtbo \
+"
