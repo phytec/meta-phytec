@@ -1,0 +1,1 @@
+overlays=imx8mm-phyboard-polis-peb-eval-01.dtbo imx8mm-phyboard-polis-peb-av-010.dtbo
