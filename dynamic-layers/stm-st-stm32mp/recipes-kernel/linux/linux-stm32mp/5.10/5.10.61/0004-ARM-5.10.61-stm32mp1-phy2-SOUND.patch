@@ -1,7 +1,7 @@
-From d05cfe1480f2c077a15dd4cc69c2add06bec578b Mon Sep 17 00:00:00 2001
+From 44f07dac7cf652706ab173e89046a46a69601aa7 Mon Sep 17 00:00:00 2001
 From: Christophe Parant <c.parant@phytec.fr>
-Date: Thu, 23 Sep 2021 17:16:29 +0200
-Subject: [PATCH 4/6] ARM 5.10.10 stm32mp1 phy1 SOUND
+Date: Tue, 31 May 2022 18:23:51 +0200
+Subject: [PATCH 4/6] ARM 5.10.61 stm32mp1 phy2 SOUND
 
 ---
  sound/soc/codecs/tlv320aic3x.c | 27 +++++++++++++++++++++++++++
@@ -86,5 +86,5 @@ index 6d066bc58ac8..b505827c96d5 100644
  	    !aic3x_is_shared_reset(aic3x)) {
  		ret = gpio_request(aic3x->gpio_reset, "tlv320aic3x reset");
 -- 
-2.17.1
+2.25.1
 

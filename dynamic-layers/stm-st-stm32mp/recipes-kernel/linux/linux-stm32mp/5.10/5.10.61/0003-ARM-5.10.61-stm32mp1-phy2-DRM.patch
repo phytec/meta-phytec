@@ -1,14 +1,14 @@
-From ec1b3d3108ebbdb420b2a31b8a0dbe18ff9b2d1f Mon Sep 17 00:00:00 2001
+From 09c7f2bb45289837fe515e8c817da706b96714b2 Mon Sep 17 00:00:00 2001
 From: Christophe Parant <c.parant@phytec.fr>
-Date: Thu, 23 Sep 2021 17:15:02 +0200
-Subject: [PATCH 3/6] ARM 5.10.10 stm32mp1 phy1 DRM
+Date: Tue, 31 May 2022 18:22:50 +0200
+Subject: [PATCH 3/6] ARM 5.10.61 stm32mp1 phy2 DRM
 
 ---
  .../drm/panel/panel-raspberrypi-touchscreen.c | 43 ++++++++++++++++++-
  1 file changed, 41 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c b/drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c
-index 5e9ccefb88f6..a74242eae09b 100644
+index bbdd086be7f5..384ddda7028d 100644
 --- a/drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c
 +++ b/drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c
 @@ -196,6 +196,42 @@ struct rpi_touchscreen {
@@ -80,5 +80,5 @@ index 5e9ccefb88f6..a74242eae09b 100644
  		dev_err(dev, "Atmel I2C read failed: %d\n", ver);
  		return -ENODEV;
 -- 
-2.17.1
+2.25.1
 

@@ -1,7 +1,7 @@
-From 1dcc60f215b49b45975b36239a207e7fd43d70e7 Mon Sep 17 00:00:00 2001
+From 83c338de1cf605b51b4aa9be449b25fff41ab432 Mon Sep 17 00:00:00 2001
 From: Christophe Parant <c.parant@phytec.fr>
-Date: Thu, 23 Sep 2021 17:08:45 +0200
-Subject: [PATCH 2/6] ARM 5.10.10 stm32mp1 phy1 DEVICETREE
+Date: Tue, 31 May 2022 18:21:14 +0200
+Subject: [PATCH 2/6] ARM 5.10.61 stm32mp1 phy2 DEVICETREE
 
 ---
  .../boot/dts/phyboard-stm32mp1-pinctrl.dtsi   | 508 ++++++++++++++++++
@@ -25,8 +25,8 @@ Subject: [PATCH 2/6] ARM 5.10.10 stm32mp1 phy1 DEVICETREE
  .../dts/phycore-stm32mp1-7-m4-examples.dts    | 176 ++++++
  arch/arm/boot/dts/phycore-stm32mp1-7.dts      |  44 ++
  .../boot/dts/phycore-stm32mp15-pinctrl.dtsi   | 277 ++++++++++
- arch/arm/boot/dts/phycore-stm32mp15-som.dtsi  | 429 +++++++++++++++
- 22 files changed, 3046 insertions(+)
+ arch/arm/boot/dts/phycore-stm32mp15-som.dtsi  | 435 +++++++++++++++
+ 22 files changed, 3052 insertions(+)
  create mode 100644 arch/arm/boot/dts/phyboard-stm32mp1-pinctrl.dtsi
  create mode 100644 arch/arm/boot/dts/phyboard-stm32mp1.dtsi
  create mode 100644 arch/arm/boot/dts/phycore-stm32mp1-2-a7-examples.dts
@@ -2795,10 +2795,10 @@ index 000000000000..cfa0c0960086
 +};
 diff --git a/arch/arm/boot/dts/phycore-stm32mp15-som.dtsi b/arch/arm/boot/dts/phycore-stm32mp15-som.dtsi
 new file mode 100644
-index 000000000000..b3eb85513b84
+index 000000000000..206e09508a8a
 --- /dev/null
 +++ b/arch/arm/boot/dts/phycore-stm32mp15-som.dtsi
-@@ -0,0 +1,429 @@
+@@ -0,0 +1,435 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
 +/*
 + * Copyright (C) PHYTEC GmbH 2019-2020 - All Rights Reserved
@@ -2849,6 +2849,12 @@ index 000000000000..b3eb85513b84
 +                        reg = <0x10000000 0x40000>;
 +                        no-map;
 +                };
++
++		mcu_rsc_table: mcu_rsc_table@10048000 {
++			compatible = "shared-dma-pool";
++			reg = <0x10048000 0x8000>;
++			no-map;
++		};
 +
 +                vdev0vring0: vdev0vring0@10040000 {
 +                        compatible = "shared-dma-pool";
@@ -3141,7 +3147,7 @@ index 000000000000..b3eb85513b84
 +
 +&m4_rproc {
 +        memory-region = <&retram>, <&mcuram>, <&mcuram2>, <&vdev0vring0>,
-+                        <&vdev0vring1>, <&vdev0buffer>;
++                        <&vdev0vring1>, <&vdev0buffer>, <&mcu_rsc_table>;
 +        mboxes = <&ipcc 0>, <&ipcc 1>, <&ipcc 2>;
 +        mbox-names = "vq0", "vq1", "shutdown";
 +        interrupt-parent = <&exti>;
@@ -3229,5 +3235,5 @@ index 000000000000..b3eb85513b84
 +};
 +
 -- 
-2.17.1
+2.25.1
 

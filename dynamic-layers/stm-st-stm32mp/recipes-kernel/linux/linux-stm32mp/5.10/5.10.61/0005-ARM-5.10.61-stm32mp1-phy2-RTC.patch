@@ -1,7 +1,7 @@
-From 4f417a0462b16aba6d4871acaa8c535d5633b438 Mon Sep 17 00:00:00 2001
+From c9edef8fe68b618a5cafb06f3c8c7dc81298c4ff Mon Sep 17 00:00:00 2001
 From: Christophe Parant <c.parant@phytec.fr>
-Date: Thu, 23 Sep 2021 17:18:00 +0200
-Subject: [PATCH 5/6] ARM 5.10.10 stm32mp1 phy1 RTC
+Date: Tue, 31 May 2022 18:25:19 +0200
+Subject: [PATCH 5/6] ARM 5.10.61 stm32mp1 phy2 RTC
 
 ---
  drivers/rtc/rtc-rv3028.c | 43 +++++++++++++++++++++++++++++++++++++---
@@ -83,5 +83,5 @@ index fa226f0fe67d..1458ee1a8ba4 100644
  	rv3028->rtc->max_user_freq = 1;
  
 -- 
-2.17.1
+2.25.1
 
