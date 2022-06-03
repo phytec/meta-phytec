@@ -1,0 +1,69 @@
+From f8f80b402323aad160e31486be9652be6115c09e Mon Sep 17 00:00:00 2001
+From: Christophe Parant <c.parant@phytec.fr>
+Date: Tue, 31 May 2022 17:24:26 +0200
+Subject: [PATCH] v2.4 stm32mp phy3 MMC
+
+---
+ drivers/mmc/mmc.c | 18 ++++--------------
+ 1 file changed, 4 insertions(+), 14 deletions(-)
+
+diff --git a/drivers/mmc/mmc.c b/drivers/mmc/mmc.c
+index 42243ea09..8a749713d 100644
+--- a/drivers/mmc/mmc.c
++++ b/drivers/mmc/mmc.c
+@@ -19,6 +19,7 @@
+ 
+ #define MMC_DEFAULT_MAX_RETRIES		5
+ #define SEND_OP_COND_MAX_RETRIES	100
++#define DEFAULT_CMD6_TIMEOUT_MS		500
+ 
+ #define MULT_BY_512K_SHIFT		19
+ 
+@@ -114,6 +115,7 @@ static int mmc_device_state(void)
+ static int mmc_set_ext_csd(unsigned int ext_cmd, unsigned int value)
+ {
+ 	int ret;
++	int timeout_ms = DEFAULT_CMD6_TIMEOUT_MS;
+ 
+ 	ret = mmc_send_cmd(MMC_CMD(6),
+ 			   EXTCSD_WRITE_BYTES | EXTCSD_CMD(ext_cmd) |
+@@ -123,6 +125,8 @@ static int mmc_set_ext_csd(unsigned int ext_cmd, unsigned int value)
+ 		return ret;
+ 	}
+ 
++	mdelay(timeout_ms);
++
+ 	do {
+ 		ret = mmc_device_state();
+ 		if (ret < 0) {
+@@ -254,13 +258,6 @@ static int mmc_fill_device_info(void)
+ 			return ret;
+ 		}
+ 
+-		do {
+-			ret = mmc_device_state();
+-			if (ret < 0) {
+-				return ret;
+-			}
+-		} while (ret != MMC_STATE_TRAN);
+-
+ 		nb_blocks = (mmc_ext_csd[CMD_EXTCSD_SEC_CNT] << 0) |
+ 			    (mmc_ext_csd[CMD_EXTCSD_SEC_CNT + 1] << 8) |
+ 			    (mmc_ext_csd[CMD_EXTCSD_SEC_CNT + 2] << 16) |
+@@ -515,13 +512,6 @@ static int mmc_enumerate(unsigned int clk, unsigned int bus_width)
+ 		return ret;
+ 	}
+ 
+-	do {
+-		ret = mmc_device_state();
+-		if (ret < 0) {
+-			return ret;
+-		}
+-	} while (ret != MMC_STATE_TRAN);
+-
+ 	ret = mmc_set_ios(clk, bus_width);
+ 	if (ret != 0) {
+ 		return ret;
+-- 
+2.25.1
+
