@@ -41,13 +41,25 @@ def find_dtss(d):
 
     return dtss_list
 
+def set_path(d, dts):
+    k_dt = d.getVar('KERNEL_DEVICETREE', '')
+    k_dt_list = k_dt.split()
+    dtsb = os.path.basename(dts)
+    base, ext = os.path.splitext(dtsb)
+    dtsb = base + ".dtb"
+    for tmp in k_dt_list:
+        if dtsb in tmp:
+            head, tail = os.path.split(tmp)
+            return head
+    return ''
+
 python do_dtsfixup () {
     import shutil
     srcdir = d.getVar('STAGING_KERNEL_DIR', True)
     arch = d.getVar('ARCH', True)
     for dts in find_dtss(d):
         cptarget=os.path.join(srcdir, "arch", arch, "boot", "dts",
-                             os.path.basename(dts))
+                              set_path(d, dts), os.path.basename(dts))
         bb.note("copying dts from: %s to: %s" % (dts, cptarget))
         shutil.copyfile(dts, cptarget)
 }
