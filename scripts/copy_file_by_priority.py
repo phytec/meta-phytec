@@ -33,7 +33,10 @@ class BSP_BBLayerFile(BoardSupportPackage):
             for line in lcfile:
                 name, val = line.partition("=")[::2]
                 if 'BBFILE_PRIORITY_' in name:
-                    priority = int(val.strip('" \n'))
+                    try:
+                        priority = int(val.strip('" \n'))
+                    except ValueError:
+                        break
                     lcfile.close
                     return priority
             lcfile.close
