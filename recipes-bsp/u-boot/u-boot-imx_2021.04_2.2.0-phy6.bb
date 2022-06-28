@@ -9,7 +9,7 @@ include u-boot-protectionshield.inc
 include u-boot-rauc.inc
 
 PROVIDES += "u-boot"
-DEPENDS:append = " python dtc-native bison-native"
+DEPENDS:append = " flex-native bison-native bc-native dtc-native gnutls-native"
 
 LICENSE = "GPL-2.0-or-later"
 LIC_FILES_CHKSUM = "file://Licenses/gpl-2.0.txt;md5=b234ee4d69f5fce4486a80fdaf4a4263"
