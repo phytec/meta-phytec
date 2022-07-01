@@ -39,7 +39,7 @@ TEE_BIN_ADDR:mx8mp-nxp-bsp="0x56000000"
 def get_hab_blocks_from_log(input_image_path, ubootimx_make_output):
     import re
     content = readfull(ubootimx_make_output)
-    spl = re.search('spl hab block:\s+(.*)', content).group(1).split()
+    spl = re.search(r'spl hab block:\s+(.*)', content).group(1).split()
 
     spl_hab_block = dict()
     spl_hab_block['addr'] = int(spl[0], 16)
@@ -47,15 +47,15 @@ def get_hab_blocks_from_log(input_image_path, ubootimx_make_output):
     spl_hab_block['size'] = int(spl[2], 16)
     spl_hab_block['filename'] = input_image_path
 
-    sld = re.search('sld hab block:\s+(.*)', content).group(1).split()
+    sld = re.search(r'sld hab block:\s+(.*)', content).group(1).split()
     sld_hab_block = dict()
     sld_hab_block['addr'] = int(sld[0], 16)
     sld_hab_block['offset'] = int(sld[1], 16)
     sld_hab_block['size'] = int(sld[2], 16)
     sld_hab_block['filename'] = input_image_path
 
-    csf_spl_offset = int(re.search('csf_off\s+(.*)', content).group(1), 16)
-    csf_fit_offset = int(re.search('sld_csf_off\s+(.*)', content).group(1), 16)
+    csf_spl_offset = int(re.search(r'csf_off\s+(.*)', content).group(1), 16)
+    csf_fit_offset = int(re.search(r'sld_csf_off\s+(.*)', content).group(1), 16)
 
     result = dict()
     result['SPL_HAB_BLOCK'] = spl_hab_block
