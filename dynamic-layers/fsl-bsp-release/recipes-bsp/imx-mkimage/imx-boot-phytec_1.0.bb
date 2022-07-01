@@ -99,7 +99,7 @@ REV_OPTION:mx8qxpc0-nxp-bsp = "REV=C0"
 TEE_LOAD_ADDRESS ?= ""
 TEE_LOAD_ADDRESS:mx8mm-nxp-bsp = "TEE_LOAD_ADDR=0x56000000"
 
-compile:mx8m-nxp-bsp() {
+compile_mx8m() {
     bbnote 8MQ/8MM boot binary build
     for ddr_firmware in ${DDR_FIRMWARE_NAME}; do
         bbnote "Copy ddr_firmware: ${ddr_firmware} from ${DEPLOY_DIR_IMAGE} -> ${BOOT_STAGING} "
@@ -123,7 +123,7 @@ maintain a custom recipe."
     done
 }
 
-compile:mx8-nxp-bsp() {
+compile_mx8() {
     bbnote 8QM boot binary build
     cp ${DEPLOY_DIR_IMAGE}/${BOOT_TOOLS}/${SC_FIRMWARE_NAME} ${BOOT_STAGING}/scfw_tcm.bin
     cp ${DEPLOY_DIR_IMAGE}/${BOOT_TOOLS}/${ATF_MACHINE_NAME} ${BOOT_STAGING}/bl31.bin
@@ -141,7 +141,7 @@ compile:mx8-nxp-bsp() {
     cp ${DEPLOY_DIR_IMAGE}/${SECO_FIRMWARE_NAME}             ${BOOT_STAGING}
 }
 
-compile:mx8x-nxp-bsp() {
+compile_mx8x() {
     bbnote 8QX boot binary build
     cp ${DEPLOY_DIR_IMAGE}/${M4_DEFAULT_IMAGE}               ${BOOT_STAGING}/m4_image.bin
     cp ${DEPLOY_DIR_IMAGE}/${SECO_FIRMWARE_NAME}             ${BOOT_STAGING}
@@ -199,7 +199,7 @@ do_install () {
     done
 }
 
-deploy:mx8m-nxp-bsp() {
+deploy_mx8m() {
     install -d ${DEPLOYDIR}/${BOOT_TOOLS}
     for type in ${UBOOT_CONFIG}; do
         install -m 0644 ${DEPLOY_DIR_IMAGE}/u-boot-spl.bin-${MACHINE}-${type} \
@@ -228,7 +228,8 @@ deploy:mx8-nxp-bsp() {
         fi
     done
 }
-deploy:mx8x-nxp-bsp() {
+
+deploy_mx8x() {
     install -d ${DEPLOYDIR}/${BOOT_TOOLS}
     install -m 0644 ${BOOT_STAGING}/${SECO_FIRMWARE_NAME}    ${DEPLOYDIR}/${BOOT_TOOLS}
     install -m 0644 ${BOOT_STAGING}/m4_image.bin             ${DEPLOYDIR}/${BOOT_TOOLS}
@@ -240,6 +241,7 @@ deploy:mx8x-nxp-bsp() {
         fi
     done
 }
+
 do_deploy() {
     deploy_${SOC_FAMILY}
     # copy tee.bin to deploy path
