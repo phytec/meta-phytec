@@ -7,10 +7,6 @@ LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/GPL-2.0-only;md5=801f80980d171dd6425610833a22dbe6"
 SECTION = "BSP"
 
-FILESEXTRAPATHS:prepend := "${THISDIR}/${BPN}:"
-
-SRC_URI += "file://0002-Fix-size-calculation-in-HAB-FIT-shellscripts.patch "
-
 IMX_EXTRA_FIRMWARE      = "firmware-imx-8 imx-sc-firmware imx-seco"
 IMX_EXTRA_FIRMWARE:mx8m-nxp-bsp = "firmware-imx-8m"
 IMX_EXTRA_FIRMWARE:mx8x-nxp-bsp = "imx-sc-firmware imx-seco"
