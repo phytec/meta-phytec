@@ -18,7 +18,6 @@ SRCREV = "c7dce18786eef3bcce53c4f2bb4af9e150bb6777"
 S = "${WORKDIR}/git"
 
 INTREE_DEFCONFIG = "imx_v8_defconfig imx8_phytec_distro.config imx8_phytec_platform.config"
-INTREE_DEFCONFIG:mx7 = "imx7_phyboard_zeta_defconfig"
 
 RDEPENDS:${KERNEL_PACKAGE_NAME}-base:mx8m-nxp-bsp = ""
 
@@ -27,8 +26,7 @@ module_conf_imx8-media-dev:mx8mp-nxp-bsp = "install imx8-media-dev /sbin/modprob
 KERNEL_MODULE_PROBECONF:mx8mp-nxp-bsp += "imx8-media-dev"
 
 COMPATIBLE_MACHINE  = "^("
-COMPATIBLE_MACHINE .= "phyboard-zeta-imx7d-1"
-COMPATIBLE_MACHINE .= "|phyboard-polaris-imx8m-3"
+COMPATIBLE_MACHINE .= "phyboard-polaris-imx8m-3"
 COMPATIBLE_MACHINE .= "|phyboard-polaris-imx8m-4"
 COMPATIBLE_MACHINE .= "|phyboard-polis-imx8mm-5"
 COMPATIBLE_MACHINE .= "|phyboard-polis-imx8mm-4"
