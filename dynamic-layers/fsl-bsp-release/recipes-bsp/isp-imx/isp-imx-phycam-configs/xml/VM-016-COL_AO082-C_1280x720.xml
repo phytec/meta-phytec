@@ -1320,7 +1320,7 @@
       </filter>
       <cac enable="false"/>
       <cnr enable="false"/>
-      <gc enable="false"/>
+      <gc enable="true"/>
       <af enable="false"/>
       <demosaic enable="true"/>
       <cproc enable="true">
