@@ -58,8 +58,8 @@ MACHINE_EXTRA_RRECOMMENDS = " kernel-modules"
 # Default device tree list supported per board
 STM32MP_DT_FILES_PHYCORE ??= ""
 
-# Set default supported device tree list
-STM32MP_DEVICETREE_append = " ${STM32MP_DT_FILES_PHYCORE} "
+# Set default supported device tree
+STM32MP_DEVICETREE = "${STM32MP_DT_FILES_PHYCORE}"
 
 # =========================================================================
 # Machine specific packages
@@ -688,9 +688,9 @@ WKS_FILE_DEPENDS ?= " \
     virtual/bootloader \
     virtual/trusted-firmware-a \
     ${@bb.utils.contains('BOOTSCHEME_LABELS', 'optee', 'virtual/optee-os', '', d)} \
-    st-image-bootfs \
-    ${@bb.utils.contains('ST_VENDORFS','1','st-image-vendorfs', '', d)} \
-    ${@bb.utils.contains('ST_USERFS','1','st-image-userfs', '', d)} \
+    ${STM32MP_BOOTFS_IMAGE} \
+    ${@bb.utils.contains('ST_VENDORFS','1','${STM32MP_VENDORFS_IMAGE}', '', d)} \
+    ${@bb.utils.contains('ST_USERFS','1','${STM32MP_USERFS_IMAGE}', '', d)} \
 "
 TRUSTED_WIC_FILE = "${@bb.utils.contains('MACHINE_FEATURES','fip','stm32mp1-sdimage.wks.in','stm32mp1-noFIP-sdimage.wks.in',d)}"
 # OPTEE WIC FILE is not provided as OPTEE is not supported yet with the phycore-stm32mp1 BSP
