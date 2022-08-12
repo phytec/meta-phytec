@@ -74,9 +74,9 @@ container_usage() {
 	if [ ! -z "${CONTAINER}" ]; then
 		echo "A docker image can also be used as your build environment.\n"
 		echo "Set up your shell environment with:\n"
-		echo "    $ docker run --rm -it -v \${PWD}:/\${PWD} ${CONTAINER} --workdir=\${PWD} bash\n"
+		echo "    $ docker run --rm -it -v \${PWD}:/\${PWD} --workdir=\${PWD} ${CONTAINER} bash\n"
 		echo "Or start a build with:\n"
-		echo "    $ docker run --rm -it -v \${PWD}:/\${PWD} ${CONTAINER} --workdir=\${PWD} \\"
+		echo "    $ docker run --rm -it -v \${PWD}:/\${PWD} --workdir=\${PWD} ${CONTAINER} \\"
 		echo "      bash -c '. sources/poky/oe-init-build-env && bitbake phytec-headless-image'"
 		echo ""
 		echo ""
