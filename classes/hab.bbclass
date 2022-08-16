@@ -1,5 +1,6 @@
 # A set of helper functions to work with HABv4 signatures, required by multiple recipes
 
+DEPENDS:append:secureboot = " nxp-cst-native"
 
 def readfull(path):
     content = None
