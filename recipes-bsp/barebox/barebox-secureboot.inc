@@ -113,6 +113,7 @@ do_patch_append_secureboot() {
     file = open(pathCFG,"w")
 
     file.write("# CONFIG_CMD_OF_OVERLAY is not set\n")
+    file.write("# CONFIG_NET_NETCONSOLE is not set\n")
 
     if oe.data.typed_value("BOOTLOADER_SIGN", d):
         check_bootloader_keyring(d)
