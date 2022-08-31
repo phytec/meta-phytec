@@ -1,5 +1,6 @@
 # A set of helper functions to work with HABv4 signatures, required by multiple recipes
 
+do_patch[depends] += "${@bb.utils.contains("DISTRO_FEATURES", "secureboot", "nxp-cst-native:do_populate_sysroot", "", d)}"
 
 def readfull(path):
     content = None
