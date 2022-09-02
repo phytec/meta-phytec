@@ -1,0 +1,31 @@
+From 03bafd8c289d3bb6f98a2aa482c26aff913ee156 Mon Sep 17 00:00:00 2001
+From: Wadim Egorov <w.egorov@phytec.de>
+Date: Thu, 25 Aug 2022 14:02:24 +0200
+Subject: [PATCH] build: Use aarch64-linux-gnu as target for all vendor
+
+Our distro names TARGET_OS=linux. There is no '-gnu' postfix
+in our toolchain name. Select aarch64-linux-gnu target for all
+aarch64-%-linux (without -gnu postfix) toolchains.
+
+Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
+---
+ build/linux/config/compiler.mk | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/build/linux/config/compiler.mk b/build/linux/config/compiler.mk
+index 4f13cf6..f4398a2 100644
+--- a/build/linux/config/compiler.mk
++++ b/build/linux/config/compiler.mk
+@@ -80,6 +80,9 @@ define calculate-compiler-preferred-target
+    ifneq ($$(filter aarch64-%-linux-gnu,$$($(1)_compiler_preferred_target)),)
+     $(1)_compiler_preferred_target := aarch64-linux-gnu
+    endif
++   ifneq ($$(filter aarch64-%-linux,$$($(1)_compiler_preferred_target)),)
++    $(1)_compiler_preferred_target := aarch64-linux-gnu
++   endif
+    ifneq ($$(filter clang%,$(2)),)
+     ifeq ($(1),target)
+      ifeq (arm-linux-gnueabihf,$$(CROSS_TRIPLE))
+-- 
+2.25.1
+
