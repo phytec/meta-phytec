@@ -3,14 +3,18 @@
 #
 # You have to set the slot images in your recipe file following this example:
 #
-#    FITIMAGE_SLOTS ?= "kernel fdt setup ramdisk"
+#    FITIMAGE_SLOTS ?= "kernel fdt fdto setup ramdisk"
 #
-#    FITIMAGE_SLOT_kernel ?= "linux-yocto"
+#    FITIMAGE_SLOT_kernel ?= "${PREFERRED_PROVIDER_virtual/kernel}"
 #    FITIMAGE_SLOT_kernel[type] ?= "kernel"
 #
-#    FITIMAGE_SLOT_fdt ?= "linux-yocto"
-#    FITIMAGE_SLOT_fdt[type] ?= "file"
+#    FITIMAGE_SLOT_fdt ?= "${PREFERRED_PROVIDER_virtual/kernel}"
+#    FITIMAGE_SLOT_fdt[type] ?= "fdt"
 #    FITIMAGE_SLOT_fdt[file] ?= "${MACHINE}.dtb"
+#
+#    FITIMAGE_SLOT_fdto ?= "${PREFERRED_PROVIDER_virtual/kernel}"
+#    FITIMAGE_SLOT_fdto[type] ?= "fdto"
+#    FITIMAGE_SLOT_fdto[file] ?= "list of all dtbo files from KERNEL_DEVICETREE"
 #
 #    FITIMAGE_SLOT_ramdisk ?= "core-image-minimal"
 #    FITIMAGE_SLOT_ramdisk[type] ?= "ramdisk"
