@@ -138,7 +138,8 @@ of_property -s -f -e $global.bootm.oftree /soc/bus@2100000/serial@21ec000 pinctr
 
     if ("phyboard-mira-imx6" in d.getVar("SOC_FAMILY")) or \
     ("phyboard-nunki-imx6" in d.getVar("SOC_FAMILY")):
-        env_add(d, "physelect",
+        if "secureboot" not in d.getVar("DISTRO_FEATURES"):
+            env_add(d, "physelect",
 """#!/bin/sh
 
 path="$global.overlays.path"
@@ -160,6 +161,26 @@ elif [ $ADIN -eq 1 ]; then
 else
     echo "No PHY found!"
     exit 1
+fi
+""")
+        else:
+            env_add(d, "physelect-secureboot",
+"""#!/bin/sh
+
+image="$global.bootm.image"
+
+let PHY_ID=${mdio0-phy03.phy_id}
+
+let KSZ9031_ID=0x00221620
+let KSZ_MASK=0x00fffff0
+let ADIN1300_ID=0x0283bc30
+let ADIN_MASK=0x0fffffff
+
+let "KSZ=KSZ9031_ID==(PHY_ID&KSZ_MASK)"
+let "ADIN=ADIN1300_ID==(PHY_ID&ADIN_MASK)"
+
+if [ $ADIN -eq 1 ]; then
+    global.bootm.image=${image}@phyboard-imx6-phy-adin1300.dtb
 fi
 """)
 }
