@@ -16,6 +16,12 @@
 #    FITIMAGE_SLOT_fdto[type] ?= "fdto"
 #    FITIMAGE_SLOT_fdto[file] ?= "list of all dtbo files from KERNEL_DEVICETREE"
 #
+#    Apply a number of overlays to the first devicetree in the KERNEL_DEVICETREE
+#    FITIMAGE_SLOT_fdtapply ?= "${PREFERRED_PROVIDER_virtual/kernel}"
+#    FITIMAGE_SLOT_fdtapply[type] ?= "fdtapply"
+#    FITIMAGE_SLOT_fdtapply[file] ?= "${MACHINE}.dtb list of dtbo"
+#    FITIMAGE_SLOT_fdtapplyname] ?= "name for new generated fdt"
+#
 #    FITIMAGE_SLOT_ramdisk ?= "core-image-minimal"
 #    FITIMAGE_SLOT_ramdisk[type] ?= "ramdisk"
 #    FITIMAGE_SLOT_ramdisk[fstype] ?= "cpio.gz"
@@ -307,16 +313,15 @@ def write_manifest(d):
     import shutil
 
     machine = d.getVar('MACHINE')
-    path = d.expand("${S}")
+    path = d.expand("${S}") + "/"
     kernelcount=1
     DTBS = ""
     DTBOS = ""
     ramdiskcount = ""
     setupcount = ""
 
-
     try:
-        fd = open('%s/manifest.its' % path, 'w')
+        fd = open('%smanifest.its' % path, 'w')
     except OSError:
         raise bb.build.FuncFailed('Unable to open manifest.its')
 
@@ -359,6 +364,23 @@ def write_manifest(d):
                     if len(dtb_path) ==0:
                         dtb_path = d.getVar("DEPLOY_DIR_IMAGE")
                     fitimage_emit_section_dtb_overlay(d,fd,dtb_file,dtb_path)
+         elif imgtype == 'fdtapply':
+                imgsource = d.getVarFlag('FITIMAGE_SLOT_%s' % slot, 'file')
+                dtbresult = path + d.getVarFlag('FITIMAGE_SLOT_%s' % slot, 'name')
+                dtbcommand = ""
+                for dtb in (imgsource or "").split():
+                    dtb_path, dtb_file = os.path.split(dtb)
+                    if len(dtb_path) ==0:
+                        dtb_path = d.getVar("DEPLOY_DIR_IMAGE")
+                    if len(dtbcommand) == 0 and dtb_file.endswith('.dtb'):
+                        dtbcommand = "fdtoverlay -i " + dtb_path + "/" + dtb_file + " -o " + dtbresult
+                    elif dtb_file.endswith('.dtbo'):
+                        dtbcommand = dtbcommand + " " + dtb_path + "/" + dtb_file
+                if os.system(dtbcommand):
+                    bb.error("fdtoverlay error: " + dtbcommand)
+                dtb_path, dtb_file = os.path.split(dtbresult)
+                DTBS = DTBS + " " + dtb_file
+                fitimage_emit_section_dtb(d,fd,dtb_file,dtb_path)
          elif imgtype == 'ramdisk':
             ramdiskcount = "1"
             if slotflags and 'fstype' in slotflags:
@@ -432,6 +454,12 @@ do_deploy() {
     its_symlink_name="${PN}-${MACHINE}"
     printf 'Copying fit-image.its source file...'
     install -m 0644 ${S}/manifest.its ${DEPLOYDIR}/${its_base_name}.its
+
+    printf 'Copying all created fdt from type fdtapply'
+    count=`ls -1 ${S}/*.dtb 2>/dev/null | wc -l`
+    if [ $count != 0 ]; then
+        install -m 0644 ${S}/*.dtb ${DEPLOYDIR}/
+    fi
 
     linux_bin_symlink_name="fitImage"
     linux_bin_base_name="${linux_bin_symlink_name}-${PN}-${PV}-${PR}-${MACHINE}${IMAGE_VERSION_SUFFIX}"
