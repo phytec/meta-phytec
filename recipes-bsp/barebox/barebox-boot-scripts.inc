@@ -20,6 +20,10 @@ def env_add_boot_scripts(d, kernelname, mmcid, emmcid):
         global overlays.path="/mnt/mmc{mmcid}.{bbrootid}/overlays"
         /env/expansions/dt-overlays
     fi
+
+    if [ -e /env/physelect-secureboot ] ; then
+        /env/physelect-secureboot
+    fi
     """)
     nandboot = textwrap.dedent("""\
     #!/bin/sh
@@ -37,6 +41,10 @@ def env_add_boot_scripts(d, kernelname, mmcid, emmcid):
         mount -t ubifs /dev/nand0.root.ubi.root{partid} /mnt/rootfs
         global overlays.path="/mnt/rootfs/overlays"
         /env/expansions/dt-overlays
+    fi
+
+    if [ -e /env/physelect-secureboot ] ; then
+        /env/physelect-secureboot
     fi
     """)
     netboot = textwrap.dedent("""\
@@ -61,6 +69,10 @@ def env_add_boot_scripts(d, kernelname, mmcid, emmcid):
         global overlays.path="/mnt/nfs/overlays"
         /env/expansions/dt-overlays
     fi
+
+    if [ -e /env/physelect-secureboot ] ; then
+        /env/physelect-secureboot
+    fi
     """)
     spiboot = textwrap.dedent("""\
     #!/bin/sh
@@ -70,6 +82,10 @@ def env_add_boot_scripts(d, kernelname, mmcid, emmcid):
     global.linux.bootargs.dyn.root="{root}"
 
     [ -e /env/config-expansions ] && /env/config-expansions
+
+    if [ -e /env/physelect-secureboot ] ; then
+        /env/physelect-secureboot
+    fi
     """)
 
     if bb.utils.contains("MACHINE_FEATURES", "emmc", True, False, d):
