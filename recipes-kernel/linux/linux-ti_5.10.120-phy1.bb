@@ -11,13 +11,15 @@ PR = "${INC_PR}.0"
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "c7e5b190598fae2625da185485ec6e3979001556"
+SRCREV = "e8ce321eb26bc3955a20ed6c1497e17109d8beeb"
 S = "${WORKDIR}/git"
 
 # Pull in the devicetree files into the rootfs
-# Add run-time dependency for PRU firmware to the rootfs
 RDEPENDS:${KERNEL_PACKAGE_NAME}-base:append = "\
     kernel-devicetree \
+"
+# Add run-time dependency for PRU firmware to the rootfs
+RDEPENDS:${KERNEL_PACKAGE_NAME}-base:append_am64xx = "\
     prueth-fw-am65x-sr2 \
 "
 
@@ -33,8 +35,9 @@ KERNEL_EXTRA_ARGS += "LOADADDR=${UBOOT_ENTRYPOINT} \
 
 FILES:${KERNEL_PACKAGE_NAME}-devicetree += "/${KERNEL_IMAGEDEST}/*.itb"
 
-INTREE_DEFCONFIG = "am64xx_phytec_defconfig"
+INTREE_DEFCONFIG = "phytec_ti_defconfig phytec_ti_platform.config"
 
 COMPATIBLE_MACHINE  = "^("
-COMPATIBLE_MACHINE .=  "phyboard-electra-am64xx-1"
+COMPATIBLE_MACHINE .=  "phyboard-lyra-am62xx-1"
+COMPATIBLE_MACHINE .=  "|phyboard-electra-am64xx-1"
 COMPATIBLE_MACHINE .= ")$"
