@@ -1,0 +1,37 @@
+From 823bfc231e5bdbcf1f1e644427dc3d3436b4b49e Mon Sep 17 00:00:00 2001
+From: Wadim Egorov <w.egorov@phytec.de>
+Date: Thu, 8 Sep 2022 15:23:36 +0200
+Subject: [PATCH] HACK: board: phytec: phycore_am62x: Enable OLDI0 &
+ AUDIO_REFCLK1
+
+This hack is required to make Audio and Display work.
+Make sure the OLDI0 LVDS IO pins are not in power down.
+And enable the AUDIO_REFCLK1 output.
+
+Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
+---
+ board/phytec/phycore_am62x/phycore-am62x.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/board/phytec/phycore_am62x/phycore-am62x.c b/board/phytec/phycore_am62x/phycore-am62x.c
+index 8ab8007948..2b7b734603 100644
+--- a/board/phytec/phycore_am62x/phycore-am62x.c
++++ b/board/phytec/phycore_am62x/phycore-am62x.c
+@@ -73,6 +73,14 @@ void spl_board_init(void)
+ 	writel(MCU_CTRL_DEVICE_CLKOUT_LFOSC_SELECT_VAL,
+ 	       MCU_CTRL_DEVICE_CLKOUT_32K_CTRL);
+ 
++	/* HACK: Do not set OLDI0 LVDS IO into power down */
++	writel(0x68ef3490, 0x00109008); /* kick0 */
++	writel(0xd172bc5a, 0x0010900C); /* kick1 */
++	writel(0x0, 0x00108700);
++
++	/* HACK: Enable AUDIO_REFCLK1 output */
++	writel(0x8000, 0x001082e4);
++
+ 	/* Init DRAM size for R5/A53 SPL */
+ 	dram_init_banksize();
+ }
+-- 
+2.34.1
+
