@@ -61,7 +61,7 @@ BB_DISKMON_DIRS ??= "\
 #IMAGE_FSTYPES = "tar.gz wic ubifs emmc"
 
 # To change the variable for any imx8 machine:
-#IMAGE_FSTYPES:mx8-generic-bsp = "tar.gz wic ubifs emmc"
+#IMAGE_FSTYPES:mx8-generic-bsp = "tar.gz wic wic.bmap"
 
 # Turn on debugging options of the kernel
 #DEBUG_BUILD:pn-linux-mainline = "1"
