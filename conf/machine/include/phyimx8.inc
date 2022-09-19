@@ -35,6 +35,6 @@ EMMC_DEV:mx8mn ?= "2"
 EMMC_DEV:mx8mp ?= "2"
 
 # Default images to build
-IMAGE_FSTYPES = "tar.gz wic"
+IMAGE_FSTYPES = "tar.gz wic wic.bmap"
 
 MACHINE_FEATURES += " caam"
