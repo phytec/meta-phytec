@@ -11,7 +11,7 @@ PR = "${INC_PR}.0"
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "e8ce321eb26bc3955a20ed6c1497e17109d8beeb"
+SRCREV = "8809fe6c10a6f23998d92d38b0e9ea0773a04872"
 S = "${WORKDIR}/git"
 
 # Pull in the devicetree files into the rootfs
