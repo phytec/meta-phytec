@@ -1,0 +1,24 @@
+From 8ac67ca9da9c43699783bfc33251684e01d41338 Mon Sep 17 00:00:00 2001
+From: Christophe Parant <c.parant@phytec.fr>
+Date: Fri, 23 Sep 2022 11:31:27 +0200
+Subject: [PATCH] v2.4 stm32mp phy4 DEVICETREE
+
+---
+ fdts/phycore-stm32mp15-som.dtsi | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/fdts/phycore-stm32mp15-som.dtsi b/fdts/phycore-stm32mp15-som.dtsi
+index 673bc8557..5446a00f1 100644
+--- a/fdts/phycore-stm32mp15-som.dtsi
++++ b/fdts/phycore-stm32mp15-som.dtsi
+@@ -232,7 +232,6 @@
+ 				regulator-name = "vdd_usb";
+ 				regulator-min-microvolt = <3300000>;
+ 				regulator-max-microvolt = <3300000>;
+-				regulator-always-on;
+ 				standby-ddr-sr {
+ 					regulator-off-in-suspend;
+ 				};
+-- 
+2.25.1
+
