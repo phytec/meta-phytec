@@ -20,7 +20,7 @@ index f6328eb..d695a7a 100644
  env set ov_init 'load ${devtype} ${devnum}:${distro_bootpart} ${fdt_addr_r} ${fdtfile} && env set fdt_addr ${fdt_addr_r} && fdt addr ${fdt_addr} && setexpr fdtovaddr ${fdt_addr} + C0000'
  env set ov_apply 'test -n ${fdtovaddr} && test -n ${overlay} && for ov in ${overlay}; do echo overlaying ${ov}...; load ${devtype} ${devnum}:${distro_bootpart} ${fdtovaddr} /overlays/${ov}.dtbo && fdt resize ${filesize} && fdt apply ${fdtovaddr}; done'
 -env set scan_overlays 'if test -e ${devtype} ${devnum}:${distro_bootpart} /overlays/overlays.txt && load ${devtype} ${devnum}:${distro_bootpart} ${loadaddr} /overlays/overlays.txt && env import -t ${loadaddr} ${filesize}; then echo loaded overlay.txt: ${overlay}; run ov_init; run ov_apply; fi'
-+env set scan_overlays 'if test -z "${overlay}"; then test -e ${devtype} ${devnum}:${distro_bootpart} /overlays/overlays.txt && load ${devtype} ${devnum}:${distro_bootpart} ${loadaddr} /overlays/overlays.txt && env import -t ${loadaddr} ${filesize}; fi; if test -n ${overlay}; then echo loaded overlay: ${overlay}; run ov_init; run ov_apply; fi'
++env set scan_overlays 'run ov_init; if test -z "${overlay}"; then test -e ${devtype} ${devnum}:${distro_bootpart} /overlays/overlays.txt && load ${devtype} ${devnum}:${distro_bootpart} ${loadaddr} /overlays/overlays.txt && env import -t ${loadaddr} ${filesize}; fi; if test -n ${overlay}; then echo loaded overlay: ${overlay}; run ov_apply; fi'
  
  # Update the DISTRO command to search in sub-directory and load M4 firmware
  env set boot_prefixes "/${boot_device}${boot_instance}_"
