@@ -13,7 +13,7 @@ MACHINE_FEATURES:remove = "nxp8987"
 
 # Wic
 IMAGE_CLASSES += "wic-helper"
-IMAGE_CLASSES:mx8m-nxp-bsp += "wic-imx8-helper"
+IMAGE_CLASSES:append:mx8m-nxp-bsp = " wic-imx8-helper"
 EXTERNAL_KERNEL_DEVICETREE ??= ""
 IMAGE_BOOT_FILES += "oftree ${EXTERNAL_KERNEL_DEVICETREE} bootenv.txt"
 IMAGE_BOOT_FILES:secureboot:mx8m-nxp-bsp = "fitImage"
