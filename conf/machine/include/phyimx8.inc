@@ -24,6 +24,7 @@ WKS_FILES:mx8m-nxp-bsp:update ?= "imx8m-rauc-sdimage.wks"
 WKS_BOOTIMAGESIZE ?= "50"
 WIC_CREATE_EXTRA_ARGS:remove = "--no-fstab-update"
 
+IMX_DEFAULT_ATF_PROVIDER:use-mainline-bsp ?= "trusted-firmware-a"
 # MMC user area bootloader image offset
 BOOTLOADER_SEEK:mx8m-generic-bsp ?= "33"
 BOOTLOADER_SEEK:mx8mn-generic-bsp ?= "32"
