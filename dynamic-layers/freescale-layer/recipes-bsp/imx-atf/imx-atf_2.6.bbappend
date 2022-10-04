@@ -6,7 +6,7 @@ UART_BASE:mx8mm-generic-bsp = "0x30880000"
 UART_BASE:mx8mn-generic-bsp = "0x30880000"
 
 SRC_URI:append:phygate-tauri-l-imx8mm-2 = "\
-    file://0003-plat-imx8mm-tauri-l-use-uart4-as-rs485.patch \
+    file://0001-plat-imx8mm-disable-uart4-assigned-to-arm-cortex-m4.patch \
 "
 EXTRA_OEMAKE += " \
         IMX_BOOT_UART_BASE="${UART_BASE}" \
