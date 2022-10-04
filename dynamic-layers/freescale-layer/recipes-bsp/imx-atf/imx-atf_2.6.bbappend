@@ -1,7 +1,7 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 SRC_URI:append:phygate-tauri-l-imx8mm-2 = "\
-    file://0003-plat-imx8mm-tauri-l-use-uart4-as-rs485.patch \
+    file://0001-plat-imx8mm-disable-uart4-assigned-to-arm-cortex-m4.patch \
 "
 EXTRA_OEMAKE += " \
         IMX_BOOT_UART_BASE="${IMX_UART_BASE}" \
