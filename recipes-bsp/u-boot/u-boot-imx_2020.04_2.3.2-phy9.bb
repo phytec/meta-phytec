@@ -52,8 +52,6 @@ COMPATIBLE_MACHINE = "^("
 COMPATIBLE_MACHINE .= "phyboard-zeta-imx7d-1"
 COMPATIBLE_MACHINE .= "|phyboard-polaris-imx8m-3"
 COMPATIBLE_MACHINE .= "|phyboard-polaris-imx8m-4"
-COMPATIBLE_MACHINE .= "|phyboard-pollux-imx8mp-2"
-COMPATIBLE_MACHINE .= "|phyboard-pollux-imx8mp-3"
 COMPATIBLE_MACHINE .= ")$"
 
 UBOOT_NAME:mx8-nxp-bsp = "u-boot-${MACHINE}.bin-${UBOOT_CONFIG}"
