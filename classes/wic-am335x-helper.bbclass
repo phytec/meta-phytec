@@ -11,17 +11,9 @@ IMAGE_CMD:emmc:append () {
 }
 
 IMAGE_CMD:emmc () {
-	if [ -e ${IMGDEPLOYDIR}/${IMAGE_NAME}.rootfs.sdcard ]; then
-		SDIMG=${IMGDEPLOYDIR}/${IMAGE_NAME}.rootfs.sdcard
-	else
-		if [ -e ${IMGDEPLOYDIR}/${IMAGE_LINK_NAME}.sdcard ]; then
-			SDIMG=`readlink -f ${IMGDEPLOYDIR}/${IMAGE_LINK_NAME}.sdcard`
-		else
-			SDIMG=${IMGDEPLOYDIR}/${IMAGE_NAME}.rootfs.wic
-		fi
-	fi
-	EMMCIMG=${IMAGE_NAME}.rootfs.emmc
-	cp ${SDIMG} ${IMGDEPLOYDIR}/${EMMCIMG}
+	EMMCIMG=${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.emmc
+	WICIMG=${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.wic
+	cp ${IMGDEPLOYDIR}/${WICIMG} ${IMGDEPLOYDIR}/${EMMCIMG}
 
 	ln -sf ${EMMCIMG} ${IMGDEPLOYDIR}/${IMAGE_LINK_NAME}.emmc
 }
