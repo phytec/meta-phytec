@@ -9,8 +9,3 @@ do_image_wic[depends] += "\
     virtual/kernel:do_deploy \
     virtual/bootloader:do_deploy \
 "
-
-IMAGE_CMD:wic:append () {
-	ln -fs "${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.wic" "$out${IMAGE_NAME_SUFFIX}.sdcard"
-	ln -fs "${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.sdcard" "${IMGDEPLOYDIR}/${IMAGE_LINK_NAME}.sdcard"
-}
