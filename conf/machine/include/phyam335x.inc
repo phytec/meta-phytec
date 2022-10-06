@@ -24,7 +24,7 @@ KERNEL_IMAGETYPE ?= "zImage"
 PACKAGE_INSTALL:append = " kernel-modules"
 KERNEL_MODULE_AUTOLOAD += " cryptodev"
 
-SERIAL_CONSOLES ?= "115200;ttyO0"
+SERIAL_CONSOLES ?= "115200;ttyS0"
 # dont install kernelimage to rootfs
 RDEPENDS:${KERNEL_PACKAGE_NAME}-base = ""
 
