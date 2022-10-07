@@ -1,0 +1,26 @@
+From 680adca960ed7d77f6dae4d6710d442f335d5b6d Mon Sep 17 00:00:00 2001
+From: Wadim Egorov <w.egorov@phytec.de>
+Date: Fri, 7 Oct 2022 11:50:19 +0200
+Subject: [PATCH] allow setting sysroot for libgcc lookup
+
+Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
+---
+ mk/gcc.mk | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mk/gcc.mk b/mk/gcc.mk
+index adc77a24..e238b9f3 100644
+--- a/mk/gcc.mk
++++ b/mk/gcc.mk
+@@ -13,7 +13,7 @@ nostdinc$(sm)	:= -nostdinc -isystem $(shell $(CC$(sm)) \
+ 			-print-file-name=include 2> /dev/null)
+ 
+ # Get location of libgcc from gcc
+-libgcc$(sm)  	:= $(shell $(CC$(sm)) $(CFLAGS$(arch-bits-$(sm))) \
++libgcc$(sm)  	:= $(shell $(CC$(sm)) $(LIBGCC_LOCATE_CFLAGS) $(CFLAGS$(arch-bits-$(sm))) \
+ 			-print-libgcc-file-name 2> /dev/null)
+ libstdc++$(sm)	:= $(shell $(CXX$(sm)) $(CXXFLAGS$(arch-bits-$(sm))) $(comp-cxxflags$(sm)) \
+ 			-print-file-name=libstdc++.a 2> /dev/null)
+-- 
+2.25.1
+
