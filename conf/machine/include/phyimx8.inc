@@ -9,8 +9,6 @@ PREFERRED_RPROVIDER_mfgtool-base = "linux-imx-mfgtool"
 PREFERRED_RPROVIDER_mfgtool-image = "linux-imx-mfgtool"
 PREFERRED_RPROVIDER_mfgtool-image-image = "linux-imx-mfgtool"
 
-MACHINE_FEATURES:remove = "nxp8987"
-
 # Wic
 IMAGE_CLASSES += "wic-helper"
 IMAGE_CLASSES:append:mx8m-nxp-bsp = " wic-imx8-helper"
