@@ -37,4 +37,4 @@ EMMC_DEV:mx8mp ?= "2"
 # Default images to build
 IMAGE_FSTYPES = "tar.gz wic wic.bmap"
 
-MACHINE_FEATURES += " caam"
+MACHINE_FEATURES += "caam optee"
