@@ -8,6 +8,8 @@ PREFERRED_PROVIDER_opencl-headers:imxgpu = "imx-gpu-viv"
 PREFERRED_RPROVIDER_mfgtool-base = "linux-imx-mfgtool"
 PREFERRED_RPROVIDER_mfgtool-image = "linux-imx-mfgtool"
 PREFERRED_RPROVIDER_mfgtool-image-image = "linux-imx-mfgtool"
+PREFERRED_PROVIDER_virtual/libgles3:mx8-nxp-bsp = "imx-gpu-viv"
+PREFERRED_PROVIDER_virtual/libgles3:mx8mm-nxp-bsp = "mesa"
 
 # Wic
 IMAGE_CLASSES += "wic-helper"
