@@ -65,7 +65,7 @@ done
         env_add(d, "nv/overlays.select", "")
 }
 
-do_deploy:prepend() {
+do_compile:append() {
     if [ "${PN}" = "barebox" ] ; then
         bbnote "Adding CRC32 checksum to barebox Image Metadata"
         ${B}/scripts/bareboximd -c ${B}/${BAREBOX_BIN}
