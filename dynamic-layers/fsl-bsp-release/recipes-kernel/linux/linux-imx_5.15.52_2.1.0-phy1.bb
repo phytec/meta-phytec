@@ -1,4 +1,4 @@
-# Copyright (C) 2019 PHYTEC Messtechnik GmbH,
+# Copyright (C) 2022 PHYTEC Messtechnik GmbH,
 # Author: Teresa Remmet <t.remmet@phytec.de>
 
 inherit phygittag
@@ -6,14 +6,14 @@ inherit buildinfo
 inherit fsl-vivante-kernel-driver-handler
 include recipes-kernel/linux/linux-common.inc
 
-BRANCH = "v5.10.72_2.2.0-phy"
+BRANCH = "v5.15.52_2.1.0-phy"
 GIT_URL = "git://git.phytec.de/${BPN}"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 PR = "${INC_PR}.0"
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "0ac59b20a35b69640b64870210e9915b06ae7bc5"
+SRCREV = "bc0cd39f9abfdea2a61b331be83c3e1ce2a89a3b"
 
 S = "${WORKDIR}/git"
 
@@ -26,9 +26,7 @@ module_conf_imx8-media-dev:mx8mp-nxp-bsp = "install imx8-media-dev /sbin/modprob
 KERNEL_MODULE_PROBECONF:mx8mp-nxp-bsp += "imx8-media-dev"
 
 COMPATIBLE_MACHINE  = "^("
-COMPATIBLE_MACHINE .= "phyboard-polaris-imx8m-3"
-COMPATIBLE_MACHINE .= "|phyboard-polaris-imx8m-4"
-COMPATIBLE_MACHINE .= "|phyboard-polis-imx8mm-5"
+COMPATIBLE_MACHINE .= "phyboard-polis-imx8mm-5"
 COMPATIBLE_MACHINE .= "|phyboard-polis-imx8mm-4"
 COMPATIBLE_MACHINE .= "|phyboard-polis-imx8mn-1"
 COMPATIBLE_MACHINE .= "|phyboard-polis-imx8mn-2"
