@@ -10,10 +10,20 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 S = "${WORKDIR}"
 
+BOOTENV_OVERLAYS_APPEND ?= ""
+
 inherit deploy
 do_deploy() {
     install -d ${DEPLOYDIR}
     install -m 0644 ${S}/bootenv.txt ${DEPLOYDIR}
+
+    # Replace multiple whitespaces by single one.
+    OVERLAYS_APPEND=$(echo "${BOOTENV_OVERLAYS_APPEND}" | sed -e "s/\s\+/ /g")
+
+    sed -i -e "s/\(overlays=.*\)/\1 ${OVERLAYS_APPEND}/" ${DEPLOYDIR}/bootenv.txt
+
+    # Remove trailing whitespaces.
+    sed -i -e "s/\ *$//g" ${DEPLOYDIR}/bootenv.txt
 }
 addtask deploy before do_build after do_unpack
 
