@@ -6,8 +6,6 @@ BBPATH = "${TOPDIR}"
 BBFILES ?= ""
 
 OEROOT := "##OEROOT##"
-# add BSPDIR variable, as it is needed by recipes of NXP
-BSPDIR := "${OEROOT}/../.."
 
 # In our BSPs active layers are defined by the manifest.xml for all BSPs. The
 # bblayers.conf gets created by the init_bblayers.py script.
