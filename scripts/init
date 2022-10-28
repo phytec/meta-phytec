@@ -134,7 +134,7 @@ echo ""
 echo "To set up your shell environment for some Yocto work, you have to type this"
 echo "command, including the 'dot':"
 echo ""
-echo "    $ . $(get_init_env_dir)/oe-init-build-env"
+echo "    $ TEMPLATECONF=../meta-phytec/conf/templates/default . $(get_init_env_dir)/oe-init-build-env"
 echo ""
 echo ""
 container_usage
