@@ -68,21 +68,6 @@ class BSP_Switcher(BoardSupportPackage):
         self.selected_machine = machine
         self.selected_distro = distro
 
-        # write build target to conf-notex.txt so it will be displayed after
-        # sourcing the environment
-        if any(targets):
-            confnotes = os.path.join(self.src.bsp_dir, 'tools', 'templateconf', 'conf-notes.txt')
-            f = open(confnotes, 'r')
-            lines = f.readlines()
-            f.close()
-            f = open(confnotes, 'w')
-            f.writelines([l for l in lines[:-1] if 'bitbake' not in l])
-            for target in targets:
-                print('add TARGET %s to conf-notes.txt' % target)
-                f.write('   $ bitbake %s\n' % target)
-            f.write('\n')
-            f.close()
-
         return self.write_machine_to_localconf()
 
 ##############
