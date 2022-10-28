@@ -53,16 +53,11 @@ install -m 0644 ${PHYTEC_DIR}/conf/doc/HOWTO ${ROOTDIR}
 
 # Setup template directory. Allow caller to overwrite default TEMPLATECONF.
 if [ -z "${TEMPLATECONF}" ]; then
-	export TEMPLATECONF="${ROOTDIR}/tools/templateconf"
-	copy_file_by_priority=${PHYTEC_DIR}/scripts/copy_file_by_priority.py
-	install -d ${TEMPLATECONF}
+	export TEMPLATECONF="${ROOTDIR}/sources/meta-phytec/conf/templates/default"
 	# copy new NXP EULA to meta-freescale in case of freescale-release
 	if [ -e "${ROOTDIR}/sources/meta-imx" ] && [ -e "${ROOTDIR}/sources/meta-freescale" ]; then
 	       cp ${ROOTDIR}/sources/meta-imx/EULA.txt ${ROOTDIR}/sources/meta-freescale/EULA
 	fi
-	$copy_file_by_priority conf/bblayers.conf.sample ${TEMPLATECONF}
-	$copy_file_by_priority conf/local.conf.sample ${TEMPLATECONF}
-	$copy_file_by_priority conf/conf-notes.txt ${TEMPLATECONF}
 fi
 
 # Init a build directory if we dont have one.
