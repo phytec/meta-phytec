@@ -54,10 +54,11 @@ install -m 0644 ${PHYTEC_DIR}/conf/doc/HOWTO ${ROOTDIR}
 # Setup template directory. Allow caller to overwrite default TEMPLATECONF.
 if [ -z "${TEMPLATECONF}" ]; then
 	export TEMPLATECONF="${ROOTDIR}/sources/meta-phytec/conf/templates/default"
-	# copy new NXP EULA to meta-freescale in case of freescale-release
-	if [ -e "${ROOTDIR}/sources/meta-imx" ] && [ -e "${ROOTDIR}/sources/meta-freescale" ]; then
-	       cp ${ROOTDIR}/sources/meta-imx/EULA.txt ${ROOTDIR}/sources/meta-freescale/EULA
-	fi
+fi
+
+# copy new NXP EULA to meta-freescale in case of freescale-release
+if [ -e "${ROOTDIR}/sources/meta-imx" ] && [ -e "${ROOTDIR}/sources/meta-freescale" ]; then
+       cp ${ROOTDIR}/sources/meta-imx/EULA.txt ${ROOTDIR}/sources/meta-freescale/EULA
 fi
 
 # Init a build directory if we dont have one.
