@@ -1,12 +1,12 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/${BPN}:"
 
 SRC_URI += " \
-    file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0001-ARM-5.10.10-stm32mp1-phy1-DT-OVERLAY.patch \
-    file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0002-ARM-5.10.10-stm32mp1-phy1-DEVICETREE.patch \
-    file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0003-ARM-5.10.10-stm32mp1-phy1-DRM.patch \
-    file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0004-ARM-5.10.10-stm32mp1-phy1-SOUND.patch \
-    file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0005-ARM-5.10.10-stm32mp1-phy1-RTC.patch \
-    file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0006-ARM-5.10.10-stm32mp1-phy1-MEDIA.patch \
+    file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0001-ARM-5.10.61-stm32mp1-phy2-DT-OVERLAY.patch \
+    file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0002-ARM-5.10.61-stm32mp1-phy2-DEVICETREE.patch \
+    file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0003-ARM-5.10.61-stm32mp1-phy2-DRM.patch \
+    file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0004-ARM-5.10.61-stm32mp1-phy2-SOUND.patch \
+    file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0005-ARM-5.10.61-stm32mp1-phy2-RTC.patch \
+    file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0006-ARM-5.10.61-stm32mp1-phy2-MEDIA.patch \
 "
 
 # -------------------------------------------------------------
@@ -42,7 +42,7 @@ SRC_URI += "file://${LINUX_VERSION}/fragment-16-camera-ar0144.config;subdir=frag
 BBCLASSEXTEND = "devupstream:target"
 
 SRC_URI:class-devupstream = "git://git.phytec.de/linux-stm32mp;protocol=git;branch=v${LINUX_VERSION}-phy"
-SRCREV:class-devupstream = "faccf9049ca974aa2489a09ab0959f8a206e5920"
+SRCREV:class-devupstream = "7a44403f6ba9e56670109e8a4ebaee73a8304a96"
 
 # -----------------------------------------------------------------------------------
 # Configure default preference to manage dynamic selection between tarball and github
