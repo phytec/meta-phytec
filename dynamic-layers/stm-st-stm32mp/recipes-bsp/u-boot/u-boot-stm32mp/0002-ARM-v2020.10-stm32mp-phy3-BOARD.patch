@@ -1,14 +1,14 @@
-From 976e87fdd95bb3d854882fd56e631867d21b9930 Mon Sep 17 00:00:00 2001
+From c7994399f10da980712d4c950f405a7e80663e27 Mon Sep 17 00:00:00 2001
 From: Christophe Parant <c.parant@phytec.fr>
-Date: Thu, 23 Sep 2021 16:55:12 +0200
-Subject: [PATCH 2/3] ARM v2020.10 stm32mp phy1 BOARD
+Date: Tue, 31 May 2022 17:55:45 +0200
+Subject: [PATCH 2/4] ARM v2020.10 stm32mp phy3 BOARD
 
 ---
  board/st/stm32mp1/stm32mp1.c | 9 ++++++---
  1 file changed, 6 insertions(+), 3 deletions(-)
 
 diff --git a/board/st/stm32mp1/stm32mp1.c b/board/st/stm32mp1/stm32mp1.c
-index 9a02e14ba5..81e773ebd2 100644
+index 42979d80f5..b6dbc21c9c 100644
 --- a/board/st/stm32mp1/stm32mp1.c
 +++ b/board/st/stm32mp1/stm32mp1.c
 @@ -689,17 +689,20 @@ int board_late_init(void)
@@ -36,5 +36,5 @@ index 9a02e14ba5..81e773ebd2 100644
  		ret = uclass_get_device_by_driver(UCLASS_MISC,
  						  DM_GET_DRIVER(stm32mp_bsec),
 -- 
-2.17.1
+2.25.1
 

@@ -1,0 +1,106 @@
+From d6e4734ff734d3bb4f5df64dfc8d76e5cdb69441 Mon Sep 17 00:00:00 2001
+From: Christophe Parant <c.parant@phytec.fr>
+Date: Tue, 31 May 2022 17:56:57 +0200
+Subject: [PATCH 3/4] ARM v2020.10 stm32mp phy3 CONFIG
+
+---
+ configs/stm32mp15_basic_defconfig   | 9 ++++++++-
+ configs/stm32mp15_trusted_defconfig | 9 ++++++++-
+ include/configs/stm32mp1.h          | 4 ++--
+ 3 files changed, 18 insertions(+), 4 deletions(-)
+
+diff --git a/configs/stm32mp15_basic_defconfig b/configs/stm32mp15_basic_defconfig
+index c90220a60d..31dcf06ff9 100644
+--- a/configs/stm32mp15_basic_defconfig
++++ b/configs/stm32mp15_basic_defconfig
+@@ -101,18 +101,23 @@ CONFIG_SYS_MTDPARTS_RUNTIME=y
+ CONFIG_MTD_RAW_NAND=y
+ CONFIG_NAND_STM32_FMC2=y
+ CONFIG_MTD_SPI_NAND=y
++CONFIG_MTD_PARTITIONS=y
+ CONFIG_DM_SPI_FLASH=y
+ CONFIG_SPI_FLASH_MACRONIX=y
+ CONFIG_SPI_FLASH_SPANSION=y
+ CONFIG_SPI_FLASH_STMICRO=y
+ CONFIG_SPI_FLASH_WINBOND=y
+-# CONFIG_SPI_FLASH_USE_4K_SECTORS is not set
++CONFIG_SPI_FLASH_USE_4K_SECTORS=y
+ CONFIG_SPI_FLASH_MTD=y
++CONFIG_SPI_FLASH_SUPPORT=y
++CONFIG_SPI_FLASH_DATAFLASH=y
+ CONFIG_PHY_REALTEK=y
+ CONFIG_DM_ETH=y
+ CONFIG_DWC_ETH_QOS=y
++CONFIG_NET_RANDOM_ETHADDR=y
+ CONFIG_PHY=y
+ CONFIG_PHY_STM32_USBPHYC=y
++CONFIG_PHY_TI=y
+ CONFIG_PINCONF=y
+ # CONFIG_SPL_PINCTRL_FULL is not set
+ CONFIG_PINCTRL_STMFX=y
+@@ -158,3 +163,5 @@ CONFIG_WDT_STM32MP=y
+ CONFIG_ERRNO_STR=y
+ CONFIG_FDT_FIXUP_PARTITIONS=y
+ CONFIG_LMB_RESERVED_REGIONS=16
++CONFIG_SIMPLE_PANEL=y
++CONFIG_PANEL=y
+diff --git a/configs/stm32mp15_trusted_defconfig b/configs/stm32mp15_trusted_defconfig
+index 2161ccbefa..815db1a79f 100644
+--- a/configs/stm32mp15_trusted_defconfig
++++ b/configs/stm32mp15_trusted_defconfig
+@@ -82,18 +82,23 @@ CONFIG_SYS_MTDPARTS_RUNTIME=y
+ CONFIG_MTD_RAW_NAND=y
+ CONFIG_NAND_STM32_FMC2=y
+ CONFIG_MTD_SPI_NAND=y
++CONFIG_MTD_PARTITIONS=y
+ CONFIG_DM_SPI_FLASH=y
+ CONFIG_SPI_FLASH_MACRONIX=y
+ CONFIG_SPI_FLASH_SPANSION=y
+ CONFIG_SPI_FLASH_STMICRO=y
+ CONFIG_SPI_FLASH_WINBOND=y
+-# CONFIG_SPI_FLASH_USE_4K_SECTORS is not set
++CONFIG_SPI_FLASH_USE_4K_SECTORS=y
+ CONFIG_SPI_FLASH_MTD=y
++CONFIG_SPI_FLASH_SUPPORT=y
++CONFIG_SPI_FLASH_DATAFLASH=y
+ CONFIG_PHY_REALTEK=y
+ CONFIG_DM_ETH=y
+ CONFIG_DWC_ETH_QOS=y
++CONFIG_NET_RANDOM_ETHADDR=y
+ CONFIG_PHY=y
+ CONFIG_PHY_STM32_USBPHYC=y
++CONFIG_PHY_TI=y
+ CONFIG_PINCONF=y
+ CONFIG_PINCTRL_STMFX=y
+ CONFIG_DM_PMIC=y
+@@ -141,3 +146,5 @@ CONFIG_WDT_STM32MP=y
+ CONFIG_ERRNO_STR=y
+ CONFIG_FDT_FIXUP_PARTITIONS=y
+ CONFIG_LMB_RESERVED_REGIONS=16
++CONFIG_SIMPLE_PANEL=y
++CONFIG_PANEL=y
+diff --git a/include/configs/stm32mp1.h b/include/configs/stm32mp1.h
+index 72424abb8b..baae876cff 100644
+--- a/include/configs/stm32mp1.h
++++ b/include/configs/stm32mp1.h
+@@ -122,7 +122,7 @@
+  * for serial/usb: execute the stm32prog command
+  * for mmc boot (eMMC, SD card), boot only on the same device
+  * for nand or spi-nand boot, boot with on ubifs partition on UBI partition
+- * for nor boot, use SD card = mmc0
++ * for nor boot, use emmc = mmc1
+  */
+ #define STM32MP_BOOTCMD "bootcmd_stm32mp=" \
+ 	"echo \"Boot over ${boot_device}${boot_instance}!\";" \
+@@ -136,7 +136,7 @@
+ 		  " test ${boot_device} = spi-nand ;" \
+ 		"then env set boot_targets ubifs0; fi;" \
+ 		"if test ${boot_device} = nor;" \
+-		"then env set boot_targets mmc0; fi;" \
++		"then env set boot_targets mmc1; fi;" \
+ 		"run distro_bootcmd;" \
+ 	"fi;\0"
+ 
+-- 
+2.25.1
+
