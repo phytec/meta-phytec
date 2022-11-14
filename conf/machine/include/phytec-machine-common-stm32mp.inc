@@ -387,7 +387,6 @@ ST_TOOLS_FOR_SDK:append = " ${ST_TOOLS_FOR_SDK_PERL} "
 ST_TOOLS_FOR_SDK:append = " \
     nativesdk-python3-pyelftools \
     nativesdk-python3-pycryptodomex \
-    nativesdk-python3-pycrypto \
 "
 
 # For support of string convertion (iconv) in SDK
