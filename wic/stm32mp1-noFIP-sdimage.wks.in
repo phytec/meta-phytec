@@ -19,7 +19,7 @@ part ssbl   --source rawcopy --fstype=ext4 --fsoptions "noauto" --part-name=ssbl
 
 part bootfs --source rawcopy --sourceparams="file=${STM32MP_BOOTFS_IMAGE}-${DISTRO}-${MACHINE}.ext4" --ondisk mmcblk --fstype=ext4 --label bootfs --active --fixed-size ${STM32MP_BOOTFS_SIZE}K
 part vendorfs --source rawcopy --sourceparams="file=${STM32MP_VENDORFS_IMAGE}-${DISTRO}-${MACHINE}.ext4" --ondisk mmcblk --fstype=ext4 --label vendorfs --active --fixed-size ${STM32MP_VENDORFS_SIZE}K
-part / --source rootfs --ondisk mmcblk --fstype=ext4 --label rootfs --fixed-size ${IMAGE_ROOTFS_MAXSIZE}K --uuid ${DEVICE_PARTUUID_ROOTFS_mmc0}
+part / --source rootfs --ondisk mmcblk --fstype=ext4 --label rootfs --fixed-size ${IMAGE_ROOTFS_MAXSIZE}K --uuid ${DEVICE_PARTUUID_ROOTFS:mmc0}
 part usrfs --source rawcopy --sourceparams="file=${STM32MP_USERFS_IMAGE}-${DISTRO}-${MACHINE}.ext4" --ondisk mmcblk --fstype=ext4 --label userfs --active --fixed-size ${STM32MP_USERFS_SIZE}K
 
 bootloader --ptable gpt
