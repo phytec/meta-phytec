@@ -13,6 +13,14 @@ MACHINEOVERRIDES .= ":stcommon"
 MACHINEOVERRIDES .= ":stm32mpcommon"
 
 # =========================================================================
+# SOC
+# =========================================================================
+STM32MP_SOC_NAME = ""
+STM32MP_SOC_NAME:append:stm32mp15common = " stm32mp15 "
+# Take care of nativesdk override use case
+STM32MP_SOC_NAME:append:class-nativesdk = " stm32mp15 "
+
+# =========================================================================
 # boot scheme
 # =========================================================================
 # List of supported boot schemes
