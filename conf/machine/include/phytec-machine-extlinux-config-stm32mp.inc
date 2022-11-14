@@ -28,25 +28,25 @@ UBOOT_EXTLINUX_TARGETS += "${@bb.utils.contains_any('BOOTDEVICE_LABELS', [ 'nand
 UBOOT_EXTLINUX_TARGETS += "${@bb.utils.contains_any('BOOTDEVICE_LABELS', [ 'nand-2-256', 'nor-nand-2-256' ], 'target-nand', '', d)}"
 # Define labels for each target
 # (mandatory to allow specific var override if needed)
-UBOOT_EXTLINUX_LABELS_target-sdcard += "rootfs"
-UBOOT_EXTLINUX_LABELS_target-emmc += "rootfs"
-UBOOT_EXTLINUX_LABELS_target-nand += "rootfs"
+UBOOT_EXTLINUX_LABELS:target-sdcard += "rootfs"
+UBOOT_EXTLINUX_LABELS:target-emmc += "rootfs"
+UBOOT_EXTLINUX_LABELS:target-nand += "rootfs"
 # Define specific bootprefix for each target
-UBOOT_EXTLINUX_BOOTPREFIXES_target-sdcard = "${DEVICE_SDCARD}_"
-UBOOT_EXTLINUX_BOOTPREFIXES_target-emmc = "${DEVICE_EMMC}_"
-UBOOT_EXTLINUX_BOOTPREFIXES_target-nand = "${DEVICE_NAND}_"
+UBOOT_EXTLINUX_BOOTPREFIXES:target-sdcard = "${DEVICE:SDCARD}_"
+UBOOT_EXTLINUX_BOOTPREFIXES:target-emmc = "${DEVICE:EMMC}_"
+UBOOT_EXTLINUX_BOOTPREFIXES:target-nand = "${DEVICE:NAND}_"
 # Define ROOT overrides for each target
-UBOOT_EXTLINUX_ROOT_target-nand = "ubi.mtd=UBI rootfstype=ubifs root=ubi0:rootfs"
-UBOOT_EXTLINUX_ROOT_target-sdcard = "root=PARTUUID=${DEVICE_PARTUUID_ROOTFS_SDCARD}"
-UBOOT_EXTLINUX_ROOT_target-emmc = "root=PARTUUID=${DEVICE_PARTUUID_ROOTFS_EMMC}"
+UBOOT_EXTLINUX_ROOT:target-nand = "ubi.mtd=UBI rootfstype=ubifs root=ubi0:rootfs"
+UBOOT_EXTLINUX_ROOT:target-sdcard = "root=PARTUUID=${DEVICE_PARTUUID_ROOTFS:SDCARD}"
+UBOOT_EXTLINUX_ROOT:target-emmc = "root=PARTUUID=${DEVICE_PARTUUID_ROOTFS:EMMC}"
 # Define INITRD overrides for nand target
-UBOOT_EXTLINUX_INITRD_target-nand = ""
+UBOOT_EXTLINUX_INITRD:target-nand = ""
 
 # -----------------------------------------------------------------------------
 # Configure default labels
 # -----------------------------------------------------------------------------
 # Define MENU_DESCRIPTION for rootfs label to default one to force selection
-UBOOT_EXTLINUX_MENU_DESCRIPTION_rootfs = "OpenSTLinux"
+UBOOT_EXTLINUX_MENU_DESCRIPTION:rootfs = "OpenSTLinux"
 
 # -----------------------------------------------------------------------------
 # Configure additional target
@@ -62,7 +62,7 @@ UBOOT_EXTLINUX_MENU_DESCRIPTION_rootfs = "OpenSTLinux"
 # the 'newlabel1' and 'newlabel2' labels will be added in 'extra-target_extlinux.conf'
 # -----------------------------------------------------------------------------
 # Define additional extra targets to consider
-UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG_target-sdcard += "${STM32MP_DT_FILES_PHYCORE}"
-UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG_target-emmc += "${STM32MP_DT_FILES_PHYCORE}"
-UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG_target-nand += "${STM32MP_DT_FILES_PHYCORE}"
+UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG:target-sdcard += "${STM32MP_DT_FILES_PHYCORE}"
+UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG:target-emmc += "${STM32MP_DT_FILES_PHYCORE}"
+UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG:target-nand += "${STM32MP_DT_FILES_PHYCORE}"
 

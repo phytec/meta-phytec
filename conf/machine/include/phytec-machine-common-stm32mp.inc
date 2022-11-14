@@ -316,16 +316,16 @@ MULTIUBI_BUILD += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nand-2-64', 'nand_
 # UBI Args for 512MB NAND soldered by default on phyCORE-STM32MP1
 # Micron MT29F8G08ABACAWP
 # LEB = BLOCK_SIZE - (2 * page size): 64*2048 - (2*2048)
-MKUBIFS_ARGS_nand_2_256 = "--min-io-size 2048 --leb-size 126976 --max-leb-cnt 972 --space-fixup"
-UBINIZE_ARGS_nand_2_256 = "--min-io-size 2048 --peb-size 128KiB"
-EXTRA_UBIFS_SIZE_nand_2_256 = "2304"
+MKUBIFS_ARGS:nand_2_256 = "--min-io-size 2048 --leb-size 126976 --max-leb-cnt 972 --space-fixup"
+UBINIZE_ARGS:nand_2_256 = "--min-io-size 2048 --peb-size 128KiB"
+EXTRA_UBIFS_SIZE:nand_2_256 = "2304"
 
 # UBI Args for 128MB NAND soldered by default on phyCORE-STM32MP1
 # Micron MT29F1G08ABAEAWP
 # LEB = BLOCK_SIZE - (2 * page size): 64*2048 - (2*2048)
-MKUBIFS_ARGS_nand_2_64 = "--min-io-size 2048 --leb-size 126976 --max-leb-cnt 972 --space-fixup"
-UBINIZE_ARGS_nand_2_64 = "--min-io-size 2048 --peb-size 128KiB"
-EXTRA_UBIFS_SIZE_nand_2_64 = "2304"
+MKUBIFS_ARGS:nand_2_64 = "--min-io-size 2048 --leb-size 126976 --max-leb-cnt 972 --space-fixup"
+UBINIZE_ARGS:nand_2_64 = "--min-io-size 2048 --peb-size 128KiB"
+EXTRA_UBIFS_SIZE:nand_2_64 = "2304"
 
 ##############################################################################################################
 
