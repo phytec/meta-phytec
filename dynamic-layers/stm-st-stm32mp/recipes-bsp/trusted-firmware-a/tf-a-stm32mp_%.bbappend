@@ -1,8 +1,9 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/tf-a-stm32mp:"
 
 SRC_URI += " \
-    file://0001-v2.4-stm32mp-phy1-DEVICETREE.patch \
-    file://0002-v2.4-stm32mp-phy2-DEVICETREE.patch \
+    file://0001-v2.4-stm32mp-phy3-DEVICETREE.patch \
+    file://0002-v2.4-stm32mp-phy3-MMC.patch \
+    file://0003-v2.4-stm32mp-phy3-REGULATOR.patch \
     "
 
 # ---------------------------------
@@ -10,8 +11,8 @@ SRC_URI += " \
 # ---------------------------------
 BBCLASSEXTEND = "devupstream:target"
 
-SRC_URI:class-devupstream = "git://git.phytec.de/tf-a-stm32mp;protocol=git;branch=v${TF_VERSION}-phy"
-SRCREV:class-devupstream = "d2fee7e0336702a9b300ecf4cf39739d2221c723"
+SRC_URI:class-devupstream = "git://git.phytec.de/tf-a-stm32mp;protocol=git;branch=${TF_A_VERSION}-phy"
+SRCREV:class-devupstream = "12d0b32b15033814a2d6a46db59e19883f401853"
 
 # ---------------------------------
 # Configure default preference to manage dynamic selection between tarball and github

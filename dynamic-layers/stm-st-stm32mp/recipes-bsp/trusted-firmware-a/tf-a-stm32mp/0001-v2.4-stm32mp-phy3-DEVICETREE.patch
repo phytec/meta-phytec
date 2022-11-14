@@ -1,31 +1,58 @@
-From 9e76ee1d872b205bebf96e496b9cab915b23f494 Mon Sep 17 00:00:00 2001
+From 41b11ee0d7e7d76acc7f0c314ece8ca10f323ed9 Mon Sep 17 00:00:00 2001
 From: Christophe Parant <c.parant@phytec.fr>
-Date: Mon, 31 May 2021 12:44:54 +0200
-Subject: [PATCH] v2.4 stm32mp phy1 DEVICETREE
+Date: Tue, 31 May 2022 17:00:01 +0200
+Subject: [PATCH] v2.4 stm32mp phy3 DEVICETREE
 
 ---
+ fdts/phycore-stm32mp1-2-fw-config.dts         |   9 +
  fdts/phycore-stm32mp1-2.dts                   |  43 ++
+ fdts/phycore-stm32mp1-3-fw-config.dts         |   9 +
  fdts/phycore-stm32mp1-3.dts                   |  47 ++
+ fdts/phycore-stm32mp1-4-fw-config.dts         |   9 +
  fdts/phycore-stm32mp1-4.dts                   |  47 ++
+ fdts/phycore-stm32mp1-5-fw-config.dts         |   9 +
  fdts/phycore-stm32mp1-5.dts                   |  43 ++
+ fdts/phycore-stm32mp1-6-fw-config.dts         |   9 +
  fdts/phycore-stm32mp1-6.dts                   |  42 ++
+ fdts/phycore-stm32mp1-7-fw-config.dts         |   9 +
  fdts/phycore-stm32mp1-7.dts                   |  42 ++
  ...hycore-stm32mp15-ddr3-2x2Gb-1066-binG.dtsi | 120 ++++
  ...hycore-stm32mp15-ddr3-2x4Gb-1066-binG.dtsi | 120 ++++
  fdts/phycore-stm32mp15-pinctrl.dtsi           | 198 +++++++
- fdts/phycore-stm32mp15-som.dtsi               | 544 ++++++++++++++++++
- 10 files changed, 1246 insertions(+)
+ fdts/phycore-stm32mp15-som.dtsi               | 542 ++++++++++++++++++
+ 16 files changed, 1298 insertions(+)
+ create mode 100644 fdts/phycore-stm32mp1-2-fw-config.dts
  create mode 100644 fdts/phycore-stm32mp1-2.dts
+ create mode 100644 fdts/phycore-stm32mp1-3-fw-config.dts
  create mode 100644 fdts/phycore-stm32mp1-3.dts
+ create mode 100644 fdts/phycore-stm32mp1-4-fw-config.dts
  create mode 100644 fdts/phycore-stm32mp1-4.dts
+ create mode 100644 fdts/phycore-stm32mp1-5-fw-config.dts
  create mode 100644 fdts/phycore-stm32mp1-5.dts
+ create mode 100644 fdts/phycore-stm32mp1-6-fw-config.dts
  create mode 100644 fdts/phycore-stm32mp1-6.dts
+ create mode 100644 fdts/phycore-stm32mp1-7-fw-config.dts
  create mode 100644 fdts/phycore-stm32mp1-7.dts
  create mode 100644 fdts/phycore-stm32mp15-ddr3-2x2Gb-1066-binG.dtsi
  create mode 100644 fdts/phycore-stm32mp15-ddr3-2x4Gb-1066-binG.dtsi
  create mode 100644 fdts/phycore-stm32mp15-pinctrl.dtsi
  create mode 100644 fdts/phycore-stm32mp15-som.dtsi
 
+diff --git a/fdts/phycore-stm32mp1-2-fw-config.dts b/fdts/phycore-stm32mp1-2-fw-config.dts
+new file mode 100644
+index 000000000..0b260502d
+--- /dev/null
++++ b/fdts/phycore-stm32mp1-2-fw-config.dts
+@@ -0,0 +1,9 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) Phytec GmbH 2022 - All Rights Reserved
++ * Author: Christophe PARANT <c.parant@phytec.fr>.
++ */
++
++#define DDR_SIZE       0x40000000 /* 1GB */
++#include "stm32mp15-fw-config.dts"
++
 diff --git a/fdts/phycore-stm32mp1-2.dts b/fdts/phycore-stm32mp1-2.dts
 new file mode 100644
 index 000000000..23d14a4ea
@@ -74,6 +101,21 @@ index 000000000..23d14a4ea
 +&sdmmc2 {
 +        status = "okay";
 +};
++
+diff --git a/fdts/phycore-stm32mp1-3-fw-config.dts b/fdts/phycore-stm32mp1-3-fw-config.dts
+new file mode 100644
+index 000000000..fd4fcc913
+--- /dev/null
++++ b/fdts/phycore-stm32mp1-3-fw-config.dts
+@@ -0,0 +1,9 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) Phytec GmbH 2022 - All Rights Reserved
++ * Author: Christophe PARANT <c.parant@phytec.fr>.
++ */
++
++#define DDR_SIZE	0x40000000 /* 1GB */
++#include "stm32mp15-fw-config.dts"
 +
 diff --git a/fdts/phycore-stm32mp1-3.dts b/fdts/phycore-stm32mp1-3.dts
 new file mode 100644
@@ -128,6 +170,21 @@ index 000000000..14d01e508
 +        status = "okay";
 +};
 +
+diff --git a/fdts/phycore-stm32mp1-4-fw-config.dts b/fdts/phycore-stm32mp1-4-fw-config.dts
+new file mode 100644
+index 000000000..0b260502d
+--- /dev/null
++++ b/fdts/phycore-stm32mp1-4-fw-config.dts
+@@ -0,0 +1,9 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) Phytec GmbH 2022 - All Rights Reserved
++ * Author: Christophe PARANT <c.parant@phytec.fr>.
++ */
++
++#define DDR_SIZE       0x40000000 /* 1GB */
++#include "stm32mp15-fw-config.dts"
++
 diff --git a/fdts/phycore-stm32mp1-4.dts b/fdts/phycore-stm32mp1-4.dts
 new file mode 100644
 index 000000000..d2972f49e
@@ -181,6 +238,21 @@ index 000000000..d2972f49e
 +        status = "okay";
 +};
 +
+diff --git a/fdts/phycore-stm32mp1-5-fw-config.dts b/fdts/phycore-stm32mp1-5-fw-config.dts
+new file mode 100644
+index 000000000..0b260502d
+--- /dev/null
++++ b/fdts/phycore-stm32mp1-5-fw-config.dts
+@@ -0,0 +1,9 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) Phytec GmbH 2022 - All Rights Reserved
++ * Author: Christophe PARANT <c.parant@phytec.fr>.
++ */
++
++#define DDR_SIZE       0x40000000 /* 1GB */
++#include "stm32mp15-fw-config.dts"
++
 diff --git a/fdts/phycore-stm32mp1-5.dts b/fdts/phycore-stm32mp1-5.dts
 new file mode 100644
 index 000000000..7eb51d423
@@ -230,6 +302,21 @@ index 000000000..7eb51d423
 +        status = "okay";
 +};
 +
+diff --git a/fdts/phycore-stm32mp1-6-fw-config.dts b/fdts/phycore-stm32mp1-6-fw-config.dts
+new file mode 100644
+index 000000000..bc034c3f2
+--- /dev/null
++++ b/fdts/phycore-stm32mp1-6-fw-config.dts
+@@ -0,0 +1,9 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) Phytec GmbH 2022 - All Rights Reserved
++ * Author: Christophe PARANT <c.parant@phytec.fr>.
++ */
++
++#define DDR_SIZE       0x20000000 /* 512MB */
++#include "stm32mp15-fw-config.dts"
++
 diff --git a/fdts/phycore-stm32mp1-6.dts b/fdts/phycore-stm32mp1-6.dts
 new file mode 100644
 index 000000000..405b921b0
@@ -278,6 +365,21 @@ index 000000000..405b921b0
 +&sdmmc2 {
 +        status = "disabled";
 +};
+diff --git a/fdts/phycore-stm32mp1-7-fw-config.dts b/fdts/phycore-stm32mp1-7-fw-config.dts
+new file mode 100644
+index 000000000..bc034c3f2
+--- /dev/null
++++ b/fdts/phycore-stm32mp1-7-fw-config.dts
+@@ -0,0 +1,9 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) Phytec GmbH 2022 - All Rights Reserved
++ * Author: Christophe PARANT <c.parant@phytec.fr>.
++ */
++
++#define DDR_SIZE       0x20000000 /* 512MB */
++#include "stm32mp15-fw-config.dts"
++
 diff --git a/fdts/phycore-stm32mp1-7.dts b/fdts/phycore-stm32mp1-7.dts
 new file mode 100644
 index 000000000..c172a3728
@@ -784,10 +886,10 @@ index 000000000..7c4abf02e
 +};
 diff --git a/fdts/phycore-stm32mp15-som.dtsi b/fdts/phycore-stm32mp15-som.dtsi
 new file mode 100644
-index 000000000..3b1ddf3aa
+index 000000000..673bc8557
 --- /dev/null
 +++ b/fdts/phycore-stm32mp15-som.dtsi
-@@ -0,0 +1,544 @@
+@@ -0,0 +1,542 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
 +/*
 + * Copyright (C) Phytec GmbH 2019-2020 - All Rights Reserved
@@ -1004,10 +1106,9 @@ index 000000000..3b1ddf3aa
 +
 +			vtt_ddr: ldo3 {
 +				regulator-name = "vtt_ddr";
-+				regulator-min-microvolt = <500000>;
-+				regulator-max-microvolt = <750000>;
 +				regulator-always-on;
 +				regulator-over-current-protection;
++                                st,regulator-sink-source;
 +				lp-stop {
 +					regulator-off-in-suspend;
 +				};
@@ -1061,7 +1162,6 @@ index 000000000..3b1ddf3aa
 +			vref_ddr: vref_ddr {
 +				regulator-name = "vref_ddr";
 +				regulator-always-on;
-+				regulator-over-current-protection;
 +				lp-stop {
 +					regulator-on-in-suspend;
 +				};
@@ -1333,5 +1433,5 @@ index 000000000..3b1ddf3aa
 +};
 +
 -- 
-2.17.1
+2.25.1
 
