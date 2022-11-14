@@ -1,8 +1,8 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 GIT_URL = "git://git.phytec.de/STM32CubeMP1"
-BRANCH = "1.4.0-phy"
-SRCREV = "cc9da152cf60c58c9164195299b3c3a0be913916"
+BRANCH = "1.5.0-phy"
+SRCREV = "309a29553fc849f3064834fb45c0ce157dc5d118"
 
 SRC_URI = "${GIT_URL};branch=${BRANCH} \
 "
@@ -23,6 +23,8 @@ M4_BOARDS ?= "STM32MP15-phyBOARD-Sargas"
 
 # Project list compatible with the boards reference
 PROJECTS_LIST = " \
+	STM32MP15-phyBOARD-Sargas/Examples/ADC/ADC_SingleConversion_Polling \
+	STM32MP15-phyBOARD-Sargas/Examples/ADC/ADC_SingleConversion_TriggerTimer_DMA \
 	STM32MP15-phyBOARD-Sargas/Examples/GPIO/GPIO_EXTI \
 	STM32MP15-phyBOARD-Sargas/Examples/UART/UART_Receive_Transmit_Console \
 	STM32MP15-phyBOARD-Sargas/Applications/OpenAMP/OpenAMP_raw \
@@ -32,6 +34,8 @@ PROJECTS_LIST = " \
 
 # Default Project list when using specific config for STM32CubeMX generated project
 PROJECTS_LIST:stm32mpcommonmx = " \
+	STM32MP15-phyBOARD-Sargas/Examples/ADC/ADC_SingleConversion_Polling \
+	STM32MP15-phyBOARD-Sargas/Examples/ADC/ADC_SingleConversion_TriggerTimer_DMA \
 	STM32MP15-phyBOARD-Sargas/Examples/GPIO/GPIO_EXTI \
 	STM32MP15-phyBOARD-Sargas/Examples/UART/UART_Receive_Transmit_Console \
 	STM32MP15-phyBOARD-Sargas/Applications/OpenAMP/OpenAMP_raw \
