@@ -494,10 +494,10 @@ PHY_EXPANSIONS += "${@bb.utils.contains('MACHINE_FEATURES', 'bluetooth', 'phyboa
 PHY_EXPANSIONS += "${@bb.utils.contains_any('MACHINE_FEATURES', 'wifi bluetooth', 'phyboard-stm32mp1-pi-hat-redbear.dtbo', '', d)}"
 
 # phyCAM-P
-PHY_EXPANSIONS += "phyboard-stm32mp1-phycam-vm010-bw.dtbo"
-PHY_EXPANSIONS += "phyboard-stm32mp1-phycam-vm010-col.dtbo"
-PHY_EXPANSIONS += "phyboard-stm32mp1-phycam-vm010-bw-10bits.dtbo"
-PHY_EXPANSIONS += "phyboard-stm32mp1-phycam-vm010-col-10bits.dtbo"
+PHY_EXPANSIONS += "phyboard-stm32mp1-pcm939l-phycam-vm010-bw-8bits.dtbo"
+PHY_EXPANSIONS += "phyboard-stm32mp1-pcm939l-phycam-vm010-col-8bits.dtbo"
+PHY_EXPANSIONS += "phyboard-stm32mp1-pcm939-phycam-vm010-bw-10bits.dtbo"
+PHY_EXPANSIONS += "phyboard-stm32mp1-pcm939-phycam-vm010-col-10bits.dtbo"
 PHY_EXPANSIONS += "phyboard-stm32mp1-pcm939l-phycam-vm016-8bits.dtbo"
 PHY_EXPANSIONS += "phyboard-stm32mp1-pcm939-phycam-vm016-8bits.dtbo"
 PHY_EXPANSIONS += "phyboard-stm32mp1-pcm939-phycam-vm016-10bits.dtbo"
