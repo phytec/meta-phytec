@@ -498,6 +498,9 @@ PHY_EXPANSIONS += "phyboard-stm32mp1-phycam-vm010-bw.dtbo"
 PHY_EXPANSIONS += "phyboard-stm32mp1-phycam-vm010-col.dtbo"
 PHY_EXPANSIONS += "phyboard-stm32mp1-phycam-vm010-bw-10bits.dtbo"
 PHY_EXPANSIONS += "phyboard-stm32mp1-phycam-vm010-col-10bits.dtbo"
+PHY_EXPANSIONS += "phyboard-stm32mp1-pcm939l-phycam-vm016-8bits.dtbo"
+PHY_EXPANSIONS += "phyboard-stm32mp1-pcm939-phycam-vm016-8bits.dtbo"
+PHY_EXPANSIONS += "phyboard-stm32mp1-pcm939-phycam-vm016-10bits.dtbo"
 
 # DT overlay to enable RS485 at boot time
 PHY_EXPANSIONS += "phyboard-stm32mp1-rs485.dtbo"

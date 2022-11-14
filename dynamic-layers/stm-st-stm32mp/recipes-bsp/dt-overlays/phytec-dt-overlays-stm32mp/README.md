@@ -33,6 +33,10 @@ phyboard-stm32mp1-phycam-vm010-col.dtbo         - phyCAM-P VM-010 COL connected 
 phyboard-stm32mp1-phycam-vm010-bw-10bits.dtbo   - phyCAM-P VM-010 B&W connected with 10bits data bus
 phyboard-stm32mp1-phycam-vm010-col-10bits.dtbo  - phyCAM-P VM-010 COL connected with 10bits data bus
 
+phyboard-stm32mp1-pcm939l-phycam-vm016-8bits    - phyCAM-P VM-016 (COL or B&W) connected to phyBOARD-Sargas PCM-939L (8bits per pixel only)
+phyboard-stm32mp1-pcm939-phycam-vm016-8bits     - phyCAM-P VM-016 (COL or B&W) connected to phyBOARD-Sargas PCM-939 - 8bits per pixel configuration
+phyboard-stm32mp1-pcm939-phycam-vm016-10bits    - phyCAM-P VM-016 (COL or B&W) connected to phyBOARD-Sargas PCM-939 - 10bits per pixel configuration
+
 # DT overlay to enable RS485 at boot time
 phyboard-stm32mp1-rs485.dtbo
 
