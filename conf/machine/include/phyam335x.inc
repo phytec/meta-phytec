@@ -44,15 +44,14 @@ XSERVER = "xserver-xorg \
            xf86-input-mouse \
            xf86-video-fbdev \
            xf86-input-keyboard"
-# Default to external video, change to smallscreen for built-in LCD
-GUI_MACHINE_CLASS = "smallscreen"
 
 # OpenGLES support for AM335x SGX Core
 PREFERRED_PROVIDER_virtual/libgles1 ?= "ti-sgx-ddk-um"
 PREFERRED_PROVIDER_virtual/libgles2 ?= "ti-sgx-ddk-um"
 PREFERRED_PROVIDER_virtual/egl ?= "ti-sgx-ddk-um"
+PREFERRED_PROVIDER_virtual/libgbm ?= "ti-sgx-ddk-um"
 
-QT_QPA_DEFAULT_PLATFORM ?= "${@bb.utils.contains('MACHINE_FEATURES', 'sgx', 'eglfs', 'linuxfb', d)}"
+QT_QPA_DEFAULT_PLATFORM ?= "${@bb.utils.contains('MACHINE_FEATURES', 'gpu', 'eglfs', 'linuxfb', d)}"
 
 #WIC
 IMAGE_CLASSES += "wic-helper"
