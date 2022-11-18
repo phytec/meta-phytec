@@ -36,4 +36,4 @@ do_deploy() {
 
 FILES:${PN} = "/overlays/*.dtbo /overlays/README.md"
 
-COMPATIBLE_MACHINE  = "^(mx6-generic-bsp|mx6ul-generic-bsp)$"
+COMPATIBLE_MACHINE  = "^(mx6-generic-bsp|mx6ul-generic-bsp|ti33x)$"
