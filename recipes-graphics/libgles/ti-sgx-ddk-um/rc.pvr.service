@@ -1,0 +1,13 @@
+[Unit]
+Description=Wrapper for the rc.pvr init script
+
+[Service]
+Type=forking
+Restart=no
+TimeoutSec=5min
+IgnoreSIGPIPE=no
+KillMode=process
+GuessMainPID=no
+RemainAfterExit=yes
+ExecStart=/etc/init.d/rc.pvr start
+ExecStop=/etc/init.d/rc.pvr stop
