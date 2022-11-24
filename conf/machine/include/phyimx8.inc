@@ -38,7 +38,11 @@ EMMC_DEV:mx8mm-generic-bsp ?= "2"
 EMMC_DEV:mx8mn-generic-bsp ?= "2"
 EMMC_DEV:mx8mp-generic-bsp ?= "2"
 
+# rootfs alignment required for RAUC adaptive update
+IMAGE_ROOTFS_ALIGNMENT:update = "4"
+
 # Default images to build
 IMAGE_FSTYPES = "tar.gz wic wic.bmap"
+IMAGE_FSTYPES:append:update = " ext4"
 
 MACHINE_FEATURES += "caam optee"
