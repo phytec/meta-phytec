@@ -61,8 +61,12 @@ BOOTLOADER_SEEK_EMMC:mx6ul-generic-bsp ?= "0"
 EMMC_DEV:mx6ul-generic-bsp ?= "1"
 NAND_DEV:mx6ul-generic-bsp ?= "0"
 
+# rootfs alignment required for RAUC adaptive update
+IMAGE_ROOTFS_ALIGNMENT:update = "4"
+
 # default images to build
 IMAGE_FSTYPES ?= "tar.gz wic ubifs"
+IMAGE_FSTYPES:append:update = " ext4"
 
 # Avoid pulling package 'gstreamer1.0-plugins-bad-meta' into the image
 # 'core-image-sato', because the recipe gstreamer1.0-plugins-bad depends on
