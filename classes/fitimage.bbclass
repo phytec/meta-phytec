@@ -64,6 +64,9 @@ FITIMAGE_SIGN_ENGINE:mx8m-nxp-bsp ??= "nxphab"
 FITIMAGE_NO_DTB_OVERLAYS ??= "false"
 FITIMAGE_NO_DTB_OVERLAYS[type] = "boolean"
 
+FITIMAGE_IMAGE_SUFFIX ??= ""
+FITIMAGE_IMAGE_LINK_NAME ??= "fitImage"
+
 # Create dependency list from images
 python __anonymous() {
     for slot in (d.getVar('FITIMAGE_SLOTS') or "").split():
@@ -461,8 +464,11 @@ do_deploy() {
         install -m 0644 ${S}/*.dtb ${DEPLOYDIR}/
     fi
 
-    linux_bin_symlink_name="fitImage"
-    linux_bin_base_name="${linux_bin_symlink_name}-${PN}-${PV}-${PR}-${MACHINE}${IMAGE_VERSION_SUFFIX}"
+    linux_bin_base_name="fitImage-${PN}-${PV}-${PR}-${MACHINE}${IMAGE_VERSION_SUFFIX}${FITIMAGE_IMAGE_SUFFIX}"
+    linux_bin_symlink_name="${PN}-${MACHINE}${FITIMAGE_IMAGE_SUFFIX}"
+    if [ -n "${FITIMAGE_IMAGE_LINK_NAME}" ]; then
+        linux_bin_symlink_name="${FITIMAGE_IMAGE_LINK_NAME}${FITIMAGE_IMAGE_SUFFIX}"
+    fi
     printf 'Copying fitImage file...'
     install -m 0644 ${B}/fitImage ${DEPLOYDIR}/${linux_bin_base_name}
 
