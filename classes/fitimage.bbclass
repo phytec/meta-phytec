@@ -198,7 +198,6 @@ def fitimage_emit_section_ramdisk(d,fd,img_file,img_path):
     ramdisk_csum = d.expand("${FITIMAGE_HASH}")
     arch = d.getVar("TARGET_ARCH")
     arch = "arm64" if arch == "aarch64" else arch
-    ramdisk_ctype = "none"
     ramdisk_loadline = "load = <00000000>;"
     ramdisk_entryline = "entry = <00000000>;"
 
@@ -213,6 +212,7 @@ def fitimage_emit_section_ramdisk(d,fd,img_file,img_path):
     fd.write('\t\t\t'   +   'type = "ramdisk";\n')
     fd.write('\t\t\t'   +   'arch = "%s";\n' % arch)
     fd.write('\t\t\t'   +   'os = "linux";\n')
+    fd.write('\t\t\t'   +   'compression = "none";\n')
     fd.write('\t\t\t'   +   '%s\n' % ramdisk_loadline)
     fd.write('\t\t\t'   +   '%s\n' % ramdisk_entryline)
     fd.write('\t\t\t'   +   'hash-1 {\n')
