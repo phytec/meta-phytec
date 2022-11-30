@@ -26,7 +26,7 @@ KERNEL_MODULE_AUTOLOAD += " cryptodev"
 
 SERIAL_CONSOLES ?= "115200;ttyS0"
 # dont install kernelimage to rootfs
-RDEPENDS:${KERNEL_PACKAGE_NAME}-base = ""
+RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base = ""
 
 # rootfs images
 # Use the expected value of the ubifs filesystem's volume name in the kernel

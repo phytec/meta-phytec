@@ -58,7 +58,7 @@ SERIAL_CONSOLES = "115200;ttySTM0"
 SERIAL_CONSOLE = "115200 ttySTM0"
 
 # Don't include kernels in standard images
-RDEPENDS:${KERNEL_PACKAGE_NAME}-base = ""
+RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base = ""
 
 # Ship all kernel modules by default
 MACHINE_EXTRA_RRECOMMENDS = " kernel-modules"

@@ -12,7 +12,7 @@ PREFERRED_PROVIDER_virtual/kernel ?= "linux-mainline"
 KERNEL_IMAGETYPE ?= "zImage"
 
 # dont install kernelimage to rootfs
-RDEPENDS:${KERNEL_PACKAGE_NAME}-base = ""
+RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base = ""
 
 # XServer
 PREFERRED_PROVIDER_virtual/xserver ?= "xserver-xorg"
