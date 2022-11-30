@@ -3,7 +3,7 @@
 #
 # You have to set the slot images in your recipe file following this example:
 #
-#    FITIMAGE_SLOTS ?= "kernel fdt fdto setup ramdisk"
+#    FITIMAGE_SLOTS ?= "kernel fdt fdto setup ramdisk bootscript"
 #
 #    FITIMAGE_SLOT_kernel ?= "${PREFERRED_PROVIDER_virtual/kernel}"
 #    FITIMAGE_SLOT_kernel[type] ?= "kernel"
@@ -25,6 +25,9 @@
 #    FITIMAGE_SLOT_ramdisk ?= "core-image-minimal"
 #    FITIMAGE_SLOT_ramdisk[type] ?= "ramdisk"
 #    FITIMAGE_SLOT_ramdisk[fstype] ?= "cpio.gz"
+#
+#    FITIMAGE_SLOT_bootscript ?= "bootscript"
+#    FITIMAGE_SLOT_bootscript[file] ?= "boot.scr"
 #
 #    FITIMAGE_its ?= "setup.its"  (FIT Image creation File, if set, then no creation if config file)
 #
@@ -223,10 +226,27 @@ def fitimage_emit_section_ramdisk(d,fd,img_file,img_path):
     fd.write('\t\t\t'   +   '};\n')
     fd.write('\t\t'     + '};\n')
 
+def fitimage_emit_section_bootscript(d,fd,imgpath,imgsource):
+    bootscript_csum = d.expand("${FITIMAGE_HASH}")
+    arch = d.getVar("TARGET_ARCH")
+    arch = "arm64" if arch == "aarch64" else arch
+
+    fd.write('\t\t'     + 'bootscr-%s {\n' % imgsource)
+    fd.write('\t\t\t'   +   'description = "U-boot script";\n')
+    fd.write('\t\t\t'   +   'data = /incbin/("%s/%s");\n' % (imgpath,imgsource))
+    fd.write('\t\t\t'   +   'type = "script";\n')
+    fd.write('\t\t\t'   +   'arch = "%s";\n' % arch)
+    fd.write('\t\t\t'   +   'os = "linux";\n')
+    fd.write('\t\t\t'   +   'compression = "none";\n')
+    fd.write('\t\t\t'   +   'hash-1 {\n')
+    fd.write('\t\t\t\t' +     'algo = "%s";\n' % bootscript_csum)
+    fd.write('\t\t\t'   +   '};\n')
+    fd.write('\t\t'     + '};\n')
+
 #
 # Emit the fitImage ITS configuration section
 #
-def fitimage_emit_section_config(d,fd,dtb,kernelcount,ramdiskcount,setupcount,i):
+def fitimage_emit_section_config(d,fd,dtb,kernelcount,ramdiskcount,setupcount,bootscriptid,i):
     conf_csum = d.expand("${FITIMAGE_HASH}")
     conf_encrypt = d.getVar("FITIMAGE_SIGNATURE_ENCRYPTION") or ""
     path, filename = os.path.split(d.getVar("FITIMAGE_SIGN_KEY_PATH") or "")
@@ -238,6 +258,7 @@ def fitimage_emit_section_config(d,fd,dtb,kernelcount,ramdiskcount,setupcount,i)
     fdt_line=""
     ramdisk_line=""
     setup_line=""
+    bootscript_line=""
     default_line=""
     if len(dtb) > 0:
          conf_desc = conf_desc + ", FDT blob"
@@ -247,6 +268,9 @@ def fitimage_emit_section_config(d,fd,dtb,kernelcount,ramdiskcount,setupcount,i)
          ramdisk_line="ramdisk = \"ramdisk-%s\";" % ramdiskcount
     if len(setupcount) > 0:
          conf_desc = conf_desc + ", setup"
+    if len(bootscriptid) > 0:
+         conf_desc = conf_desc + ", u-boot script"
+         bootscript_line="bootscr = \"bootscr-%s\";" % bootscriptid
     if i  == 1:
           default_line="default = \"%s\";" % dtb
 
@@ -257,6 +281,7 @@ def fitimage_emit_section_config(d,fd,dtb,kernelcount,ramdiskcount,setupcount,i)
     fd.write('\t\t\t' +   '%s\n' % fdt_line)
     fd.write('\t\t\t' +   '%s\n' % ramdisk_line)
     fd.write('\t\t\t' +   '%s\n' % setup_line)
+    fd.write('\t\t\t' +   '%s\n' % bootscript_line)
 
     if len(conf_sign_keyname) > 0:
        sign_line="sign-images = \"kernel\""
@@ -266,6 +291,8 @@ def fitimage_emit_section_config(d,fd,dtb,kernelcount,ramdiskcount,setupcount,i)
             sign_line = sign_line + ", \"ramdisk\""
        if len(setupcount) > 0:
             sign_line = sign_line + ", \"setup\""
+       if len(bootscriptid) > 0:
+            sign_line = sign_line + ", \"bootscr\""
        sign_line = sign_line + ";"
        fd.write('\t\t\t'   + 'signature-1 {\n')
        fd.write('\t\t\t\t' +   'algo = "%s,%s";\n' % (conf_csum, conf_encrypt))
@@ -322,6 +349,7 @@ def write_manifest(d):
     DTBOS = ""
     ramdiskcount = ""
     setupcount = ""
+    bootscriptid = ""
 
     try:
         fd = open('%smanifest.its' % path, 'w')
@@ -391,6 +419,14 @@ def write_manifest(d):
             img_file = "%s-%s.%s" % (d.getVar('FITIMAGE_SLOT_%s' % slot), machine, img_fstype)
             img_path = d.getVar("DEPLOY_DIR_IMAGE")
             fitimage_emit_section_ramdisk(d,fd,img_file,img_path)
+         elif imgtype == 'bootscript':
+            if bootscriptid:
+                bb.fatal("Only 1 boot script supported (already set to: %s)" % bootscriptid)
+            if slotflags and 'file' in slotflags:
+                imgsource = d.getVarFlag('FITIMAGE_SLOT_%s' % slot, 'file')
+            imgpath = d.getVar("DEPLOY_DIR_IMAGE")
+            bootscriptid = imgsource
+            fitimage_emit_section_bootscript(d,fd,imgpath,imgsource)
     fitimage_emit_section_maint(d,fd,'sectend')
     #
     # Step 5: Prepare a configurations section
@@ -398,7 +434,7 @@ def write_manifest(d):
     fitimage_emit_section_maint(d,fd,'confstart')
     i = 1
     for dtb in (DTBS or "").split():
-        fitimage_emit_section_config(d,fd,dtb,kernelcount,ramdiskcount,setupcount,i)
+        fitimage_emit_section_config(d,fd,dtb,kernelcount,ramdiskcount,setupcount,bootscriptid,i)
         i = i +1
     for dtb in (DTBOS or "").split():
         fitimage_emit_section_config_fdto(d,fd,dtb)
