@@ -20,7 +20,7 @@
 #    FITIMAGE_SLOT_fdtapply ?= "${PREFERRED_PROVIDER_virtual/kernel}"
 #    FITIMAGE_SLOT_fdtapply[type] ?= "fdtapply"
 #    FITIMAGE_SLOT_fdtapply[file] ?= "${MACHINE}.dtb list of dtbo"
-#    FITIMAGE_SLOT_fdtapplyname] ?= "name for new generated fdt"
+#    FITIMAGE_SLOT_fdtapply[name] ?= "name for new generated fdt"
 #
 #    FITIMAGE_SLOT_ramdisk ?= "core-image-minimal"
 #    FITIMAGE_SLOT_ramdisk[type] ?= "ramdisk"
