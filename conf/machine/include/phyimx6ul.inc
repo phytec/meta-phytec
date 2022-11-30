@@ -24,7 +24,7 @@ MACHINE_EXTRA_RRECOMMENDS = "kernel-modules"
 MACHINE_EXTRA_RDEPENDS = "firmware-imx-sdma-imx6q"
 
 # dont install kernelimage to rootfs
-RDEPENDS:${KERNEL_PACKAGE_NAME}-base = ""
+RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base = ""
 
 # cpu feature overwrite support
 MACHINEOVERRIDES .= ":imxpxp"
