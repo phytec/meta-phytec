@@ -351,6 +351,17 @@ def write_manifest(d):
     setupcount = ""
     bootscriptid = ""
 
+    def get_dtbs(dtb_suffix):
+        _dtbs = d.getVar('KERNEL_DEVICETREE')
+        dtbs = str()
+
+        for dtb in _dtbs.split():
+            if not dtb.endswith(dtb_suffix):
+                continue
+            dtbs += os.path.basename(dtb) + ' '
+
+        return dtbs
+
     try:
         fd = open('%smanifest.its' % path, 'w')
     except OSError:
@@ -380,7 +391,9 @@ def write_manifest(d):
             if slotflags and 'file' in slotflags:
                 imgsource = d.getVarFlag('FITIMAGE_SLOT_%s' % slot, 'file')
             else:
-                imgsource = "%s.dtb" % (machine)
+                imgsource = get_dtbs("dtb")
+                if not imgsource:
+                    imgsource = "%s.dtb" % (machine)
             for dtb in (imgsource or "").split():
                 dtb_path, dtb_file = os.path.split(dtb)
                 DTBS = DTBS + " " + dtb_file
@@ -389,6 +402,8 @@ def write_manifest(d):
                 fitimage_emit_section_dtb(d,fd,dtb_file,dtb_path)
          elif imgtype == 'fdto':
                 imgsource = d.getVarFlag('FITIMAGE_SLOT_%s' % slot, 'file')
+                if not imgsource:
+                    imgsource = get_dtbs("dtbo")
                 for dtb in (imgsource or "").split():
                     dtb_path, dtb_file = os.path.split(dtb)
                     DTBOS = DTBOS + " " + dtb_file
