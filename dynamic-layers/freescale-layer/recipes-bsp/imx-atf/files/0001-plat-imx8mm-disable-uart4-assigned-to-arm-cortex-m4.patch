@@ -1,4 +1,4 @@
-From 5bcd378005cdc382d035a93548e09d5d92997e73 Mon Sep 17 00:00:00 2001
+From d696c57936267c1920953306f241d0cad1fe8aa8 Mon Sep 17 00:00:00 2001
 From: Yashwanth Varakala <y.varakala@phytec.de>
 Date: Tue, 27 Sep 2022 12:29:19 +0200
 Subject: [PATCH] plat: imx8mm: disable uart4 assigned to arm-cortex m4
@@ -8,20 +8,20 @@ For tauri-l boards it is necessary to unassign uart4 as debug
 interface.
 
 Signed-off-by: Yashwanth Varakala <y.varakala@phytec.de>
+Signed-off-by: Yannic Moog <y.moog@phytec.de>
 ---
- plat/imx/imx8m/imx8mm/imx8mm_bl31_setup.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ plat/imx/imx8m/imx8mm/imx8mm_bl31_setup.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/plat/imx/imx8m/imx8mm/imx8mm_bl31_setup.c b/plat/imx/imx8m/imx8mm/imx8mm_bl31_setup.c
-index 8702d5160..672c11ec2 100644
+index 3e6d1a04c..35bb98e89 100644
 --- a/plat/imx/imx8m/imx8mm/imx8mm_bl31_setup.c
 +++ b/plat/imx/imx8m/imx8mm/imx8mm_bl31_setup.c
-@@ -61,7 +61,8 @@ static const struct imx_rdc_cfg rdc[] = {
+@@ -107,7 +107,7 @@ static const struct imx_rdc_cfg rdc[] = {
  	RDC_MDAn(RDC_MDA_M4, DID1),
  
  	/* peripherals domain permission */
 -	RDC_PDAPn(RDC_PDAP_UART4, D1R | D1W),
-+	/* RDC_PDAPn(RDC_PDAP_UART4, D1R | D1W), */
 +	RDC_PDAPn(RDC_PDAP_UART4, D0R | D0W),
  	RDC_PDAPn(RDC_PDAP_UART2, D0R | D0W),
  	RDC_PDAPn(RDC_PDAP_UART1, D0R | D0W),
