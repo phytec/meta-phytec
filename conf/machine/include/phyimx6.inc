@@ -58,4 +58,4 @@ IMAGE_ROOTFS_ALIGNMENT:update = "4"
 
 # default images to build
 IMAGE_FSTYPES ?= "tar.gz wic ubifs"
-IMAGE_FSTYPES:apped:update = " ext4"
+IMAGE_FSTYPES:append:update = " ext4"
