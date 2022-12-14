@@ -1,9 +1,7 @@
 require barebox_${PV}.bb
 require barebox-ipl.inc
 
-SRC_URI:append = " file://netboot.cfg"
-
-PR = "${INC_PR}.1"
+PR = "${INC_PR}.0"
 
 do_deploy:append () {
     # deploy spi boot images
@@ -14,7 +12,7 @@ do_deploy:append () {
     fi
 
     # deploy peripheral boot images (without GP header)
-    perimg=$(echo ${BAREBOX_IPL_BIN} | sed 's/barebox/start/;s/-/_/g;s/mlo/sram/;s/img/pblx/')
+    perimg=$(echo ${BAREBOX_IPL_BIN} | sed 's/barebox/start/;s/-/_/g;s/mlo/sram/;s/img/pblb/')
     install -m 0644 ${B}/$perimg ${DEPLOYDIR}/${BAREBOX_IPL_IMAGE_NAME}.img.per
     ln -sf ${BAREBOX_IPL_IMAGE_NAME}.img.per ${DEPLOYDIR}/${BAREBOX_IPL_BIN_LINK_NAME}.per
 }
