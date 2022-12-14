@@ -74,7 +74,7 @@ DEVICE_START_OFFSET_BOOT1:EMMC ?= "boot2"
 DEVICE_PARTUUID_ROOTFS:EMMC ?= "${@d.getVar(d.expand('DEVICE_PARTUUID_ROOTFS:${DEVICE:EMMC}')) or ''}"
 
 # Configure the list of boards that enable EMMC
-DEVICE_BOARD_ENABLE:EMMC += "${@bb.utils.contains_any('BOOTDEVICE_LABELS', [ 'emmc', 'nor-emmc' ], '${STM32MP_DT_FILES_PHYCORE}', '', d)}"
+DEVICE_BOARD_ENABLE:EMMC += "${@bb.utils.contains_any('BOOTDEVICE_LABELS', ['emmc', 'nor-emmc' ], '${STM32MP_DEVICETREE}', '', d)}"
 
 # -----------------------------------------------------------------------------
 # NAND
@@ -87,7 +87,7 @@ DEVICE_MAX_OFFSET:NAND     ?= "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nand-2
 DEVICE_ALIGNMENT_SIZE:NAND ?= "0x00040000"
 
 # Configure the list of boards that enable NAND
-DEVICE_BOARD_ENABLE:NAND   += "${@bb.utils.contains_any('BOOTDEVICE_LABELS', [ 'nand-2-256', 'nand-2-64' ], '${STM32MP_DT_FILES_PHYCORE}', '', d)}"
+DEVICE_BOARD_ENABLE:NAND   += "${@bb.utils.contains_any('BOOTDEVICE_LABELS', ['nand-2-256', 'nand-2-64' ], '${STM32MP_DEVICETREE}', '', d)}"
 
 # -----------------------------------------------------------------------------
 # NOR
@@ -97,7 +97,7 @@ DEVICE_MAX_OFFSET:NOR      ?= "0x01000000"
 DEVICE_ALIGNMENT_SIZE:NOR  ?= "0x00010000"
 
 # Configure the list of boards that enable NOR
-DEVICE_BOARD_ENABLE:NOR    += "${@bb.utils.contains_any('BOOTDEVICE_LABELS', [ 'nor-sdcard', 'nor-emmc' ], '${STM32MP_DT_FILES_PHYCORE}', '', d)}"
+DEVICE_BOARD_ENABLE:NOR    += "${@bb.utils.contains_any('BOOTDEVICE_LABELS', ['nor-sdcard', 'nor-emmc' ], '${STM32MP_DEVICETREE}', '', d)}"
 
 # -----------------------------------------------------------------------------
 # SDCARD
@@ -113,7 +113,7 @@ DEVICE_ALIGNMENT_SIZE:SDCARD  ?= "0x00000200"
 DEVICE_PARTUUID_ROOTFS:SDCARD ?= "${@d.getVar(d.expand('DEVICE_PARTUUID_ROOTFS:${DEVICE:SDCARD}')) or ''}"
 
 # Configure the list of boards that enable SDCARD
-DEVICE_BOARD_ENABLE:SDCARD += "${@bb.utils.contains_any('BOOTDEVICE_LABELS', [ 'sdcard', 'nor-sdcard' ], '${STM32MP_DT_FILES_PHYCORE}', '', d)}"
+DEVICE_BOARD_ENABLE:SDCARD += "${@bb.utils.contains_any('BOOTDEVICE_LABELS', ['sdcard', 'nor-sdcard' ], '${STM32MP_DEVICETREE}', '', d)}"
 
 # -----------------------------------------------------------------------------
 # Fixed configuration from U-Boot source code

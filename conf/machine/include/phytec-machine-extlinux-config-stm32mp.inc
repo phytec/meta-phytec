@@ -62,7 +62,7 @@ UBOOT_EXTLINUX_MENU_DESCRIPTION:rootfs = "OpenSTLinux"
 # the 'newlabel1' and 'newlabel2' labels will be added in 'extra-target_extlinux.conf'
 # -----------------------------------------------------------------------------
 # Define additional extra targets to consider
-UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG:target-sdcard += "${STM32MP_DT_FILES_PHYCORE}"
-UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG:target-emmc += "${STM32MP_DT_FILES_PHYCORE}"
-UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG:target-nand += "${STM32MP_DT_FILES_PHYCORE}"
+UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG:target-sdcard += "${STM32MP_DEVICETREE}"
+UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG:target-emmc += "${STM32MP_DEVICETREE}"
+UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG:target-nand += "${STM32MP_DEVICETREE}"
 

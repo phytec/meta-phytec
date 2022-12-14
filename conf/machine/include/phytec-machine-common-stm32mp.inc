@@ -63,11 +63,8 @@ RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base = ""
 # Ship all kernel modules by default
 MACHINE_EXTRA_RRECOMMENDS = " kernel-modules"
 
-# Default device tree list supported per board
-STM32MP_DT_FILES_PHYCORE ??= ""
-
-# Set default supported device tree
-STM32MP_DEVICETREE = "${STM32MP_DT_FILES_PHYCORE}"
+# Set default supported device tree for the bootloaders
+STM32MP_DEVICETREE = "${BOOTLOADER_DT}"
 
 # =========================================================================
 # Machine specific packages
@@ -477,7 +474,8 @@ UBOOT_ENTRYPOINT = "0xC0800000"
 
 # List of device tree to install
 KERNEL_DEVICETREE ?= "${STM32MP_KERNEL_DEVICETREE}"
-STM32MP_KERNEL_DEVICETREE += "${@' '.join('%s.dtb' % d for d in '${STM32MP_DEVICETREE}'.split())}"
+
+STM32MP_KERNEL_DEVICETREE += "${@' '.join('%s.dtb' % d for d in '${KERNEL_DT}'.split())}"
 STM32MP_KERNEL_DEVICETREE += "${@' '.join('%s.dtb' % d for d in '${CUBE_M4_EXAMPLES_DT}'.split())}"
 STM32MP_KERNEL_DEVICETREE += "${@' '.join('%s.dtb' % d for d in '${LINUX_A7_EXAMPLES_DT}'.split())}"
 

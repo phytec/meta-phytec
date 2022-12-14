@@ -11,7 +11,7 @@ FLASHLAYOUT_CONFIG_LABELS:deleteall = "phycore"
 # -----------------------------------------------------------------------------
 # Define label types for each config
 # -----------------------------------------------------------------------------
-FLASHLAYOUT_TYPE_LABELS:deleteall:phycore = "${STM32MP_DT_FILES_PHYCORE}"
+FLASHLAYOUT_TYPE_LABELS:deleteall:phycore = "${STM32MP_DEVICETREE}"
 
 # -----------------------------------------------------------------------------
 # Define partitions to consider for flashlayout file generation
