@@ -547,7 +547,7 @@ UBOOT_CONFIG:append:stm32mp1common = " basic "
 BINARY_NAME = "${@bb.utils.contains('MACHINE_FEATURES', 'fip', 'u-boot.dtb', 'u-boot.stm32', d)}"
 # Define u-boot defconfig and binary to use for each UBOOT_CONFIG
 UBOOT_CONFIG[basic]   = "stm32mp15_basic_defconfig,,u-boot.img"
-UBOOT_CONFIG[trusted] = "stm32mp15_trusted_defconfig,,${BINARY_NAME}"
+UBOOT_CONFIG[trusted] = "phycore-stm32mp15_defconfig,,${BINARY_NAME}"
 
 # List of U-Boot device tree to use
 UBOOT_DEVICETREE = "${STM32MP_DEVICETREE}"
