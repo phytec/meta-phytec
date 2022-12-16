@@ -129,6 +129,13 @@ def fitimage_emit_section_kernel(d,fd,imgpath,imgsource,imgcomp):
     kernel_loadline = ""
     if len(d.expand("${FITIMAGE_LOADADDRESS}")) > 0:
         kernel_loadline = "load = <%s>;" % d.expand("${FITIMAGE_LOADADDRESS}")
+        if len(d.expand("${FITIMAGE_DTB_LOADADDRESS}")) > 0 :
+            kernel_path = os.path.join(imgpath,imgsource)
+            kernel_size = os.stat(kernel_path).st_size
+            kernel_ram_endaddress = int(d.expand("${FITIMAGE_LOADADDRESS}"), 16) + kernel_size
+            if kernel_ram_endaddress > int(d.expand("${FITIMAGE_DTB_LOADADDRESS}"), 16):
+                bb.error("The kernel size is too large for the ram area between kernel and fdt load address")
+
     if len(d.expand("${FITIMAGE_ENTRYPOINT}")) > 0:
         kernel_entryline = "entry = <%s>;" % d.expand("${FITIMAGE_ENTRYPOINT}")
     arch = d.getVar("TARGET_ARCH")
