@@ -276,7 +276,7 @@ PARTITIONS_IMAGES += "${@bb.utils.contains('ST_USERFS', '1', 'userfs', '', d)}"
 
 # Define image to use for extra partitions
 STM32MP_BOOTFS_IMAGE      ?= "st-image-bootfs"
-STM32MP_BOOTFS_LABEL      ?= "boot"
+STM32MP_BOOTFS_LABEL      ?= "bootfs"
 STM32MP_BOOTFS_MOUNTPOINT ?= "/boot"
 # Proposed value for bootfs is 64MB
 STM32MP_BOOTFS_SIZE       ?= "65536"
@@ -342,6 +342,9 @@ STM32MP_UBI_VOLUME:prepend = "uboot_config:256:empty uboot_config_r:256:empty "
 
 # Define UBI volume label to use in kernel command line to mount UBI file system
 UBI_VOLNAME ?= "rootfs"
+
+# Manage specific override for UBI bootfs label name to 'boot' (hardcoded on U-Boot)
+UBI_VOLNAME:pn-${STM32MP_BOOTFS_IMAGE} = "boot"
 
 #########################################################################################################
 # Define UBI labels to build
