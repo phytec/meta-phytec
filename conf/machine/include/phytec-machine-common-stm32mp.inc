@@ -557,7 +557,7 @@ UBOOT_SPLASH_PORTRAIT_IMAGE = "splash_portrait"
 UBOOT_SPLASH_LANDSCAPE_IMAGE = "splash_landscape"
 
 # Enable MTDPART check for UBOOT_CONFIG
-UBOOT_MTDPART_CHECK_ENABLE ?= "${@bb.utils.contains_any('BOOTSCHEME_LABELS', 'optee trusted', d.getVarFlag('UBOOT_CONFIG', 'trusted').split(',')[0], '', d)}"
+UBOOT_MTDPART_CHECK_ENABLE ?= ""
 # Set U-Boot MTD partition configurations
 UBOOT_MTDPART_NAND_2_256_BOOT ?= "${@','.join(['%sk(%s)' % (align_size(d, 'NAND', l.split(',')[2], l.split(',')[4]), l.split(',')[1]) for l in d.getVarFlag('PARTITIONS_BOOTLOADER_CONFIG', 'nand-2-256').split()])}"
 UBOOT_MTDPART_NAND_2_64_BOOT  ?= "${@','.join(['%sk(%s)' % (align_size(d, 'NAND', l.split(',')[2], l.split(',')[4]), l.split(',')[1]) for l in d.getVarFlag('PARTITIONS_BOOTLOADER_CONFIG', 'nand-2-64').split()])}"
