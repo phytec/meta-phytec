@@ -120,3 +120,7 @@ DEVICE_BOARD_ENABLE:SDCARD += "${@bb.utils.contains_any('BOOTDEVICE_LABELS', ['s
 # -----------------------------------------------------------------------------
 DEVICE_PARTUUID_ROOTFS:mmc0 ?= "e91c4e10-16e6-4c0e-bd0e-77becf4a3582"
 DEVICE_PARTUUID_ROOTFS:mmc1 ?= "491f6117-415d-4f53-88c9-6e0de54deac6"
+
+DEVICE_TYPEUUID_FIP = "19d5df83-11b0-457b-be2c-7559c13142a5"
+DEVICE_PARTUUID_FIP_A = "4fd84c93-54ef-463f-a7ef-ae25ff887087"
+DEVICE_PARTUUID_FIP_B = "09c54952-d5bf-45af-acee-335303766fb3"
