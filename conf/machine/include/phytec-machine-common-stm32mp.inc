@@ -49,9 +49,6 @@ MACHINE_FEATURES:append = " initrd "
 # in our bootfs image (this avoid dependency loops as rootfs depends on bootfs...)
 DISTRO_EXTRA_RRECOMMENDS:remove = " ${@bb.utils.contains('COMBINED_FEATURES', 'initrd', '${INITRD_PACKAGE}', '', d)} "
 
-# Use FIP image for boot loaders
-MACHINE_FEATURES += "fip"
-
 # Default serial consoles (TTYs) to enable using getty
 # Before kernel 4.18, serial console are ttyS3 but after is ttySTM0
 SERIAL_CONSOLES = "115200;ttySTM0"
@@ -95,19 +92,19 @@ BLUETOOTH_LIST += "linux-firmware-bluetooth-bcm4335"
 #       -   The partition for the first boot loader should follow the naming
 #           rule: fsbl*
 #       -   The partition for the secondary boot loader should follow the naming
-#           rule: ssbl or fip
+#           rule: fip
 # -----------------------------------------------------------------------------
-STM32MP_FSBL1_DATA ?= "${@bb.utils.contains('MACHINE_FEATURES', 'fip', 'arm-trusted-firmware/tf-a-<TYPE>-<DEVICE>.stm32', 'arm-trusted-firmware/tf-a-<TYPE>-<BOOTSCHEME>.stm32', d)}"
+STM32MP_FSBL1_DATA ?= "arm-trusted-firmware/tf-a-<TYPE>-<DEVICE>.stm32"
 STM32MP_FSBL1_NAME ?= "fsbl1"
 STM32MP_FSBL1_SIZE ?= "256"
 STM32MP_FSBL2_DATA ?= "${STM32MP_FSBL1_DATA}"
 STM32MP_FSBL2_NAME ?= "fsbl2"
 STM32MP_FSBL2_SIZE ?= "${STM32MP_FSBL1_SIZE}"
-STM32MP_SSBL1_DATA ?= "${@bb.utils.contains('MACHINE_FEATURES', 'fip', 'fip/fip-<TYPE>-<BOOTSCHEME>${FIP_SIGN_SUFFIX}.bin', 'u-boot/u-boot-<TYPE>-trusted.stm32', d)}"
-STM32MP_SSBL1_NAME ?= "${@bb.utils.contains('MACHINE_FEATURES', 'fip', 'fip', 'ssbl', d)}"
-STM32MP_SSBL1_SIZE ?= "${@bb.utils.contains('MACHINE_FEATURES', 'fip', '4096', '2048', d)}"
+STM32MP_SSBL1_DATA ?= "fip/fip-<TYPE>-<BOOTSCHEME>${FIP_SIGN_SUFFIX}.bin"
+STM32MP_SSBL1_NAME ?= "fip"
+STM32MP_SSBL1_SIZE ?= "4096"
 STM32MP_SSBL2_DATA ?= "${STM32MP_SSBL1_DATA}"
-STM32MP_SSBL2_NAME ?= "${@bb.utils.contains('MACHINE_FEATURES', 'fip', 'fip2', 'ssbl2', d)}"
+STM32MP_SSBL2_NAME ?= "fip2"
 STM32MP_SSBL2_SIZE ?= "${STM32MP_SSBL1_SIZE}"
 STM32MP_UENV_DATA ?= ""
 STM32MP_UENV_NAME ?= "env"
@@ -414,7 +411,7 @@ ST_TOOLS_FOR_SDK:append = " \
 
 # Fip tool
 ST_TOOLS_FOR_SDK:append = " \
-    ${@bb.utils.contains('MACHINE_FEATURES', 'fip', 'nativesdk-${FIPTOOL_WRAPPER}', '', d)} \
+    nativesdk-${FIPTOOL_WRAPPER} \
     "
 
 # Make sure to append mkimage to SDK for kernel uImage build
@@ -540,14 +537,12 @@ UBOOT_CONFIG += "${@bb.utils.contains_any('BOOTSCHEME_LABELS', 'optee trusted', 
 UBOOT_CONFIG:append:stm32mp1common = " basic "
 
 # Select u-boot binary that needs specific devicetree suffix (from UBOOT_DEVICETREE)
-# For legacy mode keep the 'u-boot.stm32' but for FIP feature we need both
 # 'u-boot-nodtb.bin' and 'u-boot.dtb' : prefer 'u-boot.dtb' binary as 'u-boot-nodtb.bin'
 # doesn't need any devicetree suffix (specific case for 'u-boot-nodtb' binary
 # implemented on u-boot-stm32mp recipe)
-BINARY_NAME = "${@bb.utils.contains('MACHINE_FEATURES', 'fip', 'u-boot.dtb', 'u-boot.stm32', d)}"
 # Define u-boot defconfig and binary to use for each UBOOT_CONFIG
 UBOOT_CONFIG[basic]   = "stm32mp15_basic_defconfig,,u-boot.img"
-UBOOT_CONFIG[trusted] = "phycore-stm32mp15_defconfig,,${BINARY_NAME}"
+UBOOT_CONFIG[trusted] = "phycore-stm32mp15_defconfig,,u-boot.dtb"
 
 # List of U-Boot device tree to use
 UBOOT_DEVICETREE = "${STM32MP_DEVICETREE}"
@@ -566,15 +561,10 @@ UBOOT_MTDPART_NAND_2_64_TEE   ?= "${@','.join(['%sk(%s)' % (align_size(d, 'NAND'
 UBOOT_MTDPART_NOR_BOOT        ?= "${@','.join(['%sk(%s)' % (align_size(d, 'NOR', l.split(',')[2], l.split(',')[4]), l.split(',')[1]) for l in d.getVarFlag('PARTITIONS_BOOTLOADER_CONFIG', 'nor-emmc').split()])}"
 UBOOT_MTDPART_NOR_TEE         ?= "${@','.join(['%sk(%s)' % (align_size(d, 'NOR', l.split(',')[2], l.split(',')[4]), l.split(',')[1]) for l in d.getVarFlag('PARTITIONS_OPTEE_CONFIG', 'nor-emmc').split()])}"
 
-UBOOT_MTDPART_4LEGACY += "${@'CONFIG_MTDPARTS_NAND0_TEE=${UBOOT_MTDPART_NAND_2_256_TEE}' if bb.utils.contains('BOOTDEVICE_LABELS', 'nand-2-256', True, False, d) and bb.utils.contains('BOOTSCHEME_LABELS', 'optee', True, False, d) else ''}"
-UBOOT_MTDPART_4LEGACY += "${@'CONFIG_MTDPARTS_NAND0_TEE=${UBOOT_MTDPART_NAND_2_64_TEE}' if bb.utils.contains('BOOTDEVICE_LABELS', 'nand-2-64', True, False, d) and bb.utils.contains('BOOTSCHEME_LABELS', 'optee', True, False, d) else ''}"
-UBOOT_MTDPART_4LEGACY += "${@'CONFIG_MTDPARTS_NOR0_TEE=${UBOOT_MTDPART_NOR_TEE}' if bb.utils.contains('BOOTDEVICE_LABELS', 'nor-emmc', True, False, d) and bb.utils.contains('BOOTSCHEME_LABELS', 'optee', True, False, d) else ''}"
-
 UBOOT_MTDPART_CHECK ?= "\
     ${@bb.utils.contains_any('BOOTDEVICE_LABELS', 'nand-2-256' , 'CONFIG_MTDPARTS_NAND0_BOOT=${UBOOT_MTDPART_NAND_2_256_BOOT}', '', d)} \
     ${@bb.utils.contains_any('BOOTDEVICE_LABELS', 'nand-2-64', 'CONFIG_MTDPARTS_NAND0_BOOT=${UBOOT_MTDPART_NAND_2_64_BOOT}', '', d)} \
     ${@bb.utils.contains('BOOTDEVICE_LABELS', 'nor-emmc', 'CONFIG_MTDPARTS_NOR0_BOOT=${UBOOT_MTDPART_NOR_BOOT}', '', d)} \
-    ${@bb.utils.contains('MACHINE_FEATURES', 'fip', '', '${UBOOT_MTDPART_4LEGACY}', d)} \
     "
 
 PREFERRED_PROVIDER_u-boot-fw-utils:stm32mp1common = "libubootenv"
@@ -594,15 +584,13 @@ EXTRA_IMAGEDEPENDS += "${@bb.utils.contains_any('BOOTSCHEME_LABELS', 'optee trus
 TF_A_CONFIG += "${@bb.utils.contains('BOOTSCHEME_LABELS', 'optee', 'optee', '', d)}"
 TF_A_CONFIG += "${@bb.utils.contains('BOOTSCHEME_LABELS', 'trusted', 'trusted', '', d)}"
 # Manage specific config settings
-TF_A_CONFIG_4LEGACY += "serialboot"
-TF_A_CONFIG_4FIP += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'emmc', 'emmc', '', d)}"
-TF_A_CONFIG_4FIP += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nand-2-256', 'nand', '', d)}"
-TF_A_CONFIG_4FIP += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nand-2-64', 'nand', '', d)}"
-TF_A_CONFIG_4FIP += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nor-emmc', 'nor', '', d)}"
-TF_A_CONFIG_4FIP += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'sdcard', 'sdcard', '', d)}"
-TF_A_CONFIG_4FIP += "uart"
-TF_A_CONFIG_4FIP += "usb"
-TF_A_CONFIG += "${@bb.utils.contains('MACHINE_FEATURES', 'fip', '${TF_A_CONFIG_4FIP}', '${TF_A_CONFIG_4LEGACY}', d)}"
+TF_A_CONFIG += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'emmc', 'emmc', '', d)}"
+TF_A_CONFIG += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nand-2-256', 'nand', '', d)}"
+TF_A_CONFIG += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nand-2-64', 'nand', '', d)}"
+TF_A_CONFIG += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nor-emmc', 'nor', '', d)}"
+TF_A_CONFIG += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'sdcard', 'sdcard', '', d)}"
+TF_A_CONFIG += "uart"
+TF_A_CONFIG += "usb"
 
 # Append SSP config to TF_A_CONFIG
 TF_A_SSP_ENABLE ?= "0"
@@ -700,7 +688,7 @@ WKS_FILE_DEPENDS ?= " \
     ${@bb.utils.contains('ST_VENDORFS','1','${STM32MP_VENDORFS_IMAGE}', '', d)} \
     ${@bb.utils.contains('ST_USERFS','1','${STM32MP_USERFS_IMAGE}', '', d)} \
 "
-TRUSTED_WIC_FILE = "${@bb.utils.contains('MACHINE_FEATURES','fip','stm32mp1-sdimage.wks.in','stm32mp1-noFIP-sdimage.wks.in',d)}"
+TRUSTED_WIC_FILE = "stm32mp1-sdimage.wks.in"
 # OPTEE WIC FILE is not provided as OPTEE is not supported yet with the phycore-stm32mp1 BSP
 OPTEE_WIC_FILE = ""
 

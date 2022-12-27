@@ -128,32 +128,27 @@ FLASHLAYOUT_PROGRAMMER_SECTIONS ?= "${STM32MP_FSBL1_NAME}-boot ${STM32MP_SSBL1_N
 FLASHLAYOUT_PARTITION_LABELS:optee:emmc = "\
     ${FLASHLAYOUT_PROGRAMMER_SECTIONS} \
     ${@' '.join(['%s' % l.split(',')[1] for l in d.getVarFlag('PARTITIONS_BOOTLOADER_CONFIG', 'emmc').split()])} \
-    ${@bb.utils.contains('MACHINE_FEATURES', 'fip', '', ' '.join(['%s' % l.split(',')[1] for l in d.getVarFlag('PARTITIONS_OPTEE_CONFIG', 'emmc').split()]), d)} \
     ${@' '.join(['%s' % l.split(',')[1] for l in d.getVarFlag('PARTITIONS_CONFIG', 'emmc').split()])} \
     "
 FLASHLAYOUT_PARTITION_LABELS:optee:nand-2-256 = "\
     ${FLASHLAYOUT_PROGRAMMER_SECTIONS} \
     ${@' '.join(['%s' % l.split(',')[1] for l in d.getVarFlag('PARTITIONS_BOOTLOADER_CONFIG', 'nand-2-256').split()])} \
-    ${@bb.utils.contains('MACHINE_FEATURES', 'fip', '', ' '.join(['%s' % l.split(',')[1] for l in d.getVarFlag('PARTITIONS_OPTEE_CONFIG', 'nand').split()]), d)} \
     ${@' '.join(['%s' % l.split(',')[1] for l in d.getVarFlag('PARTITIONS_CONFIG', 'nand-2-256').split()])} \
     "
 FLASHLAYOUT_PARTITION_LABELS:optee:nand-2-64 = "\
     ${FLASHLAYOUT_PROGRAMMER_SECTIONS} \
     ${@' '.join(['%s' % l.split(',')[1] for l in d.getVarFlag('PARTITIONS_BOOTLOADER_CONFIG', 'nand-2-64').split()])} \
-    ${@bb.utils.contains('MACHINE_FEATURES', 'fip', '', ' '.join(['%s' % l.split(',')[1] for l in d.getVarFlag('PARTITIONS_OPTEE_CONFIG', 'nand').split()]), d)} \
     ${@' '.join(['%s' % l.split(',')[1] for l in d.getVarFlag('PARTITIONS_CONFIG', 'nand-2-64').split()])} \
     "
 FLASHLAYOUT_PARTITION_LABELS:optee:nor-emmc = "\
     ${FLASHLAYOUT_PROGRAMMER_SECTIONS} \
     ${@' '.join(['%s' % l.split(',')[1] for l in d.getVarFlag('PARTITIONS_BOOTLOADER_CONFIG', 'nor-emmc').split()])} \
-    ${@bb.utils.contains('MACHINE_FEATURES', 'fip', '', ' '.join(['%s' % l.split(',')[1] for l in d.getVarFlag('PARTITIONS_OPTEE_CONFIG', 'nor-emmc').split()]), d)} \
     empty \
     ${@' '.join(['%s' % l.split(',')[1] for l in d.getVarFlag('PARTITIONS_CONFIG', 'nor-emmc').split()])}\
     "
 FLASHLAYOUT_PARTITION_LABELS:optee:sdcard  = "\
     ${FLASHLAYOUT_PROGRAMMER_SECTIONS} \
     ${@' '.join(['%s' % l.split(',')[1] for l in d.getVarFlag('PARTITIONS_BOOTLOADER_CONFIG', 'sdcard').split()])} \
-    ${@bb.utils.contains('MACHINE_FEATURES', 'fip', '', ' '.join(['%s' % l.split(',')[1] for l in d.getVarFlag('PARTITIONS_OPTEE_CONFIG', 'sdcard').split()]), d)} \
     ${@' '.join(['%s' % l.split(',')[1] for l in d.getVarFlag('PARTITIONS_CONFIG', 'sdcard').split()])} \
     "
 
@@ -249,7 +244,7 @@ FLASHLAYOUT_PARTITION_SIZE:empty    = "0"
 #       '<TYPE>'       (to insert label  from FLASHLAYOUT_TYPE_LABELS)
 # These patterns are processed to expand binary name for each config.
 # -----------------------------------------------------------------------------
-FLASHLAYOUT_PARTITION_BIN2LOAD:${STM32MP_FSBL1_NAME}-boot = "${@bb.utils.contains('MACHINE_FEATURES', 'fip', 'arm-trusted-firmware/tf-a-<TYPE>-usb.stm32', 'arm-trusted-firmware/tf-a-<TYPE>-serialboot.stm32', d)}"
+FLASHLAYOUT_PARTITION_BIN2LOAD:${STM32MP_FSBL1_NAME}-boot = "arm-trusted-firmware/tf-a-<TYPE>-usb.stm32"
 FLASHLAYOUT_PARTITION_BIN2LOAD:${STM32MP_SSBL1_NAME}-boot = "${STM32MP_SSBL1_DATA}"
 FLASHLAYOUT_PARTITION_BIN2LOAD:ubifs                      = "${IMAGE_LINK_NAME}_<CONFIG>_multivolume.ubi"
 
