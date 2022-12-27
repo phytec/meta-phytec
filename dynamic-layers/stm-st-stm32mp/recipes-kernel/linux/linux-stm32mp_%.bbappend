@@ -73,3 +73,20 @@ SRC_URI:class-devupstream += "file://${LINUX_VERSION}/fragment-16-camera-ar0144.
 # Build dtb with symbols to allow bootloader to apply device tree overlays
 # ------------------------------------------------------------------------
 KERNEL_EXTRA_ARGS += "${@bb.utils.contains('MACHINE_FEATURES', 'phy-expansions', "DTC_FLAGS='-@'", '', d)}"
+
+# -------------------------------------------------------------------------
+# Create a symbolic link of the main device tree to get a generic file name
+# -------------------------------------------------------------------------
+FIRST_DTS = "${KERNEL_DT}.dtb"
+DTS_FILE = "oftree"
+
+do_deploy:append() {
+    ln -sf ${FIRST_DTS} ${DEPLOYDIR}/${DTS_FILE}
+}
+
+do_install:append() {
+    ln -sf ${FIRST_DTS} ${KERNEL_OUTPUT_DIR}/dts/${DTS_FILE}
+    install -m 0644 ${KERNEL_OUTPUT_DIR}/dts/${DTS_FILE} ${D}/${KERNEL_IMAGEDEST}
+}
+
+FILES:${KERNEL_PACKAGE_NAME}-imagebootfs += "boot/${DTS_FILE}"
