@@ -1,4 +1,4 @@
-From 1ce5de70da4561d0de92f0a20265a9800065e50f Mon Sep 17 00:00:00 2001
+From bf113361f763d787e91c3ee308f5658d37706051 Mon Sep 17 00:00:00 2001
 From: Stefan Riedmueller <s.riedmueller@phytec.de>
 Date: Thu, 17 Feb 2022 16:32:00 +0100
 Subject: [PATCH] mediacontrol: V4L2File: Try both video devices
