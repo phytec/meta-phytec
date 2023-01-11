@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 AR0144_LENS="AO082"
 AR0521_LENS="AO062"
@@ -13,7 +13,7 @@ if ! cat /proc/modules | grep -q vvcam_video; then
 	sleep 1
 fi
 
-if [ -e /dev/isp-csi1 -a -e /dev/isp-csi2 ]; then
+if [ -e /dev/isp-csi1 ] && [ -e /dev/isp-csi2 ]; then
 	RUN_OPT="DUAL_CAMERA"
 	echo $RUN_OPT
 elif [ -e /dev/isp-csi1 ]; then
