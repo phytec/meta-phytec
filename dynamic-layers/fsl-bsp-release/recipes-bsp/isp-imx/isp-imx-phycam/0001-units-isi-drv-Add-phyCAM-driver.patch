@@ -1,4 +1,4 @@
-From e666d86655a90e91f5534f24358feb93b9718e91 Mon Sep 17 00:00:00 2001
+From 9e4cc0a370c3c63d98b82fd4217a31e209ef3d4f Mon Sep 17 00:00:00 2001
 From: Stefan Riedmueller <s.riedmueller@phytec.de>
 Date: Fri, 28 Jan 2022 16:34:34 +0100
 Subject: [PATCH] units/isi/drv: Add phyCAM driver
@@ -7,41 +7,44 @@ Add a generic phyCAM driver to support both VM-017 and VM-016 PHYTEC
 cameras.
 
 Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
+
 ---
  build-all-isp.sh                    |   1 +
- units/isi/CMakeLists.txt            |   5 +-
+ units/isi/CMakeLists.txt            |   7 +-
  units/isi/drv/phyCAM/CMakeLists.txt |  92 +++
  units/isi/drv/phyCAM/phycam.c       | 873 ++++++++++++++++++++++++++++
  units/isi/drv/phyCAM/phycam_log.h   |  45 ++
- 5 files changed, 1014 insertions(+), 2 deletions(-)
+ 5 files changed, 1015 insertions(+), 3 deletions(-)
  create mode 100755 units/isi/drv/phyCAM/CMakeLists.txt
  create mode 100644 units/isi/drv/phyCAM/phycam.c
  create mode 100644 units/isi/drv/phyCAM/phycam_log.h
 
 diff --git a/build-all-isp.sh b/build-all-isp.sh
-index 6ae45f8b6743..60b305e930ef 100755
+index 91cef8c73681..dbbcc5aea180 100755
 --- a/build-all-isp.sh
 +++ b/build-all-isp.sh
-@@ -116,6 +116,7 @@ fi
- cp -a appshell/build/generated/${BUILD_DIR}/lib/*.so* ${ISP_LIB_DIR}
- cp -a appshell/build/generated/${BUILD_TYPE}/bin/OV2775* ${ISP_BIN_DIR}
+@@ -118,6 +118,7 @@ cp -a appshell/build/generated/${BUILD_TYPE}/bin/OV2775* ${ISP_BIN_DIR}
  cp -a appshell/build/generated/${BUILD_TYPE}/bin/ov2775* ${ISP_BIN_DIR}
+ cp -a appshell/build/generated/${BUILD_TYPE}/bin/OS08a20* ${ISP_BIN_DIR}
+ cp -a appshell/build/generated/${BUILD_TYPE}/bin/os08a20* ${ISP_BIN_DIR}
 +cp -a appshell/build/generated/${BUILD_TYPE}/bin/phycam* ${ISP_BIN_DIR}
  cp -a appshell/build/generated/${BUILD_TYPE}/bin/isp_media_server ${ISP_BIN_DIR}
  cp -a appshell/build/generated/${BUILD_TYPE}/bin/*_test ${ISP_BIN_DIR}
- cp -a appshell/build/generated/${BUILD_DIR}/bin/Sensor0_Entry.cfg ${ISP_BIN_DIR}/Sensor0_Entry.cfg.ov2775
+ cp -a appshell/build/generated/${BUILD_DIR}/bin/*.cfg ${ISP_BIN_DIR}/
 diff --git a/units/isi/CMakeLists.txt b/units/isi/CMakeLists.txt
-index 6ae0075dfb85..17c365470d7f 100644
+index 5e94f26968a9..c4f766b1aa78 100755
 --- a/units/isi/CMakeLists.txt
 +++ b/units/isi/CMakeLists.txt
-@@ -82,8 +82,9 @@ include(${UNITS_TOP_DIRECTORY}/targets.cmake)
+@@ -82,9 +82,10 @@ include(${UNITS_TOP_DIRECTORY}/targets.cmake)
  # add sensor driver modules here
  #add_subdirectory( drv/OV2715 )
  #add_subdirectory( drv/OV2710 )
 -add_subdirectory( drv/OV2775 )
 -add_subdirectory( drv/OS08a20 )
+-add_subdirectory( drv/AR1335 )
 +#add_subdirectory( drv/OV2775 )
 +#add_subdirectory( drv/OS08a20 )
++#add_subdirectory( drv/AR1335 )
 +add_subdirectory( drv/phyCAM )
  #add_subdirectory( drv/OV5630 )
  ###add_subdirectory( drv/OV8810 )
@@ -146,7 +149,7 @@ index 000000000000..f032a3dd3bc6
 +include(${UNITS_TOP_DIRECTORY}/targets.cmake)
 diff --git a/units/isi/drv/phyCAM/phycam.c b/units/isi/drv/phyCAM/phycam.c
 new file mode 100644
-index 000000000000..2db88712039c
+index 000000000000..9e7192eb1c3b
 --- /dev/null
 +++ b/units/isi/drv/phyCAM/phycam.c
 @@ -0,0 +1,873 @@
@@ -241,7 +244,7 @@ index 000000000000..2db88712039c
 +    SensorMode.index = pConfig->SensorModeIndex;
 +    result = PhyCam_IsiSetSensorModeIss(pPhyCamCtx, &SensorMode);
 +    if (result != RET_SUCCESS) {
-+        ALOGE("%s set sensor mode error\n", __func__);
++        ALOGE("%s set sensor mode error", __func__);
 +        return RET_FAILURE;
 +    }
 +
@@ -425,7 +428,7 @@ index 000000000000..2db88712039c
 +
 +    ret = ioctl(pHalCtx->sensor_fd, VVSENSORIOC_S_SENSOR_MODE, &sensor_mode);
 +    if (ret != 0) {
-+        ALOGE("%s set sensor mode error\n", __func__);
++        ALOGE("%s set sensor mode error", __func__);
 +        return RET_FAILURE;
 +    }
 +
@@ -667,7 +670,7 @@ index 000000000000..2db88712039c
 +
 +    linear_int = pIntTime->IntegrationTime.linearInt;
 +    ret = ioctl(pHalCtx->sensor_fd, VVSENSORIOC_S_EXP, &linear_int);
-+    ALOGD("%s: new integration time: %u 0x%08x\n", __func__,
++    ALOGD("%s: new integration time: %u 0x%08x", __func__,
 +          linear_int, linear_int);
 +    if (ret != 0) {
 +        ALOGE("%s: set sensor integration time error", __func__);
@@ -723,7 +726,7 @@ index 000000000000..2db88712039c
 +
 +    gain = pGain->gain.linearGainParas;
 +    ret = ioctl(pHalCtx->sensor_fd, VVSENSORIOC_S_GAIN, &gain);
-+    ALOGD("%s: new gain: %u 0x%08x\n", __func__, gain, gain);
++    ALOGD("%s: new gain: %u 0x%08x", __func__, gain, gain);
 +    if (ret != 0) {
 +        ALOGE("%s: set sensor gain error", __func__);
 +        return RET_FAILURE;
@@ -752,7 +755,7 @@ index 000000000000..2db88712039c
 +    pHalCtx = (HalContext_t *) pPhyCamCtx->IsiCtx.HalHandle;
 +
 +    ret = ioctl(pHalCtx->sensor_fd, VVSENSORIOC_G_FPS, pfps);
-+    ALOGD("%s: FPS: %u 0x%08x\n", __func__, *pfps, *pfps);
++    ALOGD("%s: FPS: %u 0x%08x", __func__, *pfps, *pfps);
 +    if (ret != 0) {
 +        ALOGE("%s: get sensor FPS error", __func__);
 +        return RET_FAILURE;
@@ -778,7 +781,7 @@ index 000000000000..2db88712039c
 +    pHalCtx = (HalContext_t *) pPhyCamCtx->IsiCtx.HalHandle;
 +
 +    ret = ioctl(pHalCtx->sensor_fd, VVSENSORIOC_S_FPS, &fps);
-+    ALOGD("%s: FPS: %u 0x%08x\n", __func__, fps, fps);
++    ALOGD("%s: FPS: %u 0x%08x", __func__, fps, fps);
 +    if (ret != 0) {
 +        ALOGE("%s: set sensor FPS error", __func__);
 +        return RET_FAILURE;
@@ -879,10 +882,10 @@ index 000000000000..2db88712039c
 +
 +    pHalCtx = (HalContext_t *) pPhyCamCtx->IsiCtx.HalHandle;
 +
-+    ALOGD("%s: new r gain: %u 0x%08x\n", __func__, pWb->r_gain, pWb->r_gain);
-+    ALOGD("%s: new gr gain: %u 0x%08x\n", __func__, pWb->gr_gain, pWb->gr_gain);
-+    ALOGD("%s: new gb gain: %u 0x%08x\n", __func__, pWb->gb_gain, pWb->gb_gain);
-+    ALOGD("%s: new b gain: %u 0x%08x\n", __func__, pWb->b_gain, pWb->b_gain);
++    ALOGD("%s: new r gain: %u 0x%08x", __func__, pWb->r_gain, pWb->r_gain);
++    ALOGD("%s: new gr gain: %u 0x%08x", __func__, pWb->gr_gain, pWb->gr_gain);
++    ALOGD("%s: new gb gain: %u 0x%08x", __func__, pWb->gb_gain, pWb->gb_gain);
++    ALOGD("%s: new b gain: %u 0x%08x", __func__, pWb->b_gain, pWb->b_gain);
 +
 +    ret = ioctl(pHalCtx->sensor_fd, VVSENSORIOC_S_WB, pWb);
 +    if (ret != 0) {
@@ -1074,6 +1077,3 @@ index 000000000000..6d4385bf5f33
 +    if (isp_log_level() >= ISP_LOG_LEVEL_ERROR) printf("\033[1;30;31mERROR  : " __ALOG_INT(__VA_ARGS__, "\n"))  // red
 +
 +#endif  // _PHYCAM_LOG_H_
--- 
-2.25.1
-
