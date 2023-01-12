@@ -7,3 +7,5 @@ PREFERRED_PROVIDER_virtual/gpudriver:am62xx = "ti-img-rogue-driver"
 
 # Install modules in initramfs and roofs
 PACKAGE_INSTALL:append = " kernel-modules"
+
+INITRAMFS_FSTYPES = "wic.xz"
