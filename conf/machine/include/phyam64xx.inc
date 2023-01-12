@@ -20,3 +20,5 @@ BBMULTICONFIG = "k3r5"
 
 do_image_wic[mcdepends] = "mc::k3r5:ti-sci-fw:do_deploy"
 do_image_tar[mcdepends] = "mc::k3r5:ti-sci-fw:do_deploy"
+
+INITRAMFS_FSTYPES = "wic.xz"
