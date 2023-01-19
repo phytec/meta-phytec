@@ -6,14 +6,14 @@ inherit buildinfo
 inherit fsl-vivante-kernel-driver-handler
 include recipes-kernel/linux/linux-common.inc
 
-BRANCH = "v5.15.52_2.1.0-phy"
+BRANCH = "v5.15.71_2.2.0-phy"
 GIT_URL = "git://git.phytec.de/${BPN}"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 PR = "${INC_PR}.0"
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "bc0cd39f9abfdea2a61b331be83c3e1ce2a89a3b"
+SRCREV = "8be5480142e67cb017fa18e58d89a8c18282ba66"
 
 S = "${WORKDIR}/git"
 
