@@ -24,11 +24,15 @@ UBOOT_EXTLINUX_TARGETS += "${@bb.utils.contains_any('BOOTDEVICE_LABELS', [ 'sdca
 UBOOT_EXTLINUX_TARGETS += "${@bb.utils.contains_any('BOOTDEVICE_LABELS', [ 'emmc', 'nor-emmc' ], 'target-emmc', '', d)}"
 UBOOT_EXTLINUX_TARGETS += "${@bb.utils.contains_any('BOOTDEVICE_LABELS', [ 'nand-2-64', 'nor-nand-2-64' ], 'target-nand', '', d)}"
 UBOOT_EXTLINUX_TARGETS += "${@bb.utils.contains_any('BOOTDEVICE_LABELS', [ 'nand-2-256', 'nor-nand-2-256' ], 'target-nand', '', d)}"
+# Label names
+LABEL_DEFAULT = "rootfs"
+LABEL_A7_EXAMPLES += "${@ 'rootfs-a7-examples' if '${LINUX_A7_EXAMPLES_DT}' else ''}"
+LABEL_M4_EXAMPLES += "${@ 'rootfs-m4-examples' if '${CUBE_M4_EXAMPLES_DT}' else ''}"
 # Define labels for each target
 # (mandatory to allow specific var override if needed)
-UBOOT_EXTLINUX_LABELS:target-sdcard += "rootfs"
-UBOOT_EXTLINUX_LABELS:target-emmc += "rootfs"
-UBOOT_EXTLINUX_LABELS:target-nand += "rootfs"
+UBOOT_EXTLINUX_LABELS:target-sdcard += "${LABEL_DEFAULT} ${LABEL_A7_EXAMPLES} ${LABEL_M4_EXAMPLES}"
+UBOOT_EXTLINUX_LABELS:target-emmc += "${LABEL_DEFAULT} ${LABEL_A7_EXAMPLES} ${LABEL_M4_EXAMPLES}"
+UBOOT_EXTLINUX_LABELS:target-nand += "${LABEL_DEFAULT} ${LABEL_A7_EXAMPLES} ${LABEL_M4_EXAMPLES}"
 # Define specific bootprefix for each target
 UBOOT_EXTLINUX_BOOTPREFIXES:target-sdcard = "${DEVICE:SDCARD}_"
 UBOOT_EXTLINUX_BOOTPREFIXES:target-emmc = "${DEVICE:EMMC}_"
@@ -47,8 +51,28 @@ UBOOT_EXTLINUX_INITRD:target-nand = ""
 UBOOT_EXTLINUX_MENU_DESCRIPTION:rootfs = "OpenSTLinux"
 
 # -----------------------------------------------------------------------------
+# Configure A7 examples labels
+# -----------------------------------------------------------------------------
+# Define MENU DESCRIPTION overrides for new A7 labels
+UBOOT_EXTLINUX_MENU_DESCRIPTION:rootfs-a7-examples = "${LINUX_A7_EXAMPLES_DT}"
+# Define FDT overrides for new A7 labels
+UBOOT_EXTLINUX_FDT:rootfs-a7-examples = "/${LINUX_A7_EXAMPLES_DT}.dtb"
+
+# -----------------------------------------------------------------------------
+# Configure M4 examples labels
+# -----------------------------------------------------------------------------
+# Define MENU DESCRIPTION overrides for new M4 labels
+UBOOT_EXTLINUX_MENU_DESCRIPTION:rootfs-m4-examples = "${CUBE_M4_EXAMPLES_DT}"
+# Define FDT overrides for new M4 labels
+UBOOT_EXTLINUX_FDT:rootfs-m4-examples = "/${CUBE_M4_EXAMPLES_DT}.dtb"
+
+# -----------------------------------------------------------------------------
 # Configure additional target
 # -----------------------------------------------------------------------------
+# Disable by default UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG
+UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG ?= ""
+UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG[none] ?= ""
+
 # Enable UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG var that allows to configure
 # additional target:
 #   UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG = "extra-target"
@@ -60,7 +84,6 @@ UBOOT_EXTLINUX_MENU_DESCRIPTION:rootfs = "OpenSTLinux"
 # the 'newlabel1' and 'newlabel2' labels will be added in 'extra-target_extlinux.conf'
 # -----------------------------------------------------------------------------
 # Define additional extra targets to consider
-UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG:target-sdcard += "${STM32MP_DEVICETREE}"
-UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG:target-emmc += "${STM32MP_DEVICETREE}"
-UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG:target-nand += "${STM32MP_DEVICETREE}"
-
+#UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG:target-sdcard += "${STM32MP_DEVICETREE}"
+#UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG:target-emmc += "${STM32MP_DEVICETREE}"
+#UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG:target-nand += "${STM32MP_DEVICETREE}"
