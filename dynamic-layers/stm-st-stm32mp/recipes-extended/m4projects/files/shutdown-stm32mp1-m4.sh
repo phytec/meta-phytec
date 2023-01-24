@@ -1,7 +1,7 @@
 #!/bin/sh -
 
 # test if we are a phyBOARD-Sargas
-if ! $(grep -q "pcm939" /proc/device-tree/compatible) ;
+if ! $(grep -q "stm32mp15\(3a\|7[cf]\)-phyboard-sargas" /proc/device-tree/compatible) ;
 then
     exit 0
 fi
