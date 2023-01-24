@@ -27,7 +27,7 @@ UBOOT_EXTLINUX_FDT:phycore-stm32mp1-3-a7-examples = "/${LINUX_A7_EXAMPLES_DT}.dt
 # Define MENU DESCRIPTION overrides for new M4 labels
 UBOOT_EXTLINUX_MENU_DESCRIPTION:phycore-stm32mp1-3-m4-examples = "stm32mp157c-phyboard-sargas-rdk-emmc-m4-examples"
 # Define FDT overrides for new M4 labels
-UBOOT_EXTLINUX_FDT:phycore-stm32mp1-3-m4-examples = "/${LINUX_A7_EXAMPLES_DT}.dtb"
+UBOOT_EXTLINUX_FDT:phycore-stm32mp1-3-m4-examples = "/${CUBE_M4_EXAMPLES_DT}.dtb"
 
 # -----------------------------------------------------------------------------
 # Define FDT override for Default label
