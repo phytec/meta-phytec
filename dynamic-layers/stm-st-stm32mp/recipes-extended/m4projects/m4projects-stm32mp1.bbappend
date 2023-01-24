@@ -1,8 +1,8 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 GIT_URL = "git://git.phytec.de/STM32CubeMP1"
-BRANCH = "1.5.0-phy"
-SRCREV = "309a29553fc849f3064834fb45c0ce157dc5d118"
+BRANCH = "1.6.0-phy"
+SRCREV = "1f1b2171f5bf0f060cebdd6c1b8bea2d19957413"
 
 SRC_URI = "${GIT_URL};branch=${BRANCH} \
 "
