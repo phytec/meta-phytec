@@ -11,6 +11,8 @@ LINUX_IMAGE_PATH_SIGNED="${B}/${KERNEL_OUTPUT_DIR}/Image-signed"
 DTBS_PATH="${B}/${KERNEL_OUTPUT_DIR}/dts/"
 
 DEPENDS_append_secureboot = " nxp-cst-native"
+FITIMAGE_SIGN ??= "true"
+FITIMAGE_SIGN[type] = "boolean"
 
 python do_sign() {
     if "secureboot" in d.getVar('DISTRO_FEATURES', True):
