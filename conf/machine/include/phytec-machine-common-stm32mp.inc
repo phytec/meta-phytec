@@ -731,7 +731,7 @@ WKS_FILE_DEPENDS ?= " \
     ${@bb.utils.contains('ST_VENDORFS','1','${STM32MP_VENDORFS_IMAGE}', '', d)} \
     ${@bb.utils.contains('ST_USERFS','1','${STM32MP_USERFS_IMAGE}', '', d)} \
 "
-TRUSTED_WIC_FILE = "stm32mp1-sdimage.wks.in"
+TRUSTED_WIC_FILE = "${@bb.utils.contains('MACHINE_FEATURES','fw-update','stm32mp1-fw-update-sdimage.wks.in','stm32mp1-sdimage.wks.in',d)}"
 # OPTEE WIC FILE is not provided as OPTEE is not supported yet with the phycore-stm32mp1 BSP
 OPTEE_WIC_FILE = ""
 
