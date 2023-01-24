@@ -4,7 +4,7 @@ SRC_URI:append:secureboot = " \
         file://dynamic-config.cfg \
 "
 
-DEPENDS:append:secureboot = " bison-native nxp-cst-native"
+DEPENDS:append:secureboot = " bison-native nxp-cst-native u-boot-mkimage-native dtc-native"
 
 BAREBOX_BIN_SIGNED ?= "images/${BAREBOX_BASE_BIN}-s.img"
 BAREBOX_BIN_SIGNEDUSB ?= "images/${BAREBOX_BASE_BIN}-us.img"
@@ -22,6 +22,11 @@ BOOTLOADER_SIGN_SRKFUSE_PATH ??= "${CERT_PATH}/nxp_habv4_pki/crts/SRK_1_2_3_4_ta
 FITIMAGE_SIGN ??= "true"
 FITIMAGE_SIGN[type] = "boolean"
 FITIMAGE_SIGN_KEY_PATH ??= "${CERT_PATH}/fit/FIT-4096.key"
+FITIMAGE_HASH ??= "sha256"
+FITIMAGE_SIGNATURE_ENCRYPTION ??= "rsa4096"
+FITIMAGE_SIGNER ??= ""
+FITIMAGE_SIGNER_VERSION ??= "${PN}"
+FITIMAGE_PUBKEY_SIGNATURE_PATH ??= "${WORKDIR}/signature_node.dtsi"
 
 #Create an empty device tree
 def write_signature_node(d):
