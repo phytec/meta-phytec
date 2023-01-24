@@ -8,7 +8,7 @@ then
 fi
 
 #search on device tree compatible entry the board type
-if $(grep -q "pcm939" /proc/device-tree/compatible) ;
+if $(grep -q "stm32mp15\(3a\|7[cf]\)-phyboard-sargas" /proc/device-tree/compatible) ;
 then
     board="STM32MP15-phyBOARD-Sargas"
 else
