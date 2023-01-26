@@ -1,4 +1,5 @@
 *.py?
 /*.patch
+/patches/
 *.sw?
 *~
