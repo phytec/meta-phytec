@@ -167,6 +167,9 @@ do_patch:append:secureboot() {
         file.write("CONFIG_DIGEST_SHA256_GENERIC=y\n")
         file.write("# CONFIG_CMD_GO is not set\n")
 
+        if bb.utils.contains("MACHINE_FEATURES", "optee", True, False, d):
+            file.write("CONFIG_BOOTM_OPTEE=y\n")
+
     file.close()
 }
 
