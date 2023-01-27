@@ -3,7 +3,7 @@
 #
 # You have to set the slot images in your recipe file following this example:
 #
-#    FITIMAGE_SLOTS ?= "kernel fdt fdto setup ramdisk bootscript"
+#    FITIMAGE_SLOTS ?= "kernel fdt fdto setup ramdisk bootscript tee"
 #
 #    FITIMAGE_SLOT_kernel ?= "${PREFERRED_PROVIDER_virtual/kernel}"
 #    FITIMAGE_SLOT_kernel[type] ?= "kernel"
@@ -28,6 +28,10 @@
 #
 #    FITIMAGE_SLOT_bootscript ?= "bootscript"
 #    FITIMAGE_SLOT_bootscript[file] ?= "boot.scr"
+#
+#    FITIMAGE_SLOT_tee ?= "optee-os"
+#    FITIMAGE_SLOT_tee[type] ?= "tee"
+#    FITIMAGE_SLOT_tee[file] ?= "optee/tee.bin"
 #
 #    FITIMAGE_its ?= "setup.its"  (FIT Image creation File, if set, then no creation if config file)
 #
@@ -58,6 +62,8 @@ FITIMAGE_DTB_LOADADDRESS:mx8m-nxp-bsp ??= "0x4A300000"
 FITIMAGE_DTB_OVERLAY_LOADADDRESS:mx8m-nxp-bsp ??= "0x4A3C0000"
 FITIMAGE_RD_LOADADDRESS ??= ""
 FITIMAGE_RD_ENTRYPOINT ??= ""
+FITIMAGE_TEE_LOADADDRESS ??= ""
+FITIMAGE_TEE_ENTRYPOINT ??= ""
 
 FITIMAGE_SIGN ??= "true"
 FITIMAGE_SIGN[type] = "boolean"
@@ -252,17 +258,46 @@ def fitimage_emit_section_bootscript(d,fd,imgpath,imgsource):
     fd.write('\t\t'     + '};\n')
 
 #
+# Emit the fitImage Trusted Execution Section
+#
+def fitimage_emit_section_tee(d,fd,teecount,imgpath,imgsource,imgcomp):
+    tee_csum = d.expand("${FITIMAGE_HASH}")
+    tee_entryline = ""
+    tee_loadline = ""
+    if len(d.expand("${FITIMAGE_TEE_LOADADDRESS}")) > 0:
+        tee_loadline = "load = <%s>;" % d.expand("${FITIMAGE_TEE_LOADADDRESS}")
+    if len(d.expand("${FITIMAGE_TEE_ENTRYPOINT}")) > 0:
+        tee_entryline = "entry = <%s>;" % d.expand("${FITIMAGE_TEE_ENTRYPOINT}")
+    arch = d.getVar("TARGET_ARCH")
+    arch = "arm64" if arch == "aarch64" else arch
+    fd.write('\t\t'     + 'tee-%s {\n' % teecount)
+    fd.write('\t\t\t'   +   'description = "TEE";\n')
+    fd.write('\t\t\t'   +   'data = /incbin/("%s/%s");\n' % (imgpath, imgsource))
+    fd.write('\t\t\t'   +   'type = "tee";\n')
+    fd.write('\t\t\t'   +   'arch = "%s";\n' % arch)
+    fd.write('\t\t\t'   +   'os = "linux";\n')
+    fd.write('\t\t\t'   +   'compression = "%s";\n' % imgcomp)
+    fd.write('\t\t\t'   +   '%s\n' % tee_loadline)
+    fd.write('\t\t\t'   +   '%s\n' % tee_entryline)
+    fd.write('\t\t\t'   +   'hash-1 {\n')
+    fd.write('\t\t\t\t' +     'algo = "%s";\n' % tee_csum)
+    fd.write('\t\t\t'   +   '};\n')
+    fd.write('\t\t'     + '};\n')
+
+#
 # Emit the fitImage ITS configuration section
 #
-def fitimage_emit_section_config(d,fd,dtb,kernelcount,ramdiskcount,setupcount,bootscriptid,i):
+def fitimage_emit_section_config(d,fd,dtb,teecount,kernelcount,ramdiskcount,setupcount,bootscriptid,i):
     conf_csum = d.expand("${FITIMAGE_HASH}")
     conf_encrypt = d.getVar("FITIMAGE_SIGNATURE_ENCRYPTION") or ""
     path, filename = os.path.split(d.getVar("FITIMAGE_SIGN_KEY_PATH") or "")
     conf_sign_keyname = filename.split('.')
 
-
     conf_desc="Linux kernel"
     kernel_line="kernel = \"kernel-1\";"
+    tee_line=""
+    if teecount > 0:
+        tee_line="tee = \"tee-1\";"
     fdt_line=""
     ramdisk_line=""
     setup_line=""
@@ -286,6 +321,8 @@ def fitimage_emit_section_config(d,fd,dtb,kernelcount,ramdiskcount,setupcount,bo
     fd.write('\t\t'   + '%s {\n' % dtb)
     fd.write('\t\t\t' +   'description = "%d %s";\n' % (i,conf_desc))
     fd.write('\t\t\t' +   '%s\n' % kernel_line)
+    if teecount > 0:
+        fd.write('\t\t\t' +   '%s\n' % tee_line)
     fd.write('\t\t\t' +   '%s\n' % fdt_line)
     fd.write('\t\t\t' +   '%s\n' % ramdisk_line)
     fd.write('\t\t\t' +   '%s\n' % setup_line)
@@ -293,6 +330,8 @@ def fitimage_emit_section_config(d,fd,dtb,kernelcount,ramdiskcount,setupcount,bo
 
     if len(conf_sign_keyname) > 0:
        sign_line="sign-images = \"kernel\""
+       if teecount > 0:
+            sign_line = sign_line + ", \"tee\""
        if len(dtb) > 0:
             sign_line = sign_line + ", \"fdt\""
        if len(ramdiskcount) > 0:
@@ -357,6 +396,7 @@ def write_manifest(d):
     DTBOS = ""
     ramdiskcount = ""
     setupcount = ""
+    teecount=0
     bootscriptid = ""
 
     def get_dtbs(dtb_suffix):
@@ -450,6 +490,15 @@ def write_manifest(d):
             imgpath = d.getVar("DEPLOY_DIR_IMAGE")
             bootscriptid = imgsource
             fitimage_emit_section_bootscript(d,fd,imgpath,imgsource)
+         elif imgtype == 'tee':
+            teecount = teecount + 1
+            imgsource = d.getVarFlag('FITIMAGE_SLOT_%s' % slot, 'file')
+            if slotflags and 'comp' in slotflags:
+               imgcomp = d.getVarFlag('FITIMAGE_SLOT_%s' % slot, 'comp')
+            else:
+               imgcomp = "none"
+            imgpath = d.getVar("DEPLOY_DIR_IMAGE")
+            fitimage_emit_section_tee(d,fd,teecount,imgpath,imgsource,imgcomp)
     fitimage_emit_section_maint(d,fd,'sectend')
     #
     # Step 5: Prepare a configurations section
@@ -457,7 +506,7 @@ def write_manifest(d):
     fitimage_emit_section_maint(d,fd,'confstart')
     i = 1
     for dtb in (DTBS or "").split():
-        fitimage_emit_section_config(d,fd,dtb,kernelcount,ramdiskcount,setupcount,bootscriptid,i)
+        fitimage_emit_section_config(d,fd,dtb,teecount,kernelcount,ramdiskcount,setupcount,bootscriptid,i)
         i = i +1
     for dtb in (DTBOS or "").split():
         fitimage_emit_section_config_fdto(d,fd,dtb)
