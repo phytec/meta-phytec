@@ -19,7 +19,13 @@ class BSP_BBLayerFile(BoardSupportPackage):
         super(BSP_BBLayerFile, self).__init__()
         project_priority = []
         # ignore repos with layer.conf in unusual places
-        project_filter = ["poky", "meta-openembedded", "meta-imx", "base"]
+        project_filter = [
+            "poky",
+            "meta-openembedded",
+            "meta-imx",
+            "meta-ti",
+            "base"
+        ]
         for p in set(self.project_paths).difference(project_filter):
             abs_project_path = os.path.join(self.src.bsp_dir, 'sources', p)
             layer_conf = os.path.join(abs_project_path, 'conf/layer.conf')
