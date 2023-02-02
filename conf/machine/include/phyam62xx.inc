@@ -9,3 +9,6 @@ PREFERRED_PROVIDER_virtual/gpudriver:am62xx = "ti-img-rogue-driver"
 PACKAGE_INSTALL:append = " kernel-modules"
 
 INITRAMFS_FSTYPES = "wic.xz"
+
+MACHINE_FEATURES:remove = "efi"
+WKS_FILE ?= "sdimage-2part.wks"
