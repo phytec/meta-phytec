@@ -1,4 +1,4 @@
-From bdd30801f27bcc4c721809b21a3dc67129f1144b Mon Sep 17 00:00:00 2001
+From f4008b7172b1f268156fe673819a0854be06dd9a Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Stefan=20M=C3=BCller-Klieser?= <s.mueller-klieser@phytec.de>
 Date: Fri, 7 Oct 2016 14:45:34 +0200
 Subject: [PATCH] rc.pvr: add proper error return code
@@ -9,14 +9,16 @@ Content-Transfer-Encoding: 8bit
 Signed-off-by: Stefan Müller-Klieser <s.mueller-klieser@phytec.de>
 [rebased against 1.17.4948957]
 Signed-off-by: Dominik Haller <d.haller@phytec.de>
+[rebased against ti-img-sgx/kirkstone/1.17.4948957]
+Signed-off-by: Steffen Hemer <s.hemer@@phytec.de>
 ---
- targetfs/ti335x/etc/init.d/rc.pvr | 8 +++++---
+ targetfs/common/etc/init.d/rc.pvr | 8 +++++---
  1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/targetfs/ti335x/etc/init.d/rc.pvr b/targetfs/ti335x/etc/init.d/rc.pvr
+diff --git a/targetfs/common/etc/init.d/rc.pvr b/targetfs/common/etc/init.d/rc.pvr
 index 7da0e4d27c9d..3610d48cd674 100755
---- a/targetfs/ti335x/etc/init.d/rc.pvr
-+++ b/targetfs/ti335x/etc/init.d/rc.pvr
+--- a/targetfs/common/etc/init.d/rc.pvr
++++ b/targetfs/common/etc/init.d/rc.pvr
 @@ -37,11 +37,11 @@ load_pvr()
  				/sbin/depmod && depmod_has_been_run=1
  			fi
