@@ -10,16 +10,16 @@ REQUIRED_MACHINE_FEATURES = "gpu"
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 COMPATIBLE_MACHINE = "ti33x"
 
-PR = "r37"
+PR = "r38"
 
-BRANCH = "ti-img-sgx/dunfell/${PV}"
+BRANCH = "ti-img-sgx/kirkstone/${PV}"
 
 SRC_URI = "\
     git://git.ti.com/git/graphics/omap5-sgx-ddk-um-linux.git;protocol=https;branch=${BRANCH} \
     file://0001-rc.pvr-add-proper-error-return-code.patch \
     file://rc.pvr.service \
 "
-SRCREV = "742cf38aba13e1ba1a910cf1f036a1a212c263b6"
+SRCREV = "905809029b877fea42e91b9738825a6294ff1775"
 
 TARGET_PRODUCT:ti33x = "ti335x"
 
@@ -34,7 +34,7 @@ PROVIDES += "virtual/egl virtual/libgles1 virtual/libgles2 virtual/libgbm"
 
 DEPENDS += "libdrm udev wayland wayland-protocols libffi expat"
 DEPENDS:append:libc-musl = " gcompat"
-RDEPENDS:${PN} += "libdrm libdrm-omap udev wayland wayland-protocols libffi expat"
+RDEPENDS:${PN} += "libdrm libdrm-omap udev wayland wayland-protocols libffi expat libzstd"
 
 RPROVIDES:${PN} = "libegl libgles1 libgles2 libgbm"
 RPROVIDES:${PN}-dev = "libegl-dev libgles1-dev libgles2-dev libgbm-dev"
@@ -68,6 +68,7 @@ do_install () {
 
 FILES:${PN} =  " \
     ${bindir}/* \
+    ${datadir}/* \
     ${libdir}/* \
     ${includedir}/* \
     ${sysconfdir}/* \
