@@ -14,10 +14,6 @@ PR = "${INC_PR}.0"
 SRCREV = "dfa4f01de4f77a6abb39097c49e44ed7e555f9bf"
 S = "${WORKDIR}/git"
 
-# Pull in the devicetree files into the rootfs
-RDEPENDS_${KERNEL_PACKAGE_NAME}-base_append = "\
-    kernel-devicetree \
-"
 # Add run-time dependency for PRU firmware to the rootfs
 RDEPENDS_${KERNEL_PACKAGE_NAME}-base_append_am64xx = "\
     prueth-fw-am65x-sr2 \
