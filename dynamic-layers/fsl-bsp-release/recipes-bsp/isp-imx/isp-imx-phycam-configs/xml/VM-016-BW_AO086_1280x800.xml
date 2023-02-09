@@ -2,7 +2,7 @@
 <matfile>
    <header type="struct" size="[1 1]">
       <creation_date index="1" type="char" size="[1 11]">
-         04-May-2022
+         10-JAN-2023
       </creation_date>
       <creator index="1" type="char" size="[1 6]">
          Bender
@@ -1295,7 +1295,7 @@
       <ae enable="true" bypass="false">
          <afps>false</afps>
          <flicker.period>1</flicker.period>
-         <set.point>100</set.point>
+         <set.point>90</set.point>
          <damping.over>0.2</damping.over>
          <damping.under>0.8</damping.under>
          <tolerance>15</tolerance>
@@ -1315,8 +1315,8 @@
       <dpcc enable="true"/>
       <dpf enable="true"/>
       <filter enable="true" auto="true">
-         <denoise>3</denoise>
-         <sharpen>4</sharpen>
+         <denoise>5</denoise>
+         <sharpen>5</sharpen>
       </filter>
       <cac enable="false"/>
       <cnr enable="false"/>
