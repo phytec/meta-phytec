@@ -42,7 +42,6 @@ FILES:${PN} += " \
 "
 
 RDEPENDS:${PN} += " \
-    bash \
     v4l-utils \
     media-ctl \
 "

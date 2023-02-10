@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 display_help() {
 	echo "Usage: ./setup-pipeline-csi1.sh [-f <format>] [-s <frame size>] [-o <offset>] [-c <sensor size>] [-p <phycam-l port] [-v]"
@@ -31,9 +31,9 @@ done
 # Select the correct camera subdevice. Can be phyCAM-M or phyCAM-L (Port 0 or 1).
 if [ -L /dev/cam-csi1 ] ; then
 	CAM="/dev/cam-csi1"
-elif [ -L /dev/cam-csi1-port0 ] && [ "$PORT" == "0" ] ; then
+elif [ -L /dev/cam-csi1-port0 ] && [ "$PORT" = "0" ] ; then
 	CAM="/dev/cam-csi1-port0"
-elif [ -L /dev/cam-csi1-port1 ] && [ "$PORT" == "1" ] ; then
+elif [ -L /dev/cam-csi1-port1 ] && [ "$PORT" = "1" ] ; then
 	CAM="/dev/cam-csi1-port1"
 else
 	echo "No camera found on CSI1"
@@ -107,12 +107,12 @@ if [ -n "$SER_P0_ENT" ] && [ -n "$SER_P0_ENT" ] ; then
 	$MC -l "'${SER_P1_ENT}':1->'${DESER_ENT}':1[0]" ${VERBOSE}
 fi
 
-if [ -n "$SER_P0_ENT" ] && [ -n "$DESER_ENT" ] && [ "$PORT" == "0" ] ; then
+if [ -n "$SER_P0_ENT" ] && [ -n "$DESER_ENT" ] && [ "$PORT" = "0" ] ; then
 	echo "Enabling phyCAM-L Port 0 on CSI1"
 	$MC -l "'${SER_P0_ENT}':1->'${DESER_ENT}':0[1]" ${VERBOSE}
 fi
 
-if [ -n "$SER_P1_ENT" ] && [ -n "$DESER_ENT" ] && [ "$PORT" == "1" ] ; then
+if [ -n "$SER_P1_ENT" ] && [ -n "$DESER_ENT" ] && [ "$PORT" = "1" ] ; then
 	echo "Enabling phyCAM-L Port 1 on CSI1"
 	$MC -l "'${SER_P1_ENT}':1->'${DESER_ENT}':1[1]" ${VERBOSE}
 fi
