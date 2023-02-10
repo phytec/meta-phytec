@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 display_help() {
 	echo "Usage: ./setup-pipeline-csi1.sh [-f <format>] [-s <frame size>] [-o <offset>] [-c <sensor size>] [-v]"
