@@ -28,11 +28,6 @@ phyboard-stm32mp1-peb-wlbt-05-bluetooth-usart1.dtbo - if Bluetooth feature enabl
 phyboard-stm32mp1-pi-hat-redbear.dtbo - if WIFI or Bluetooth feature enabled
 
 # phyCAM-P
-phyboard-stm32mp1-pcm939l-phycam-vm010-bw-8bits.dtbo   - phyCAM-P VM-010 B&W connected to phyBOARD-Sargas PCM-939L (8bits per pixel only)
-phyboard-stm32mp1-pcm939l-phycam-vm010-col-8bits.dtbo  - phyCAM-P VM-010 COL connected to phyBOARD-Sargas PCM-939L (8bits per pixel only)
-phyboard-stm32mp1-pcm939-phycam-vm010-bw-10bits.dtbo   - phyCAM-P VM-010 B&W connected to phyBOARD-Sargas PCM-939 (10bits per pixel only)
-phyboard-stm32mp1-pcm939-phycam-vm010-col-10bits.dtbo  - phyCAM-P VM-010 COL connected to phyBOARD-Sargas PCM-939 (10bits per pixel only)
-
 phyboard-stm32mp1-pcm939l-phycam-vm016-8bits    - phyCAM-P VM-016 (COL or B&W) connected to phyBOARD-Sargas PCM-939L (8bits per pixel only)
 phyboard-stm32mp1-pcm939-phycam-vm016-8bits     - phyCAM-P VM-016 (COL or B&W) connected to phyBOARD-Sargas PCM-939 - 8bits per pixel configuration
 phyboard-stm32mp1-pcm939-phycam-vm016-10bits    - phyCAM-P VM-016 (COL or B&W) connected to phyBOARD-Sargas PCM-939 - 10bits per pixel configuration
