@@ -133,9 +133,9 @@ You now have two possible workflows for your changes:
 1. Work inside the git repository:
 Copy and paste the following snippet to your "local.conf":
 
-SRC_URI:pn-{PN} = "git:///${{HOME}}/git/{PN};branch=${{BRANCH}}\"
+SRC_URI:pn-{PN} = "git://${{HOME}}/git/{PN};branch=${{BRANCH}}"
 SRCREV:pn-{PN} = "${{AUTOREV}}"
-BRANCH:pn-{PN} = \"{branchname}\"
+BRANCH:pn-{PN} = "{branchname}"
 
 After that you can recompile and deploy the package with
 
@@ -146,7 +146,7 @@ Note: You have to commit all your changes. Otherwise yocto doesn't pick them up!
 
 2. Work and compile from the local working directory
 To work and compile in an external source directoy we provide the
-externalsrc.bbclass. To use it copy and paste the following snippet to your
+externalsrc.bbclass. To use it, copy and paste the following snippet to your
 "local.conf":
 
 INHERIT += "externalsrc"
