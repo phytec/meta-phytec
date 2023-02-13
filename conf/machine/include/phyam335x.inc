@@ -33,8 +33,8 @@ RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base = ""
 UBI_VOLNAME = "root"
 # The biggest NANDs on current modules are 1GB. With current partition layout,
 # this sums up to 7943 LEBs available for the ubifs
-MKUBIFS_ARGS = "-F -m 2048 -e 129024 -c 7943"
-UBINIZE_ARGS = "-m 2048 -p 128KiB -s 512"
+MKUBIFS_ARGS = "--min-io-size 2048 --leb-size 129024 --max-leb-cnt 7943 --space-fixup"
+UBINIZE_ARGS = "--min-io-size 2048 --peb-size 128KiB --sub-page-size 512"
 
 # xserver
 PREFERRED_PROVIDER_virtual/xserver ?= "xserver-xorg"
