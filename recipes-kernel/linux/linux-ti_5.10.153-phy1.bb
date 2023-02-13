@@ -11,7 +11,7 @@ PR = "${INC_PR}.0"
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "dfa4f01de4f77a6abb39097c49e44ed7e555f9bf"
+SRCREV = "b4b038f737ecead2ab766e0efd551a8b3eb6c00f"
 S = "${WORKDIR}/git"
 
 # Add run-time dependency for PRU firmware to the rootfs
