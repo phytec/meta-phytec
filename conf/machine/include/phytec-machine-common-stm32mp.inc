@@ -75,16 +75,9 @@ MACHINE_EXTRA_RRECOMMENDS:append = " ${@bb.utils.contains('DISTRO_FEATURES','sys
 MACHINE_EXTRA_RRECOMMENDS:append = " ${@bb.utils.contains("MACHINE_FEATURES", "hdmi", "linux-firmware-edid", "", d)}"
 
 # Specify WIFI and Bluetooth firmwares to install
-# Two firmware packages for the BCM4343W and BCM43353 SoCs are available (from Cypress or from Laird).
-# Current stm release has been tested with the firmware package from Cypress.
-
-#Firmware packages for BCM4343W SoC (2.4Ghz)
-WIFI_LIST += "linux-firmware-bcm43430"
-BLUETOOTH_LIST += "linux-firmware-bluetooth-bcm4343"
-
-#Firmwares packages for BCM43353 SoC (5Ghz)
-WIFI_LIST += "linux-firmware-bcm4339"
-BLUETOOTH_LIST += "linux-firmware-bluetooth-bcm4335"
+# For PEB-WLBT-05 expansions we use the Laird Sterling LWB firmware
+WIFI_LIST += "laird-sterling-firmware"
+BLUETOOTH_LIST += "laird-sterling-firmware"
 
 # =========================================================================
 # Bootloader raw partition configuration : data, label, size (Kbytes)
