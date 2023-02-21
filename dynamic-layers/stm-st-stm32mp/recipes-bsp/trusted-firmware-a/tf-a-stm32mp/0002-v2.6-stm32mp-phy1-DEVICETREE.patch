@@ -1,444 +1,42 @@
-From 41b11ee0d7e7d76acc7f0c314ece8ca10f323ed9 Mon Sep 17 00:00:00 2001
+From 4b9b7aa4b5023447a7125ef7362f8d4689fc34ee Mon Sep 17 00:00:00 2001
 From: Christophe Parant <c.parant@phytec.fr>
-Date: Tue, 31 May 2022 17:00:01 +0200
-Subject: [PATCH] v2.4 stm32mp phy3 DEVICETREE
+Date: Tue, 21 Feb 2023 09:51:26 +0100
+Subject: [PATCH 2/2] v2.6 stm32mp phy1 DEVICETREE
 
 ---
- fdts/phycore-stm32mp1-2-fw-config.dts         |   9 +
- fdts/phycore-stm32mp1-2.dts                   |  43 ++
- fdts/phycore-stm32mp1-3-fw-config.dts         |   9 +
- fdts/phycore-stm32mp1-3.dts                   |  47 ++
- fdts/phycore-stm32mp1-4-fw-config.dts         |   9 +
- fdts/phycore-stm32mp1-4.dts                   |  47 ++
- fdts/phycore-stm32mp1-5-fw-config.dts         |   9 +
- fdts/phycore-stm32mp1-5.dts                   |  43 ++
- fdts/phycore-stm32mp1-6-fw-config.dts         |   9 +
- fdts/phycore-stm32mp1-6.dts                   |  42 ++
- fdts/phycore-stm32mp1-7-fw-config.dts         |   9 +
- fdts/phycore-stm32mp1-7.dts                   |  42 ++
- ...hycore-stm32mp15-ddr3-2x2Gb-1066-binG.dtsi | 120 ++++
- ...hycore-stm32mp15-ddr3-2x4Gb-1066-binG.dtsi | 120 ++++
- fdts/phycore-stm32mp15-pinctrl.dtsi           | 198 +++++++
- fdts/phycore-stm32mp15-som.dtsi               | 542 ++++++++++++++++++
- 16 files changed, 1298 insertions(+)
- create mode 100644 fdts/phycore-stm32mp1-2-fw-config.dts
- create mode 100644 fdts/phycore-stm32mp1-2.dts
- create mode 100644 fdts/phycore-stm32mp1-3-fw-config.dts
- create mode 100644 fdts/phycore-stm32mp1-3.dts
- create mode 100644 fdts/phycore-stm32mp1-4-fw-config.dts
- create mode 100644 fdts/phycore-stm32mp1-4.dts
- create mode 100644 fdts/phycore-stm32mp1-5-fw-config.dts
- create mode 100644 fdts/phycore-stm32mp1-5.dts
- create mode 100644 fdts/phycore-stm32mp1-6-fw-config.dts
- create mode 100644 fdts/phycore-stm32mp1-6.dts
- create mode 100644 fdts/phycore-stm32mp1-7-fw-config.dts
- create mode 100644 fdts/phycore-stm32mp1-7.dts
- create mode 100644 fdts/phycore-stm32mp15-ddr3-2x2Gb-1066-binG.dtsi
- create mode 100644 fdts/phycore-stm32mp15-ddr3-2x4Gb-1066-binG.dtsi
- create mode 100644 fdts/phycore-stm32mp15-pinctrl.dtsi
- create mode 100644 fdts/phycore-stm32mp15-som.dtsi
+ ...mp15-phycore-som-ddr3-2x2Gb-1066-binG.dtsi | 120 ++++
+ ...mp15-phycore-som-ddr3-2x4Gb-1066-binG.dtsi | 120 ++++
+ ...p153a-phycore-som-nand-512mb-fw-config.dts |   9 +
+ fdts/stm32mp153a-phycore-som-nand-512mb.dts   |  42 ++
+ ...mp157c-phycore-som-emmc-1gib-fw-config.dts |   9 +
+ fdts/stm32mp157c-phycore-som-emmc-1gib.dts    |  46 ++
+ ...mp157f-phycore-som-emmc-1gib-fw-config.dts |   9 +
+ fdts/stm32mp157f-phycore-som-emmc-1gib.dts    |  46 ++
+ fdts/stm32mp15xx-phycore-som-pinctrl.dtsi     | 200 +++++++
+ fdts/stm32mp15xx-phycore-som.dtsi             | 521 ++++++++++++++++++
+ 10 files changed, 1122 insertions(+)
+ create mode 100644 fdts/stm32mp15-phycore-som-ddr3-2x2Gb-1066-binG.dtsi
+ create mode 100644 fdts/stm32mp15-phycore-som-ddr3-2x4Gb-1066-binG.dtsi
+ create mode 100644 fdts/stm32mp153a-phycore-som-nand-512mb-fw-config.dts
+ create mode 100644 fdts/stm32mp153a-phycore-som-nand-512mb.dts
+ create mode 100644 fdts/stm32mp157c-phycore-som-emmc-1gib-fw-config.dts
+ create mode 100644 fdts/stm32mp157c-phycore-som-emmc-1gib.dts
+ create mode 100644 fdts/stm32mp157f-phycore-som-emmc-1gib-fw-config.dts
+ create mode 100644 fdts/stm32mp157f-phycore-som-emmc-1gib.dts
+ create mode 100644 fdts/stm32mp15xx-phycore-som-pinctrl.dtsi
+ create mode 100644 fdts/stm32mp15xx-phycore-som.dtsi
 
-diff --git a/fdts/phycore-stm32mp1-2-fw-config.dts b/fdts/phycore-stm32mp1-2-fw-config.dts
+diff --git a/fdts/stm32mp15-phycore-som-ddr3-2x2Gb-1066-binG.dtsi b/fdts/stm32mp15-phycore-som-ddr3-2x2Gb-1066-binG.dtsi
 new file mode 100644
-index 000000000..0b260502d
+index 000000000..a48408c08
 --- /dev/null
-+++ b/fdts/phycore-stm32mp1-2-fw-config.dts
-@@ -0,0 +1,9 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
-+/*
-+ * Copyright (C) Phytec GmbH 2022 - All Rights Reserved
-+ * Author: Christophe PARANT <c.parant@phytec.fr>.
-+ */
-+
-+#define DDR_SIZE       0x40000000 /* 1GB */
-+#include "stm32mp15-fw-config.dts"
-+
-diff --git a/fdts/phycore-stm32mp1-2.dts b/fdts/phycore-stm32mp1-2.dts
-new file mode 100644
-index 000000000..23d14a4ea
---- /dev/null
-+++ b/fdts/phycore-stm32mp1-2.dts
-@@ -0,0 +1,43 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
-+/*
-+ * Copyright (C) Phytec GmbH 2020-2021 - All Rights Reserved
-+ * Author: Christophe Parant <c.parant@phytec.fr>.
-+ */
-+
-+/dts-v1/;
-+
-+/* ATF Specific */
-+#include <dt-bindings/clock/stm32mp1-clksrc.h>
-+#include <dt-bindings/power/stm32mp1-power.h>
-+#include "stm32mp157.dtsi"
-+#include "stm32mp15xa.dtsi"
-+#include "phycore-stm32mp15-som.dtsi"
-+#include "stm32mp15xxac-pinctrl.dtsi"
-+#include "phycore-stm32mp15-ddr3-2x4Gb-1066-binG.dtsi"
-+
-+/ {
-+       model = "PHYTEC phyCORE-STM32MP1-2 SOM";
-+       compatible = "st,phycore-stm32mp1", "st,stm32mp157";
-+
-+};
-+
-+&rtc {
-+        status = "okay";
-+};
-+
-+&fmc {
-+        status = "disabled";
-+};
-+
-+&qspi {
-+        status = "okay";
-+};
-+
-+&sdmmc1 {
-+        status = "okay";
-+};
-+
-+&sdmmc2 {
-+        status = "okay";
-+};
-+
-diff --git a/fdts/phycore-stm32mp1-3-fw-config.dts b/fdts/phycore-stm32mp1-3-fw-config.dts
-new file mode 100644
-index 000000000..fd4fcc913
---- /dev/null
-+++ b/fdts/phycore-stm32mp1-3-fw-config.dts
-@@ -0,0 +1,9 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
-+/*
-+ * Copyright (C) Phytec GmbH 2022 - All Rights Reserved
-+ * Author: Christophe PARANT <c.parant@phytec.fr>.
-+ */
-+
-+#define DDR_SIZE	0x40000000 /* 1GB */
-+#include "stm32mp15-fw-config.dts"
-+
-diff --git a/fdts/phycore-stm32mp1-3.dts b/fdts/phycore-stm32mp1-3.dts
-new file mode 100644
-index 000000000..14d01e508
---- /dev/null
-+++ b/fdts/phycore-stm32mp1-3.dts
-@@ -0,0 +1,47 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
-+/*
-+ * Copyright (C) Phytec GmbH 2019-2020 - All Rights Reserved
-+ * Author: Dom VOVARD <dom.vovard@linrt.com>.
-+ */
-+
-+/dts-v1/;
-+
-+/* ATF Specific */
-+#include <dt-bindings/clock/stm32mp1-clksrc.h>
-+#include <dt-bindings/power/stm32mp1-power.h>
-+#include "stm32mp157.dtsi"
-+#include "stm32mp15xc.dtsi"
-+#include "phycore-stm32mp15-som.dtsi"
-+#include "stm32mp15xxac-pinctrl.dtsi"
-+#include "phycore-stm32mp15-ddr3-2x4Gb-1066-binG.dtsi"
-+
-+/ {
-+       model = "PHYTEC phyCORE-STM32MP1-3 SOM";
-+       compatible = "st,phycore-stm32mp1", "st,stm32mp157";
-+
-+};
-+
-+&rtc {
-+        status = "okay";
-+};
-+
-+&fmc {
-+        status = "disabled";
-+};
-+
-+&qspi {
-+        status = "okay";
-+};
-+
-+&sdmmc1 {
-+        status = "okay";
-+};
-+
-+&sdmmc2 {
-+        status = "okay";
-+};
-+
-+&cryp1 {
-+        status = "okay";
-+};
-+
-diff --git a/fdts/phycore-stm32mp1-4-fw-config.dts b/fdts/phycore-stm32mp1-4-fw-config.dts
-new file mode 100644
-index 000000000..0b260502d
---- /dev/null
-+++ b/fdts/phycore-stm32mp1-4-fw-config.dts
-@@ -0,0 +1,9 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
-+/*
-+ * Copyright (C) Phytec GmbH 2022 - All Rights Reserved
-+ * Author: Christophe PARANT <c.parant@phytec.fr>.
-+ */
-+
-+#define DDR_SIZE       0x40000000 /* 1GB */
-+#include "stm32mp15-fw-config.dts"
-+
-diff --git a/fdts/phycore-stm32mp1-4.dts b/fdts/phycore-stm32mp1-4.dts
-new file mode 100644
-index 000000000..d2972f49e
---- /dev/null
-+++ b/fdts/phycore-stm32mp1-4.dts
-@@ -0,0 +1,47 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
-+/*
-+ * Copyright (C) Phytec GmbH 2020-2021 - All Rights Reserved
-+ * Author: Christophe Parant <c.parant@phytec.fr>.
-+ */
-+
-+/dts-v1/;
-+
-+/* ATF Specific */
-+#include <dt-bindings/clock/stm32mp1-clksrc.h>
-+#include <dt-bindings/power/stm32mp1-power.h>
-+#include "stm32mp157.dtsi"
-+#include "stm32mp15xf.dtsi"
-+#include "phycore-stm32mp15-som.dtsi"
-+#include "stm32mp15xxac-pinctrl.dtsi"
-+#include "phycore-stm32mp15-ddr3-2x4Gb-1066-binG.dtsi"
-+
-+/ {
-+       model = "PHYTEC phyCORE-STM32MP1-4 SOM";
-+       compatible = "st,phycore-stm32mp1", "st,stm32mp157";
-+
-+};
-+
-+&rtc {
-+        status = "okay";
-+};
-+
-+&fmc {
-+        status = "disabled";
-+};
-+
-+&qspi {
-+        status = "okay";
-+};
-+
-+&sdmmc1 {
-+        status = "okay";
-+};
-+
-+&sdmmc2 {
-+        status = "okay";
-+};
-+
-+&cryp1 {
-+        status = "okay";
-+};
-+
-diff --git a/fdts/phycore-stm32mp1-5-fw-config.dts b/fdts/phycore-stm32mp1-5-fw-config.dts
-new file mode 100644
-index 000000000..0b260502d
---- /dev/null
-+++ b/fdts/phycore-stm32mp1-5-fw-config.dts
-@@ -0,0 +1,9 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
-+/*
-+ * Copyright (C) Phytec GmbH 2022 - All Rights Reserved
-+ * Author: Christophe PARANT <c.parant@phytec.fr>.
-+ */
-+
-+#define DDR_SIZE       0x40000000 /* 1GB */
-+#include "stm32mp15-fw-config.dts"
-+
-diff --git a/fdts/phycore-stm32mp1-5.dts b/fdts/phycore-stm32mp1-5.dts
-new file mode 100644
-index 000000000..7eb51d423
---- /dev/null
-+++ b/fdts/phycore-stm32mp1-5.dts
-@@ -0,0 +1,43 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
-+/*
-+ * Copyright (C) Phytec GmbH 2020-2021 - All Rights Reserved
-+ * Author: Christophe Parant <c.parant@phytec.fr>.
-+ */
-+
-+/dts-v1/;
-+
-+/* ATF Specific */
-+#include <dt-bindings/clock/stm32mp1-clksrc.h>
-+#include <dt-bindings/power/stm32mp1-power.h>
-+#include "stm32mp153.dtsi"
-+#include "stm32mp15xa.dtsi"
-+#include "phycore-stm32mp15-som.dtsi"
-+#include "stm32mp15xxac-pinctrl.dtsi"
-+#include "phycore-stm32mp15-ddr3-2x4Gb-1066-binG.dtsi"
-+
-+/ {
-+       model = "PHYTEC phyCORE-STM32MP1-5 SOM";
-+       compatible = "st,phycore-stm32mp1", "st,stm32mp157";
-+
-+};
-+
-+&rtc {
-+        status = "okay";
-+};
-+
-+&fmc {
-+        status = "disabled";
-+};
-+
-+&qspi {
-+        status = "okay";
-+};
-+
-+&sdmmc1 {
-+        status = "okay";
-+};
-+
-+&sdmmc2 {
-+        status = "okay";
-+};
-+
-diff --git a/fdts/phycore-stm32mp1-6-fw-config.dts b/fdts/phycore-stm32mp1-6-fw-config.dts
-new file mode 100644
-index 000000000..bc034c3f2
---- /dev/null
-+++ b/fdts/phycore-stm32mp1-6-fw-config.dts
-@@ -0,0 +1,9 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
-+/*
-+ * Copyright (C) Phytec GmbH 2022 - All Rights Reserved
-+ * Author: Christophe PARANT <c.parant@phytec.fr>.
-+ */
-+
-+#define DDR_SIZE       0x20000000 /* 512MB */
-+#include "stm32mp15-fw-config.dts"
-+
-diff --git a/fdts/phycore-stm32mp1-6.dts b/fdts/phycore-stm32mp1-6.dts
-new file mode 100644
-index 000000000..405b921b0
---- /dev/null
-+++ b/fdts/phycore-stm32mp1-6.dts
-@@ -0,0 +1,42 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
-+/*
-+ * Copyright (C) Phytec GmbH 2019-2020 - All Rights Reserved
-+ * Author: Dom VOVARD <dom.vovard@linrt.com>.
-+ */
-+
-+/dts-v1/;
-+
-+/* ATF Specific */
-+#include <dt-bindings/clock/stm32mp1-clksrc.h>
-+#include <dt-bindings/power/stm32mp1-power.h>
-+#include "stm32mp153.dtsi"
-+#include "stm32mp15xa.dtsi"
-+#include "phycore-stm32mp15-som.dtsi"
-+#include "stm32mp15xxac-pinctrl.dtsi"
-+#include "phycore-stm32mp15-ddr3-2x2Gb-1066-binG.dtsi"
-+
-+/ {
-+       model = "PHYTEC phyCORE-STM32MP1-6 SOM";
-+       compatible = "st,phycore-stm32mp1", "st,stm32mp157";
-+
-+};
-+
-+&rtc {
-+        status = "okay";
-+};
-+
-+&fmc {
-+        status = "okay";
-+};
-+
-+&qspi {
-+        status = "okay";
-+};
-+
-+&sdmmc1 {
-+        status = "okay";
-+};
-+
-+&sdmmc2 {
-+        status = "disabled";
-+};
-diff --git a/fdts/phycore-stm32mp1-7-fw-config.dts b/fdts/phycore-stm32mp1-7-fw-config.dts
-new file mode 100644
-index 000000000..bc034c3f2
---- /dev/null
-+++ b/fdts/phycore-stm32mp1-7-fw-config.dts
-@@ -0,0 +1,9 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
-+/*
-+ * Copyright (C) Phytec GmbH 2022 - All Rights Reserved
-+ * Author: Christophe PARANT <c.parant@phytec.fr>.
-+ */
-+
-+#define DDR_SIZE       0x20000000 /* 512MB */
-+#include "stm32mp15-fw-config.dts"
-+
-diff --git a/fdts/phycore-stm32mp1-7.dts b/fdts/phycore-stm32mp1-7.dts
-new file mode 100644
-index 000000000..c172a3728
---- /dev/null
-+++ b/fdts/phycore-stm32mp1-7.dts
-@@ -0,0 +1,42 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
-+/*
-+ * Copyright (C) Phytec GmbH 2020-2021 - All Rights Reserved
-+ * Author: Christophe Parant <c.parant@phytec.fr>.
-+ */
-+
-+/dts-v1/;
-+
-+/* ATF Specific */
-+#include <dt-bindings/clock/stm32mp1-clksrc.h>
-+#include <dt-bindings/power/stm32mp1-power.h>
-+#include "stm32mp153.dtsi"
-+#include "stm32mp15xa.dtsi"
-+#include "phycore-stm32mp15-som.dtsi"
-+#include "stm32mp15xxac-pinctrl.dtsi"
-+#include "phycore-stm32mp15-ddr3-2x2Gb-1066-binG.dtsi"
-+
-+/ {
-+       model = "PHYTEC phyCORE-STM32MP1-7 SOM";
-+       compatible = "st,phycore-stm32mp1", "st,stm32mp157";
-+
-+};
-+
-+&rtc {
-+        status = "okay";
-+};
-+
-+&fmc {
-+        status = "okay";
-+};
-+
-+&qspi {
-+        status = "okay";
-+};
-+
-+&sdmmc1 {
-+        status = "okay";
-+};
-+
-+&sdmmc2 {
-+        status = "disabled";
-+};
-diff --git a/fdts/phycore-stm32mp15-ddr3-2x2Gb-1066-binG.dtsi b/fdts/phycore-stm32mp15-ddr3-2x2Gb-1066-binG.dtsi
-new file mode 100644
-index 000000000..8ed55a80e
---- /dev/null
-+++ b/fdts/phycore-stm32mp15-ddr3-2x2Gb-1066-binG.dtsi
++++ b/fdts/stm32mp15-phycore-som-ddr3-2x2Gb-1066-binG.dtsi
 @@ -0,0 +1,120 @@
 +// SPDX-License-Identifier: GPL-2.0+ OR BSD-3-Clause
 +/*
-+ * Copyright (C) Phytec GmbH 2019-2020 - All Rights Reserved
++ * Copyright (C) 2020 PHYTEC Messtechnik GmbH
 + *
-+ * phyCORE-STM32MP1 512MB DDR configuration
++ * phyCORE-STM32MP15 512MB DDR configuration
 + * 2x DDR3L 2Gb each, 16-bit, 533MHz, Single Die Package in flyby topology.
 + * Reference used NT5CC256M16DP-DI from NANYA
 + *
@@ -491,7 +89,7 @@ index 000000000..8ed55a80e
 +#define DDR_ADDRMAP3 0x00000000
 +#define DDR_ADDRMAP4 0x00001F1F
 +#define DDR_ADDRMAP5 0x07070707
-+#define DDR_ADDRMAP6 0x0F070707
++#define DDR_ADDRMAP6 0x0F0F0707
 +#define DDR_ADDRMAP9 0x00000000
 +#define DDR_ADDRMAP10 0x00000000
 +#define DDR_ADDRMAP11 0x00000000
@@ -554,17 +152,17 @@ index 000000000..8ed55a80e
 +#define DDR_DX3DQSTR 0x3DB02000
 +
 +#include "stm32mp15-ddr.dtsi"
-diff --git a/fdts/phycore-stm32mp15-ddr3-2x4Gb-1066-binG.dtsi b/fdts/phycore-stm32mp15-ddr3-2x4Gb-1066-binG.dtsi
+diff --git a/fdts/stm32mp15-phycore-som-ddr3-2x4Gb-1066-binG.dtsi b/fdts/stm32mp15-phycore-som-ddr3-2x4Gb-1066-binG.dtsi
 new file mode 100644
-index 000000000..dd83ba029
+index 000000000..62a0f0a6e
 --- /dev/null
-+++ b/fdts/phycore-stm32mp15-ddr3-2x4Gb-1066-binG.dtsi
++++ b/fdts/stm32mp15-phycore-som-ddr3-2x4Gb-1066-binG.dtsi
 @@ -0,0 +1,120 @@
 +// SPDX-License-Identifier: GPL-2.0+ OR BSD-3-Clause
 +/*
-+ * Copyright (C) Phytec GmbH 2019-2020 - All Rights Reserved
++ * Copyright (C) 2020 PHYTEC Messtechnik GmbH
 + *
-+ * phyCORE-STM32MP1 1GB DDR configuration
++ * phyCORE-STM32MP15 1GB DDR configuration
 + * 2x DDR3L 4Gb each, 16-bit, 533MHz, Single Die Package in flyby topology.
 + * Reference used NT5CC256M16DP-DI from NANYA
 + *
@@ -680,45 +278,244 @@ index 000000000..dd83ba029
 +#define DDR_DX3DQSTR 0x3DB02000
 +
 +#include "stm32mp15-ddr.dtsi"
-diff --git a/fdts/phycore-stm32mp15-pinctrl.dtsi b/fdts/phycore-stm32mp15-pinctrl.dtsi
+diff --git a/fdts/stm32mp153a-phycore-som-nand-512mb-fw-config.dts b/fdts/stm32mp153a-phycore-som-nand-512mb-fw-config.dts
 new file mode 100644
-index 000000000..7c4abf02e
+index 000000000..ee17f0b38
 --- /dev/null
-+++ b/fdts/phycore-stm32mp15-pinctrl.dtsi
-@@ -0,0 +1,198 @@
++++ b/fdts/stm32mp153a-phycore-som-nand-512mb-fw-config.dts
+@@ -0,0 +1,9 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
 +/*
-+ * Copyright (C) Phytec GmbH 2019-2020 - All Rights Reserved
-+ * Author: Dom VOVARD <dom.vovard@linrt.com>.
++ * Copyright (C) 2022 PHYTEC Messtechnik GmbH
++ * Author: Christophe PARANT <c.parant@phytec.fr>.
 + */
++
++#define DDR_SIZE	0x20000000 /* 512MB */
++#include "stm32mp15-fw-config.dtsi"
++
+diff --git a/fdts/stm32mp153a-phycore-som-nand-512mb.dts b/fdts/stm32mp153a-phycore-som-nand-512mb.dts
+new file mode 100644
+index 000000000..2279b1a93
+--- /dev/null
++++ b/fdts/stm32mp153a-phycore-som-nand-512mb.dts
+@@ -0,0 +1,42 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2020 PHYTEC Messtechnik GmbH
++ * Author: Dom Vovard <dom.vovard@linrt.com>
++ *	   Christophe Parant <c.parant@phytec.fr>
++ */
++
++/dts-v1/;
++
++/* ATF Specific */
++#include <dt-bindings/clock/stm32mp1-clksrc.h>
++#include <dt-bindings/power/stm32mp1-power.h>
++#include "stm32mp153.dtsi"
++#include "stm32mp15xa.dtsi"
++#include "stm32mp15xx-phycore-som.dtsi"
++#include "stm32mp15-phycore-som-ddr3-2x2Gb-1066-binG.dtsi"
++
++/ {
++	model = "PHYTEC phyCORE-STM32MP153A with NAND and 512MB RAM";
++	compatible = "phytec,stm32mp153a-phycore-som-nand-512mb",
++		     "phytec,stm32mp153a-phycore-som.dtsi", "st,stm32mp153";
++};
++
++&rtc {
++	status = "okay";
++};
++
++&fmc {
++	status = "okay";
++};
++
++&qspi {
++	status = "okay";
++};
++
++&sdmmc1 {
++	status = "okay";
++};
++
++&sdmmc2 {
++	status = "disabled";
++};
+diff --git a/fdts/stm32mp157c-phycore-som-emmc-1gib-fw-config.dts b/fdts/stm32mp157c-phycore-som-emmc-1gib-fw-config.dts
+new file mode 100644
+index 000000000..0698886a8
+--- /dev/null
++++ b/fdts/stm32mp157c-phycore-som-emmc-1gib-fw-config.dts
+@@ -0,0 +1,9 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2022 PHYTEC Messtechnik GmbH
++ * Author: Christophe PARANT <c.parant@phytec.fr>.
++ */
++
++#define DDR_SIZE	0x40000000 /* 1GB */
++#include "stm32mp15-fw-config.dtsi"
++
+diff --git a/fdts/stm32mp157c-phycore-som-emmc-1gib.dts b/fdts/stm32mp157c-phycore-som-emmc-1gib.dts
+new file mode 100644
+index 000000000..ed1365533
+--- /dev/null
++++ b/fdts/stm32mp157c-phycore-som-emmc-1gib.dts
+@@ -0,0 +1,46 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2020 PHYTEC Messtechnik GmbH
++ * Author: Dom Vovard <dom.vovard@linrt.com>
++ *	   Christophe Parant <c.parant@phytec.fr>
++ */
++
++/dts-v1/;
++
++/* ATF Specific */
++#include <dt-bindings/clock/stm32mp1-clksrc.h>
++#include <dt-bindings/power/stm32mp1-power.h>
++#include "stm32mp157.dtsi"
++#include "stm32mp15xc.dtsi"
++#include "stm32mp15xx-phycore-som.dtsi"
++#include "stm32mp15-phycore-som-ddr3-2x4Gb-1066-binG.dtsi"
++
++/ {
++	model = "PHYTEC phyCORE-STM32MP157C with eMMC and 1GiB RAM";
++	compatible = "phytec,stm32mp157c-phycore-som-emmc-1gib",
++		     "phytec,stm32mp157c-phycore-som.dtsi", "st,stm32mp157";
++};
++
++&rtc {
++	status = "okay";
++};
++
++&fmc {
++	status = "disabled";
++};
++
++&qspi {
++	status = "okay";
++};
++
++&sdmmc1 {
++	status = "okay";
++};
++
++&sdmmc2 {
++	status = "okay";
++};
++
++&cryp1 {
++	status = "okay";
++};
+diff --git a/fdts/stm32mp157f-phycore-som-emmc-1gib-fw-config.dts b/fdts/stm32mp157f-phycore-som-emmc-1gib-fw-config.dts
+new file mode 100644
+index 000000000..0698886a8
+--- /dev/null
++++ b/fdts/stm32mp157f-phycore-som-emmc-1gib-fw-config.dts
+@@ -0,0 +1,9 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2022 PHYTEC Messtechnik GmbH
++ * Author: Christophe PARANT <c.parant@phytec.fr>.
++ */
++
++#define DDR_SIZE	0x40000000 /* 1GB */
++#include "stm32mp15-fw-config.dtsi"
++
+diff --git a/fdts/stm32mp157f-phycore-som-emmc-1gib.dts b/fdts/stm32mp157f-phycore-som-emmc-1gib.dts
+new file mode 100644
+index 000000000..e889939cd
+--- /dev/null
++++ b/fdts/stm32mp157f-phycore-som-emmc-1gib.dts
+@@ -0,0 +1,46 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2020 PHYTEC Messtechnik GmbH
++ * Author: Dom Vovard <dom.vovard@linrt.com>
++ *	   Christophe Parant <c.parant@phytec.fr>
++ */
++
++/dts-v1/;
++
++/* ATF Specific */
++#include <dt-bindings/clock/stm32mp1-clksrc.h>
++#include <dt-bindings/power/stm32mp1-power.h>
++#include "stm32mp157.dtsi"
++#include "stm32mp15xf.dtsi"
++#include "stm32mp15xx-phycore-som.dtsi"
++#include "stm32mp15-phycore-som-ddr3-2x4Gb-1066-binG.dtsi"
++
++/ {
++	model = "PHYTEC phyCORE-STM32MP157F with eMMC and 1GiB RAM";
++	compatible = "phytec,stm32mp157f-phycore-som-emmc-1gib",
++		     "phytec,stm32mp157f-phycore-som.dtsi", "st,stm32mp157";
++};
++
++&rtc {
++	status = "okay";
++};
++
++&fmc {
++	status = "disabled";
++};
++
++&qspi {
++	status = "okay";
++};
++
++&sdmmc1 {
++	status = "okay";
++};
++
++&sdmmc2 {
++	status = "okay";
++};
++
++&cryp1 {
++	status = "okay";
++};
+diff --git a/fdts/stm32mp15xx-phycore-som-pinctrl.dtsi b/fdts/stm32mp15xx-phycore-som-pinctrl.dtsi
+new file mode 100644
+index 000000000..66352a348
+--- /dev/null
++++ b/fdts/stm32mp15xx-phycore-som-pinctrl.dtsi
+@@ -0,0 +1,200 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2020 PHYTEC Messtechnik GmbH
++ * Author: Dom Vovard <dom.vovard@linrt.com>
++ *	   Christophe Parant <c.parant@phytec.fr>
++ */
++
 +#include <dt-bindings/pinctrl/stm32-pinfunc.h>
 +
 +&pinctrl {
 +
-+        fmc_pins_mx: fmc_mx-0 {
-+                pins1 {
-+                        pinmux = <STM32_PINMUX('D', 0, AF12)>, /* FMC_D2 */
-+                                 <STM32_PINMUX('D', 1, AF12)>, /* FMC_D3 */
-+                                 <STM32_PINMUX('D', 4, AF12)>, /* FMC_NOE */
-+                                 <STM32_PINMUX('D', 5, AF12)>, /* FMC_NWE */
-+                                 <STM32_PINMUX('D', 11, AF12)>, /* FMC_CLE */
-+                                 <STM32_PINMUX('D', 12, AF12)>, /* FMC_ALE */
-+                                 <STM32_PINMUX('D', 14, AF12)>, /* FMC_D0 */
-+                                 <STM32_PINMUX('D', 15, AF12)>, /* FMC_D1 */
-+                                 <STM32_PINMUX('E', 7, AF12)>, /* FMC_D4 */
-+                                 <STM32_PINMUX('E', 8, AF12)>, /* FMC_D5 */
-+                                 <STM32_PINMUX('E', 9, AF12)>, /* FMC_D6 */
-+                                 <STM32_PINMUX('E', 10, AF12)>, /* FMC_D7 */
-+                                 <STM32_PINMUX('G', 9, AF12)>; /* FMC_NCE */
-+                        bias-disable;
-+                        drive-push-pull;
-+                        slew-rate = <1>;
-+                };
-+                pins2 {
-+                        pinmux = <STM32_PINMUX('D', 6, AF12)>; /* FMC_NWAIT */
-+                        bias-pull-up;
-+                };
-+        };
++	fmc_pins_mx: fmc_mx-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('D', 0, AF12)>, /* FMC_D2 */
++				 <STM32_PINMUX('D', 1, AF12)>, /* FMC_D3 */
++				 <STM32_PINMUX('D', 4, AF12)>, /* FMC_NOE */
++				 <STM32_PINMUX('D', 5, AF12)>, /* FMC_NWE */
++				 <STM32_PINMUX('D', 11, AF12)>, /* FMC_CLE */
++				 <STM32_PINMUX('D', 12, AF12)>, /* FMC_ALE */
++				 <STM32_PINMUX('D', 14, AF12)>, /* FMC_D0 */
++				 <STM32_PINMUX('D', 15, AF12)>, /* FMC_D1 */
++				 <STM32_PINMUX('E', 7, AF12)>, /* FMC_D4 */
++				 <STM32_PINMUX('E', 8, AF12)>, /* FMC_D5 */
++				 <STM32_PINMUX('E', 9, AF12)>, /* FMC_D6 */
++				 <STM32_PINMUX('E', 10, AF12)>, /* FMC_D7 */
++				 <STM32_PINMUX('G', 9, AF12)>; /* FMC_NCE */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <1>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('D', 6, AF12)>; /* FMC_NWAIT */
++			bias-pull-up;
++		};
++	};
 +
 +	qspi_bk1_pins_a: qspi-bk1-0 {
 +		pins1 {
@@ -884,19 +681,21 @@ index 000000000..7c4abf02e
 +		};
 +	};
 +};
-diff --git a/fdts/phycore-stm32mp15-som.dtsi b/fdts/phycore-stm32mp15-som.dtsi
+diff --git a/fdts/stm32mp15xx-phycore-som.dtsi b/fdts/stm32mp15xx-phycore-som.dtsi
 new file mode 100644
-index 000000000..673bc8557
+index 000000000..276da8db7
 --- /dev/null
-+++ b/fdts/phycore-stm32mp15-som.dtsi
-@@ -0,0 +1,542 @@
++++ b/fdts/stm32mp15xx-phycore-som.dtsi
+@@ -0,0 +1,521 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
 +/*
-+ * Copyright (C) Phytec GmbH 2019-2020 - All Rights Reserved
-+ * Author: Dom VOVARD <dom.vovard@linrt.com>.
++ * Copyright (C) 2020 PHYTEC Messtechnik GmbH
++ * Author: Dom Vovard <dom.vovard@linrt.com>
++ *	   Christophe Parant <c.parant@phytec.fr>
 + */
 +
-+#include "phycore-stm32mp15-pinctrl.dtsi"
++#include "stm32mp15xx-phycore-som-pinctrl.dtsi"
++#include "stm32mp15xxac-pinctrl.dtsi"
 +#include <dt-bindings/soc/st,stm32-etzpc.h>
 +
 +/ {
@@ -1108,7 +907,7 @@ index 000000000..673bc8557
 +				regulator-name = "vtt_ddr";
 +				regulator-always-on;
 +				regulator-over-current-protection;
-+                                st,regulator-sink-source;
++				st,regulator-sink-source;
 +				lp-stop {
 +					regulator-off-in-suspend;
 +				};
@@ -1124,7 +923,6 @@ index 000000000..673bc8557
 +				regulator-name = "vdd_usb";
 +				regulator-min-microvolt = <3300000>;
 +				regulator-max-microvolt = <3300000>;
-+				regulator-always-on;
 +				standby-ddr-sr {
 +					regulator-off-in-suspend;
 +				};
@@ -1195,28 +993,6 @@ index 000000000..673bc8557
 +	secure-status = "okay";
 +};
 +
-+&nvmem_layout {
-+	nvmem-cells = <&cfg0_otp>,
-+		      <&part_number_otp>,
-+		      <&monotonic_otp>,
-+		      <&nand_otp>,
-+		      <&uid_otp>,
-+		      <&package_otp>,
-+		      <&hw2_otp>,
-+		      <&pkh_otp>,
-+		      <&board_id>;
-+
-+	nvmem-cell-names = "cfg0_otp",
-+			   "part_number_otp",
-+			   "monotonic_otp",
-+			   "nand_otp",
-+			   "uid_otp",
-+			   "package_otp",
-+			   "hw2_otp",
-+			   "pkh_otp",
-+			   "board_id";
-+};
-+
 +&pwr_regulators {
 +	system_suspend_supported_soc_modes = <
 +		STM32_PM_CSLEEP_RUN
@@ -1268,7 +1044,7 @@ index 000000000..673bc8557
 +		CLK_DSI_DSIPLL
 +		CLK_STGEN_HSE
 +		CLK_USBPHY_HSE
-+                CLK_FDCAN_HSE
++		CLK_FDCAN_HSE
 +		CLK_SPI2S1_PLL3Q
 +		CLK_SPI2S23_PLL3Q
 +		CLK_SPI45_HSI
@@ -1339,34 +1115,34 @@ index 000000000..673bc8557
 +	nand-controller@4,0 {
 +		status = "okay";
 +
-+	        nand: nand@0 {
-+		        reg = <0>;
-+		        nand-on-flash-bbt;
-+		        nand-ecc-strength = <4>;
-+		        nand-ecc-step-size = <512>;
-+		        #address-cells = <1>;
-+		        #size-cells = <1>;
-+	        };
++		nand: nand@0 {
++			reg = <0>;
++			nand-on-flash-bbt;
++			nand-ecc-strength = <4>;
++			nand-ecc-step-size = <512>;
++			#address-cells = <1>;
++			#size-cells = <1>;
++		};
 +	};
 +};
 +
 +&qspi {
-+        pinctrl-names = "default";
-+        pinctrl-0 = <&qspi_clk_pins_a &qspi_bk1_pins_a &qspi_bk2_pins_a>;
-+        reg = <0x58003000 0x1000>, <0x70000000 0x4000000>;
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+        status = "disabled";
++	pinctrl-names = "default";
++	pinctrl-0 = <&qspi_clk_pins_a &qspi_bk1_pins_a &qspi_bk2_pins_a>;
++	reg = <0x58003000 0x1000>, <0x70000000 0x4000000>;
++	#address-cells = <1>;
++	#size-cells = <0>;
++	status = "disabled";
 +
-+        flash0: n25q128@0 {
-+                compatible = "micron,n25q128a13", "jedec,spi-nor";
-+                reg = <0>;
-+                spi-rx-bus-width = <4>;
-+                spi-max-frequency = <50000000>;
-+                m25p,fast-read;
-+                #address-cells = <1>;
-+                #size-cells = <1>;
-+        };
++	flash0: n25q128@0 {
++		compatible = "micron,n25q128a13", "jedec,spi-nor";
++		reg = <0>;
++		spi-rx-bus-width = <4>;
++		spi-max-frequency = <50000000>;
++		m25p,fast-read;
++		#address-cells = <1>;
++		#size-cells = <1>;
++	};
 +};
 +
 +&sdmmc1 {
@@ -1382,17 +1158,17 @@ index 000000000..673bc8557
 +
 +&sdmmc2 {
 +	pinctrl-names = "default";
-+        pinctrl-0 = <&sdmmc2_b4_pins_a &sdmmc2_d47_pins_a>;
-+        non-removable;
-+        no-sd;
-+        no-sdio;
-+        st,neg-edge;
-+        bus-width = <8>;
-+        status = "disabled";
++	pinctrl-0 = <&sdmmc2_b4_pins_a &sdmmc2_d47_pins_a>;
++	non-removable;
++	no-sd;
++	no-sdio;
++	st,neg-edge;
++	bus-width = <8>;
++	status = "disabled";
 +	vmmc-supply = <&v3v3>;
-+        vqmmc-supply = <&v3v3>;
-+        mmc-ddr-3_3v;
-+        status = "disabled";
++	vqmmc-supply = <&v3v3>;
++	mmc-ddr-3_3v;
++	status = "disabled";
 +};
 +
 +&timers12 {
