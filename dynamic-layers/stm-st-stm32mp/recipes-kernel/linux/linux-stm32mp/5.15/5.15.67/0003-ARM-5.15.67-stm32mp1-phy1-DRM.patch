@@ -1,14 +1,14 @@
-From 09c7f2bb45289837fe515e8c817da706b96714b2 Mon Sep 17 00:00:00 2001
+From ba0028e33391e0226ec8a59a239b20207971f756 Mon Sep 17 00:00:00 2001
 From: Christophe Parant <c.parant@phytec.fr>
-Date: Tue, 31 May 2022 18:22:50 +0200
-Subject: [PATCH 3/6] ARM 5.10.61 stm32mp1 phy2 DRM
+Date: Tue, 21 Feb 2023 11:58:58 +0100
+Subject: [PACTH 3/7] ARM 5.15.67 stm32mp1 phy1 DRM
 
 ---
  .../drm/panel/panel-raspberrypi-touchscreen.c | 43 ++++++++++++++++++-
  1 file changed, 41 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c b/drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c
-index bbdd086be7f5..384ddda7028d 100644
+index 145047e19394..736cdbd11e03 100644
 --- a/drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c
 +++ b/drivers/gpu/drm/panel/panel-raspberrypi-touchscreen.c
 @@ -196,6 +196,42 @@ struct rpi_touchscreen {
@@ -55,7 +55,7 @@ index bbdd086be7f5..384ddda7028d 100644
  		/* Modeline comes from the Raspberry Pi firmware, with HFP=1
  		 * plugged in and clock re-computed from that.
 @@ -268,12 +304,13 @@ static int rpi_touchscreen_noop(struct drm_panel *panel)
- static int rpi_touchscreen_enable(struct drm_panel *panel)
+ static int rpi_touchscreen_prepare(struct drm_panel *panel)
  {
  	struct rpi_touchscreen *ts = panel_to_ts(panel);
 -	int i;
@@ -70,7 +70,7 @@ index bbdd086be7f5..384ddda7028d 100644
  			break;
  	}
  
-@@ -377,6 +414,8 @@ static int rpi_touchscreen_probe(struct i2c_client *i2c,
+@@ -384,6 +421,8 @@ static int rpi_touchscreen_probe(struct i2c_client *i2c,
  	ts->i2c = i2c;
  
  	ver = rpi_touchscreen_i2c_read(ts, REG_ID);
