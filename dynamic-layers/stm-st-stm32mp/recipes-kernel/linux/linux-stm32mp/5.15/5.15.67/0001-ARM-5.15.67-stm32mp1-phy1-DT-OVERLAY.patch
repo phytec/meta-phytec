@@ -1,19 +1,15 @@
-From 6420e7bbba95e8f1d93379084f0221242327ae3d Mon Sep 17 00:00:00 2001
+From 6ed9311730325fb2db794024134bee4ad52d07d7 Mon Sep 17 00:00:00 2001
 From: Christophe Parant <c.parant@phytec.fr>
-Date: Thu, 2 Jun 2022 16:29:33 +0200
-Subject: [PATCH 1/6] ARM 5.10.61 stm32mp1 phy2 DT OVERLAY
+Date: Tue, 21 Feb 2023 11:47:45 +0100
+Subject: [PACTH 1/7] ARM 5.15.67 stm32mp1 phy1 DT OVERLAY
 
 ---
  .../phyboard-stm32mp1-dsi-lcd-mb1407.dts      |  98 ++++++++
  ...oard-stm32mp1-dsi-rpi-official-display.dts |  79 +++++++
- .../phyboard-stm32mp1-motor-control-m4.dts    | 186 +++++++++++++++
- .../phyboard-stm32mp1-motor-control.dts       | 212 ++++++++++++++++++
- ...stm32mp1-pcm939-phycam-vm010-bw-10bits.dts |  64 ++++++
- ...tm32mp1-pcm939-phycam-vm010-col-10bits.dts |  64 ++++++
+ .../phyboard-stm32mp1-motor-control-m4.dts    | 187 ++++++++++++++++
+ .../phyboard-stm32mp1-motor-control.dts       | 211 ++++++++++++++++++
  ...rd-stm32mp1-pcm939-phycam-vm016-10bits.dts |  60 +++++
  ...ard-stm32mp1-pcm939-phycam-vm016-8bits.dts |  60 +++++
- ...stm32mp1-pcm939l-phycam-vm010-bw-8bits.dts |  64 ++++++
- ...tm32mp1-pcm939l-phycam-vm010-col-8bits.dts |  64 ++++++
  ...rd-stm32mp1-pcm939l-phycam-vm016-8bits.dts |  60 +++++
  .../phyboard-stm32mp1-peb-av01-hdmi.dts       |  74 ++++++
  .../phyboard-stm32mp1-peb-av02-lcd.dts        | 103 +++++++++
@@ -21,20 +17,16 @@ Subject: [PATCH 1/6] ARM 5.10.61 stm32mp1 phy2 DT OVERLAY
  ...-stm32mp1-peb-wlbt-05-bluetooth-usart3.dts |  42 ++++
  .../phyboard-stm32mp1-peb-wlbt-05-wlan.dts    |  60 +++++
  .../phyboard-stm32mp1-pi-hat-extension.dts    |  38 ++++
- .../phyboard-stm32mp1-pi-hat-redbear.dts      |  87 +++++++
+ .../phyboard-stm32mp1-pi-hat-redbear.dts      |  87 ++++++++
  .../dts/overlays/phyboard-stm32mp1-rs485.dts  |  21 ++
- .../phyboard-stm32mp1-uno-r3-extension.dts    |  85 +++++++
- 20 files changed, 1553 insertions(+)
+ .../phyboard-stm32mp1-uno-r3-extension.dts    |  73 ++++++
+ 16 files changed, 1285 insertions(+)
  create mode 100644 arch/arm/boot/dts/overlays/phyboard-stm32mp1-dsi-lcd-mb1407.dts
  create mode 100644 arch/arm/boot/dts/overlays/phyboard-stm32mp1-dsi-rpi-official-display.dts
  create mode 100644 arch/arm/boot/dts/overlays/phyboard-stm32mp1-motor-control-m4.dts
  create mode 100644 arch/arm/boot/dts/overlays/phyboard-stm32mp1-motor-control.dts
- create mode 100644 arch/arm/boot/dts/overlays/phyboard-stm32mp1-pcm939-phycam-vm010-bw-10bits.dts
- create mode 100644 arch/arm/boot/dts/overlays/phyboard-stm32mp1-pcm939-phycam-vm010-col-10bits.dts
  create mode 100644 arch/arm/boot/dts/overlays/phyboard-stm32mp1-pcm939-phycam-vm016-10bits.dts
  create mode 100644 arch/arm/boot/dts/overlays/phyboard-stm32mp1-pcm939-phycam-vm016-8bits.dts
- create mode 100644 arch/arm/boot/dts/overlays/phyboard-stm32mp1-pcm939l-phycam-vm010-bw-8bits.dts
- create mode 100644 arch/arm/boot/dts/overlays/phyboard-stm32mp1-pcm939l-phycam-vm010-col-8bits.dts
  create mode 100644 arch/arm/boot/dts/overlays/phyboard-stm32mp1-pcm939l-phycam-vm016-8bits.dts
  create mode 100644 arch/arm/boot/dts/overlays/phyboard-stm32mp1-peb-av01-hdmi.dts
  create mode 100644 arch/arm/boot/dts/overlays/phyboard-stm32mp1-peb-av02-lcd.dts
@@ -48,7 +40,7 @@ Subject: [PATCH 1/6] ARM 5.10.61 stm32mp1 phy2 DT OVERLAY
 
 diff --git a/arch/arm/boot/dts/overlays/phyboard-stm32mp1-dsi-lcd-mb1407.dts b/arch/arm/boot/dts/overlays/phyboard-stm32mp1-dsi-lcd-mb1407.dts
 new file mode 100644
-index 000000000000..1f4dce7dbd2d
+index 000000000000..e532adc6f63d
 --- /dev/null
 +++ b/arch/arm/boot/dts/overlays/phyboard-stm32mp1-dsi-lcd-mb1407.dts
 @@ -0,0 +1,98 @@
@@ -56,7 +48,7 @@ index 000000000000..1f4dce7dbd2d
 +/*
 + * Copyright (C) PHYTEC GmbH 2021 - All Rights Reserved
 + * Author: Christophe PARANT <c.parant@phytec.fr>.
-+ * Devicetree overlay for ST MB1407 4" TFT 480x800 pixels DSI display 
++ * Devicetree overlay for ST MB1407 4" TFT 480x800 pixels DSI display
 + */
 +
 +/dts-v1/;
@@ -65,94 +57,94 @@ index 000000000000..1f4dce7dbd2d
 +#include <dt-bindings/gpio/gpio.h>
 +
 +/ {
-+        compatible = "phytec,stm32mp1-pcm939";
++	compatible = "phytec,stm32mp1-pcm939";
 +};
 +
 +&i2c1 {
 +	#address-cells = <1>;
 +	#size-cells = <0>;
-+        status = "okay";
++	status = "okay";
 +
-+        touchscreen@2a {
-+                compatible = "focaltech,ft6236";
-+                reg = <0x2a>;
-+                interrupts = <8 2>;
-+                interrupt-parent = <&gpioi>;
-+                interrupt-controller;
-+                touchscreen-size-x = <480>;
-+                touchscreen-size-y = <800>;
++	touchscreen@2a {
++		compatible = "focaltech,ft6236";
++		reg = <0x2a>;
++		interrupts = <8 2>;
++		interrupt-parent = <&gpioi>;
++		interrupt-controller;
++		touchscreen-size-x = <480>;
++		touchscreen-size-y = <800>;
 +		panel = <&dsi_panel>;
-+                status = "okay";
-+        };
++		status = "okay";
++	};
 +
-+        touchscreen@38 {
-+                compatible = "focaltech,ft6336";
-+                reg = <0x38>;
-+                interrupts = <8 2>;
-+                interrupt-parent = <&gpioi>;
-+                interrupt-controller;
-+                touchscreen-size-x = <480>;
-+                touchscreen-size-y = <800>;
++	touchscreen@38 {
++		compatible = "focaltech,ft6336";
++		reg = <0x38>;
++		interrupts = <8 2>;
++		interrupt-parent = <&gpioi>;
++		interrupt-controller;
++		touchscreen-size-x = <480>;
++		touchscreen-size-y = <800>;
 +		panel = <&dsi_panel>;
-+                status = "okay";
-+        };
++		status = "okay";
++	};
 +};
 +
 +&ltdc {
-+        status = "okay";
++	status = "okay";
 +
-+        port {
-+                #address-cells = <1>;
-+                #size-cells = <0>;
++	port {
++		#address-cells = <1>;
++		#size-cells = <0>;
 +
-+                ltdc_ep0_out: endpoint@0 {
-+                        reg = <0>;
-+                        remote-endpoint = <&dsi_in>;
-+                };
-+        };
++		ltdc_ep0_out: endpoint@0 {
++			reg = <0>;
++			remote-endpoint = <&dsi_in>;
++		};
++	};
 +};
 +
 +&dsi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+        status = "okay";
++	#address-cells = <1>;
++	#size-cells = <0>;
++	status = "okay";
 +
-+        ports {
-+                #address-cells = <1>;
-+                #size-cells = <0>;
++	ports {
++		#address-cells = <1>;
++		#size-cells = <0>;
 +
-+                port@0 {
-+                        reg = <0>;
-+                        dsi_in: endpoint {
-+                                remote-endpoint = <&ltdc_ep0_out>;
-+                        };
-+                };
++		port@0 {
++			reg = <0>;
++			dsi_in: endpoint {
++				remote-endpoint = <&ltdc_ep0_out>;
++			};
++		};
 +
-+                port@1 {
-+                        reg = <1>;
-+                        dsi_out: endpoint {
-+                                remote-endpoint = <&panel_in>;
-+                        };
-+                };
-+        };
++		port@1 {
++			reg = <1>;
++			dsi_out: endpoint {
++				remote-endpoint = <&panel_in>;
++			};
++		};
++	};
 +
-+        dsi_panel:panel@0 {
-+                compatible = "orisetech,otm8009a";
-+                reg = <0>;
-+                reset-gpios = <&gpiod 9 GPIO_ACTIVE_LOW>;
++	dsi_panel:panel@0 {
++		compatible = "orisetech,otm8009a";
++		reg = <0>;
++		reset-gpios = <&gpiod 9 GPIO_ACTIVE_LOW>;
 +		power-supply = <&v3v3>;
-+                status = "okay";
++		status = "okay";
 +
-+                port {
-+                        panel_in: endpoint {
-+                                remote-endpoint = <&dsi_out>;
-+                        };
-+                };
-+        };
++		port {
++			panel_in: endpoint {
++				remote-endpoint = <&dsi_out>;
++			};
++		};
++	};
 +};
 diff --git a/arch/arm/boot/dts/overlays/phyboard-stm32mp1-dsi-rpi-official-display.dts b/arch/arm/boot/dts/overlays/phyboard-stm32mp1-dsi-rpi-official-display.dts
 new file mode 100644
-index 000000000000..a7fc6c19de1e
+index 000000000000..c9d40a03140f
 --- /dev/null
 +++ b/arch/arm/boot/dts/overlays/phyboard-stm32mp1-dsi-rpi-official-display.dts
 @@ -0,0 +1,79 @@
@@ -160,29 +152,29 @@ index 000000000000..a7fc6c19de1e
 +/*
 + * Copyright (C) PHYTEC GmbH 2021 - All Rights Reserved
 + * Author: Christophe PARANT <c.parant@phytec.fr>.
-+ * Devicetree overlay for Official Raspberry Pi Touch 7" Display 
++ * Devicetree overlay for Official Raspberry Pi Touch 7" Display
 + */
 +
 +/dts-v1/;
 +/plugin/;
 +
 +/ {
-+        compatible = "phytec,stm32mp1-pcm939";
++	compatible = "phytec,stm32mp1-pcm939";
 +};
 +
 +&i2c1 {
 +	#address-cells = <1>;
 +	#size-cells = <0>;
-+        status = "okay";
++	status = "okay";
 +
-+        touchscreen@38 {
-+                compatible = "sitronix,st1633";
-+                reg = <0x38>;
-+                interrupts = <2 2>;
-+                interrupt-parent = <&gpiof>;
-+                interrupt-controller;
-+                status = "okay";
-+        };
++	touchscreen@38 {
++		compatible = "sitronix,st1633";
++		reg = <0x38>;
++		interrupts = <2 2>;
++		interrupt-parent = <&gpiof>;
++		interrupt-controller;
++		status = "okay";
++	};
 +
 +	lcd@45 {
 +		compatible = "raspberrypi,7inch-touchscreen-panel";
@@ -198,49 +190,49 @@ index 000000000000..a7fc6c19de1e
 +};
 +
 +&ltdc {
-+        status = "okay";
++	status = "okay";
 +
-+        port {
-+                #address-cells = <1>;
-+                #size-cells = <0>;
++	port {
++		#address-cells = <1>;
++		#size-cells = <0>;
 +
-+                ltdc_ep0_out: endpoint@0 {
-+                        reg = <0>;
-+                        remote-endpoint = <&dsi_in>;
-+                };
-+        };
++		ltdc_ep0_out: endpoint@0 {
++			reg = <0>;
++			remote-endpoint = <&dsi_in>;
++		};
++	};
 +};
 +
 +&dsi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+        status = "okay";
++	#address-cells = <1>;
++	#size-cells = <0>;
++	status = "okay";
 +
-+        ports {
-+                #address-cells = <1>;
-+                #size-cells = <0>;
++	ports {
++		#address-cells = <1>;
++		#size-cells = <0>;
 +
-+                port@0 {
-+                        reg = <0>;
-+                        dsi_in: endpoint {
-+                                remote-endpoint = <&ltdc_ep0_out>;
-+                        };
-+                };
++		port@0 {
++			reg = <0>;
++			dsi_in: endpoint {
++				remote-endpoint = <&ltdc_ep0_out>;
++			};
++		};
 +
-+                port@1 {
-+                        reg = <1>;
-+                        dsi_out: endpoint {
-+                                remote-endpoint = <&panel_in>;
-+                        };
-+                };
-+        };
++		port@1 {
++			reg = <1>;
++			dsi_out: endpoint {
++				remote-endpoint = <&panel_in>;
++			};
++		};
++	};
 +};
 diff --git a/arch/arm/boot/dts/overlays/phyboard-stm32mp1-motor-control-m4.dts b/arch/arm/boot/dts/overlays/phyboard-stm32mp1-motor-control-m4.dts
 new file mode 100644
-index 000000000000..ce0e9d8a2146
+index 000000000000..f22ebfca0aa7
 --- /dev/null
 +++ b/arch/arm/boot/dts/overlays/phyboard-stm32mp1-motor-control-m4.dts
-@@ -0,0 +1,186 @@
+@@ -0,0 +1,187 @@
 +/* SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause) */
 +/*
 + * Copyright (C) PHYTEC GmbH 2021 - All Rights Reserved
@@ -254,7 +246,7 @@ index 000000000000..ce0e9d8a2146
 +#include <dt-bindings/pinctrl/stm32-pinfunc.h>
 +
 +/ {
-+        compatible = "phytec,stm32mp1-pcm939";
++	compatible = "phytec,stm32mp1-pcm939";
 +};
 +
 +&usart3{
@@ -284,24 +276,25 @@ index 000000000000..ce0e9d8a2146
 +};
 +
 +&m4_rproc{
-+    m4_system_resources{
-+        status = "okay";
-+	button {
-+		compatible = "rproc-srm-dev";
-+		interrupt-parent = <&gpioa>;
-+		interrupts = <14 2>;
-+		interrupt-names = "irq";
++	m4_system_resources{
 +		status = "okay";
-+	};
 +
-+	m4_led: m4_led {
-+		compatible = "rproc-srm-dev";
-+		pinctrl-names = "rproc_default", "rproc_sleep";
-+		pinctrl-0 = <&leds_red_pins>;
-+		pinctrl-1 = <&leds_red_sleep_pins>;
-+		status = "okay";
++		button {
++			compatible = "rproc-srm-dev";
++			interrupt-parent = <&gpioa>;
++			interrupts = <14 2>;
++			interrupt-names = "irq";
++			status = "okay";
++		};
++
++		m4_led: m4_led {
++			compatible = "rproc-srm-dev";
++			pinctrl-names = "rproc_default", "rproc_sleep";
++			pinctrl-0 = <&leds_red_pins>;
++			pinctrl-1 = <&leds_red_sleep_pins>;
++			status = "okay";
++		};
 +	};
-+    };
 +};
 +
 +
@@ -311,12 +304,12 @@ index 000000000000..ce0e9d8a2146
 +
 +
 +&vrefbuf {
-+        status = "okay";
++	status = "okay";
 +};
 +
 +&m4_adc{
-+        vdd-supply = <&vdd>;
-+        vref-supply = <&vrefbuf>;
++	vdd-supply = <&vdd>;
++	vref-supply = <&vrefbuf>;
 +
 +	pinctrl-names = "rproc_default", "rproc_sleep";
 +	pinctrl-0 = <&adc_pins>;
@@ -351,63 +344,63 @@ index 000000000000..ce0e9d8a2146
 +&pinctrl {
 +	adc_pins: adc-0 {
 +		pins {
-+		    pinmux = <STM32_PINMUX('F', 12, ANALOG)>; /* ADC1_INP6 */
++			pinmux = <STM32_PINMUX('F', 12, ANALOG)>; /* ADC1_INP6 */
 +		};
 +	};
 +
 +	tim8_pins: tim8-0 {
 +		pins {
-+		    pinmux = <STM32_PINMUX('C', 7, AF3)>, /* TIM8_CH2 */
-+			     <STM32_PINMUX('I', 5, AF3)>, /* TIM8_CH1 */
-+			     <STM32_PINMUX('I', 7, AF3)>; /* TIM8_CH3 */
-+		    bias-disable;
-+		    drive-push-pull;
-+		    slew-rate = <0>;
++			pinmux = <STM32_PINMUX('C', 7, AF3)>, /* TIM8_CH2 */
++				 <STM32_PINMUX('I', 5, AF3)>, /* TIM8_CH1 */
++				 <STM32_PINMUX('I', 7, AF3)>; /* TIM8_CH3 */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <0>;
 +		};
 +	};
 +
 +	tim8_pwm_pins: tim8_pwm-0 {
 +		pins {
-+		    pinmux = <STM32_PINMUX('G', 3, AF3)>; /* TIM8_BKIN2 */
-+		    bias-disable;
-+		    drive-open-drain;
-+		    slew-rate = <0>;
++			pinmux = <STM32_PINMUX('G', 3, AF3)>; /* TIM8_BKIN2 */
++			bias-disable;
++			drive-open-drain;
++			slew-rate = <0>;
 +		};
 +	};
 +
 +	tim3_pins: tim3-0 {
 +		pins {
-+		    pinmux = <STM32_PINMUX('A', 6, AF2)>; /* TIM3_CH1 */
-+		    bias-disable;
-+		    drive-push-pull;
-+		    slew-rate = <0>;
++			pinmux = <STM32_PINMUX('A', 6, AF2)>; /* TIM3_CH1 */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <0>;
 +		};
 +	};
 +
 +	adc_sleep_pins: adc_sleep-0 {
 +		pins {
-+		    pinmux = <STM32_PINMUX('F', 12, ANALOG)>; /* ADC1_INP6 */
++			pinmux = <STM32_PINMUX('F', 12, ANALOG)>; /* ADC1_INP6 */
 +		};
 +	};
 +
 +	tim8_sleep_pins: tim8_sleep-0 {
 +		pins {
-+		    pinmux = <STM32_PINMUX('C', 7, ANALOG)>, /* TIM8_CH2 */
-+			     <STM32_PINMUX('I', 5, ANALOG)>, /* TIM8_CH1 */
-+			     <STM32_PINMUX('I', 7, ANALOG)>; /* TIM8_CH3 */
++			pinmux = <STM32_PINMUX('C', 7, ANALOG)>, /* TIM8_CH2 */
++				 <STM32_PINMUX('I', 5, ANALOG)>, /* TIM8_CH1 */
++				 <STM32_PINMUX('I', 7, ANALOG)>; /* TIM8_CH3 */
 +		};
 +	};
 +
 +	tim8_pwm_sleep_pins: tim8_pwm_sleep-0 {
 +		pins {
-+		    pinmux = <STM32_PINMUX('G', 3, ANALOG)>; /* TIM8_BKIN2 */
++			pinmux = <STM32_PINMUX('G', 3, ANALOG)>; /* TIM8_BKIN2 */
 +		};
 +	};
 +
 +
 +	tim3_sleep_pins: tim3_sleep-0 {
 +		pins {
-+		    pinmux = <STM32_PINMUX('A', 6, ANALOG)>; /* TIM3_CH1 */
++			pinmux = <STM32_PINMUX('A', 6, ANALOG)>; /* TIM3_CH1 */
 +		};
 +	};
 +
@@ -429,10 +422,10 @@ index 000000000000..ce0e9d8a2146
 +};
 diff --git a/arch/arm/boot/dts/overlays/phyboard-stm32mp1-motor-control.dts b/arch/arm/boot/dts/overlays/phyboard-stm32mp1-motor-control.dts
 new file mode 100644
-index 000000000000..dbcebf736369
+index 000000000000..fd05a3aef407
 --- /dev/null
 +++ b/arch/arm/boot/dts/overlays/phyboard-stm32mp1-motor-control.dts
-@@ -0,0 +1,212 @@
+@@ -0,0 +1,211 @@
 +/* SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause) */
 +/*
 + * Copyright (C) PHYTEC GmbH 2021 - All Rights Reserved
@@ -446,37 +439,37 @@ index 000000000000..dbcebf736369
 +#include <dt-bindings/pinctrl/stm32-pinfunc.h>
 +
 +/ {
-+        compatible = "phytec,stm32mp1-pcm939";
++	compatible = "phytec,stm32mp1-pcm939";
 +};
 +
 +&vrefbuf {
-+        status = "okay";
++	status = "okay";
 +};
 +
 +&adc {
-+        pinctrl-names = "default";
++	pinctrl-names = "default";
 +	pinctrl-0 = <&adc12_pins_mx>;
 +	pinctrl-1 = <&adc12_sleep_pins_mx>;
 +
-+        vdd-supply = <&vdd>;
-+        vdda-supply = <&vdd>;
-+        vref-supply = <&vrefbuf>;
-+        status = "okay";
++	vdd-supply = <&vdd>;
++	vdda-supply = <&vdd>;
++	vref-supply = <&vrefbuf>;
++	status = "okay";
 +
-+        adc1: adc@0 {
-+                st,min-sample-time-nsecs = <5000>;
-+                /* in6, in13, in15 */
-+                st,adc-channels = <6 13 15>;
-+                status = "okay";
-+        };
++	adc1: adc@0 {
++		st,min-sample-time-nsecs = <5000>;
++		/* in6, in13, in15 */
++		st,adc-channels = <6 13 15>;
++		status = "okay";
++	};
 +
-+        adc2: adc@100 {
-+                /* ANA0, ANA1, in2 */
-+                st,adc-channels = <0 1 2>;
-+                /* temperature sensor min sample time */
-+                st,min-sample-time-nsecs = <10000>;
-+                status = "okay";
-+        };
++	adc2: adc@100 {
++		/* ANA0, ANA1, in2 */
++		st,adc-channels = <0 1 2>;
++		/* temperature sensor min sample time */
++		st,min-sample-time-nsecs = <10000>;
++		status = "okay";
++	};
 +};
 +
 +
@@ -550,238 +543,97 @@ index 000000000000..dbcebf736369
 +
 +
 +&pinctrl {
-+    adc12_pins_mx: adc12_mx-0 {
-+                pins {
-+                pinmux = <STM32_PINMUX('A', 3, ANALOG)>, /* ADC1 in15 */
-+                         <STM32_PINMUX('C', 3, ANALOG)>, /* ADC1 in13 */
-+                         <STM32_PINMUX('F', 12, ANALOG)>, /* ADC1 in6 */
-+                         <STM32_PINMUX('F', 13, ANALOG)>; /* ADC2 in2 */
-+          };
-+    };
++	adc12_pins_mx: adc12_mx-0 {
++		pins {
++			pinmux = <STM32_PINMUX('A', 3, ANALOG)>, /* ADC1 in15 */
++				 <STM32_PINMUX('C', 3, ANALOG)>, /* ADC1 in13 */
++				 <STM32_PINMUX('F', 12, ANALOG)>, /* ADC1 in6 */
++				 <STM32_PINMUX('F', 13, ANALOG)>; /* ADC2 in2 */
++		};
++	};
 +
-+    adc12_sleep_pins_mx: adc12_sleep_mx-0 {
-+          pins {
-+             pinmux = <STM32_PINMUX('A', 3, ANALOG)>, /* ADC1 in15 */
-+                      <STM32_PINMUX('C', 3, ANALOG)>, /* ADC1 in13 */
-+                      <STM32_PINMUX('F', 12, ANALOG)>, /* ADC1 in6 */
-+                      <STM32_PINMUX('F', 13, ANALOG)>; /* ADC2 in2 */
-+             };
-+    };
++	adc12_sleep_pins_mx: adc12_sleep_mx-0 {
++		pins {
++			pinmux = <STM32_PINMUX('A', 3, ANALOG)>, /* ADC1 in15 */
++				 <STM32_PINMUX('C', 3, ANALOG)>, /* ADC1 in13 */
++				 <STM32_PINMUX('F', 12, ANALOG)>, /* ADC1 in6 */
++				 <STM32_PINMUX('F', 13, ANALOG)>; /* ADC2 in2 */
++		};
++	};
 +
-+    tim1_pwm_pins_mx: tim1_pwm_mx-0 {
++	tim1_pwm_pins_mx: tim1_pwm_mx-0 {
 +		pins {
 +			pinmux = <STM32_PINMUX('E', 11, AF1)>, /* TIM1_CH2 */
-+					 <STM32_PINMUX('E', 14, AF1)>; /* TIM1_CH4 */
++				 <STM32_PINMUX('E', 14, AF1)>; /* TIM1_CH4 */
 +			bias-disable;
 +			drive-push-pull;
 +			slew-rate = <0>;
 +		};
-+    };
++	};
 +
-+
-+    tim1_pwm_sleep_pins_mx: tim1_pwm_sleep_mx-0 {
++	tim1_pwm_sleep_pins_mx: tim1_pwm_sleep_mx-0 {
 +		pins {
 +			pinmux = <STM32_PINMUX('E', 11, ANALOG)>, /* TIM1_CH2 */
-+					 <STM32_PINMUX('E', 14, ANALOG)>; /* TIM1_CH4 */
++				 <STM32_PINMUX('E', 14, ANALOG)>; /* TIM1_CH4 */
 +		};
-+    };
++	};
 +
-+    tim3_pwm_pins_mx: tim3_pwm_mx-0 {
++	tim3_pwm_pins_mx: tim3_pwm_mx-0 {
 +		pins {
 +			pinmux = <STM32_PINMUX('A', 6, AF2)>; /* TIM3_CH1 */
 +			bias-disable;
 +			drive-push-pull;
 +			slew-rate = <0>;
 +		};
-+    };
++	};
 +
-+    tim3_pwm_sleep_pins_mx: tim3_pwm_sleep_mx-0 {
++	tim3_pwm_sleep_pins_mx: tim3_pwm_sleep_mx-0 {
 +		pins {
 +			pinmux = <STM32_PINMUX('A', 6, ANALOG)>; /* TIM3_CH1 */
 +		};
-+    };
++	};
 +
-+    tim5_pwm_pins_mx: tim5_pwm_mx-0 {
++	tim5_pwm_pins_mx: tim5_pwm_mx-0 {
 +		pins {
 +			pinmux = <STM32_PINMUX('H', 10, AF2)>, /* TIM5_CH1 */
-+					 <STM32_PINMUX('H', 12, AF2)>, /* TIM5_CH3 */
-+					 <STM32_PINMUX('I', 0, AF2)>; /* TIM5_CH4 */
++				 <STM32_PINMUX('H', 12, AF2)>, /* TIM5_CH3 */
++				 <STM32_PINMUX('I', 0, AF2)>; /* TIM5_CH4 */
 +			bias-disable;
 +			drive-push-pull;
 +			slew-rate = <0>;
 +		};
-+    };
++	};
 +
-+    tim5_pwm_sleep_pins_mx: tim5_pwm_sleep_mx-0 {
++	tim5_pwm_sleep_pins_mx: tim5_pwm_sleep_mx-0 {
 +		pins {
 +			pinmux = <STM32_PINMUX('H', 10, ANALOG)>, /* TIM5_CH1 */
-+					 <STM32_PINMUX('H', 12, ANALOG)>, /* TIM5_CH3 */
-+					 <STM32_PINMUX('I', 0, ANALOG)>; /* TIM5_CH4 */
++				 <STM32_PINMUX('H', 12, ANALOG)>, /* TIM5_CH3 */
++				 <STM32_PINMUX('I', 0, ANALOG)>; /* TIM5_CH4 */
 +		};
-+    };
++	};
 +
-+    tim8_pwm_pins_mx: tim8_pwm_mx-0 {
++	tim8_pwm_pins_mx: tim8_pwm_mx-0 {
 +		pins {
 +			pinmux = <STM32_PINMUX('A', 5, AF3)>, /* TIM8_CH1N */
-+					 <STM32_PINMUX('B', 0, AF3)>, /* TIM8_CH2N */
-+					 <STM32_PINMUX('C', 7, AF3)>, /* TIM8_CH2 */
-+					 <STM32_PINMUX('H', 15, AF3)>, /* TIM8_CH3N */
-+					 <STM32_PINMUX('I', 5, AF3)>, /* TIM8_CH1 */
-+					 <STM32_PINMUX('I', 7, AF3)>; /* TIM8_CH3 */
++				 <STM32_PINMUX('B', 0, AF3)>, /* TIM8_CH2N */
++				 <STM32_PINMUX('C', 7, AF3)>, /* TIM8_CH2 */
++				 <STM32_PINMUX('H', 15, AF3)>, /* TIM8_CH3N */
++				 <STM32_PINMUX('I', 5, AF3)>, /* TIM8_CH1 */
++				 <STM32_PINMUX('I', 7, AF3)>; /* TIM8_CH3 */
 +			bias-disable;
 +			drive-push-pull;
 +			slew-rate = <0>;
 +		};
-+    };
++	};
 +
-+    tim8_pwm_sleep_pins_mx: tim8_pwm_sleep_mx-0 {
++	tim8_pwm_sleep_pins_mx: tim8_pwm_sleep_mx-0 {
 +		pins {
 +			pinmux = <STM32_PINMUX('A', 5, ANALOG)>, /* TIM8_CH1N */
-+					 <STM32_PINMUX('B', 0, ANALOG)>, /* TIM8_CH2N */
-+					 <STM32_PINMUX('C', 7, ANALOG)>, /* TIM8_CH2 */
-+					 <STM32_PINMUX('H', 15, ANALOG)>, /* TIM8_CH3N */
-+					 <STM32_PINMUX('I', 5, ANALOG)>, /* TIM8_CH1 */
-+					 <STM32_PINMUX('I', 7, ANALOG)>; /* TIM8_CH3 */
-+		};
-+    };
-+};
-diff --git a/arch/arm/boot/dts/overlays/phyboard-stm32mp1-pcm939-phycam-vm010-bw-10bits.dts b/arch/arm/boot/dts/overlays/phyboard-stm32mp1-pcm939-phycam-vm010-bw-10bits.dts
-new file mode 100644
-index 000000000000..f9dd890fe9ba
---- /dev/null
-+++ b/arch/arm/boot/dts/overlays/phyboard-stm32mp1-pcm939-phycam-vm010-bw-10bits.dts
-@@ -0,0 +1,64 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
-+/*
-+ * Copyright (C) PHYTEC GmbH 2021 - All Rights Reserved
-+ * Author: Christophe PARANT <c.parant@phytec.fr>.
-+ * Devicetree overlay for phyCAM-P VM-010-BW connected with 10bits data bus width
-+ */
-+
-+/dts-v1/;
-+/plugin/;
-+
-+/ {
-+        compatible = "phytec,stm32mp1-pcm939";
-+};
-+
-+
-+&clk_ext_camera {
-+	status = "okay";
-+};
-+
-+&reg_vcc_cam {
-+	status = "okay";
-+};
-+
-+&i2c1 {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	status = "okay";
-+
-+	mt9v024: mt9v024@48 {
-+		compatible = "aptina,mt9v024m";
-+		reg = <0x48>;
-+		clocks = <&clk_ext_camera>;
-+		clock-names = "xclk";
-+		vdd-supply = <&reg_vcc_cam>;
-+		vdd_io-supply = <&reg_vcc_cam>;
-+		vaa-supply = <&reg_vcc_cam>;
-+		status = "okay";
-+
-+		port {
-+			mt9v024_ep0: endpoint {
-+				remote-endpoint = <&dcmi_ep0>;
-+				link-frequencies = /bits/ 64 <27000000>;
-+				bus-width = <10>;
-+				hsync-active = <0>;
-+				vsync-active = <0>;
-+			};
-+		};
-+	};
-+};
-+
-+&dcmi {
-+	status = "okay";
-+
-+	port {
-+		dcmi_ep0: endpoint {
-+			remote-endpoint = <&mt9v024_ep0>;
-+			bus-width = <10>;
-+			hsync-active = <0>;
-+			vsync-active = <0>;
-+			pclk-max-frequency = <77000000>;
-+			pclk-sample = <1>;
-+		};
-+	};
-+};
-diff --git a/arch/arm/boot/dts/overlays/phyboard-stm32mp1-pcm939-phycam-vm010-col-10bits.dts b/arch/arm/boot/dts/overlays/phyboard-stm32mp1-pcm939-phycam-vm010-col-10bits.dts
-new file mode 100644
-index 000000000000..c9eb69e417f0
---- /dev/null
-+++ b/arch/arm/boot/dts/overlays/phyboard-stm32mp1-pcm939-phycam-vm010-col-10bits.dts
-@@ -0,0 +1,64 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
-+/*
-+ * Copyright (C) PHYTEC GmbH 2021 - All Rights Reserved
-+ * Author: Christophe PARANT <c.parant@phytec.fr>.
-+ * Devicetree overlay for phyCAM-P VM-010-COL connected with 10bits data bus width
-+ */
-+
-+/dts-v1/;
-+/plugin/;
-+
-+/ {
-+        compatible = "phytec,stm32mp1-pcm939";
-+};
-+
-+
-+&clk_ext_camera {
-+	status = "okay";
-+};
-+
-+&reg_vcc_cam {
-+	status = "okay";
-+};
-+
-+&i2c1 {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	status = "okay";
-+
-+	mt9v024: mt9v024@48 {
-+		compatible = "aptina,mt9v024";
-+		reg = <0x48>;
-+		clocks = <&clk_ext_camera>;
-+		clock-names = "xclk";
-+		vdd-supply = <&reg_vcc_cam>;
-+		vdd_io-supply = <&reg_vcc_cam>;
-+		vaa-supply = <&reg_vcc_cam>;
-+		status = "okay";
-+
-+		port {
-+			mt9v024_ep0: endpoint {
-+				remote-endpoint = <&dcmi_ep0>;
-+				link-frequencies = /bits/ 64 <27000000>;
-+				bus-width = <10>;
-+				hsync-active = <0>;
-+				vsync-active = <0>;
-+			};
-+		};
-+	};
-+};
-+
-+&dcmi {
-+	status = "okay";
-+
-+	port {
-+		dcmi_ep0: endpoint {
-+			remote-endpoint = <&mt9v024_ep0>;
-+			bus-width = <10>;
-+			hsync-active = <0>;
-+			vsync-active = <0>;
-+			pclk-max-frequency = <77000000>;
-+			pclk-sample = <1>;
++				 <STM32_PINMUX('B', 0, ANALOG)>, /* TIM8_CH2N */
++				 <STM32_PINMUX('C', 7, ANALOG)>, /* TIM8_CH2 */
++				 <STM32_PINMUX('H', 15, ANALOG)>, /* TIM8_CH3N */
++				 <STM32_PINMUX('I', 5, ANALOG)>, /* TIM8_CH1 */
++				 <STM32_PINMUX('I', 7, ANALOG)>; /* TIM8_CH3 */
 +		};
 +	};
 +};
@@ -917,146 +769,6 @@ index 000000000000..b57d33369c6b
 +		};
 +	};
 +};
-diff --git a/arch/arm/boot/dts/overlays/phyboard-stm32mp1-pcm939l-phycam-vm010-bw-8bits.dts b/arch/arm/boot/dts/overlays/phyboard-stm32mp1-pcm939l-phycam-vm010-bw-8bits.dts
-new file mode 100644
-index 000000000000..073e3387df28
---- /dev/null
-+++ b/arch/arm/boot/dts/overlays/phyboard-stm32mp1-pcm939l-phycam-vm010-bw-8bits.dts
-@@ -0,0 +1,64 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
-+/*
-+ * Copyright (C) PHYTEC GmbH 2021 - All Rights Reserved
-+ * Author: Christophe PARANT <c.parant@phytec.fr>.
-+ * Devicetree overlay for phyCAM-P VM-010-BW
-+ */
-+
-+/dts-v1/;
-+/plugin/;
-+
-+/ {
-+        compatible = "phytec,stm32mp1-pcm939";
-+};
-+
-+
-+&clk_ext_camera {
-+	status = "okay";
-+};
-+
-+&reg_vcc_cam {
-+	status = "okay";
-+};
-+
-+&i2c1 {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	status = "okay";
-+
-+	mt9v024: mt9v024@48 {
-+		compatible = "aptina,mt9v024m";
-+		reg = <0x48>;
-+		clocks = <&clk_ext_camera>;
-+		clock-names = "xclk";
-+		vdd-supply = <&reg_vcc_cam>;
-+		vdd_io-supply = <&reg_vcc_cam>;
-+		vaa-supply = <&reg_vcc_cam>;
-+		status = "okay";
-+
-+		port {
-+			mt9v024_ep0: endpoint {
-+				remote-endpoint = <&dcmi_ep0>;
-+				link-frequencies = /bits/ 64 <27000000>;
-+				bus-width = <8>;
-+				hsync-active = <0>;
-+				vsync-active = <0>;
-+			};
-+		};
-+	};
-+};
-+
-+&dcmi {
-+	status = "okay";
-+
-+	port {
-+		dcmi_ep0: endpoint {
-+			remote-endpoint = <&mt9v024_ep0>;
-+			bus-width = <8>;
-+			hsync-active = <0>;
-+			vsync-active = <0>;
-+			pclk-max-frequency = <77000000>;
-+			pclk-sample = <1>;
-+		};
-+	};
-+};
-diff --git a/arch/arm/boot/dts/overlays/phyboard-stm32mp1-pcm939l-phycam-vm010-col-8bits.dts b/arch/arm/boot/dts/overlays/phyboard-stm32mp1-pcm939l-phycam-vm010-col-8bits.dts
-new file mode 100644
-index 000000000000..6f04d0325d67
---- /dev/null
-+++ b/arch/arm/boot/dts/overlays/phyboard-stm32mp1-pcm939l-phycam-vm010-col-8bits.dts
-@@ -0,0 +1,64 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
-+/*
-+ * Copyright (C) PHYTEC GmbH 2021 - All Rights Reserved
-+ * Author: Christophe PARANT <c.parant@phytec.fr>.
-+ * Devicetree overlay for phyCAM-P VM-010-COL
-+ */
-+
-+/dts-v1/;
-+/plugin/;
-+
-+/ {
-+        compatible = "phytec,stm32mp1-pcm939";
-+};
-+
-+
-+&clk_ext_camera {
-+	status = "okay";
-+};
-+
-+&reg_vcc_cam {
-+	status = "okay";
-+};
-+
-+&i2c1 {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	status = "okay";
-+
-+	mt9v024: mt9v024@48 {
-+		compatible = "aptina,mt9v024";
-+		reg = <0x48>;
-+		clocks = <&clk_ext_camera>;
-+		clock-names = "xclk";
-+		vdd-supply = <&reg_vcc_cam>;
-+		vdd_io-supply = <&reg_vcc_cam>;
-+		vaa-supply = <&reg_vcc_cam>;
-+		status = "okay";
-+
-+		port {
-+			mt9v024_ep0: endpoint {
-+				remote-endpoint = <&dcmi_ep0>;
-+				link-frequencies = /bits/ 64 <27000000>;
-+				bus-width = <8>;
-+				hsync-active = <0>;
-+				vsync-active = <0>;
-+			};
-+		};
-+	};
-+};
-+
-+&dcmi {
-+	status = "okay";
-+
-+	port {
-+		dcmi_ep0: endpoint {
-+			remote-endpoint = <&mt9v024_ep0>;
-+			bus-width = <8>;
-+			hsync-active = <0>;
-+			vsync-active = <0>;
-+			pclk-max-frequency = <77000000>;
-+			pclk-sample = <1>;
-+		};
-+	};
-+};
 diff --git a/arch/arm/boot/dts/overlays/phyboard-stm32mp1-pcm939l-phycam-vm016-8bits.dts b/arch/arm/boot/dts/overlays/phyboard-stm32mp1-pcm939l-phycam-vm016-8bits.dts
 new file mode 100644
 index 000000000000..27042bdb6522
@@ -1125,7 +837,7 @@ index 000000000000..27042bdb6522
 +};
 diff --git a/arch/arm/boot/dts/overlays/phyboard-stm32mp1-peb-av01-hdmi.dts b/arch/arm/boot/dts/overlays/phyboard-stm32mp1-peb-av01-hdmi.dts
 new file mode 100644
-index 000000000000..672efca927d6
+index 000000000000..cea7e6f13f56
 --- /dev/null
 +++ b/arch/arm/boot/dts/overlays/phyboard-stm32mp1-peb-av01-hdmi.dts
 @@ -0,0 +1,74 @@
@@ -1133,7 +845,7 @@ index 000000000000..672efca927d6
 +/*
 + * Copyright (C) PHYTEC GmbH 2021 - All Rights Reserved
 + * Author: Christophe PARANT <c.parant@phytec.fr>.
-+ * Devicetree overlay for PEB-AV-01 expansion (HDMI interface) 
++ * Devicetree overlay for PEB-AV-01 expansion (HDMI interface)
 + */
 +
 +/dts-v1/;
@@ -1142,11 +854,11 @@ index 000000000000..672efca927d6
 +#include <dt-bindings/gpio/gpio.h>
 +
 +/ {
-+        compatible = "phytec,stm32mp1-pcm939";
++	compatible = "phytec,stm32mp1-pcm939";
 +
-+        fragment@0 {
-+        	target-path = "/";
-+                __overlay__ {
++	fragment@0 {
++		target-path = "/";
++		__overlay__ {
 +			reg_hdmi_en: hdmi_en {
 +				compatible = "regulator-fixed";
 +				regulator-name = "hdmi_en";
@@ -1160,7 +872,7 @@ index 000000000000..672efca927d6
 +		};
 +	};
 +
-+        fragment@1 {
++	fragment@1 {
 +		target = <&i2c1>;
 +		__overlay__ {
 +			#address-cells = <1>;
@@ -1176,17 +888,17 @@ index 000000000000..672efca927d6
 +				status = "okay";
 +
 +				ports {
-+				        port@0 {
-+				                hdmi_in: endpoint@0 {
-+				                        remote-endpoint = <&ltdc_ep0_out>;
-+				                };
-+				        };
++					port@0 {
++						hdmi_in: endpoint@0 {
++							remote-endpoint = <&ltdc_ep0_out>;
++						};
++					};
 +				};
 +			};
 +		};
 +	};
 +
-+        fragment@2 {
++	fragment@2 {
 +		target = <&ltdc>;
 +		__overlay__ {
 +			status = "okay";
@@ -1205,7 +917,7 @@ index 000000000000..672efca927d6
 +};
 diff --git a/arch/arm/boot/dts/overlays/phyboard-stm32mp1-peb-av02-lcd.dts b/arch/arm/boot/dts/overlays/phyboard-stm32mp1-peb-av02-lcd.dts
 new file mode 100644
-index 000000000000..ed5f9d8fb5cc
+index 000000000000..b264b3a4a1f7
 --- /dev/null
 +++ b/arch/arm/boot/dts/overlays/phyboard-stm32mp1-peb-av02-lcd.dts
 @@ -0,0 +1,103 @@
@@ -1213,7 +925,7 @@ index 000000000000..ed5f9d8fb5cc
 +/*
 + * Copyright (C) PHYTEC GmbH 2021 - All Rights Reserved
 + * Author: Christophe PARANT <c.parant@phytec.fr>.
-+ * Devicetree overlay for PEB-AV-02 expansion (Capacitive 7" EDT Display) 
++ * Devicetree overlay for PEB-AV-02 expansion (Capacitive 7" EDT Display)
 + */
 +
 +/dts-v1/;
@@ -1222,36 +934,36 @@ index 000000000000..ed5f9d8fb5cc
 +#include <dt-bindings/gpio/gpio.h>
 +
 +/ {
-+        compatible = "phytec,stm32mp1-pcm939";
++	compatible = "phytec,stm32mp1-pcm939";
 +
-+        fragment@0 {
-+        	target-path = "/";
-+                __overlay__ {
-+                	panel_rgb: panel {
-+                		compatible = "edt,etm0700g0edh6";
-+                		status = "okay";
-+                		backlight = <&panel_backlight>;
-+				enable-gpios = <&gpioa 4 GPIO_ACTIVE_HIGH>;		
++	fragment@0 {
++		target-path = "/";
++		__overlay__ {
++			panel_rgb: panel {
++				compatible = "edt,etm0700g0edh6";
++				status = "okay";
++				backlight = <&panel_backlight>;
++				enable-gpios = <&gpioa 4 GPIO_ACTIVE_HIGH>;
 +
-+                		port {
-+                        		panel_in_rgb: endpoint {
-+                                		remote-endpoint = <&ltdc_ep0_out>;
-+                        		};
-+                		};
-+        		};
++				port {
++					panel_in_rgb: endpoint {
++						remote-endpoint = <&ltdc_ep0_out>;
++					};
++				};
++			};
 +
-+        		panel_backlight: panel-backlight {
-+                		compatible = "pwm-backlight";
-+               			status = "okay";
++			panel_backlight: panel-backlight {
++				compatible = "pwm-backlight";
++				status = "okay";
 +				pwms = <&pwm_5 3 100000>;
-+				power-supply = <&v3v3>;		
++				power-supply = <&v3v3>;
 +				brightness-levels = <0 4 8 16 32 64 128 255>;
 +				default-brightness-level = <6>;
-+        		};
-+        	};
-+        };
++			};
++		};
++	};
 +
-+        fragment@1 {
++	fragment@1 {
 +		target = <&timers5>;
 +		__overlay__ {
 +			status = "okay";
@@ -1272,11 +984,11 @@ index 000000000000..ed5f9d8fb5cc
 +		};
 +	};
 +
-+        fragment@2 {
++	fragment@2 {
 +		target = <&ltdc>;
 +		__overlay__ {
 +			status = "okay";
-+		  
++
 +			pinctrl-names = "default", "sleep";
 +			pinctrl-0 = <&ltdc_pins_a>;
 +			pinctrl-1 = <&ltdc_pins_sleep_a>;
@@ -1286,14 +998,14 @@ index 000000000000..ed5f9d8fb5cc
 +				#size-cells = <0>;
 +
 +				ltdc_ep0_out: endpoint@0 {
-+				        reg = <0>;
-+				        remote-endpoint = <&panel_in_rgb>;
++					reg = <0>;
++					remote-endpoint = <&panel_in_rgb>;
 +				};
 +			};
 +		};
 +	};
 +
-+        fragment@3 {
++	fragment@3 {
 +		target = <&i2c1>;
 +		__overlay__ {
 +			#address-cells = <1>;
@@ -1314,7 +1026,7 @@ index 000000000000..ed5f9d8fb5cc
 +};
 diff --git a/arch/arm/boot/dts/overlays/phyboard-stm32mp1-peb-wlbt-05-bluetooth-usart1.dts b/arch/arm/boot/dts/overlays/phyboard-stm32mp1-peb-wlbt-05-bluetooth-usart1.dts
 new file mode 100644
-index 000000000000..2709f81ba576
+index 000000000000..59f1aabcace3
 --- /dev/null
 +++ b/arch/arm/boot/dts/overlays/phyboard-stm32mp1-peb-wlbt-05-bluetooth-usart1.dts
 @@ -0,0 +1,32 @@
@@ -1331,18 +1043,18 @@ index 000000000000..2709f81ba576
 +#include <dt-bindings/gpio/gpio.h>
 +
 +/ {
-+        compatible = "phytec,stm32mp1-pcm939";
++	compatible = "phytec,stm32mp1-pcm939";
 +};
 +
 +&gpio_keys {
 +	enter {
-+		status = "disabled"; //disable PA14 (key enter) as input event
++		status = "disabled"; /* disable PA14 (key enter) as input event */
 +	};
 +};
 +
 +
 +&usart1 {
-+        status = "okay";
++	status = "okay";
 +	uart-has-rtscts;
 +	bluetooth {
 +		shutdown-gpios = <&gpioa 14 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
@@ -1352,7 +1064,7 @@ index 000000000000..2709f81ba576
 +};
 diff --git a/arch/arm/boot/dts/overlays/phyboard-stm32mp1-peb-wlbt-05-bluetooth-usart3.dts b/arch/arm/boot/dts/overlays/phyboard-stm32mp1-peb-wlbt-05-bluetooth-usart3.dts
 new file mode 100644
-index 000000000000..c43e4625e133
+index 000000000000..2793165bdcd0
 --- /dev/null
 +++ b/arch/arm/boot/dts/overlays/phyboard-stm32mp1-peb-wlbt-05-bluetooth-usart3.dts
 @@ -0,0 +1,42 @@
@@ -1367,25 +1079,25 @@ index 000000000000..c43e4625e133
 +/plugin/;
 +
 +/ {
-+        compatible = "phytec,stm32mp1-pcm939";
++	compatible = "phytec,stm32mp1-pcm939";
 +};
 +
 +#include <dt-bindings/gpio/gpio.h>
 +
 +&gpio_keys {
 +	enter {
-+		status = "disabled"; //disable PA14 (key enter) as input event
++		status = "disabled"; /* disable PA14 (key enter) as input event */
 +	};
 +};
 +
 +&m_can2 {
-+        status = "disabled"; //disable CAN2 (TX pin used as USART3_CTS for bluetooth)
++	status = "disabled"; /* disable CAN2 (TX pin used as USART3_CTS for bluetooth) */
 +};
 +
 +&usart3 {
-+        status = "okay";
++	status = "okay";
 +	uart-has-rtscts;
-+	
++
 +	/* redefine usart3 pinctrl with additional rts/cts pins */
 +	pinctrl-names = "default", "sleep", "idle";
 +	pinctrl-0 = <&usart3_pins_a &usart3_pins_b>;
@@ -1400,7 +1112,7 @@ index 000000000000..c43e4625e133
 +};
 diff --git a/arch/arm/boot/dts/overlays/phyboard-stm32mp1-peb-wlbt-05-wlan.dts b/arch/arm/boot/dts/overlays/phyboard-stm32mp1-peb-wlbt-05-wlan.dts
 new file mode 100644
-index 000000000000..5e5c8f588458
+index 000000000000..7de663961d56
 --- /dev/null
 +++ b/arch/arm/boot/dts/overlays/phyboard-stm32mp1-peb-wlbt-05-wlan.dts
 @@ -0,0 +1,60 @@
@@ -1417,11 +1129,11 @@ index 000000000000..5e5c8f588458
 +#include <dt-bindings/gpio/gpio.h>
 +
 +/ {
-+        compatible = "phytec,stm32mp1-pcm939";
++	compatible = "phytec,stm32mp1-pcm939";
 +
-+        fragment@0 {
-+        	target-path = "/";
-+                __overlay__ {
++	fragment@0 {
++		target-path = "/";
++		__overlay__ {
 +			reg_wlan_en: wlan_en {
 +				compatible = "regulator-fixed";
 +				regulator-name = "wlan_en";
@@ -1434,18 +1146,18 @@ index 000000000000..5e5c8f588458
 +		};
 +	};
 +
-+        fragment@1 {
-+        	target = <&gpio_keys>;
-+                __overlay__ {
++	fragment@1 {
++		target = <&gpio_keys>;
++		__overlay__ {
 +			home {
-+				status = "disabled"; //disable PA13 (key home) as input event
++				status = "disabled"; /* disable PA13 (key home) as input event */
 +			};
 +		};
 +	};
 +
-+        fragment@2 {
-+        	target = <&sdmmc3>;
-+                __overlay__ {
++	fragment@2 {
++		target = <&sdmmc3>;
++		__overlay__ {
 +			status = "okay";
 +			arm,primecell-periphid = <0x10153180>;
 +			pinctrl-names = "default", "opendrain", "sleep";
@@ -1466,7 +1178,7 @@ index 000000000000..5e5c8f588458
 +};
 diff --git a/arch/arm/boot/dts/overlays/phyboard-stm32mp1-pi-hat-extension.dts b/arch/arm/boot/dts/overlays/phyboard-stm32mp1-pi-hat-extension.dts
 new file mode 100644
-index 000000000000..2d06e6aff988
+index 000000000000..7305ea41b7fa
 --- /dev/null
 +++ b/arch/arm/boot/dts/overlays/phyboard-stm32mp1-pi-hat-extension.dts
 @@ -0,0 +1,38 @@
@@ -1481,11 +1193,11 @@ index 000000000000..2d06e6aff988
 +/plugin/;
 +
 +/ {
-+        compatible = "phytec,stm32mp1-pcm939";
++	compatible = "phytec,stm32mp1-pcm939";
 +};
 +
 +&spi1 {
-+        status = "okay";
++	status = "okay";
 +};
 +
 +&sdmmc3 {
@@ -1501,16 +1213,16 @@ index 000000000000..2d06e6aff988
 +};
 +
 +&i2c1 {
-+        status = "okay";
++	status = "okay";
 +};
 +
 +&usart1 {
-+        status = "okay";
++	status = "okay";
 +};
 +
 diff --git a/arch/arm/boot/dts/overlays/phyboard-stm32mp1-pi-hat-redbear.dts b/arch/arm/boot/dts/overlays/phyboard-stm32mp1-pi-hat-redbear.dts
 new file mode 100644
-index 000000000000..c022b195bceb
+index 000000000000..a3cee7993e79
 --- /dev/null
 +++ b/arch/arm/boot/dts/overlays/phyboard-stm32mp1-pi-hat-redbear.dts
 @@ -0,0 +1,87 @@
@@ -1527,11 +1239,11 @@ index 000000000000..c022b195bceb
 +#include <dt-bindings/gpio/gpio.h>
 +
 +/ {
-+        compatible = "phytec,stm32mp1-pcm939";
++	compatible = "phytec,stm32mp1-pcm939";
 +
-+        fragment@0 {
-+        	target-path = "/";
-+                __overlay__ {
++	fragment@0 {
++		target-path = "/";
++		__overlay__ {
 +			gpio_led_wl: leds {
 +				compatible = "gpio-leds";
 +				status = "okay";
@@ -1544,7 +1256,7 @@ index 000000000000..c022b195bceb
 +		};
 +	};
 +
-+        fragment@1 {
++	fragment@1 {
 +		target = <&spi1>;
 +		__overlay__ {
 +			status = "okay";
@@ -1557,7 +1269,7 @@ index 000000000000..c022b195bceb
 +		};
 +	};
 +
-+        fragment@2 {
++	fragment@2 {
 +		target = <&sdmmc3>;
 +		__overlay__ {
 +			status = "okay";
@@ -1579,14 +1291,14 @@ index 000000000000..c022b195bceb
 +		};
 +	};
 +
-+        fragment@3 {
++	fragment@3 {
 +		target = <&i2c1>;
 +		__overlay__ {
 +			status = "okay";
 +		};
 +	};
 +
-+        fragment@4 {
++	fragment@4 {
 +		target = <&usart1>;
 +		__overlay__ {
 +			status = "okay";
@@ -1603,7 +1315,7 @@ index 000000000000..c022b195bceb
 +};
 diff --git a/arch/arm/boot/dts/overlays/phyboard-stm32mp1-rs485.dts b/arch/arm/boot/dts/overlays/phyboard-stm32mp1-rs485.dts
 new file mode 100644
-index 000000000000..c8bdd58bc3d6
+index 000000000000..a64f21bf53eb
 --- /dev/null
 +++ b/arch/arm/boot/dts/overlays/phyboard-stm32mp1-rs485.dts
 @@ -0,0 +1,21 @@
@@ -1620,20 +1332,20 @@ index 000000000000..c8bdd58bc3d6
 +#include <dt-bindings/gpio/gpio.h>
 +
 +/ {
-+        compatible = "phytec,stm32mp1-pcm939";
++	compatible = "phytec,stm32mp1-pcm939";
 +};
 +
 +
 +&usart1 {
 +	linux,rs485-enabled-at-boot-time;
-+        status = "okay";
++	status = "okay";
 +};
 diff --git a/arch/arm/boot/dts/overlays/phyboard-stm32mp1-uno-r3-extension.dts b/arch/arm/boot/dts/overlays/phyboard-stm32mp1-uno-r3-extension.dts
 new file mode 100644
-index 000000000000..f66f8fae3b0a
+index 000000000000..e70fd668cff4
 --- /dev/null
 +++ b/arch/arm/boot/dts/overlays/phyboard-stm32mp1-uno-r3-extension.dts
-@@ -0,0 +1,85 @@
+@@ -0,0 +1,73 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
 +/*
 + * Copyright (C) PHYTEC GmbH 2021 - All Rights Reserved
@@ -1647,77 +1359,65 @@ index 000000000000..f66f8fae3b0a
 +#include <dt-bindings/pinctrl/stm32-pinfunc.h>
 +
 +/ {
-+        compatible = "phytec,stm32mp1-pcm939";
++	compatible = "phytec,stm32mp1-pcm939";
 +};
 +
 +&timers4{
 +	status = "okay";
-+
-+	/* USER CODE BEGIN timers4 */
-+	/* USER CODE END timers4 */
 +
 +	pwm4: pwm{
 +		pinctrl-names = "default", "sleep";
 +		pinctrl-0 = <&tim4_pwm_pins_mx>;
 +		pinctrl-1 = <&tim4_pwm_sleep_pins_mx>;
 +		status = "okay";
-+
-+		/* USER CODE BEGIN timers4_pwm */
-+		/* USER CODE END timers4_pwm */
 +	};
 +};
 +
 +&timers15{
 +	status = "okay";
 +
-+	/* USER CODE BEGIN timers15 */
-+	/* USER CODE END timers15 */
-+
 +	pwm15: pwm{
 +		pinctrl-names = "default", "sleep";
 +		pinctrl-0 = <&tim15_pwm_pins_mx>;
 +		pinctrl-1 = <&tim15_pwm_sleep_pins_mx>;
 +		status = "okay";
-+
-+		/* USER CODE BEGIN timers15_pwm */
-+		/* USER CODE END timers15_pwm */
 +	};
 +};
 +
-+// Other Timers and ADCs for the Arduino Shield connector are settled in "phyboard-stm32mp1-motor-control.dts" overlay
++/* Other Timers and ADCs for the Arduino Shield connector can be settled using "phyboard-stm32mp1-motor-control.dts" overlay */
 +
 +
 +&pinctrl {
 +
-+    tim4_pwm_pins_mx: tim4_pwm_mx-0 {
++	tim4_pwm_pins_mx: tim4_pwm_mx-0 {
 +		pins {
 +			pinmux = <STM32_PINMUX('B', 7, AF2)>; /* TIM4_CH2 */
 +			bias-disable;
 +			drive-push-pull;
 +			slew-rate = <0>;
 +		};
-+    };
++	};
 +
-+    tim4_pwm_sleep_pins_mx: tim4_pwm_sleep_mx-0 {
++	tim4_pwm_sleep_pins_mx: tim4_pwm_sleep_mx-0 {
 +		pins {
 +			pinmux = <STM32_PINMUX('B', 7, ANALOG)>; /* TIM4_CH2 */
 +		};
-+    };
++	};
 +
-+    tim15_pwm_pins_mx: tim15_pwm_mx-0 {
++	tim15_pwm_pins_mx: tim15_pwm_mx-0 {
 +		pins {
 +			pinmux = <STM32_PINMUX('E', 5, AF4)>; /* TIM15_CH1 */
 +			bias-disable;
 +			drive-push-pull;
 +			slew-rate = <0>;
 +		};
-+    };
++	};
 +
-+    tim15_pwm_sleep_pins_mx: tim15_pwm_sleep_mx-0 {
++	tim15_pwm_sleep_pins_mx: tim15_pwm_sleep_mx-0 {
 +		pins {
 +			pinmux = <STM32_PINMUX('E', 5, ANALOG)>; /* TIM15_CH1 */
 +		};
-+    };
++	};
 +};
 -- 
 2.25.1
