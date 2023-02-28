@@ -5,7 +5,7 @@ LICENSE = "GPLv2+"
 LIC_FILES_CHKSUM = "file://Licenses/README;md5=5a7450c57ffe5ae63fd732446b988025"
 
 GIT_URL = "git://github.com/phytec/u-boot-phytec-ti.git;protocol=https"
-BRANCH = "v2021.01_08.03.00.005-phy"
+BRANCH = "v2021.01_08.06.00.002-phy"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/u-boot:"
@@ -24,7 +24,7 @@ SRC_URI:append:phyboard-lyra-am62xx-1-k3r5 = "\
 "
 
 PR = "r0"
-SRCREV = "71d3014ea58a4efdb847dc6820076880407fb6a3"
+SRCREV = "7f49e5072af581761e72ca592d9dcd8886246348"
 
 SPL_UART_BINARY_k3r5 = "u-boot-spl.bin"
 
