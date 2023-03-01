@@ -35,5 +35,6 @@ INTREE_DEFCONFIG = "phytec_ti_defconfig phytec_ti_platform.config"
 
 COMPATIBLE_MACHINE  = "^("
 COMPATIBLE_MACHINE .=  "phyboard-lyra-am62xx-1"
+COMPATIBLE_MACHINE .=  "|phyboard-lyra-am62xx-2"
 COMPATIBLE_MACHINE .=  "|phyboard-electra-am64xx-1"
 COMPATIBLE_MACHINE .= ")$"
