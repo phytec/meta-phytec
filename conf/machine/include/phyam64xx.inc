@@ -3,7 +3,6 @@ SOC_FAMILY:append = ":am64xx"
 
 TFA_BOARD = "lite"
 OPTEEMACHINE = "k3-am64x"
-OPTEEOUTPUTMACHINE = "k3"
 
 # Set the list of device targets for ti-pdk class recipes
 TI_PDK_LIMIT_SOCS = "am64x"
