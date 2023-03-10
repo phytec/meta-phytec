@@ -1,7 +1,7 @@
 # Copyright (C) 2022 PHYTEC Messtechnik GmbH,
 # Author: Christian Hemp <c.hemp@phytec.de>
 
-require linux-imx_5.10.72_2.2.0-phy12.bb
+require linux-imx_5.10.72_2.2.0-phy13.bb
 
 BRANCH = "v5.10.72_2.2.0-rt54-phy"
 GIT_URL = "git://git.phytec.de/linux-imx"
