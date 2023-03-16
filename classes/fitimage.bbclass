@@ -48,7 +48,7 @@ do_fetch[cleandirs] = "${S}"
 do_patch[noexec] = "1"
 do_compile[noexec] = "1"
 deltask do_package_qa
-
+do_unpack[depends] += "dtc-native:do_populate_sysroot"
 DEPENDS = "u-boot-mkimage-native dtc-native"
 FITIMAGE_HASH ??= "sha256"
 FITIMAGE_SIGNATURE_ENCRYPTION ??= "rsa4096"
