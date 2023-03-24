@@ -1,6 +1,7 @@
 inherit phygittag
 inherit buildinfo
-include linux-common.inc
+require recipes-kernel/linux/linux-common.inc
+require recipes-kernel/linux/kernel-rdepends.inc
 
 LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 
@@ -14,16 +15,14 @@ PR = "${INC_PR}.0"
 SRCREV = "e5238fcdba8af4a40541ca4cc9d87eec0f178fa4"
 S = "${WORKDIR}/git"
 
-# Add run-time dependency for PRU firmware to the rootfs
-RDEPENDS:${KERNEL_PACKAGE_NAME}-base:append_am64xx = "\
-    prueth-fw-am65x-sr2 \
-"
-
 # Special configuration for remoteproc/rpmsg IPC modules
 module_conf_rpmsg_client_sample = "blacklist rpmsg_client_sample"
 module_conf_ti_k3_r5_remoteproc = "softdep ti_k3_r5_remoteproc pre: virtio_rpmsg_bus"
 module_conf_ti_k3_dsp_remoteproc = "softdep ti_k3_dsp_remoteproc pre: virtio_rpmsg_bus"
 KERNEL_MODULE_PROBECONF += "rpmsg_client_sample ti_k3_r5_remoteproc ti_k3_dsp_remoteproc"
+
+# Drop kernel-devicetree, added by TI's kernel-rdepends.inc
+RDEPENDS_${KERNEL_PACKAGE_NAME}-base_remove = "kernel-devicetree"
 
 EXTRA_DTC_ARGS += "DTC_FLAGS=-@"
 KERNEL_EXTRA_ARGS += "LOADADDR=${UBOOT_ENTRYPOINT} \
