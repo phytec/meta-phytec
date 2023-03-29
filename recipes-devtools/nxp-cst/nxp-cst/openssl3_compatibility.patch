@@ -1,0 +1,35 @@
+A few changes to make it build against openssl3.
+
+ - Don't use deprecated EVP_PKEY_bits
+ - Allow passing CC/LD flags so we can link against the native sysroot versions, instead
+ of build host
+ - Remove -Werror for now as it would not compile otherwise due to usage of deprecated APIs,
+ and the deprecation warnings would be treated as an error.
+diff -ur a/code/back_end-engine/src/backend.c b/code/back_end-engine/src/backend.c
+--- a/code/back_end-engine/src/backend.c 2021-03-12 21:17:49.000000000 +0100
++++ b/code/back_end-engine/src/backend.c 2023-03-28 13:52:23.783517491 +0200
+@@ -489,8 +489,8 @@
+         /* Copy R|S to sig_buf */
+         memset (sig_buf, 0, *sig_buf_bytes);
+
+-        key_size = EVP_PKEY_bits (key) >> 3;
+-        if (EVP_PKEY_bits (key) & 0x7)
++        key_size = EVP_PKEY_get_bits (key) >> 3;
++        if (EVP_PKEY_get_bits (key) & 0x7)
+             key_size += 1;        /* Valid for P-521 */
+
+         if ((key_size * 2) > *sig_buf_bytes) {
+diff -ur a/code/back_end-engine/src/Makefile b/code/back_end-engine/src/Makefile
+--- a/code/back_end-engine/src/Makefile  2021-03-12 21:19:13.000000000 +0100
++++ b/code/back_end-engine/src/Makefile  2023-03-28 13:52:23.783517491 +0200
+@@ -26,8 +26,8 @@
+ LDFLAGS_64 := -m64
+
+ CC := gcc
+-CFLAGS := $(CFLAGS_$(BITNESS)) -g -Wall -Werror -Winline -Wl,--export-all-symbols -Iinclude
+-LDFLAGS = $(LDFLAGS_$(BITNESS))
++CFLAGS := $(CFLAGS_$(BITNESS)) $(COPTIONS) -g -Wall -Winline -Wl,--export-all-symbols -Iinclude
++LDFLAGS = $(LDFLAGS_$(BITNESS)) $(LDOPTIONS)
+
+ ifeq ($(OS),Windows_NT)
+ DEP += -lpsapi -lgdi32
