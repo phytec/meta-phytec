@@ -43,12 +43,14 @@
 LICENSE = "MIT"
 inherit hab
 inherit deploy
+inherit signing-helpers
 
 do_fetch[cleandirs] = "${S}"
 do_patch[noexec] = "1"
 do_compile[noexec] = "1"
 deltask do_package_qa
 do_unpack[depends] += "dtc-native:do_populate_sysroot"
+do_fitimagebundle[depends] += "libp11-native:do_populate_sysroot"
 DEPENDS = "u-boot-mkimage-native dtc-native"
 FITIMAGE_HASH ??= "sha256"
 FITIMAGE_SIGNATURE_ENCRYPTION ??= "rsa4096"
@@ -290,8 +292,8 @@ def fitimage_emit_section_tee(d,fd,teecount,imgpath,imgsource,imgcomp):
 def fitimage_emit_section_config(d,fd,dtb,teecount,kernelcount,ramdiskcount,setupcount,bootscriptid,i):
     conf_csum = d.expand("${FITIMAGE_HASH}")
     conf_encrypt = d.getVar("FITIMAGE_SIGNATURE_ENCRYPTION") or ""
-    path, filename = os.path.split(d.getVar("FITIMAGE_SIGN_KEY_PATH") or "")
-    conf_sign_keyname = filename.split('.')
+
+    conf_sign_keyname = get_key_name_hint(d.getVar("FITIMAGE_SIGN_KEY_PATH"))
 
     conf_desc="Linux kernel"
     kernel_line="kernel = \"kernel-1\";"
@@ -343,7 +345,7 @@ def fitimage_emit_section_config(d,fd,dtb,teecount,kernelcount,ramdiskcount,setu
        sign_line = sign_line + ";"
        fd.write('\t\t\t'   + 'signature-1 {\n')
        fd.write('\t\t\t\t' +   'algo = "%s,%s";\n' % (conf_csum, conf_encrypt))
-       fd.write('\t\t\t\t' +   'key-name-hint = "%s";\n' % conf_sign_keyname[0])
+       fd.write('\t\t\t\t' +   'key-name-hint = "%s";\n' % conf_sign_keyname)
        fd.write('\t\t\t\t' +   '%s\n' % sign_line)
        fd.write('\t\t\t\t' +   'signer-name = "%s";\n' % d.getVar("FITIMAGE_SIGNER"))
        fd.write('\t\t\t\t' +   'signer-version = "%s";\n' % d.getVar("FITIMAGE_SIGNER_VERSION"))
@@ -359,8 +361,8 @@ def fitimage_emit_section_config(d,fd,dtb,teecount,kernelcount,ramdiskcount,setu
 def fitimage_emit_section_config_fdto(d,fd,dtb):
     conf_csum = d.expand("${FITIMAGE_HASH}")
     conf_encrypt = d.getVar("FITIMAGE_SIGNATURE_ENCRYPTION") or ""
-    path, filename = os.path.split(d.getVar("FITIMAGE_SIGN_KEY_PATH") or "")
-    conf_sign_keyname = filename.split('.')
+
+    conf_sign_keyname = get_key_name_hint(d.getVar("FITIMAGE_SIGN_KEY_PATH"))
 
 
     conf_desc="Device Tree Overlay"
@@ -376,7 +378,7 @@ def fitimage_emit_section_config_fdto(d,fd,dtb):
 
        fd.write('\t\t\t'   + 'signature-1 {\n')
        fd.write('\t\t\t\t' +   'algo = "%s,%s";\n' % (conf_csum, conf_encrypt))
-       fd.write('\t\t\t\t' +   'key-name-hint = "%s";\n' % conf_sign_keyname[0])
+       fd.write('\t\t\t\t' +   'key-name-hint = "%s";\n' % conf_sign_keyname)
        fd.write('\t\t\t\t' +   '%s;\n' % sign_line)
        fd.write('\t\t\t\t' +   'signer-name = "%s";\n' % d.getVar("FITIMAGE_SIGNER"))
        fd.write('\t\t\t\t' +   'signer-version = "%s";\n' % d.getVar("FITIMAGE_SIGNER_VERSION"))
@@ -520,22 +522,31 @@ do_unpack:append() {
 }
 
 do_fitimagebundle () {
-    if [ "${FITIMAGE_SIGN}" = "true" -a "${FITIMAGE_SIGN_ENGINE}" = "software" ] ; then
-        if [ -e ${FITIMAGE_SIGN_KEY_PATH} ] ; then
+    is_pkcs11=0
+    echo "${FITIMAGE_SIGN_KEY_PATH}" | grep -q "^pkcs11:" && is_pkcs11=1
+    if [ "${FITIMAGE_SIGN}" = "true" -a "${FITIMAGE_SIGN_ENGINE}" != "nxphab" ] ; then
+        path_key=""
+        engine=""
+        if [ $is_pkcs11 -eq 0 ] ; then
+            if [ ! -f "${FITIMAGE_SIGN_KEY_PATH}" ] ; then
+                bberror "Key file ${FITIMAGE_SIGN_KEY_PATH} to sign FIT image was not found"
+            fi
             path_key=$(dirname "${FITIMAGE_SIGN_KEY_PATH}")
-            printf '/dts-v1/;\n\n/ {\n};\n' > pubkey.dts
-            dtc -O dtb pubkey.dts > pubkey.dtb
-            #uboot-mkimage-fit \
-            mkimage \
+        else
+            # mkimage expects the URI without the pkcs11: prefix
+            path_key=$(echo "${FITIMAGE_SIGN_KEY_PATH}" | cut -c 8-)
+            engine="-N pkcs11"
+            setup_pkcs11_env
+        fi
+
+        printf '/dts-v1/;\n\n/ {\n};\n' > pubkey.dts
+        dtc -O dtb pubkey.dts > pubkey.dtb
+        mkimage ${engine} \
                 -f "${S}/manifest.its" \
                 -k "${path_key}" \
                 -K "${B}/pubkey.dtb" \
                 -r "${B}/fitImage"
-        else
-            bberror "${FITIMAGE_SIGN_KEY_PATH} Key File do not exist for signing FIT Image"
-        fi
     else
-        #uboot-mkimage-fit \
         mkimage \
             -f "${S}/manifest.its" \
             -r "${B}/fitImage"
