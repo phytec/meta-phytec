@@ -48,6 +48,10 @@ do_configure:append() {
 }
 
 do_compile () {
+    if [ -n "${CST_KEY_SOURCE}" -a "${CST_KEY_SOURCE}" = "token" ] ; then
+        setup_pkcs11_env
+    fi
+
     unset CFLAGS
     export LDFLAGS="--no-dynamic-linker"
     oe_runmake all
