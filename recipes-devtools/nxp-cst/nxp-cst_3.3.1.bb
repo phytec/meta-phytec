@@ -13,7 +13,7 @@ LIC_FILES_CHKSUM = " \
 
 require nxp-cst.inc
 
-SRC_URI = " \
+SRC_URI += " \
         https://download.phytec.de/dummyurl/cst-${PV}.tar;name=tarball \
 "
 
