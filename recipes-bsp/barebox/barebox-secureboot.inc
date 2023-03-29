@@ -4,7 +4,7 @@ SRC_URI:append:secureboot = " \
         file://dynamic-config.cfg \
 "
 
-DEPENDS:append:secureboot = " bison-native nxp-cst-native u-boot-mkimage-native dtc-native"
+DEPENDS:append:secureboot = " bison-native nxp-cst-native u-boot-mkimage-native dtc-native libp11-native"
 
 BAREBOX_BIN_SIGNED ?= "images/${BAREBOX_BASE_BIN}-s.img"
 BAREBOX_BIN_SIGNEDUSB ?= "images/${BAREBOX_BASE_BIN}-us.img"
@@ -28,6 +28,8 @@ FITIMAGE_SIGNER ??= ""
 FITIMAGE_SIGNER_VERSION ??= "${PN}"
 FITIMAGE_PUBKEY_SIGNATURE_PATH ??= "${WORKDIR}/signature_node.dtsi"
 
+inherit signing-helpers
+
 #Create an empty device tree
 def write_signature_node(d):
      import shutil
@@ -47,15 +49,14 @@ def write_signature_creation(d):
      import os
      path_manifest = d.getVar("WORKDIR")
 
-     path, file = os.path.split(d.getVar("FITIMAGE_SIGN_KEY_PATH"))
-     str_keynamehint = file.split('.')
-
      try:
         manifest = open('%s/signature_creation.its' % path_manifest, 'w')
      except OSError:
         raise bb.build.FuncFailed('Unable to open signature_creation.its')
 
+     key_name_hint = get_key_name_hint(d.getVar("FITIMAGE_SIGN_KEY_PATH"))
      manifest.write('/dts-v1/;\n\n/ {\n')
+     manifest.write('\tdescription = "Signature blob";\n')
      manifest.write('\t'        + 'images {\n')
      manifest.write('\t\t'      +   'fdt-1 {\n')
      manifest.write('\t\t\t'    +     'description = "Flattened Device Tree blob";\n')
@@ -75,7 +76,7 @@ def write_signature_creation(d):
      manifest.write('\t\t\t'    +      'fdt = "fdt-1";\n')
      manifest.write('\t\t\t'    +      'signature-1 {\n')
      manifest.write('\t\t\t\t'  +        'algo = "%s,%s";\n' % (d.getVar("FITIMAGE_HASH"), d.getVar("FITIMAGE_SIGNATURE_ENCRYPTION")))
-     manifest.write('\t\t\t\t'  +        'key-name-hint = "%s";\n' % str_keynamehint[0])
+     manifest.write('\t\t\t\t'  +        'key-name-hint = "%s";\n' % key_name_hint)
      manifest.write('\t\t\t\t'  +        'sign-images = "fdt";\n')
      manifest.write('\t\t\t\t'  +        'signer = "%s";\n' %  d.getVar("FITIMAGE_SIGNER"))
      manifest.write('\t\t\t\t'  +        'signer-version = " %s";\n' % d.getVar("FITIMAGE_SIGNER_VERSION"))
@@ -85,48 +86,42 @@ def write_signature_creation(d):
      manifest.write('};\n')
      manifest.close()
 
-def write_command(name,out):
-     import shlex, subprocess
-
-     newenv = dict(os.environ)
-     args = shlex.split(name)
-     #p = subprocess.Popen(args, shell=True, env=newenv, stdout=subprocess.PIPE)
-     if (len(out) > 0):
-         file = open(out,'w')
-         p = subprocess.Popen(args,stdout=file)
-         file.close
-     else:
-          p = subprocess.Popen(args, stdout=subprocess.PIPE)
-          #p = subprocess.Popen(args, shell=True, env=newenv, stdout=subprocess.PIPE)
-          stdout, stderr = p.communicate()
-          output = stdout.decode("utf-8")
-          return "%s" % (output)
-
+def exec_command(cmd):
+    import shlex
+    import subprocess
+    result = subprocess.run(shlex.split(cmd), capture_output=True, encoding='UTF-8')
+    if result.returncode != 0:
+        bb.fatal("Failed to run cmd:", cmd, "\nstderr: ", result.stderr, "\nstdout:", result.stdout)
+    return result.stdout
 
 def check_fitimage_keyring(d):
     # check for problematic certificate setups
-    shasum = write_command("sha256sum " + d.getVar("FITIMAGE_SIGN_KEY_PATH"),'')
-    if ((len(shasum) > 0) and (shasum.split(' ',1)[0] == "6f92252aab834bbe8090e92c44f051b2c40db8e3953c8c26c04c14e7ae2db7d8")) or \
-        ((len(shasum) > 0) and (shasum.split(' ',1)[0] == "1e3eb95fe6a7d1e45db761bff6eedafb9291661480e1a1ad10eb6f5b8b9961c1")):
-            bb.warn("!! CRITICAL SECURITY WARNING: You're using Phytec's Development Keyring for Secure Boot in the fit-image. Please create your own!!")
+
+    path = d.getVar("FITIMAGE_SIGN_KEY_PATH")
+    if not path.startswith("pkcs11:"):
+        shasum = exec_command("sha256sum " + path)
+        if ((len(shasum) > 0) and (shasum.split(' ',1)[0] == "6f92252aab834bbe8090e92c44f051b2c40db8e3953c8c26c04c14e7ae2db7d8")) or \
+            ((len(shasum) > 0) and (shasum.split(' ',1)[0] == "1e3eb95fe6a7d1e45db761bff6eedafb9291661480e1a1ad10eb6f5b8b9961c1")):
+                bb.warn("!! CRITICAL SECURITY WARNING: You're using Phytec's Development Keyring for Secure Boot in the fit-image. Please create your own!!")
 
 
 def check_bootloader_keyring(d):
     # check for problematic certificate setups
-    shasumSRK=write_command("sha256sum "+ d.getVar("BOOTLOADER_SIGN_SRKFUSE_PATH"),'')
-    if ((len(shasumSRK) >0) and (shasumSRK.split(' ',1)[0] == "0d5dbc6ed8b0a55414648b19727e217453c54d1527cef3a62784ae818c9777e7")):
-        bb.warn("!! CRITICAL SECURITY WARNING: You're using Phytec's Development Keyring for Secure Boot in the bootloader. Please create your own!!")
+    path = d.getVar("BOOTLOADER_SIGN_SRKFUSE_PATH")
+    if not path.startswith("pkcs11:"):
+        shasumSRK=exec_command("sha256sum "+ path)
+        if ((len(shasumSRK) >0) and (shasumSRK.split(' ',1)[0] == "0d5dbc6ed8b0a55414648b19727e217453c54d1527cef3a62784ae818c9777e7")):
+            bb.warn("!! CRITICAL SECURITY WARNING: You're using Phytec's Development Keyring for Secure Boot in the bootloader. Please create your own!!")
 
 do_patch:append:secureboot() {
     import os
     import subprocess
 
-    pathCFG = d.getVar("WORKDIR") + "/dynamic-config.cfg"
+    workdir = d.getVar("WORKDIR")
+    if not os.path.exists(workdir):
+        os.makedirs(workdir)
 
-    if not os.path.exists(d.getVar("WORKDIR")):
-        os.makedirs(d.getVar("WORKDIR"))
-
-    # noch Verzeinis Pruefen ansonsten anlegen
+    pathCFG = os.path.join(workdir, "dynamic-config.cfg")
     file = open(pathCFG,"w")
 
     file.write("# CONFIG_CMD_OF_OVERLAY is not set\n")
@@ -176,23 +171,43 @@ do_patch:append:secureboot() {
 python do_create_dynamic_dtree(){
 }
 
+# Creates a device-tree containing a /signature node with a pubkey
+# to verify FIT-images with
 python do_create_dynamic_dtree:append:secureboot (){
     import os
 
-    pathDD = d.getVar("WORKDIR")
-    if not os.path.exists(pathDD):
-        os.makedirs(pathDD)
+    workdir = d.getVar("WORKDIR")
+    if not os.path.exists(workdir):
+        os.makedirs(workdir)
 
-    #Create Pubkey Signature for Barebox
     if oe.data.typed_value("FITIMAGE_SIGN", d):
         write_signature_node(d)
         write_signature_creation(d)
-        write_command("dtc -O dtb " +  pathDD + "/signature_node.dts",  pathDD + "/signature_node.dtb")
-        path, file = os.path.split(d.getVar("FITIMAGE_SIGN_KEY_PATH"))
-        write_command("mkimage -f " +  pathDD + "/signature_creation.its -k " + path + " -K " + pathDD + "/signature_node.dtb -r " + pathDD + "/dummy.img", '')
-        write_command("dtc -I dtb " + pathDD + "/signature_node.dtb", pathDD + "/signature_node.tmp")
+
+
+        signature_node_path_dts = os.path.join(workdir, "signature_node.dts")
+        signature_node_path_dtb = os.path.join(workdir, "signature_node.dtb")
+        signature_node_path_tmp = os.path.join(workdir, "signature_node.tmp")
+
+        exec_command("dtc -O dtb {0} -o {1}".format(signature_node_path_dts, signature_node_path_dtb))
+
+        key_path = d.getVar("FITIMAGE_SIGN_KEY_PATH")
+
+        engine = ""
+
+        if key_path.startswith("pkcs11:"):
+            engine = "-N pkcs11"
+
+            setup_pkcs11_env(d)
+
+        path = get_mkimage_key_path(key_path)
+
+        exec_command("mkimage {0} -f {1} -k {2} -K {3} -r {4}".format(engine, workdir + "/signature_creation.its", path, signature_node_path_dtb, workdir + "/dummy.img"))
+
+        exec_command("dtc -I dtb {0} -o {1}".format(signature_node_path_dtb,  signature_node_path_tmp))
+
         os.sync()
-        with open(pathDD + "/signature_node.tmp", 'r') as fin:
+        with open(signature_node_path_tmp, 'r') as fin:
             data = fin.readlines()
         with open(d.getVar("FITIMAGE_PUBKEY_SIGNATURE_PATH"), 'w') as fout:
             for line in data :
