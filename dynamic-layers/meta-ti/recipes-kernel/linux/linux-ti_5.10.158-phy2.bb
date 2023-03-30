@@ -12,7 +12,7 @@ PR = "${INC_PR}.0"
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "eac5cd6e17c182e5bd27393e3f80c140f32ebd79"
+SRCREV = "33b7ee11247b0a48b3f530da13783e8e5ef5cab7"
 S = "${WORKDIR}/git"
 
 # Special configuration for remoteproc/rpmsg IPC modules
