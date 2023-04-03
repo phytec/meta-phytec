@@ -22,7 +22,7 @@ module_conf_ti_k3_dsp_remoteproc = "softdep ti_k3_dsp_remoteproc pre: virtio_rpm
 KERNEL_MODULE_PROBECONF += "rpmsg_client_sample ti_k3_r5_remoteproc ti_k3_dsp_remoteproc"
 
 # Drop kernel-devicetree, added by TI's kernel-rdepends.inc
-RDEPENDS_${KERNEL_PACKAGE_NAME}-base_remove = "kernel-devicetree"
+RDEPENDS_${KERNEL_PACKAGE_NAME}-base:remove = "kernel-devicetree"
 
 EXTRA_DTC_ARGS += "DTC_FLAGS=-@"
 KERNEL_EXTRA_ARGS += "LOADADDR=${UBOOT_ENTRYPOINT} \
