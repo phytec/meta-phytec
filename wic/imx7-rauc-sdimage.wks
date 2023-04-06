@@ -3,7 +3,7 @@
 # the user can directly dd to an SD card and boot. This image contains two boot
 # and rootfs partitions for a redundant system.
 
-part u-boot --source rawcopy --sourceparams="file=u-boot-with-spl.imx" --ondisk mmcblk --no-table --align ${BOOTLOADER_SEEK}
+part u-boot --source rawcopy --sourceparams="file=u-boot.imx" --ondisk mmcblk --no-table --align ${BOOTLOADER_SEEK}
 
 include rauc-sdimage.wks.inc
 
