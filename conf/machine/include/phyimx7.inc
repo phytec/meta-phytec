@@ -11,13 +11,16 @@ MKUBIFS_ARGS = "-F -m 2048 -e 126976 -c 1912"
 UBINIZE_ARGS = "-m 2048 -p 128KiB -s 2048 -O 2048"
 
 # WIC
-IMAGE_BOOT_FILES = "zImage ${KERNEL_DEVICETREE}"
-WKS_FILES:mx7 ?= "imx7-sdimage.wks"
+IMAGE_CLASSES += "wic-helper"
+EXTERNAL_KERNEL_DEVICETREE ??= ""
+IMAGE_BOOT_FILES += "oftree ${EXTERNAL_KERNEL_DEVICETREE}"
+WKS_FILES:mx7-nxp-bsp ?= "imx7-sdimage.wks"
+WKS_BOOTIMAGESIZE ?= "20"
 
 # MMC user area bootloader image offset
-BOOTLOADER_SEEK:mx7 ?= "1"
+BOOTLOADER_SEEK:mx7-generic-bsp ?= "1"
 # eMMC boot partition bootloader image offset
-BOOTLOADER_SEEK_EMMC:mx7 ?= "1"
+BOOTLOADER_SEEK_EMMC:mx7-generic-bsp ?= "1"
 
 # Default images to build
 IMAGE_FSTYPES = "tar.xz wic ubifs"
