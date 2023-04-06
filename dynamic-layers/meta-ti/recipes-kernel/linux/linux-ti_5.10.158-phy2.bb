@@ -12,6 +12,8 @@ PR = "${INC_PR}.0"
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
 # NOTE: Keep version in filename in sync with commit id!
+# NOTE: Keep version of TI_LINUX_FW_SRCREV in sync, configured in
+#       dynamic-layers/meta-ti/recipes-bsp/ti-linux-fw/ti-linux-fw-freeze.inc
 SRCREV = "33b7ee11247b0a48b3f530da13783e8e5ef5cab7"
 S = "${WORKDIR}/git"
 
