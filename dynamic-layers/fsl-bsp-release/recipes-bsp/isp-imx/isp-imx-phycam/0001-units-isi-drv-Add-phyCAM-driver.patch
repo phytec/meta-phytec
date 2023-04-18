@@ -1,4 +1,4 @@
-From e666d86655a90e91f5534f24358feb93b9718e91 Mon Sep 17 00:00:00 2001
+From cbb3aec84a4abb3a8f504eb134bd97fc2953570c Mon Sep 17 00:00:00 2001
 From: Stefan Riedmueller <s.riedmueller@phytec.de>
 Date: Fri, 28 Jan 2022 16:34:34 +0100
 Subject: [PATCH] units/isi/drv: Add phyCAM driver
@@ -9,43 +9,39 @@ cameras.
 Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
 ---
  build-all-isp.sh                    |   1 +
- units/isi/CMakeLists.txt            |   5 +-
+ units/isi/CMakeLists.txt            |   4 +-
  units/isi/drv/phyCAM/CMakeLists.txt |  92 +++
  units/isi/drv/phyCAM/phycam.c       | 873 ++++++++++++++++++++++++++++
  units/isi/drv/phyCAM/phycam_log.h   |  45 ++
- 5 files changed, 1014 insertions(+), 2 deletions(-)
+ 5 files changed, 1013 insertions(+), 2 deletions(-)
  create mode 100755 units/isi/drv/phyCAM/CMakeLists.txt
  create mode 100644 units/isi/drv/phyCAM/phycam.c
  create mode 100644 units/isi/drv/phyCAM/phycam_log.h
 
 diff --git a/build-all-isp.sh b/build-all-isp.sh
-index 6ae45f8b6743..60b305e930ef 100755
+index e96c4cb0419c..b33dea563e82 100755
 --- a/build-all-isp.sh
 +++ b/build-all-isp.sh
 @@ -116,6 +116,7 @@ fi
  cp -a appshell/build/generated/${BUILD_DIR}/lib/*.so* ${ISP_LIB_DIR}
- cp -a appshell/build/generated/${BUILD_TYPE}/bin/OV2775* ${ISP_BIN_DIR}
- cp -a appshell/build/generated/${BUILD_TYPE}/bin/ov2775* ${ISP_BIN_DIR}
+ #cp -a appshell/build/generated/${BUILD_TYPE}/bin/OV2775* ${ISP_BIN_DIR}
+ #cp -a appshell/build/generated/${BUILD_TYPE}/bin/ov2775* ${ISP_BIN_DIR}
 +cp -a appshell/build/generated/${BUILD_TYPE}/bin/phycam* ${ISP_BIN_DIR}
  cp -a appshell/build/generated/${BUILD_TYPE}/bin/isp_media_server ${ISP_BIN_DIR}
  cp -a appshell/build/generated/${BUILD_TYPE}/bin/*_test ${ISP_BIN_DIR}
- cp -a appshell/build/generated/${BUILD_DIR}/bin/Sensor0_Entry.cfg ${ISP_BIN_DIR}/Sensor0_Entry.cfg.ov2775
+ #cp -a appshell/build/generated/${BUILD_DIR}/bin/Sensor0_Entry.cfg ${ISP_BIN_DIR}/Sensor0_Entry.cfg.ov2775
 diff --git a/units/isi/CMakeLists.txt b/units/isi/CMakeLists.txt
-index 6ae0075dfb85..17c365470d7f 100644
+index 36c6451350d0..9792afedf2a9 100644
 --- a/units/isi/CMakeLists.txt
 +++ b/units/isi/CMakeLists.txt
-@@ -82,8 +82,9 @@ include(${UNITS_TOP_DIRECTORY}/targets.cmake)
+@@ -74,5 +74,5 @@ endif( DEFINED APPSHELL_TOP_COMPILE)
+ include(${UNITS_TOP_DIRECTORY}/targets.cmake)
+ 
  # add sensor driver modules here
- #add_subdirectory( drv/OV2715 )
- #add_subdirectory( drv/OV2710 )
--add_subdirectory( drv/OV2775 )
 -add_subdirectory( drv/OS08a20 )
-+#add_subdirectory( drv/OV2775 )
+-
 +#add_subdirectory( drv/OS08a20 )
 +add_subdirectory( drv/phyCAM )
- #add_subdirectory( drv/OV5630 )
- ###add_subdirectory( drv/OV8810 )
- #add_subdirectory( drv/OV14825 )
 diff --git a/units/isi/drv/phyCAM/CMakeLists.txt b/units/isi/drv/phyCAM/CMakeLists.txt
 new file mode 100755
 index 000000000000..f032a3dd3bc6
