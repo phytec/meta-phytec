@@ -12,7 +12,9 @@ EXTRA_OEMAKE += " \
         IMX_BOOT_UART_BASE="${UART_BASE}" \
 "
 
-EXTRA_OEMAKE_append_mx8mm = ' BL32_BASE="0x56000000" '
+EXTRA_OEMAKE_append_mx8mm = ' BL32_BASE="0x7DE00000" '
+EXTRA_OEMAKE_append_mx8mn = ' BL32_BASE="0x7DE00000" '
+EXTRA_OEMAKE_append_mx8mp = ' BL32_BASE="0x7DE00000" '
 # NOTE: Uncomment for debug build:
 #EXTRA_OEMAKE += " \
 #	DEBUG=1 \
