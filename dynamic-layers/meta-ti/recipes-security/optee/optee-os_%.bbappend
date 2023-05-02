@@ -1,5 +1,6 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 EXTRA_OEMAKE:append:am62xx = " CFG_WITH_SOFTWARE_PRNG=y CFG_TEE_CORE_LOG_LEVEL=1"
+EXTRA_OEMAKE:append:am62axx = " CFG_TEE_CORE_LOG_LEVEL=2"
 
 SRC_URI_ti-soc = " \
     git://github.com/OP-TEE/optee_os.git;protocol=https \

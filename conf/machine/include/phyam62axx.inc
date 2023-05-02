@@ -3,6 +3,7 @@ SOC_FAMILY_append = ":am62axx"
 
 TFA_BOARD = "lite"
 OPTEEMACHINE = "k3-am62x"
+OPTEEOUTPUTMACHINE = "k3"
 
 TFA_K3_SYSTEM_SUSPEND = "1"
 
