@@ -32,7 +32,7 @@ SRC_URI_append_phyboard-lyra-am62xx-2-k3r5 = "\
 "
 
 PR = "r0"
-SRCREV = "b4e63a132e2e487ca528f3200f996cf990d938c5"
+SRCREV = "d9e835f13531b5083d437b98012e398d7595198f"
 
 SPL_UART_BINARY_k3r5 = "u-boot-spl.bin"
 
