@@ -25,6 +25,7 @@ KERNEL_MODULE_PROBECONF += "rpmsg_client_sample ti_k3_r5_remoteproc ti_k3_dsp_re
 
 # Drop kernel-devicetree, added by TI's kernel-rdepends.inc
 RDEPENDS_${KERNEL_PACKAGE_NAME}-base_remove = "kernel-devicetree"
+RDEPENDS_${KERNEL_PACKAGE_NAME}-base_append_phyboard-izar-am68x-1 = " cnm-wave-fw"
 
 EXTRA_DTC_ARGS += "DTC_FLAGS=-@"
 KERNEL_EXTRA_ARGS += "LOADADDR=${UBOOT_ENTRYPOINT} \
@@ -39,4 +40,5 @@ COMPATIBLE_MACHINE .=  "phyboard-lyra-am62xx-1"
 COMPATIBLE_MACHINE .=  "|phyboard-lyra-am62xx-2"
 COMPATIBLE_MACHINE .=  "|phyboard-lyra-am62axx-1"
 COMPATIBLE_MACHINE .=  "|phyboard-electra-am64xx-1"
+COMPATIBLE_MACHINE .=  "|phyboard-izar-am68x-1"
 COMPATIBLE_MACHINE .= ")$"
