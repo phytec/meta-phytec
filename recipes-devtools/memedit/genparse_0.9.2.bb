@@ -14,6 +14,8 @@ BBCLASSEXTEND = "native"
 
 DEPENDS = ""
 
+BUILD_CFLAGS:append = " -std=c++14"
+
 SRC_URI = " \
     http://sourceforge.net/projects/genparse/files/genparse/0.9.2/genparse-0.9.2.tar.gz \
     file://genparse-build-minimal.patch \
