@@ -25,6 +25,7 @@ BOOTLOADER_SEEK_EMMC:mx7-generic-bsp ?= "1"
 # Default images to build
 IMAGE_FSTYPES = " \
     tar.xz \
-    wic \
+    wic.xz \
+    wic.bmap \
     ${@bb.utils.contains("MACHINE_FEATURES", "nand", "ubifs", "", d)} \
 "
