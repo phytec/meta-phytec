@@ -17,6 +17,10 @@ DISTRO ?= "ampliphy"
 #  - Uncomment for Freescale i.MX6 VPU firmware blobs
 #LICENSE_FLAGS_ACCEPTED += "license-freescale_v12-march-2016_firmware-imx"
 
+# When building multiple distros in the same TOPDIR
+#TMPDIR = "${TOPDIR}/${DISTRO}-tmp"
+#DEPLOY_DIR = "${TOPDIR}/${DISTRO}-deploy"
+
 # build artifacts are deployed here
 DEPLOY_DIR = "${TOPDIR}/deploy"
 
