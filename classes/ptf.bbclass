@@ -25,7 +25,7 @@ def build_ptf_data(d):
     from oe.rootfs import image_list_installed_packages
     pkgs = image_list_installed_packages(d)
     data['ENV_PTF_BUSYBOX_VERSION'] = pkgs['busybox']['ver'].split('-')[0]
-    data['ENV_PTF_YOCTO_RELEASE'] = d.getVar('DISTRO_CODENAME')
+    data['ENV_PTF_YOCTO_RELEASE'] = d.getVar('VERSION_CODENAME')
     mk = get_bootloader_makefile(d)
     data['ENV_PTF_BOOTLOADER_VERSION'] = get_bootloader_version(mk)
     dtb = d.getVar('KERNEL_DEVICETREE').split(' ')[0]
