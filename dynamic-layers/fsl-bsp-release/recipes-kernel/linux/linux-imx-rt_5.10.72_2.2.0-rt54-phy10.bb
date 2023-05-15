@@ -8,6 +8,6 @@ GIT_URL = "git://git.phytec.de/linux-imx"
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "0c836b715b054bc7d65c17b8c8bc9a2dec7f0607"
+SRCREV = "c21c5280b27d784351c4149969fd6d0dc92c5a7f"
 
 INTREE_DEFCONFIG += "imx8_phytec_rt.config"
