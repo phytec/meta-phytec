@@ -9,12 +9,12 @@
 # If you want to install some kernel modules 'by hand', e.g. in a image recipe
 # or package group, you can append the package name to the variable
 #
-#   KERNEL_MODULES_RDEPENDS_BLACKLIST
+#   KERNEL_MODULES_RDEPENDS_DISABLE
 #
 # This will remove the package from the RDEPENDS list of the package
 # 'kernel_modules' and therefore the kernel module is not installed by default.
 
-KERNEL_MODULES_RDEPENDS_BLACKLIST ??= ""
+KERNEL_MODULES_RDEPENDS_DISABLE ??= ""
 
 
 # The task 'split_kernel_module_packages' is defined in
@@ -22,17 +22,17 @@ KERNEL_MODULES_RDEPENDS_BLACKLIST ??= ""
 python split_kernel_module_packages:append () {
     # Get all modules which shouldn't be in RDEPENDS.
     if modules:
-        blacklisted_modules = set(s.strip() for s in
-                                  d.getVar("KERNEL_MODULES_RDEPENDS_BLACKLIST").split(' '))
+        disabled_modules = set(s.strip() for s in
+                                  d.getVar("KERNEL_MODULES_RDEPENDS_DISABLE").split(' '))
 
-        # Remove packages in set blacklisted_modules from variable
+        # Remove packages in set disabled_modules from variable
         #    RDEPENDS:${KERNEL_MODULES_META_PACKAGE}.
         # After that the package 'kernel-modules' doesn't pull these packages onto
         # the rootfs automatically.
         kernel_modules = d.getVar("KERNEL_MODULES_META_PACKAGE")
         rdepends = d.getVar("RDEPENDS:%s" % (kernel_modules,), True)
         if rdepends is not None:
-            rdepends = [pkg for pkg in rdepends.split(" ") if pkg not in blacklisted_modules]
+            rdepends = [pkg for pkg in rdepends.split(" ") if pkg not in disabled_modules]
             d.setVar("RDEPENDS:%s" % (kernel_modules), ' '.join(rdepends))
 
 }
