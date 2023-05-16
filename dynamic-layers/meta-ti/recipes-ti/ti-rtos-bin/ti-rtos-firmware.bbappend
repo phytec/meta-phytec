@@ -18,6 +18,10 @@ do_install_prepend_am62axx() {
 
 PLAT_SFX_phyboard-izar-am68x-1 = "j721s2"
 
+SRC_URI_append_phyboard-izar-am68x-1 = " \
+        https://download.phytec.de/Software/Linux/BSP-Yocto-AM68x/resources/DM_FW_BSP-Yocto-TISDK-AM68x-ALPHA1.tar.gz;sha256sum=89ee1bccae357b590561f4c87b2d48bb0624caabdc5d3ac707b7c8966935d31a \
+"
+
 do_install_phyboard-izar-am68x-1() {
     install -d ${LEGACY_IPC_FW_DIR}
     install -m 0644 ${RTOS_IPC_FW_DIR}/ipc_echo_test_mcu1_1_release_strip.xer5f ${LEGACY_IPC_FW_DIR}
@@ -28,7 +32,8 @@ do_install_phyboard-izar-am68x-1() {
     install -m 0644 ${RTOS_IPC_FW_DIR}/ipc_echo_test_c7x_1_release_strip.xe71 ${LEGACY_IPC_FW_DIR}
     install -m 0644 ${RTOS_IPC_FW_DIR}/ipc_echo_test_c7x_2_release_strip.xe71 ${LEGACY_IPC_FW_DIR}
     # DM Firmware
-    install -m 0644 ${RTOS_DM_FW_DIR}/ipc_echo_testb_mcu1_0_release_strip.xer5f ${LEGACY_DM_FW_DIR}
+    install -d ${WORKDIR}
+    install -m 644 ${WORKDIR}/ipc_echo_testb_mcu1_0_release_strip.xer5f ${LEGACY_DM_FW_DIR}
 }
 
 ALTERNATIVE_${PN}_phyboard-izar-am68x-1 = "\
