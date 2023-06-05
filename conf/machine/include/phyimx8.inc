@@ -13,13 +13,14 @@ PREFERRED_PROVIDER_virtual/libgles3:mx8mm-nxp-bsp = "mesa"
 
 # Wic
 IMAGE_CLASSES += "wic-helper"
-IMAGE_CLASSES:append:mx8m-nxp-bsp = " wic-imx8-helper"
+IMAGE_CLASSES:append:mx8-nxp-bsp = " wic-imx8-helper"
 EXTERNAL_KERNEL_DEVICETREE ??= ""
 IMAGE_BOOT_FILES += "oftree ${EXTERNAL_KERNEL_DEVICETREE} bootenv.txt"
 IMAGE_BOOT_FILES:secureboot:mx8m-nxp-bsp = "fitImage bootenv.txt"
 WKS_FILES:mx8m-nxp-bsp ?= "imx8m-sdimage.wks"
 WKS_FILES:mx8m-mainline-bsp ?= "imx8m-binman-sdimage.wks"
 WKS_FILES:mx8m-nxp-bsp:update ?= "imx8m-rauc-sdimage.wks"
+WKS_FILES:mx8x-nxp-bsp ?= "imx8x-sdimage.wks"
 WKS_BOOTIMAGESIZE ?= "50"
 WIC_CREATE_EXTRA_ARGS:remove = "--no-fstab-update"
 
@@ -27,6 +28,7 @@ WIC_CREATE_EXTRA_ARGS:remove = "--no-fstab-update"
 BOOTLOADER_SEEK:mx8m-generic-bsp ?= "33"
 BOOTLOADER_SEEK:mx8mn-generic-bsp ?= "32"
 BOOTLOADER_SEEK:mx8mp-generic-bsp ?= "32"
+BOOTLOADER_SEEK:mx8x-generic-bsp ?= "32"
 # eMMC boot partition bootloader image offset
 BOOTLOADER_SEEK_EMMC:mx8m-generic-bsp ?= "33"
 BOOTLOADER_SEEK_EMMC:mx8mn-generic-bsp ?= "0"
@@ -44,5 +46,8 @@ IMAGE_ROOTFS_ALIGNMENT:update = "4"
 # Default images to build
 IMAGE_FSTYPES = "tar.gz wic wic.bmap"
 IMAGE_FSTYPES:append:update = " ext4"
+IMAGE_FSTYPES:append:mx8x-nxp-bsp = " wic.xz"
+IMAGE_FSTYPES:remove:mx8x-nxp-bsp = " wic"
 
 MACHINE_FEATURES += "caam optee"
+MACHINE_FEATURES:remove:mx8x-nxp-bsp = " optee"
