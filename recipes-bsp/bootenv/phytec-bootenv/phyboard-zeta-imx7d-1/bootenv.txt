@@ -1,0 +1,1 @@
+overlays=imx7d-phyboard-zeta-peb-d-rpi.dtbo
