@@ -38,6 +38,13 @@ SRC_URI:append:phyboard-lyra-am62xx-2-k3r5 = "\
     file://0001-HACK-board-phytec-phycore_am62x-Enable-OLDI0-AUDIO_R.patch \
 "
 
+SRC_URI:append:phyboard-lyra-am62xx-3 = "\
+    file://0001-HACK-board-phytec-phycore_am62x-Enable-OLDI0-AUDIO_R.patch \
+"
+SRC_URI:append:phyboard-lyra-am62xx-3-k3r5 = "\
+    file://0001-HACK-board-phytec-phycore_am62x-Enable-OLDI0-AUDIO_R.patch \
+"
+
 PR = "r0"
 SRCREV = "0613b31d4cc514e508f1eebc5f6feec4753e91c1"
 
@@ -53,6 +60,8 @@ COMPATIBLE_MACHINE .= "phyboard-lyra-am62xx-1"
 COMPATIBLE_MACHINE .= "|phyboard-lyra-am62xx-1-k3r5"
 COMPATIBLE_MACHINE .= "|phyboard-lyra-am62xx-2"
 COMPATIBLE_MACHINE .= "|phyboard-lyra-am62xx-2-k3r5"
+COMPATIBLE_MACHINE .= "|phyboard-lyra-am62xx-3"
+COMPATIBLE_MACHINE .= "|phyboard-lyra-am62xx-3-k3r5"
 COMPATIBLE_MACHINE .= "|phyboard-lyra-am62axx-1"
 COMPATIBLE_MACHINE .= "|phyboard-lyra-am62axx-1-k3r5"
 COMPATIBLE_MACHINE .= "|phyboard-electra-am64xx-1"
