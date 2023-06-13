@@ -9,9 +9,11 @@ SECTION = "BSP"
 
 FILESEXTRAPATHS:prepend := "${OEROOT}/../meta-imx/meta-bsp/recipes-bsp/imx-mkimage/files:"
 
+inherit use-imx-security-controller-firmware
+
 IMX_EXTRA_FIRMWARE      = "firmware-imx-8 imx-sc-firmware imx-seco"
 IMX_EXTRA_FIRMWARE:mx8m-nxp-bsp = "firmware-imx-8m"
-IMX_EXTRA_FIRMWARE:mx8x-nxp-bsp = "imx-sc-firmware imx-seco"
+IMX_EXTRA_FIRMWARE:mx8x-nxp-bsp = "imx-sc-firmware-phytec imx-seco"
 DEPENDS += " \
     u-boot \
     ${IMX_EXTRA_FIRMWARE} \
@@ -86,7 +88,7 @@ IMXBOOT_TARGETS ?= \
 
 BOOT_STAGING       = "${S}/${SOC_TARGET}"
 BOOT_STAGING:mx8m-nxp-bsp  = "${S}/iMX8M"
-BOOT_STAGING:mx8dx-nxp-bsp = "${S}/iMX8QX"
+BOOT_STAGING:mx8x-nxp-bsp = "${S}/iMX8QX"
 
 SOC_FAMILY      = "INVALID"
 SOC_FAMILY:mx8-nxp-bsp  = "mx8"
@@ -94,6 +96,9 @@ SOC_FAMILY:mx8m-nxp-bsp = "mx8m"
 SOC_FAMILY:mx8x-nxp-bsp = "mx8x"
 
 REV_OPTION ?= ""
+REV_OPTION:mx8qxp-generic-bsp = " \
+    ${@bb.utils.contains('MACHINE_FEATURES', 'soc-revb0', '', 'REV=C0', d)} \
+"
 REV_OPTION:mx8qxpc0-nxp-bsp = "REV=C0"
 
 TEE_LOAD_ADDRESS ?= ""
