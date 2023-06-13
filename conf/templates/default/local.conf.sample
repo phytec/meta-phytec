@@ -67,6 +67,10 @@ BB_DISKMON_DIRS ??= "\
 # To change the variable for any imx8 machine:
 #IMAGE_FSTYPES:mx8-generic-bsp = "tar.gz wic wic.bmap"
 
+# phyCORE-i.MX8X uses wic.xz images.
+# To change the variable for imx8x machine only:
+#IMAGE_FSTYPES:mx8x-generic-bsp = "tar.gz wic.xz wic.bmap"
+
 # Turn on debugging options of the kernel
 #DEBUG_BUILD:pn-linux-mainline = "1"
 # Turn on debugging options of the imx kernel
