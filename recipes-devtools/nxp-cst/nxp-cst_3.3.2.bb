@@ -13,11 +13,11 @@ LIC_FILES_CHKSUM = " \
 
 require nxp-cst.inc
 
-SRC_URI = " \
-        https://download.phytec.de/dummyurl/cst-${PV}.tar;name=tarball \
+SRC_URI += " \
+        https://download.phytec.de/dummyurl/cst-${PV}.tgz;name=tarball \
 "
 
-SRC_URI[tarball.md5sum] = "830965fe59a0e9c505fd18c7d2e60dbd"
-SRC_URI[tarball.sha256sum] = "8cf41fb146298a9caa14e3db9aec1c7e0f0279ddc51ee3f7d76770287032e7a3"
+SRC_URI[tarball.md5sum] = "4b9fccac381fa412cba8ba7028c154c7"
+SRC_URI[tarball.sha256sum] = "517b11dca181e8c438a6249f56f0a13a0eb251b30e690760be3bf6191ee06c68"
 
 INSANE_SKIP:${PN} += "already-stripped"
