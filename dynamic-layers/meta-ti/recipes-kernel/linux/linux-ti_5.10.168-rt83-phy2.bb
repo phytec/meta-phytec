@@ -6,8 +6,8 @@ require recipes-kernel/linux/kernel-rdepends.inc
 #Skip this recipe if DISTRO_FEATURES contains the PREEMPT-RT value and
 # a kernel with real-time is desired
 python () {
-    if 'preempt-rt' in d.getVar("DISTRO_FEATURES"):
-        raise bb.parse.SkipPackage("Disable 'preempt-rt' in DISTRO_FEATURES!")
+    if 'preempt-rt' not in d.getVar("DISTRO_FEATURES"):
+        raise bb.parse.SkipPackage("Enable 'preempt-rt' in DISTRO_FEATURES!")
 }
 
 LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
@@ -24,7 +24,7 @@ PR = "${INC_PR}.0"
 # NOTE: Keep version in filename in sync with commit id!
 # NOTE: Keep version of TI_LINUX_FW_SRCREV in sync, configured in
 #       dynamic-layers/meta-ti/recipes-bsp/ti-linux-fw/ti-linux-fw-freeze.inc
-SRCREV = "80753ed7029a2234bffe3de1c77f0a3e7b0f460b"
+SRCREV = "d568aa08c02b49aba741aaeae2766322c56a5625"
 S = "${WORKDIR}/git"
 
 # Special configuration for remoteproc/rpmsg IPC modules
@@ -43,7 +43,7 @@ KERNEL_EXTRA_ARGS += "LOADADDR=${UBOOT_ENTRYPOINT} \
 
 FILES_${KERNEL_PACKAGE_NAME}-devicetree += "/${KERNEL_IMAGEDEST}/*.itb"
 
-INTREE_DEFCONFIG = "phytec_ti_defconfig phytec_ti_platform.config"
+INTREE_DEFCONFIG = "phytec_ti_defconfig phytec_ti_platform.config phytec_ti_rt.config"
 
 COMPATIBLE_MACHINE  = "^("
 COMPATIBLE_MACHINE .=  "phyboard-lyra-am62xx-1"
