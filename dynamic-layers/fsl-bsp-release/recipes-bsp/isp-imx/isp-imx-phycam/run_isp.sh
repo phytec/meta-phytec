@@ -3,7 +3,12 @@
 AR0144_LENS="AO082"
 AR0521_LENS="AO062"
 
-if ! [ -e /dev/cam-csi1 ] && ! [ -e /dev/cam-csi2 ]; then
+if ! [ -e /dev/cam-csi1 ] && \
+   ! [ -e /dev/cam-csi2 ] && \
+   ! [ -e /dev/cam-csi1-port0 ] && \
+   ! [ -e /dev/cam-csi1-port1 ] && \
+   ! [ -e /dev/cam-csi2-port0 ] && \
+   ! [ -e /dev/cam-csi2-port1 ]; then
 	echo "No camera"
 	exit 6
 fi
@@ -28,10 +33,28 @@ else
 fi
 
 # Create Sensor0_Entry.cfg link according to connected Sensor and Color
-if [ -e /dev/cam-csi1 ]; then
-	CAM="$(cat /sys/class/video4linux/$(readlink /dev/cam-csi1)/name | \
+if [ -e /dev/cam-csi1 ] || \
+   [ -e /dev/cam-csi1-port0 ] || \
+   [ -e /dev/cam-csi1-port1 ]; then
+
+	if [ -e /dev/cam-csi1 ]; then
+		CAM_DEV="/dev/cam-csi1"
+	elif [ -e /dev/cam-csi1-port0 ] && ! [ -e /dev/cam-csi1-port1 ]; then
+		CAM_DEV="/dev/cam-csi1-port0"
+		setup-pipeline-csi1 -p 0
+	elif [ -e /dev/cam-csi1-port1 ] && ! [ -e /dev/cam-csi1-port0 ]; then
+		CAM_DEV="/dev/cam-csi1-port1"
+		setup-pipeline-csi1 -p 1
+	else
+		echo "No valid configuration"
+		echo "Dual port phyCAM-L not supported with ISP"
+		exit 6
+	fi
+
+
+	CAM="$(cat /sys/class/video4linux/$(readlink ${CAM_DEV})/name | \
 		cut -d" " -f1)"
-	COLOR="$(v4l2-ctl -d /dev/cam-csi1 --get-subdev-fmt 0 | \
+	COLOR="$(v4l2-ctl -d ${CAM_DEV} --get-subdev-fmt 0 | \
 		grep "Mediabus Code" | sed 's/.*BUS_FMT_\([A-Z]*\).*/\1/g')"
 
 	if [ $COLOR = "Y" ]; then
@@ -51,10 +74,27 @@ if [ -e /dev/cam-csi1 ]; then
 fi
 
 # Create Sensor1_Entry.cfg link according to connected Sensor and Color
-if [ -e /dev/cam-csi2 ]; then
-	CAM="$(cat /sys/class/video4linux/$(readlink /dev/cam-csi2)/name | \
+if [ -e /dev/cam-csi2 ] || \
+   [ -e /dev/cam-csi2-port0 ] || \
+   [ -e /dev/cam-csi2-port1 ]; then
+
+	if [ -e /dev/cam-csi2 ]; then
+		CAM_DEV="/dev/cam-csi2"
+	elif [ -e /dev/cam-csi2-port0 ] && ! [ -e /dev/cam-csi2-port1 ]; then
+		CAM_DEV="/dev/cam-csi2-port0"
+		setup-pipeline-csi2 -p 0
+	elif [ -e /dev/cam-csi2-port1 ] && ! [ -e /dev/cam-csi2-port0 ]; then
+		CAM_DEV="/dev/cam-csi2-port1"
+		setup-pipeline-csi2 -p 1
+	else
+		echo "No valid configuration"
+		echo "Dual port phyCAM-L not supported with ISP"
+		exit 6
+	fi
+
+	CAM="$(cat /sys/class/video4linux/$(readlink ${CAM_DEV})/name | \
 		cut -d" " -f1)"
-	COLOR="$(v4l2-ctl -d /dev/cam-csi2 --get-subdev-fmt 0 | \
+	COLOR="$(v4l2-ctl -d ${CAM_DEV} --get-subdev-fmt 0 | \
 		grep "Mediabus Code" | sed 's/.*BUS_FMT_\([A-Z]*\).*/\1/g')"
 
 	if [ $COLOR = "Y" ]; then
