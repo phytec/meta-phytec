@@ -10,7 +10,7 @@ if ! [ -e /dev/cam-csi1 ] && \
    ! [ -e /dev/cam-csi2-port0 ] && \
    ! [ -e /dev/cam-csi2-port1 ]; then
 	echo "No camera"
-	exit 6
+	exit 1
 fi
 
 if ! cat /proc/modules | grep -q vvcam_video; then
