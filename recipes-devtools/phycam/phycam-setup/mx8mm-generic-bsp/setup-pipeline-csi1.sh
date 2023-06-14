@@ -109,7 +109,7 @@ MC="media-ctl"
 
 # Disable all existing phyCAM-L links (if phyCAM-L is connected) so the new
 # setup can be selected.
-if [ -n "$SER_P0_ENT" ] && [ -n "$SER_P0_ENT" ] ; then
+if [ -n "$SER_P0_ENT" ] && [ -n "$SER_P1_ENT" ] ; then
 	$MC -l "'${SER_P0_ENT}':1->'${DESER_ENT}':0[0]" ${VERBOSE}
 	$MC -l "'${SER_P1_ENT}':1->'${DESER_ENT}':1[0]" ${VERBOSE}
 fi
