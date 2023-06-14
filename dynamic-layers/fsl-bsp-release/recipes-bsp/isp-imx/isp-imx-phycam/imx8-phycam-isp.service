@@ -1,7 +1,7 @@
 [Unit]
 Description=i.MX 8 MPlus phyCAM ISP Service
-StartLimitIntervalSec=500
-StartLimitBurst=40
+StartLimitIntervalSec=40
+StartLimitBurst=6
 
 [Service]
 Type=simple
