@@ -15,7 +15,7 @@
 
 part fsbl1 --source rawcopy --fstype=ext4 --fsoptions "noauto" --part-name=fsbl1 --sourceparams="file=${DEPLOY_DIR_IMAGE}/arm-trusted-firmware/tf-a-${STM32MP_DEVICETREE}-sdcard.stm32" --ondisk mmcblk --part-type 0x8301 --fixed-size ${STM32MP_FSBL1_SIZE}K --align 17
 part fsbl2 --source rawcopy --fstype=ext4 --fsoptions "noauto" --part-name=fsbl2 --sourceparams="file=${DEPLOY_DIR_IMAGE}/arm-trusted-firmware/tf-a-${STM32MP_DEVICETREE}-sdcard.stm32" --ondisk mmcblk --part-type 0x8301 --fixed-size ${STM32MP_FSBL2_SIZE}K
-part fip   --source rawcopy --fstype=ext4 --fsoptions "noauto" --part-name=fip --sourceparams="file=${DEPLOY_DIR_IMAGE}/fip/fip-${STM32MP_DEVICETREE}-trusted.bin" --ondisk mmcblk --part-type 0x8301 --fixed-size ${STM32MP_SSBL1_SIZE}K
+part fip   --source rawcopy --fstype=ext4 --fsoptions "noauto" --part-name=fip --sourceparams="file=${DEPLOY_DIR_IMAGE}/fip/fip-${STM32MP_DEVICETREE}-${WKS_BOOTSCHEME}.bin" --ondisk mmcblk --part-type 0x8301 --fixed-size ${STM32MP_SSBL1_SIZE}K
 
 part bootfs --source rawcopy --sourceparams="file=${STM32MP_BOOTFS_IMAGE}-${DISTRO}-${MACHINE}.ext4" --ondisk mmcblk --fstype=ext4 --label bootfs --active --fixed-size ${STM32MP_BOOTFS_SIZE}K
 part vendorfs --source rawcopy --sourceparams="file=${STM32MP_VENDORFS_IMAGE}-${DISTRO}-${MACHINE}.ext4" --ondisk mmcblk --fstype=ext4 --label vendorfs --active --fixed-size ${STM32MP_VENDORFS_SIZE}K
