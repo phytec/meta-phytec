@@ -1,3 +1,5 @@
+include recipes-bsp/u-boot/u-boot-rauc.inc
+
 FILESEXTRAPATHS:prepend := "${THISDIR}/${BPN}:"
 
 SRC_URI += " \
