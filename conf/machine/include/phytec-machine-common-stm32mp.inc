@@ -712,9 +712,10 @@ WKS_FILE_DEPENDS ?= " \
     ${@bb.utils.contains('ST_VENDORFS','1','${STM32MP_VENDORFS_IMAGE}', '', d)} \
     ${@bb.utils.contains('ST_USERFS','1','${STM32MP_USERFS_IMAGE}', '', d)} \
 "
-TRUSTED_WIC_FILE = "${@bb.utils.contains('MACHINE_FEATURES','fw-update','stm32mp1-fw-update-sdimage.wks.in','stm32mp1-sdimage.wks.in',d)}"
-# OPTEE WIC FILE is not provided as OPTEE is not supported yet with the phycore-stm32mp1 BSP
-OPTEE_WIC_FILE = ""
-
 WKS_IMAGE_FSTYPES += "wic wic.bz2 wic.bmap"
-WKS_FILE += "${@bb.utils.contains('BOOTSCHEME_LABELS', 'optee', '${OPTEE_WIC_FILE}', '${TRUSTED_WIC_FILE}', d)}"
+
+# If optee is part of the selected boot chains, create WIC for optee by default
+# WKS_BOOTSCHEME is only used in the ".wks.in" files to indicate which boot chain to use when generating the WIC file
+WKS_BOOTSCHEME = "${@bb.utils.contains('BOOTSCHEME_LABELS', 'optee', 'optee', 'trusted', d)}"
+
+WKS_FILE +=  "${@bb.utils.contains('MACHINE_FEATURES','fw-update','stm32mp1-fw-update-sdimage.wks.in','stm32mp1-sdimage.wks.in',d)}"
