@@ -1,0 +1,43 @@
+# short-description: Create SD card image with a boot partition
+# long-description: Creates a partitioned SD card image for STM32MP1 BSP with RAUC feature enabled
+#
+# -------------------------------------------------------------------------------------------------------------------------------------
+# | | TFA(2) | Metadata(2) | FIPA | FIPB | U-BOOT ENV | bootfs-a | bootfs-b | vendorfs-a | vendorfs-b | rootfs-a  | rootfs-b | userfs |
+# -------------------------------------------------------------------------------------------------------------------------------------
+# ^ ^
+# | |
+# 0 17kB
+#
+# Partition sizes are defined throught the machine settings (or can be changed manually on this file).
+#
+# Warning: the first stage of boot (here fsbl1, fsbl2, metadata1, metadata2, fip-a, fip-b) MUST be on GPT partition to be detected.
+#
+
+# FSBL partitions (TF-A BL2)
+part fsbl1 --source rawcopy --fstype=ext4 --fsoptions "noauto" --part-name=fsbl1 --sourceparams="file=${DEPLOY_DIR_IMAGE}/arm-trusted-firmware/tf-a-${STM32MP_DEVICETREE}-sdcard.stm32" --ondisk mmcblk --part-type 0x8301 --fixed-size ${STM32MP_FSBL1_SIZE}K --align 17
+part fsbl2 --source rawcopy --fstype=ext4 --fsoptions "noauto" --part-name=fsbl2 --sourceparams="file=${DEPLOY_DIR_IMAGE}/arm-trusted-firmware/tf-a-${STM32MP_DEVICETREE}-sdcard.stm32" --ondisk mmcblk --part-type 0x8301 --fixed-size ${STM32MP_FSBL2_SIZE}K
+
+# Metadata partitions
+part metadata1 --source rawcopy --fstype=ext4 --fsoptions "noauto" --part-name=metadata1 --sourceparams="file=${DEPLOY_DIR_IMAGE}/arm-trusted-firmware/metadata.bin" --ondisk mmcblk --part-type 0x8301 --fixed-size ${STM32MP_METADATA_SIZE}K
+part metadata2 --source rawcopy --fstype=ext4 --fsoptions "noauto" --part-name=metadata2 --sourceparams="file=${DEPLOY_DIR_IMAGE}/arm-trusted-firmware/metadata.bin" --ondisk mmcblk --part-type 0x8301 --fixed-size ${STM32MP_METADATA_SIZE}K
+
+# Fip partitions
+part fip-a --source rawcopy --fstype=ext4 --fsoptions "noauto" --part-name=fip-a --sourceparams="file=${DEPLOY_DIR_IMAGE}/fip/fip-${STM32MP_DEVICETREE}-${WKS_BOOTSCHEME}.bin" --ondisk mmcblk --part-type ${DEVICE_TYPEUUID_FIP} --fixed-size ${STM32MP_SSBL1_SIZE}K --uuid ${DEVICE_PARTUUID_FIP_A}
+part fip-b --fstype=ext4 --fsoptions "noauto" --part-name=fip-b --ondisk mmcblk --part-type ${DEVICE_TYPEUUID_FIP} --fixed-size ${STM32MP_SSBL1_SIZE}K --uuid ${DEVICE_PARTUUID_FIP_B}
+
+# U-BOOT env
+part u-boot-env --source empty --part-name=uboot-env --ondisk mmcblk --part-type 0x8301 --fixed-size ${STM32MP_UENV_SIZE}K
+
+# Bootfs
+part bootfs-a --source rawcopy --sourceparams="file=${STM32MP_BOOTFS_IMAGE}-${DISTRO}-${MACHINE}.ext4" --ondisk mmcblk --fstype=ext4 --label bootfs --active --fixed-size ${STM32MP_BOOTFS_SIZE}K
+part bootfs-b --ondisk mmcblk --fstype=ext4 --label bootfs --active --fixed-size ${STM32MP_BOOTFS_SIZE}K
+# Vendorfs
+part vendorfs-a --source rawcopy --sourceparams="file=${STM32MP_VENDORFS_IMAGE}-${DISTRO}-${MACHINE}.ext4" --ondisk mmcblk --fstype=ext4 --label vendorfs --active --fixed-size ${STM32MP_VENDORFS_SIZE}K
+part vendorfs-b --ondisk mmcblk --fstype=ext4 --label vendorfs --active --fixed-size ${STM32MP_VENDORFS_SIZE}K
+# Rootfs
+part rootfs-a --source rootfs --ondisk mmcblk --fstype=ext4 --label rootfs --fixed-size ${IMAGE_ROOTFS_MAXSIZE}K --uuid ${DEVICE_PARTUUID_ROOTFS:mmc0}
+part rootfs-b --ondisk mmcblk --fstype=ext4 --label rootfs --fixed-size ${IMAGE_ROOTFS_MAXSIZE}K --uuid ${DEVICE_PARTUUID_ROOTFS:mmc0}
+# Userfs
+part userfs --source rawcopy --sourceparams="file=${STM32MP_USERFS_IMAGE}-${DISTRO}-${MACHINE}.ext4" --ondisk mmcblk --fstype=ext4 --label userfs --active --fixed-size ${STM32MP_USERFS_SIZE}K
+
+bootloader --ptable gpt
