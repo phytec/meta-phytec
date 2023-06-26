@@ -554,6 +554,8 @@ EXTRA_KERNEL_ARGS += "${HDMI_EDID_KERNEL_ARGS}"
 # bootargs to remove trace on kernel
 ST_CMD_LINE_DEBUG_TRACE ?= "loglevel=1 quiet"
 EXTRA_KERNEL_ARGS += "${@bb.utils.contains('ST_DEBUG_TRACE', '1', '', '${ST_CMD_LINE_DEBUG_TRACE}', d)}"
+# bootargs to set the RAUC slot
+EXTRA_KERNEL_ARGS:update += "rauc.slot=${bootslot}"
 
 # =========================================================================
 # u-boot

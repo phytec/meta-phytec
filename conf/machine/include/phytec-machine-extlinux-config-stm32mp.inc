@@ -41,6 +41,10 @@ UBOOT_EXTLINUX_BOOTPREFIXES:target-nand = "${DEVICE:NAND}_"
 UBOOT_EXTLINUX_ROOT:target-nand = "ubi.mtd=UBI rootfstype=ubifs root=ubi0:rootfs"
 UBOOT_EXTLINUX_ROOT:target-sdcard = "root=PARTUUID=${DEVICE_PARTUUID_ROOTFS:SDCARD}"
 UBOOT_EXTLINUX_ROOT:target-emmc = "root=PARTUUID=${DEVICE_PARTUUID_ROOTFS:EMMC}"
+# Specific ROOT overrides when using update distro feature (RAUC)
+UBOOT_EXTLINUX_ROOT:target-sdcard:update = "root=PARTLABEL=${rootpartlabel}"
+UBOOT_EXTLINUX_ROOT:target-emmc:update = "root=PARTLABEL=${rootpartlabel}"
+
 # Define INITRD overrides for nand target
 UBOOT_EXTLINUX_INITRD:target-nand = ""
 
