@@ -115,23 +115,10 @@ STM32MP_METADATA_DATA ?= "${@bb.utils.contains('MACHINE_FEATURES', 'fw-update', 
 STM32MP_METADATA_NAME ?= "${@bb.utils.contains('ENABLE_FLASHLAYOUT_CONFIG_FWUP', '1', 'metadata', '', d)}"
 STM32MP_METADATA_SIZE ?= "256"
 
-STM32MP_TEEH_DATA ?= "optee/tee-header_v2-<TYPE>.stm32"
-STM32MP_TEEH_NAME ?= "teeh"
-STM32MP_TEEH_SIZE ?= "256"
-STM32MP_TEED_DATA ?= "optee/tee-pageable_v2-<TYPE>.stm32"
-STM32MP_TEED_NAME ?= "teed"
-STM32MP_TEED_SIZE ?= "512"
-STM32MP_TEEX_DATA ?= "optee/tee-pager_v2-<TYPE>.stm32"
-STM32MP_TEEX_NAME ?= "teex"
-STM32MP_TEEX_SIZE ?= "256"
-
 # Specific override for NAND device type regarding partition sizes to follow
 # the hard coded configuration on U-Boot source code
 STM32MP_FSBL1_SIZE_UBOOT ?= "${@bb.utils.contains('ENABLE_FLASHLAYOUT_CONFIG_FWUP', '1', '512', '1024', d)}"
 STM32MP_METADATA_SIZE_UBOOT ?= "512"
-
-STM32MP_TEEH_SIZE_UBOOT ?= "512"
-STM32MP_TEEX_SIZE_UBOOT ?= "512"
 
 # Bootloader Partitions configuration
 PARTITIONS_BOOTLOADER_CONFIG += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'emmc', 'emmc', '', d)}"
@@ -178,39 +165,7 @@ PARTITIONS_BOOTLOADER_CONFIG[sdcard] ?= "\
     ${@ '${STM32MP_SSBL2_DATA},${STM32MP_SSBL2_NAME},${STM32MP_SSBL2_SIZE},FIP,1' if '${STM32MP_SSBL2_NAME}' and bb.utils.contains('ENABLE_FLASHLAYOUT_CONFIG_FWUP', '1', True, False, d) else ''} \
     ${@ '${STM32MP_UENV_DATA},${STM32MP_UENV_NAME},${STM32MP_UENV_SIZE},Binary,1' if '${STM32MP_UENV_NAME}' else ''} \
     "
-# Optee Partitions configuration
-PARTITIONS_OPTEE_CONFIG += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'emmc', 'emmc', '', d)}"
-PARTITIONS_OPTEE_CONFIG += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nand-2-256', 'nand-2-256', '', d)}"
-PARTITIONS_OPTEE_CONFIG += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nand-2-64', 'nand-2-64', '', d)}"
-PARTITIONS_OPTEE_CONFIG += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nor-emmc', 'nor-emmc', '', d)}"
-PARTITIONS_OPTEE_CONFIG += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'sdcard', 'sdcard', '', d)}"
 
-# <binary_name>,<partlabel>,<size>,<type>,<copy>
-PARTITIONS_OPTEE_CONFIG[emmc] ?= "\
-    ${@ '${STM32MP_TEEH_DATA},${STM32MP_TEEH_NAME},${STM32MP_TEEH_SIZE},Binary,1' if '${STM32MP_TEEH_NAME}' else ''} \
-    ${@ '${STM32MP_TEED_DATA},${STM32MP_TEED_NAME},${STM32MP_TEED_SIZE},Binary,1' if '${STM32MP_TEED_NAME}' else ''} \
-    ${@ '${STM32MP_TEEX_DATA},${STM32MP_TEEX_NAME},${STM32MP_TEEX_SIZE},Binary,1' if '${STM32MP_TEEX_NAME}' else ''} \
-    "
-PARTITIONS_OPTEE_CONFIG[nand-2-256] ?= "\
-    ${@ '${STM32MP_TEEH_DATA},${STM32MP_TEEH_NAME},${STM32MP_TEEH_SIZE_UBOOT},Binary,1' if '${STM32MP_TEEH_NAME}' else ''} \
-    ${@ '${STM32MP_TEED_DATA},${STM32MP_TEED_NAME},${STM32MP_TEED_SIZE},Binary,1' if '${STM32MP_TEED_NAME}' else ''} \
-    ${@ '${STM32MP_TEEX_DATA},${STM32MP_TEEX_NAME},${STM32MP_TEEX_SIZE_UBOOT},Binary,1' if '${STM32MP_TEEX_NAME}' else ''} \
-    "
-PARTITIONS_OPTEE_CONFIG[nand-2-64] ?= "\
-    ${@ '${STM32MP_TEEH_DATA},${STM32MP_TEEH_NAME},${STM32MP_TEEH_SIZE_UBOOT},Binary,1' if '${STM32MP_TEEH_NAME}' else ''} \
-    ${@ '${STM32MP_TEED_DATA},${STM32MP_TEED_NAME},${STM32MP_TEED_SIZE},Binary,1' if '${STM32MP_TEED_NAME}' else ''} \
-    ${@ '${STM32MP_TEEX_DATA},${STM32MP_TEEX_NAME},${STM32MP_TEEX_SIZE_UBOOT},Binary,1' if '${STM32MP_TEEX_NAME}' else ''} \
-    "
-PARTITIONS_OPTEE_CONFIG[nor-emmc] ?= "\
-    ${@ '${STM32MP_TEEH_DATA},${STM32MP_TEEH_NAME},${STM32MP_TEEH_SIZE},Binary,1' if '${STM32MP_TEEH_NAME}' else ''} \
-    ${@ '${STM32MP_TEED_DATA},${STM32MP_TEED_NAME},${STM32MP_TEED_SIZE},Binary,1' if '${STM32MP_TEED_NAME}' else ''} \
-    ${@ '${STM32MP_TEEX_DATA},${STM32MP_TEEX_NAME},${STM32MP_TEEX_SIZE},Binary,1' if '${STM32MP_TEEX_NAME}' else ''} \
-    "
-PARTITIONS_OPTEE_CONFIG[sdcard] ?= "\
-    ${@ '${STM32MP_TEEH_DATA},${STM32MP_TEEH_NAME},${STM32MP_TEEH_SIZE},Binary,1' if '${STM32MP_TEEH_NAME}' else ''} \
-    ${@ '${STM32MP_TEED_DATA},${STM32MP_TEED_NAME},${STM32MP_TEED_SIZE},Binary,1' if '${STM32MP_TEED_NAME}' else ''} \
-    ${@ '${STM32MP_TEEX_DATA},${STM32MP_TEEX_NAME},${STM32MP_TEEX_SIZE},Binary,1' if '${STM32MP_TEEX_NAME}' else ''} \
-    "
 # =========================================================================
 # Image
 # =========================================================================
@@ -625,10 +580,7 @@ UBOOT_MTDPART_CHECK_ENABLE ?= ""
 # Set U-Boot MTD partition configurations
 UBOOT_MTDPART_NAND_2_256_BOOT ?= "${@','.join(['%sk(%s)' % (align_size(d, 'NAND', l.split(',')[2], l.split(',')[4]), l.split(',')[1]) for l in d.getVarFlag('PARTITIONS_BOOTLOADER_CONFIG', 'nand-2-256').split()])}"
 UBOOT_MTDPART_NAND_2_64_BOOT  ?= "${@','.join(['%sk(%s)' % (align_size(d, 'NAND', l.split(',')[2], l.split(',')[4]), l.split(',')[1]) for l in d.getVarFlag('PARTITIONS_BOOTLOADER_CONFIG', 'nand-2-64').split()])}"
-UBOOT_MTDPART_NAND_2_256_TEE  ?= "${@','.join(['%sk(%s)' % (align_size(d, 'NAND', l.split(',')[2], l.split(',')[4]), l.split(',')[1]) for l in d.getVarFlag('PARTITIONS_OPTEE_CONFIG', 'nand-2-256').split()])}"
-UBOOT_MTDPART_NAND_2_64_TEE   ?= "${@','.join(['%sk(%s)' % (align_size(d, 'NAND', l.split(',')[2], l.split(',')[4]), l.split(',')[1]) for l in d.getVarFlag('PARTITIONS_OPTEE_CONFIG', 'nand-2-64').split()])}"
 UBOOT_MTDPART_NOR_BOOT        ?= "${@','.join(['%sk(%s)' % (align_size(d, 'NOR', l.split(',')[2], l.split(',')[4]), l.split(',')[1]) for l in d.getVarFlag('PARTITIONS_BOOTLOADER_CONFIG', 'nor-emmc').split()])}"
-UBOOT_MTDPART_NOR_TEE         ?= "${@','.join(['%sk(%s)' % (align_size(d, 'NOR', l.split(',')[2], l.split(',')[4]), l.split(',')[1]) for l in d.getVarFlag('PARTITIONS_OPTEE_CONFIG', 'nor-emmc').split()])}"
 
 UBOOT_MTDPART_CHECK ?= "\
     ${@bb.utils.contains_any('BOOTDEVICE_LABELS', 'nand-2-256' , 'CONFIG_MTDPARTS_NAND0_BOOT=${UBOOT_MTDPART_NAND_2_256_BOOT}', '', d)} \
