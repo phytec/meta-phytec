@@ -49,8 +49,8 @@ MACHINE_FEATURES:append = " initrd "
 # in our bootfs image (this avoid dependency loops as rootfs depends on bootfs...)
 DISTRO_EXTRA_RRECOMMENDS:remove = " ${@bb.utils.contains('COMBINED_FEATURES', 'initrd', '${INITRD_PACKAGE}', '', d)} "
 
-# Enable firmware secure update feature
-MACHINE_FEATURES:append = " fw-update"
+# Enable firmware secure update feature when using RAUC distro feature
+MACHINE_FEATURES:append:update = " fw-update"
 
 # Default serial consoles (TTYs) to enable using getty
 # Before kernel 4.18, serial console are ttyS3 but after is ttySTM0
@@ -709,8 +709,8 @@ WKS_FILE_DEPENDS ?= " \
     virtual/trusted-firmware-a \
     ${@bb.utils.contains('BOOTSCHEME_LABELS', 'optee', 'virtual/optee-os', '', d)} \
     ${STM32MP_BOOTFS_IMAGE} \
-    ${@bb.utils.contains('ST_VENDORFS','1','${STM32MP_VENDORFS_IMAGE}', '', d)} \
-    ${@bb.utils.contains('ST_USERFS','1','${STM32MP_USERFS_IMAGE}', '', d)} \
+    ${@bb.utils.contains('ST_VENDORFS', '1', '${STM32MP_VENDORFS_IMAGE}', '', d)} \
+    ${@bb.utils.contains('ST_USERFS', '1', '${STM32MP_USERFS_IMAGE}', '', d)} \
 "
 WKS_IMAGE_FSTYPES += "wic wic.bz2 wic.bmap"
 
@@ -718,4 +718,4 @@ WKS_IMAGE_FSTYPES += "wic wic.bz2 wic.bmap"
 # WKS_BOOTSCHEME is only used in the ".wks.in" files to indicate which boot chain to use when generating the WIC file
 WKS_BOOTSCHEME = "${@bb.utils.contains('BOOTSCHEME_LABELS', 'optee', 'optee', 'trusted', d)}"
 
-WKS_FILE +=  "${@bb.utils.contains('MACHINE_FEATURES','fw-update','stm32mp1-fw-update-sdimage.wks.in','stm32mp1-sdimage.wks.in',d)}"
+WKS_FILE += "${@bb.utils.contains('DISTRO_FEATURES', 'rauc', 'stm32mp1-rauc-sdimage.wks.in', 'stm32mp1-sdimage.wks.in',d)}"
