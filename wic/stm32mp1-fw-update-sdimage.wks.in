@@ -1,5 +1,5 @@
 # short-description: Create SD card image with a boot partition
-# long-description: Creates a partitioned SD card image for STM32MP1 BSP
+# long-description: Creates a partitioned SD card image for STM32MP1 BSP with 'fw-update' feature enabled
 #
 # --------------------------------------------------------------------------------------------
 # | | TFA(2) | Metadata(2) | FIPA | FIPB | U-BOOT ENV | bootfs | vendorfs | rootfs  | userfs |
@@ -22,8 +22,8 @@ part metadata1 --source rawcopy --fstype=ext4 --fsoptions "noauto" --part-name=m
 part metadata2 --source rawcopy --fstype=ext4 --fsoptions "noauto" --part-name=metadata2 --sourceparams="file=${DEPLOY_DIR_IMAGE}/arm-trusted-firmware/metadata.bin" --ondisk mmcblk --part-type 0x8301 --fixed-size ${STM32MP_METADATA_SIZE}K
 
 # Fip partitions
-part fip-a   --source rawcopy --fstype=ext4 --fsoptions "noauto" --part-name=fip-a --sourceparams="file=${DEPLOY_DIR_IMAGE}/fip/fip-${STM32MP_DEVICETREE}-trusted.bin" --ondisk mmcblk --part-type ${DEVICE_TYPEUUID_FIP} --fixed-size ${STM32MP_SSBL1_SIZE}K --uuid ${DEVICE_PARTUUID_FIP_A}
-part fip-b   --source rawcopy --fstype=ext4 --fsoptions "noauto" --part-name=fip-b --sourceparams="file=${DEPLOY_DIR_IMAGE}/fip/fip-${STM32MP_DEVICETREE}-trusted.bin" --ondisk mmcblk --part-type ${DEVICE_TYPEUUID_FIP} --fixed-size ${STM32MP_SSBL1_SIZE}K --uuid ${DEVICE_PARTUUID_FIP_B}
+part fip-a   --source rawcopy --fstype=ext4 --fsoptions "noauto" --part-name=fip-a --sourceparams="file=${DEPLOY_DIR_IMAGE}/fip/fip-${STM32MP_DEVICETREE}-${WKS_BOOTSCHEME}.bin" --ondisk mmcblk --part-type ${DEVICE_TYPEUUID_FIP} --fixed-size ${STM32MP_SSBL1_SIZE}K --uuid ${DEVICE_PARTUUID_FIP_A}
+part fip-b   --source rawcopy --fstype=ext4 --fsoptions "noauto" --part-name=fip-b --sourceparams="file=${DEPLOY_DIR_IMAGE}/fip/fip-${STM32MP_DEVICETREE}-${WKS_BOOTSCHEME}.bin" --ondisk mmcblk --part-type ${DEVICE_TYPEUUID_FIP} --fixed-size ${STM32MP_SSBL1_SIZE}K --uuid ${DEVICE_PARTUUID_FIP_B}
 
 # U-BOOT env
 part u-boot-env --source empty --part-name=uboot-env --ondisk mmcblk --part-type 0x8301 --fixed-size ${STM32MP_UENV_SIZE}K
