@@ -310,22 +310,60 @@ PARTITIONS_CONFIG += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'sdcard', 'sdcar
 
 PARTITIONS_SUFFIX ?= "ext4"
 
+# For RAUC distro feature, redefine labels of the updatable primary partitions (A/B partitions system)
+STM32MP_BOOTFS_LABEL:update   = "bootfs-a"
+STM32MP_ROOTFS_LABEL:update   = "rootfs-a"
+STM32MP_VENDORFS_LABEL:update = "vendorfs-a"
+
+# For RAUC distro feature, define the updatable partitions images
+PARTITIONS_IMAGES_UPDATABLE ?= ""
+PARTITIONS_IMAGES_UPDATABLE:update = "bootfs vendorfs rootfs"
+
+# Redefine 'partImage2partConfig' function defined in 'flashlayout-stm32mp.bbclass'
+# to add A/B partionning in flashlayout when using RAUC distro feature
+def partImage2partConfig(config, fstype, d):
+    """
+    Convert PARTITIONS_IMAGES['config'] setting format to format expected to feed
+    PARTITIONS_CONFIG[xxx].
+    Manage <image_name> update respect to 'fstype' provided and apply the rootfs
+    namming or standard partition image one.
+    If the partition image is updatable, i.e 'config' is part of PARTITIONS_IMAGES_UPDATABLE
+    add a secondary partition (B) to duplicate the primary partition (A),
+    but without binary (empty partition).
+        FROM: <image_name>,<partition_label>,<mountpoint>,<size>,<type>
+        TO  : <binary_name>,<partition_label>,<size>,<type> [,<partition_b_label>,<size>,<type>]
+    """
+
+    items = d.getVarFlag('PARTITIONS_IMAGES', config).split(',') or ""
+    if len(items) != 5:
+        bb.fatal('Wrong settings for PARTITIONS_IMAGES[%s] : %s' % (config, items))
+    if items[2] != '':
+        bin_name = items[0] + '-${DISTRO}-${MACHINE}' + '.' + fstype
+    else:
+        bin_name = items[0] + '-${MACHINE}' + '.' + fstype
+    # Set string for PARTITIONS_CONFIG item: <binary_name>,<partlabel>,<size>,<type>
+    part_format = bin_name + ',' + items[1] + ',' + items[3] + ',' + items[4]
+
+    if config in d.getVar('PARTITIONS_IMAGES_UPDATABLE'):
+        part_b_label = items[1].replace('-a', '-b')
+        part_format = part_format + ' ' + ',' + part_b_label + ',' + items[3] + ',' + items[4]
+
+    return part_format
+
+# Partition configuration
 # <binary_name>,<partlabel>,<size>,<type>,<copy>
-PARTITIONS_CONFIG[emmc] ?= "\
+PARTITIONS_CONFIG_MMC ?= "\
     ${@' '.join(['%s' % partImage2partConfig(config, '${PARTITIONS_SUFFIX}', d) for config in d.getVar('PARTITIONS_IMAGES').split()])} \
     "
-PARTITIONS_CONFIG[nand-2-256] ?= "\
+PARTITIONS_CONFIG_NAND ?= "\
     ${STM32MP_UBIFS_DATA},${STM32MP_UBIFS_NAME},${STM32MP_UBIFS_SIZE},System,1 \
     "
-PARTITIONS_CONFIG[nand-2-64] ?= "\
-    ${STM32MP_UBIFS_DATA},${STM32MP_UBIFS_NAME},${STM32MP_UBIFS_SIZE},System,1 \
-    "
-PARTITIONS_CONFIG[nor-emmc] ?= "\
-    ${@' '.join(['%s' % partImage2partConfig(config, '${PARTITIONS_SUFFIX}', d) for config in d.getVar('PARTITIONS_IMAGES').split()])} \
-    "
-PARTITIONS_CONFIG[sdcard] ?= "\
-    ${@' '.join(['%s' % partImage2partConfig(config, '${PARTITIONS_SUFFIX}', d) for config in d.getVar('PARTITIONS_IMAGES').split()])} \
-    "
+
+PARTITIONS_CONFIG[emmc] ?= "${PARTITIONS_CONFIG_MMC}"
+PARTITIONS_CONFIG[nand-2-256] ?= "${PARTITIONS_CONFIG_NAND}"
+PARTITIONS_CONFIG[nand-2-64] ?= "${PARTITIONS_CONFIG_NAND}"
+PARTITIONS_CONFIG[nor-emmc] ?= "${PARTITIONS_CONFIG_MMC}"
+PARTITIONS_CONFIG[sdcard] ?= "${PARTITIONS_CONFIG_MMC}"
 
 # UBI Configuration
 IMAGE_CLASSES += "image_types-stubi"
