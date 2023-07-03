@@ -18,7 +18,7 @@ GIT_URL = "git://git.phytec.de/${BPN}"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
 PR = "r0"
-SRCREV = "e1f89300027defc4f409a2c8d98f4dcf550947e0"
+SRCREV = "1bd482665d236089202c3ef4a8721064a540e769"
 
 S = "${WORKDIR}/git"
 
