@@ -49,8 +49,7 @@ do_deploy:append:mx8m-nxp-bsp () {
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 COMPATIBLE_MACHINE = "^("
-COMPATIBLE_MACHINE .= "phyboard-zeta-imx7d-1"
-COMPATIBLE_MACHINE .= "|phyboard-polaris-imx8m-3"
+COMPATIBLE_MACHINE .= "phyboard-polaris-imx8m-3"
 COMPATIBLE_MACHINE .= "|phyboard-polaris-imx8m-4"
 COMPATIBLE_MACHINE .= ")$"
 
