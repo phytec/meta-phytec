@@ -124,6 +124,21 @@ container_usage() {
 	fi
 }
 
+rc_warning() {
+	echo "     {}  _---_  {}"
+	echo "       \/     \/  "
+	echo "        |() ()|   "
+	echo "        /\ + /\   "
+	echo "       /  HHH  \  "
+	echo "     {}   \_/   {}"
+	echo ""
+	echo "WARNING!! You are working on a RC or ALPHA version of Phytecs"
+	echo "Linux BSP. You will have to port all your work to a"
+	echo "Major or Minor Release to have stable update support."
+	echo "There will be no backports for this version."
+	echo ""
+}
+
 echo ""
 echo "Before you start your work, please check your build/conf/local.conf for"
 echo "host specific configuration. Check the documentation especially for:"
@@ -137,4 +152,11 @@ echo ""
 echo "    $ TEMPLATECONF=../meta-phytec/conf/templates/default . $(get_init_env_dir)/oe-init-build-env"
 echo ""
 echo ""
+
+case "$RELEASE_UID" in
+	*"-rc"* )  rc_warning ;;
+	*"ALPHA"*) rc_warning ;;
+	*       ) ;;
+esac
+
 container_usage
