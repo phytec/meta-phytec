@@ -147,15 +147,19 @@ path="$global.overlays.path"
 let PHY_ID=${mdio0-phy03.phy_id}
 
 let KSZ9031_ID=0x00221620
+let KSZ9131_ID=0x00221640
 let KSZ_MASK=0x00fffff0
 let ADIN1300_ID=0x0283bc30
 let ADIN_MASK=0x0fffffff
 
-let "KSZ=KSZ9031_ID==(PHY_ID&KSZ_MASK)"
+let "KSZ9031=KSZ9031_ID==(PHY_ID&KSZ_MASK)"
+let "KSZ9131=KSZ9131_ID==(PHY_ID&KSZ_MASK)"
 let "ADIN=ADIN1300_ID==(PHY_ID&ADIN_MASK)"
 
-if [ $KSZ -eq 1 ]; then
+if [ $KSZ9031 -eq 1 ]; then
     exit 0
+elif [ $KSZ9131 -eq 1 ]; then
+    of_overlay ${path}/imx6-phy-ksz9131.dtbo
 elif [ $ADIN -eq 1 ]; then
     of_overlay ${path}/imx6-phy-adin1300.dtbo
 else
