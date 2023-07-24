@@ -13,11 +13,12 @@ PR = "${INC_PR}.0"
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "a3785e3e63123c2c1238338125be9003e034ed42"
+SRCREV = "199b54d9d3105b2b196070fc95b893cf9233d8f6"
 
 S = "${WORKDIR}/git"
 
 INTREE_DEFCONFIG = "imx_v8_defconfig imx8_phytec_distro.config imx8_phytec_platform.config"
+INTREE_DEFCONFIG:mx7-nxp-bsp = "imx7_phyboard_zeta_defconfig"
 
 RDEPENDS:${KERNEL_PACKAGE_NAME}-base:mx8m-nxp-bsp = ""
 
@@ -31,4 +32,5 @@ COMPATIBLE_MACHINE .= "|phyboard-polis-imx8mm-4"
 COMPATIBLE_MACHINE .= "|phyboard-polis-imx8mn-2"
 COMPATIBLE_MACHINE .= "|phygate-tauri-l-imx8mm-2"
 COMPATIBLE_MACHINE .= "|phyboard-pollux-imx8mp-3"
+COMPATIBLE_MACHINE .= "|phyboard-zeta-imx7d-1"
 COMPATIBLE_MACHINE .= ")$"
