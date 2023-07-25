@@ -14,6 +14,10 @@ SRC_URI += "\
     file://Sensor_Entry.cfg.ar0144.AO082.bw \
     file://Sensor_Entry.cfg.ar0144.AO086.col \
     file://Sensor_Entry.cfg.ar0144.AO086.bw \
+    file://Sensor_Entry.cfg.ar0234.AO070.A1.col \
+    file://Sensor_Entry.cfg.ar0234.AO070.A1.bw \
+    file://Sensor_Entry.cfg.ar0234.AO082.col \
+    file://Sensor_Entry.cfg.ar0234.AO082.bw \
     file://Sensor_Entry.cfg.ar0521.AO062.col \
     file://Sensor_Entry.cfg.ar0521.AO062.bw \
     file://Sensor_Entry.cfg.ar0521.AO070.A1.col \
