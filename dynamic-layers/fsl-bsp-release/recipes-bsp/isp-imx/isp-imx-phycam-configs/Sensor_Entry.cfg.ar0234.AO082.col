@@ -1,0 +1,15 @@
+name="phycam"
+drv = "phycam.drv"
+mode= 1
+
+[mode.0]
+xml = "xml/VM-020-COL_AO082-C_1280x720.xml"
+dwe = "dwe/VM-020_AO082_1280x720.json"
+
+[mode.1]
+xml = "xml/VM-020-COL_AO082-C_1920x1080.xml"
+dwe = "dwe/VM-020_AO082_1920x1080.json"
+
+[mode.2]
+xml = "xml/VM-020-COL_AO082-C_1920x1200.xml"
+dwe = "dwe/VM-020_AO082_1920x1200.json"
