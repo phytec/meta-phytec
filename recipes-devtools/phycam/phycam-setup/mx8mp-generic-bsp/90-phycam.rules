@@ -65,7 +65,7 @@ ACTION=="add", \
 ACTION=="add", \
 	SUBSYSTEM=="video4linux", \
 	ATTR{name}=="ar0521 1-0036", \
-	KERNELS=="30a40000.i2c", \
+	KERNELS=="30a30000.i2c", \
 	SYMLINK+="cam-csi2", \
 
 # phyCAM VM-017 (ar0521) CSI2 phyCAM-L Port0
