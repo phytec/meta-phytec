@@ -1,6 +1,7 @@
 #!/bin/sh
 
 AR0144_LENS="AO082"
+AR0234_LENS="AO082"
 AR0521_LENS="AO062"
 
 if ! [ -e /dev/cam-csi1 ] && \
@@ -65,6 +66,7 @@ if [ -e /dev/cam-csi1 ] || \
 
 	case ${CAM} in
 		ar0144) LENS=${AR0144_LENS} ;;
+		ar0234) LENS=${AR0234_LENS} ;;
 		ar0521) LENS=${AR0521_LENS} ;;
 		* ) echo "Unknown camera" ; exit 6
 	esac
@@ -105,6 +107,7 @@ if [ -e /dev/cam-csi2 ] || \
 
 	case ${CAM} in
 		ar0144) LENS=${AR0144_LENS} ;;
+		ar0234) LENS=${AR0234_LENS} ;;
 		ar0521) LENS=${AR0521_LENS} ;;
 		* ) echo "Unknown camera" ; exit 6
 	esac
