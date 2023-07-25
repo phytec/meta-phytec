@@ -8,36 +8,8 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/${BPN}:"
 PR = "r0"
 
 SRC_URI += "\
-    file://xml/VM-016-COL_AO082-C_1280x720.xml \
-    file://xml/VM-016-COL_AO082-C_1280x800.xml \
-    file://xml/VM-016-BW_AO082_1280x720.xml \
-    file://xml/VM-016-BW_AO082_1280x800.xml \
-    file://xml/VM-016-COL_AO086-C_1280x720.xml \
-    file://xml/VM-016-COL_AO086-C_1280x800.xml \
-    file://xml/VM-016-BW_AO086_1280x720.xml \
-    file://xml/VM-016-BW_AO086_1280x800.xml \
-    file://xml/VM-017-COL_AO062-C_1280x720.xml \
-    file://xml/VM-017-COL_AO062-C_1920x1080.xml \
-    file://xml/VM-017-COL_AO062-C_2592x1944.xml \
-    file://xml/VM-017-BW_AO062_1280x720.xml \
-    file://xml/VM-017-BW_AO062_1920x1080.xml \
-    file://xml/VM-017-BW_AO062_2592x1944.xml \
-    file://xml/VM-017-COL_AO070-C.A1_1280x720.xml \
-    file://xml/VM-017-COL_AO070-C.A1_1920x1080.xml \
-    file://xml/VM-017-COL_AO070-C.A1_2592x1944.xml \
-    file://xml/VM-017-BW_AO070.A1_1280x720.xml \
-    file://xml/VM-017-BW_AO070.A1_1920x1080.xml \
-    file://xml/VM-017-BW_AO070.A1_2592x1944.xml \
-    file://dwe/VM-016_AO082_1280x720.json \
-    file://dwe/VM-016_AO082_1280x800.json \
-    file://dwe/VM-016_AO086_1280x720.json \
-    file://dwe/VM-016_AO086_1280x800.json \
-    file://dwe/VM-017_AO062_1280x720.json \
-    file://dwe/VM-017_AO062_1920x1080.json \
-    file://dwe/VM-017_AO062_2592x1944.json \
-    file://dwe/VM-017_AO070.A1_1280x720.json \
-    file://dwe/VM-017_AO070.A1_1920x1080.json \
-    file://dwe/VM-017_AO070.A1_2592x1944.json \
+    file://xml/ \
+    file://dwe/ \
     file://Sensor_Entry.cfg.ar0144.AO082.col \
     file://Sensor_Entry.cfg.ar0144.AO082.bw \
     file://Sensor_Entry.cfg.ar0144.AO086.col \
