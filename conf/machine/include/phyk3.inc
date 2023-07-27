@@ -8,6 +8,8 @@ PACKAGE_INSTALL:append = " kernel-modules"
 
 INITRAMFS_FSTYPES = "wic.xz"
 
+UBOOT_SIGN_ENABLE = "0"
+
 PREFERRED_PROVIDER_virtual/kernel = "linux-ti"
 PREFERRED_PROVIDER_virtual/bootloader = "u-boot-ti"
 PREFERRED_PROVIDER_u-boot = "u-boot-ti"
