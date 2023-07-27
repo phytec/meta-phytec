@@ -8,9 +8,6 @@ PACKAGE_INSTALL:append = " kernel-modules"
 
 INITRAMFS_FSTYPES = "wic.xz"
 
-do_image_wic[mcdepends] = "mc::k3r5:ti-sci-fw:do_deploy"
-do_image_tar[mcdepends] = "mc::k3r5:ti-sci-fw:do_deploy"
-
 PREFERRED_PROVIDER_virtual/kernel = "linux-ti"
 PREFERRED_PROVIDER_virtual/bootloader = "u-boot-ti"
 PREFERRED_PROVIDER_u-boot = "u-boot-ti"
