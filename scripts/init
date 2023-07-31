@@ -58,7 +58,7 @@ fi
 
 # copy new NXP EULA to meta-freescale in case of freescale-release
 if [ -e "${ROOTDIR}/sources/meta-imx" ] && [ -e "${ROOTDIR}/sources/meta-freescale" ]; then
-       cp ${ROOTDIR}/sources/meta-imx/EULA.txt ${ROOTDIR}/sources/meta-freescale/EULA
+       cp ${ROOTDIR}/sources/meta-imx/LICENSE.txt ${ROOTDIR}/sources/meta-freescale/EULA
 fi
 
 # Init a build directory if we dont have one.
