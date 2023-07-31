@@ -1,4 +1,4 @@
-require recipes-bsp/isp-imx/isp-imx_4.2.2.20.0.bb
+require recipes-bsp/isp-imx/isp-imx_4.2.2.22.0.bb
 
 SUMARY = "PHYTEC extension for i.MX Verisilicon Software ISP"
 PROVIDES = "${PN}"
