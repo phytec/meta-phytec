@@ -33,8 +33,8 @@ module_conf_ti_k3_r5_remoteproc = "softdep ti_k3_r5_remoteproc pre: virtio_rpmsg
 module_conf_ti_k3_dsp_remoteproc = "softdep ti_k3_dsp_remoteproc pre: virtio_rpmsg_bus"
 KERNEL_MODULE_PROBECONF += "rpmsg_client_sample ti_k3_r5_remoteproc ti_k3_dsp_remoteproc"
 
-# Drop kernel-devicetree, added by TI's kernel-rdepends.inc
-RDEPENDS_${KERNEL_PACKAGE_NAME}-base_remove = "kernel-devicetree"
+# Drop kernel-devicetree, added by TI's kernel-rdepends.inc for k3 platforms
+RDEPENDS_${KERNEL_PACKAGE_NAME}-base_remove_k3 = "kernel-devicetree"
 RDEPENDS_${KERNEL_PACKAGE_NAME}-base_append_phyboard-izar-am68x-1 = " cnm-wave-fw"
 
 EXTRA_DTC_ARGS += "DTC_FLAGS=-@"
