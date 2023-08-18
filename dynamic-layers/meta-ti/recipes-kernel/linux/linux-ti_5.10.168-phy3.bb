@@ -43,6 +43,14 @@ KERNEL_EXTRA_ARGS += "LOADADDR=${UBOOT_ENTRYPOINT} \
 
 FILES_${KERNEL_PACKAGE_NAME}-devicetree += "/${KERNEL_IMAGEDEST}/*.itb"
 
+# Provide oftree in rootfs /boot directory on am57xx
+do_install_append_am57xx() {
+    dtb=`normalize_dtb "${@get_oftree(d)}"`
+    dtb_path=`get_real_dtb_path_in_kernel "$dtb"`
+    install -m 0644 $dtb_path ${D}/${KERNEL_IMAGEDEST}/oftree
+}
+FILES_${KERNEL_PACKAGE_NAME}-devicetree_append_am57xx = " /${KERNEL_IMAGEDEST}/oftree"
+
 INTREE_DEFCONFIG = "phytec_ti_defconfig phytec_ti_platform.config"
 
 COMPATIBLE_MACHINE  = "^("
