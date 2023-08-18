@@ -14,6 +14,8 @@ PREFERRED_PROVIDER_virtual/kernel = "linux-ti"
 PREFERRED_PROVIDER_virtual/bootloader = "u-boot-ti"
 PREFERRED_PROVIDER_u-boot = "u-boot-ti"
 
+MACHINE_FEATURES += "optee"
+
 # dont install kernelimage to rootfs
 RDEPENDS_${KERNEL_PACKAGE_NAME}-base = ""
 
