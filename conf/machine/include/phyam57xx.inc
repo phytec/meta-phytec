@@ -27,6 +27,9 @@ UBOOT_EXTLINUX = "0"
 # MLO and u-boot.img
 IMAGE_BOOT_FILES = "${SPL_BINARY} u-boot.${UBOOT_SUFFIX}"
 
+# WIC
+WKS_FILES_am57xx ?= "am57xx-sdimage.wks"
+
 # AM57x has SGX GPU core
 PREFERRED_PROVIDER_virtual/egl = "ti-sgx-ddk-um"
 PREFERRED_PROVIDER_virtual/libgles1 = "ti-sgx-ddk-um"
