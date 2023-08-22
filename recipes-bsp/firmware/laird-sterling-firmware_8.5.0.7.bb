@@ -27,7 +27,7 @@ do_configure[noexec] = "1"
 do_compile[noexec] = "1"
 
 S = "${WORKDIR}"
-FIRMWARE_PATH = "${nonarch_base_libdir}/firmware/brcm"
+FIRMWARE_PATH = "/lib/firmware/brcm"
 
 do_install() {
     # Clear country code entry
