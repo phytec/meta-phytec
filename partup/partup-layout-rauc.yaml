@@ -1,0 +1,61 @@
+api-version: 0
+disklabel: msdos
+
+emmc-boot-partitions:
+  enable: true
+  input-offset: 0kiB
+  output-offset: ${BOOTLOADER_SEEK_EMMC}kiB
+  input:
+    uri: ${BOOTLOADER_FILE}
+
+raw:
+  - input-offset: ${BOOTLOADER_SKIP}kiB
+    output-offset: ${BOOTLOADER_SEEK}kiB
+    input:
+      uri: ${BOOTLOADER_FILE}
+
+# BEGIN_CLEAN
+clean:
+  - offset: 3840kiB
+    size: 64kiB
+  - offset: 3968kiB
+    size: 64kiB
+# END_CLEAN
+partitions:
+  - label: BOOT0
+    type: primary
+    filesystem: fat32
+    size: 128MiB
+    offset: 4MiB
+    input: # ARRAY_IMAGE_BOOT_FILES
+      - uri: @KEY@ # ARRAY_IMAGE_BOOT_FILES
+
+  - label: BOOT1
+    type: primary
+    filesystem: fat32
+    size: 128MiB
+    input: # ARRAY_IMAGE_BOOT_FILES
+      - uri: @KEY@ # ARRAY_IMAGE_BOOT_FILES
+
+  - label: CONFIG
+    type: primary
+    filesystem: ext4
+    size: 64MiB
+    input:
+      - uri: config-partition.tar.gz
+
+  - label: ROOT0
+    type: logical
+    filesystem: null
+    expand: true
+    block-size: 4kiB
+    input:
+      - uri: ${IMAGE_LINK_NAME}.ext4
+
+  - label: ROOT1
+    type: logical
+    filesystem: null
+    expand: true
+    block-size: 4kiB
+    input:
+      - uri: ${IMAGE_LINK_NAME}.ext4
