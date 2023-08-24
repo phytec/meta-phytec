@@ -56,6 +56,10 @@ NAND_DEV:mx6-generic-bsp ?= "0"
 # rootfs alignment required for RAUC adaptive update
 IMAGE_ROOTFS_ALIGNMENT:update = "4"
 
+# partup
+IMAGE_CLASSES += "image-types-partup"
+include partup-layout-config.inc
+
 # default images to build
-IMAGE_FSTYPES ?= "tar.gz wic ubifs"
+IMAGE_FSTYPES ?= "tar.gz wic ubifs partup"
 IMAGE_FSTYPES:append:update = " ext4"
