@@ -15,7 +15,7 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 GIT_URL = "git://github.com/phytec/linux-phytec-ti.git;protocol=https"
 SRC_URI = " \
 	${GIT_URL};branch=${BRANCH} \
-	${@bb.utils.contains('MACHINE_FEATURES', 'lwb5p', 'file://disable-configs-for-lwb5p-backports.cfg', '', d)} \
+	${@bb.utils.contains('MACHINE_FEATURES', 'lwb5p', 'file://update-configs-for-lwb5p-backports.cfg', '', d)} \
 "
 SRC_URI:append:phyboard-izar-am68x-1 = " \
 	file://eth-module.cfg \
