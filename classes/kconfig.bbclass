@@ -37,12 +37,21 @@ def find_cfgs(d):
     return sources_list
 
 def get_absolut_defconfigs(d):
+    import os.path
     defconfigs=d.getVar("INTREE_DEFCONFIG").split()
     arch = d.getVar('ARCH')
     absdefconfs=[]
     for defconfig in defconfigs:
-        absdefconfs.append(os.path.join(d.getVar("S"),
-                           "arch", arch, "configs", defconfig))
+        # Check if config comes from arch/$ARCH/configs/
+        cfg = os.path.join(d.getVar("S"), "arch", arch, "configs", defconfig)
+        if os.path.isfile(cfg):
+            absdefconfs.append(cfg)
+
+        # Check if config comes from kernel/configs/
+        cfg = os.path.join(d.getVar("S"), "kernel/configs", defconfig)
+        if os.path.isfile(cfg):
+            absdefconfs.append(cfg)
+
     return absdefconfs
 
 kconfig_do_configure() {
