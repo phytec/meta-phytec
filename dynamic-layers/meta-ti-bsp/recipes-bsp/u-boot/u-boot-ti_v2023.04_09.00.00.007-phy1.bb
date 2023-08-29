@@ -50,11 +50,6 @@ SRCREV = "680d7f0d2bca15cf6b20e3b1ddd6800c25de7ef3"
 
 SPL_UART_BINARY_k3r5 = "u-boot-spl.bin"
 
-do_deploy:append:k3r5 () {
-	mv ${DEPLOYDIR}/tiboot3.bin ${DEPLOYDIR}/tiboot3-r5spl.bin || true
-	mv ${DEPLOYDIR}/u-boot-spl.bin ${DEPLOYDIR}/u-boot-spl-r5spl.bin || true
-}
-
 COMPATIBLE_MACHINE = "^("
 COMPATIBLE_MACHINE .= "phyboard-lyra-am62xx-1"
 COMPATIBLE_MACHINE .= "|phyboard-lyra-am62xx-1-k3r5"
