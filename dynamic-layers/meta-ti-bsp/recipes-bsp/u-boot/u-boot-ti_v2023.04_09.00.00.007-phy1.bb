@@ -3,10 +3,10 @@ require recipes-bsp/u-boot/u-boot-common.inc
 require recipes-bsp/u-boot/u-boot-ti.inc
 
 LICENSE = "GPL-2.0-or-later"
-LIC_FILES_CHKSUM = "file://Licenses/README;md5=5a7450c57ffe5ae63fd732446b988025"
+LIC_FILES_CHKSUM = "file://Licenses/README;md5=2ca5f2c35c8cc335f0a19756634782f1"
 
 GIT_URL = "git://github.com/phytec/u-boot-phytec-ti.git;protocol=https"
-BRANCH = "v2021.01_08.06.00.007-phy"
+BRANCH = "v2023.04_09.00.00.007-phy"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/u-boot:"
@@ -46,7 +46,7 @@ SRC_URI:append:phyboard-lyra-am62xx-3-k3r5 = "\
 "
 
 PR = "r0"
-SRCREV = "9218680a52c032f73026bb0ea6b7726b068f398e"
+SRCREV = "680d7f0d2bca15cf6b20e3b1ddd6800c25de7ef3"
 
 SPL_UART_BINARY_k3r5 = "u-boot-spl.bin"
 
