@@ -46,6 +46,9 @@ PREFERRED_VERSION_ti-sgx-ddk-km = "1.17.4948957"
 
 QT_QPA_PLATFORM ?= "eglfs"
 
+# Vivante GC320 2D accelerator
+MACHINE_EXTRA_RRECOMMENDS_append_am57xx = " ti-gc320-driver ti-gc320-libs"
+
 # Useful RRECOMMENDS
 MACHINE_EXTRA_RRECOMMENDS_append_am57xx = " \
     omapconf \
