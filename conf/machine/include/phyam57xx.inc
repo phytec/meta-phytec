@@ -58,6 +58,9 @@ MACHINE_EXTRA_RRECOMMENDS_append_am57xx = " \
 RESERVE_CMEM ?= "1"
 MACHINE_EXTRA_RRECOMMENDS_append_am57xx = " cmem"
 
+# Hardware cryptography
+KERNEL_MODULE_AUTOLOAD += "cryptodev"
+
 # Set the list of device targets for ti-pdk class recipes
 TI_PDK_LIMIT_SOCS = "am571x am572x am574x"
 TI_PDK_LIMIT_BOARDS = "evmAM571x evmAM572x idkAM571x idkAM572x idkAM574x"
