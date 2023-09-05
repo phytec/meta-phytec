@@ -2,6 +2,10 @@ require conf/machine/include/dra7xx.inc
 
 SOC_FAMILY_append = ":am57xx"
 
+# Sub-architecture support
+MACHINE_SOCARCH = "${TUNE_PKGARCH}-am57xx"
+PACKAGE_EXTRA_ARCHS_append = " ${MACHINE_SOCARCH}"
+
 # Add machine features
 MACHINE_FEATURES += "can touchscreen resistivetouch wifi bluetooth"
 
