@@ -46,6 +46,11 @@ PREFERRED_VERSION_ti-sgx-ddk-km = "1.17.4948957"
 
 QT_QPA_PLATFORM ?= "eglfs"
 
+# Useful RRECOMMENDS
+MACHINE_EXTRA_RRECOMMENDS_append_am57xx = " \
+    omapconf \
+"
+
 # Set the list of device targets for ti-pdk class recipes
 TI_PDK_LIMIT_SOCS = "am571x am572x am574x"
 TI_PDK_LIMIT_BOARDS = "evmAM571x evmAM572x idkAM571x idkAM572x idkAM574x"
