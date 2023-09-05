@@ -54,6 +54,10 @@ FILES_${KERNEL_PACKAGE_NAME}-devicetree_append_am57xx = " /${KERNEL_IMAGEDEST}/o
 # Add PRU Ethernet firmware to the rootfs for am57xx
 RRECOMMENDS_${KERNEL_PACKAGE_NAME}-base_append_am57xx = " prueth-fw prusw-fw pruhsr-fw pruprp-fw"
 
+RDEPENDS_kernel-modules_am57xx += "\
+    cryptodev-module \
+"
+
 INTREE_DEFCONFIG = "phytec_ti_defconfig phytec_ti_platform.config"
 
 COMPATIBLE_MACHINE  = "^("
