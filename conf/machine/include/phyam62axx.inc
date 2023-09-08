@@ -6,6 +6,8 @@ OPTEEMACHINE = "k3-am62x"
 
 TFA_K3_SYSTEM_SUSPEND = "1"
 
+MACHINE_FEATURES += "screen"
+
 # This is required to use am62axx with graphical support such as QT5
 PREFERRED_PROVIDER_virtual/mesa:am62axx = "mesa"
 PREFERRED_PROVIDER_virtual/egl:am62axx = "mesa"
