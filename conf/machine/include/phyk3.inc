@@ -17,7 +17,7 @@ PREFERRED_PROVIDER_u-boot = "u-boot-ti"
 MACHINE_FEATURES += "optee"
 
 # dont install kernelimage to rootfs
-RDEPENDS_${KERNEL_PACKAGE_NAME}-base = ""
+RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base = ""
 
 KERNEL_IMAGETYPE = "Image"
 KERNEL_IMAGETYPES = "Image vmlinux.gz"
