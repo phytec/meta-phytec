@@ -11,6 +11,9 @@ PREFERRED_RPROVIDER_mfgtool-image-image = "linux-imx-mfgtool"
 PREFERRED_PROVIDER_virtual/libgles3:mx8-nxp-bsp = "imx-gpu-viv"
 PREFERRED_PROVIDER_virtual/libgles3:mx8mm-nxp-bsp = "mesa"
 
+# dont install kernelimage to rootfs
+RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base = ""
+
 # Wic
 IMAGE_CLASSES += "wic-helper"
 IMAGE_CLASSES:append:mx8-nxp-bsp = " wic-imx8-helper"
