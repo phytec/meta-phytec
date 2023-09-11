@@ -14,9 +14,9 @@ PACKAGE_INSTALL_append = " kernel-modules"
 MACHINE_ESSENTIAL_EXTRA_RDEPENDS += "kernel-devicetree"
 
 # Bootloader and kernel from meta-phytec
-PREFERRED_PROVIDER_virtual/bootloader_${MACHINE} = "u-boot-ti"
+PREFERRED_PROVIDER_virtual/bootloader:${MACHINE} = "u-boot-ti"
 PREFERRED_PROVIDER_u-boot = "u-boot-ti"
-PREFERRED_PROVIDER_virtual/kernel_${MACHINE} = "linux-ti"
+PREFERRED_PROVIDER_virtual/kernel:${MACHINE} = "linux-ti"
 
 # Do not install uImage
 KERNEL_IMAGETYPES_remove = "uImage"
