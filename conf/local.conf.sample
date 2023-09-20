@@ -88,7 +88,7 @@ TOOLCHAIN_TARGET_TASK:append = " kernel-devsrc"
 # filesystem:
 #IMAGE_ROOTFS_EXTRA_SPACE = "524288"
 
-# See http://www.yoctoproject.org/docs/1.8/ref-manual/ref-manual.html#ref-features-image
+# See https://docs.yoctoproject.org/ref-manual/features.html#image-features
 #   "Through these variables, you can add several different predefined
 #    packages such as development utilities or packages with debug information
 #    needed to investigate application problems or profile applications
