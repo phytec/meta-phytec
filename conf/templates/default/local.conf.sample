@@ -17,12 +17,12 @@ DISTRO ?= "ampliphy"
 #  - Uncomment for Freescale i.MX6 VPU firmware blobs
 #LICENSE_FLAGS_ACCEPTED += "license-freescale_v12-march-2016_firmware-imx"
 
+# build artifacts are deployed here
+DEPLOY_DIR = "${TOPDIR}/deploy"
+
 # When building multiple distros in the same TOPDIR
 #TMPDIR = "${TOPDIR}/${DISTRO}-tmp"
 #DEPLOY_DIR = "${TOPDIR}/${DISTRO}-deploy"
-
-# build artifacts are deployed here
-DEPLOY_DIR = "${TOPDIR}/deploy"
 
 # enable bitbakes git shallow functionality: this reduces download volume
 # from 7.3G to 1.6 G as of sumo. If you need the git history of a project,
@@ -54,11 +54,6 @@ BB_DISKMON_DIRS ??= "\
 #######################
 # Image configuration #
 #######################
-
-# The following line disables the autostart of the phytec-qtdemo by
-# default, but you can start the demo anytime using
-#  $ systemctl start phytec-qtdemo.service
-#SYSTEMD_AUTO_ENABLE:pn-phytec-qtdemo = "disable"
 
 # You can disable and enable FSTYPES as you wish. e.g. 'ext4'.
 # This variable is ordering dependend.
@@ -117,6 +112,11 @@ EXTRA_IMAGE_FEATURES += "debug-tweaks"
 ####################
 # QT configuration #
 ####################
+
+# The following line disables the autostart of the phytec-qtdemo by
+# default, but you can start the demo anytime using
+#  $ systemctl start phytec-qtdemo.service
+#SYSTEMD_AUTO_ENABLE:pn-phytec-qtdemo = "disable"
 
 # We disable qt widgets per default to save about 10 MB of storage. If
 # you need qt widget support, you can enable it with this line
