@@ -16,7 +16,7 @@ LIC_FILES_CHKSUM = " \
 require nxp-cst.inc
 
 SRC_URI = " \
-        https://download.phytec.de/cst-${PV}.tar;name=tarball \
+        https://download.phytec.de/cst-${PV}_zeus.tar;name=tarball \
 "
 
 SRC_URI[tarball.md5sum] = "830965fe59a0e9c505fd18c7d2e60dbd"
