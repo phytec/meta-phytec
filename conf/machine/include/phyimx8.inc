@@ -46,11 +46,12 @@ EMMC_DEV:mx8mp-generic-bsp ?= "2"
 IMAGE_ROOTFS_ALIGNMENT:update = "4"
 
 # partup
-IMAGE_CLASSES += "image-types-partup"
+IMAGE_CLASSES:append:partup-package = " image-types-partup"
 include partup-layout-config.inc
+IMAGE_FSTYPES:append:partup-package = " partup"
 
 # Default images to build
-IMAGE_FSTYPES = "tar.gz wic wic.bmap partup"
+IMAGE_FSTYPES = "tar.gz wic wic.bmap"
 IMAGE_FSTYPES:append:update = " ext4"
 IMAGE_FSTYPES:append:mx8x-nxp-bsp = " wic.xz"
 IMAGE_FSTYPES:remove:mx8x-nxp-bsp = " wic"
