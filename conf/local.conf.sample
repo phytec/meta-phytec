@@ -3,7 +3,7 @@ MACHINE ?= "UNASSIGNED"
 DISTRO ?= "ampliphy"
 
 ########################
-# global configuration #
+# Global configuration #
 ########################
 
 # That are the default values of bitbake.  Adapt these to your workspace and
@@ -108,7 +108,7 @@ EXTRA_IMAGE_FEATURES += "debug-tweaks"
 #EXTRA_IMAGE_FEATURES += "tools-debug"
 
 ######################
-# rauc configuration #
+# RAUC configuration #
 ######################
 
 # certificate location for signing bundles
