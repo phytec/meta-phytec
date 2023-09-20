@@ -65,11 +65,12 @@ NAND_DEV:mx6ul-generic-bsp ?= "0"
 IMAGE_ROOTFS_ALIGNMENT:update = "4"
 
 # partup
-IMAGE_CLASSES += "image-types-partup"
+IMAGE_CLASSES:append:partup-package = " image-types-partup"
 include partup-layout-config.inc
+IMAGE_FSTYPES:append:partup-package = " partup"
 
 # default images to build
-IMAGE_FSTYPES ?= "tar.gz wic ubifs partup"
+IMAGE_FSTYPES ?= "tar.gz wic ubifs"
 IMAGE_FSTYPES:append:update = " ext4"
 
 # Avoid pulling package 'gstreamer1.0-plugins-bad-meta' into the image
