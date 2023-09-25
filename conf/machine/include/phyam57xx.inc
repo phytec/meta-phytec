@@ -1,6 +1,6 @@
 require conf/machine/include/dra7xx.inc
 
-SOC_FAMILY_append = ":am57xx"
+SOC_FAMILY:append = ":am57xx"
 
 # Add machine features
 MACHINE_FEATURES += "can touchscreen resistivetouch wifi bluetooth"
@@ -8,7 +8,7 @@ MACHINE_FEATURES += "can touchscreen resistivetouch wifi bluetooth"
 SERIAL_CONSOLES = "115200;ttyS2"
 
 # Install modules in initramfs and roofs
-PACKAGE_INSTALL_append = " kernel-modules"
+PACKAGE_INSTALL:append = " kernel-modules"
 
 # Install device-trees in rootfs
 MACHINE_ESSENTIAL_EXTRA_RDEPENDS += "kernel-devicetree"
@@ -19,7 +19,7 @@ PREFERRED_PROVIDER_u-boot = "u-boot-ti"
 PREFERRED_PROVIDER_virtual/kernel:${MACHINE} = "linux-ti"
 
 # Do not install uImage
-KERNEL_IMAGETYPES_remove = "uImage"
+KERNEL_IMAGETYPES:remove = "uImage"
 
 # Do not build extlinux
 UBOOT_EXTLINUX = "0"
