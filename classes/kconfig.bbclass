@@ -2,7 +2,7 @@ inherit cml1
 
 # these variables can be configured in the recipes inheriting kconfig
 INTREE_DEFCONFIG ??= ""
-LOCALVERSION ??= ""
+PHYTEC_LOCALVERSION ??= ""
 # This command is used when parsing a defconfig provided in the SRC_URI
 # It will depend on the way you have created your defconfig
 CONFIG_COMMAND ??= "olddefconfig"
@@ -91,8 +91,8 @@ kconfig_do_configure() {
         ${S}/scripts/kconfig/merge_config.sh -m -O "${B}" "$config" $fragments
     fi
 
-    if [ ! -z "${LOCALVERSION}" ]; then
-        kconfig_set LOCALVERSION \"${LOCALVERSION}\"
+    if [ ! -z "${PHYTEC_LOCALVERSION}" ]; then
+        kconfig_set LOCALVERSION \"${PHYTEC_LOCALVERSION}\"
     fi
 
     # Disable auto version globally. There are some bad behaving recipes
