@@ -16,6 +16,7 @@ If any, provide ALL of the following options:
   -k, --kernel    Linux kernel image
   -d, --dtb       device tree blob
   -r, --rootfs    root filesystem
+  -c, --config    configuration files in TAR archive
 
 General options:
   -h, --help      show this help
@@ -25,9 +26,10 @@ General options:
 KERNEL=""
 DTB=""
 ROOTFS=""
+CONFIG=""
 WRITE_FILES=0
 
-ARGS=$(getopt -n $(basename $0) -o k:d:r:h -l kernel:,dtb:,rootfs:,help -- "$@")
+ARGS=$(getopt -n $(basename $0) -o k:d:r:c:h -l kernel:,dtb:,rootfs:,config:,help -- "$@")
 VALID_ARGS=$?
 if [ "$VALID_ARGS" != "0" ]; then
 	usage
@@ -41,6 +43,7 @@ do
 		-k | --kernel) WRITE_FILES=1; KERNEL="$2"; shift 2;;
 		-d | --dtb) WRITE_FILES=1; DTB="$2"; shift 2;;
 		-r | --rootfs) WRITE_FILES=1; ROOTFS="$2"; shift 2;;
+		-c | --config) WRITE_FILES=1; CONFIG="$2"; shift 2;;
 		-h | --help) usage; exit 0;;
 		--) shift; break;;
 		*) echo "ERROR: Invalid option \"$1\""; usage; exit 2;;
@@ -105,6 +108,15 @@ if [ $WRITE_FILES -eq 1 ]; then
 	ubiupdatevol ${UBI_DEV}_3 $DTB
 	ubiupdatevol ${UBI_DEV}_5 $ROOTFS
 	ubiupdatevol ${UBI_DEV}_6 $ROOTFS
+
+	if [ "$CONFIG" != "" ]; then
+		CONFIG_TMP_MOUNT="/run/mount/config"
+		mkdir $CONFIG_TMP_MOUNT
+		mount -t ubifs ${UBI_DEV}_4 $CONFIG_TMP_MOUNT
+		tar -xf "$CONFIG" -C $CONFIG_TMP_MOUNT
+		umount ${UBI_DEV}_4
+		rm -r $CONFIG_TMP_MOUNT
+	fi
 fi
 
 echo "Detaching MTD device $MTD_DEV"
