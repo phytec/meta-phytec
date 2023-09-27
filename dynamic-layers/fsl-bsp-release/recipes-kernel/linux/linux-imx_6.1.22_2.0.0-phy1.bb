@@ -19,6 +19,9 @@ S = "${WORKDIR}/git"
 
 INTREE_DEFCONFIG:mx93-generic-bsp = "imx_v8_defconfig imx9_phytec_platform.config"
 
+EXTRA_DTC_ARGS += "DTC_FLAGS=-@"
+KERNEL_EXTRA_ARGS += "${EXTRA_DTC_ARGS}"
+
 COMPATIBLE_MACHINE  = "^("
 COMPATIBLE_MACHINE .= "phyboard-segin-imx93-1"
 COMPATIBLE_MACHINE .= ")$"
