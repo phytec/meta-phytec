@@ -1,0 +1,44 @@
+From 5e359e38bb8528fcffc4dca11a08605d0fa1c5fc Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Stefan=20Riedm=C3=BCller?= <s.riedmueller@phytec.de>
+Date: Thu, 21 Sep 2023 16:41:58 +0200
+Subject: [PATCH] v4l2: video: Fix boundary check in s_selection
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+To check against width boundaries the left and width parameters of the
+rectangle need to be considered, same as for the height boundaries the
+top and height parameters need to be considered. Fix this.
+
+Otherwise this check fails when trying to crop only in one dimension,
+e.g. when cropping a 1280x720 out of a 1280x800 frame.
+
+Signed-off-by: Stefan Riedmüller <s.riedmueller@phytec.de>
+---
+ vvcam/v4l2/video/video.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/vvcam/v4l2/video/video.c b/vvcam/v4l2/video/video.c
+index a2fadc708010..933ee052adf1 100644
+--- a/vvcam/v4l2/video/video.c
++++ b/vvcam/v4l2/video/video.c
+@@ -1552,15 +1552,15 @@ static int vidioc_s_selection(struct file *file, void *fh,
+ 	switch (s->target) {
+ 	case V4L2_SEL_TGT_CROP:
+ 		if (((s->r.left + s->r.width) < VIDEO_FRAME_MIN_WIDTH) ||
+-		    ((s->r.top + s->r.width) > vdev->camera_mode.size.width) ||
+-			((s->r.left + s->r.height) < VIDEO_FRAME_MIN_HEIGHT) ||
++		    ((s->r.left + s->r.width) > vdev->camera_mode.size.width) ||
++		    ((s->r.top + s->r.height) < VIDEO_FRAME_MIN_HEIGHT) ||
+ 		    ((s->r.top + s->r.height) > vdev->camera_mode.size.height))
+ 			return -EINVAL;
+ 		break;
+ 	case V4L2_SEL_TGT_COMPOSE:
+ 		if (((s->r.left + s->r.width) < VIDEO_FRAME_MIN_WIDTH) ||
+-		    ((s->r.top + s->r.width) > VIDEO_FRAME_MAX_WIDTH) ||
+-			((s->r.left + s->r.height) < VIDEO_FRAME_MIN_HEIGHT) ||
++		    ((s->r.left + s->r.width) > VIDEO_FRAME_MAX_WIDTH) ||
++		    ((s->r.top + s->r.height) < VIDEO_FRAME_MIN_HEIGHT) ||
+ 		    ((s->r.top + s->r.height) > VIDEO_FRAME_MAX_HEIGHT))
+ 			return -EINVAL;
+ 		break;
