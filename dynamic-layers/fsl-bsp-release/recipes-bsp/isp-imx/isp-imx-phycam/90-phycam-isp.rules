@@ -15,11 +15,11 @@ ACTION=="add", \
 	SUBSYSTEM=="video4linux", \
 	ATTR{name}=="viv_v4l20", \
 	DRIVERS=="vvcam-video", \
-	SYMLINK+="video-csi1"
+	SYMLINK+="video-isp-csi1"
 
 # CSI2 ISP Video Device
 ACTION=="add", \
 	SUBSYSTEM=="video4linux", \
 	ATTR{name}=="viv_v4l21", \
 	DRIVERS=="vvcam-video", \
-	SYMLINK+="video-csi2"
+	SYMLINK+="video-isp-csi2"
