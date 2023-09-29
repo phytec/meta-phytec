@@ -50,10 +50,11 @@ IMAGE_ROOTFS_ALIGNMENT:update = "4"
 # partup
 IMAGE_CLASSES:append:partup-package = " image-types-partup"
 include partup-layout-config.inc
-IMAGE_FSTYPES:append:partup-package = " partup"
+PARTUP_IMAGE_FSTYPE = ""
+PARTUP_IMAGE_FSTYPE:partup-package = "partup"
 
 # Default images to build
-IMAGE_FSTYPES = "tar.gz wic wic.bmap"
+IMAGE_FSTYPES = "tar.gz wic wic.bmap ${PARTUP_IMAGE_FSTYPE}"
 IMAGE_FSTYPES:append:update = " ext4"
 IMAGE_FSTYPES:append:mx8x-nxp-bsp = " wic.xz"
 IMAGE_FSTYPES:remove:mx8x-nxp-bsp = " wic"
