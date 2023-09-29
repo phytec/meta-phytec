@@ -59,8 +59,9 @@ IMAGE_ROOTFS_ALIGNMENT:update = "4"
 # partup
 IMAGE_CLASSES:append:partup-package = " image-types-partup"
 include partup-layout-config.inc
-IMAGE_FSTYPES:append:partup-package = " partup"
+PARTUP_IMAGE_FSTYPE = ""
+PARTUP_IMAGE_FSTYPE:partup-package = "partup"
 
 # default images to build
-IMAGE_FSTYPES ?= "tar.gz wic ubifs"
+IMAGE_FSTYPES ?= "tar.gz wic ubifs ${PARTUP_IMAGE_FSTYPE}"
 IMAGE_FSTYPES:append:update = " ext4"
