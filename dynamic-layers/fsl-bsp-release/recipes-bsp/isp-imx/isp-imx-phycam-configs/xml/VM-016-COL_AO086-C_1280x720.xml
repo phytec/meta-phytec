@@ -1340,7 +1340,7 @@
          <sensor>
             <ec>
                <gain>2.00</gain>
-               <intergration.time>0.002</intergration.time>
+               <integration.time>0.002</integration.time>
             </ec>
          </sensor>
       </sensors>
