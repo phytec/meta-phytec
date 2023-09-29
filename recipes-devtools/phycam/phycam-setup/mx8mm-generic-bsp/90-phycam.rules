@@ -47,6 +47,20 @@ ACTION=="add", \
 	KERNELS=="30a50000.i2c", \
 	SYMLINK+="cam-csi1", \
 
+# phyCAM VM-020 (ar0234) CSI1 phyCAM-L Port0
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="ar0234*", \
+	ATTRS{name}=="i2c-3-mux (chan_id 0)", \
+	SYMLINK+="cam-csi1-port0", \
+
+# phyCAM VM-020 (ar0234) CSI1 phyCAM-L Port1
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="ar0234*", \
+	ATTRS{name}=="i2c-3-mux (chan_id 1)", \
+	SYMLINK+="cam-csi1-port1", \
+
 # phyCAM-L Serializer (ds90ub953) Port0 CSI1
 ACTION=="add", \
 	SUBSYSTEM=="video4linux", \
