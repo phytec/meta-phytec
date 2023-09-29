@@ -143,11 +143,11 @@ ACTION=="add", \
 	SUBSYSTEM=="video4linux", \
 	ATTR{name}=="mxc_isi.0.capture", \
 	DRIVERS=="mxc-md", \
-	SYMLINK+="video-csi1"
+	SYMLINK+="video-isi-csi1"
 
 # CSI2 ISI Video Device
 ACTION=="add", \
 	SUBSYSTEM=="video4linux", \
 	ATTR{name}=="mxc_isi.1.capture", \
 	DRIVERS=="mxc-md", \
-	SYMLINK+="video-csi2"
+	SYMLINK+="video-isi-csi2"
