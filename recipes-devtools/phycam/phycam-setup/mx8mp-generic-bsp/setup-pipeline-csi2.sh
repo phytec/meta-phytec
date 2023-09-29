@@ -123,7 +123,7 @@ if [ -n "$SER_P1_ENT" ] && [ -n "$DESER_ENT" ] && [ "$PORT" = "1" ] ; then
 	$MC -l "'${SER_P1_ENT}':1->'${DESER_ENT}':1[1]" ${VERBOSE}
 fi
 
-if [ -L /dev/isp-csi2 ] ; then
+if [ ! -L /dev/video-isi-csi2 ] ; then
 	# ISP is used, nothing more to do here.
 	exit 0
 fi
