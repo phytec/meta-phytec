@@ -1,0 +1,51 @@
+From 45cd6a08d4d4c6827ab839c0941c93a02f84fb0d Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Stefan=20Riedm=C3=BCller?= <s.riedmueller@phytec.de>
+Date: Wed, 20 Sep 2023 11:29:59 +0200
+Subject: [PATCH] v4l2: video: Allow v4l2-ctl -p to set the FPS
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+v4l2-ctl -p sets the FPS always with a 1/1000 fraction, which does not
+work with the current implementation, as it only uses the denominator to
+check and set the FPS. Fix this by calculating the FPS from numerator
+and denominator instead of only using the denominator.
+
+Signed-off-by: Stefan Riedmüller <s.riedmueller@phytec.de>
+---
+ vvcam/v4l2/video/video.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/vvcam/v4l2/video/video.c b/vvcam/v4l2/video/video.c
+index daa6742e7d6f..b1c15038c7e0 100644
+--- a/vvcam/v4l2/video/video.c
++++ b/vvcam/v4l2/video/video.c
+@@ -1409,11 +1409,10 @@ static int vidioc_s_parm(struct file *file, void *fh,
+ 	struct viv_video_device *vdev = handle->vdev;
+ 	struct v4l2_event event;
+ 	struct viv_video_event *v_event;
++	u32 fps;
+ 
+ 	if (a->type != V4L2_BUF_TYPE_VIDEO_CAPTURE)
+ 		return -EINVAL;
+-	if (a->parm.output.timeperframe.denominator > handle->vdev->camera_mode.fps)
+-		return -EINVAL;
+ 
+ 	if (vdev->ctrls.buf_va == NULL)
+ 		return -EINVAL;
+@@ -1424,8 +1423,13 @@ static int vidioc_s_parm(struct file *file, void *fh,
+ 		a->parm.capture.capability = V4L2_CAP_TIMEPERFRAME;
+ 		a->parm.capture.timeperframe = handle->vdev->timeperframe;
+ 	}
+-	handle->vdev->timeperframe = a->parm.output.timeperframe;
+-	sprintf(vdev->ctrls.buf_va,"{<id>:<s.fps>;<fps>:%d}",handle->vdev->timeperframe.denominator);
++
++	fps = a->parm.capture.timeperframe.denominator / a->parm.capture.timeperframe.numerator;
++	if (fps > handle->vdev->camera_mode.fps)
++		return -EINVAL;
++
++	handle->vdev->timeperframe = a->parm.capture.timeperframe;
++	sprintf(vdev->ctrls.buf_va,"{<id>:<s.fps>;<fps>:%u}", fps);
+ 	v_event = (struct viv_video_event *)&event.u.data[0];
+ 	v_event->stream_id = 0;
+ 	v_event->file = &handle->vfh;
