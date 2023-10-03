@@ -714,8 +714,8 @@ WKS_FILE_DEPENDS ?= " \
 "
 WKS_IMAGE_FSTYPES += "wic wic.bz2 wic.bmap"
 
-# If optee is part of the selected boot chains, create WIC for optee by default
-# WKS_BOOTSCHEME is only used in the ".wks.in" files to indicate which boot chain to use when generating the WIC file
-WKS_BOOTSCHEME = "${@bb.utils.contains('BOOTSCHEME_LABELS', 'optee', 'optee', 'trusted', d)}"
+# If optee is part of the selected boot chains, consider optee by default.
+# This default value (BOOTSCHEME) can be used for example for the WIC file generation or rauc bundle build.
+BOOTSCHEME = "${@bb.utils.contains('BOOTSCHEME_LABELS', 'optee', 'optee', 'trusted', d)}"
 
 WKS_FILE += "${@bb.utils.contains('DISTRO_FEATURES', 'rauc', 'stm32mp1-rauc-sdimage.wks.in', 'stm32mp1-sdimage.wks.in',d)}"
