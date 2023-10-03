@@ -1,0 +1,43 @@
+From b1afba2c1a5c08061c66ff077fd4d37f7cedea98 Mon Sep 17 00:00:00 2001
+From: Christophe Parant <c.parant@phytec.fr>
+Date: Mon, 2 Oct 2023 14:46:31 +0200
+Subject: [PATCH 4/4] ARM v2021.10 stm32mp phy2 MACHINE
+
+---
+ arch/arm/mach-stm32mp/Kconfig.13x | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/arch/arm/mach-stm32mp/Kconfig.13x b/arch/arm/mach-stm32mp/Kconfig.13x
+index 5fc000986e..208988c850 100644
+--- a/arch/arm/mach-stm32mp/Kconfig.13x
++++ b/arch/arm/mach-stm32mp/Kconfig.13x
+@@ -17,6 +17,19 @@ config TARGET_ST_STM32MP13x
+ 		managed by board/st/stm32mp1.
+ 		The difference between board are managed with devicetree
+ 
++config TARGET_PHYTEC_PHYCORE_STM32MP13x
++        bool "PHYTEC phyCORE-STM32MP13x SOM"
++        imply BOOTSTAGE
++        imply CMD_BOOTSTAGE
++        imply CMD_CLS if CMD_BMP
++        imply DISABLE_CONSOLE
++        imply PRE_CONSOLE_BUFFER
++        imply SILENT_CONSOLE
++        help
++                target the PHYTEC phyCORE-STM32MP13x SOM
++                managed by board/phytec/phycore_stm32mp1
++                The difference between board are managed with devicetree
++
+ endchoice
+ 
+ config SYS_TEXT_BASE
+@@ -53,5 +66,6 @@ config DEBUG_UART_CLOCK
+ endif
+ 
+ source "board/st/stm32mp1/Kconfig"
++source "board/phytec/phycore_stm32mp1/Kconfig
+ 
+ endif
+-- 
+2.25.1
+
