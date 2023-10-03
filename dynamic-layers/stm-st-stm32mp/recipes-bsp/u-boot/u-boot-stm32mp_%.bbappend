@@ -7,6 +7,10 @@ SRC_URI += " \
     file://0002-ARM-v2021.10-stm32mp-phy1-BOARD.patch \
     file://0003-ARM-v2021.10-stm32mp-phy1-CONFIG.patch \
     file://0004-ARM-v2021.10-stm32mp-phy1-MACHINE.patch \
+    file://0001-ARM-v2021.10-stm32mp-phy2-DEVICETREE.patch \
+    file://0002-ARM-v2021.10-stm32mp-phy2-BOARD.patch \
+    file://0003-ARM-v2021.10-stm32mp-phy2-CONFIG.patch \
+    file://0004-ARM-v2021.10-stm32mp-phy2-MACHINE.patch \
 "
 
 # ---------------------------------
@@ -15,7 +19,7 @@ SRC_URI += " \
 BBCLASSEXTEND = "devupstream:target"
 
 SRC_URI:class-devupstream = "git://git.phytec.de/u-boot-stm32mp;protocol=git;branch=${U_BOOT_VERSION}-phy"
-SRCREV:class-devupstream = "21fdd3f0bab5aad4987d34992a4ce670d5c2642d"
+SRCREV:class-devupstream = "c653c6d180c02c0a2e6d9ecc6dc87c2957043ce9"
 
 # ---------------------------------
 # Configure default preference to manage dynamic selection between tarball and github
