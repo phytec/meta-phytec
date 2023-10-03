@@ -1,0 +1,1195 @@
+From 97149a6567e9e18637556eb9111502b3d4aef6a6 Mon Sep 17 00:00:00 2001
+From: Christophe Parant <c.parant@phytec.fr>
+Date: Mon, 2 Oct 2023 14:56:35 +0200
+Subject: [PATCH 2/4] ARM 5.15.67 stm32mp1 phy2 DEVICETREE
+
+---
+ ...mp135f-phyboard-segin-ff-rdk-emmc-1gib.dts |  35 ++
+ ...p135f-phyboard-segin-ff-rdk-emmc-512mb.dts |  35 ++
+ ...tm32mp135f-phyboard-segin-ff-rdk-emmc.dtsi |  90 ++++
+ .../stm32mp13xx-phyboard-segin-pinctrl.dtsi   | 384 ++++++++++++++++++
+ .../boot/dts/stm32mp13xx-phyboard-segin.dtsi  | 288 +++++++++++++
+ .../dts/stm32mp13xx-phycore-som-pinctrl.dtsi  | 152 +++++++
+ .../arm/boot/dts/stm32mp13xx-phycore-som.dtsi | 144 +++++++
+ 7 files changed, 1128 insertions(+)
+ create mode 100644 arch/arm/boot/dts/stm32mp135f-phyboard-segin-ff-rdk-emmc-1gib.dts
+ create mode 100644 arch/arm/boot/dts/stm32mp135f-phyboard-segin-ff-rdk-emmc-512mb.dts
+ create mode 100644 arch/arm/boot/dts/stm32mp135f-phyboard-segin-ff-rdk-emmc.dtsi
+ create mode 100644 arch/arm/boot/dts/stm32mp13xx-phyboard-segin-pinctrl.dtsi
+ create mode 100644 arch/arm/boot/dts/stm32mp13xx-phyboard-segin.dtsi
+ create mode 100644 arch/arm/boot/dts/stm32mp13xx-phycore-som-pinctrl.dtsi
+ create mode 100644 arch/arm/boot/dts/stm32mp13xx-phycore-som.dtsi
+
+diff --git a/arch/arm/boot/dts/stm32mp135f-phyboard-segin-ff-rdk-emmc-1gib.dts b/arch/arm/boot/dts/stm32mp135f-phyboard-segin-ff-rdk-emmc-1gib.dts
+new file mode 100644
+index 000000000000..cabf069955b9
+--- /dev/null
++++ b/arch/arm/boot/dts/stm32mp135f-phyboard-segin-ff-rdk-emmc-1gib.dts
+@@ -0,0 +1,35 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2023 PHYTEC Messtechnik GmbH
++ * Authors: Christophe Parant <c.parant@phytec.fr>
++ */
++
++/dts-v1/;
++
++#include "stm32mp135f-phyboard-segin-ff-rdk-emmc.dtsi"
++
++/ {
++	model = "PHYTEC phyBOARD-Segin STM32MP135F Full Featured with eMMC and 1Gib RAM";
++	compatible = "phytec,stm32mp135f-pbacd10", "phytec,stm32mp135f-pcl076-emmc",
++		     "phytec,stm32mp135f-pcl076", "st,stm32mp135";
++
++	memory@c0000000 {
++		reg = <0xc0000000 0x40000000>;
++	};
++
++	reserved-memory {
++		#address-cells = <1>;
++		#size-cells = <1>;
++		ranges;
++
++		optee_framebuffer@dd000000 {
++			reg = <0xfd000000 0x1000000>;
++			no-map;
++		};
++
++		optee@de000000 {
++			reg = <0xfe000000 0x2000000>;
++			no-map;
++		};
++	};
++};
+diff --git a/arch/arm/boot/dts/stm32mp135f-phyboard-segin-ff-rdk-emmc-512mb.dts b/arch/arm/boot/dts/stm32mp135f-phyboard-segin-ff-rdk-emmc-512mb.dts
+new file mode 100644
+index 000000000000..f6dd512faad2
+--- /dev/null
++++ b/arch/arm/boot/dts/stm32mp135f-phyboard-segin-ff-rdk-emmc-512mb.dts
+@@ -0,0 +1,35 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2023 PHYTEC Messtechnik GmbH
++ * Authors: Christophe Parant <c.parant@phytec.fr>
++ */
++
++/dts-v1/;
++
++#include "stm32mp135f-phyboard-segin-ff-rdk-emmc.dtsi"
++
++/ {
++	model = "PHYTEC phyBOARD-Segin STM32MP135F Full Featured with eMMC and 512MB RAM";
++	compatible = "phytec,stm32mp135f-pbacd10", "phytec,stm32mp135f-pcl076-emmc",
++		     "phytec,stm32mp135f-pcl076", "st,stm32mp135";
++
++	memory@c0000000 {
++		reg = <0xc0000000 0x20000000>;
++	};
++
++	reserved-memory {
++		#address-cells = <1>;
++		#size-cells = <1>;
++		ranges;
++
++		optee_framebuffer@dd000000 {
++			reg = <0xdd000000 0x1000000>;
++			no-map;
++		};
++
++		optee@de000000 {
++			reg = <0xde000000 0x2000000>;
++			no-map;
++		};
++	};
++};
+diff --git a/arch/arm/boot/dts/stm32mp135f-phyboard-segin-ff-rdk-emmc.dtsi b/arch/arm/boot/dts/stm32mp135f-phyboard-segin-ff-rdk-emmc.dtsi
+new file mode 100644
+index 000000000000..f38a9b1d4da1
+--- /dev/null
++++ b/arch/arm/boot/dts/stm32mp135f-phyboard-segin-ff-rdk-emmc.dtsi
+@@ -0,0 +1,90 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2023 PHYTEC Messtechnik GmbH
++ * Authors: Christophe Parant <c.parant@phytec.fr>
++ */
++
++#include "stm32mp135.dtsi"
++#include "stm32mp13xf.dtsi"
++#include "stm32mp13xx-phycore-som.dtsi"
++#include "stm32mp13xx-phyboard-segin.dtsi"
++
++&i2c5_eeprom {
++	status = "okay";
++};
++
++&sdmmc1 {
++	status = "okay";
++};
++
++&sdmmc2 {
++	status = "okay";
++};
++
++&cryp {
++	status = "okay";
++};
++
++&adc1 {
++	status = "okay";
++};
++
++&m_can2 {
++	status = "okay";
++};
++
++&spi1 {
++	status = "okay";
++};
++
++&eth1 {
++	status = "okay";
++};
++
++&eth2 {
++	status = "okay";
++};
++
++&i2c_rtc {
++	status = "okay";
++};
++
++&reg_m_can {
++	status = "okay";
++};
++
++&reg_sound_1v8 {
++	status = "okay";
++};
++
++&reg_sound_3v3 {
++	status = "okay";
++};
++
++&sai1 {
++	status = "okay";
++};
++
++&sound {
++	status = "okay";
++};
++
++&tlv320 {
++	status = "okay";
++};
++
++&usart2 {
++	status = "okay";
++};
++
++&usbotg_hs {
++	status = "okay";
++};
++
++&usbh_ehci {
++	status = "okay";
++};
++
++&usbh_ohci{
++	status = "okay";
++};
+diff --git a/arch/arm/boot/dts/stm32mp13xx-phyboard-segin-pinctrl.dtsi b/arch/arm/boot/dts/stm32mp13xx-phyboard-segin-pinctrl.dtsi
+new file mode 100644
+index 000000000000..750b6e842496
+--- /dev/null
++++ b/arch/arm/boot/dts/stm32mp13xx-phyboard-segin-pinctrl.dtsi
+@@ -0,0 +1,384 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2023 PHYTEC Messtechnik GmbH
++ * Authors: Christophe Parant <c.parant@phytec.fr>
++ */
++
++#include <dt-bindings/pinctrl/stm32-pinfunc.h>
++
++&pinctrl {
++
++	adc1_pins_mx: adc1_mx-0 {
++		pins {
++			pinmux = <STM32_PINMUX('F', 12, ANALOG)>; /* ADC1_INP6 */
++		};
++	};
++
++	adc1_sleep_pins_mx: adc1_sleep_mx-0 {
++		pins {
++			pinmux = <STM32_PINMUX('F', 12, ANALOG)>; /* ADC1_INP6 */
++		};
++	};
++
++	dcmipp_pins_mx: dcmipp_mx-0 {
++		pins {
++			pinmux = <STM32_PINMUX('A', 9, AF13)>, /* DCMIPP_D0 */
++					 <STM32_PINMUX('B', 7, AF14)>, /* DCMIPP_PIXCLK */
++					 <STM32_PINMUX('B', 8, AF13)>, /* DCMIPP_D6 */
++					 <STM32_PINMUX('D', 0, AF13)>, /* DCMIPP_D1 */
++					 <STM32_PINMUX('D', 3, AF13)>, /* DCMIPP_D5 */
++					 <STM32_PINMUX('D', 11, AF14)>, /* DCMIPP_D4 */
++					 <STM32_PINMUX('E', 4, AF13)>, /* DCMIPP_D3 */
++					 <STM32_PINMUX('E', 14, AF13)>, /* DCMIPP_D7 */
++					 <STM32_PINMUX('G', 9, AF13)>, /* DCMIPP_VSYNC */
++					 <STM32_PINMUX('G', 10, AF13)>, /* DCMIPP_D2 */
++					 <STM32_PINMUX('H', 8, AF13)>; /* DCMIPP_HSYNC */
++			bias-disable;
++		};
++	};
++
++	dcmipp_sleep_pins_mx: dcmipp_sleep_mx-0 {
++		pins {
++			pinmux = <STM32_PINMUX('A', 9, ANALOG)>, /* DCMIPP_D0 */
++					 <STM32_PINMUX('B', 7, ANALOG)>, /* DCMIPP_PIXCLK */
++					 <STM32_PINMUX('B', 8, ANALOG)>, /* DCMIPP_D6 */
++					 <STM32_PINMUX('D', 0, ANALOG)>, /* DCMIPP_D1 */
++					 <STM32_PINMUX('D', 3, ANALOG)>, /* DCMIPP_D5 */
++					 <STM32_PINMUX('D', 11, ANALOG)>, /* DCMIPP_D4 */
++					 <STM32_PINMUX('E', 4, ANALOG)>, /* DCMIPP_D3 */
++					 <STM32_PINMUX('E', 14, ANALOG)>, /* DCMIPP_D7 */
++					 <STM32_PINMUX('G', 9, ANALOG)>, /* DCMIPP_VSYNC */
++					 <STM32_PINMUX('G', 10, ANALOG)>, /* DCMIPP_D2 */
++					 <STM32_PINMUX('H', 8, ANALOG)>; /* DCMIPP_HSYNC */
++		};
++	};
++
++	eth2_pins_mx: eth2_mx-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('A', 12, AF11)>, /* ETH2_CRS_DV */
++					 <STM32_PINMUX('E', 2, AF10)>, /* ETH2_RXD1 */
++					 <STM32_PINMUX('F', 4, AF11)>, /* ETH2_RXD0 */
++					 <STM32_PINMUX('F', 11, AF12)>; /* ETH2_RX_ER */
++			bias-disable;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('B', 2, AF11)>; /* ETH2_MDIO */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <0>;
++		};
++		pins3 {
++			pinmux = <STM32_PINMUX('F', 6, AF11)>, /* ETH2_TX_EN */
++					 <STM32_PINMUX('F', 7, AF11)>, /* ETH2_TXD0 */
++					 <STM32_PINMUX('G', 5, AF10)>, /* ETH2_MDC */
++					 <STM32_PINMUX('G', 8, AF13)>, /* ETH2_CLK */
++					 <STM32_PINMUX('G', 11, AF10)>; /* ETH2_TXD1 */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <1>;
++		};
++	};
++
++	eth2_sleep_pins_mx: eth2_sleep_mx-0 {
++		pins {
++			pinmux = <STM32_PINMUX('A', 12, ANALOG)>, /* ETH2_CRS_DV */
++					 <STM32_PINMUX('B', 2, ANALOG)>, /* ETH2_MDIO */
++					 <STM32_PINMUX('E', 2, ANALOG)>, /* ETH2_RXD1 */
++					 <STM32_PINMUX('F', 4, ANALOG)>, /* ETH2_RXD0 */
++					 <STM32_PINMUX('F', 6, ANALOG)>, /* ETH2_TX_EN */
++					 <STM32_PINMUX('F', 7, ANALOG)>, /* ETH2_TXD0 */
++					 <STM32_PINMUX('F', 11, ANALOG)>, /* ETH2_RX_ER */
++					 <STM32_PINMUX('G', 5, ANALOG)>, /* ETH2_MDC */
++					 <STM32_PINMUX('G', 8, ANALOG)>, /* ETH2_CLK */
++					 <STM32_PINMUX('G', 11, ANALOG)>; /* ETH2_TXD1 */
++		};
++	};
++
++	fdcan2_pins_mx: fdcan2_mx-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('G', 1, AF9)>; /* FDCAN2_TX */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <0>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('G', 3, AF9)>; /* FDCAN2_RX */
++			bias-disable;
++		};
++	};
++
++	fdcan2_sleep_pins_mx: fdcan2_sleep_mx-0 {
++		pins {
++			pinmux = <STM32_PINMUX('G', 1, ANALOG)>, /* FDCAN2_TX */
++					 <STM32_PINMUX('G', 3, ANALOG)>; /* FDCAN2_RX */
++		};
++	};
++
++	ltdc_pins_mx: ltdc_mx-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('A', 15, AF11)>, /* LTDC_G7 */
++					 <STM32_PINMUX('B', 6, AF7)>, /* LTDC_B6 */
++					 <STM32_PINMUX('B', 12, AF13)>, /* LTDC_R3 */
++					 <STM32_PINMUX('D', 5, AF14)>, /* LTDC_G4 */
++					 <STM32_PINMUX('D', 10, AF14)>, /* LTDC_B2 */
++					 <STM32_PINMUX('D', 14, AF14)>, /* LTDC_R4 */
++					 <STM32_PINMUX('E', 0, AF14)>, /* LTDC_B5 */
++					 <STM32_PINMUX('E', 7, AF14)>, /* LTDC_R5 */
++					 <STM32_PINMUX('E', 9, AF14)>, /* LTDC_R7 */
++					 <STM32_PINMUX('E', 13, AF14)>, /* LTDC_R6 */
++					 <STM32_PINMUX('F', 1, AF13)>, /* LTDC_B7 */
++					 <STM32_PINMUX('F', 2, AF14)>, /* LTDC_B3 */
++					 <STM32_PINMUX('F', 3, AF14)>, /* LTDC_G3 */
++					 <STM32_PINMUX('G', 0, AF14)>, /* LTDC_G5 */
++					 <STM32_PINMUX('G', 4, AF11)>, /* LTDC_VSYNC */
++					 <STM32_PINMUX('G', 7, AF14)>, /* LTDC_R2 */
++					 <STM32_PINMUX('H', 9, AF11)>, /* LTDC_DE */
++					 <STM32_PINMUX('H', 10, AF13)>, /* LTDC_HSYNC */
++					 <STM32_PINMUX('H', 11, AF14)>, /* LTDC_G6 */
++					 <STM32_PINMUX('H', 13, AF14)>, /* LTDC_G2 */
++					 <STM32_PINMUX('H', 14, AF11)>; /* LTDC_B4 */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <0>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('D', 9, AF13)>; /* LTDC_CLK */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <1>;
++		};
++	};
++
++	ltdc_sleep_pins_mx: ltdc_sleep_mx-0 {
++		pins {
++			pinmux = <STM32_PINMUX('A', 15, ANALOG)>, /* LTDC_G7 */
++					 <STM32_PINMUX('B', 6, ANALOG)>, /* LTDC_B6 */
++					 <STM32_PINMUX('B', 12, ANALOG)>, /* LTDC_R3 */
++					 <STM32_PINMUX('D', 5, ANALOG)>, /* LTDC_G4 */
++					 <STM32_PINMUX('D', 9, ANALOG)>, /* LTDC_CLK */
++					 <STM32_PINMUX('D', 10, ANALOG)>, /* LTDC_B2 */
++					 <STM32_PINMUX('D', 14, ANALOG)>, /* LTDC_R4 */
++					 <STM32_PINMUX('E', 0, ANALOG)>, /* LTDC_B5 */
++					 <STM32_PINMUX('E', 7, ANALOG)>, /* LTDC_R5 */
++					 <STM32_PINMUX('E', 9, ANALOG)>, /* LTDC_R7 */
++					 <STM32_PINMUX('E', 13, ANALOG)>, /* LTDC_R6 */
++					 <STM32_PINMUX('F', 1, ANALOG)>, /* LTDC_B7 */
++					 <STM32_PINMUX('F', 2, ANALOG)>, /* LTDC_B3 */
++					 <STM32_PINMUX('F', 3, ANALOG)>, /* LTDC_G3 */
++					 <STM32_PINMUX('G', 0, ANALOG)>, /* LTDC_G5 */
++					 <STM32_PINMUX('G', 4, ANALOG)>, /* LTDC_VSYNC */
++					 <STM32_PINMUX('G', 7, ANALOG)>, /* LTDC_R2 */
++					 <STM32_PINMUX('H', 9, ANALOG)>, /* LTDC_DE */
++					 <STM32_PINMUX('H', 10, ANALOG)>, /* LTDC_HSYNC */
++					 <STM32_PINMUX('H', 11, ANALOG)>, /* LTDC_G6 */
++					 <STM32_PINMUX('H', 13, ANALOG)>, /* LTDC_G2 */
++					 <STM32_PINMUX('H', 14, ANALOG)>; /* LTDC_B4 */
++		};
++	};
++
++	sai1a_pins_mx: sai1a_mx-0 {
++		pins {
++			pinmux = <STM32_PINMUX('A', 5, AF6)>; /* SAI1_SD_A */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <0>;
++		};
++	};
++
++	sai1a_sleep_pins_mx: sai1a_sleep_mx-0 {
++		pins {
++			pinmux = <STM32_PINMUX('A', 5, ANALOG)>; /* SAI1_SD_A */
++		};
++	};
++
++	sai1b_pins_mx: sai1b_mx-0 {
++		pins {
++			pinmux = <STM32_PINMUX('A', 0, AF6)>, /* SAI1_SD_B */
++					 <STM32_PINMUX('A', 3, AF6)>, /* SAI1_FS_B */
++					 <STM32_PINMUX('A', 4, AF4)>, /* SAI1_SCK_B */
++					 <STM32_PINMUX('F', 13, AF2)>; /* SAI1_MCLK_B */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <0>;
++		};
++	};
++
++	sai1b_sleep_pins_mx: sai1b_sleep_mx-0 {
++		pins {
++			pinmux = <STM32_PINMUX('A', 0, ANALOG)>, /* SAI1_SD_B */
++					 <STM32_PINMUX('A', 3, ANALOG)>, /* SAI1_FS_B */
++					 <STM32_PINMUX('A', 4, ANALOG)>, /* SAI1_SCK_B */
++					 <STM32_PINMUX('F', 13, ANALOG)>; /* SAI1_MCLK_B */
++		};
++	};
++
++	sdmmc1_pins_mx: sdmmc1_mx-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('C', 8, AF12)>, /* SDMMC1_D0 */
++					 <STM32_PINMUX('C', 9, AF12)>, /* SDMMC1_D1 */
++					 <STM32_PINMUX('C', 10, AF12)>, /* SDMMC1_D2 */
++					 <STM32_PINMUX('C', 11, AF12)>, /* SDMMC1_D3 */
++					 <STM32_PINMUX('D', 2, AF12)>; /* SDMMC1_CMD */
++			bias-pull-up;
++			drive-push-pull;
++			slew-rate = <1>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('C', 12, AF12)>; /* SDMMC1_CK */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <2>;
++		};
++	};
++
++	sdmmc1_opendrain_pins_mx: sdmmc1_opendrain_mx-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('C', 8, AF12)>, /* SDMMC1_D0 */
++					 <STM32_PINMUX('C', 9, AF12)>, /* SDMMC1_D1 */
++					 <STM32_PINMUX('C', 10, AF12)>, /* SDMMC1_D2 */
++					 <STM32_PINMUX('C', 11, AF12)>; /* SDMMC1_D3 */
++			bias-pull-up;
++			drive-push-pull;
++			slew-rate = <1>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('C', 12, AF12)>; /* SDMMC1_CK */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <2>;
++		};
++		pins3 {
++			pinmux = <STM32_PINMUX('D', 2, AF12)>; /* SDMMC1_CMD */
++			bias-pull-up;
++			drive-open-drain;
++			slew-rate = <1>;
++		};
++	};
++
++	sdmmc1_sleep_pins_mx: sdmmc1_sleep_mx-0 {
++		pins {
++			pinmux = <STM32_PINMUX('C', 8, ANALOG)>, /* SDMMC1_D0 */
++					 <STM32_PINMUX('C', 9, ANALOG)>, /* SDMMC1_D1 */
++					 <STM32_PINMUX('C', 10, ANALOG)>, /* SDMMC1_D2 */
++					 <STM32_PINMUX('C', 11, ANALOG)>, /* SDMMC1_D3 */
++					 <STM32_PINMUX('C', 12, ANALOG)>, /* SDMMC1_CK */
++					 <STM32_PINMUX('D', 2, ANALOG)>; /* SDMMC1_CMD */
++		};
++	};
++
++	spi1_pins_mx: spi1_mx-0 {
++		pins {
++			pinmux = <STM32_PINMUX('A', 7, AF5)>, /* SPI1_SCK */
++					 <STM32_PINMUX('C', 0, AF6)>, /* SPI1_MOSI */
++					 <STM32_PINMUX('C', 3, AF5)>; /* SPI1_MISO */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <1>;
++		};
++	};
++
++	spi1_sleep_pins_mx: spi1_sleep_mx-0 {
++		pins {
++			pinmux = <STM32_PINMUX('A', 7, ANALOG)>, /* SPI1_SCK */
++					 <STM32_PINMUX('C', 0, ANALOG)>, /* SPI1_MOSI */
++					 <STM32_PINMUX('C', 3, ANALOG)>; /* SPI1_MISO */
++		};
++	};
++
++	tim8_pwm_pins_mx: tim8_pwm_mx-0 {
++		pins {
++			pinmux = <STM32_PINMUX('E', 5, AF3)>; /* TIM8_CH3 */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <0>;
++		};
++	};
++
++	tim8_pwm_sleep_pins_mx: tim8_pwm_sleep_mx-0 {
++		pins {
++			pinmux = <STM32_PINMUX('E', 5, ANALOG)>; /* TIM8_CH3 */
++		};
++	};
++
++	uart7_pins_mx: uart7_mx-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('E', 10, AF7)>; /* UART7_RX */
++			bias-disable;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('H', 2, AF8)>; /* UART7_TX */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <0>;
++		};
++	};
++
++	uart7_sleep_pins_mx: uart7_sleep_mx-0 {
++		pins {
++			pinmux = <STM32_PINMUX('E', 10, ANALOG)>, /* UART7_RX */
++					 <STM32_PINMUX('H', 2, ANALOG)>; /* UART7_TX */
++		};
++	};
++
++	usart2_pins_mx: usart2_mx-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('D', 15, AF1)>, /* USART2_RX */
++					 <STM32_PINMUX('E', 11, AF2)>; /* USART2_CTS */
++			bias-disable;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('D', 4, AF3)>, /* USART2_RTS */
++					 <STM32_PINMUX('H', 12, AF1)>; /* USART2_TX */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <0>;
++		};
++	};
++
++	usart2_sleep_pins_mx: usart2_sleep_mx-0 {
++		pins {
++			pinmux = <STM32_PINMUX('D', 4, ANALOG)>, /* USART2_RTS */
++					 <STM32_PINMUX('D', 15, ANALOG)>, /* USART2_RX */
++					 <STM32_PINMUX('E', 11, ANALOG)>, /* USART2_CTS */
++					 <STM32_PINMUX('H', 12, ANALOG)>; /* USART2_TX */
++		};
++	};
++
++	usb_otg_hs_pins_mx: usb_otg_hs_mx-0 {
++		pins {
++			pinmux = <STM32_PINMUX('A', 10, ANALOG)>, /* USB_OTG_HS_ID */
++					 <STM32_PINMUX('I', 7, ANALOG)>; /* USB_OTG_HS_VBUS */
++		};
++	};
++
++	usb_otg_hs_sleep_pins_mx: usb_otg_hs_sleep_mx-0 {
++		pins {
++			pinmux = <STM32_PINMUX('A', 10, ANALOG)>, /* USB_OTG_HS_ID */
++					 <STM32_PINMUX('I', 7, ANALOG)>; /* USB_OTG_HS_VBUS */
++		};
++	};
++
++	usart1_pins_mx: usart1_mx-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('A', 7, AF7)>, /* USART1_CTS */
++					 <STM32_PINMUX('B', 0, AF4)>; /* USART1_RX */
++			bias-disable;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('C', 0, AF7)>, /* USART1_TX */
++					 <STM32_PINMUX('C', 2, AF7)>; /* USART1_RTS */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <0>;
++		};
++	};
++
++	usart1_sleep_pins_mx: usart1_sleep_mx-0 {
++		pins {
++			pinmux = <STM32_PINMUX('A', 7, ANALOG)>, /* USART1_CTS */
++					 <STM32_PINMUX('B', 0, ANALOG)>, /* USART1_RX */
++					 <STM32_PINMUX('C', 0, ANALOG)>, /* USART1_TX */
++					 <STM32_PINMUX('C', 2, ANALOG)>; /* USART1_RTS */
++		};
++	};
++};
+diff --git a/arch/arm/boot/dts/stm32mp13xx-phyboard-segin.dtsi b/arch/arm/boot/dts/stm32mp13xx-phyboard-segin.dtsi
+new file mode 100644
+index 000000000000..95cc6572002a
+--- /dev/null
++++ b/arch/arm/boot/dts/stm32mp13xx-phyboard-segin.dtsi
+@@ -0,0 +1,288 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (C) 2023 PHYTEC Messtechnik GmbH
++ * Author: Christophe Parant <c.parant@phytec.fr>
++ */
++
++#include "stm32mp13xx-phyboard-segin-pinctrl.dtsi"
++
++/ {
++	model = "PHYTEC phyBOARD-Segin STM32MP13";
++	compatible = "phytec,stm32mp13-pbacd-10", "phytec,stm32mp13-pcl076", "st,stm32mp13";
++
++	aliases {
++		ethernet1 = &eth2;
++		rtc0 = &i2c_rtc;
++		rtc1 = &rtc;
++		serial1 = &usart2;
++	};
++
++	reg_sound_1v8: regulator-1v8 {
++		compatible = "regulator-fixed";
++		regulator-name = "i2s-audio-1v8";
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <1800000>;
++		status = "okay";
++	};
++
++	reg_sound_3v3: regulator-3v3 {
++		compatible = "regulator-fixed";
++		regulator-name = "i2s-audio-3v3";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		status = "okay";
++	};
++
++	reg_m_can: regulator-mcan {
++		compatible = "regulator-fixed";
++		regulator-name = "mcan-reg";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		gpio = <&gpioa 14 GPIO_ACTIVE_HIGH>;
++		regulator-always-on;
++		status = "okay";
++	};
++
++	sound: sound {
++		compatible = "audio-graph-card";
++		label = "STM32MP1-PHYCORE";
++		routing =
++			"Playback", "MCLK", /* Set a route between "MCLK" and "playback" widgets */
++			"Capture", "MCLK";
++		dais = <&sai1b_port &sai1a_port>;
++		status = "okay";
++	};
++
++	clocks {
++		clk_mco1: clk-mco1 {
++			#clock-cells = <0>;
++			compatible = "fixed-clock";
++			clock-frequency = <24000000>;
++		};
++	};
++
++	wake_up {
++		compatible = "gpio-keys";
++		status = "okay";
++
++		button {
++			label = "wake-up";
++			linux,code = <KEY_WAKEUP>;
++			interrupts-extended = <&optee 0>;
++			status = "okay";
++		};
++	};
++};
++
++&adc_1 {
++	pinctrl-names = "default", "sleep";
++	pinctrl-0 = <&adc1_pins_mx>;
++	pinctrl-1 = <&adc1_sleep_pins_mx>;
++	vdd-supply = <&scmi_vdd>;
++	vdda-supply = <&scmi_vdd>;
++	vref-supply = <&scmi_vdd>;
++	status = "disabled";
++
++	adc1: adc@0 {
++		st,min-sample-time-nsecs = <5000>;
++		/* in6 */
++		st,adc-channels = <6>;
++		status = "okay";
++	};
++};
++
++&dcmipp{
++	pinctrl-names = "default", "sleep";
++	pinctrl-0 = <&dcmipp_pins_mx>;
++	pinctrl-1 = <&dcmipp_sleep_pins_mx>;
++	status = "disabled";
++};
++
++&m_can2 {
++	pinctrl-names = "default", "sleep";
++	pinctrl-0 = <&fdcan2_pins_mx>;
++	pinctrl-1 = <&fdcan2_sleep_pins_mx>;
++	status = "disabled";
++};
++
++&spi1 {
++	pinctrl-names = "default", "sleep";
++	pinctrl-0 = <&spi1_pins_mx>;
++	pinctrl-1 = <&spi1_sleep_pins_mx>;
++	cs-gpios = <&gpioc 2 GPIO_ACTIVE_LOW>;
++	status = "disabled";
++
++	spi@0 {
++		compatible = "linux,spidev";
++		spi-max-frequency = <10000000>;
++		reg = <0>;
++	};
++};
++
++&eth2 {
++	pinctrl-names = "default", "sleep";
++	pinctrl-0 = <&eth2_pins_mx>;
++	pinctrl-1 = <&eth2_sleep_pins_mx>;
++	phy-mode = "rmii";
++	max-speed = <100>;
++	phy-handle = <&phy0_eth2>;
++	st,ext-phyclk;
++	nvmem-cells = <&ethernet_mac2_address>;
++	nvmem-cell-names = "mac-address";
++	status = "disabled";
++
++	mdio1 {
++		#address-cells = <1>;
++		#size-cells = <0>;
++		compatible = "snps,dwmac-mdio";
++		phy0_eth2: ethernet-phy@2 {
++			clocks = <&rcc ETH2CK_K>;
++			clock-names = "rmii-ref";
++			micrel,led-mode = <1>;
++			reg = <2>;
++		};
++	};
++};
++
++&i2c5 {
++	tlv320: codec@18 {
++		compatible = "ti,tlv320aic3007";
++		#sound-dai-cells = <0>;
++		reg = <0x18>;
++		AVDD-supply = <&reg_sound_3v3>;
++		IOVDD-supply = <&reg_sound_3v3>;
++		DRVDD-supply = <&reg_sound_3v3>;
++		DVDD-supply = <&reg_sound_1v8>;
++
++		clocks = <&sai1b>;
++		clock-names = "MCLK";
++
++		status = "okay";
++
++		tlv320_port: port {
++			#address-cells = <1>;
++			#size-cells = <0>;
++
++			tlv320_tx_endpoint: endpoint@0 {
++				reg = <0>;
++				remote-endpoint = <&sai1b_endpoint>;
++				frame-master;
++				bitclock-master;
++			};
++
++			tlv320_rx_endpoint: endpoint@1 {
++				reg = <1>;
++				remote-endpoint = <&sai1a_endpoint>;
++				frame-master;
++				bitclock-master;
++			};
++		};
++
++	};
++
++	i2c_rtc: rtc@68 {
++		compatible = "microcrystal,rv4162";
++		reg = <0x68>;
++		interrupt-parent = <&gpiog>;
++		interrupts = <12 IRQ_TYPE_LEVEL_LOW>;
++		status = "disabled";
++	};
++};
++
++&sai1 {
++	pinctrl-names = "default", "sleep";
++	pinctrl-0 = <&sai1a_pins_mx>, <&sai1b_pins_mx>;
++	pinctrl-1 = <&sai1a_sleep_pins_mx>, <&sai1b_sleep_pins_mx>;
++	clocks = <&rcc SAI1>, <&scmi_clk CK_SCMI_PLL3_Q>, <&scmi_clk CK_SCMI_PLL3_R>;
++	clock-names = "pclk", "x8k", "x11k";
++	status = "disabled";
++
++	sai1a:audio-controller@4400a004{
++		dma-names = "rx";
++		st,sync = <&sai1b 2>;
++		status = "okay";
++		clocks = <&rcc SAI1_K>, <&sai1b>;
++		clock-names = "sai_ck", "MCLK";
++		status = "okay";
++
++		sai1a_port: port {
++			sai1a_endpoint: endpoint {
++				remote-endpoint = <&tlv320_rx_endpoint>;
++				format = "i2s";
++				mclk-fs = <256>;
++				dai-tdm-slot-num = <2>;
++				dai-tdm-slot-width = <16>;
++			};
++		};
++	};
++
++	sai1b:audio-controller@4400a024{
++		#clock-cells = <0>;
++		dma-names = "tx";
++		status = "okay";
++
++		sai1b_port: port {
++			sai1b_endpoint: endpoint {
++				remote-endpoint = <&tlv320_tx_endpoint>;
++				format = "i2s";
++				mclk-fs = <256>;
++				dai-tdm-slot-num = <2>;
++				dai-tdm-slot-width = <16>;
++			};
++		};
++	};
++};
++
++&usart2 {
++	pinctrl-names = "default", "sleep";
++	pinctrl-0 = <&usart2_pins_mx>;
++	pinctrl-1 = <&usart2_sleep_pins_mx>;
++	uart-has-rtscts;
++	status = "disabled";
++};
++
++&usbh_ehci {
++	phys = <&usbphyc_port0>;
++	phy-names = "usb";
++	status = "disabled";
++};
++
++&usbh_ohci {
++	phys = <&usbphyc_port0>;
++	phy-names = "usb";
++	status = "disabled";
++};
++
++&usbotg_hs {
++	pinctrl-names = "default", "sleep";
++	pinctrl-0 = <&usb_otg_hs_pins_mx>;
++	pinctrl-1 = <&usb_otg_hs_sleep_pins_mx>;
++	phys = <&usbphyc_port1 0>;
++	phy-names = "usb2-phy";
++	status = "disabled";
++};
++
++&usbphyc {
++	status = "okay";
++};
++
++&usbphyc_port0 {
++	phy-supply = <&scmi_vdd_usb>;
++};
++
++&usbphyc_port1 {
++	phy-supply = <&scmi_vdd_usb>;
++};
++
++&sdmmc1 {
++	pinctrl-names = "default", "opendrain", "sleep";
++	pinctrl-0 = <&sdmmc1_pins_mx>;
++	pinctrl-1 = <&sdmmc1_opendrain_pins_mx>;
++	pinctrl-2 = <&sdmmc1_sleep_pins_mx>;
++	cd-gpios = <&gpioi 1 GPIO_ACTIVE_LOW>;
++	st,neg-edge;
++	bus-width = <4>;
++	max-frequency = <10000000>;
++	vmmc-supply = <&scmi_vdd>;
++	status = "okay";
++};
+diff --git a/arch/arm/boot/dts/stm32mp13xx-phycore-som-pinctrl.dtsi b/arch/arm/boot/dts/stm32mp13xx-phycore-som-pinctrl.dtsi
+new file mode 100644
+index 000000000000..2549ab23e483
+--- /dev/null
++++ b/arch/arm/boot/dts/stm32mp13xx-phycore-som-pinctrl.dtsi
+@@ -0,0 +1,152 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2023 PHYTEC Messtechnik GmbH
++ * Authors: Christophe Parant <c.parant@phytec.fr>
++ */
++
++#include <dt-bindings/pinctrl/stm32-pinfunc.h>
++
++&pinctrl {
++
++	eth1_pins_mx: eth1_mx-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('A', 1, AF11)>, /* ETH1_REF_CLK */
++					 <STM32_PINMUX('B', 11, AF11)>, /* ETH1_TX_EN */
++					 <STM32_PINMUX('G', 2, AF11)>, /* ETH1_MDC */
++					 <STM32_PINMUX('G', 13, AF11)>, /* ETH1_TXD0 */
++					 <STM32_PINMUX('G', 14, AF11)>; /* ETH1_TXD1 */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <1>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('A', 2, AF11)>; /* ETH1_MDIO */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <0>;
++		};
++		pins3 {
++			pinmux = <STM32_PINMUX('C', 1, AF10)>, /* ETH1_CRS_DV */
++					 <STM32_PINMUX('C', 4, AF11)>, /* ETH1_RXD0 */
++					 <STM32_PINMUX('C', 5, AF11)>; /* ETH1_RXD1 */
++			bias-disable;
++		};
++	};
++
++	eth1_sleep_pins_mx: eth1_sleep_mx-0 {
++		pins {
++			pinmux = <STM32_PINMUX('A', 1, ANALOG)>, /* ETH1_REF_CLK */
++					 <STM32_PINMUX('A', 2, ANALOG)>, /* ETH1_MDIO */
++					 <STM32_PINMUX('B', 11, ANALOG)>, /* ETH1_TX_EN */
++					 <STM32_PINMUX('C', 1, ANALOG)>, /* ETH1_CRS_DV */
++					 <STM32_PINMUX('C', 4, ANALOG)>, /* ETH1_RXD0 */
++					 <STM32_PINMUX('C', 5, ANALOG)>, /* ETH1_RXD1 */
++					 <STM32_PINMUX('G', 2, ANALOG)>, /* ETH1_MDC */
++					 <STM32_PINMUX('G', 13, ANALOG)>, /* ETH1_TXD0 */
++					 <STM32_PINMUX('G', 14, ANALOG)>; /* ETH1_TXD1 */
++		};
++	};
++
++	i2c5_pins_mx: i2c5_mx-0 {
++		pins {
++			pinmux = <STM32_PINMUX('D', 1, AF4)>, /* I2C5_SCL */
++					 <STM32_PINMUX('H', 6, AF4)>; /* I2C5_SDA */
++			bias-disable;
++			drive-open-drain;
++			slew-rate = <0>;
++		};
++	};
++
++	i2c5_sleep_pins_mx: i2c5_sleep_mx-0 {
++		pins {
++			pinmux = <STM32_PINMUX('D', 1, ANALOG)>, /* I2C5_SCL */
++					 <STM32_PINMUX('H', 6, ANALOG)>; /* I2C5_SDA */
++		};
++	};
++
++	sdmmc2_pins_mx: sdmmc2_mx-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('B', 3, AF10)>, /* SDMMC2_D2 */
++					 <STM32_PINMUX('B', 4, AF10)>, /* SDMMC2_D3 */
++					 <STM32_PINMUX('B', 9, AF10)>, /* SDMMC2_D5 */
++					 <STM32_PINMUX('B', 14, AF10)>, /* SDMMC2_D0 */
++					 <STM32_PINMUX('B', 15, AF10)>, /* SDMMC2_D1 */
++					 <STM32_PINMUX('C', 6, AF10)>, /* SDMMC2_D6 */
++					 <STM32_PINMUX('C', 7, AF10)>, /* SDMMC2_D7 */
++					 <STM32_PINMUX('F', 0, AF10)>, /* SDMMC2_D4 */
++					 <STM32_PINMUX('G', 6, AF10)>; /* SDMMC2_CMD */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <1>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('E', 3, AF10)>; /* SDMMC2_CK */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <2>;
++		};
++	};
++
++	sdmmc2_opendrain_pins_mx: sdmmc2_opendrain_mx-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('B', 3, AF10)>, /* SDMMC2_D2 */
++					 <STM32_PINMUX('B', 4, AF10)>, /* SDMMC2_D3 */
++					 <STM32_PINMUX('B', 9, AF10)>, /* SDMMC2_D5 */
++					 <STM32_PINMUX('B', 14, AF10)>, /* SDMMC2_D0 */
++					 <STM32_PINMUX('B', 15, AF10)>, /* SDMMC2_D1 */
++					 <STM32_PINMUX('C', 6, AF10)>, /* SDMMC2_D6 */
++					 <STM32_PINMUX('C', 7, AF10)>, /* SDMMC2_D7 */
++					 <STM32_PINMUX('F', 0, AF10)>; /* SDMMC2_D4 */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <1>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('E', 3, AF10)>; /* SDMMC2_CK */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <2>;
++		};
++		pins3 {
++			pinmux = <STM32_PINMUX('G', 6, AF10)>; /* SDMMC2_CMD */
++			bias-disable;
++			drive-open-drain;
++			slew-rate = <1>;
++		};
++	};
++
++	sdmmc2_sleep_pins_mx: sdmmc2_sleep_mx-0 {
++		pins {
++			pinmux = <STM32_PINMUX('B', 3, ANALOG)>, /* SDMMC2_D2 */
++					 <STM32_PINMUX('B', 4, ANALOG)>, /* SDMMC2_D3 */
++					 <STM32_PINMUX('B', 9, ANALOG)>, /* SDMMC2_D5 */
++					 <STM32_PINMUX('B', 14, ANALOG)>, /* SDMMC2_D0 */
++					 <STM32_PINMUX('B', 15, ANALOG)>, /* SDMMC2_D1 */
++					 <STM32_PINMUX('C', 6, ANALOG)>, /* SDMMC2_D6 */
++					 <STM32_PINMUX('C', 7, ANALOG)>, /* SDMMC2_D7 */
++					 <STM32_PINMUX('E', 3, ANALOG)>, /* SDMMC2_CK */
++					 <STM32_PINMUX('F', 0, ANALOG)>, /* SDMMC2_D4 */
++					 <STM32_PINMUX('G', 6, ANALOG)>; /* SDMMC2_CMD */
++		};
++	};
++
++	uart4_pins_mx: uart4_mx-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('D', 6, AF8)>; /* UART4_TX */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <0>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('D', 8, AF8)>; /* UART4_RX */
++			bias-pull-up;
++		};
++	};
++
++	uart4_sleep_pins_mx: uart4_sleep_mx-0 {
++		pins {
++			pinmux = <STM32_PINMUX('D', 6, ANALOG)>, /* UART4_TX */
++						<STM32_PINMUX('D', 8, ANALOG)>; /* UART4_RX */
++		};
++	};
++};
+diff --git a/arch/arm/boot/dts/stm32mp13xx-phycore-som.dtsi b/arch/arm/boot/dts/stm32mp13xx-phycore-som.dtsi
+new file mode 100644
+index 000000000000..5cf2c97352bf
+--- /dev/null
++++ b/arch/arm/boot/dts/stm32mp13xx-phycore-som.dtsi
+@@ -0,0 +1,144 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2023 PHYTEC Messtechnik GmbH
++ * Authors: Christophe Parant <c.parant@phytec.fr>
++ */
++
++#include "stm32mp13xx-phycore-som-pinctrl.dtsi"
++#include <dt-bindings/gpio/gpio.h>
++#include <dt-bindings/input/input.h>
++#include <dt-bindings/net/ti-dp83867.h>
++
++/ {
++	model = "PHYTEC phyCORE-STM32MP13";
++	compatible = "phytec,stm32mp13-pcl076", "st,stm32mp13";
++
++	aliases {
++		ethernet0 = &eth1;
++		serial0 = &uart4;
++	};
++
++	chosen {
++		stdout-path = "serial0:115200n8";
++	};
++};
++
++&scmi_regu {
++	scmi_vddcpu: voltd-vddcpu {
++		voltd-name = "vddcpu";
++		regulator-name = "vddcpu";
++	};
++	scmi_vdd: voltd-vdd {
++		voltd-name = "vdd";
++		regulator-name = "vdd";
++	};
++	scmi_vdd_usb: voltd-vdd_usb {
++		voltd-name = "vdd_usb";
++		regulator-name = "vdd_usb";
++	};
++};
++
++&sram {
++	dma_pool: dma-sram@0 {
++		reg = <0x0 0x4000>;
++		pool;
++	};
++};
++
++&dma1 {
++	sram = <&dma_pool>;
++};
++
++&dma2 {
++	sram = <&dma_pool>;
++};
++
++&dts {
++	status = "okay";
++};
++
++&bsec{
++	status = "okay";
++};
++
++&crc1 {
++	status = "okay";
++};
++
++&i2c5 {
++	pinctrl-names = "default", "sleep";
++	pinctrl-0 = <&i2c5_pins_mx>;
++	pinctrl-1 = <&i2c5_sleep_pins_mx>;
++	i2c-scl-rising-time-ns = <185>;
++	i2c-scl-falling-time-ns = <20>;
++	status = "okay";
++	/* spare dmas for other usage */
++	/delete-property/dmas;
++	/delete-property/dma-names;
++
++	i2c5_eeprom: eeprom@52 {
++		compatible = "microchip,24c32", "atmel,24c32";
++		reg = <0x52>;
++		status = "disabled";
++	};
++};
++
++&iwdg2 {
++	timeout-sec = <32>;
++	status = "okay";
++};
++
++&rtc {
++	status = "okay";
++};
++
++&eth1{
++	pinctrl-names = "default", "sleep";
++	pinctrl-0 = <&eth1_pins_mx>;
++	pinctrl-1 = <&eth1_sleep_pins_mx>;
++	phy-mode = "rmii";
++	max-speed = <100>;
++	phy-handle = <&phy0_eth1>;
++	nvmem-cells = <&ethernet_mac1_address>;
++	nvmem-cell-names = "mac-address";
++	status = "disabled";
++
++	mdio1 {
++		#address-cells = <1>;
++		#size-cells = <0>;
++		compatible = "snps,dwmac-mdio";
++
++		phy0_eth1: ethernet-phy@1 {
++			compatible = "ethernet-phy-ieee802.3-c22";
++			reg = <1>;
++			interrupt-parent = <&gpioi>;
++			interrupts = <3 IRQ_TYPE_EDGE_FALLING>;
++			wakeup-source;
++		};
++	};
++};
++
++&sdmmc2 {
++	pinctrl-names = "default", "opendrain", "sleep";
++	pinctrl-0 = <&sdmmc2_pins_mx>;
++	pinctrl-1 = <&sdmmc2_opendrain_pins_mx>;
++	pinctrl-2 = <&sdmmc2_sleep_pins_mx>;
++	non-removable;
++	no-sd;
++	no-sdio;
++	st,neg-edge;
++	bus-width = <8>;
++	vmmc-supply = <&scmi_vdd>;
++	vqmmc-supply = <&scmi_vdd>;
++	mmc-ddr-3_3v;
++	status = "disabled";
++};
++
++&uart4 {
++	pinctrl-names = "default", "sleep";
++	pinctrl-0 = <&uart4_pins_mx>;
++	pinctrl-1 = <&uart4_sleep_pins_mx>;
++	/delete-property/dmas;
++	/delete-property/dma-names;
++	status = "okay";
++};
+-- 
+2.25.1
+
