@@ -1,0 +1,48 @@
+From e8a29642901c6780f74532bac61ee14e5746418e Mon Sep 17 00:00:00 2001
+From: Christophe Parant <c.parant@phytec.fr>
+Date: Mon, 2 Oct 2023 14:58:43 +0200
+Subject: [PATCH 4/4] ARM 5.15.67 stm32mp1 phy2 NET
+
+---
+ drivers/net/phy/dp83822.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/phy/dp83822.c b/drivers/net/phy/dp83822.c
+index a792dd6d2ec3..28f62275fcdd 100644
+--- a/drivers/net/phy/dp83822.c
++++ b/drivers/net/phy/dp83822.c
+@@ -232,7 +232,8 @@ static int dp83822_config_intr(struct phy_device *phydev)
+ 				DP83822_ENERGY_DET_INT_EN |
+ 				DP83822_LINK_QUAL_INT_EN);
+ 
+-		if (!dp83822->fx_enabled)
++		/* Private data pointer is NULL on DP83825/26 */
++		if (!dp83822 || !dp83822->fx_enabled)
+ 			misr_status |= DP83822_ANEG_COMPLETE_INT_EN |
+ 				       DP83822_DUP_MODE_CHANGE_INT_EN |
+ 				       DP83822_SPEED_CHANGED_INT_EN;
+@@ -252,9 +253,9 @@ static int dp83822_config_intr(struct phy_device *phydev)
+ 				DP83822_PAGE_RX_INT_EN |
+ 				DP83822_EEE_ERROR_CHANGE_INT_EN);
+ 
+-		if (!dp83822->fx_enabled)
+-			misr_status |= DP83822_MDI_XOVER_INT_EN |
+-				       DP83822_ANEG_ERR_INT_EN |
++		/* Private data pointer is NULL on DP83825/26 */
++		if (!dp83822 || !dp83822->fx_enabled)
++			misr_status |= DP83822_ANEG_ERR_INT_EN |
+ 				       DP83822_WOL_PKT_INT_EN;
+ 
+ 		err = phy_write(phydev, MII_DP83822_MISR2, misr_status);
+@@ -518,6 +519,8 @@ static int dp83822_read_straps(struct phy_device *phydev)
+ 	if (val < 0)
+ 		return val;
+ 
++	phydev_dbg(phydev, "SOR1 strap register: 0x%04x\n", val);
++
+ 	fx_enabled = (val & DP83822_COL_STRAP_MASK) >> DP83822_COL_SHIFT;
+ 	if (fx_enabled == DP83822_STRAP_MODE2 ||
+ 	    fx_enabled == DP83822_STRAP_MODE3)
+-- 
+2.25.1
+
