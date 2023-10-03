@@ -22,22 +22,22 @@ part metadata1 --source rawcopy --fstype=ext4 --fsoptions "noauto" --part-name=m
 part metadata2 --source rawcopy --fstype=ext4 --fsoptions "noauto" --part-name=metadata2 --sourceparams="file=${DEPLOY_DIR_IMAGE}/arm-trusted-firmware/metadata.bin" --ondisk mmcblk --part-type 0x8301 --fixed-size ${STM32MP_METADATA_SIZE}K
 
 # Fip partitions
-part fip-a --source rawcopy --fstype=ext4 --fsoptions "noauto" --part-name=fip-a --sourceparams="file=${DEPLOY_DIR_IMAGE}/fip/fip-${STM32MP_DEVICETREE}-${WKS_BOOTSCHEME}.bin" --ondisk mmcblk --part-type ${DEVICE_TYPEUUID_FIP} --fixed-size ${STM32MP_SSBL1_SIZE}K --uuid ${DEVICE_PARTUUID_FIP_A}
+part fip-a --source rawcopy --fstype=ext4 --fsoptions "noauto" --part-name=fip-a --sourceparams="file=${DEPLOY_DIR_IMAGE}/fip/fip-${STM32MP_DEVICETREE}-${BOOTSCHEME}.bin" --ondisk mmcblk --part-type ${DEVICE_TYPEUUID_FIP} --fixed-size ${STM32MP_SSBL1_SIZE}K --uuid ${DEVICE_PARTUUID_FIP_A}
 part fip-b --fstype=ext4 --fsoptions "noauto" --part-name=fip-b --ondisk mmcblk --part-type ${DEVICE_TYPEUUID_FIP} --fixed-size ${STM32MP_SSBL1_SIZE}K --uuid ${DEVICE_PARTUUID_FIP_B}
 
 # U-BOOT env
-part u-boot-env --source empty --part-name=uboot-env --ondisk mmcblk --part-type 0x8301 --fixed-size ${STM32MP_UENV_SIZE}K
+part u-boot-env --source empty --part-name=u-boot-env --ondisk mmcblk --part-type 0x8301 --fixed-size ${STM32MP_UENV_SIZE}K
 
 # Bootfs
-part bootfs-a --source rawcopy --sourceparams="file=${STM32MP_BOOTFS_IMAGE}-${DISTRO}-${MACHINE}.ext4" --ondisk mmcblk --fstype=ext4 --label bootfs --active --fixed-size ${STM32MP_BOOTFS_SIZE}K
-part bootfs-b --ondisk mmcblk --fstype=ext4 --label bootfs --active --fixed-size ${STM32MP_BOOTFS_SIZE}K
+part bootfs-a --source rawcopy --sourceparams="file=${STM32MP_BOOTFS_IMAGE}-${DISTRO}-${MACHINE}.ext4" --ondisk mmcblk --fstype=ext4 --part-name bootfs --active --fixed-size ${STM32MP_BOOTFS_SIZE}K
+part bootfs-b --ondisk mmcblk --fstype=ext4 --part-name bootfs --active --fixed-size ${STM32MP_BOOTFS_SIZE}K
 # Vendorfs
-part vendorfs-a --source rawcopy --sourceparams="file=${STM32MP_VENDORFS_IMAGE}-${DISTRO}-${MACHINE}.ext4" --ondisk mmcblk --fstype=ext4 --label vendorfs --active --fixed-size ${STM32MP_VENDORFS_SIZE}K
-part vendorfs-b --ondisk mmcblk --fstype=ext4 --label vendorfs --active --fixed-size ${STM32MP_VENDORFS_SIZE}K
+part vendorfs-a --source rawcopy --sourceparams="file=${STM32MP_VENDORFS_IMAGE}-${DISTRO}-${MACHINE}.ext4" --ondisk mmcblk --fstype=ext4 --part-name vendorfs --fixed-size ${STM32MP_VENDORFS_SIZE}K
+part vendorfs-b --ondisk mmcblk --fstype=ext4 --part-name vendorfs --fixed-size ${STM32MP_VENDORFS_SIZE}K
 # Rootfs
-part rootfs-a --source rootfs --ondisk mmcblk --fstype=ext4 --label rootfs --fixed-size ${IMAGE_ROOTFS_MAXSIZE}K --uuid ${DEVICE_PARTUUID_ROOTFS:mmc0}
-part rootfs-b --ondisk mmcblk --fstype=ext4 --label rootfs --fixed-size ${IMAGE_ROOTFS_MAXSIZE}K --uuid ${DEVICE_PARTUUID_ROOTFS:mmc0}
+part rootfs-a --source rootfs --ondisk mmcblk --fstype=ext4 --part-name rootfs --fixed-size ${IMAGE_ROOTFS_MAXSIZE}K --uuid ${DEVICE_PARTUUID_ROOTFS:mmc0}
+part rootfs-b --ondisk mmcblk --fstype=ext4 --part-name rootfs --fixed-size ${IMAGE_ROOTFS_MAXSIZE}K --uuid ${DEVICE_PARTUUID_ROOTFS:mmc0}
 # Userfs
-part userfs --source rawcopy --sourceparams="file=${STM32MP_USERFS_IMAGE}-${DISTRO}-${MACHINE}.ext4" --ondisk mmcblk --fstype=ext4 --label userfs --active --fixed-size ${STM32MP_USERFS_SIZE}K
+part userfs --source rawcopy --sourceparams="file=${STM32MP_USERFS_IMAGE}-${DISTRO}-${MACHINE}.ext4" --ondisk mmcblk --fstype=ext4 --part-name userfs --fixed-size ${STM32MP_USERFS_SIZE}K
 
 bootloader --ptable gpt
