@@ -8,6 +8,10 @@ SRC_URI += " \
     file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0005-ARM-5.15.67-stm32mp1-phy1-RTC.patch \
     file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0006-ARM-5.15.67-stm32mp1-phy1-MEDIA.patch \
     file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0007-ARM-5.15.67-stm32mp1-phy1-SPI.patch \
+    file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0001-ARM-5.15.67-stm32mp1-phy2-DT-OVERLAY.patch \
+    file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0002-ARM-5.15.67-stm32mp1-phy2-DEVICETREE.patch \
+    file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0003-ARM-5.15.67-stm32mp1-phy2-MEDIA.patch \
+    file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0004-ARM-5.15.67-stm32mp1-phy2-NET.patch \
 "
 
 # -------------------------------------------------------------
@@ -43,7 +47,7 @@ SRC_URI += "file://${LINUX_VERSION}/fragment-16-camera-ar0144.config;subdir=frag
 BBCLASSEXTEND = "devupstream:target"
 
 SRC_URI:class-devupstream = "git://git.phytec.de/linux-stm32mp;protocol=git;branch=v${LINUX_VERSION}-phy"
-SRCREV:class-devupstream = "ff82d21716482b228258b3eab232c2c87ea704a1"
+SRCREV:class-devupstream = "6e5a83d9fa8d0cdd6b97730d51105b386a1d6f7f"
 
 # -----------------------------------------------------------------------------------
 # Configure default preference to manage dynamic selection between tarball and github
