@@ -24,7 +24,7 @@ PR = "${INC_PR}.0"
 # NOTE: Keep version in filename in sync with commit id!
 # NOTE: Keep version of TI_LINUX_FW_SRCREV in sync, configured in
 #       dynamic-layers/meta-ti/recipes-bsp/ti-linux-fw/ti-linux-fw-freeze.inc
-SRCREV = "ba0cf107a09280c4e5c07736c9955a21e649f4bd"
+SRCREV = "03da409af725d3adedc3092a4beab401a9e45d01"
 S = "${WORKDIR}/git"
 
 # Special configuration for remoteproc/rpmsg IPC modules
