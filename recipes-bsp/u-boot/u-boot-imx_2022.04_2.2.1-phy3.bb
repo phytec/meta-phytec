@@ -50,7 +50,7 @@ do_deploy:append:mx8m-nxp-bsp () {
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 COMPATIBLE_MACHINE = "^("
-COMPATIBLE_MACHINE .= "none"
+COMPATIBLE_MACHINE .= "phyboard-zeta-imx7d-1"
 COMPATIBLE_MACHINE .= ")$"
 
 UBOOT_NAME:mx8-nxp-bsp = "u-boot-${MACHINE}.bin-${UBOOT_CONFIG}"
