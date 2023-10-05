@@ -18,6 +18,7 @@ CERT_PATH ??= "${OEROOT}/../../phytec-dev-ca"
 BOOTLOADER_SIGN_IMG_PATH ??= "${CERT_PATH}/nxp_habv4_pki/crts/IMG1_1_sha256_4096_65537_v3_usr_crt.pem"
 BOOTLOADER_SIGN_CSF_PATH ??= "${CERT_PATH}/nxp_habv4_pki/crts/CSF1_1_sha256_4096_65537_v3_usr_crt.pem"
 BOOTLOADER_SIGN_SRKFUSE_PATH ??= "${CERT_PATH}/nxp_habv4_pki/crts/SRK_1_2_3_4_table.bin"
+BOOTLOADER_HABV4_SRK_INDEX ??= "0"
 
 FITIMAGE_SIGN ??= "true"
 FITIMAGE_SIGN[type] = "boolean"
@@ -135,6 +136,7 @@ do_patch:append:secureboot() {
             #activated HAB
             file.write("CONFIG_HAB=y\n")
             file.write("CONFIG_HABV4=y\n")
+            file.write('CONFIG_HABV4_SRK_INDEX=%s\n' % d.getVar("BOOTLOADER_HABV4_SRK_INDEX"))
             file.write('CONFIG_HABV4_TABLE_BIN="%s"\n' % d.getVar("BOOTLOADER_SIGN_SRKFUSE_PATH"))
             file.write('CONFIG_HABV4_CSF_CRT_PEM="%s"\n' % d.getVar("BOOTLOADER_SIGN_CSF_PATH"))
             file.write('CONFIG_HABV4_IMG_CRT_PEM="%s"\n' % d.getVar("BOOTLOADER_SIGN_IMG_PATH"))
