@@ -560,17 +560,19 @@ EXTRA_KERNEL_ARGS:update += "rauc.slot=${bootslot}"
 EXTRA_IMAGEDEPENDS += "virtual/bootloader"
 
 # Define default U-Boot config
-UBOOT_CONFIG += "${@bb.utils.contains_any('BOOTSCHEME_LABELS', 'optee trusted', 'trusted', '', d)}"
-# The 'basic' config is only available for stm32mp1 machines
-UBOOT_CONFIG:append:stm32mp1common = " basic "
+UBOOT_CONFIG = ""
+# STM32MP15
+UBOOT_CONFIG:append:stm32mp15common = "${@bb.utils.contains_any('BOOTSCHEME_LABELS', 'optee trusted', 'trusted_stm32mp15', '', d)}"
+# STM32MP13
+UBOOT_CONFIG:append:stm32mp13common = "${@bb.utils.contains_any('BOOTSCHEME_LABELS', 'optee trusted', 'trusted_stm32mp13', '', d)}"
 
 # Select u-boot binary that needs specific devicetree suffix (from UBOOT_DEVICETREE)
 # 'u-boot-nodtb.bin' and 'u-boot.dtb' : prefer 'u-boot.dtb' binary as 'u-boot-nodtb.bin'
 # doesn't need any devicetree suffix (specific case for 'u-boot-nodtb' binary
 # implemented on u-boot-stm32mp recipe)
 # Define u-boot defconfig and binary to use for each UBOOT_CONFIG
-UBOOT_CONFIG[basic]   = "stm32mp15_basic_defconfig,,u-boot.img"
-UBOOT_CONFIG[trusted] = "phycore-stm32mp15_defconfig,,u-boot.dtb"
+UBOOT_CONFIG[trusted_stm32mp15] = "phycore-stm32mp15_defconfig,,u-boot.dtb"
+UBOOT_CONFIG[trusted_stm32mp13] = "phycore-stm32mp13_defconfig,,u-boot.dtb"
 
 # List of U-Boot device tree to use
 UBOOT_DEVICETREE = "${STM32MP_DEVICETREE}"
