@@ -28,6 +28,7 @@ KERNEL_CONFIG_FRAGMENTS += "${WORKDIR}/fragments/${LINUX_VERSION}/fragment-13-ad
 KERNEL_CONFIG_FRAGMENTS += "${WORKDIR}/fragments/${LINUX_VERSION}/fragment-14-RPI-screen.config"
 KERNEL_CONFIG_FRAGMENTS += "${WORKDIR}/fragments/${LINUX_VERSION}/fragment-15-camera-mt9v032.config"
 KERNEL_CONFIG_FRAGMENTS += "${WORKDIR}/fragments/${LINUX_VERSION}/fragment-16-camera-ar0144.config"
+KERNEL_CONFIG_FRAGMENTS += "${WORKDIR}/fragments/${LINUX_VERSION}/fragment-17-phy-dp83826.config"
 
 SRC_URI += "file://${LINUX_VERSION}/fragment-06-rtc.config;subdir=fragments"
 SRC_URI += "file://${LINUX_VERSION}/fragment-07-eeprom.config;subdir=fragments"
@@ -40,6 +41,7 @@ SRC_URI += "file://${LINUX_VERSION}/fragment-13-add-pca953x-led-support.config;s
 SRC_URI += "file://${LINUX_VERSION}/fragment-14-RPI-screen.config;subdir=fragments"
 SRC_URI += "file://${LINUX_VERSION}/fragment-15-camera-mt9v032.config;subdir=fragments"
 SRC_URI += "file://${LINUX_VERSION}/fragment-16-camera-ar0144.config;subdir=fragments"
+SRC_URI += "file://${LINUX_VERSION}/fragment-17-phy-dp83826.config;subdir=fragments"
 
 # ---------------------------------
 # Configure devupstream class usage
