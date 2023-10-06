@@ -506,32 +506,43 @@ STM32MP_KERNEL_DEVICETREE += "${@' '.join('%s.dtb' % d for d in '${KERNEL_DT}'.s
 STM32MP_KERNEL_DEVICETREE += "${@' '.join('%s.dtb' % d for d in '${CUBE_M4_EXAMPLES_DT}'.split())}"
 STM32MP_KERNEL_DEVICETREE += "${@' '.join('%s.dtb' % d for d in '${LINUX_A7_EXAMPLES_DT}'.split())}"
 
-# List of device tree overlays to install
+# List of device tree overlays to install for phyBOARD-Sargas
+PHY_EXPANSIONS:phycore-stm32mp15 = "${PHY_EXPANSIONS_SARGAS}"
 # Displays
-PHY_EXPANSIONS += "phyboard-stm32mp1-peb-av02-lcd.dtbo"
-PHY_EXPANSIONS += "${@bb.utils.contains('MACHINE_FEATURES', 'hdmi', 'phyboard-stm32mp1-peb-av01-hdmi.dtbo', '', d)}"
-PHY_EXPANSIONS += "${@bb.utils.contains('MACHINE_FEATURES', 'mipi-dsi', 'phyboard-stm32mp1-dsi-lcd-mb1407.dtbo', '', d)}"
-PHY_EXPANSIONS += "${@bb.utils.contains('MACHINE_FEATURES', 'mipi-dsi', 'phyboard-stm32mp1-dsi-rpi-official-display.dtbo', '', d)}"
-
+PHY_EXPANSIONS_SARGAS += "phyboard-stm32mp1-peb-av02-lcd.dtbo"
+PHY_EXPANSIONS_SARGAS += "${@bb.utils.contains('MACHINE_FEATURES', 'hdmi', 'phyboard-stm32mp1-peb-av01-hdmi.dtbo', '', d)}"
+PHY_EXPANSIONS_SARGAS += "${@bb.utils.contains('MACHINE_FEATURES', 'mipi-dsi', 'phyboard-stm32mp1-dsi-lcd-mb1407.dtbo', '', d)}"
+PHY_EXPANSIONS_SARGAS += "${@bb.utils.contains('MACHINE_FEATURES', 'mipi-dsi', 'phyboard-stm32mp1-dsi-rpi-official-display.dtbo', '', d)}"
 # Configurations examples for the specific connectors
-PHY_EXPANSIONS += "phyboard-stm32mp1-pi-hat-extension.dtbo"
-PHY_EXPANSIONS += "phyboard-stm32mp1-uno-r3-extension.dtbo"
-PHY_EXPANSIONS += "phyboard-stm32mp1-motor-control.dtbo"
-PHY_EXPANSIONS += "phyboard-stm32mp1-motor-control-m4.dtbo"
-
+PHY_EXPANSIONS_SARGAS += "phyboard-stm32mp1-pi-hat-extension.dtbo"
+PHY_EXPANSIONS_SARGAS += "phyboard-stm32mp1-uno-r3-extension.dtbo"
+PHY_EXPANSIONS_SARGAS += "phyboard-stm32mp1-motor-control.dtbo"
+PHY_EXPANSIONS_SARGAS += "phyboard-stm32mp1-motor-control-m4.dtbo"
 # Wireless expansions
-PHY_EXPANSIONS += "${@bb.utils.contains('MACHINE_FEATURES', 'wifi', 'phyboard-stm32mp1-peb-wlbt-05-wlan.dtbo', '', d)}"
-PHY_EXPANSIONS += "${@bb.utils.contains('MACHINE_FEATURES', 'bluetooth', 'phyboard-stm32mp1-peb-wlbt-05-bluetooth-usart3.dtbo', '', d)}"
-PHY_EXPANSIONS += "${@bb.utils.contains('MACHINE_FEATURES', 'bluetooth', 'phyboard-stm32mp1-peb-wlbt-05-bluetooth-usart1.dtbo', '', d)}"
-PHY_EXPANSIONS += "${@bb.utils.contains_any('MACHINE_FEATURES', 'wifi bluetooth', 'phyboard-stm32mp1-pi-hat-redbear.dtbo', '', d)}"
-
+PHY_EXPANSIONS_SARGAS += "${@bb.utils.contains('MACHINE_FEATURES', 'wifi', 'phyboard-stm32mp1-peb-wlbt-05-wlan.dtbo', '', d)}"
+PHY_EXPANSIONS_SARGAS += "${@bb.utils.contains('MACHINE_FEATURES', 'bluetooth', 'phyboard-stm32mp1-peb-wlbt-05-bluetooth-usart3.dtbo', '', d)}"
+PHY_EXPANSIONS_SARGAS += "${@bb.utils.contains('MACHINE_FEATURES', 'bluetooth', 'phyboard-stm32mp1-peb-wlbt-05-bluetooth-usart1.dtbo', '', d)}"
+PHY_EXPANSIONS_SARGAS += "${@bb.utils.contains_any('MACHINE_FEATURES', 'wifi bluetooth', 'phyboard-stm32mp1-pi-hat-redbear.dtbo', '', d)}"
 # phyCAM-P
-PHY_EXPANSIONS += "phyboard-stm32mp1-pcm939l-phycam-vm016-8bits.dtbo"
-PHY_EXPANSIONS += "phyboard-stm32mp1-pcm939-phycam-vm016-8bits.dtbo"
-PHY_EXPANSIONS += "phyboard-stm32mp1-pcm939-phycam-vm016-10bits.dtbo"
+PHY_EXPANSIONS_SARGAS += "phyboard-stm32mp1-pcm939l-phycam-vm016-8bits.dtbo"
+PHY_EXPANSIONS_SARGAS += "phyboard-stm32mp1-pcm939-phycam-vm016-8bits.dtbo"
+PHY_EXPANSIONS_SARGAS += "phyboard-stm32mp1-pcm939-phycam-vm016-10bits.dtbo"
 
 # DT overlay to enable RS485 at boot time
-PHY_EXPANSIONS += "phyboard-stm32mp1-rs485.dtbo"
+PHY_EXPANSIONS_SARGAS += "phyboard-stm32mp1-rs485.dtbo"
+
+# List of device tree overlays to install for phyBOARD-Segin
+PHY_EXPANSIONS:phycore-stm32mp13 = "${PHY_EXPANSIONS_SEGIN}"
+# Displays
+PHY_EXPANSIONS_SEGIN += "stm32mp135x-phyboard-segin-peb-av-02-lcd.dtbo"
+PHY_EXPANSIONS_SEGIN += "stm32mp135x-phyboard-segin-peb-av-02-lcd-resistive.dtbo"
+PHY_EXPANSIONS_SEGIN += "${@bb.utils.contains('MACHINE_FEATURES', 'hdmi', 'stm32mp135x-phyboard-segin-peb-av-01-hdmi.dtbo', '', d)}"
+# Evaluation board
+PHY_EXPANSIONS_SEGIN += "stm32mp13xx-phyboard-segin-peb-eval-01-leds-buttons.dtbo"
+PHY_EXPANSIONS_SEGIN += "stm32mp13xx-phyboard-segin-peb-eval-01-jtag.dtbo"
+# phyCAM-P
+PHY_EXPANSIONS_SEGIN += "stm32mp135x-phyboard-segin-phycam-vm016.dtbo"
+
 
 # Set LOADADDR
 # Set this address to 0xC2000040, which is 0xC2000000 + 0x40.
