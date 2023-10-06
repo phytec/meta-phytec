@@ -12,6 +12,10 @@ MACHINEOVERRIDES .= ":stcommon"
 # Define specific common layer name
 MACHINEOVERRIDES .= ":stm32mpcommon"
 
+# Define the EULA file to use
+EULA_FILE_ST:stm32mpcommon = "${PHYCORE_STM32MP_BASE}/conf/eula/${MACHINE}"
+EULA_FILE_ST_MD5SUM:stm32mpcommon = "8b505090fb679839cefbcc784afe8ce9"
+
 # =========================================================================
 # SOC
 # =========================================================================
