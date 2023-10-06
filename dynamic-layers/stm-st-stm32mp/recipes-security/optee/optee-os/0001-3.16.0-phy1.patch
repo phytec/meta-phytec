@@ -1,0 +1,1277 @@
+From 6dab3a4911dcd2702fac88276d551336abe781bc Mon Sep 17 00:00:00 2001
+From: Christophe Parant <c.parant@phytec.fr>
+Date: Mon, 2 Oct 2023 15:16:58 +0200
+Subject: [PATCH] 3.16.0 phy1
+
+---
+ .../dts/stm32mp135f-phycore-som-emmc-1gib.dts |  41 ++
+ .../stm32mp135f-phycore-som-emmc-512mb.dts    |  41 ++
+ .../dts/stm32mp13xx-phycore-som-pinctrl.dtsi  |  61 +++
+ .../arch/arm/dts/stm32mp13xx-phycore-som.dtsi | 384 ++++++++++++++++
+ .../dts/stm32mp157c-phycore-som-emmc-1gib.dts |  26 ++
+ .../dts/stm32mp15xx-phycore-som-pinctrl.dtsi  | 200 +++++++++
+ .../arch/arm/dts/stm32mp15xx-phycore-som.dtsi | 422 ++++++++++++++++++
+ core/arch/arm/plat-stm32mp1/conf.mk           |   9 +-
+ 8 files changed, 1182 insertions(+), 2 deletions(-)
+ create mode 100644 core/arch/arm/dts/stm32mp135f-phycore-som-emmc-1gib.dts
+ create mode 100644 core/arch/arm/dts/stm32mp135f-phycore-som-emmc-512mb.dts
+ create mode 100644 core/arch/arm/dts/stm32mp13xx-phycore-som-pinctrl.dtsi
+ create mode 100644 core/arch/arm/dts/stm32mp13xx-phycore-som.dtsi
+ create mode 100644 core/arch/arm/dts/stm32mp157c-phycore-som-emmc-1gib.dts
+ create mode 100644 core/arch/arm/dts/stm32mp15xx-phycore-som-pinctrl.dtsi
+ create mode 100644 core/arch/arm/dts/stm32mp15xx-phycore-som.dtsi
+
+diff --git a/core/arch/arm/dts/stm32mp135f-phycore-som-emmc-1gib.dts b/core/arch/arm/dts/stm32mp135f-phycore-som-emmc-1gib.dts
+new file mode 100644
+index 00000000..f2f98e8d
+--- /dev/null
++++ b/core/arch/arm/dts/stm32mp135f-phycore-som-emmc-1gib.dts
+@@ -0,0 +1,41 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2023 PHYTEC Messtechnik GmbH
++ * Author: Christophe Parant <c.parant@phytec.fr>
++ */
++
++/dts-v1/;
++
++#include <dt-bindings/clock/stm32mp13-clksrc.h>
++#include "stm32mp135.dtsi"
++#include "stm32mp13xf.dtsi"
++#include "stm32mp13xx-phycore-som.dtsi"
++
++/ {
++	model = "PHYTEC phyCORE-STM32MP135F with eMMC and 1GiB RAM";
++	compatible = "phytec,stm32mp135f-pcl076-emmc-1gib", "st,stm32mp135";
++
++	memory@c0000000 {
++		device_type = "memory";
++		reg = <0xc0000000 0x40000000>;
++	};
++
++	reserved-memory {
++		#address-cells = <1>;
++		#size-cells = <1>;
++		ranges;
++		optee_framebuffer: optee-framebuffer@dd000000 {
++			/* Secure framebuffer memory */
++			reg = <0xfd000000 0x1000000>;
++			st,protreg = <TZC_REGION_S_RDWR 0>;
++		};
++	};
++};
++
++&pka{
++	status = "okay";
++};
++
++&saes{
++	status = "okay";
++};
+diff --git a/core/arch/arm/dts/stm32mp135f-phycore-som-emmc-512mb.dts b/core/arch/arm/dts/stm32mp135f-phycore-som-emmc-512mb.dts
+new file mode 100644
+index 00000000..97520b21
+--- /dev/null
++++ b/core/arch/arm/dts/stm32mp135f-phycore-som-emmc-512mb.dts
+@@ -0,0 +1,41 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2023 PHYTEC Messtechnik GmbH
++ * Author: Christophe Parant <c.parant@phytec.fr>
++ */
++
++/dts-v1/;
++
++#include <dt-bindings/clock/stm32mp13-clksrc.h>
++#include "stm32mp135.dtsi"
++#include "stm32mp13xf.dtsi"
++#include "stm32mp13xx-phycore-som.dtsi"
++
++/ {
++	model = "PHYTEC phyCORE-STM32MP135F with eMMC and 512MB RAM";
++	compatible = "phytec,stm32mp135f-pcl076-emmc-512mb", "st,stm32mp135";
++
++	memory@c0000000 {
++		device_type = "memory";
++		reg = <0xc0000000 0x20000000>;
++	};
++
++	reserved-memory {
++		#address-cells = <1>;
++		#size-cells = <1>;
++		ranges;
++		optee_framebuffer: optee-framebuffer@dd000000 {
++			/* Secure framebuffer memory */
++			reg = <0xdd000000 0x1000000>;
++			st,protreg = <TZC_REGION_S_RDWR 0>;
++		};
++	};
++};
++
++&pka{
++	status = "okay";
++};
++
++&saes{
++	status = "okay";
++};
+diff --git a/core/arch/arm/dts/stm32mp13xx-phycore-som-pinctrl.dtsi b/core/arch/arm/dts/stm32mp13xx-phycore-som-pinctrl.dtsi
+new file mode 100644
+index 00000000..f7545761
+--- /dev/null
++++ b/core/arch/arm/dts/stm32mp13xx-phycore-som-pinctrl.dtsi
+@@ -0,0 +1,61 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2023 PHYTEC Messtechnik GmbH
++ * Author: Christophe Parant <c.parant@phytec.fr>
++ */
++
++#include <dt-bindings/pinctrl/stm32-pinfunc.h>
++
++&pinctrl {
++	rcc_pins_mx: rcc_mx-0 {
++		pins {
++			pinmux = <STM32_PINMUX('D', 7, AF0)>; /* RCC_MCO_1 */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <1>;
++		};
++	};
++
++	uart4_pins_mx: uart4_mx-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('D', 6, AF8)>; /* UART4_TX */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <0>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('D', 8, AF8)>; /* UART4_RX */
++			bias-pull-up;
++		};
++	};
++
++	vddcpu_pins_a: vddcpu_a-0 {
++		pins {
++			pinmux = <STM32_PINMUX('C', 13, RSVD)>; /* X_OD_OPP */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <0>;
++		};
++	};
++
++	wakeup_pins: wakeup_pins {
++		wakeup_pin_1: pins1 {
++			pinmux = <STM32_PINMUX('F', 8, GPIO)>;
++		};
++		wakeup_pin_2: pins2 {
++			pinmux = <STM32_PINMUX('I', 3, GPIO)>;
++		};
++		wakeup_pin_3: pins3 {
++			pinmux = <STM32_PINMUX('C', 13, GPIO)>;
++		};
++		wakeup_pin_4: pins4 {
++			pinmux = <STM32_PINMUX('I', 1, GPIO)>;
++		};
++		wakeup_pin_5: pins5 {
++			pinmux = <STM32_PINMUX('I', 2, GPIO)>;
++		};
++		wakeup_pin_6: pins6 {
++			pinmux = <STM32_PINMUX('A', 3, GPIO)>;
++		};
++	};
++};
+diff --git a/core/arch/arm/dts/stm32mp13xx-phycore-som.dtsi b/core/arch/arm/dts/stm32mp13xx-phycore-som.dtsi
+new file mode 100644
+index 00000000..f32e5d8d
+--- /dev/null
++++ b/core/arch/arm/dts/stm32mp13xx-phycore-som.dtsi
+@@ -0,0 +1,384 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2023 PHYTEC Messtechnik GmbH
++ * Author: Christophe Parant <c.parant@phytec.fr>
++ */
++
++#include "stm32mp13xx-phycore-som-pinctrl.dtsi"
++#include <dt-bindings/soc/stm32mp13-etzpc.h>
++#include <dt-bindings/soc/stm32mp-tzc400-macro.h>
++#include <dt-bindings/soc/stm32mp13-tzc400.h>
++#include <dt-bindings/power/stm32mp1-power.h>
++#include <dt-bindings/gpio/gpio.h>
++#include <dt-bindings/gpio/stm32mp_gpio.h>
++
++/ {
++
++	aliases {
++		serial0 = &uart4;
++	};
++
++	chosen {
++		stdout-path = "serial0:115200n8";
++	};
++
++	vdd: vdd {
++		compatible = "regulator-fixed";
++		regulator-name = "vdd";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		regulator-always-on;
++	};
++
++	vddcpu: vddcpu {
++		compatible = "st,stm32-regulator-gpio";
++		regulator-name = "vddcpu";
++		regulator-min-microvolt = <1250000>;
++		regulator-max-microvolt = <1350000>;
++		regulator-always-on;
++
++		pinctrl-names = "default";
++		pinctrl-0 = <&vddcpu_pins_a>;
++		st,voltage_pin_index = <0>;
++
++		states = <1250000 0x0>,<1350000 0x1>;
++
++		lp-stop {
++			regulator-suspend-microvolt = <1250000>;
++		};
++		lplv-stop2 {
++			regulator-off-in-suspend;
++		};
++		standby-ddr-sr {
++			regulator-off-in-suspend;
++		};
++		standby-ddr-off {
++			regulator-off-in-suspend;
++		};
++	};
++
++	vdd_usb: vdd_usb {
++		compatible = "regulator-fixed";
++		regulator-name = "vdd_usb";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++	};
++
++	wakeup_button: wakeup-button {
++		compatible = "st,stm32mp1,pwr-irq-user";
++		/* Alert pin on PF8, wakeup_pin_1 */
++		st,wakeup-pin-number = <1>;
++		st,notif-it-id = <0>;
++		status = "okay";
++	};
++};
++
++&adc_2 {
++	vdda-supply = <&vdd>;
++	vref-supply = <&vdd>;
++	status = "okay";
++
++	adc2: adc@0 {
++		status = "okay";
++
++		channel@15 {
++			reg = <15>;
++			label = "vbat";
++		};
++	};
++};
++
++&bsec {
++	board_id: board_id@f0 {
++		reg = <0xf0 0x4>;
++		st,non-secure-otp;
++	};
++};
++
++&etzpc{
++	status = "okay";
++	st,decprot = <
++	/*"Non Secured" peripherals*/
++	DECPROT(STM32MP1_ETZPC_CRYP_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
++	DECPROT(STM32MP1_ETZPC_DCMIPP_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
++	DECPROT(STM32MP1_ETZPC_ETH1_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
++	DECPROT(STM32MP1_ETZPC_ETH2_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
++	DECPROT(STM32MP1_ETZPC_I2C5_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
++	DECPROT(STM32MP1_ETZPC_LTDC_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
++	DECPROT(STM32MP1_ETZPC_SDMMC1_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
++	DECPROT(STM32MP1_ETZPC_SDMMC2_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
++	DECPROT(STM32MP1_ETZPC_USART2_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
++	DECPROT(STM32MP1_ETZPC_OTG_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
++	DECPROT(STM32MP1_ETZPC_USBPHYCTRL_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
++	DECPROT(STM32MP1_ETZPC_SRAM1_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
++	DECPROT(STM32MP1_ETZPC_SRAM2_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
++	/*"NS_R S_W" peripherals*/
++	DECPROT(STM32MP1_ETZPC_DDRCTRLPHY_ID, DECPROT_NS_R_S_W, DECPROT_LOCK)
++	/*"Secured" peripherals*/
++	DECPROT(STM32MP1_ETZPC_ADC2_ID, DECPROT_S_RW, DECPROT_UNLOCK)
++	DECPROT(STM32MP1_ETZPC_HASH_ID, DECPROT_S_RW, DECPROT_UNLOCK)
++	DECPROT(STM32MP1_ETZPC_PKA_ID, DECPROT_S_RW, DECPROT_UNLOCK)
++	DECPROT(STM32MP1_ETZPC_RNG_ID, DECPROT_S_RW, DECPROT_UNLOCK)
++	DECPROT(STM32MP1_ETZPC_SAES_ID, DECPROT_S_RW, DECPROT_UNLOCK)
++	DECPROT(STM32MP1_ETZPC_STGENC_ID, DECPROT_S_RW, DECPROT_UNLOCK)
++	DECPROT(STM32MP1_ETZPC_SRAM3_ID, DECPROT_S_RW, DECPROT_UNLOCK)
++	DECPROT(STM32MP1_ETZPC_BKPSRAM_ID, DECPROT_S_RW, DECPROT_UNLOCK)
++	>;
++};
++
++&gpioc {
++	st,protreg = < (TZPROT(13)) >;
++};
++
++&gpiod {
++	st,protreg = < (TZPROT(7)) >;
++};
++
++&gpiof {
++	st,protreg = < (TZPROT(8)) >;
++};
++
++&cpu0{
++	cpu-supply = <&vddcpu>;
++};
++
++&hash {
++	status = "okay";
++};
++
++&iwdg2 {
++	timeout-sec = <32>;
++	status = "okay";
++};
++
++&pwr_irq {
++	pinctrl-names = "default";
++	pinctrl-0 = <&wakeup_pins>;
++	status = "okay";
++};
++
++&pwr_regulators {
++	system_suspend_supported_soc_modes = <
++		STM32_PM_CSLEEP_RUN
++		STM32_PM_CSTOP_ALLOW_LP_STOP
++		STM32_PM_CSTOP_ALLOW_LPLV_STOP2
++		STM32_PM_CSTOP_ALLOW_STANDBY_DDR_SR
++	>;
++
++	system_off_soc_mode = <STM32_PM_CSTOP_ALLOW_STANDBY_DDR_OFF>;
++	vdd-supply = <&vdd>;
++	vdd_3v3_usbfs-supply = <&vdd_usb>;
++};
++
++&scmi_regu {
++	scmi_vddcpu: voltd-vddcpu {
++		voltd-name = "vddcpu";
++		regulator-name = "vddcpu";
++	};
++	scmi_vdd: voltd-vdd {
++		voltd-name = "vdd";
++		regulator-name = "vdd";
++	};
++	scmi_vdd_usb: volt-vdd_usb {
++		voltd-name = "vdd_usb";
++		regulator-name = "vdd_usb";
++	};
++};
++
++&rcc{
++	compatible = "st,stm32mp13-rcc", "syscon", "st,stm32mp13-rcc-mco";
++	pinctrl-names = "default";
++	pinctrl-0 = <&rcc_pins_mx>;
++	status = "okay";
++
++	st,clksrc = <
++		CLK_MPU_PLL1P
++		CLK_AXI_PLL2P
++		CLK_MLAHBS_PLL3
++		CLK_RTC_LSE
++		CLK_MCO1_HSE
++		CLK_MCO2_DISABLED
++		CLK_CKPER_HSE
++		CLK_ETH1_PLL4P
++		CLK_ETH2_PLL4P
++		CLK_SDMMC1_PLL4P
++		CLK_SDMMC2_PLL4P
++		CLK_STGEN_HSE
++		CLK_USBPHY_HSE
++		CLK_SPI1_PLL4P
++		CLK_USBO_USBPHY
++		CLK_ADC2_CKPER
++		CLK_I2C5_HSI
++		CLK_UART2_HSI
++		CLK_UART4_HSI
++		CLK_UART78_HSI
++		CLK_FDCAN_HSE
++		CLK_SAI1_PLL3Q
++		CLK_RNG1_PLL4R
++		CLK_SAES_AXI
++		CLK_DCMIPP_PLL2Q
++	>;
++
++	st,clkdiv = <
++		DIV(DIV_MPU, 1)
++		DIV(DIV_AXI, 0)
++		DIV(DIV_MLAHB, 0)
++		DIV(DIV_APB1, 1)
++		DIV(DIV_APB2, 1)
++		DIV(DIV_APB3, 1)
++		DIV(DIV_APB4, 1)
++		DIV(DIV_APB5, 2)
++		DIV(DIV_APB6, 1)
++		DIV(DIV_RTC, 0)
++		DIV(DIV_MCO1, 0)
++		DIV(DIV_MCO2, 0)
++	>;
++
++	st,pll_vco {
++		pll1_vco_2000Mhz: pll1-vco-2000Mhz {
++			src = < CLK_PLL12_HSE >;
++			divmn = < 1 82 >;
++			frac = < 0xAAA >;
++		};
++
++		pll1_vco_1300Mhz: pll1-vco-1300Mhz {
++			src = < CLK_PLL12_HSE >;
++			divmn = < 2 80 >;
++			frac = < 0x800 >;
++		};
++		pll2_vco_1066Mhz: pll2-vco-1066Mhz {
++			src = < CLK_PLL12_HSE >;
++			divmn = < 2 65 >;
++			frac = < 0x1400 >;
++		};
++		pll3_vco_417Mhz: pll3-vco-417Mhz {
++			src = < CLK_PLL3_HSE >;
++			divmn = < 1 33 >;
++			frac = < 0x1a04 >;
++		};
++		pll4_vco_600Mhz: pll4-vco-600Mhz {
++			src = < CLK_PLL4_HSE >;
++			divmn = < 1 49 >;
++		};
++	};
++
++	pll1:st,pll@0 {
++		compatible = "st,stm32mp1-pll";
++		reg = <0>;
++
++		st,pll = < &pll1_cfg1 >;
++
++		pll1_cfg1: pll1_cfg1 {
++			st,pll_vco = < &pll1_vco_1300Mhz >;
++			st,pll_div_pqr = < 0 1 1 >;
++		};
++
++		pll1_cfg2: pll1_cfg2 {
++			st,pll_vco = < &pll1_vco_2000Mhz >;
++			st,pll_div_pqr = < 0 1 1 >;
++		};
++	};
++
++	pll2:st,pll@1 {
++		compatible = "st,stm32mp1-pll";
++		reg = <1>;
++
++		st,pll = < &pll2_cfg1 >;
++
++		pll2_cfg1: pll2_cfg1 {
++			st,pll_vco = < &pll2_vco_1066Mhz >;
++			st,pll_div_pqr = < 1 1 0 >;
++		};
++	};
++
++	pll3:st,pll@2 {
++		compatible = "st,stm32mp1-pll";
++		reg = <2>;
++
++		st,pll = < &pll3_cfg1 >;
++
++		pll3_cfg1: pll3_cfg1 {
++			st,pll_vco = < &pll3_vco_417Mhz >;
++			st,pll_div_pqr = < 1 16 36 >;
++		};
++	};
++
++	pll4:st,pll@3 {
++		compatible = "st,stm32mp1-pll";
++		reg = <3>;
++
++		st,pll = < &pll4_cfg1 >;
++
++		pll4_cfg1: pll4_cfg1 {
++			st,pll_vco = < &pll4_vco_600Mhz >;
++			st,pll_div_pqr = < 11 59 11 >;
++		};
++	};
++
++	st,clk_opp {
++		/* CK_MPU clock config for MP13 */
++		st,ck_mpu {
++
++			cfg_1 {
++				hz = < 1000000000 >;
++				st,clksrc = < CLK_MPU_PLL1P >;
++				st,pll = < &pll1_cfg2 >;
++			};
++
++			cfg_2 {
++				hz = < 650000000 >;
++				st,clksrc = < CLK_MPU_PLL1P >;
++				st,pll = < &pll1_cfg1 >;
++			};
++		};
++
++		/* CK_AXI clock config for MP13 */
++		st,ck_axi {
++
++			cfg_1 {
++				hz = < 266500000 >;
++				st,clksrc = < CLK_AXI_PLL2P >;
++				st,clkdiv = < DIV(DIV_AXI, 0) >;
++				st,pll = < &pll2_cfg1 >;
++			};
++		};
++
++		/* CK_MLAHBS clock config for MP13 */
++		st,ck_mlahbs {
++
++			cfg_1 {
++				hz = < 208877929 >;
++				st,clksrc = < CLK_MLAHBS_PLL3 >;
++				st,clkdiv = < DIV(DIV_MLAHB, 0) >;
++				st,pll = < &pll3_cfg1 >;
++			};
++		};
++
++	};
++};
++
++&rng{
++	status = "okay";
++};
++
++&rtc{
++	status = "okay";
++};
++
++&tamp{
++	status = "okay";
++};
++
++&tzc400 {
++	memory-region = <&optee_framebuffer>;
++};
++
++&uart4{
++	pinctrl-names = "default";
++	pinctrl-0 = <&uart4_pins_mx>;
++	status = "okay";
++};
++
++&wakeup_pin_1 {
++	bias-pull-up;
++};
+diff --git a/core/arch/arm/dts/stm32mp157c-phycore-som-emmc-1gib.dts b/core/arch/arm/dts/stm32mp157c-phycore-som-emmc-1gib.dts
+new file mode 100644
+index 00000000..788b7dd2
+--- /dev/null
++++ b/core/arch/arm/dts/stm32mp157c-phycore-som-emmc-1gib.dts
+@@ -0,0 +1,26 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2020 PHYTEC Messtechnik GmbH
++ * Author: Dom Vovard <dom.vovard@linrt.com>
++ *	   Christophe Parant <c.parant@phytec.fr>
++ */
++
++/dts-v1/;
++
++/* ATF Specific */
++#include <dt-bindings/clock/stm32mp1-clksrc.h>
++#include <dt-bindings/power/stm32mp1-power.h>
++#include "stm32mp157.dtsi"
++#include "stm32mp15xc.dtsi"
++#include "stm32mp15xx-phycore-som.dtsi"
++
++/ {
++	model = "PHYTEC phyCORE-STM32MP157C with eMMC and 1GiB RAM";
++	compatible = "phytec,stm32mp157c-phycore-som-emmc-1gib",
++		     "phytec,stm32mp157c-phycore-som.dtsi", "st,stm32mp157";
++
++	memory@c0000000 {
++		device_type = "memory";
++		reg = <0xc0000000 0x40000000>;
++	};
++};
+diff --git a/core/arch/arm/dts/stm32mp15xx-phycore-som-pinctrl.dtsi b/core/arch/arm/dts/stm32mp15xx-phycore-som-pinctrl.dtsi
+new file mode 100644
+index 00000000..66352a34
+--- /dev/null
++++ b/core/arch/arm/dts/stm32mp15xx-phycore-som-pinctrl.dtsi
+@@ -0,0 +1,200 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2020 PHYTEC Messtechnik GmbH
++ * Author: Dom Vovard <dom.vovard@linrt.com>
++ *	   Christophe Parant <c.parant@phytec.fr>
++ */
++
++#include <dt-bindings/pinctrl/stm32-pinfunc.h>
++
++&pinctrl {
++
++	fmc_pins_mx: fmc_mx-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('D', 0, AF12)>, /* FMC_D2 */
++				 <STM32_PINMUX('D', 1, AF12)>, /* FMC_D3 */
++				 <STM32_PINMUX('D', 4, AF12)>, /* FMC_NOE */
++				 <STM32_PINMUX('D', 5, AF12)>, /* FMC_NWE */
++				 <STM32_PINMUX('D', 11, AF12)>, /* FMC_CLE */
++				 <STM32_PINMUX('D', 12, AF12)>, /* FMC_ALE */
++				 <STM32_PINMUX('D', 14, AF12)>, /* FMC_D0 */
++				 <STM32_PINMUX('D', 15, AF12)>, /* FMC_D1 */
++				 <STM32_PINMUX('E', 7, AF12)>, /* FMC_D4 */
++				 <STM32_PINMUX('E', 8, AF12)>, /* FMC_D5 */
++				 <STM32_PINMUX('E', 9, AF12)>, /* FMC_D6 */
++				 <STM32_PINMUX('E', 10, AF12)>, /* FMC_D7 */
++				 <STM32_PINMUX('G', 9, AF12)>; /* FMC_NCE */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <1>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('D', 6, AF12)>; /* FMC_NWAIT */
++			bias-pull-up;
++		};
++	};
++
++	qspi_bk1_pins_a: qspi-bk1-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('F', 8, AF10)>, /* QSPI_BK1_IO0 */
++				 <STM32_PINMUX('F', 9, AF10)>, /* QSPI_BK1_IO1 */
++				 <STM32_PINMUX('F', 7, AF9)>, /* QSPI_BK1_IO2 */
++				 <STM32_PINMUX('F', 6, AF9)>; /* QSPI_BK1_IO3 */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <1>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('B', 6, AF10)>; /* QSPI_BK1_NCS */
++			bias-pull-up;
++			drive-push-pull;
++			slew-rate = <1>;
++		};
++	};
++
++	qspi_bk2_pins_a: qspi-bk2-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('H', 2, AF9)>, /* QSPI_BK2_IO0 */
++				 <STM32_PINMUX('H', 3, AF9)>, /* QSPI_BK2_IO1 */
++				 <STM32_PINMUX('G', 10, AF11)>, /* QSPI_BK2_IO2 */
++				 <STM32_PINMUX('G', 7, AF11)>; /* QSPI_BK2_IO3 */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <1>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('C', 0, AF10)>; /* QSPI_BK2_NCS */
++			bias-pull-up;
++			drive-push-pull;
++			slew-rate = <1>;
++		};
++	};
++
++	qspi_clk_pins_a: qspi-clk-0 {
++		pins {
++			pinmux = <STM32_PINMUX('F', 10, AF9)>; /* QSPI_CLK */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <3>;
++		};
++	};
++
++	sdmmc1_b4_pins_a: sdmmc1-b4-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('C', 8, AF12)>, /* SDMMC1_D0 */
++				 <STM32_PINMUX('C', 9, AF12)>, /* SDMMC1_D1 */
++				 <STM32_PINMUX('E', 6, AF8)>, /* SDMMC1_D2 */
++				 <STM32_PINMUX('C', 11, AF12)>, /* SDMMC1_D3 */
++				 <STM32_PINMUX('D', 2, AF12)>; /* SDMMC1_CMD */
++			slew-rate = <1>;
++			drive-push-pull;
++			bias-disable;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('C', 12, AF12)>; /* SDMMC1_CK */
++			slew-rate = <2>;
++			drive-push-pull;
++			bias-disable;
++		};
++	};
++
++	sdmmc1_dir_pins_a: sdmmc1-dir-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('F', 2, AF11)>, /* SDMMC1_D0DIR */
++				 <STM32_PINMUX('C', 7, AF8)>, /* SDMMC1_D123DIR */
++				 <STM32_PINMUX('B', 9, AF11)>; /* SDMMC1_CDIR */
++			slew-rate = <1>;
++			drive-push-pull;
++			bias-pull-up;
++		};
++		pins2{
++			pinmux = <STM32_PINMUX('E', 4, AF8)>; /* SDMMC1_CKIN */
++			bias-pull-up;
++		};
++	};
++
++	sdmmc1_dir_pins_b: sdmmc1-dir-1 {
++		pins1 {
++			pinmux = <STM32_PINMUX('E', 12, AF8)>, /* SDMMC1_D0DIR */
++				 <STM32_PINMUX('E', 14, AF11)>, /* SDMMC1_D123DIR */
++				 <STM32_PINMUX('B', 9, AF11)>; /* SDMMC1_CDIR */
++			slew-rate = <3>;
++			drive-push-pull;
++			bias-pull-up;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('E', 4, AF8)>; /* SDMMC1_CKIN */
++			bias-pull-up;
++		};
++	};
++
++	sdmmc2_b4_pins_a: sdmmc2-b4-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('B', 14, AF9)>, /* SDMMC2_D0 */
++				 <STM32_PINMUX('B', 15, AF9)>, /* SDMMC2_D1 */
++				 <STM32_PINMUX('B', 3, AF9)>, /* SDMMC2_D2 */
++				 <STM32_PINMUX('B', 4, AF9)>, /* SDMMC2_D3 */
++				 <STM32_PINMUX('G', 6, AF10)>; /* SDMMC2_CMD */
++			slew-rate = <1>;
++			drive-push-pull;
++			bias-pull-up;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('E', 3, AF9)>; /* SDMMC2_CK */
++			slew-rate = <2>;
++			drive-push-pull;
++			bias-pull-up;
++		};
++	};
++
++	sdmmc2_d47_pins_a: sdmmc2-d47-0 {
++		pins {
++			pinmux = <STM32_PINMUX('A', 8, AF9)>, /* SDMMC2_D4 */
++				 <STM32_PINMUX('A', 9, AF10)>, /* SDMMC2_D5 */
++				 <STM32_PINMUX('C', 6, AF10)>, /* SDMMC2_D6 */
++				 <STM32_PINMUX('D', 3, AF9)>; /* SDMMC2_D7 */
++			slew-rate = <1>;
++			drive-push-pull;
++			bias-pull-up;
++		};
++	};
++
++	uart4_pins_a: uart4-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('B', 9, AF8)>; /* UART4_TX */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <0>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('B', 2, AF8)>; /* UART4_RX */
++			bias-disable;
++		};
++	};
++
++	usart3_pins_a: usart3-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('B', 10, AF7)>; /* USART3_TX */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <0>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('B', 12, AF8)>; /* USART3_RX */
++			bias-disable;
++		};
++	};
++};
++
++&pinctrl_z {
++
++	i2c4_pins_a: i2c4-0 {
++		pins {
++			pinmux = <STM32_PINMUX('Z', 4, AF6)>, /* I2C4_SCL */
++				 <STM32_PINMUX('Z', 5, AF6)>; /* I2C4_SDA */
++			bias-disable;
++			drive-open-drain;
++			slew-rate = <0>;
++		};
++	};
++};
+diff --git a/core/arch/arm/dts/stm32mp15xx-phycore-som.dtsi b/core/arch/arm/dts/stm32mp15xx-phycore-som.dtsi
+new file mode 100644
+index 00000000..c261fd07
+--- /dev/null
++++ b/core/arch/arm/dts/stm32mp15xx-phycore-som.dtsi
+@@ -0,0 +1,422 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2020 PHYTEC Messtechnik GmbH
++ * Author: Dom Vovard <dom.vovard@linrt.com>
++ *	   Christophe Parant <c.parant@phytec.fr>
++ */
++
++#include "stm32mp15xx-phycore-som-pinctrl.dtsi"
++#include "stm32mp15xxac-pinctrl.dtsi"
++#include <dt-bindings/soc/stm32mp15-etzpc.h>
++
++/ {
++
++	aliases {
++		serial0 = &uart4;
++		serial1 = &usart3;
++	};
++
++	chosen {
++		stdout-path = "serial0:115200n8";
++	};
++
++	vin: vin {
++		compatible = "regulator-fixed";
++		regulator-name = "vin";
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++		regulator-always-on;
++	};
++};
++
++&etzpc {
++	st,decprot = <
++		DECPROT(STM32MP1_ETZPC_USART1_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
++		DECPROT(STM32MP1_ETZPC_SPI6_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
++		DECPROT(STM32MP1_ETZPC_I2C4_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
++		DECPROT(STM32MP1_ETZPC_I2C6_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
++		DECPROT(STM32MP1_ETZPC_RNG1_ID, DECPROT_S_RW, DECPROT_UNLOCK)
++		DECPROT(STM32MP1_ETZPC_HASH1_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
++		DECPROT(STM32MP1_ETZPC_CRYP1_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
++		DECPROT(STM32MP1_ETZPC_DDRCTRL_ID, DECPROT_NS_R_S_W, DECPROT_LOCK)
++		DECPROT(STM32MP1_ETZPC_DDRPHYC_ID, DECPROT_NS_R_S_W, DECPROT_LOCK)
++		DECPROT(STM32MP1_ETZPC_STGENC_ID, DECPROT_S_RW, DECPROT_LOCK)
++		DECPROT(STM32MP1_ETZPC_BKPSRAM_ID, DECPROT_S_RW, DECPROT_LOCK)
++		DECPROT(STM32MP1_ETZPC_IWDG1_ID, DECPROT_S_RW, DECPROT_LOCK)
++	>;
++};
++
++&bsec {
++	board_id: board_id@ec {
++		reg = <0xec 0x4>;
++		st,non-secure-otp;
++	};
++};
++
++&clk_hse {
++	st,digbypass;
++};
++
++&cpu0{
++	cpu-supply = <&vddcore>;
++};
++
++&cpu1{
++	cpu-supply = <&vddcore>;
++};
++
++&i2c4 {
++	compatible = "st,stm32mp15-i2c-non-secure";
++	pinctrl-names = "default";
++	pinctrl-0 = <&i2c4_pins_a>;
++	i2c-scl-rising-time-ns = <185>;
++	i2c-scl-falling-time-ns = <20>;
++	status = "okay";
++
++	pmic: stpmic@33 {
++		compatible = "st,stpmic1";
++		reg = <0x33>;
++		interrupt-controller;
++		#interrupt-cells = <2>;
++		status = "okay";
++
++		regulators {
++			compatible = "st,stpmic1-regulators";
++			buck1-supply = <&vin>;
++			buck2-supply = <&vin>;
++			buck3-supply = <&vin>;
++			buck4-supply = <&vin>;
++			ldo1-supply = <&v3v3>;
++			ldo2-supply = <&v3v3>;
++			ldo3-supply = <&vdd_ddr>;
++			ldo4-supply = <&vin>;
++			ldo5-supply = <&v3v3>;
++			ldo6-supply = <&v3v3>;
++			vref_ddr-supply = <&vin>;
++			boost-supply = <&vin>;
++			pwr_sw1-supply = <&bst_out>;
++			pwr_sw2-supply = <&bst_out>;
++
++			vddcore: buck1 {
++				regulator-name = "vddcore";
++				regulator-min-microvolt = <1200000>;
++				regulator-max-microvolt = <1350000>;
++				regulator-always-on;
++				regulator-initial-mode = <0>;
++				regulator-over-current-protection;
++				lp-stop {
++					regulator-on-in-suspend;
++					regulator-suspend-microvolt = <1200000>;
++				};
++				standby-ddr-sr {
++					regulator-off-in-suspend;
++				};
++				standby-ddr-off {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vdd_ddr: buck2 {
++				regulator-name = "vdd_ddr";
++				regulator-min-microvolt = <1350000>;
++				regulator-max-microvolt = <1350000>;
++				regulator-always-on;
++				regulator-initial-mode = <0>;
++				regulator-over-current-protection;
++				lp-stop {
++					regulator-suspend-microvolt = <1350000>;
++					regulator-on-in-suspend;
++				};
++				standby-ddr-sr {
++					regulator-suspend-microvolt = <1350000>;
++					regulator-on-in-suspend;
++				};
++				standby-ddr-off {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vdd: buck3 {
++				regulator-name = "vdd";
++				regulator-min-microvolt = <3300000>;
++				regulator-max-microvolt = <3300000>;
++				regulator-always-on;
++				st,mask-reset;
++				regulator-initial-mode = <0>;
++				regulator-over-current-protection;
++				lp-stop {
++					regulator-suspend-microvolt = <3300000>;
++					regulator-on-in-suspend;
++				};
++				standby-ddr-sr {
++					regulator-suspend-microvolt = <3300000>;
++					regulator-on-in-suspend;
++				};
++				standby-ddr-off {
++					regulator-suspend-microvolt = <3300000>;
++					regulator-on-in-suspend;
++				};
++			};
++
++			v3v3: buck4 {
++				regulator-name = "v3v3";
++				regulator-min-microvolt = <3300000>;
++				regulator-max-microvolt = <3300000>;
++				regulator-always-on;
++				regulator-over-current-protection;
++				regulator-initial-mode = <0>;
++				lp-stop {
++					regulator-suspend-microvolt = <3300000>;
++					regulator-on-in-suspend;
++				};
++				standby-ddr-sr {
++					regulator-off-in-suspend;
++				};
++				standby-ddr-off {
++					regulator-off-in-suspend;
++				};
++			};
++
++			v1v8_audio: ldo1 {
++				regulator-name = "v1v8_audio";
++				regulator-min-microvolt = <1800000>;
++				regulator-max-microvolt = <1800000>;
++				regulator-always-on;
++				standby-ddr-sr {
++					regulator-off-in-suspend;
++				};
++				standby-ddr-off {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vdd_eth_2v5: ldo2 {
++				regulator-name = "vdd_eth_2v5";
++				regulator-min-microvolt = <2500000>;
++				regulator-max-microvolt = <2500000>;
++				regulator-always-on;
++				standby-ddr-sr {
++					regulator-off-in-suspend;
++				};
++				standby-ddr-off {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vtt_ddr: ldo3 {
++				regulator-name = "vtt_ddr";
++				regulator-always-on;
++				regulator-over-current-protection;
++				st,regulator-sink-source;
++				lp-stop {
++					regulator-off-in-suspend;
++				};
++				standby-ddr-sr {
++					regulator-off-in-suspend;
++				};
++				standby-ddr-off {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vdd_usb: ldo4 {
++				regulator-name = "vdd_usb";
++				regulator-min-microvolt = <3300000>;
++				regulator-max-microvolt = <3300000>;
++				standby-ddr-sr {
++					regulator-off-in-suspend;
++				};
++				standby-ddr-off {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vdda: ldo5 {
++				regulator-name = "vdda";
++				regulator-min-microvolt = <2900000>;
++				regulator-max-microvolt = <2900000>;
++				regulator-boot-on;
++				standby-ddr-sr {
++					regulator-off-in-suspend;
++				};
++				standby-ddr-off {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vdd_eth_1v0: ldo6 {
++				regulator-name = "vdd_eth_1v0";
++				regulator-min-microvolt = <1000000>;
++				regulator-max-microvolt = <1000000>;
++				regulator-always-on;
++				standby-ddr-sr {
++					regulator-off-in-suspend;
++				};
++				standby-ddr-off {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vref_ddr: vref_ddr {
++				regulator-name = "vref_ddr";
++				regulator-always-on;
++				lp-stop {
++					regulator-on-in-suspend;
++				};
++				standby-ddr-sr {
++					regulator-on-in-suspend;
++				};
++				standby-ddr-off {
++					regulator-off-in-suspend;
++				};
++			};
++
++			bst_out: boost {
++				regulator-name = "bst_out";
++			};
++
++			vbus_otg: pwr_sw1 {
++				regulator-name = "vbus_otg";
++			};
++
++			vbus_sw: pwr_sw2 {
++				regulator-name = "vbus_sw";
++				regulator-active-discharge = <1>;
++			};
++		};
++	};
++};
++
++&iwdg2 {
++	timeout-sec = <32>;
++	status = "okay";
++};
++
++&pwr_regulators {
++	system_suspend_supported_soc_modes = <
++		STM32_PM_CSLEEP_RUN
++		STM32_PM_CSTOP_ALLOW_LP_STOP
++		STM32_PM_CSTOP_ALLOW_LPLV_STOP
++		STM32_PM_CSTOP_ALLOW_STANDBY_DDR_SR
++	>;
++	system_off_soc_mode = <STM32_PM_CSTOP_ALLOW_STANDBY_DDR_OFF>;
++	vdd-supply = <&vdd>;
++	vdd_3v3_usbfs-supply = <&vdd_usb>;
++};
++
++&rcc {
++	st,hsi-cal;
++	st,csi-cal;
++	st,cal-sec = <60>;
++	st,clksrc = <
++		CLK_MPU_PLL1P
++		CLK_AXI_PLL2P
++		CLK_MCU_PLL3P
++		CLK_PLL12_HSE
++		CLK_PLL3_HSE
++		CLK_PLL4_HSE
++		CLK_RTC_LSE
++		CLK_MCO1_DISABLED
++		CLK_MCO2_DISABLED
++	>;
++
++	st,clkdiv = <
++		1 /*MPU*/
++		0 /*AXI*/
++		0 /*MCU*/
++		1 /*APB1*/
++		1 /*APB2*/
++		1 /*APB3*/
++		1 /*APB4*/
++		2 /*APB5*/
++		23 /*RTC*/
++		0 /*MCO1*/
++		0 /*MCO2*/
++	>;
++
++	st,pkcs = <
++		CLK_CKPER_HSE
++		CLK_FMC_ACLK
++		CLK_QSPI_ACLK
++		CLK_ETH_PLL4P
++		CLK_SDMMC12_PLL4P
++		CLK_DSI_DSIPLL
++		CLK_STGEN_HSE
++		CLK_USBPHY_HSE
++		CLK_FDCAN_HSE
++		CLK_SPI2S1_PLL3Q
++		CLK_SPI2S23_PLL3Q
++		CLK_SPI45_HSI
++		CLK_SPI6_HSI
++		CLK_I2C46_HSI
++		CLK_SDMMC3_PLL4P
++		CLK_USBO_USBPHY
++		CLK_ADC_CKPER
++		CLK_CEC_LSE
++		CLK_I2C12_HSI
++		CLK_I2C35_HSI
++		CLK_UART1_HSI
++		CLK_UART24_HSI
++		CLK_UART35_HSI
++		CLK_UART6_HSI
++		CLK_UART78_HSI
++		CLK_SPDIF_PLL4P
++		CLK_SAI1_PLL3Q
++		CLK_SAI2_PLL3Q
++		CLK_SAI3_PLL3Q
++		CLK_SAI4_PLL3Q
++		CLK_RNG1_LSI
++		CLK_RNG2_LSI
++		CLK_LPTIM1_PCLK1
++		CLK_LPTIM23_PCLK3
++		CLK_LPTIM45_LSE
++	>;
++
++	/* VCO = 1066.0 MHz => P = 266 (AXI), Q = 533 (GPU), R = 533 (DDR) */
++	pll2: st,pll@1 {
++		compatible = "st,stm32mp1-pll";
++		reg = <1>;
++		cfg = <2 65 1 0 0 PQR(1,1,1)>;
++		frac = <0x1400>;
++	};
++
++	/* VCO = 417.8 MHz => P = 209, Q = 24, R = 11 */
++	pll3: st,pll@2 {
++		compatible = "st,stm32mp1-pll";
++		reg = <2>;
++		cfg = <1 33 1 16 36 PQR(1,1,1)>;
++		frac = <0x1a04>;
++	};
++
++	/* VCO = 750.0 MHz => P=125, Q=62.5, R=62.5 */
++	pll4: st,pll@3 {
++		compatible = "st,stm32mp1-pll";
++		reg = <3>;
++		cfg = <3 124 5 11 11 PQR(1,1,1)>;
++	};
++};
++
++&rng1 {
++	status = "okay";
++};
++
++&rtc {
++	status = "okay";
++};
++
++&timers12 {
++	st,hsi-cal-input = <1>;
++	st,csi-cal-input = <2>;
++};
++
++&uart4 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&uart4_pins_a>;
++	status = "okay";
++};
++
++&usart3 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&usart3_pins_a>;
++	status = "disabled";
++};
+diff --git a/core/arch/arm/plat-stm32mp1/conf.mk b/core/arch/arm/plat-stm32mp1/conf.mk
+index 6c959d4b..ef67df9d 100644
+--- a/core/arch/arm/plat-stm32mp1/conf.mk
++++ b/core/arch/arm/plat-stm32mp1/conf.mk
+@@ -12,6 +12,8 @@ flavor_dts_file-157F_DK2 = stm32mp157f-dk2.dts
+ flavor_dts_file-157F_ED1 = stm32mp157f-ed1.dts
+ flavor_dts_file-157F_EV1 = stm32mp157f-ev1.dts
+ flavor_dts_file-135F_DK = stm32mp135f-dk.dts
++flavor_dts_file-135F_PHYCORE_EMMC_1GB = stm32mp135f-phycore-som-emmc-1gib.dts
++flavor_dts_file-135F_PHYCORE_EMMC_512MB = stm32mp135f-phycore-som-emmc-512mb.dts
+ 
+ flavorlist-512M = $(flavor_dts_file-157A_DK1) \
+ 		  $(flavor_dts_file-157C_DK2) \
+@@ -26,7 +28,8 @@ flavorlist-1G = $(flavor_dts_file-157A_ED1) \
+ 		$(flavor_dts_file-157C_ED1) \
+ 		$(flavor_dts_file-157C_EV1) \
+ 		$(flavor_dts_file-157F_ED1) \
+-		$(flavor_dts_file-157F_EV1)
++		$(flavor_dts_file-157F_EV1) \
++                $(flavor_dts_file-135F_PHYCORE)
+ 
+ flavorlist-MP15 = $(flavor_dts_file-157A_DK1) \
+ 		  $(flavor_dts_file-157C_DK2) \
+@@ -41,7 +44,9 @@ flavorlist-MP15 = $(flavor_dts_file-157A_DK1) \
+ 		  $(flavor_dts_file-157F_ED1) \
+ 		  $(flavor_dts_file-157F_EV1)
+ 
+-flavorlist-MP13 = $(flavor_dts_file-135F_DK)
++flavorlist-MP13 = $(flavor_dts_file-135F_DK) \
++                  $(flavor_dts_file-135F_PHYCORE_EMMC_1GB) \
++                  $(flavor_dts_file-135F_PHYCORE_EMMC_512MB)
+ 
+ ifneq ($(PLATFORM_FLAVOR),)
+ ifeq ($(flavor_dts_file-$(PLATFORM_FLAVOR)),)
+-- 
+2.25.1
+
