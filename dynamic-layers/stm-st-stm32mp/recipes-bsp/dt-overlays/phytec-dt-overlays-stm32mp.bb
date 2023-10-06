@@ -11,7 +11,11 @@ COMPATIBLE_MACHINE = "(stm32mpcommon)"
 
 inherit devicetree
 
-SRC_URI += "file://README.md"
+SRC_URI += "file://README_stm32mp15xx_sargas.md"
+SRC_URI += "file://README_stm32mp13xx_segin.md"
+
+README = "README_stm32mp15xx_sargas.md"
+README:phycore-stm32mp13 = "README_stm32mp13xx_segin.md"
 
 DT_FILES_PATH = "${STAGING_KERNEL_DIR}/arch/${ARCH}/boot/dts/overlays/"
 DT_OVERLAYS_INSTALL_DIR ?= "boot/overlays"
@@ -28,7 +32,7 @@ do_install() {
         install -m 0644 ${B}/${DTB_FILE} ${D}/${DT_OVERLAYS_INSTALL_DIR}/${DTB_FILE}
     done
 
-    install -m 0644 ${WORKDIR}/README.md ${D}/${DT_OVERLAYS_INSTALL_DIR}/README.md
+    install -m 0644 ${WORKDIR}/${README} ${D}/${DT_OVERLAYS_INSTALL_DIR}/README.md
 }
 
 do_deploy() {
