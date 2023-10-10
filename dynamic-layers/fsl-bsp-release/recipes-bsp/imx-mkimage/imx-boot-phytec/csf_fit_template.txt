@@ -9,7 +9,7 @@
 [Install SRK]
     # Index of the key location in the SRK table to be installed
     File = "{SRK_TABLE_PATH}"
-    Source index = 0
+    Source index = {HABV4_SRK_INDEX}
 
 [Install CSFK]
     # Key used to authenticate the CSF data
