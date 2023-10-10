@@ -36,7 +36,7 @@ def create_csf_template():
     '''[Install SRK]
         # Index of the key location in the SRK table to be installed
         File = "{SRK_TABLE_PATH}"
-        Source index = 0'''
+        Source index = {HABV4_SRK_INDEX}'''
     '\n\n'
     '''[Install CSFK]
         # Key used to authenticate the CSF data
@@ -95,6 +95,7 @@ def gen_csf(d, template_content: str, blocks: str, outfile):
     template_content = template_content.replace('{SRK_TABLE_PATH}', srk_table_path)
     template_content = template_content.replace('{INSTALL_CSFK_PATH}', d.getVar('BOOTLOADER_SIGN_CSF_PATH'))
     template_content = template_content.replace('{INSTALL_KEY_PATH}', d.getVar('BOOTLOADER_SIGN_IMG_PATH'))
+    template_content = template_content.replace('{HABV4_SRK_INDEX}', d.getVar('BOOTLOADER_HABV4_SRK_INDEX'))
 
     with open(outfile, 'w') as outfd:
         outfd.write(template_content)
