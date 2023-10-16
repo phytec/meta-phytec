@@ -19,6 +19,7 @@ DISTRO ?= "ampliphy"
 
 # build artifacts are deployed here
 DEPLOY_DIR = "${TOPDIR}/deploy"
+TI_COMMON_DEPLOY = "${DEPLOY_DIR}"
 
 # When building multiple distros in the same TOPDIR
 #TMPDIR = "${TOPDIR}/${DISTRO}-tmp"
