@@ -70,6 +70,7 @@ def get_oftree(d):
     kdt = d.getVar('KERNEL_DEVICETREE', '')
     return os.path.basename(kdt.split()[0])
 
+KERNEL_ARTIFACT_LINK_NAME = ""
 KERNEL_IMAGE_NAME = "${KERNEL_IMAGETYPE}-${PN}-${PKGV}-${PKGR}-${MACHINE}${IMAGE_VERSION_SUFFIX}"
 FIRST_DTS = "${@get_oftree(d)}"
 do_deploy:append() {
