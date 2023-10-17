@@ -7,6 +7,7 @@ inherit python3native
 include u-boot-secureboot.inc
 include u-boot-protectionshield.inc
 include u-boot-rauc.inc
+include u-boot-imx-remove-symlinks.inc
 
 PROVIDES += "u-boot"
 DEPENDS:append = " flex-native bison-native bc-native dtc-native gnutls-native python3-setuptools-native"
