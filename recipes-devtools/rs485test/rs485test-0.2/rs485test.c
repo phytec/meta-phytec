@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include <getopt.h> //for C11 compliance
 #include <stdlib.h>
 #include <fcntl.h>
 #include <errno.h>
@@ -166,8 +167,8 @@ int receive(int fd) {
 
 void print_help()
 {
-	printf("Usage rs485test [s] [m] -d DEVICE\n"
-		" -l [LENGTH] singelshoot\n"
+	printf("Usage rs485test [-s] [-m] -d DEVICE\n"
+		" -l [LENGTH] singleshoot\n"
 		" -s set RS485 half duplex\n"
 		" -f set RS485 full duplex\n"
 		" -m master mode\n"
@@ -186,10 +187,10 @@ int main(int argc, char *argv[])
 	int hasdev  = 0;
 	int singleshoot = 0;
 
-	struct serial_rs485 rs485ctrl;
-	struct serial_rs485 rs485ctrl_orig;
-	int c, ret, fd, save;
-	struct termios ti;
+	struct serial_rs485 rs485ctrl = {0};
+	struct serial_rs485 rs485ctrl_orig = {0};
+	int c, ret, fd, cant_save, already_enabled = 0;
+	struct termios ti = {0};
 	speed_t speed = B115200;
 
 	while ((c = getopt (argc, argv, "vsfmd:l:")) != -1)
@@ -234,8 +235,9 @@ int main(int argc, char *argv[])
 	}
 
 	/* save rs485 settings if possible*/
-	save = get_rs485_ioctl(fd, &rs485ctrl_orig);
-	if (!save) {
+	cant_save = get_rs485_ioctl(fd, &rs485ctrl_orig);
+	already_enabled = (rs485ctrl_orig.flags & SER_RS485_ENABLED);
+	if (!cant_save && !already_enabled) {
 		rs485ctrl = rs485ctrl_orig;
 
 		if  (setrs485half || setrs485full) {
@@ -260,7 +262,8 @@ int main(int argc, char *argv[])
 		printf("delay_rts_after_send: %d\n",
 					rs485ctrl.delay_rts_after_send);
 	} else {
-		printf("ioctl not supported. Will not change any settings.\n");
+		printf(cant_save?"ioctl not supported.":"RS485 already enabled.");
+		printf(" Will not change any settings.\n");
 	}
 
 	/* Set the port speed */
@@ -283,7 +286,7 @@ int main(int argc, char *argv[])
 
 
 	/* restore orginial rs485 settings if available */
-	if (!save)
+	if (!cant_save && !already_enabled)
 		set_rs485_ioctl(fd, &rs485ctrl_orig);
 
 	close(fd);
