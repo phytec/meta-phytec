@@ -53,8 +53,6 @@ do_deploy:append:secureboot() {
     if [ -f "${LINUX_IMAGE_PATH_SIGNED}" ] ; then
         base_name="${imageType}-${KERNEL_IMAGE_NAME}-signed"
         install -m 0644 "${LINUX_IMAGE_PATH_SIGNED}" "${DEPLOYDIR}/${base_name}.bin"
-        symlink_name="${imageType}-${KERNEL_IMAGE_LINK_NAME}-signed"
-        ln -sf "${base_name}.bin" "$deployDir/${symlink_name}.bin"
         ln -sf "${base_name}.bin" "$deployDir/${imageType}-signed"
     fi
 }
