@@ -30,23 +30,23 @@ do_configure[noexec] = "1"
 do_compile[noexec] = "1"
 
 do_install () {
-    install -d ${D}/lib/firmware
+    install -d ${D}${nonarch_base_libdir}/firmware
     # Only install i.MX6 VPU firmware for now.
-    install -m 644 ${S}/firmware/vpu/vpu_fw_imx6q.bin ${D}/lib/firmware/
-    install -m 644 ${S}/firmware/vpu/vpu_fw_imx6d.bin ${D}/lib/firmware/
-    install -m 644 ${S}/COPYING "${D}/lib/firmware/LICENCE.freescale-v12-march-2016"
+    install -m 644 ${S}/firmware/vpu/vpu_fw_imx6q.bin ${D}${nonarch_base_libdir}/firmware/
+    install -m 644 ${S}/firmware/vpu/vpu_fw_imx6d.bin ${D}${nonarch_base_libdir}/firmware/
+    install -m 644 ${S}/COPYING "${D}${nonarch_base_libdir}/firmware/LICENCE.freescale-v12-march-2016"
 }
 
 
 # Use same license scheme as in recipe linux-firmware
-FILES:${PN}-freescale-imx-license = "/lib/firmware/LICENCE.freescale-v12-march-2016"
+FILES:${PN}-freescale-imx-license = "${nonarch_base_libdir}/firmware/LICENCE.freescale-v12-march-2016"
 
 LICENSE:${PN}-vpu-mx6q = "LICENCE.freescale-v12-march-2016"
-FILES:${PN}-vpu-mx6q = "/lib/firmware/vpu_fw_imx6q.bin"
+FILES:${PN}-vpu-mx6q = "${nonarch_base_libdir}/firmware/vpu_fw_imx6q.bin"
 RDEPENDS:${PN}-vpu-mx6q += "${PN}-freescale-imx-license"
 
 LICENSE:${PN}-vpu-mx6dl = "LICENCE.freescale-v12-march-2016"
-FILES:${PN}-vpu-mx6dl = "/lib/firmware/vpu_fw_imx6d.bin"
+FILES:${PN}-vpu-mx6dl = "${nonarch_base_libdir}/firmware/vpu_fw_imx6d.bin"
 RDEPENDS:${PN}-vpu-mx6dl += "${PN}-freescale-imx-license"
 
 COMPATIBLE_MACHINE = "phy.*imx6.*"
