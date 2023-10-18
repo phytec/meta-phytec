@@ -16,7 +16,6 @@ python fsl_bin_do_unpack() {
         return
 
     localdata = bb.data.createCopy(d)
-    bb.data.update_data(localdata)
 
     rootdir = localdata.getVar('WORKDIR')
     fetcher = bb.fetch2.Fetch(src_uri, localdata)
