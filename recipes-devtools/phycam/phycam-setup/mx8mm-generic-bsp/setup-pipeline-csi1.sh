@@ -101,36 +101,70 @@ if [ -z $RES ] ; then RES="$SENSOR_RES" ; fi
 if [ -z $FRES ] ; then FRES="$SENSOR_RES" ; fi
 if [ -z $OFFSET ] ; then OFFSET="$OFFSET_SENSOR" ; fi
 
-# Setup media pipeline either for phyCAM-M or phyCAM-L.
-echo "Setting ${FMT}/${RES} ${OFFSET}/${FRES} for ${CAM_ENT}"
 CSI_ENT="csi"
 MIPI_ENT="csis-32e30000.mipi-csi-upstream"
 MC="media-ctl"
 
+echo ""
+echo "Setting up MEDIA Pipeline with"
+echo "${FMT}/${RES} ${OFFSET}/${FRES} for ${CAM_ENT}"
+echo "========================================================="
+echo " Setting up MEDIA Links:"
+echo " -----------------------"
+
 # Disable all existing phyCAM-L links (if phyCAM-L is connected) so the new
 # setup can be selected.
 if [ -n "$SER_P0_ENT" ] && [ -n "$SER_P1_ENT" ] ; then
+	echo "  Disable both phyCAM-L Ports:"
+	echo "   $MC -l \"'${SER_P0_ENT}':1->'${DESER_ENT}':0[0]\""
 	$MC -l "'${SER_P0_ENT}':1->'${DESER_ENT}':0[0]" ${VERBOSE}
+	if [ ! -z "$VERBOSE" ] ; then echo "" ; fi
+
+	echo "   $MC -l \"'${SER_P0_ENT}':1->'${DESER_ENT}':1[0]\""
 	$MC -l "'${SER_P1_ENT}':1->'${DESER_ENT}':1[0]" ${VERBOSE}
+	echo ""
 fi
 
 if [ -n "$SER_P0_ENT" ] && [ -n "$DESER_ENT" ] && [ "$PORT" = "0" ] ; then
-	echo "Enabling phyCAM-L Port 0 on CSI1"
+	echo "  Enabling phyCAM-L Port 0 on CSI1"
+	echo "   $MC -l \"'${SER_P0_ENT}':1->'${DESER_ENT}':0[1]\""
 	$MC -l "'${SER_P0_ENT}':1->'${DESER_ENT}':0[1]" ${VERBOSE}
+	if [ ! -z "$VERBOSE" ] ; then echo "" ; fi
+
+	echo "   $MC -l \"'${DESER_ENT}':2->'${MIPI_ENT}':0[1]\""
 	$MC -l "'${DESER_ENT}':2->'${MIPI_ENT}':0[1]" ${VERBOSE}
+	echo ""
 fi
 
 if [ -n "$SER_P1_ENT" ] && [ -n "$DESER_ENT" ] && [ "$PORT" = "1" ] ; then
-	echo "Enabling phyCAM-L Port 1 on CSI1"
+	echo "  Enabling phyCAM-L Port 1 on CSI1"
+	echo "   $MC -l \"'${SER_P1_ENT}':1->'${DESER_ENT}':1[1]\""
 	$MC -l "'${SER_P1_ENT}':1->'${DESER_ENT}':1[1]" ${VERBOSE}
+	if [ ! -z "$VERBOSE" ] ; then echo "" ; fi
+
+	echo "   $MC -l \"'${DESER_ENT}':2->'${MIPI_ENT}':0[1]\""
 	$MC -l "'${DESER_ENT}':2->'${MIPI_ENT}':0[1]" ${VERBOSE}
+	echo ""
 fi
 
 if [ -L /dev/cam-csi1 ] ; then
+	echo "  Enabling phyCAM-M Link:"
+	echo "   $MC -l \"'${CAM_ENT}':0->'${MIPI_ENT}':0[1]\""
 	$MC -l "'${CAM_ENT}':0->'${MIPI_ENT}':0[1]" ${VERBOSE}
+	echo ""
 fi
 
-# Setup the desired format on sensor, MIPI bridge and CSI interface.
+echo " Setting up MEDIA Formats:"
+echo " -------------------------"
+echo "  Sensor:"
+echo "   $MC -V \"'${CAM_ENT}':0[fmt:${FMT}/${RES} ${OFFSET}/${FRES}]\""
 $MC -V "'${CAM_ENT}':0[fmt:${FMT}/${RES} ${OFFSET}/${FRES}]" ${VERBOSE}
+echo ""
+echo "  MIPI Interface:"
+echo "   $MC -V \"'${MIPI_ENT}':0[fmt:${FMT}/${RES}]\""
 $MC -V "'${MIPI_ENT}':0[fmt:${FMT}/${RES}]" ${VERBOSE}
+echo ""
+echo "  CSI Interface:"
+echo "   $MC -V \"'${CSI_ENT}':0[fmt:${FMT}/${RES}]\""
 $MC -V "'${CSI_ENT}':0[fmt:${FMT}/${RES}]" ${VERBOSE}
+echo ""
