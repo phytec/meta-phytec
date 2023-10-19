@@ -2,7 +2,7 @@
 <matfile>
    <header type="struct" size="[1 1]">
       <creation_date index="1" type="char" size="[1 11]">
-         13-Jun-2023
+         10-OCT-2023
       </creation_date>
       <creator index="1" type="char" size="[1 6]">
          Bender
@@ -11,7 +11,7 @@
          AR0234
       </sensor_name>
       <sample_name index="1" type="char" size="[1 15]">
-         AO082_1920x1080
+         AO082_1920x1080_ANP6.A0
       </sample_name>
       <generator_version index="1" type="char" size="[1 7]">
          v2.0.19
@@ -1310,7 +1310,7 @@
       </wdr>
       <dpcc enable="true"/>
       <dpf enable="true"/>
-      <filter enable="true" auto="true">
+      <filter enable="true" auto="false">
          <denoise>5</denoise>
          <sharpen>5</sharpen>
       </filter>
