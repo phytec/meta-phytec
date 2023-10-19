@@ -15,6 +15,10 @@ SRC_URI:append:mx6ul-generic-bsp = " \
     file://setup-pipeline-csi1.sh \
 "
 
+SRC_URI:append:mx8mm-generic-bsp = " \
+    file://setup-pipeline-csi1.sh \
+"
+
 SRC_URI:append:mx8mp-generic-bsp = " \
     file://setup-pipeline-csi1.sh \
     file://setup-pipeline-csi2.sh \
