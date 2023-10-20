@@ -1,0 +1,89 @@
+From c90173aa746aa762d8ced24f6fa31bbd061143bc Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Stefan=20Riedm=C3=BCller?= <s.riedmueller@phytec.de>
+Date: Wed, 18 Oct 2023 15:42:49 +0200
+Subject: [PATCH] units/isi/drv: phycam: Allow to configure a min fps from
+ config file
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Allow to configure a minimal allowed FPS setting, supplied to the sensor
+driver, via the '/opt/imx8-isp/bin/phycam-min-fps.conf' config file.
+
+Signed-off-by: Stefan Riedmüller <s.riedmueller@phytec.de>
+---
+ units/isi/drv/phyCAM/phycam.c | 35 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
+
+diff --git a/units/isi/drv/phyCAM/phycam.c b/units/isi/drv/phyCAM/phycam.c
+index 9e7192eb1c3b..888e7be12b55 100644
+--- a/units/isi/drv/phyCAM/phycam.c
++++ b/units/isi/drv/phyCAM/phycam.c
+@@ -26,6 +26,7 @@ typedef struct PhyCam_Context_s
+     IsiSensorGain_t SensorGain;
+ 
+     uint32_t SensorModeCount;
++    uint32_t MinAllowedFps;
+     bool_t Configured;
+     bool_t Streaming;
+ 
+@@ -234,11 +235,16 @@ static RESULT PhyCam_IsiGetSensorModeIss(IsiSensorHandle_t handle,
+     pHalCtx = (HalContext_t *) pPhyCamCtx->IsiCtx.HalHandle;
+ 
+     memset(&sensor_mode, 0, sizeof(struct vvcam_mode_info_s));
++    sensor_mode.ae_info.min_fps = pPhyCamCtx->MinAllowedFps;
++
+     ret = ioctl(pHalCtx->sensor_fd, VVSENSORIOC_G_SENSOR_MODE, &sensor_mode);
+     if (ret != 0) {
+         ALOGE("%s get sensor mode failed", __func__);
+         return RET_FAILURE;
+     }
++
++    ALOGD("%s max_integration_line: %u", __func__,
++	  sensor_mode.ae_info.max_integration_line);
+     memcpy(&pPhyCamCtx->SensorMode, &sensor_mode,
+            sizeof(struct vvcam_mode_info_s));
+     memcpy(pMode, &(pPhyCamCtx->SensorMode), sizeof(IsiSensorMode_t));
+@@ -369,6 +375,9 @@ static RESULT PhyCam_IsiSetupSensorIss(IsiSensorHandle_t handle,
+                                        const IsiSensorCaps_t * pSensorCaps)
+ {
+     PhyCam_Context_t *pPhyCamCtx = (PhyCam_Context_t *) handle;
++    FILE *pFpsConfig;
++    char lineStr[128];
++    uint32_t MinAllowedFps;
+ 
+     ALOGD("%s (enter)", __func__);
+ 
+@@ -386,6 +395,32 @@ static RESULT PhyCam_IsiSetupSensorIss(IsiSensorHandle_t handle,
+         return RET_WRONG_STATE;
+     }
+ 
++    pFpsConfig = fopen("/opt/imx8-isp/bin/phycam-min-fps.conf", "r");
++    if (pFpsConfig == NULL) {
++        ALOGD("%s No phycam-min-fps.conf available, ignoring", __func__);
++        MinAllowedFps = 0;
++    } else {
++        ALOGI("%s Reading min FPS setting from phycam-min-fps.conf", __func__);
++        MinAllowedFps = 0;
++
++        while (!feof(pFpsConfig)) {
++            if (NULL == fgets(lineStr, 128, pFpsConfig))
++                continue;
++
++            if (lineStr[0] == '\n')
++                continue;
++
++            if (lineStr[0] == '#')
++                continue;
++
++            sscanf(lineStr, "%u", &MinAllowedFps);
++            break;
++        }
++
++        ALOGI("%s Applying min FPS setting: %d", __func__, MinAllowedFps);
++    }
++
++    pPhyCamCtx->MinAllowedFps = MinAllowedFps;
+     pPhyCamCtx->Configured = BOOL_TRUE;
+ 
+     ALOGD("%s: (exit)", __func__);
