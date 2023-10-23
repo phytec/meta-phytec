@@ -12,7 +12,6 @@ do_deploy:append () {
                     cd ${DEPLOYDIR}
                     rm -f ${UBOOT_SYMLINK}
                     rm -f ${UBOOT_BINARY}-${type}
-                    rm -f ${UBOOT_BINARY}
 
                     # Deploy the uboot-initial-env
                     if [ -n "${UBOOT_INITIAL_ENV}" ]; then
