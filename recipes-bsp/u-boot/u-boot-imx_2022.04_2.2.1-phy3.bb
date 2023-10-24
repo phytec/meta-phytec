@@ -6,6 +6,7 @@ inherit python3native
 
 include u-boot-secureboot.inc
 include u-boot-protectionshield.inc
+include u-boot-hardening.inc
 include u-boot-rauc.inc
 include u-boot-imx-remove-symlinks.inc
 
