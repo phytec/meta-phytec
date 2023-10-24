@@ -59,5 +59,5 @@ IMAGE_FSTYPES:append:update = " ext4"
 IMAGE_FSTYPES:append:mx8x-nxp-bsp = " wic.xz"
 IMAGE_FSTYPES:remove:mx8x-nxp-bsp = " wic"
 
-MACHINE_FEATURES += "caam"
-MACHINE_FEATURES:mx8m-nxp-bsp += "optee"
+MACHINE_FEATURES += "caam optee"
+MACHINE_FEATURES:remove:mx8x-nxp-bsp = " optee"
