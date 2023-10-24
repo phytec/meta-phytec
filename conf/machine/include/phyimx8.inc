@@ -59,3 +59,7 @@ IMAGE_FSTYPES:remove:mx8x-nxp-bsp = " wic"
 
 MACHINE_FEATURES += "caam optee"
 MACHINE_FEATURES:remove:mx8x-nxp-bsp = " optee"
+
+OPTEEMACHINE:mx8mm-generic-bsp ?= "imx-mx8mmevk"
+OPTEEMACHINE:mx8mn-generic-bsp ?= "imx-mx8mnevk"
+OPTEEMACHINE:mx8mp-generic-bsp ?= "imx-mx8mpevk"
