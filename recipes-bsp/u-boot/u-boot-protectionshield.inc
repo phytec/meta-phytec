@@ -29,11 +29,14 @@ patch_enable_password() {
     PASSWORD_HASH=$( echo -n "${1}" | sha256sum | awk '{print $1}')
     kconfig_del AUTOBOOT
     kconfig_set BOOTDELAY ${PROTECTION_SHIELD_BOOTLOADER_TIMEOUT}
+    kconfig_set AUTOBOOT_FLUSH_STDIN y
     kconfig_set AUTOBOOT_KEYED y
     kconfig_set AUTOBOOT_PROMPT '"Enter password within %d seconds to stop autoboot and access console\\n"'
     kconfig_set CMD_HASH y
+    kconfig_set AUTOBOOT_STOP_STR_ENABLE y
     kconfig_set AUTOBOOT_ENCRYPTION y
     kconfig_set AUTOBOOT_STOP_STR_SHA256 "\"${PASSWORD_HASH}\""
+    kconfig_set SYS_DEVICE_NULLDEV n
 }
 
 set_autoboot_password_root() {
