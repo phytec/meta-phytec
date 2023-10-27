@@ -11,5 +11,3 @@ require conf/machine/include/mesa-pvr.inc
 PREFERRED_PROVIDER_virtual/gpudriver:am62xx = "ti-img-rogue-driver"
 
 MACHINE_FEATURES += "screen"
-MACHINE_FEATURES:remove = "efi"
-WKS_FILE ?= "sdimage-2part.wks"
