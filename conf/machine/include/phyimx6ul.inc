@@ -71,7 +71,11 @@ PARTUP_IMAGE_FSTYPE = ""
 PARTUP_IMAGE_FSTYPE:partup-package = "partup"
 
 # default images to build
-IMAGE_FSTYPES ?= "tar.gz wic ubifs ${PARTUP_IMAGE_FSTYPE}"
+IMAGE_FSTYPES ?= " \
+    tar.gz wic \
+    ${@bb.utils.contains('MACHINE_FEATURES', 'emmc', '', 'ubifs', d)} \
+    ${PARTUP_IMAGE_FSTYPE} \
+"
 IMAGE_FSTYPES:append:update = " ext4"
 
 # Avoid pulling package 'gstreamer1.0-plugins-bad-meta' into the image
