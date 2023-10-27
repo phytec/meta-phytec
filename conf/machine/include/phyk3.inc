@@ -14,13 +14,15 @@ PREFERRED_PROVIDER_virtual/kernel = "linux-ti"
 PREFERRED_PROVIDER_virtual/bootloader = "u-boot-ti"
 PREFERRED_PROVIDER_u-boot = "u-boot-ti"
 
-MACHINE_FEATURES += "optee"
+MACHINE_FEATURES += "optee efi"
 
 # dont install kernelimage to rootfs
 RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base = ""
 
 KERNEL_IMAGETYPE = "Image"
 KERNEL_IMAGETYPES = "Image vmlinux.gz"
+
+WKS_FILE = "${@bb.utils.contains("MACHINE_FEATURES", "efi", "k3-sdimage-efi.wks.in", "k3-sdimage.wks", d)}"
 
 def make_dtb_boot_files(d):
     # Generate IMAGE_BOOT_FILES entries for device tree files listed in
