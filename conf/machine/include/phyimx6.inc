@@ -64,7 +64,7 @@ PARTUP_IMAGE_FSTYPE:partup-package = "partup"
 
 # default images to build
 IMAGE_FSTYPES ?= " \
-    tar.gz wic \
+    tar.gz wic wic.bmap \
     ${@bb.utils.contains('MACHINE_FEATURES', 'emmc', '', 'ubifs', d)} \
     ${PARTUP_IMAGE_FSTYPE} \
 "
