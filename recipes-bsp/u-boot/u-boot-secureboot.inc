@@ -45,6 +45,10 @@ patch_ubootconfig () {
         kconfig_set LEGACY_IMAGE_FORMAT n
 
         sed -i "s/\(setenv dofitboot \)[01]/\11/" ${S}/include/configs/phycore_*.h
+        sed -i "s/\(setenv dofitboot \)[01]/\11/" ${S}/configs/phycore-imx8m*
+        if test -f "${S}/configs/imx8mm-phygate-tauri_defconfig"; then
+            sed -i "s/\(setenv dofitboot \)[01]/\11/" ${S}/configs/imx8mm-phygate-tauri_defconfig
+        fi
         sed -e 's/image=Image\\0/image=fitImage\\0/g' -i ${S}/include/configs/phycore_*.h
     else
         sed -e 's/image=Image\\0/image=Image-signed\\0/g' -i ${S}/include/configs/phycore_*.h
