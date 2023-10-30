@@ -16,12 +16,12 @@ DEPENDS:append = " flex-native bison-native bc-native dtc-native gnutls-native p
 LICENSE = "GPL-2.0-or-later"
 LIC_FILES_CHKSUM = "file://Licenses/gpl-2.0.txt;md5=b234ee4d69f5fce4486a80fdaf4a4263"
 
-BRANCH = "v2022.04_2.2.1-phy"
+BRANCH = "v2022.04_2.2.2-phy"
 GIT_URL = "git://git.phytec.de/${BPN}"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
 PR = "r0"
-SRCREV = "2833d9a8f3d1edcee1ec17301b4cc7f1b9e28ed5"
+SRCREV = "c93e25d4053e8068354dfb579f05c24c3ef89c9d"
 
 S = "${WORKDIR}/git"
 
