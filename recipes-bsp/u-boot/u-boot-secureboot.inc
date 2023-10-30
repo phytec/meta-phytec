@@ -50,6 +50,11 @@ patch_ubootconfig () {
             sed -i "s/\(setenv dofitboot \)[01]/\11/" ${S}/configs/imx8mm-phygate-tauri_defconfig
         fi
         sed -e 's/image=Image\\0/image=fitImage\\0/g' -i ${S}/include/configs/phycore_*.h
+        # Set CONFIG_SYS_LOAD_ADDR to UBOOT_ENTRY_POINT
+        sed -i 's/CONFIG_SYS_LOAD_ADDR=0x.*/CONFIG_SYS_LOAD_ADDR=${UBOOT_ENTRYPOINT}/g' -i ${S}/configs/phycore-imx8m*
+        if test -f "${S}/configs/imx8mm-phygate-tauri_defconfig"; then
+            sed -i 's/CONFIG_SYS_LOAD_ADDR=0x.*/CONFIG_SYS_LOAD_ADDR=${UBOOT_ENTRYPOINT}/g' -i ${S}/configs/imx8mm-phygate-tauri_defconfig
+        fi
     else
         sed -e 's/image=Image\\0/image=Image-signed\\0/g' -i ${S}/include/configs/phycore_*.h
     fi
