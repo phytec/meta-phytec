@@ -1,7 +1,6 @@
 inherit phygittag
 inherit buildinfo
 require recipes-kernel/linux/linux-common.inc
-require recipes-kernel/linux/kernel-rdepends.inc
 
 #Skip this recipe if DISTRO_FEATURES contains the PREEMPT-RT value and
 # a kernel with real-time is desired
@@ -35,10 +34,6 @@ module_conf_rpmsg_client_sample = "blacklist rpmsg_client_sample"
 module_conf_ti_k3_r5_remoteproc = "softdep ti_k3_r5_remoteproc pre: virtio_rpmsg_bus"
 module_conf_ti_k3_dsp_remoteproc = "softdep ti_k3_dsp_remoteproc pre: virtio_rpmsg_bus"
 KERNEL_MODULE_PROBECONF += "rpmsg_client_sample ti_k3_r5_remoteproc ti_k3_dsp_remoteproc"
-
-# Drop kernel-devicetree, added by TI's kernel-rdepends.inc
-RDEPENDS:${KERNEL_PACKAGE_NAME}-base:remove = "kernel-devicetree"
-RDEPENDS:${KERNEL_PACKAGE_NAME}-base:append:phyboard-izar-am68x-1 = " cnm-wave-fw"
 
 EXTRA_DTC_ARGS += "DTC_FLAGS=-@"
 KERNEL_EXTRA_ARGS += "LOADADDR=${UBOOT_ENTRYPOINT} \
