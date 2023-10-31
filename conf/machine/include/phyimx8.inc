@@ -63,3 +63,7 @@ MACHINE_FEATURES:remove:mx8x-nxp-bsp = " optee"
 OPTEEMACHINE:mx8mm-generic-bsp ?= "imx-mx8mmevk"
 OPTEEMACHINE:mx8mn-generic-bsp ?= "imx-mx8mnevk"
 OPTEEMACHINE:mx8mp-generic-bsp ?= "imx-mx8mpevk"
+
+PREFERRED_VERSION_optee-os:mx8-nxp-bsp ?= "3.22.0"
+PREFERRED_VERSION_optee-client:mx8-nxp-bsp ?= "3.22.0"
+PREFERRED_VERSION_optee-test:mx8-nxp-bsp ?= "3.22.0"
