@@ -7,7 +7,14 @@ OPTEEMACHINE = "k3-am62x"
 TFA_K3_SYSTEM_SUSPEND = "1"
 
 # am62xx has a Rogue GPU core
-require conf/machine/include/mesa-pvr.inc
-PREFERRED_PROVIDER_virtual/gpudriver:am62xx = "ti-img-rogue-driver"
+PREFERRED_PROVIDER_virtual/mesa ?= "mesa-pvr"
+PREFERRED_PROVIDER_virtual/egl ?= "mesa-pvr"
+PREFERRED_PROVIDER_virtual/libgles1 ?= "mesa-pvr"
+PREFERRED_PROVIDER_virtual/libgles2 ?= "mesa-pvr"
+PREFERRED_PROVIDER_virtual/libgles3 ?= "mesa-pvr"
+PREFERRED_PROVIDER_virtual/libgbm ?= "mesa-pvr"
+PREFERRED_PROVIDER_virtual/libglx ?= "mesa-pvr"
+PREFERRED_PROVIDER_virtual/libgl ?= "mesa-pvr"
+PREFERRED_PROVIDER_virtual/gpudriver ?= "ti-img-rogue-driver"
 
 MACHINE_FEATURES += "screen"
