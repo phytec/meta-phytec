@@ -3,8 +3,15 @@ require conf/machine/include/phyk3.inc
 SOC_FAMILY:append = ":j721s2"
 
 # j721s2 has a Rogue GPU core
-require conf/machine/include/mesa-pvr.inc
-PREFERRED_PROVIDER_virtual/gpudriver:j721s2 = "ti-img-rogue-driver"
+PREFERRED_PROVIDER_virtual/mesa ?= "mesa-pvr"
+PREFERRED_PROVIDER_virtual/egl ?= "mesa-pvr"
+PREFERRED_PROVIDER_virtual/libgles1 ?= "mesa-pvr"
+PREFERRED_PROVIDER_virtual/libgles2 ?= "mesa-pvr"
+PREFERRED_PROVIDER_virtual/libgles3 ?= "mesa-pvr"
+PREFERRED_PROVIDER_virtual/libgbm ?= "mesa-pvr"
+PREFERRED_PROVIDER_virtual/libglx ?= "mesa-pvr"
+PREFERRED_PROVIDER_virtual/libgl ?= "mesa-pvr"
+PREFERRED_PROVIDER_virtual/gpudriver ?= "ti-img-rogue-driver"
 
 MACHINE_ESSENTIAL_EXTRA_RRECOMMENDS += "cadence-mhdp-fw cnm-wave-fw"
 
