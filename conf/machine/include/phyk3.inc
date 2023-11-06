@@ -5,8 +5,7 @@ SERIAL_CONSOLES_CHECK = "${SERIAL_CONSOLES}"
 
 # Install modules in initramfs and roofs
 PACKAGE_INSTALL:append = " kernel-modules"
-
-INITRAMFS_FSTYPES = "wic.xz"
+INITRAMFS_FSTYPES = "cpio.xz"
 
 UBOOT_SIGN_ENABLE = "0"
 
