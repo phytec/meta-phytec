@@ -1,10 +1,10 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 require recipes-security/optee/optee-os.inc
-SRCREV = "001ace6655dd6bb9cbe31aa31b4ba69746e1a1d9"
+SRCREV = "2a5b1d1232f582056184367fb58a425ac7478ec6"
 
 # SoC specific patches
 SRC_URI:append:mx8m-nxp-bsp = " \
-    file://0001-BACKPORT-for-3.22-TEE-639-drivers-caam-skip-JR-init-.patch \
+    file://0001-BACKPORT-for-4.0.0-TEE-639-drivers-caam-skip-JR-init.patch \
 "
 
 do_compile:append() {
