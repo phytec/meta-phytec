@@ -1,6 +1,5 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 require recipes-security/optee/optee-os.inc
-require optee-phytec.inc
 SRCREV = "001ace6655dd6bb9cbe31aa31b4ba69746e1a1d9"
 
 # SoC specific patches
