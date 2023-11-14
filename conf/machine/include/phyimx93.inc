@@ -1,8 +1,6 @@
 # Common settings for PHYTEC's i.MX93 boards
 require conf/machine/include/arm/armv8-2a/tune-cortexa55.inc
 
-MACHINEOVERRIDES .= ":imxfbdev"
-
 PREFERRED_PROVIDER_virtual/bootloader ?= "u-boot-imx"
 PREFERRED_PROVIDER_virtual/kernel ?= "linux-imx"
 
