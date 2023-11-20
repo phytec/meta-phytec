@@ -10,14 +10,8 @@ LIC_FILES_CHKSUM = " \
     file://LICENSE.hidapi;md5=e0ea014f523f64f0adb13409055ee59e \
     file://LICENSE.openssl;md5=06698624268f7be8151210879bbcbcab \
 "
-
+SRCREV = "a981faeb029dd5b7ee3e5edfa26339a204f25e65"
+BRANCH = "debian/unstable"
 require nxp-cst.inc
 
-SRC_URI += " \
-        https://download.phytec.de/dummyurl/cst-${PV}.tgz;name=tarball \
-"
-
-SRC_URI[tarball.md5sum] = "4b9fccac381fa412cba8ba7028c154c7"
-SRC_URI[tarball.sha256sum] = "517b11dca181e8c438a6249f56f0a13a0eb251b30e690760be3bf6191ee06c68"
-
-INSANE_SKIP_${PN} += "already-stripped"
+INSANE_SKIP:${PN} += "already-stripped"
