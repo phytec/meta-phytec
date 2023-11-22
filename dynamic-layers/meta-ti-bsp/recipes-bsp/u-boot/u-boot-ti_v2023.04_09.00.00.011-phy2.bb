@@ -49,7 +49,6 @@ PR = "r0"
 SRCREV = "f55ccd6111b966de6d4c7a3190812e4c04f6cbd6"
 
 PACKAGECONFIG[optee] = "TEE=${STAGING_DIR_HOST}${nonarch_base_libdir}/firmware/tee-pager_v2.bin,,optee-os"
-SPL_UART_BINARY:k3r5 = "u-boot-spl.bin"
 
 COMPATIBLE_MACHINE = "^("
 COMPATIBLE_MACHINE .= "phyboard-lyra-am62xx-1"
