@@ -4,6 +4,10 @@ require optee-phytec.inc
 
 SRCREV = "2a5b1d1232f582056184367fb58a425ac7478ec6"
 
+SRC_URI:append = " \
+    file://0001-allow-setting-sysroot-for-libgcc-lookup.patch \
+"
+
 # SoC specific patches
 SRC_URI:append:mx8m-nxp-bsp = " \
     file://0001-BACKPORT-for-4.0.0-TEE-639-drivers-caam-skip-JR-init.patch \
