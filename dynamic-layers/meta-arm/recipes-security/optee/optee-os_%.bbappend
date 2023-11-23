@@ -27,6 +27,11 @@ EXTRA_OEMAKE:append:mx8m-generic-bsp = ' \
     CFG_PKCS11_TA_HEAP_SIZE=${OPTEE_PKCS11_TA_HEAP_SIZE} \
 '
 
+EXTRA_OEMAKE:append:mx6ul-generic-bsp = ' \
+    CFG_IN_TREE_EARLY_TAS="${OPTEE_IN_TREE_EARLY_TAS}" \
+    OPENSSL_MODULES=${STAGING_LIBDIR_NATIVE}/ossl-modules \
+'
+
 # SoC Settings
 EXTRA_OEMAKE:append:mx8m-generic-bsp = " \
     CFG_NXP_CAAM=y \
@@ -55,4 +60,10 @@ EXTRA_OEMAKE:append:mx8mp-nxp-bsp = " \
 
 EXTRA_OEMAKE:append:k3 = " \
     CFG_WITH_SOFTWARE_PRNG=n \
+"
+
+EXTRA_OEMAKE:append:mx6ul-generic-bsp = " \
+    CFG_WITH_SOFTWARE_PRNG=n \
+    ${@bb.utils.contains('MACHINE_FEATURES', 'caam', '', 'CFG_IMX_RNGB=y', d)} \
+    ${@bb.utils.contains('MACHINE_FEATURES', 'emmc', '', 'CFG_RPMB_FS=n', d)} \
 "
