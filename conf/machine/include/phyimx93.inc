@@ -9,6 +9,7 @@ RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base = ""
 
 # Wic
 IMAGE_CLASSES += "wic-helper"
+IMAGE_CLASSES:append:mx93-nxp-bsp = " wic-imx93-helper"
 WKS_FILES:mx93-generic-bsp ?= "imx93-sdimage.wks"
 WKS_BOOTIMAGESIZE ?= "64"
 WIC_CREATE_EXTRA_ARGS:remove = "--no-fstab-update"
@@ -17,7 +18,7 @@ WIC_CREATE_EXTRA_ARGS:remove = "--no-fstab-update"
 BOOTLOADER_SEEK:mx93-generic-bsp ?= "32"
 
 EXTERNAL_KERNEL_DEVICETREE ??= ""
-IMAGE_BOOT_FILES += "oftree ${EXTERNAL_KERNEL_DEVICETREE}"
+IMAGE_BOOT_FILES += "oftree ${EXTERNAL_KERNEL_DEVICETREE} bootenv.txt"
 
 IMAGE_FSTYPES = "tar.gz wic.bmap wic.xz"
 
