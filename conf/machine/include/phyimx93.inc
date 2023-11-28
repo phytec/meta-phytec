@@ -7,6 +7,15 @@ PREFERRED_PROVIDER_virtual/kernel ?= "linux-imx"
 # Don't install kernelimage to rootfs
 RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base = ""
 
+# Wic
+IMAGE_CLASSES += "wic-helper"
+WKS_FILES:mx93-generic-bsp ?= "imx93-sdimage.wks"
+WKS_BOOTIMAGESIZE ?= "64"
+WIC_CREATE_EXTRA_ARGS:remove = "--no-fstab-update"
+
+# MMC user area bootloader image offset
+BOOTLOADER_SEEK:mx93-generic-bsp ?= "32"
+
 EXTERNAL_KERNEL_DEVICETREE ??= ""
 IMAGE_BOOT_FILES += "oftree ${EXTERNAL_KERNEL_DEVICETREE}"
 
