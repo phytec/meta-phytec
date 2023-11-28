@@ -4,6 +4,9 @@ require conf/machine/include/arm/armv8-2a/tune-cortexa55.inc
 PREFERRED_PROVIDER_virtual/bootloader ?= "u-boot-imx"
 PREFERRED_PROVIDER_virtual/kernel ?= "linux-imx"
 
+# Don't install kernelimage to rootfs
+RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base = ""
+
 KERNEL_IMAGETYPE = "Image"
 EXTERNAL_KERNEL_DEVICETREE ??= ""
 IMAGE_BOOT_FILES += "oftree ${EXTERNAL_KERNEL_DEVICETREE} ${KERNEL_IMAGETYPE}"
