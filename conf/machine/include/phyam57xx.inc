@@ -17,6 +17,13 @@ MACHINE_ESSENTIAL_EXTRA_RDEPENDS += "kernel-devicetree"
 PREFERRED_PROVIDER_virtual/bootloader:${MACHINE} = "u-boot-ti"
 PREFERRED_PROVIDER_u-boot = "u-boot-ti"
 PREFERRED_PROVIDER_virtual/kernel:${MACHINE} = "linux-ti"
+# Use standard binutils and gcc and not TI's packages
+PREFERRED_RPROVIDER_binutils-cross-canadian-arm ?= "binutils-cross-canadian-arm"
+PREFERRED_RPROVIDER_gcc-cross-canadian-arm ?= "gcc-cross-canadian-arm"
+# Use standard wpa-supplicant and not the tools provide by wl18xx
+PREFERRED_RPROVIDER_wpa-supplicant ?= "wpa-supplicant"
+PREFERRED_RPROVIDER_wpa-supplicant-cli ?= "wpa-supplicant"
+PREFERRED_RPROVIDER_wpa-supplicant-passphrase ?= "wpa-supplicant"
 
 # Do not install uImage
 KERNEL_IMAGETYPES:remove = "uImage"
