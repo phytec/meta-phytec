@@ -1,13 +1,6 @@
 inherit phygittag
 inherit buildinfo
-require recipes-kernel/linux/linux-common.inc
-
-#Skip this recipe if DISTRO_FEATURES contains the PREEMPT-RT value and
-# a kernel with real-time is desired
-python () {
-    if 'preempt-rt' in d.getVar("DISTRO_FEATURES"):
-        raise bb.parse.SkipPackage("Disable 'preempt-rt' in DISTRO_FEATURES!")
-}
+require recipes-kernel/linux/linux-common-non-rt.inc
 
 LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 
