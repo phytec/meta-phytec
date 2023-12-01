@@ -57,6 +57,7 @@ COMPATIBLE_MACHINE .= "|phyboard-polis-imx8mm-4"
 COMPATIBLE_MACHINE .= "|phyboard-polis-imx8mm-5"
 COMPATIBLE_MACHINE .= "|phyboard-polis-imx8mn-2"
 COMPATIBLE_MACHINE .= "|phyboard-pollux-imx8mp-3"
+COMPATIBLE_MACHINE .= "|phycore-imx8x-1"
 COMPATIBLE_MACHINE .= "|phygate-tauri-l-imx8mm-2"
 COMPATIBLE_MACHINE .= ")$"
 
