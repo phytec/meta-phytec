@@ -40,11 +40,14 @@ LOCALVERSION = "-${@legitimize_package_name(d.getVar('DISTRO_VERSION'))}"
 
 COMPATIBLE_MACHINE  = "^("
 COMPATIBLE_MACHINE .=  "phyboard-lyra-am62xx-1"
-COMPATIBLE_MACHINE .=  "|phyboard-lyra-am62xx-2"
-COMPATIBLE_MACHINE .=  "|phyboard-lyra-am62xx-3"
-COMPATIBLE_MACHINE .=  "|phyboard-lyra-am62axx-1"
-COMPATIBLE_MACHINE .=  "|phyboard-lyra-am62axx-2"
-COMPATIBLE_MACHINE .=  "|phyboard-electra-am64xx-1"
-COMPATIBLE_MACHINE .=  "|phyboard-electra-am64xx-2"
-COMPATIBLE_MACHINE .=  "|phyboard-izar-am68x-1"
+COMPATIBLE_MACHINE .= "|phyboard-lyra-am62xx-2"
+COMPATIBLE_MACHINE .= "|phyboard-lyra-am62xx-3"
+
+COMPATIBLE_MACHINE .= "|phyboard-lyra-am62axx-1"
+COMPATIBLE_MACHINE .= "|phyboard-lyra-am62axx-2"
+
+COMPATIBLE_MACHINE .= "|phyboard-electra-am64xx-1"
+COMPATIBLE_MACHINE .= "|phyboard-electra-am64xx-2"
+
+COMPATIBLE_MACHINE .= "|phyboard-izar-am68x-1"
 COMPATIBLE_MACHINE .= ")$"
