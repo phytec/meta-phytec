@@ -50,4 +50,5 @@ COMPATIBLE_MACHINE .= "|phyboard-electra-am64xx-1"
 COMPATIBLE_MACHINE .= "|phyboard-electra-am64xx-2"
 
 COMPATIBLE_MACHINE .= "|phyboard-izar-am68x-1"
+COMPATIBLE_MACHINE .= "|phyboard-izar-am68x-2"
 COMPATIBLE_MACHINE .= ")$"
