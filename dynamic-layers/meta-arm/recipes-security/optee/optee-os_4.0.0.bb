@@ -6,6 +6,7 @@ SRCREV = "2a5b1d1232f582056184367fb58a425ac7478ec6"
 
 SRC_URI:append = " \
     file://0001-allow-setting-sysroot-for-libgcc-lookup.patch \
+    file://0001-drivers-caam-update-return-type-of-caam_sm_free.patch \
 "
 
 # SoC specific patches
