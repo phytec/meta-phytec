@@ -6,7 +6,7 @@ PARTUP_PACKAGE_FILES = " \
 PARTUP_PACKAGE_FILES:append:update = " config-partition.tar.gz"
 PARTUP_PACKAGE_DEPENDS:append:update = " config-partition"
 
-PARTUP_PACKAGE_DEPENDS:append:mx8m-generic-bsp = " \
+PARTUP_PACKAGE_DEPENDS:append:mx8m-nxp-bsp = " \
     ${@oe.utils.ifelse(d.getVar('UBOOT_PROVIDES_BOOT_CONTAINER') == '0', '${IMAGE_BOOTLOADER}', '')} \
     phytec-bootenv \
 "
