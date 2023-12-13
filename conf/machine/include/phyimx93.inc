@@ -20,6 +20,16 @@ BOOTLOADER_SEEK:mx93-generic-bsp ?= "32"
 EXTERNAL_KERNEL_DEVICETREE ??= ""
 IMAGE_BOOT_FILES += "oftree ${EXTERNAL_KERNEL_DEVICETREE} bootenv.txt"
 
+# M33 core demos (bootaux)
+WKS_FILES:append:mx93-nxp-bsp = " imx-m33-demos"
+IMX_M33_DEMO_EXT ??= "bin"
+IMX_M33_DEMO_INSTALL:mx93-nxp-bsp ??= " \
+    imx93-11x11-evk_m33_TCM_rpmsg_lite_str_echo_rtos.${IMX_M33_DEMO_EXT} \
+    imx93-11x11-evk_m33_TCM_rpmsg_lite_pingpong_rtos_linux_remote.${IMX_M33_DEMO_EXT} \
+    imx93-11x11-evk_m33_TCM_power_mode_switch.${IMX_M33_DEMO_EXT} \
+"
+IMAGE_BOOT_FILES:append = "${IMX_M33_DEMO_INSTALL}"
+
 IMAGE_FSTYPES = "tar.gz wic.bmap wic.xz"
 
 MACHINE_FEATURES += "caam optee"
