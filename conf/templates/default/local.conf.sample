@@ -83,7 +83,7 @@ BB_DISKMON_DIRS ??= "\
 #DEBUG_BUILD:pn-barebox = "1"
 
 # Include kernel sources in SDK
-TOOLCHAIN_TARGET_TASK:append = " kernel-devsrc"
+TOOLCHAIN_TARGET_TASK:append = " make kernel-devsrc"
 
 # The default package class of the distro ampliphy is 'package_ipk'. The first
 # value is used as the package manager to build the image and sdk. To build
