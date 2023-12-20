@@ -11,6 +11,10 @@ PARTUP_PACKAGE_DEPENDS:append:mx8m-nxp-bsp = " \
     phytec-bootenv \
 "
 
+PARTUP_PACKAGE_DEPENDS:append:mx8m-mainline-bsp = " \
+    virtual/bootloader \
+"
+
 PARTUP_LAYOUT_CONFIG = "partup-layout-default.yaml"
 PARTUP_LAYOUT_CONFIG:update = "partup-layout-rauc.yaml"
 
