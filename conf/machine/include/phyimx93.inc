@@ -22,7 +22,7 @@ IMAGE_BOOT_FILES += "oftree ${EXTERNAL_KERNEL_DEVICETREE} bootenv.txt"
 
 IMAGE_FSTYPES = "tar.gz wic.bmap wic.xz"
 
-MACHINE_FEATURES += "caam optee"
+MACHINE_FEATURES += "caam optee wifi"
 
 # Remove unused NXP WiFi features
 MACHINE_FEATURES:remove:use-nxp-bsp = " \
