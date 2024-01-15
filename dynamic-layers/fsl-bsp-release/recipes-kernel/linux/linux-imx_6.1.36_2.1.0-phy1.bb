@@ -17,7 +17,7 @@ SRCREV = "080354f9e53bdade96b250162430becfa34b2137"
 
 S = "${WORKDIR}/git"
 
-INTREE_DEFCONFIG:mx93-generic-bsp = "imx_v8_defconfig imx9_phytec_platform.config"
+INTREE_DEFCONFIG:mx93-generic-bsp = "imx_v8_defconfig imx9_phytec_distro.config imx9_phytec_platform.config"
 
 COMPATIBLE_MACHINE  = "^("
 COMPATIBLE_MACHINE .= "phyboard-segin-imx93-2"
