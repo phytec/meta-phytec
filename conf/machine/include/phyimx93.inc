@@ -18,6 +18,8 @@ WIC_CREATE_EXTRA_ARGS:remove = "--no-fstab-update"
 BOOTLOADER_SEEK:mx93-generic-bsp ?= "32"
 # eMMC boot partition bootloader image offset
 BOOTLOADER_SEEK_EMMC:mx93-generic-bsp ?= "0"
+# Device information used by RAUC and some of its dependencies
+EMMC_DEV:mx93-generic-bsp ?= "0"
 
 EXTERNAL_KERNEL_DEVICETREE ??= ""
 IMAGE_BOOT_FILES += "oftree ${EXTERNAL_KERNEL_DEVICETREE} bootenv.txt"
