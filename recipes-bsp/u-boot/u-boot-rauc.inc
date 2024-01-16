@@ -1,15 +1,19 @@
+set_safely () {
+    if test -f "${S}/${2}"; then
+        sed -i ${1} "${S}/${2}"
+    fi
+}
+
 set_doraucboot_1 () {
     bbnote "Setting \"doraucboot\" to \"1\""
-    sed -i "s/\(setenv doraucboot \)[01]/\11/" ${S}/include/configs/phycore_*.h
-    sed -i "s/\(setenv doraucboot \)[01]/\11/" ${S}/configs/phycore-imx8m*
-    if test -f "${S}/configs/imx8mm-phygate-tauri_defconfig"; then
-        sed -i "s/\(setenv doraucboot \)[01]/\11/" ${S}/configs/imx8mm-phygate-tauri_defconfig
-    fi
+    set_safely "s/\(setenv doraucboot \)[01]/\11/" include/configs/phycore_*.h
+    set_safely "s/\(setenv doraucboot \)[01]/\11/" configs/phycore-imx8m*
+    set_safely "s/\(setenv doraucboot \)[01]/\11/" configs/imx8mm-phygate-tauri_defconfig
 }
 
 enable_bootretry () {
     bbnote "Setting \"bootretry\" to \"30\""
-    sed -i "s/\(bootretry=\)-1/\130/" ${S}/include/configs/phycore_rauc_env.h
+    set_safely "s/\(bootretry=\)-1/\130/" include/configs/phycore_rauc_env.h
 }
 
 python do_patch:append:update () {
