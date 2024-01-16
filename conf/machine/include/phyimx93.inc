@@ -31,6 +31,10 @@ PARTUP_IMAGE_FSTYPE = ""
 PARTUP_IMAGE_FSTYPE:partup-package = "partup"
 
 IMAGE_FSTYPES = "tar.gz wic.bmap wic.xz ${PARTUP_IMAGE_FSTYPE}"
+IMAGE_FSTYPES:append:update = " ext4"
+
+# rootfs alignment required for RAUC adaptive update
+IMAGE_ROOTFS_ALIGNMENT:update = "4"
 
 MACHINE_FEATURES += "caam optee wifi"
 
