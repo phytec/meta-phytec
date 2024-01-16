@@ -27,6 +27,13 @@ BOOTLOADER_FILE:k3 ?= "${SPL_BINARY}"
 BOOTLOADER_FILE:mx6-generic-bsp ?= "${BAREBOX_BINARY}"
 BOOTLOADER_FILE:mx6ul-generic-bsp ?= "${BAREBOX_BINARY}"
 BOOTLOADER_FILE:mx8m-generic-bsp ?= "imx-boot"
+BOOTLOADER_FILE:mx93-generic-bsp ?= "imx-boot"
+UBOOT_ENV_OFFSET ??= "3840kiB"
+UBOOT_ENV_OFFSET:mx93-generic-bsp ?= "7168kiB"
+UBOOT_ENV_OFFSET_REDUND ??= "3968kiB"
+UBOOT_ENV_OFFSET_REDUND:mx93-generic-bsp ?= "7296kiB"
+BOOT_PART_OFFSET ??= "4MiB"
+BOOT_PART_OFFSET:mx93-generic-bsp ?= "8MiB"
 
 do_layout_config[vardeps] += " \
     BOOTLOADER_SKIP \

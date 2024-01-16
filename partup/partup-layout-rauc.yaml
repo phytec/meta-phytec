@@ -18,9 +18,9 @@ raw:
 
 # BEGIN_CLEAN
 clean:
-  - offset: 3840kiB
+  - offset: ${UBOOT_ENV_OFFSET}
     size: 64kiB
-  - offset: 3968kiB
+  - offset: ${UBOOT_ENV_OFFSET_REDUND}
     size: 64kiB
 # END_CLEAN
 partitions:
@@ -28,7 +28,7 @@ partitions:
     type: primary
     filesystem: fat32
     size: 128MiB
-    offset: 4MiB
+    offset: ${BOOT_PART_OFFSET}
     input: # ARRAY_IMAGE_BOOT_FILES
       - filename: @KEY@ # ARRAY_IMAGE_BOOT_FILES
 

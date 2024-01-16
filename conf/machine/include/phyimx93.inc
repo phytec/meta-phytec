@@ -16,6 +16,8 @@ WIC_CREATE_EXTRA_ARGS:remove = "--no-fstab-update"
 
 # MMC user area bootloader image offset
 BOOTLOADER_SEEK:mx93-generic-bsp ?= "32"
+# eMMC boot partition bootloader image offset
+BOOTLOADER_SEEK_EMMC:mx93-generic-bsp ?= "0"
 
 EXTERNAL_KERNEL_DEVICETREE ??= ""
 IMAGE_BOOT_FILES += "oftree ${EXTERNAL_KERNEL_DEVICETREE} bootenv.txt"
@@ -30,7 +32,13 @@ IMX_M33_DEMO_INSTALL:mx93-nxp-bsp ??= " \
 "
 IMAGE_BOOT_FILES:append = "${IMX_M33_DEMO_INSTALL}"
 
-IMAGE_FSTYPES = "tar.gz wic.bmap wic.xz"
+# partup
+IMAGE_CLASSES:append:partup-package = " image-types-partup"
+include partup-layout-config.inc
+PARTUP_IMAGE_FSTYPE = ""
+PARTUP_IMAGE_FSTYPE:partup-package = "partup"
+
+IMAGE_FSTYPES = "tar.gz wic.bmap wic.xz ${PARTUP_IMAGE_FSTYPE}"
 
 MACHINE_FEATURES += "caam optee wifi"
 
