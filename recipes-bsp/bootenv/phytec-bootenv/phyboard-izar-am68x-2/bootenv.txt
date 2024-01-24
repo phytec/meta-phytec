@@ -1,0 +1,1 @@
+overlays=k3-am68-phyboard-izar-lvds-ac200.dtbo k3-am68-phyboard-izar-pwm-fan.dtbo
