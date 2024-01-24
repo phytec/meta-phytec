@@ -12,7 +12,7 @@ UBINIZE_ARGS = "-m 2048 -p 128KiB -s 2048 -O 2048"
 
 # WIC
 IMAGE_CLASSES += "wic-helper"
-IMAGE_CLASSES:append:mx7-nxp-bsp = " wic-imx7-helper"
+IMAGE_CLASSES:append:mx7-nxp-bsp = " wic-bootenv-helper"
 EXTERNAL_KERNEL_DEVICETREE ??= ""
 IMAGE_BOOT_FILES += "oftree ${EXTERNAL_KERNEL_DEVICETREE} bootenv.txt"
 WKS_FILES:mx7-nxp-bsp ?= "imx7-sdimage.wks"
