@@ -1,4 +1,4 @@
-SUMMARY = "Provides machine depended external environment for u-boot on i.MX8 PHYTEC hardware"
+SUMMARY = "Provides machine depended external environment for u-boot on PHYTEC hardware"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
@@ -31,4 +31,5 @@ COMPATIBLE_MACHINE = "^("
 COMPATIBLE_MACHINE .= "mx7-nxp-bsp"
 COMPATIBLE_MACHINE .= "|mx8m-nxp-bsp"
 COMPATIBLE_MACHINE .= "|mx8x-nxp-bsp"
+COMPATIBLE_MACHINE .= "|j721s2"
 COMPATIBLE_MACHINE .= ")$"
