@@ -16,6 +16,9 @@ PREFERRED_PROVIDER_virtual/gpudriver ?= "ti-img-rogue-driver"
 MACHINE_ESSENTIAL_EXTRA_RRECOMMENDS += "cadence-mhdp-fw cnm-wave-fw"
 MACHINE_FEATURES += "screen"
 
+IMAGE_CLASSES:append: = " wic-bootenv-helper"
+IMAGE_BOOT_FILES += "bootenv.txt"
+
 TFA_BOARD = "generic"
 TFA_K3_USART = "0x8"
 OPTEEMACHINE = "k3-j784s4"
