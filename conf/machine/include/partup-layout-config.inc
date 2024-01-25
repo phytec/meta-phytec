@@ -12,6 +12,7 @@ PARTUP_PACKAGE_DEPENDS:append:mx8m-nxp-bsp = " \
 "
 
 PARTUP_PACKAGE_DEPENDS:append:mx8m-mainline-bsp = " \
+    virtual/kernel \
     virtual/bootloader \
 "
 
