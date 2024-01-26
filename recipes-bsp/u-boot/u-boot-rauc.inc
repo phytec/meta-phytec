@@ -6,6 +6,7 @@ set_safely () {
 
 set_doraucboot_1 () {
     bbnote "Setting \"doraucboot\" to \"1\""
+    set_safely "s/\(doraucboot=\)[01]/\11/" include/environment/phytec/rauc.env
     set_safely "s/\(setenv doraucboot \)[01]/\11/" include/configs/phycore_*.h
     set_safely "s/\(setenv doraucboot \)[01]/\11/" configs/phycore-imx8m*
     set_safely "s/\(setenv doraucboot \)[01]/\11/" configs/imx8mm-phygate-tauri_defconfig
