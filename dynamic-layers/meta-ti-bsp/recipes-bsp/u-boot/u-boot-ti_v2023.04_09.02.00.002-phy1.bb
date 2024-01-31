@@ -6,7 +6,7 @@ LICENSE = "GPL-2.0-or-later"
 LIC_FILES_CHKSUM = "file://Licenses/README;md5=2ca5f2c35c8cc335f0a19756634782f1"
 
 GIT_URL = "git://github.com/phytec/u-boot-phytec-ti.git;protocol=https"
-BRANCH = "v2023.04_09.00.00.011-phy"
+BRANCH = "v2023.04_09.02.00.002-phy"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/u-boot:"
@@ -57,7 +57,7 @@ SRC_URI:append:phyboard-izar-am68x-3-k3r5 = "\
 "
 
 PR = "r0"
-SRCREV = "187feb2c7f6c545b5ef2c704442dbd4d62d080cd"
+SRCREV = "0031c7e6c7d2e3682be7c7f9dfbb4bc2c824d5e4"
 
 PACKAGECONFIG[optee] = "TEE=${STAGING_DIR_HOST}${nonarch_base_libdir}/firmware/tee-pager_v2.bin,,optee-os"
 
