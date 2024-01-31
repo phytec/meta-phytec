@@ -47,3 +47,4 @@ def make_dtb_boot_files(d):
     return ' '.join([transform(dtb) for dtb in alldtbs.split() if dtb])
 
 IMAGE_BOOT_FILES += "oftree ${KERNEL_IMAGETYPE} ${@make_dtb_boot_files(d)}"
+IMAGE_BOOT_FILES:update = "oftree ${KERNEL_IMAGETYPE} ${@make_dtb_boot_files(d)}"
