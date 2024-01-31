@@ -1,6 +1,6 @@
 set_safely () {
     if test -f "${S}/${2}"; then
-        sed -i ${1} "${S}/${2}"
+        sed -i "${1}" "${S}/${2}"
     fi
 }
 
