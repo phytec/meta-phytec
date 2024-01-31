@@ -52,3 +52,6 @@ IMAGE_BOOT_FILES:update = "oftree ${KERNEL_IMAGETYPE} ${@make_dtb_boot_files(d)}
 IMAGE_FSTYPES:append:update = " ext4"
 # rootfs alignment required for RAUC adaptive update
 IMAGE_ROOTFS_ALIGNMENT:update = "4"
+
+# bootloader update is not yet supported
+RAUC_BUNDLE_SLOTS:remove:k3 = "bootloader"
