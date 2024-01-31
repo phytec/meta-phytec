@@ -1,6 +1,7 @@
 inherit phygittag
 require recipes-bsp/u-boot/u-boot-common.inc
 require recipes-bsp/u-boot/u-boot-ti.inc
+require recipes-bsp/u-boot/u-boot-rauc.inc
 
 LICENSE = "GPL-2.0-or-later"
 LIC_FILES_CHKSUM = "file://Licenses/README;md5=2ca5f2c35c8cc335f0a19756634782f1"
