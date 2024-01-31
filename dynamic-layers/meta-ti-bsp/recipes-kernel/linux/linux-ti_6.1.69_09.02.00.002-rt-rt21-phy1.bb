@@ -5,6 +5,7 @@ require recipes-kernel/linux/linux-common-rt.inc
 LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 
 GIT_URL = "git://github.com/phytec/linux-phytec-ti.git;protocol=https"
+BRANCH = "v6.1.69_09.02.00.002-rt-rt21-phy"
 SRC_URI = " \
 	${GIT_URL};branch=${BRANCH} \
 	${@bb.utils.contains('MACHINE_FEATURES', 'lwb5p', 'file://update-configs-for-lwb5p-backports.cfg', '', d)} \
@@ -19,7 +20,7 @@ PR = "${INC_PR}.0"
 # NOTE: Keep version in filename in sync with commit id!
 # NOTE: Keep version of TI_LINUX_FW_SRCREV in sync, configured in
 #       dynamic-layers/meta-ti-bsp/recipes-bsp/ti-linux-fw/ti-linux-fw-freeze.inc
-SRCREV = "57e896893d8649b64df4fae970e81edd34670319"
+SRCREV = "71ab4db07f7c9cc3bbd0ee9816e55f8c0ae5a176"
 S = "${WORKDIR}/git"
 
 # Special configuration for remoteproc/rpmsg IPC modules
@@ -39,16 +40,17 @@ INTREE_DEFCONFIG = "phytec_ti_defconfig phytec_ti_platform.config phytec_ti_rt.c
 LOCALVERSION = "-${@legitimize_package_name(d.getVar('DISTRO_VERSION'))}"
 
 COMPATIBLE_MACHINE  = "^("
-COMPATIBLE_MACHINE .=  "phyboard-lyra-am62xx-1"
-COMPATIBLE_MACHINE .= "|phyboard-lyra-am62xx-2"
-COMPATIBLE_MACHINE .= "|phyboard-lyra-am62xx-3"
-COMPATIBLE_MACHINE .= "|phyboard-lyra-am62xx-4"
+COMPATIBLE_MACHINE .=   "phyboard-lyra-am62xx-2"
+COMPATIBLE_MACHINE .=  "|phyboard-lyra-am62xx-3"
+COMPATIBLE_MACHINE .=  "|phyboard-lyra-am62xx-4"
 
-COMPATIBLE_MACHINE .= "|phyboard-lyra-am62axx-1"
-COMPATIBLE_MACHINE .= "|phyboard-lyra-am62axx-2"
+COMPATIBLE_MACHINE .=  "|phyboard-lyra-am62axx-1"
+COMPATIBLE_MACHINE .=  "|phyboard-lyra-am62axx-2"
 
-COMPATIBLE_MACHINE .= "|phyboard-electra-am64xx-1"
-COMPATIBLE_MACHINE .= "|phyboard-electra-am64xx-2"
+COMPATIBLE_MACHINE .=  "|phyboard-electra-am64xx-1"
+COMPATIBLE_MACHINE .=  "|phyboard-electra-am64xx-2"
 
-COMPATIBLE_MACHINE .= "|phyboard-izar-am68x-1"
+COMPATIBLE_MACHINE .=  "|phyboard-izar-am68x-1"
+COMPATIBLE_MACHINE .=  "|phyboard-izar-am68x-2"
+COMPATIBLE_MACHINE .=  "|phyboard-izar-am68x-3"
 COMPATIBLE_MACHINE .= ")$"
