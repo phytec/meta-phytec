@@ -49,6 +49,12 @@ def make_dtb_boot_files(d):
 IMAGE_BOOT_FILES += "oftree ${KERNEL_IMAGETYPE} ${@make_dtb_boot_files(d)}"
 IMAGE_BOOT_FILES:update = "oftree ${KERNEL_IMAGETYPE} ${@make_dtb_boot_files(d)}"
 
+IMAGE_CLASSES:append:partup-package = " image-types-partup"
+include partup-layout-config.inc
+PARTUP_IMAGE_FSTYPE = ""
+PARTUP_IMAGE_FSTYPE:partup-package = "partup"
+IMAGE_FSTYPES:append = " ${PARTUP_IMAGE_FSTYPE}"
+
 IMAGE_FSTYPES:append:update = " ext4"
 # rootfs alignment required for RAUC adaptive update
 IMAGE_ROOTFS_ALIGNMENT:update = "4"
