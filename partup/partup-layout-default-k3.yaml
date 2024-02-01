@@ -1,0 +1,41 @@
+api-version: 2
+disklabel: msdos
+
+mmc:
+  boot-partitions:
+    enable: 1
+    boot-ack: true
+    binaries:
+      - input-offset: 0kiB
+        output-offset: 0kiB
+        input:
+          filename: tiboot3.bin
+      - input-offset: 0kiB
+        output-offset: 512kiB
+        input:
+          filename: tispl.bin
+      - input-offset: 0kiB
+        output-offset: 2560kiB
+        input:
+          filename: u-boot.img
+
+partitions:
+  - label: boot
+    type: primary
+    filesystem: fat16
+    mkfs-extra-args: -g 64/32
+    size: 128MiB
+    offset: 8MiB
+    flags:
+      - boot
+      - lba
+    input: # ARRAY_IMAGE_BOOT_FILES
+      - filename: @KEY@ # ARRAY_IMAGE_BOOT_FILES
+
+  - label: root
+    type: primary
+    filesystem: null
+    expand: true
+    block-size: 4kiB
+    input:
+      - filename: ${IMAGE_LINK_NAME}.ext4
