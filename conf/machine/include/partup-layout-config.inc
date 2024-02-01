@@ -17,7 +17,9 @@ PARTUP_PACKAGE_DEPENDS:append:mx8m-mainline-bsp = " \
 "
 
 PARTUP_LAYOUT_CONFIG = "partup-layout-default.yaml"
+PARTUP_LAYOUT_CONFIG:k3 = "partup-layout-default-k3.yaml"
 PARTUP_LAYOUT_CONFIG:update = "partup-layout-rauc.yaml"
+PARTUP_LAYOUT_CONFIG:update:k3 = "partup-layout-rauc-k3.yaml"
 
 PARTUP_SECTIONS += "clean"
 PARTUP_SECTION_clean = "${@bb.utils.contains('PREFERRED_PROVIDER_virtual/bootloader', 'barebox', False, True, d)}"
