@@ -2,6 +2,8 @@ api-version: 2
 disklabel: msdos
 
 mmc:
+  hwreset: enable
+  bootbus: single_backward x1 x8
   boot-partitions:
     enable: 1
     boot-ack: true
