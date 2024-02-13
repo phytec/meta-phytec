@@ -1,4 +1,5 @@
 DESCRIPTION = "U-Boot supporting PHYTEC boards."
+LICENSE = "GPL-2.0-or-later"
 
 inherit phygittag
 require recipes-bsp/u-boot/u-boot-common.inc
