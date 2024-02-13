@@ -2,7 +2,7 @@ FILESEXTRAPATHS:prepend := "${OEROOT}/../meta-arm/meta-arm/recipes-security/opte
 require recipes-security/optee/optee-test.inc
 require optee-phytec.inc
 
-SRCREV = "1c3d6be5eaa6174e3dbabf60928d15628e39b994"
+SRCREV = "2e1e7a9c9d659585566a75fc8802f4758c42bcb2"
 
 EXTRA_OEMAKE:append = " OPTEE_OPENSSL_EXPORT=${STAGING_INCDIR}"
 DEPENDS:append = " openssl"
