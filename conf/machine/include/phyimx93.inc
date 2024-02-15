@@ -35,12 +35,10 @@ IMX_M33_DEMO_INSTALL:mx93-nxp-bsp ??= " \
 IMAGE_BOOT_FILES:append = "${IMX_M33_DEMO_INSTALL}"
 
 # partup
-IMAGE_CLASSES:append:partup-package = " image-types-partup"
+IMAGE_CLASSES += "image-types-partup"
 include partup-layout-config.inc
-PARTUP_IMAGE_FSTYPE = ""
-PARTUP_IMAGE_FSTYPE:partup-package = "partup"
 
-IMAGE_FSTYPES = "tar.gz wic.bmap wic.xz ${PARTUP_IMAGE_FSTYPE}"
+IMAGE_FSTYPES = "tar.gz wic.bmap wic.xz partup"
 IMAGE_FSTYPES:append:update = " ext4"
 
 # rootfs alignment required for RAUC adaptive update
