@@ -62,6 +62,3 @@ IMAGE_FSTYPES:append = " ${PARTUP_IMAGE_FSTYPE}"
 IMAGE_FSTYPES:append:update = " ext4"
 # rootfs alignment required for RAUC adaptive update
 IMAGE_ROOTFS_ALIGNMENT:update = "4"
-
-# bootloader update is not yet supported
-RAUC_BUNDLE_SLOTS:remove:k3 = "bootloader"
