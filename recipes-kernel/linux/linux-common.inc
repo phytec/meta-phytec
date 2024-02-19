@@ -22,7 +22,7 @@ SRC_URI:append = " \
 
 INC_PR = "r0"
 
-DEPENDS += "gzip-native lz4-native"
+DEPENDS += "lzop-native lz4-native"
 PATCHTOOL = "git"
 
 SRCTREECOVEREDTASKS ?= "do_unpack do_fetch"
