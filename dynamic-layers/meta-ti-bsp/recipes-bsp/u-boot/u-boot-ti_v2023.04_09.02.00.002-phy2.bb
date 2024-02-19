@@ -39,15 +39,6 @@ SRC_URI:append:phyboard-lyra-am62xx-3-k3r5 = "\
     file://0001-HACK-board-phytec-phycore_am62x-Enable-OLDI0-AUDIO_R.patch \
 "
 
-SRC_URI:append:phyboard-lyra-am62xx-4 = "\
-    file://0001-HACK-board-phytec-phycore_am62x-Enable-OLDI0-AUDIO_R.patch \
-    file://0001-HACK-arm-dts-Add-phyCORE-AM62x-1GB.patch \
-"
-SRC_URI:append:phyboard-lyra-am62xx-4-k3r5 = "\
-    file://0001-HACK-board-phytec-phycore_am62x-Enable-OLDI0-AUDIO_R.patch \
-    file://0001-HACK-arm-dts-Add-phyCORE-AM62x-1GB.patch \
-"
-
 SRC_URI:append:phyboard-izar-am68x-3 = "\
     file://0001-HACK-board-phytec-phycore_am68x-Obtain-RAM-size-from.patch \
     file://0002-HACK-board-phytec-am68x-Configure-8GB-ram.patch \
@@ -67,8 +58,6 @@ COMPATIBLE_MACHINE .=  "phyboard-lyra-am62xx-2"
 COMPATIBLE_MACHINE .= "|phyboard-lyra-am62xx-2-k3r5"
 COMPATIBLE_MACHINE .= "|phyboard-lyra-am62xx-3"
 COMPATIBLE_MACHINE .= "|phyboard-lyra-am62xx-3-k3r5"
-COMPATIBLE_MACHINE .= "|phyboard-lyra-am62xx-4"
-COMPATIBLE_MACHINE .= "|phyboard-lyra-am62xx-4-k3r5"
 
 COMPATIBLE_MACHINE .= "|phyboard-lyra-am62axx-1"
 COMPATIBLE_MACHINE .= "|phyboard-lyra-am62axx-1-k3r5"
