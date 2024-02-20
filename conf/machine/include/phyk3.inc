@@ -57,6 +57,6 @@ IMAGE_CLASSES += "image-types-partup"
 include partup-layout-config.inc
 IMAGE_FSTYPES += "partup"
 
-IMAGE_FSTYPES:append:update = " ext4"
+IMAGE_FSTYPES:remove:update = "wic.xz wic.bmap"
 # rootfs alignment required for RAUC adaptive update
 IMAGE_ROOTFS_ALIGNMENT:update = "4"
