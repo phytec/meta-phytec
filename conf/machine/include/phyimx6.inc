@@ -57,15 +57,12 @@ NAND_DEV:mx6-generic-bsp ?= "0"
 IMAGE_ROOTFS_ALIGNMENT:update = "4"
 
 # partup
-IMAGE_CLASSES:append:partup-package = " image-types-partup"
+IMAGE_CLASSES += "image-types-partup"
 include partup-layout-config.inc
-PARTUP_IMAGE_FSTYPE = ""
-PARTUP_IMAGE_FSTYPE:partup-package = "partup"
 
 # default images to build
 IMAGE_FSTYPES ?= " \
-    tar.gz wic wic.bmap \
+    tar.gz wic wic.bmap partup \
     ${@bb.utils.contains('MACHINE_FEATURES', 'emmc', '', 'ubifs', d)} \
-    ${PARTUP_IMAGE_FSTYPE} \
 "
 IMAGE_FSTYPES:append:update = " ext4"
