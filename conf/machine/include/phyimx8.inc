@@ -49,7 +49,7 @@ include partup-layout-config.inc
 
 # Default images to build
 IMAGE_FSTYPES = "tar.gz wic wic.bmap partup"
-IMAGE_FSTYPES:append:update = " ext4"
+IMAGE_FSTYPES:remove:update = "wic wic.bmap"
 IMAGE_FSTYPES:append:mx8x-nxp-bsp = " wic.xz"
 IMAGE_FSTYPES:remove:mx8x-nxp-bsp = " wic"
 
