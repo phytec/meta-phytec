@@ -393,24 +393,49 @@ ST_TOOLS_FOR_SDK = " \
     nativesdk-ncurses-libncursesw \
     "
 
+# Add tools to build native application with SDK
+# Currently mandatory for kernel and u-boot
+ST_TOOLS_FOR_SDK:append = " \
+    nativesdk-cpp-symlinks \
+    nativesdk-gcc-symlinks \
+    nativesdk-libyaml \
+    nativesdk-libyaml-dev \
+    "
+
 # For support of perl ansicolor
 ST_TOOLS_FOR_SDK_PERL = " \
     nativesdk-perl-module-term-ansicolor \
     nativesdk-perl-module-encode \
+    nativesdk-perl-module-encode-encoding \
     nativesdk-perl-module-encode-mime-header \
 "
 
 # For some scripts in kernel source code
 ST_TOOLS_FOR_SDK_PERL:append = " \
     nativesdk-perl-module-file-spec-functions \
+    nativesdk-perl-module-integer \
+    nativesdk-perl-module-pod-text \
 "
 
 ST_TOOLS_FOR_SDK:append = " ${ST_TOOLS_FOR_SDK_PERL} "
+
+# For support of python module for u-boot
+ST_TOOLS_FOR_SDK:append = " \
+    nativesdk-python3-dev \
+    nativesdk-python3-setuptools \
+    nativesdk-swig \
+    nativesdk-dtc \
+    nativesdk-flex \
+    "
 
 # For support of python module for optee-os
 ST_TOOLS_FOR_SDK:append = " \
     nativesdk-python3-pyelftools \
     nativesdk-python3-pycryptodomex \
+    nativesdk-python3-pillow \
+    nativesdk-python3-cffi \
+    nativesdk-python3-pycparser \
+    nativesdk-python3-cryptography \
 "
 
 # For support of string convertion (iconv) in SDK
@@ -421,12 +446,6 @@ ST_TOOLS_FOR_SDK:append = " \
 # For support wayland-scanner in SDK
 ST_TOOLS_FOR_SDK:append = " \
     nativesdk-wayland \
-    "
-
-# For Kernel yaml dependency
-ST_TOOLS_FOR_SDK:remove = " \
-    nativesdk-libyaml \
-    nativesdk-libyaml-dev \
     "
 
 # For CMSIS-SVD file parser with GDB
