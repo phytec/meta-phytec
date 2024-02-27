@@ -1,6 +1,6 @@
-do_deploy:append () {
+do_deploy:append() {
     if [ -n "${UBOOT_CONFIG}" ]; then
-    for defconfig in ${UBOOT_MACHINE}; do
+        for defconfig in ${UBOOT_MACHINE}; do
             i=$(expr $i + 1);
             for type in ${UBOOT_CONFIG}; do
                 j=$(expr $j + 1);
@@ -20,14 +20,12 @@ do_deploy:append () {
 }
 
 do_compile:prepend:k3r5() {
-    if [ -n "${UBOOT_CONFIG}" ];
-    then
+    if [ -n "${UBOOT_CONFIG}" ]; then
         for config in ${UBOOT_MACHINE}; do
             i=$(expr $i + 1);
             for type in ${UBOOT_CONFIG}; do
                 j=$(expr $j + 1);
-                if [ $j -eq $i ];
-                then
+                if [ $j -eq $i ]; then
                     if ! [ -L ${B}/${config}/${UBOOT_BINARY} ] && ! [ -f ${B}/${config}/${UBOOT_BINARY} ]; then
                         ln -s ${B}/${config}/spl/u-boot-spl.${UBOOT_SUFFIX} ${B}/${config}/${UBOOT_BINARY}
                     fi
