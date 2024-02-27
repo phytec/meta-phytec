@@ -3,6 +3,11 @@ PARTUP_PACKAGE_FILES = " \
     ${IMAGE_BOOT_FILES} \
     ${IMAGE_LINK_NAME}.ext4 \
 "
+PARTUP_PACKAGE_DEPENDS = " \
+    virtual/kernel \
+    virtual/bootloader \
+"
+
 PARTUP_PACKAGE_FILES:append:update = " config-partition.tar.gz"
 PARTUP_PACKAGE_DEPENDS:append:update = " config-partition"
 
