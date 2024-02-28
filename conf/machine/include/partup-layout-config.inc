@@ -9,6 +9,7 @@ PARTUP_PACKAGE_DEPENDS = " \
 "
 
 PARTUP_PACKAGE_FILES:append:update = " config-partition.tar.gz"
+PARTUP_PACKAGE_FILES:append:k3 = " ${SPL_BINARYNAME} u-boot.${UBOOT_SUFFIX} tiboot3.bin"
 PARTUP_PACKAGE_DEPENDS:append:update = " config-partition"
 
 PARTUP_PACKAGE_DEPENDS:append:mx8m-generic-bsp = " \
@@ -30,7 +31,7 @@ PARTUP_ARRAY_image_boot_files = "${IMAGE_BOOT_FILES}"
 BOOTLOADER_SKIP ??= "${@bb.utils.contains('PREFERRED_PROVIDER_virtual/bootloader', 'barebox', 1, 0, d)}"
 BOOTLOADER_SEEK ??= "1"
 BOOTLOADER_FILE ??= "u-boot.bin"
-BOOTLOADER_FILE:k3 ?= "${SPL_BINARY}"
+BOOTLOADER_FILE:k3 ?= ""
 BOOTLOADER_FILE:mx6-generic-bsp ?= "${BAREBOX_BINARY}"
 BOOTLOADER_FILE:mx6ul-generic-bsp ?= "${BAREBOX_BINARY}"
 BOOTLOADER_FILE:mx8m-generic-bsp ?= "imx-boot"
