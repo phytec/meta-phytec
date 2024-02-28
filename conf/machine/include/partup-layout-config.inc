@@ -47,4 +47,7 @@ do_layout_config[vardeps] += " \
     BOOTLOADER_SKIP \
     BOOTLOADER_SEEK \
     BOOTLOADER_FILE \
+    UBOOT_ENV_OFFSET \
+    UBOOT_ENV_OFFSET_REDUND \
+    BOOT_PART_OFFSET \
 "
