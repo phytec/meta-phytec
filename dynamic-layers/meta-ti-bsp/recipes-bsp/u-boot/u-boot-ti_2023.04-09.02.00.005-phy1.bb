@@ -39,11 +39,9 @@ SRC_URI:append:phyboard-lyra-am62xx-3-k3r5 = "\
 "
 
 SRC_URI:append:phyboard-izar-am68x-3 = "\
-    file://0001-HACK-board-phytec-phycore_am68x-Obtain-RAM-size-from.patch \
     file://0002-HACK-board-phytec-am68x-Configure-8GB-ram.patch \
 "
 SRC_URI:append:phyboard-izar-am68x-3-k3r5 = "\
-    file://0001-HACK-board-phytec-phycore_am68x-Obtain-RAM-size-from.patch \
     file://0002-HACK-board-phytec-am68x-Configure-8GB-ram.patch \
 "
 
