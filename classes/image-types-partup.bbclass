@@ -85,7 +85,7 @@ DEPENDS += "partup-native"
 IMAGE_CMD:partup() {
     partup \
         package \
-        ${IMGDEPLOYDIR}/${IMAGE_NAME}${IMAGE_NAME_SUFFIX}${PARTUP_PACKAGE_SUFFIX} \
+        ${IMGDEPLOYDIR}/${IMAGE_NAME}${PARTUP_PACKAGE_SUFFIX} \
         -C ${PARTUP_BUILD_DIR} \
         ${PARTUP_PACKAGE_FILES} layout.yaml
 }
