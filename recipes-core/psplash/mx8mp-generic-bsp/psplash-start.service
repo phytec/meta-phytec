@@ -1,0 +1,14 @@
+[Unit]
+Description=Start psplash boot splash screen
+RequiresMountsFor=/run
+ConditionFileIsExecutable=/usr/bin/psplash
+ConditionPathExists=/dev/fb0
+After=sysinit.target
+
+[Service]
+Type=notify
+ExecStart=/usr/bin/psplash
+RemainAfterExit=yes
+
+[Install]
+WantedBy=sysinit.target
