@@ -2,16 +2,31 @@ meta-phytec
 ===========
 
 This is the official hardware support layer for PHYTEC Boards.
-Meta-phytec is a distribution independent layer and delivers bootloader
-and kernel to our customers.
+Meta-phytec is a BSP layer, it is distribution independent and delivers
+bootloader and kernel to our customers.
 If you are interested in a fully tested and configured Linux
-distribution, consider installing
-[meta-yogurt](git://git.phytec.de/meta-yogurt)
-too, which is a test distribution based on Poky, maintained by PHYTEC.
+distribution, consider working with
+
+  <https://git.phytec.de/meta-ampliphy>
+
+which is PHYTEC's distribution based on Poky.
+
+Releases are functional tested, supported and maintained. They can be
+accessed by our repo manifest.
+
+  <https://git.phytec.de/phy2octo>
+
+We have a small wrapper to guide you through the release setup.
+
+```
+wget https://download.phytec.de/Software/Linux/Yocto/Tools/phyLinux
+chmod +x ./phyLinux
+./phyLinux init
+```
 
 Further information about the hardware can be found on our webpage:
 
-  <http://www.phytec.de>
+  <https://www.phytec.de>
 
 If you experience any problem with this software, please contact our
 <support@phytec.de> or the maintainer directly.
