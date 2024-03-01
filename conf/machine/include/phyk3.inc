@@ -1,7 +1,6 @@
 require conf/machine/include/k3.inc
 
 SERIAL_CONSOLES = "115200;ttyS2"
-SERIAL_CONSOLES_CHECK = "${SERIAL_CONSOLES}"
 
 # Install modules in initramfs and roofs
 PACKAGE_INSTALL:append = " kernel-modules"
