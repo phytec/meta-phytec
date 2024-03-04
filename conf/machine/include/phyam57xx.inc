@@ -51,8 +51,6 @@ PREFERRED_PROVIDER_virtual/gpudriver = "ti-sgx-ddk-km"
 PREFERRED_VERSION_ti-sgx-ddk-um = "1.17.4948957"
 PREFERRED_VERSION_ti-sgx-ddk-km = "1.17.4948957"
 
-QT_QPA_PLATFORM ?= "eglfs"
-
 # Vivante GC320 2D accelerator
 MACHINE_EXTRA_RRECOMMENDS_append_am57xx = " \
     ${@bb.utils.contains('MACHINE_FEATURES', 'gc320', 'ti-gc320-driver ti-gc320-libs', '', d)} \
