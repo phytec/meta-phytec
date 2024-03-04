@@ -4,6 +4,7 @@ LICENSE = "GPL-2.0-or-later"
 inherit phygittag
 require recipes-bsp/u-boot/u-boot-common.inc
 require recipes-bsp/u-boot/u-boot.inc
+require u-boot-rauc.inc
 
 inherit ${@oe.utils.ifelse(d.getVar('UBOOT_PROVIDES_BOOT_CONTAINER') == '1', 'imx-boot-container', '')}
 
