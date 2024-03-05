@@ -22,7 +22,6 @@ IMAGE_CLASSES += "wic-helper"
 EXTERNAL_KERNEL_DEVICETREE ??= ""
 IMAGE_BOOT_FILES = "zImage;linuximage oftree ${KERNEL_DEVICETREE} ${EXTERNAL_KERNEL_DEVICETREE}"
 WKS_FILES:rk3288 ?= "rk3288-sdimage.wks"
-WKS_FILES:rk3288:update ?= "rk3288-rauc-sdimage.wks"
 WKS_BOOTIMAGESIZE ?= "20"
 
 # Device information used by RAUC and some of its dependencies
