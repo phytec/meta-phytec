@@ -65,7 +65,6 @@ do_image_wic[depends] += "\
     virtual/prebootloader:do_deploy \
 "
 WKS_FILES:ti33x ?= "am335x-sdimage.wks"
-WKS_FILES:ti33x:update ?= "am335x-rauc-sdimage.wks"
 WKS_BOOTIMAGESIZE ?= "20"
 
 # Device information used by RAUC and some of its dependencies

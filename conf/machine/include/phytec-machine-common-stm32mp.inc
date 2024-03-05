@@ -754,4 +754,4 @@ WKS_IMAGE_FSTYPES += "wic wic.bz2 wic.bmap"
 # This default value (BOOTSCHEME) can be used for example for the WIC file generation or rauc bundle build.
 BOOTSCHEME = "${@bb.utils.contains('BOOTSCHEME_LABELS', 'optee', 'optee', 'trusted', d)}"
 
-WKS_FILE += "${@bb.utils.contains('DISTRO_FEATURES', 'rauc', 'stm32mp1-rauc-sdimage.wks.in', 'stm32mp1-sdimage.wks.in',d)}"
+WKS_FILE += "stm32mp1-sdimage.wks.in"
