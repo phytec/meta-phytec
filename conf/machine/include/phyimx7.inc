@@ -3,7 +3,6 @@
 PREFERRED_PROVIDER_virtual/kernel = "linux-imx"
 PREFERRED_PROVIDER_virtual/bootloader = "u-boot-imx"
 PREFERRED_PROVIDER_u-boot = "u-boot-imx"
-PREFERRED_PROVIDER_u-boot-fw-utils = "libubootenv"
 
 # UBIFS
 UBI_VOLNAME = "root"

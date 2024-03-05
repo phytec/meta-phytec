@@ -624,8 +624,6 @@ UBOOT_MTDPART_CHECK ?= "\
     ${@bb.utils.contains('BOOTDEVICE_LABELS', 'nor-emmc', 'CONFIG_MTDPARTS_NOR0_BOOT=${UBOOT_MTDPART_NOR_BOOT}', '', d)} \
     "
 
-PREFERRED_PROVIDER_u-boot-fw-utils:stm32mp1common = "libubootenv"
-
 MACHINE_EXTRA_RRECOMMENDS:append:stm32mp1common = " \
     u-boot-fw-config-stm32mp \
 "
