@@ -1059,7 +1059,7 @@ state.phyBOARDLyra {
 	control.82 {
 		iface MIXER
 		name 'Left HP Mixer DACL1 Switch'
-		value false
+		value true
 		comment {
 			access 'read write'
 			type BOOLEAN
