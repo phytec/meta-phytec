@@ -16,6 +16,7 @@ python () {
 
 GIT_URL = "git://git.phytec.de/${BPN}"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
+SRC_URI_append = " file://0001-perf-Make-perf-able-to-build-with-latest-libbfd.patch"
 SRC_URI_append_ti33x = "\
     ${@bb.utils.contains('MACHINE_FEATURES', '3g', 'file://3g.cfg', '', d)} \
     file://blacklist-cpufreq_dt.cfg \

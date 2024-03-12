@@ -9,6 +9,7 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=bbea815ee2795b2f4230826c0c6b8814"
 
 GIT_URL = "git://git.phytec.de/${BPN}"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
+SRC_URI_append = " file://0001-perf-Make-perf-able-to-build-with-latest-libbfd.patch"
 
 PR = "${INC_PR}.0"
 
