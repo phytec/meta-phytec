@@ -21,6 +21,12 @@ DISTRO ?= "ampliphy"
 DEPLOY_DIR = "${TOPDIR}/deploy"
 TI_COMMON_DEPLOY = "${DEPLOY_DIR}"
 
+# Sharing a deploy directory in a multiconfig setup leads to
+# build errors as poky started to restrict deployment of identical
+# license files. Split licenses directory into subdirectories in
+# a multiconfig environment for native packages.
+LICENSE_DIRECTORY:class-native = "${DEPLOY_DIR}/licenses/${BB_CURRENT_MC}"
+
 # When building multiple distros in the same TOPDIR
 #TMPDIR = "${TOPDIR}/${DISTRO}-tmp"
 #DEPLOY_DIR = "${TOPDIR}/${DISTRO}-deploy"
