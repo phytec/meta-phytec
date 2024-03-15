@@ -23,4 +23,5 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 COMPATIBLE_MACHINE = "^("
 COMPATIBLE_MACHINE .= "phyboard-segin-imx93-2"
+COMPATIBLE_MACHINE .= "|phyboard-nash-imx93-1"
 COMPATIBLE_MACHINE .= ")$"
