@@ -21,4 +21,5 @@ INTREE_DEFCONFIG:mx93-generic-bsp = "imx_v8_defconfig imx9_phytec_distro.config 
 
 COMPATIBLE_MACHINE  = "^("
 COMPATIBLE_MACHINE .= "phyboard-segin-imx93-2"
+COMPATIBLE_MACHINE .= "|phyboard-nash-imx93-1"
 COMPATIBLE_MACHINE .= ")$"
