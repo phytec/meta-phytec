@@ -1,0 +1,26 @@
+# phyCAM VM-016 (ar0144) DCMIPP
+ACTION=="add", \
+        SUBSYSTEM=="video4linux", \
+        ATTR{name}=="ar0144*", \
+        SYMLINK+="cam-dcmipp"
+
+# DCMIPP parallel entity
+ACTION=="add", \
+        SUBSYSTEM=="video4linux", \
+        ATTR{name}=="dcmipp_parallel", \
+        DRIVERS=="dcmipp", \
+        SYMLINK+="parallel-dcmipp"
+
+# DCMIPP byteproc entity
+ACTION=="add", \
+        SUBSYSTEM=="video4linux", \
+        ATTR{name}=="dcmipp_dump_postproc", \
+        DRIVERS=="dcmipp", \
+        SYMLINK+="byteproc-dcmipp"
+
+# DCMIPP Video Device
+ACTION=="add", \
+        SUBSYSTEM=="video4linux", \
+        ATTR{name}=="dcmipp_dump_capture", \
+        DRIVERS=="dcmipp", \
+        SYMLINK+="video-dcmipp"
