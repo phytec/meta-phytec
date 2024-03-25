@@ -24,6 +24,10 @@ SRC_URI:append:mx8mp-generic-bsp = " \
     file://setup-pipeline-csi2.sh \
 "
 
+SRC_URI:append:stm32mp13common = " \
+    file://setup-pipeline-dcmipp.sh \
+"
+
 do_install() {
     install -d ${D}${nonarch_base_libdir}/udev/rules.d/
     install -m 0644 ${WORKDIR}/90-phycam.rules \
@@ -39,6 +43,12 @@ do_install() {
         install -d ${D}${bindir}
         install -m 0755 ${WORKDIR}/setup-pipeline-csi2.sh \
                         ${D}${bindir}/setup-pipeline-csi2
+    fi
+
+    if [ -e ${WORKDIR}/setup-pipeline-dcmipp.sh ]; then
+        install -d ${D}${bindir}
+        install -m 0755 ${WORKDIR}/setup-pipeline-dcmipp.sh \
+                        ${D}${bindir}/setup-pipeline-dcmipp
     fi
 }
 
