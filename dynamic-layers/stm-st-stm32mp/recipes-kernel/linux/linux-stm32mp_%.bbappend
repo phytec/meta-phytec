@@ -30,6 +30,7 @@ KERNEL_CONFIG_FRAGMENTS += "${WORKDIR}/fragments/${LINUX_VERSION}/fragment-15-ca
 KERNEL_CONFIG_FRAGMENTS += "${WORKDIR}/fragments/${LINUX_VERSION}/fragment-16-camera-ar0144.config"
 KERNEL_CONFIG_FRAGMENTS += "${WORKDIR}/fragments/${LINUX_VERSION}/fragment-17-phy-dp83826.config"
 KERNEL_CONFIG_FRAGMENTS += "${WORKDIR}/fragments/${LINUX_VERSION}/fragment-18-resistive-touch.config"
+KERNEL_CONFIG_FRAGMENTS += "${WORKDIR}/fragments/${LINUX_VERSION}/fragment-19-capacitive-touch.config"
 
 SRC_URI += "file://${LINUX_VERSION}/fragment-06-rtc.config;subdir=fragments"
 SRC_URI += "file://${LINUX_VERSION}/fragment-07-eeprom.config;subdir=fragments"
@@ -44,6 +45,7 @@ SRC_URI += "file://${LINUX_VERSION}/fragment-15-camera-mt9v032.config;subdir=fra
 SRC_URI += "file://${LINUX_VERSION}/fragment-16-camera-ar0144.config;subdir=fragments"
 SRC_URI += "file://${LINUX_VERSION}/fragment-17-phy-dp83826.config;subdir=fragments"
 SRC_URI += "file://${LINUX_VERSION}/fragment-18-resistive-touch.config;subdir=fragments"
+SRC_URI += "file://${LINUX_VERSION}/fragment-19-capacitive-touch.config;subdir=fragments"
 
 # ---------------------------------
 # Configure devupstream class usage
@@ -77,6 +79,9 @@ SRC_URI:class-devupstream += "file://${LINUX_VERSION}/fragment-13-add-pca953x-le
 SRC_URI:class-devupstream += "file://${LINUX_VERSION}/fragment-14-RPI-screen.config;subdir=fragments"
 SRC_URI:class-devupstream += "file://${LINUX_VERSION}/fragment-15-camera-mt9v032.config;subdir=fragments"
 SRC_URI:class-devupstream += "file://${LINUX_VERSION}/fragment-16-camera-ar0144.config;subdir=fragments"
+SRC_URI:class-devupstream += "file://${LINUX_VERSION}/fragment-17-phy-dp83826.config;subdir=fragments"
+SRC_URI:class-devupstream += "file://${LINUX_VERSION}/fragment-18-resistive-touch.config;subdir=fragments"
+SRC_URI:class-devupstream += "file://${LINUX_VERSION}/fragment-19-capacitive-touch.config;subdir=fragments"
 
 # ------------------------------------------------------------------------
 # Build dtb with symbols to allow bootloader to apply device tree overlays
