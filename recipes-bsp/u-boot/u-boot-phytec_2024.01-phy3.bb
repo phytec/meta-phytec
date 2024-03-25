@@ -14,7 +14,7 @@ GIT_URL = "git://github.com/phytec/u-boot-phytec.git;protocol=https"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
 PR = "r0"
-SRCREV = "51f4f0c241010a3eaf91f6a971e2fd4ac20b69f2"
+SRCREV = "30ed1d3bc40f724af68e83a027e357af657bdd0d"
 
 PROVIDES += "u-boot"
 
