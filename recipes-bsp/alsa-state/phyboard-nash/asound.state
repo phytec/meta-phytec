@@ -1,0 +1,50 @@
+state.sndpebav10 {
+	control.11 {
+		iface MIXER
+		name 'PCM Playback Volume'
+		value.0 95
+		value.1 95
+		comment {
+			access 'read write'
+			type INTEGER
+			count 2
+			range '0 - 127'
+			dbmin -6350
+			dbmax 0
+			dbvalue.0 -1600
+			dbvalue.1 -1600
+		}
+	}
+	control.27 {
+		iface MIXER
+		name 'HP DAC Playback Volume'
+		value.0 118
+		value.1 118
+		comment {
+			access 'read write'
+			type INTEGER
+			count 2
+			range '0 - 118'
+			dbmin -9999999
+			dbmax 0
+			dbvalue.0 0
+			dbvalue.1 0
+		}
+	}
+	control.44 {
+		iface MIXER
+		name 'PGA Capture Volume'
+		value.0 88
+		value.1 88
+		comment {
+			access 'read write'
+			type INTEGER
+			count 2
+			range '0 - 119'
+			dbmin 0
+			dbmax 5950
+			dbvalue.0 4400
+			dbvalue.1 4400
+		}
+	}
+}
