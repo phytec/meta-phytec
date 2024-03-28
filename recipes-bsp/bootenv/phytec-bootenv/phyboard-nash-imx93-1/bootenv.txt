@@ -1,0 +1,1 @@
+overlays=imx93-phyboard-nash-peb-av-010.dtbo
