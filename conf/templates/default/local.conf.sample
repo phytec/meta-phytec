@@ -12,8 +12,6 @@ DISTRO ?= "ampliphy"
 #SSTATE_DIR = "${TOPDIR}/sstate-cache"
 
 # License Handling
-#  - Uncomment for i.MX6 proprietary GPU libraries
-#LICENSE_FLAGS_ACCEPTED += "license-nxp_v14-june-2016_imx-gpu-viv"
 #  - Uncomment for Freescale i.MX6 VPU firmware blobs
 #LICENSE_FLAGS_ACCEPTED += "license-freescale_v12-march-2016_firmware-imx"
 
