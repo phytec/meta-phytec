@@ -1,0 +1,13 @@
+header:
+  version: 2
+  includes:
+    - kas/poky-phytec.yml
+
+repos:
+  poky:
+    url:
+    path: poky
+
+  meta-phytec:
+    url:
+    path: meta-phytec

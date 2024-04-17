@@ -1,0 +1,27 @@
+header:
+  version: 14
+  includes:
+    - repo: meta-phytec
+      file: kas/include/poky-local-conf.yml
+
+machine: phyboard-segin-imx6ul-6
+distro: poky
+target: core-image-base
+
+defaults:
+  repos:
+    branch: master
+
+repos:
+  poky:
+    url: https://github.com/yoctoproject/poky
+    layers:
+      meta:
+      meta-poky:
+
+  meta-phytec:
+    url: https://github.com/phytec/meta-phytec
+
+local_conf_header:
+  phytec_pure:poky_config: |
+    PREFERRED_PROVIDER_virtual/kernel = "linux-yocto"
