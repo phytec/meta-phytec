@@ -40,6 +40,28 @@ Please try to do the following first:
   to see if other people have run into similar
   problems or had similar questions answered.
 
+kas
+===
+
+The kas subfolder contains build configurations for the kas setup tool. Those
+build configurations run in our CI or cover certain use cases and cannot be
+seen as releases. Releases are provided through our repo manifest repository.
+Information about the tool can be found here:
+
+ <https://kas.readthedocs.io/en/latest/>
+
+Some use cases are covered:
+
+1. build a poky image for phytec hardware
+
+ $ kas build meta-phytec/kas/poky-phytec.yml
+
+2. work on a poky upstream feature:
+
+ $ kas checkout meta-phytec/kas/poky-phytec.yml
+ # work on the layers
+ $ kas build meta-phytec/kas/poky-phytec-local.yml
+
 License
 =======
 
