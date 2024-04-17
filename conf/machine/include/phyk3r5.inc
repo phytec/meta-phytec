@@ -1,3 +1,5 @@
+require phytec-machine-common.inc
+
 require conf/machine/include/k3r5.inc
 
 PREFERRED_PROVIDER_virtual/kernel = "linux-dummy"

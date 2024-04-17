@@ -1,3 +1,5 @@
+require phytec-machine-common.inc
+
 # Common settings for PHYTEC's i.MX7 boards
 
 PREFERRED_PROVIDER_virtual/kernel = "linux-imx"

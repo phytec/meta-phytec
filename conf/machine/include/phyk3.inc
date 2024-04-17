@@ -1,3 +1,5 @@
+require phytec-machine-common.inc
+
 require conf/machine/include/k3.inc
 
 SERIAL_CONSOLES = "115200;ttyS2"

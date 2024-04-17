@@ -1,3 +1,5 @@
+require phytec-machine-common.inc
+
 #@DESCRIPTION: Common Machine configuration for STM32 systems
 
 require conf/machine/include/phytec-machine-extlinux-config-stm32mp.inc

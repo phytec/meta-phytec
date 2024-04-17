@@ -1,3 +1,5 @@
+require phytec-machine-common.inc
+
 require conf/machine/include/dra7xx.inc
 
 SOC_FAMILY:append = ":am57xx"

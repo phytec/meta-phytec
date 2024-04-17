@@ -1,3 +1,5 @@
+require phytec-machine-common.inc
+
 # Common settings for PHYTEC's i.MX8 boards
 
 PREFERRED_PROVIDER_virtual/bootloader:mx8-nxp-bsp ?= "u-boot-imx"

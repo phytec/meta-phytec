@@ -1,3 +1,5 @@
+require phytec-machine-common.inc
+
 #Taken from meta-rockchip Layer, original name:rk3288.inc
 DEFAULTTUNE ?= "cortexa17thf-neon-vfpv4"
 

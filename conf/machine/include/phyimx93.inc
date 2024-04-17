@@ -1,3 +1,5 @@
+require phytec-machine-common.inc
+
 # Common settings for PHYTEC's i.MX93 boards
 require conf/machine/include/arm/armv8-2a/tune-cortexa55.inc
 
