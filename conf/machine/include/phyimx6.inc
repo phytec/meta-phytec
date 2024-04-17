@@ -1,3 +1,5 @@
+require phytec-machine-common.inc
+
 # Common settings for phytecs imx6 boards
 
 include conf/machine/include/soc-family.inc

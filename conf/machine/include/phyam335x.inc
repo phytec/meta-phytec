@@ -1,3 +1,5 @@
+require phytec-machine-common.inc
+
 #Taken from TI yocto BSP Layer Version 05-2014, original name:ti33xx.inc
 SOC_FAMILY = "ti33x"
 require conf/machine/include/soc-family.inc
