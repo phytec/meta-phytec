@@ -18,6 +18,8 @@ S = "${WORKDIR}/git"
 
 INTREE_DEFCONFIG = "imx_v6_v7_defconfig imx6_phytec_distro.config imx6_phytec_machine.config imx6_phytec_platform.config"
 
+KERNEL_DEVICETREE_32BIT_COMPATIBILITY_UPDATE = "1"
+
 COMPATIBLE_MACHINE  = "^("
 COMPATIBLE_MACHINE .=  "phyboard-segin-imx6ul-2"
 COMPATIBLE_MACHINE .= "|phyboard-segin-imx6ul-3"
