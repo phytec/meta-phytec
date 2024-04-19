@@ -66,8 +66,6 @@ PARTUP_BOOT_FILES = " \
 "
 IMAGE_EFI_BOOT_FILES ?= "${IMAGE_BOOT_FILES}"
 
-IMAGE_BOOT_FILES:remove:update = "${K3_BOOTLOADER_FILES}"
-
 IMAGE_CLASSES += "image-types-partup"
 include partup-layout-config.inc
 IMAGE_FSTYPES += "partup"
