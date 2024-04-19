@@ -50,8 +50,19 @@ def make_dtb_boot_files(d):
 
     return ' '.join([transform(dtb) for dtb in alldtbs.split() if dtb])
 
-IMAGE_BOOT_FILES += "oftree ${KERNEL_IMAGETYPE} ${@make_dtb_boot_files(d)}"
-IMAGE_BOOT_FILES:update = "oftree ${KERNEL_IMAGETYPE} ${@make_dtb_boot_files(d)}"
+SPL_BINARY = "tispl.bin"
+SPL_BINARYNAME = "tispl.bin"
+UBOOT_SUFFIX = "img"
+K3_BOOTLOADER_FILES = "${SPL_BINARYNAME} u-boot.${UBOOT_SUFFIX} tiboot3.bin"
+
+IMAGE_BOOT_FILES = " \
+    ${K3_BOOTLOADER_FILES} \
+    ${KERNEL_IMAGETYPE} \
+    ${@make_dtb_boot_files(d)} oftree \
+"
+IMAGE_EFI_BOOT_FILES ?= "${IMAGE_BOOT_FILES}"
+
+IMAGE_BOOT_FILES:remove:update = "${K3_BOOTLOADER_FILES}"
 
 IMAGE_CLASSES += "image-types-partup"
 include partup-layout-config.inc
