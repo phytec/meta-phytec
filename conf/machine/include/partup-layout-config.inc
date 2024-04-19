@@ -9,7 +9,6 @@ PARTUP_PACKAGE_DEPENDS = " \
 "
 
 PARTUP_PACKAGE_FILES:append:update = " config-partition.tar.gz"
-PARTUP_PACKAGE_FILES:append:k3 = " ${SPL_BINARYNAME} u-boot.${UBOOT_SUFFIX} tiboot3.bin"
 PARTUP_PACKAGE_DEPENDS:append:update = " config-partition"
 
 PARTUP_PACKAGE_DEPENDS:append:mx8m-generic-bsp = " \
