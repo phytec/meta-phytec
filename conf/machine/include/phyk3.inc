@@ -18,6 +18,7 @@ MACHINE_FEATURES += "optee efi"
 
 # dont install kernelimage to rootfs
 RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base = ""
+MACHINE_ESSENTIAL_EXTRA_RDEPENDS:remove = "kernel-image-image kernel-devicetree"
 
 KERNEL_IMAGETYPE = "Image"
 KERNEL_IMAGETYPES = "Image vmlinux.gz"
