@@ -510,6 +510,8 @@ KERNEL_ALT_IMAGETYPE =  " Image "
 KERNEL_ALT_IMAGETYPE =+ " vmlinux "
 KERNEL_ALT_IMAGETYPE =+ " ${@bb.utils.contains('MACHINE_FEATURES', 'fit', 'uImage', 'zImage', d)} "
 
+KERNEL_CLASSES = " ${@bb.utils.contains('MACHINE_FEATURES', 'fit', 'kernel-fitimage', 'kernel-uimage', d)} "
+
 # Maxsize authorized for uncompressed kernel binary
 # Define to null to skip kernel image size check
 KERNEL_IMAGE_MAXSIZE ?= ""
