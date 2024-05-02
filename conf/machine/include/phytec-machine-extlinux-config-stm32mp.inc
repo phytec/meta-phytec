@@ -73,8 +73,9 @@ UBOOT_EXTLINUX_FDT:rootfs-m4-examples = "/${CUBE_M4_EXAMPLES_DT}.dtb"
 # -----------------------------------------------------------------------------
 # Configure additional target
 # -----------------------------------------------------------------------------
-# Disable by default UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG
-UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG ?= ""
+# When using FIT image, UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG must be set to Kernel device tree name
+# Otherwise, disable by default UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG
+UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG ?= "${@bb.utils.contains_any('MACHINE_FEATURES', 'fit', '${KERNEL_DT}', '', d)}"
 UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG[none] ?= ""
 
 # Enable UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG var that allows to configure
