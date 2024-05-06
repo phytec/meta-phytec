@@ -16,6 +16,10 @@ PARTUP_PACKAGE_DEPENDS:append:mx8m-generic-bsp = " \
     phytec-bootenv \
 "
 
+PARTUP_PACKAGE_DEPENDS:append:j721s2 = " \
+    phytec-bootenv \
+"
+
 PARTUP_LAYOUT_CONFIG = "partup-layout-default.yaml"
 PARTUP_LAYOUT_CONFIG:k3 = "partup-layout-default-k3.yaml"
 PARTUP_LAYOUT_CONFIG:update = "partup-layout-rauc.yaml"
