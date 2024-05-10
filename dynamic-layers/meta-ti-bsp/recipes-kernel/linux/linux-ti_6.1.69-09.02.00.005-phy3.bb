@@ -32,8 +32,6 @@ EXTRA_DTC_ARGS += "DTC_FLAGS=-@"
 KERNEL_EXTRA_ARGS += "LOADADDR=${UBOOT_ENTRYPOINT} \
                       ${EXTRA_DTC_ARGS}"
 
-FILES:${KERNEL_PACKAGE_NAME}-devicetree += "/${KERNEL_IMAGEDEST}/*.itb"
-
 INTREE_DEFCONFIG = "phytec_ti_defconfig phytec_ti_platform.config"
 
 LOCALVERSION = "-${@legitimize_package_name(d.getVar('DISTRO_VERSION'))}"
