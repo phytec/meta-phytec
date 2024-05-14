@@ -28,7 +28,7 @@ PARTUP_LAYOUT_CONFIG:update:k3 ?= "layout-rauc-k3.yaml"
 PARTUP_SECTIONS += "clean"
 PARTUP_SECTION_clean = "${@bb.utils.contains('PREFERRED_PROVIDER_virtual/bootloader', 'barebox', False, True, d)}"
 
-PARTUP_BOOT_FILES ?= "${IMAGE_BOOT_FILES}"
+PARTUP_BOOT_FILES ??= "${IMAGE_BOOT_FILES}"
 PARTUP_ARRAYS += "image_boot_files"
 PARTUP_ARRAY_image_boot_files = "${PARTUP_BOOT_FILES}"
 
