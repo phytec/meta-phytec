@@ -9,8 +9,10 @@ SECTION = "devel"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://COPYING.MIT;md5=017e4848cc19ac0eb4e3f461b957234b"
 
-SRC_URI = "https://github.com/phytec/${BPN}/archive/refs/tags/v${PV}.tar.gz"
-SRC_URI[sha256sum] = "62151ca675e23f34b40ced74d5d7edbf87e80ad7a2487dcd9d903ad4f6362a13"
+SRC_URI = "git://github.com/phytec/${BPN}.git;protocol=https;branch=main"
+SRCREV = "d68df3614204c2b5f65750d7bd21fba198c47105"
+
+S="${WORKDIR}/git"
 
 inherit setuptools3
 
