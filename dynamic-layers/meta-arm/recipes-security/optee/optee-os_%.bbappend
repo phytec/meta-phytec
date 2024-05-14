@@ -43,6 +43,11 @@ EXTRA_OEMAKE:append:mx8m-generic-bsp = " \
     CFG_CORE_LARGE_PHYS_ADDR=y CFG_CORE_ARM64_PA_BITS=36 \
     CFG_VIRTUALIZATION=n \
 "
+# HACK: disable HWRNG
+EXTRA_OEMAKE:append:mx8m-generic-bsp = " \
+    CFG_WITH_SOFTWARE_PRNG=y \
+    CFG_HWRNG_PTA=n \
+"
 
 EXTRA_OEMAKE:append:mx8mm-nxp-bsp = " \
     CFG_UART_BASE=UART3_BASE \
