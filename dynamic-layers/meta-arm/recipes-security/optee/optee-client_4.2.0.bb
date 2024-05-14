@@ -2,7 +2,7 @@ FILESEXTRAPATHS:prepend := "${OEROOT}/../meta-arm/meta-arm/recipes-security/opte
 require recipes-security/optee/optee-client.inc
 require optee-phytec.inc
 
-SRCREV = "f7e4ced15d1fefd073bbfc484fe0e1f74afe96c2"
+SRCREV = "3eac340a781c00ccd61b151b0e9c22a8c6e9f9f0"
 
 inherit pkgconfig
 DEPENDS += "util-linux"
