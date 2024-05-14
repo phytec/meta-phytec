@@ -2,7 +2,7 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 require recipes-security/optee/optee-os.inc
 require optee-phytec.inc
 
-SRCREV = "18b424c23aa5a798dfe2e4d20b4bde3919dc4e99"
+SRCREV = "12d7c4ee4642d2d761e39fbcf21a06fb77141dea"
 
 # SoC specific patches
 SRC_URI:append:mx8m-nxp-bsp = " \
