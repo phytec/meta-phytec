@@ -1,8 +1,6 @@
 # This class is used to extract yocto build data for our test environment.
 # ENV_PTF_* variables are consumed by our test system configs.
 
-inherit linux-kernel-base
-
 def get_bootloader_makefile(d):
     bootloader = d.getVar('PREFERRED_PROVIDER_virtual/bootloader')
     mult = os.path.join(d.getVar('BASE_WORKDIR'), d.getVar('MULTIMACH_TARGET_SYS'))
@@ -16,6 +14,15 @@ def get_bootloader_version(makefile):
     patchlevel = re.compile(r'(PATCHLEVEL = \d\d)').findall(makefile)
     return '%s.%s' % (version[0].split(' = ')[1], patchlevel[0].split(' = ')[1])
 
+def get_kernelversion_file(p):
+    fn = p + '/kernel-abiversion'
+
+    try:
+        with open(fn, 'r') as f:
+            return f.readlines()[0].strip()
+    except IOError:
+        return None
+
 def build_ptf_data(d):
     data = {}
     kernel = get_kernelversion_file(d.getVar('STAGING_KERNEL_BUILDDIR')).split('-')[0]
@@ -28,11 +35,6 @@ def build_ptf_data(d):
     data['ENV_PTF_YOCTO_RELEASE'] = d.getVar('DISTRO_CODENAME')
     mk = get_bootloader_makefile(d)
     data['ENV_PTF_BOOTLOADER_VERSION'] = get_bootloader_version(mk)
-    dtb = d.getVar('KERNEL_DEVICETREE').split(' ')[0]
-    dtb = dtb.split('/')[1] if '/' in dtb else dtb
-    data['ENV_PTF_DEVICETREE'] = dtb
-    kernel_image = '%s-%s.bin' % (d.getVar('KERNEL_IMAGETYPE'), d.getVar('MACHINE'))
-    data['ENV_PTF_KERNEL_IMAGE'] = kernel_image
 
     return data
 
