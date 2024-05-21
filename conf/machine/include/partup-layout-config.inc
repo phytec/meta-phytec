@@ -10,6 +10,8 @@ PARTUP_PACKAGE_DEPENDS = " \
 
 PARTUP_PACKAGE_FILES:append:update = " config-partition.tar.gz"
 PARTUP_PACKAGE_DEPENDS:append:update = " config-partition"
+PARTUP_PACKAGE_FILES:append:rauc-appfs = " rauc-appfs-example.tar.gz"
+PARTUP_PACKAGE_DEPENDS:append:rauc-appfs = " rauc-appfs-example"
 
 PARTUP_PACKAGE_DEPENDS:append:mx8m-nxp-bsp = " \
     ${@oe.utils.ifelse(d.getVar('UBOOT_PROVIDES_BOOT_CONTAINER') == '0', '${IMAGE_BOOTLOADER}', '')} \
