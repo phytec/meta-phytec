@@ -19,7 +19,7 @@ clean:
     size: 64kiB
 # END_CLEAN
 partitions:
-  - label: BOOT
+  - label: boot
     type: primary
     filesystem: fat32
     size: 128MiB
@@ -27,7 +27,7 @@ partitions:
     input: # ARRAY_IMAGE_BOOT_FILES
       - filename: @KEY@ # ARRAY_IMAGE_BOOT_FILES
 
-  - label: ROOT
+  - label: root
     type: primary
     filesystem: null
     expand: true
