@@ -61,3 +61,19 @@ partitions:
     block-size: 4kiB
     input:
       - filename: ${IMAGE_LINK_NAME}.ext4
+# BEGIN_APPFS
+
+  - label: app0
+    type: logical
+    filesystem: ext4
+    size: 1GiB
+    input:
+      - filename: rauc-appfs-example.tar.gz
+
+  - label: app1
+    type: logical
+    filesystem: ext4
+    size: 1GiB
+    input:
+      - filename: rauc-appfs-example.tar.gz
+# END_APPFS
