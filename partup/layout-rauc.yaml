@@ -24,7 +24,7 @@ clean:
     size: 64kiB
 # END_CLEAN
 partitions:
-  - label: BOOT0
+  - label: boot0
     type: primary
     filesystem: fat32
     size: 128MiB
@@ -32,21 +32,21 @@ partitions:
     input: # ARRAY_IMAGE_BOOT_FILES
       - filename: @KEY@ # ARRAY_IMAGE_BOOT_FILES
 
-  - label: BOOT1
+  - label: boot1
     type: primary
     filesystem: fat32
     size: 128MiB
     input: # ARRAY_IMAGE_BOOT_FILES
       - filename: @KEY@ # ARRAY_IMAGE_BOOT_FILES
 
-  - label: CONFIG
+  - label: config
     type: primary
     filesystem: ext4
     size: 64MiB
     input:
       - filename: config-partition.tar.gz
 
-  - label: ROOT0
+  - label: root0
     type: logical
     filesystem: null
     expand: true
@@ -54,7 +54,7 @@ partitions:
     input:
       - filename: ${IMAGE_LINK_NAME}.ext4
 
-  - label: ROOT1
+  - label: root1
     type: logical
     filesystem: null
     expand: true
