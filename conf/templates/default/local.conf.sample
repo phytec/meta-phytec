@@ -26,8 +26,8 @@ TI_COMMON_DEPLOY = "${DEPLOY_DIR}"
 LICENSE_DIRECTORY:class-native = "${DEPLOY_DIR}/licenses/${BB_CURRENT_MC}"
 
 # When building multiple distros in the same TOPDIR
-#TMPDIR = "${TOPDIR}/${DISTRO}-tmp"
-#DEPLOY_DIR = "${TOPDIR}/${DISTRO}-deploy"
+#TMPDIR = "${TOPDIR}/tmp-${DISTRO}"
+#DEPLOY_DIR = "${TOPDIR}/deploy-${DISTRO}"
 
 # enable bitbakes git shallow functionality: this reduces download volume
 # from 7.3G to 1.6 G as of sumo. If you need the git history of a project,
