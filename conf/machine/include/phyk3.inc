@@ -60,6 +60,10 @@ IMAGE_BOOT_FILES = " \
     ${KERNEL_IMAGETYPE} \
     ${@make_dtb_boot_files(d)} oftree \
 "
+IMAGE_BOOT_FILES:secureboot = " \
+    ${K3_BOOTLOADER_FILES} \
+    fitImage \
+"
 PARTUP_BOOT_FILES = " \
     ${KERNEL_IMAGETYPE} \
     ${@make_dtb_boot_files(d)} oftree \
