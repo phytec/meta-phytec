@@ -1,3 +1,5 @@
+inherit sed-safely
+
 kconfig_del() {
     bbnote "Removing all lines $1 prefixes in configs"
     for config in ${UBOOT_MACHINE}; do
@@ -44,24 +46,20 @@ patch_ubootconfig () {
         kconfig_set FIT_VERBOSE n
         kconfig_set LEGACY_IMAGE_FORMAT n
 
-        sed -i "s/\(setenv dofitboot \)[01]/\11/" ${S}/include/configs/phycore_*.h
-        sed -i "s/\(setenv dofitboot \)[01]/\11/" ${S}/configs/phycore-imx8m*
-        if test -f "${S}/configs/imx8mm-phygate-tauri_defconfig"; then
-            sed -i "s/\(setenv dofitboot \)[01]/\11/" ${S}/configs/imx8mm-phygate-tauri_defconfig
-        fi
-        sed -e 's/image=Image\\0/image=fitImage\\0/g' -i ${S}/include/configs/phycore_*.h
+        sed_safely "s/\(setenv dofitboot \)[01]/\11/" include/configs/phycore_*.h
+        sed_safely "s/\(setenv dofitboot \)[01]/\11/" configs/phycore-imx8m*
+        sed_safely "s/\(setenv dofitboot \)[01]/\11/" configs/imx8mm-phygate-tauri_defconfig
+        sed_safely 's/image=Image\\0/image=fitImage\\0/g' include/configs/phycore_*.h
         # Set CONFIG_SYS_LOAD_ADDR to UBOOT_ENTRY_POINT
-        sed -i 's/CONFIG_SYS_LOAD_ADDR=0x.*/CONFIG_SYS_LOAD_ADDR=${UBOOT_ENTRYPOINT}/g' -i ${S}/configs/phycore-imx8m*
-        if test -f "${S}/configs/imx8mm-phygate-tauri_defconfig"; then
-            sed -i 's/CONFIG_SYS_LOAD_ADDR=0x.*/CONFIG_SYS_LOAD_ADDR=${UBOOT_ENTRYPOINT}/g' -i ${S}/configs/imx8mm-phygate-tauri_defconfig
-        fi
+        sed_safely 's/CONFIG_SYS_LOAD_ADDR=0x.*/CONFIG_SYS_LOAD_ADDR=${UBOOT_ENTRYPOINT}/g' configs/phycore-imx8m*
+        sed_safely 's/CONFIG_SYS_LOAD_ADDR=0x.*/CONFIG_SYS_LOAD_ADDR=${UBOOT_ENTRYPOINT}/g' configs/imx8mm-phygate-tauri_defconfig
     else
-        sed -e 's/image=Image\\0/image=Image-signed\\0/g' -i ${S}/include/configs/phycore_*.h
+        sed_safely 's/image=Image\\0/image=Image-signed\\0/g' include/configs/phycore_*.h
     fi
     if [ "${FITIMAGE_NO_DTB_OVERLAYS}" == "true" ]; then
-        sed 's/mmc_load_overlay=/no_extensions=1\\0no_overlays=1\\0mmc_load_overlay=/g' -i ${S}/include/configs/phycore_*.h
+        sed_safely 's/mmc_load_overlay=/no_extensions=1\\0no_overlays=1\\0mmc_load_overlay=/g' include/configs/phycore_*.h
     else
-        sed 's/mmc_load_overlay=/no_extensions=1\\0no_overlays=0\\0mmc_load_overlay=/   g' -i ${S}/include/configs/phycore_*.h
+        sed_safely 's/mmc_load_overlay=/no_extensions=1\\0no_overlays=0\\0mmc_load_overlay=/g' include/configs/phycore_*.h
     fi
 }
 
