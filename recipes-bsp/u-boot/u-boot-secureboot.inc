@@ -1,4 +1,5 @@
 inherit sed-safely
+inherit u-boot-dts-pubkeynode
 
 kconfig_del() {
     bbnote "Removing all lines $1 prefixes in configs"
@@ -45,6 +46,9 @@ patch_ubootconfig () {
         kconfig_set FIT_BEST_MATCH y
         kconfig_set FIT_VERBOSE n
         kconfig_set LEGACY_IMAGE_FORMAT n
+        if [ "${FITIMAGE_SIGN_ENGINE}" = "software" ]; then
+            kconfig_set DEVICE_TREE_INCLUDES '"${FITIMAGE_PUBKEY_SIGNATURE_PATH}"'
+        fi
 
         sed_safely "s/\(setenv dofitboot \)[01]/\11/" include/configs/phycore_*.h
         sed_safely "s/\(setenv dofitboot \)[01]/\11/" configs/phycore-imx8m*
