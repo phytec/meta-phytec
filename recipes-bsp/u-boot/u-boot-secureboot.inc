@@ -1,12 +1,17 @@
+FILESEXTRAPATHS:prepend := "${THISDIR}/features:"
+
 inherit sed-safely
 inherit u-boot-dts-pubkeynode
 
-kconfig_del() {
-    bbnote "Removing all lines $1 prefixes in configs"
-    for config in ${UBOOT_MACHINE}; do
-        sed -e "/$1/d" -i "${S}/configs/${config}"
-    done
-}
+SRC_URI:append:secureboot = " \
+    file://deselect-commands.cfg \
+    file://default-env.cfg \
+    ${@bb.utils.contains('FITIMAGE_SIGN','true','file://fitimage.cfg', '', d)} \
+"
+
+SRC_URI:append:mx8m-generic-bsp:secureboot = " \
+    file://hab.cfg \
+"
 
 kconfig_set() {
     bbnote "Setting $1 in configs to $2"
@@ -25,49 +30,31 @@ kconfig_set() {
     done
 }
 
-patch_ubootconfig () {
-    kconfig_set IMX_HAB y #enable HAB
-    kconfig_set ENV_IS_NOWHERE y #enable built-in env
-    #don't allow reading/writing arbitrary vars from/to env storage.
-    #only allow appending variables in general.
-    kconfig_set ENV_APPEND y
-    #only allow variables with the 'w' access flag to be set.
-    kconfig_set ENV_WRITEABLE_LIST y
-    kconfig_set ENV_ACCESS_IGNORE_FORCE y
-    kconfig_set CMD_ENV_CALLBACK y
-    kconfig_set CMD_ENV_FLAGS y
-    kconfig_set CMD_GO n
-    kconfig_set CMD_MEMORY n
-    kconfig_set CMD_PROVISION_KEY n
-
-    if [ "${FITIMAGE_SIGN}" = "true" ]; then
-        kconfig_set FIT y
-        kconfig_set FIT_ENABLE_SHA256_SUPPORT y
-        kconfig_set FIT_BEST_MATCH y
-        kconfig_set FIT_VERBOSE n
-        kconfig_set LEGACY_IMAGE_FORMAT n
-        if [ "${FITIMAGE_SIGN_ENGINE}" = "software" ]; then
-            kconfig_set DEVICE_TREE_INCLUDES '"${FITIMAGE_PUBKEY_SIGNATURE_PATH}"'
-        fi
-
-        sed_safely "s/\(setenv dofitboot \)[01]/\11/" include/configs/phycore_*.h
-        sed_safely "s/\(setenv dofitboot \)[01]/\11/" configs/phycore-imx8m*
-        sed_safely "s/\(setenv dofitboot \)[01]/\11/" configs/imx8mm-phygate-tauri_defconfig
-        sed_safely 's/image=Image\\0/image=fitImage\\0/g' include/configs/phycore_*.h
-        # Set CONFIG_SYS_LOAD_ADDR to UBOOT_ENTRY_POINT
-        sed_safely 's/CONFIG_SYS_LOAD_ADDR=0x.*/CONFIG_SYS_LOAD_ADDR=${UBOOT_ENTRYPOINT}/g' configs/phycore-imx8m*
-        sed_safely 's/CONFIG_SYS_LOAD_ADDR=0x.*/CONFIG_SYS_LOAD_ADDR=${UBOOT_ENTRYPOINT}/g' configs/imx8mm-phygate-tauri_defconfig
-    else
-        sed_safely 's/image=Image\\0/image=Image-signed\\0/g' include/configs/phycore_*.h
-    fi
-    if [ "${FITIMAGE_NO_DTB_OVERLAYS}" == "true" ]; then
-        sed_safely 's/mmc_load_overlay=/no_extensions=1\\0no_overlays=1\\0mmc_load_overlay=/g' include/configs/phycore_*.h
-    else
-        sed_safely 's/mmc_load_overlay=/no_extensions=1\\0no_overlays=0\\0mmc_load_overlay=/g' include/configs/phycore_*.h
-    fi
+set_dofitboot_1 () {
+    bbnote "Setting \"dofitboot\" to \"1\""
+    sed_safely "s/\(setenv dofitboot \)[01]/\11/" include/configs/phycore_*.h
+    sed_safely "s/\(setenv dofitboot \)[01]/\11/" configs/phycore-imx8m*
+    sed_safely "s/\(setenv dofitboot \)[01]/\11/" configs/imx8mm-phygate-tauri_defconfig
 }
 
-do_patch:append:secureboot () {
-    bb.build.exec_func("patch_ubootconfig", d)
+set_image_to_fitimage () {
+    sed_safely "s/image=Image\\0/image=fitImage\\0/g" include/configs/phycore_*.h
 }
 
+set_loadaddress () {
+    sed_safely "s/CONFIG_SYS_LOAD_ADDR=0x.*/CONFIG_SYS_LOAD_ADDR=${UBOOT_ENTRYPOINT}/g" configs/phycore-imx8m*
+    sed_safely "s/CONFIG_SYS_LOAD_ADDR=0x.*/CONFIG_SYS_LOAD_ADDR=${UBOOT_ENTRYPOINT}/g" configs/imx8mm-phygate-tauri_defconfig
+}
+
+set_fitimage_key() {
+    kconfig_set DEVICE_TREE_INCLUDES '"${FITIMAGE_PUBKEY_SIGNATURE_PATH}"'
+}
+
+python do_patch:append:secureboot () {
+    bb.build.exec_func("set_dofitboot_1", d)
+    bb.build.exec_func("set_image_to_fitimage", d)
+    bb.build.exec_func("set_loadaddress", d)
+
+    if oe.data.typed_value("FITIMAGE_SIGN", d) and d.getVar('FITIMAGE_SIGN_ENGINE') == 'software':
+        bb.build.exec_func("set_fitimage_key", d)
+}
