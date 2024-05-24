@@ -50,6 +50,12 @@ set_fitimage_key() {
     kconfig_set DEVICE_TREE_INCLUDES '"${FITIMAGE_PUBKEY_SIGNATURE_PATH}"'
 }
 
+set_tikey() {
+    kconfig_set PHYTEC_K3_KEY_BLOB_COPY n
+    kconfig_set PHYTEC_K3_MPK_KEY '"${BOOTLOADER_TI_K3_MPK_KEY}"'
+    kconfig_set PHYTEC_K3_DEGENERATE_KEY '"${BOOTLOADER_TI_K3_DEGENERATE_KEY}"'
+}
+
 python do_patch:append:secureboot () {
     bb.build.exec_func("set_dofitboot_1", d)
     bb.build.exec_func("set_image_to_fitimage", d)
@@ -57,4 +63,8 @@ python do_patch:append:secureboot () {
 
     if oe.data.typed_value("FITIMAGE_SIGN", d) and d.getVar('FITIMAGE_SIGN_ENGINE') == 'software':
         bb.build.exec_func("set_fitimage_key", d)
+}
+
+python do_patch:append:k3:secureboot () {
+    bb.build.exec_func("set_tikey", d)
 }
