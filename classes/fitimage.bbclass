@@ -66,6 +66,8 @@ FITIMAGE_RD_LOADADDRESS ??= ""
 FITIMAGE_RD_ENTRYPOINT ??= ""
 FITIMAGE_TEE_LOADADDRESS ??= ""
 FITIMAGE_TEE_ENTRYPOINT ??= ""
+FIT_CONF_PREFIX ??= ""
+FIT_CONF_PREFIX:k3 ?= "conf-"
 
 FITIMAGE_SIGN ??= "true"
 FITIMAGE_SIGN[type] = "boolean"
@@ -306,6 +308,7 @@ def fitimage_emit_section_config(d,fd,dtb,teecount,kernelcount,ramdiskcount,setu
     setup_line=""
     bootscript_line=""
     default_line=""
+    conf_node="%s%s" % (d.getVar("FIT_CONF_PREFIX"),dtb)
     if len(dtb) > 0:
          conf_desc = conf_desc + ", FDT blob"
          fdt_line="fdt = \"fdt-%s\";" % dtb
@@ -318,10 +321,10 @@ def fitimage_emit_section_config(d,fd,dtb,teecount,kernelcount,ramdiskcount,setu
          conf_desc = conf_desc + ", u-boot script"
          bootscript_line="bootscr = \"bootscr-%s\";" % bootscriptid
     if i  == 1:
-          default_line="default = \"%s\";" % dtb
+          default_line="default = \"%s\";" % conf_node
 
     fd.write('\t\t'   + '%s\n' % default_line)
-    fd.write('\t\t'   + '%s {\n' % dtb)
+    fd.write('\t\t'   + '%s {\n' % conf_node)
     fd.write('\t\t\t' +   'description = "%d %s";\n' % (i,conf_desc))
     fd.write('\t\t\t' +   '%s\n' % kernel_line)
     if teecount > 0:
@@ -370,7 +373,7 @@ def fitimage_emit_section_config_fdto(d,fd,dtb):
     if len(dtb) > 0:
          fdt_line="fdt = \"fdt-%s\";" % dtb
 
-    fd.write('\t\t'   + '%s {\n' % dtb)
+    fd.write('\t\t'   + '%s%s {\n' % (d.getVar("FIT_CONF_PREFIX"),dtb))
     fd.write('\t\t\t' +   'description = "%s";\n' % (conf_desc))
     fd.write('\t\t\t' +   '%s\n' % fdt_line)
 
