@@ -26,7 +26,8 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=53d3628b28a0bc3caea61587feade5f9"
 do_configure[noexec] = "1"
 do_compile[noexec] = "1"
 
-S = "${WORKDIR}"
+S = "${WORKDIR}/sources"
+UNPACKDIR = "${S}"
 FIRMWARE_PATH = "/lib/firmware/brcm"
 
 do_install() {

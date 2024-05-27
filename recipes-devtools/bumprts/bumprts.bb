@@ -7,7 +7,8 @@ SRC_URI = "\
     file://bumpRTS.c \
     file://COPYING.GPLv2 \
 "
-S = "${WORKDIR}"
+S = "${WORKDIR}/sources"
+UNPACKDIR = "${S}"
 
 do_compile() {
     ${CC} ${CFLAGS} ${LDFLAGS} -o bumpRTS bumpRTS.c

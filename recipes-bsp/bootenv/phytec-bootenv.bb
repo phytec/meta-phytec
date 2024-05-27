@@ -8,7 +8,8 @@ SRC_URI = " \
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
-S = "${WORKDIR}"
+S = "${WORKDIR}/sources"
+UNPACKDIR = "${S}"
 
 BOOTENV_OVERLAYS_APPEND ?= ""
 

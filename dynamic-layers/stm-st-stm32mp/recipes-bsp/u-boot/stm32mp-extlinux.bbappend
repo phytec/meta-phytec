@@ -4,7 +4,8 @@ SRC_URI += " \
            file://0001-boot-src-cmd-custom-scan_overlays-cmd.patch \
 "
 
-S = "${WORKDIR}"
+S = "${WORKDIR}/sources"
+UNPACKDIR = "${S}"
 
 # For FIT image, the extlinux file prefix is the kernel device tree name and not the bootloader device tree name.
 do_compile[postfuncs] += "${@bb.utils.contains('MACHINE_FEATURES', 'fit', 'remame_extlinux_file', '', d)}"
