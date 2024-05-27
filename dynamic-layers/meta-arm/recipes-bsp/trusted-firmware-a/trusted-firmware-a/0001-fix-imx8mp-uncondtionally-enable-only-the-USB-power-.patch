@@ -1,0 +1,60 @@
+From ae6ce196df5b932f38c543cd8c6d8d86ee600009 Mon Sep 17 00:00:00 2001
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri, 19 Jan 2024 17:41:43 +0100
+Subject: [PATCH] fix(imx8mp): uncondtionally enable only the USB power domain
+
+The i.MX8MP exists in multiple SKUs, some of which lack the NPU or VPU.
+Yet, we unconditionally enable NPU and VPU power domains in upstream
+TF-A, causing it to hang on such SoCs, unless patched.
+
+Enabling all power domains is an idiosyncrasy of the i.MX8MP support,
+which we don't have on i.MX8MQ, i.MX8MM or i.MX8MN. Therefore let's drop
+unconditional powering on of all power domains.
+
+As only exception, we will keep enabling the USB power domains. These
+are enabled in the BootROM if booting over SDPS and boot firmware may
+expect them to be enabled for non-SDPS recovery too. As USB is
+available unconditionally on the current i.MX8MP variants, this is
+deemed acceptable and reduces the chance of breaking existing systems.
+
+Upstream-Status: Backport [ae6ce196df5b932f38c543cd8c6d8d86ee600009]
+
+Fixes: a775ef25c312 ("plat: imx8mp: Add the basic support for i.MX8MP")
+Change-Id: Idc6e8f770d240f4d929dffa91f9ccf8c476c6c12
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ plat/imx/imx8m/imx8mp/gpc.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
+
+diff --git a/plat/imx/imx8m/imx8mp/gpc.c b/plat/imx/imx8m/imx8mp/gpc.c
+index 956b508171de..a95eb3651a91 100644
+--- a/plat/imx/imx8m/imx8mp/gpc.c
++++ b/plat/imx/imx8m/imx8mp/gpc.c
+@@ -374,12 +374,20 @@ void imx_gpc_init(void)
+ 	mmio_clrbits_32(IMX_SRC_BASE + SRC_OTG1PHY_SCR, 0x1);
+ 	mmio_clrbits_32(IMX_SRC_BASE + SRC_OTG2PHY_SCR, 0x1);
+ 
+-	/* enable all the power domain by default */
++	/* enable all clocks by default */
+ 	for (i = 0; i < 101; i++) {
+ 		mmio_write_32(IMX_CCM_BASE + CCGR(i), 0x3);
+ 	}
+ 
+-	for (i = 0; i < 20; i++) {
+-		imx_gpc_pm_domain_enable(i, true);
+-	}
++	/* Depending on SKU, we may be lacking e.g. a VPU and shouldn't
++	 * access that domain here, because that would lockup the SoC.
++	 * Other i.MX8M variants don't initialize any power domains, but
++	 * for 8MP we have been enabling the USB power domains since the
++	 * beginning and stopping to do this now may render systems
++	 * unrecoverable. So we'll keep initializing just the USB power
++	 * domains instead of all of them like before.
++	 */
++	imx_gpc_pm_domain_enable(HSIOMIX, true);
++	imx_gpc_pm_domain_enable(USB1_PHY, true);
++	imx_gpc_pm_domain_enable(USB2_PHY, true);
+ }
+-- 
+2.25.1
+
