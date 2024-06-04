@@ -53,7 +53,7 @@ include partup-layout-config.inc
 
 # Default images to build
 IMAGE_FSTYPES = "tar.gz wic.xz wic.bmap partup"
-IMAGE_FSTYPES:remove:update = "wic wic.bmap"
+IMAGE_FSTYPES:update = "partup"
 
 MACHINE_FEATURES += "caam optee"
 MACHINE_FEATURES:remove:mx8x-nxp-bsp = " optee"
