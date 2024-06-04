@@ -25,12 +25,12 @@ do_configure:append () {
 		-e 's/@ENV_OFFSET@/${ENV_OFFSET}/g' \
 		-e 's/@ENV_OFFSET_REDUND@/${ENV_OFFSET_REDUND}/g' \
 		-e 's/@ENV_SIZE@/${ENV_SIZE}/g' \
-		${WORKDIR}/fw_env.config
+		${UNPACKDIR}/fw_env.config
 }
 
 do_install:append () {
 	install -d ${D}${sysconfdir}
-	install -m 644 ${WORKDIR}/fw_env.config ${D}${sysconfdir}/fw_env.config
+	install -m 644 ${UNPACKDIR}/fw_env.config ${D}${sysconfdir}/fw_env.config
 }
 
 FILES:${PN} += "${sysconfdir}/fw_env.config"
