@@ -72,7 +72,8 @@ IMAGE_EFI_BOOT_FILES ?= "${IMAGE_BOOT_FILES}"
 
 IMAGE_CLASSES += "image-types-partup"
 include partup-layout-config.inc
-IMAGE_FSTYPES += "partup"
+
+IMAGE_FSTYPES = "tar.gz wic.xz wic.bmap partup"
 
 IMAGE_FSTYPES:remove:update = "wic.xz wic.bmap"
 # rootfs alignment required for RAUC adaptive update
