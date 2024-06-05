@@ -1,0 +1,32 @@
+From 42d71471613b892f80fe69c7f00221472cf58a0e Mon Sep 17 00:00:00 2001
+From: Primoz Fiser <primoz.fiser@norik.com>
+Date: Mon, 3 Jun 2024 15:38:37 +0200
+Subject: [PATCH] phytec_eeprom_flashtool: Fix for pyyaml 6.0 (kirkstone)
+
+Python package pyyaml version 6.0 (kirkstone) requires loader parameter
+for the load() function. Fix it by passing Loader=yaml.Loader. Fixes the
+following run-time error:
+
+  TypeError: load() missing 1 required positional argument: 'Loader'
+
+Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+---
+ phytec_eeprom_flashtool.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/phytec_eeprom_flashtool.py b/phytec_eeprom_flashtool.py
+index 7a31b0bcf3d0..5a7908d93be9 100755
+--- a/phytec_eeprom_flashtool.py
++++ b/phytec_eeprom_flashtool.py
+@@ -57,7 +57,7 @@ def open_som_config():
+ 				os.path.dirname(os.path.realpath(sys.argv[0])) \
+ 				+ yml_dir
+ 		config_file = open(yml_path + args.som + '.yml','r')
+-		yml_parser = yaml.load(config_file)
++		yml_parser = yaml.load(config_file, Loader=yaml.Loader)
+ 		config_file.close()
+ 	except IOError as err:
+ 		sys.exit(err)
+-- 
+2.25.1
+
