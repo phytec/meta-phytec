@@ -2,6 +2,10 @@ require phytec-machine-common.inc
 
 require conf/machine/include/am57xx.inc
 
+# Sub-architecture support
+MACHINE_SOCARCH = "${TUNE_PKGARCH}-am57xx"
+PACKAGE_EXTRA_ARCHS:append = " ${MACHINE_SOCARCH}"
+
 # Add machine features
 MACHINE_FEATURES += "can touchscreen resistivetouch wifi bluetooth"
 
