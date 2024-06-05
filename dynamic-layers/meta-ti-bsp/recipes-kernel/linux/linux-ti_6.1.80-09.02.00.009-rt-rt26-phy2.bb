@@ -37,16 +37,23 @@ INTREE_DEFCONFIG = "phytec_ti_defconfig phytec_ti_platform.config phytec_ti_rt.c
 KERNEL_LOCALVERSION = "-${@legitimize_package_name(d.getVar('DISTRO_VERSION'))}"
 
 COMPATIBLE_MACHINE  = "^("
-COMPATIBLE_MACHINE .=   "phyboard-lyra-am62xx-2"
-COMPATIBLE_MACHINE .=  "|phyboard-lyra-am62xx-3"
+COMPATIBLE_MACHINE .=  "phyboard-lyra-am62xx-2"
+COMPATIBLE_MACHINE .= "|phyboard-lyra-am62xx-3"
 
-COMPATIBLE_MACHINE .=  "|phyboard-lyra-am62axx-1"
-COMPATIBLE_MACHINE .=  "|phyboard-lyra-am62axx-2"
+COMPATIBLE_MACHINE .= "|phyboard-lyra-am62axx-1"
+COMPATIBLE_MACHINE .= "|phyboard-lyra-am62axx-2"
 
-COMPATIBLE_MACHINE .=  "|phyboard-electra-am64xx-1"
-COMPATIBLE_MACHINE .=  "|phyboard-electra-am64xx-2"
+COMPATIBLE_MACHINE .= "|phyboard-electra-am64xx-1"
+COMPATIBLE_MACHINE .= "|phyboard-electra-am64xx-2"
 
-COMPATIBLE_MACHINE .=  "|phyboard-izar-am68x-1"
-COMPATIBLE_MACHINE .=  "|phyboard-izar-am68x-2"
-COMPATIBLE_MACHINE .=  "|phyboard-izar-am68x-3"
+COMPATIBLE_MACHINE .= "|phyboard-izar-am68x-1"
+COMPATIBLE_MACHINE .= "|phyboard-izar-am68x-2"
+COMPATIBLE_MACHINE .= "|phyboard-izar-am68x-3"
+
+COMPATIBLE_MACHINE .= "|phycore-am57xx-1"
+COMPATIBLE_MACHINE .= "|phycore-am57xx-2"
+COMPATIBLE_MACHINE .= "|phycore-am57xx-3"
+COMPATIBLE_MACHINE .= "|phycore-am57xx-4"
+COMPATIBLE_MACHINE .= "|phycore-am57xx-5"
+COMPATIBLE_MACHINE .= "|phycore-am57xx-6"
 COMPATIBLE_MACHINE .= ")$"
