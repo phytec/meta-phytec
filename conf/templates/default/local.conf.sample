@@ -17,8 +17,10 @@ DISTRO ?= "ampliphy"
 #  - Uncomment for Freescale i.MX6 VPU firmware blobs
 #LICENSE_FLAGS_ACCEPTED += "license-freescale_v12-march-2016_firmware-imx"
 
-# build artifacts are deployed here
-DEPLOY_DIR = "${TOPDIR}/deploy"
+# build artifacts are deployed here,
+# separate by ${DISTRO} postfix for building multiple distros in the same TOPDIR
+TMPDIR = "${TOPDIR}/tmp-${DISTRO}"
+DEPLOY_DIR = "${TOPDIR}/deploy-${DISTRO}"
 TI_COMMON_DEPLOY = "${DEPLOY_DIR}"
 
 # Sharing a deploy directory in a multiconfig setup leads to
@@ -26,10 +28,6 @@ TI_COMMON_DEPLOY = "${DEPLOY_DIR}"
 # license files. Split licenses directory into subdirectories in
 # a multiconfig environment for native packages.
 LICENSE_DIRECTORY:class-native = "${DEPLOY_DIR}/licenses/${BB_CURRENT_MC}"
-
-# When building multiple distros in the same TOPDIR
-#TMPDIR = "${TOPDIR}/tmp-${DISTRO}"
-#DEPLOY_DIR = "${TOPDIR}/deploy-${DISTRO}"
 
 # enable bitbakes git shallow functionality: this reduces download volume
 # from 7.3G to 1.6 G as of sumo. If you need the git history of a project,
