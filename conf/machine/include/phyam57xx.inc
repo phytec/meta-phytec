@@ -36,11 +36,7 @@ IMAGE_BOOT_FILES = "${SPL_BINARY} u-boot.${UBOOT_SUFFIX}"
 WKS_FILES:am57xx ?= "am57xx-sdimage.wks"
 
 # AM57x has SGX GPU core
-PREFERRED_PROVIDER_virtual/egl = "ti-sgx-ddk-um"
-PREFERRED_PROVIDER_virtual/libgles1 = "ti-sgx-ddk-um"
-PREFERRED_PROVIDER_virtual/libgles2 = "ti-sgx-ddk-um"
-PREFERRED_PROVIDER_virtual/libgbm = "ti-sgx-ddk-um"
-PREFERRED_PROVIDER_virtual/gpudriver = "ti-sgx-ddk-km"
+PREFERRED_PROVIDER_virtual/gpudriver ?= "ti-sgx-ddk-km"
 
 PREFERRED_VERSION_ti-sgx-ddk-um = "1.17.4948957"
 PREFERRED_VERSION_ti-sgx-ddk-km = "1.17.4948957"
