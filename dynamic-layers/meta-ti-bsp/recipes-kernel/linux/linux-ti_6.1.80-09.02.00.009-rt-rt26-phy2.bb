@@ -32,6 +32,14 @@ EXTRA_DTC_ARGS += "DTC_FLAGS=-@"
 KERNEL_EXTRA_ARGS += "LOADADDR=${UBOOT_ENTRYPOINT} \
                       ${EXTRA_DTC_ARGS}"
 
+# Provide oftree in rootfs /boot directory on am57xx
+do_install:append:am57xx() {
+	dtb=`normalize_dtb "${@get_oftree(d)}"`
+	dtb_path=`get_real_dtb_path_in_kernel "$dtb"`
+	install -m 0644 $dtb_path ${D}/${KERNEL_IMAGEDEST}/oftree
+}
+FILES:${KERNEL_PACKAGE_NAME}-devicetree:append:am57xx = " /${KERNEL_IMAGEDEST}/oftree"
+
 INTREE_DEFCONFIG = "phytec_ti_defconfig phytec_ti_platform.config phytec_ti_rt.config"
 
 LOCALVERSION = "-${@legitimize_package_name(d.getVar('DISTRO_VERSION'))}"
