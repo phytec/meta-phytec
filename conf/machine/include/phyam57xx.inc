@@ -1,8 +1,6 @@
 require phytec-machine-common.inc
 
-require conf/machine/include/dra7xx.inc
-
-SOC_FAMILY:append = ":am57xx"
+require conf/machine/include/am57xx.inc
 
 # Add machine features
 MACHINE_FEATURES += "can touchscreen resistivetouch wifi bluetooth"
