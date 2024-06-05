@@ -1,0 +1,50 @@
+From c7b57c25a34a87d9a6e3b3f0ea994015f957c992 Mon Sep 17 00:00:00 2001
+From: Matt McKee <mmckee@phytec.com>
+Date: Wed, 15 Sep 2021 13:00:31 -0700
+Subject: [PATCH 1/1] configs: PCM-057: uprev known configuration BOMs
+
+Signed-off-by: Matt McKee <mmckee@phytec.com>
+---
+ configs/PCM-057.yml | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/configs/PCM-057.yml b/configs/PCM-057.yml
+index b290fa0..0cf27f9 100644
+--- a/configs/PCM-057.yml
++++ b/configs/PCM-057.yml
+@@ -1,5 +1,5 @@
+ # PCM-057 PHYTEC EEPROM Flashtool Config File
+-# Copyright (C) 2019-2020 PHYTEC
++# Copyright (C) 2019-2021 PHYTEC
+
+ PHYTEC:
+   eeprom_offset: 0x0
+@@ -26,19 +26,19 @@ Known:
+   10200110I: A0
+   10203110C: A0
+   10203111I: A1
+-  11302111I: A0
++  11302111I: A1
+   11304111I: A0
+   11305111I: A0
+-  10306111I: A0
+-  32302111I: A0
++  10306111I: A1
++  32302111I: A1
+   40200110C: A0
+-  40201111I: A0
+-  40300111I: A0
++  40201111I: A2
++  40300111I: A1
+   41201111I: A1
+   41300111I: A2
+-  40A00111I: A0
++  40A00111I: A1
+   50201111I: A0
+-  50500111I: A0
++  50500111I: A1
+   # KSP example:
+   # KSP99: A0
+
+--
+2.25.1
