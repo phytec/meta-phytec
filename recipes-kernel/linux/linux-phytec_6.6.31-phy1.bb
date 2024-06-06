@@ -1,24 +1,21 @@
-# Copyright (C) 2017 PHYTEC Messtechnik GmbH,
-# Author: Stefan Riedmueller <s.riedmueller@phytec.de>
-
 inherit phygittag
 inherit buildinfo
 include linux-common.inc
 
-GIT_URL = "git://git.phytec.de/${BPN}"
+GIT_URL = "git://github.com/phytec/linux-phytec.git;protocol=https"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
 PR = "${INC_PR}.0"
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "101405c684b59a22b13d8a97f860d108f640d143"
+SRCREV = "53e4f08dabfe105be161c2e3ed49997bc02033fe"
 
 S = "${WORKDIR}/git"
 
-INTREE_DEFCONFIG = "imx_v6_v7_defconfig imx6_phytec_distro.config imx6_phytec_machine.config imx6_phytec_platform.config"
+RDEPENDS:${KERNEL_PACKAGE_NAME}-base += "phytec-dt-overlays"
 
-KERNEL_DEVICETREE_32BIT_COMPATIBILITY_UPDATE = "1"
+INTREE_DEFCONFIG = "imx_v6_v7_defconfig imx6_phytec_distro.config imx6_phytec_machine.config imx6_phytec_platform.config"
 
 COMPATIBLE_MACHINE  = "^("
 COMPATIBLE_MACHINE .=  "phyboard-segin-imx6ul-2"

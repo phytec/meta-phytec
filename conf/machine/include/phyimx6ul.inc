@@ -18,7 +18,7 @@ PACKAGE_EXTRA_ARCHS:append = " ${MACHINE_SOCARCH}"
 PREFERRED_PROVIDER_virtual/bootloader ?= "barebox"
 
 # Kernel
-PREFERRED_PROVIDER_virtual/kernel ?= "linux-mainline"
+PREFERRED_PROVIDER_virtual/kernel ?= "linux-phytec"
 KERNEL_IMAGETYPE ?= "zImage"
 
 # Ship kernel modules
