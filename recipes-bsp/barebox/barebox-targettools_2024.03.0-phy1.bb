@@ -10,6 +10,8 @@ export userccflags="${TARGET_CC_ARCH} ${TOOLCHAIN_OPTIONS} ${CFLAGS} ${LDFLAGS}"
 
 do_configure:append() {
     oe_runmake ARCH=sandbox targettools_defconfig
+    kconfig_set ARCH_IMX y
+    kconfig_set MACH_PHYTEC_SOM_IMX6 y
 }
 
 do_compile () {
