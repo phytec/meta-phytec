@@ -47,6 +47,12 @@ PREFERRED_PROVIDER_virtual/gpudriver ?= "ti-sgx-ddk-km"
 # Hardware cryptography
 KERNEL_MODULE_AUTOLOAD += "cryptodev"
 
+# Vivante GC320 2D accelerator
+MACHINE_EXTRA_RRECOMMENDS:append:am57xx = " \
+    ${@bb.utils.contains('MACHINE_FEATURES', 'gc320', \
+    'ti-gc320-driver ti-gc320-libs-dev', '', d)} \
+"
+
 # Set the list of device targets for ti-pdk class recipes
 TI_PDK_LIMIT_SOCS = "am571x am572x am574x"
 TI_PDK_LIMIT_BOARDS = "evmAM571x evmAM572x idkAM571x idkAM572x idkAM574x"
