@@ -1,0 +1,33 @@
+From b719420ad2b11caf2c3f07566b1c3dcb10798881 Mon Sep 17 00:00:00 2001
+From: Primoz Fiser <primoz.fiser@norik.com>
+Date: Mon, 20 May 2024 23:05:52 +0200
+Subject: [PATCH 2/2] km: Fix build by importing DMA_BUF namespace
+
+Fix build by importing DMA_BUF namespace. Otherwise build fails with:
+
+| ERROR: modpost: module galcore uses symbol dma_buf_attach from namespace DMA_BUF, but does not import it.
+| ERROR: modpost: module galcore uses symbol dma_buf_map_attachment from namespace DMA_BUF, but does not import it.
+| ERROR: modpost: module galcore uses symbol dma_buf_unmap_attachment from namespace DMA_BUF, but does not import it.
+| ERROR: modpost: module galcore uses symbol dma_buf_get from namespace DMA_BUF, but does not import it.
+| ERROR: modpost: module galcore uses symbol dma_buf_put from namespace DMA_BUF, but does not import it.
+| ERROR: modpost: module galcore uses symbol dma_buf_detach from namespace DMA_BUF, but does not import it.
+
+Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+---
+ hal/os/linux/kernel/gc_hal_kernel_probe.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/hal/os/linux/kernel/gc_hal_kernel_probe.c b/hal/os/linux/kernel/gc_hal_kernel_probe.c
+index 877b5a2618aa..430c67edd12d 100755
+--- a/hal/os/linux/kernel/gc_hal_kernel_probe.c
++++ b/hal/os/linux/kernel/gc_hal_kernel_probe.c
+@@ -73,6 +73,7 @@
+ #define _GC_OBJ_ZONE    gcvZONE_DRIVER
+
+ MODULE_DESCRIPTION("Vivante Graphics Driver");
++MODULE_IMPORT_NS(DMA_BUF);
+ MODULE_LICENSE("GPL");
+
+ static struct class* gpuClass;
+--
+2.25.1
