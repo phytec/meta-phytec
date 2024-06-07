@@ -1,0 +1,41 @@
+From 883b9128eba0fc7b77aa08480fc6a49e944d52a5 Mon Sep 17 00:00:00 2001
+From: Primoz Fiser <primoz.fiser@norik.com>
+Date: Mon, 20 May 2024 23:03:08 +0200
+Subject: [PATCH 1/2] km: Fix build against recent kernels
+
+In kernels 5.15+, stdarg.h is part of the kernel sources.
+
+Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+---
+ hal/os/linux/kernel/gc_hal_kernel_debug.h   | 2 +-
+ hal/os/linux/kernel/gc_hal_kernel_debugfs.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/hal/os/linux/kernel/gc_hal_kernel_debug.h b/hal/os/linux/kernel/gc_hal_kernel_debug.h
+index 54782fd8ccc8..cac55289e7da 100755
+--- a/hal/os/linux/kernel/gc_hal_kernel_debug.h
++++ b/hal/os/linux/kernel/gc_hal_kernel_debug.h
+@@ -59,7 +59,7 @@
+ #include <gc_hal_kernel_linux.h>
+ #include <linux/spinlock.h>
+ #include <linux/time.h>
+-#include <stdarg.h>
++#include <linux/stdarg.h>
+
+ #ifdef __cplusplus
+ extern "C" {
+diff --git a/hal/os/linux/kernel/gc_hal_kernel_debugfs.h b/hal/os/linux/kernel/gc_hal_kernel_debugfs.h
+index 9a15d77747b8..a9602722bdf6 100755
+--- a/hal/os/linux/kernel/gc_hal_kernel_debugfs.h
++++ b/hal/os/linux/kernel/gc_hal_kernel_debugfs.h
+@@ -53,7 +53,7 @@
+ *****************************************************************************/
+
+
+-#include <stdarg.h>
++#include <linux/stdarg.h>
+
+ #ifndef __gc_hal_kernel_debugfs_h_
+ #define __gc_hal_kernel_debugfs_h_
+--
+2.25.1
