@@ -19,7 +19,7 @@ PR = "${INC_PR}.0"
 # NOTE: Keep version in filename in sync with commit id!
 # NOTE: Keep version of TI_LINUX_FW_SRCREV in sync, configured in
 #       dynamic-layers/meta-ti-bsp/recipes-bsp/ti-linux-fw/ti-linux-fw-freeze.inc
-SRCREV = "73b1b3a19dff7679b18d8667c1c3452ff6240795"
+SRCREV = "c3f0b643b7b21a8aaef9bc3384af10b825602b29"
 S = "${WORKDIR}/git"
 
 # Special configuration for remoteproc/rpmsg IPC modules
@@ -45,23 +45,23 @@ INTREE_DEFCONFIG = "phytec_ti_defconfig phytec_ti_platform.config phytec_ti_rt.c
 LOCALVERSION = "-${@legitimize_package_name(d.getVar('DISTRO_VERSION'))}"
 
 COMPATIBLE_MACHINE  = "^("
-COMPATIBLE_MACHINE .=   "phyboard-lyra-am62xx-2"
-COMPATIBLE_MACHINE .=  "|phyboard-lyra-am62xx-3"
+COMPATIBLE_MACHINE .=  "phyboard-lyra-am62xx-2"
+COMPATIBLE_MACHINE .= "|phyboard-lyra-am62xx-3"
 
-COMPATIBLE_MACHINE .=  "|phyboard-lyra-am62axx-1"
-COMPATIBLE_MACHINE .=  "|phyboard-lyra-am62axx-2"
+COMPATIBLE_MACHINE .= "|phyboard-lyra-am62axx-1"
+COMPATIBLE_MACHINE .= "|phyboard-lyra-am62axx-2"
 
-COMPATIBLE_MACHINE .=  "|phyboard-electra-am64xx-1"
-COMPATIBLE_MACHINE .=  "|phyboard-electra-am64xx-2"
+COMPATIBLE_MACHINE .= "|phyboard-electra-am64xx-1"
+COMPATIBLE_MACHINE .= "|phyboard-electra-am64xx-2"
 
-COMPATIBLE_MACHINE .=  "|phyboard-izar-am68x-1"
-COMPATIBLE_MACHINE .=  "|phyboard-izar-am68x-2"
-COMPATIBLE_MACHINE .=  "|phyboard-izar-am68x-3"
+COMPATIBLE_MACHINE .= "|phyboard-izar-am68x-1"
+COMPATIBLE_MACHINE .= "|phyboard-izar-am68x-2"
+COMPATIBLE_MACHINE .= "|phyboard-izar-am68x-3"
 
-COMPATIBLE_MACHINE .=  "|phycore-am57xx-1"
-COMPATIBLE_MACHINE .=  "|phycore-am57xx-2"
-COMPATIBLE_MACHINE .=  "|phycore-am57xx-3"
-COMPATIBLE_MACHINE .=  "|phycore-am57xx-4"
-COMPATIBLE_MACHINE .=  "|phycore-am57xx-5"
-COMPATIBLE_MACHINE .=  "|phycore-am57xx-6"
+COMPATIBLE_MACHINE .= "|phycore-am57xx-1"
+COMPATIBLE_MACHINE .= "|phycore-am57xx-2"
+COMPATIBLE_MACHINE .= "|phycore-am57xx-3"
+COMPATIBLE_MACHINE .= "|phycore-am57xx-4"
+COMPATIBLE_MACHINE .= "|phycore-am57xx-5"
+COMPATIBLE_MACHINE .= "|phycore-am57xx-6"
 COMPATIBLE_MACHINE .= ")$"
