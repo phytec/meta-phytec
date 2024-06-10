@@ -57,20 +57,7 @@ do_compile () {
     oe_runmake all
 }
 
-# target rootfs boot directory
-base_bootdir = "/boot"
-
-do_install () {
-    bbnote "Installing barebox image on target rootfs"
-    install -d ${D}${base_bootdir}
-    install ${B}/${BAREBOX_BIN} ${D}${base_bootdir}/${BAREBOX_IMAGE_NAME}.bin
-    ln -sf ${BAREBOX_IMAGE_NAME}.bin ${D}${base_bootdir}/${BAREBOX_BIN_LINK_NAME}
-}
-do_install[prefuncs] += "package_get_auto_pr"
-
 PACKAGE_ARCH = "${MACHINE_ARCH}"
-
-FILES:${PN} = "${base_bootdir}"
 
 do_deploy () {
     bbnote "Deploying barebox"
