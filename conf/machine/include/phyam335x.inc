@@ -59,7 +59,7 @@ QT_QPA_DEFAULT_PLATFORM ?= "${@bb.utils.contains('MACHINE_FEATURES', 'gpu', 'egl
 IMAGE_CLASSES += "wic-helper"
 IMAGE_CLASSES += "wic-am335x-helper"
 EXTERNAL_KERNEL_DEVICETREE ??= ""
-IMAGE_BOOT_FILES = "barebox.bin MLO zImage oftree ${KERNEL_DEVICETREE} ${EXTERNAL_KERNEL_DEVICETREE}"
+IMAGE_BOOT_FILES = "barebox.bin MLO zImage oftree ${EXTERNAL_KERNEL_DEVICETREE}"
 #copy ubifs image to sdcard
 IMAGE_BOOT_FILES += "${IMGDEPLOYDIR}/${IMAGE_NAME}.rootfs.ubifs;${IMAGE_LINK_NAME}.ubifs"
 IMAGE_TYPEDEP:wic ??= "ubifs"
