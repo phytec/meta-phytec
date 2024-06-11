@@ -12,6 +12,8 @@ website: https://packages.debian.org/source/sid/gengetopt
 package: gengetopt_2.22.6+dfsg0-3.debian.tar.xz
 patch:   ./patches/makefile-dependencies.patch
 
+Upstream-Status: Pending
+
 Signed-off-by: Norbert Wesp <n.wesp@phytec.de>
 ---
  src/Makefile.am | 2 +-
@@ -24,12 +26,12 @@ index 1ef55ca..ce20b9a 100644
 @@ -51,7 +51,7 @@ libgengetopt_la_LIBADD = $(top_builddir)/gl/libgnu.la \
  	@LTLIBOBJS@ \
  	skels/libgen.la
- 
+
 -LDADD = $(top_builddir)/src/libgengetopt.la
 +LDADD = libgengetopt.la
- 
+
  EXTRA_DIST = parser.h argsdef.h gengetopt.h ggos.h gm.h gnugetopt.h \
  cmdline.c cmdline.h \
--- 
+--
 2.7.4
 
