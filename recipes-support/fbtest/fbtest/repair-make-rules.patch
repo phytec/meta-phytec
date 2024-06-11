@@ -1,3 +1,5 @@
+Upstream-Status: Pending
+
 --- a/Rules.make
 +++ b/Rules.make
 @@ -1,12 +1,5 @@

@@ -10,6 +10,8 @@ is very painful to compile.
 [mkl: added std patch header]
 [mkl: don't delete penguin.c on clean]
 
+Upstream-Status: Pending
+
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
  Makefile         |    2 +-

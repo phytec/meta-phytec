@@ -4,6 +4,8 @@ Subject: [PATCH] remove asm/page.h, use sysconf
 
 remove include asm/page.h, use susconf instead of hard coded PAGE_MASK and PAGE_SIZE
 
+Upstream-Status: Pending
+
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
  fb.c   |   11 +++++------
