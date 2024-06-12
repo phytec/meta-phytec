@@ -1,7 +1,7 @@
 require phytec-machine-common.inc
 
 #Taken from TI yocto BSP Layer Version 05-2014, original name:ti33xx.inc
-SOC_FAMILY = "ti33x"
+SOC_FAMILY = "ti-soc:ti33x"
 require conf/machine/include/soc-family.inc
 DEFAULTTUNE ?= "cortexa8thf-neon"
 require conf/machine/include/arm/armv7a/tune-cortexa8.inc
