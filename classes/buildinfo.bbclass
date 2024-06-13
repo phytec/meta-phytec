@@ -48,7 +48,7 @@
 #
 # If a recipe doesn't fetch the source code from a git repository and uses
 # another method, e.g. a tar.gz, the buildinfo task can be used, too.  Only
-# GIT_URL, GIT_TAG and SRCREV must be set.  An example recipe may looks like
+# GIT_URL, GIT_TAG and SRCREV must be set. An example recipe may looks like
 #
 #     inherit buildinfo
 #     GIT_TAG = "v3.17.6-phy1"
@@ -114,6 +114,14 @@ python do_buildinfo() {
 
     # Some more variables for buildinfo text.
     git_url = d.getVar("GIT_URL")
+
+    # fix the protocol in the git_url
+    if ";protocol=https" in git_url:
+        git_url = git_url.replace(";protocol=https", "")
+        git_url = git_url.replace("git://", "https://")
+    elif ";protocol=ssh" in git_url:
+        git_url = git_url.replace(";protocol=ssh", "")
+        git_url = git_url.replace("git://", "ssh://")
     pv = d.getVar("PV")
     pn = d.getVar("BPN")
 
