@@ -89,16 +89,6 @@ do_patch:append:secureboot() {
         file.close()
 }
 
-do_install:append:secureboot () {
-    if [ "${PN}" = "barebox" ] ; then
-        bbnote "Installing signed barebox image on target rootfs"
-        install ${B}/${BAREBOX_BIN_SIGNED} ${D}${base_bootdir}/${BAREBOX_IMAGE_NAME}-s.bin
-        ln -sf ${BAREBOX_IMAGE_NAME}-s.bin ${D}${base_bootdir}/${BAREBOX_LINK_NAME}-s.bin
-        install ${B}/${BAREBOX_BIN_SIGNEDUSB} ${D}${base_bootdir}/${BAREBOX_IMAGE_NAME}-us.bin
-        ln -sf ${BAREBOX_IMAGE_NAME}-us.bin ${D}${base_bootdir}/${BAREBOX_LINK_NAME}-us.bin
-    fi
-}
-
 do_deploy:append:secureboot () {
     if [ "${PN}" = "barebox" ] ; then
         bbnote "Deploying signed barebox"
