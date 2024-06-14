@@ -74,7 +74,10 @@ IMAGE_FSTYPES ?= " \
     tar.gz wic wic.bmap partup \
     ${@bb.utils.contains('MACHINE_FEATURES', 'emmc', '', 'ubifs', d)} \
 "
-IMAGE_FSTYPES:update = "partup"
+IMAGE_FSTYPES:update = " \
+    partup \
+    ${@bb.utils.contains('MACHINE_FEATURES', 'emmc', '', 'ubifs', d)} \
+"
 
 # Avoid pulling package 'gstreamer1.0-plugins-bad-meta' into the image
 # 'core-image-sato', because the recipe gstreamer1.0-plugins-bad depends on
