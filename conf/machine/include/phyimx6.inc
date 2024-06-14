@@ -64,4 +64,7 @@ IMAGE_FSTYPES ?= " \
     tar.gz wic wic.bmap partup \
     ${@bb.utils.contains('MACHINE_FEATURES', 'emmc', '', 'ubifs', d)} \
 "
-IMAGE_FSTYPES:update = "partup"
+IMAGE_FSTYPES:update = " \
+    partup \
+    ${@bb.utils.contains('MACHINE_FEATURES', 'emmc', '', 'ubifs', d)} \
+"
