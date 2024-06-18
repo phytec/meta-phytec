@@ -1,6 +1,3 @@
-# Copyright (C) 2021 Christophe Parant <c.parant@phytec.de>
-# Released under the MIT license (see COPYING.MIT for the terms)
-
 SUMMARY = "PHYTEC Devicetree Overlays for phyCORE-STM32MP1"
 HOMEPAGE = "http://www.phytec.de/"
 SECTION = "kernel"
