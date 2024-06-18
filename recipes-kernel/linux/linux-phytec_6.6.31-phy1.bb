@@ -1,6 +1,7 @@
 inherit phygittag
 inherit buildinfo
 include linux-common.inc
+include linux-barebox-dt-overlays.inc
 
 GIT_URL = "git://github.com/phytec/linux-phytec.git;protocol=https"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
@@ -12,8 +13,6 @@ PR = "${INC_PR}.0"
 SRCREV = "53e4f08dabfe105be161c2e3ed49997bc02033fe"
 
 S = "${WORKDIR}/git"
-
-RDEPENDS:${KERNEL_PACKAGE_NAME}-base += "phytec-dt-overlays"
 
 INTREE_DEFCONFIG = "imx_v6_v7_defconfig imx6_phytec_distro.config imx6_phytec_machine.config imx6_phytec_platform.config"
 
