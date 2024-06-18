@@ -4,6 +4,7 @@
 inherit phygittag
 inherit buildinfo
 include linux-common.inc
+include linux-barebox-dt-overlays.inc
 
 GIT_URL = "git://git.phytec.de/${BPN}"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
