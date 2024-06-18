@@ -39,15 +39,8 @@ SRC_URI:append:phyboard-lyra-am62xx-3-k3r5 = "\
     file://0001-HACK-board-phytec-phycore_am62x-Enable-OLDI0-AUDIO_R.patch \
 "
 
-SRC_URI:append:phyboard-izar-am68x-3 = "\
-    file://0002-HACK-board-phytec-am68x-Configure-8GB-ram.patch \
-"
-SRC_URI:append:phyboard-izar-am68x-3-k3r5 = "\
-    file://0002-HACK-board-phytec-am68x-Configure-8GB-ram.patch \
-"
-
 PR = "r0"
-SRCREV = "e2e5f66693ba2a4ed6f3909a01e2930566e755f0"
+SRCREV = "daf4f20630f158e93c8a11fbecc7c615c5fdcdb4"
 
 PACKAGECONFIG[optee] = "TEE=${STAGING_DIR_HOST}${nonarch_base_libdir}/firmware/tee-pager_v2.bin,,optee-os"
 
@@ -66,13 +59,6 @@ COMPATIBLE_MACHINE .= "|phyboard-electra-am64xx-1"
 COMPATIBLE_MACHINE .= "|phyboard-electra-am64xx-1-k3r5"
 COMPATIBLE_MACHINE .= "|phyboard-electra-am64xx-2"
 COMPATIBLE_MACHINE .= "|phyboard-electra-am64xx-2-k3r5"
-
-COMPATIBLE_MACHINE .= "|phyboard-izar-am68x-1"
-COMPATIBLE_MACHINE .= "|phyboard-izar-am68x-1-k3r5"
-COMPATIBLE_MACHINE .= "|phyboard-izar-am68x-2"
-COMPATIBLE_MACHINE .= "|phyboard-izar-am68x-2-k3r5"
-COMPATIBLE_MACHINE .= "|phyboard-izar-am68x-3"
-COMPATIBLE_MACHINE .= "|phyboard-izar-am68x-3-k3r5"
 
 COMPATIBLE_MACHINE .= "|phycore-am57xx-1"
 COMPATIBLE_MACHINE .= "|phycore-am57xx-2"
