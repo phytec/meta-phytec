@@ -1,6 +1,3 @@
-# Copyright (C) 2021 Stefan Riedmueller <s.riedmueller@phytec.de>
-# Released under the MIT license (see COPYING.MIT for the terms)
-
 SUMMARY = "PHYTEC Devicetree Overlays"
 HOMEPAGE = "http://www.phytec.de/"
 SECTION = "base"
