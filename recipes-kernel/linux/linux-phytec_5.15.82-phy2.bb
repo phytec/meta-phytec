@@ -3,7 +3,7 @@ inherit buildinfo
 include linux-common.inc
 include linux-barebox-dt-overlays.inc
 
-GIT_URL = "git://git.phytec.de/${BPN}"
+GIT_URL = "git://github.com/phytec/linux-phytec.git;protocol=https"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
 PR = "${INC_PR}.0"
