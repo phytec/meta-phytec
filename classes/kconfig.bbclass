@@ -33,7 +33,7 @@ def find_cfgs(d):
     for s in sources:
         base, ext = os.path.splitext(os.path.basename(s))
         if ext and ext in [".cfg"]:
-            sources_list.append(os.path.join(d.getVar("WORKDIR"), (base + ext)))
+            sources_list.append(os.path.join(d.getVar("UNPACKDIR"), (base + ext)))
     return sources_list
 
 def get_absolut_defconfigs(d):
