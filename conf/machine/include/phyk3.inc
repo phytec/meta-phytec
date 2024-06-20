@@ -79,8 +79,3 @@ IMAGE_FSTYPES:update = "partup"
 
 # rootfs alignment required for RAUC adaptive update
 IMAGE_ROOTFS_ALIGNMENT:update = "4"
-
-PREFERRED_VERSION_optee-os ?= "4.1.0+git%"
-PREFERRED_VERSION_optee-client ?= "4.1.0+git%"
-PREFERRED_VERSION_optee-test ?= "4.1.0+git%"
-PREFERRED_VERSION_optee-os-tadevkit ?= "4.1.0+git%"
