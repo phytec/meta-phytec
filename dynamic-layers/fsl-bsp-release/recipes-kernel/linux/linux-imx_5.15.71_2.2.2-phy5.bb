@@ -28,7 +28,6 @@ KERNEL_MODULE_PROBECONF:mx8mp-nxp-bsp += "imx8-media-dev"
 
 COMPATIBLE_MACHINE  = "^("
 COMPATIBLE_MACHINE .= "phyboard-polis-imx8mm-5"
-COMPATIBLE_MACHINE .= "|phyboard-polis-imx8mm-4"
 COMPATIBLE_MACHINE .= "|phyboard-polis-imx8mn-2"
 COMPATIBLE_MACHINE .= "|phygate-tauri-l-imx8mm-2"
 COMPATIBLE_MACHINE .= "|phyboard-pollux-imx8mp-3"
