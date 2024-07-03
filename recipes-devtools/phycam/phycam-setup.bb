@@ -4,6 +4,7 @@ LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
 PACKAGE_ARCH = "${MACHINE_SOCARCH}"
+PACKAGE_ARCH:j721s2 = "${MACHINE_ARCH}"
 
 PR = "r0"
 
@@ -28,10 +29,21 @@ SRC_URI:append:stm32mp13common = " \
     file://setup-pipeline-dcmipp.sh \
 "
 
+SRC_URI:append:j721s2 = " \
+    file://setup-pipeline-csi0.sh \
+    file://setup-pipeline-csi1.sh \
+"
+
 do_install() {
     install -d ${D}${nonarch_base_libdir}/udev/rules.d/
     install -m 0644 ${WORKDIR}/90-phycam.rules \
                     ${D}${nonarch_base_libdir}/udev/rules.d/
+
+    if [ -e ${WORKDIR}/setup-pipeline-csi0.sh ]; then
+        install -d ${D}${bindir}
+        install -m 0755 ${WORKDIR}/setup-pipeline-csi0.sh \
+                        ${D}${bindir}/setup-pipeline-csi0
+    fi
 
     if [ -e ${WORKDIR}/setup-pipeline-csi1.sh ]; then
         install -d ${D}${bindir}
