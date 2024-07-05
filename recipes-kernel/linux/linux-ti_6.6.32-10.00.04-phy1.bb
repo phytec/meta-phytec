@@ -8,7 +8,6 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/linux-ti-6.6:"
 GIT_URL = "git://github.com/phytec/linux-phytec-ti.git;protocol=https"
 SRC_URI = " \
 	${GIT_URL};branch=${BRANCH} \
-	${@bb.utils.contains('MACHINE_FEATURES', 'lwb5p', 'file://update-configs-for-lwb5p-backports.cfg', '', d)} \
 "
 SRC_URI:append:phyboard-izar-am68x-1 = " \
 	file://eth-module.cfg \
