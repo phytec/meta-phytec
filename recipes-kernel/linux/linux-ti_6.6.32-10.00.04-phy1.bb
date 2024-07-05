@@ -1,6 +1,6 @@
 inherit kernel kernel-yocto
 inherit phygittag buildinfo
-require recipes-kernel/linux/linux-common-non-rt.inc
+require recipes-kernel/linux/linux-common.inc
 
 LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 
@@ -10,11 +10,21 @@ SRC_URI = " \
 	${GIT_URL};branch=${BRANCH} \
         file://lxc.scc \
         file://oci.scc \
+        file://preempt-rt.scc \
 "
+
+# Apply rt patch in case of preempt-rt
+RT_PATCH = "${KERNELORG_MIRROR}/linux/kernel/projects/rt/6.6/older/patch-6.6.32-rt32.patch.xz;name=rt-patch"
+SRC_URI:append = " \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'preempt-rt', "${RT_PATCH}", '', d)} \
+"
+SRC_URI[rt-patch.sha256sum] = "058b73df1634b54d3b0ca7d7d5998b9ecc1c69fff935c3bfc3f0f0279af96243"
+
 SRC_URI:append:phyboard-izar-am68x-1 = " file://eth-module.scc"
 
 KERNEL_FEATURES = " \
     ${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'lxc.scc oci.scc', '', d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'preempt-rt', 'preempt-rt.scc', '', d)} \
 "
 KERNEL_FEATURES:append:phyboard-izar-am68x-1 = " eth-module.scc"
 
