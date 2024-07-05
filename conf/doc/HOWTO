@@ -7,11 +7,11 @@ You can find all git repositories at:
 
   git://git.phytec.de
 
-The barebox and kernel git repositories for this BSP are called
-"barebox", "linux-mainline", "linux-ti" and "linux-imx". To find out which tag is
-used for a specific board, run the buildinfo command:
+The bootloader and kernel git repositories for this BSP are called
+"barebox", "u-boot", "linux-phytec", "linux-ti" and "linux-imx".
+To find out which tag is used for a specific board, run the buildinfo command:
 
- bitbake -c buildinfo [barebox/linux-mainline/linux-ti/linux-imx]
+ bitbake -c buildinfo [barebox/linux-phytec/linux-ti/linux-imx]
 
 To find out which hardware is tested in the release, have a look at the
 phytec webpage for a full list. You can also inspect the folder:

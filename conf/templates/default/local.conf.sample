@@ -74,7 +74,7 @@ BB_DISKMON_DIRS ??= "\
 # IMAGE_FSTYPES:remove = "wic wic.bmap wic.xz"
 
 # Turn on debugging options of the kernel
-#DEBUG_BUILD:pn-linux-mainline = "1"
+#DEBUG_BUILD:pn-linux-phytec = "1"
 # Turn on debugging options of the imx kernel
 #DEBUG_BUILD:pn-linux-imx = "1"
 # Turn on debugging options of the barebox
