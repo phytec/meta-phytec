@@ -1,17 +1,25 @@
-inherit kernel
-inherit phygittag buildinfo kconfig
+inherit kernel kernel-yocto
+inherit phygittag buildinfo
 require recipes-kernel/linux/linux-common-non-rt.inc
 
 LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 
-FILESEXTRAPATHS:prepend := "${THISDIR}/linux-ti-6.6:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/linux-ti-6.6:${THISDIR}/linux-phytec-6.6:"
 GIT_URL = "git://github.com/phytec/linux-phytec-ti.git;protocol=https"
 SRC_URI = " \
 	${GIT_URL};branch=${BRANCH} \
+        file://lxc.scc \
+        file://oci.scc \
 "
-SRC_URI:append:phyboard-izar-am68x-1 = " \
-	file://eth-module.cfg \
+SRC_URI:append:phyboard-izar-am68x-1 = " file://eth-module.scc"
+
+KERNEL_FEATURES = " \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'lxc.scc oci.scc', '', d)} \
 "
+KERNEL_FEATURES:append:phyboard-izar-am68x-1 = " eth-module.scc"
+
+KBUILD_DEFCONFIG ?= "phytec_ti_defconfig"
+KCONFIG_MODE="alldefconfig"
 
 PR = "${INC_PR}.0"
 
@@ -40,7 +48,6 @@ do_install:append:am57xx() {
 }
 FILES:${KERNEL_PACKAGE_NAME}-devicetree:append:am57xx = " /${KERNEL_IMAGEDEST}/oftree"
 
-INTREE_DEFCONFIG = "phytec_ti_defconfig phytec_ti_platform.config"
 
 KERNEL_LOCALVERSION = "-${@legitimize_package_name(d.getVar('DISTRO_VERSION'))}"
 
