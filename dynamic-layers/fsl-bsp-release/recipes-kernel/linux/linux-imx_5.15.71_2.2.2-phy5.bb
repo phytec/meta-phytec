@@ -1,8 +1,8 @@
 # Copyright (C) 2022 PHYTEC Messtechnik GmbH,
 # Author: Teresa Remmet <t.remmet@phytec.de>
 
-inherit phygittag
-inherit buildinfo
+inherit kernel
+inherit phygittag buildinfo kconfig
 inherit fsl-vivante-kernel-driver-handler
 include recipes-kernel/linux/linux-common.inc
 

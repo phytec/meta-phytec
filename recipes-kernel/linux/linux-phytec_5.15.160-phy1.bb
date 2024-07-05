@@ -1,5 +1,5 @@
-inherit phygittag
-inherit buildinfo
+inherit kernel
+inherit phygittag buildinfo kconfig
 include linux-common.inc
 include linux-barebox-dt-overlays.inc
 
