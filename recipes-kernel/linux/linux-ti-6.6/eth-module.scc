@@ -1,0 +1,4 @@
+define KFEATURE_DESCRIPTION "Load K3 CPSW Ethernet driver as a module"
+define KFEATURE_COMPATIBILITY board
+
+kconf hardware eth-module.cfg
