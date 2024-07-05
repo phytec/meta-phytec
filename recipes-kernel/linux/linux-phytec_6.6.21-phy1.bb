@@ -1,7 +1,7 @@
 # Copyright (C) 2024 PHYTEC Messtechnik GmbH
 
-inherit phygittag
-inherit buildinfo
+inherit kernel
+inherit phygittag buildinfo kconfig
 include linux-common.inc
 
 GIT_URL = "git://github.com/phytec/linux-phytec.git;protocol=https"

@@ -7,9 +7,6 @@ LIC_FILES_CHKSUM ?= "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 
 CVE_VERSION = "${@d.getVar("PV").split('-')[0]}"
 
-inherit kernel
-inherit kconfig
-
 FILESEXTRAPATHS:prepend := "${THISDIR}/linux-common:"
 SRC_URI:append = " \
   ${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'file://lxc.cfg', '', d)} \

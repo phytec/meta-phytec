@@ -1,8 +1,8 @@
 # Copyright (C) 2017 PHYTEC Messtechnik GmbH,
 # Author: Stefan Riedmueller <s.riedmueller@phytec.de>
 
-inherit phygittag
-inherit buildinfo
+inherit kernel
+inherit phygittag buildinfo kconfig
 include linux-common.inc
 include linux-barebox-dt-overlays.inc
 

@@ -1,6 +1,6 @@
-inherit phygittag
-inherit buildinfo
-require recipes-kernel/linux/linux-common-rt.inc
+inherit kernel
+inherit phygittag buildinfo kconfig
+require recipes-kernel/linux/linux-common-non-rt.inc
 
 LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 
