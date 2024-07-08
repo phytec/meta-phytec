@@ -8,6 +8,8 @@ This hack is required to make Audio and Display work.
 Make sure the OLDI0 LVDS IO pins are not in power down.
 And enable the AUDIO_REFCLK1 output.
 
+Upstream-Status: Inappropriate [carrier board specific]
+
 Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
 ---
  board/phytec/phycore_am62x/phycore-am62x.c | 8 ++++++++
