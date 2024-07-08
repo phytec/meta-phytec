@@ -7,7 +7,7 @@ LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/GPL-2.0-only;md5=801f80980d171dd6425610833a22dbe6"
 SECTION = "BSP"
 
-FILESEXTRAPATHS:prepend := "${OEROOT}/../meta-imx/meta-bsp/recipes-bsp/imx-mkimage/files:"
+FILESEXTRAPATHS:prepend := "${OEROOT}/../meta-imx/meta-imx-bsp/recipes-bsp/imx-mkimage/files:"
 
 inherit use-imx-security-controller-firmware
 
