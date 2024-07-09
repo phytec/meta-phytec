@@ -6,3 +6,5 @@ MACHINE_FEATURES += "emmc pci wifi bluetooth"
 MACHINE_FEATURES:remove = "nxp8987"
 
 DEBUG_PREFIX_MAP:remove = "-fcanon-prefix-map"
+
+ATF_BOOT_UART_BASE = "auto"
