@@ -12,7 +12,6 @@ FILESEXTRAPATHS:prepend := "${OEROOT}/../meta-imx/meta-imx-bsp/recipes-bsp/imx-m
 inherit use-imx-security-controller-firmware
 
 IMX_EXTRA_FIRMWARE      = "firmware-imx-8 imx-sc-firmware imx-seco"
-IMX_EXTRA_FIRMWARE:mx8m-nxp-bsp = "firmware-imx-8m"
 IMX_EXTRA_FIRMWARE:mx8x-nxp-bsp = "imx-sc-firmware-phytec imx-seco"
 DEPENDS += " \
     u-boot \
