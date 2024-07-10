@@ -16,7 +16,8 @@
 #    FITIMAGE_SLOT_fdto[type] ?= "fdto"
 #    FITIMAGE_SLOT_fdto[file] ?= "list of all dtbo files from KERNEL_DEVICETREE"
 #
-#    Apply a number of overlays to the first devicetree in the KERNEL_DEVICETREE
+# Apply a number of overlays to the first devicetree in the KERNEL_DEVICETREE
+#
 #    FITIMAGE_SLOT_fdtapply ?= "${PREFERRED_PROVIDER_virtual/kernel}"
 #    FITIMAGE_SLOT_fdtapply[type] ?= "fdtapply"
 #    FITIMAGE_SLOT_fdtapply[file] ?= "${MACHINE}.dtb list of dtbo"
@@ -35,10 +36,15 @@
 #
 #    FITIMAGE_its ?= "setup.its"  (FIT Image creation File, if set, then no creation if config file)
 #
-# Additionally you need to provide a certificate and a key file
+# Additionally, you need to provide a path where to find a key file
 #
-#    FITIMAGE_KEY_FILE ?= "development-1.key.pem"
-#    FITIMAGE_CERT_FILE ?= "development-1.cert.pem"
+#    FITIMAGE_SIGN_KEY_PATH = "${CERT_PATH}/fit/FIT-4096.key"
+#
+# or use
+#
+#    FITIMAGE_SIGN = "false"
+#
+# for an unsigned fitimage
 
 LICENSE = "MIT"
 inherit hab
@@ -73,6 +79,7 @@ FIT_CONF_PREFIX:k3 ?= "conf-"
 
 FITIMAGE_SIGN ??= "true"
 FITIMAGE_SIGN[type] = "boolean"
+FITIMAGE_SIGN_KEY_PATH ??= ""
 
 FITIMAGE_SIGN_ENGINE ??= "software"
 FITIMAGE_SIGN_ENGINE:mx8m-nxp-bsp ??= "nxphab"
