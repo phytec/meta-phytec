@@ -37,10 +37,6 @@ module_conf_imx8-media-dev:mx8mp-nxp-bsp = "install imx8-media-dev /sbin/modprob
 KERNEL_MODULE_PROBECONF:mx8mp-nxp-bsp += "imx8-media-dev"
 
 COMPATIBLE_MACHINE  = "^("
-COMPATIBLE_MACHINE .= "phyboard-polis-imx8mm-5"
-COMPATIBLE_MACHINE .= "|phyboard-polis-imx8mn-2"
-COMPATIBLE_MACHINE .= "|phygate-tauri-l-imx8mm-2"
-COMPATIBLE_MACHINE .= "|phyboard-pollux-imx8mp-3"
-COMPATIBLE_MACHINE .= "|phyboard-zeta-imx7d-1"
+COMPATIBLE_MACHINE .= "phyboard-zeta-imx7d-1"
 COMPATIBLE_MACHINE .= "|phycore-imx8x-1"
 COMPATIBLE_MACHINE .= ")$"
