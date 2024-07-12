@@ -10,7 +10,6 @@ PREFERRED_PROVIDER_imx-boot="imx-boot-phytec"
 PREFERRED_PROVIDER_opencl-headers:imxgpu = "imx-gpu-viv"
 PREFERRED_PROVIDER_linux-imx-mfgtool:mx8-nxp-bsp = "linux-imx-mfgtool"
 PREFERRED_PROVIDER_virtual/libgles3:mx8-nxp-bsp = "imx-gpu-viv"
-PREFERRED_PROVIDER_virtual/libgles3:mx8mm-nxp-bsp = "mesa"
 
 # dont install kernelimage to rootfs
 RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base = ""
