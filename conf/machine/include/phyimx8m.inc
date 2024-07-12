@@ -7,7 +7,13 @@ MACHINE_FEATURES:remove = "nxp8987"
 
 DEBUG_PREFIX_MAP:remove = "-fcanon-prefix-map"
 
-IMAGE_BOOT_FILES += "bootenv.txt"
+IMAGE_BOOT_FILES += "fitImage bootenv.txt"
 IMAGE_BOOT_FILES:secureboot = "fitImage bootenv.txt"
+
+UBOOT_DTB_LOADADDRESS = "0x48000000"
+UBOOT_DTBO_LOADADDRESS = "0x49000000"
+
+KERNEL_CLASSES += "kernel-fitimage"
+KERNEL_IMAGETYPES += "fitImage"
 
 ATF_BOOT_UART_BASE = "auto"
