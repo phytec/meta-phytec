@@ -3,6 +3,8 @@
 
 do_image_cpio[depends] += "virtual/kernel:do_shared_workdir"
 do_image_cpio[depends] += "virtual/bootloader:do_unpack"
+do_bundle[depends] += "virtual/kernel:do_shared_workdir"
+do_bundle[depends] += "virtual/bootloader:do_unpack"
 
 def get_bootloader_makefile(d):
     bootloader = d.getVar('PREFERRED_PROVIDER_virtual/bootloader')
