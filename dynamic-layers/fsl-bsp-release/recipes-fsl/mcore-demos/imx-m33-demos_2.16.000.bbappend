@@ -1,25 +1,22 @@
-do_install:append:mx93-nxp-bsp () {
-    cd ${D}${base_libdir}/firmware
+remove_m33_demos() {
+    local ext="$1"
+    local search_dir="$2"
 
-    IMX_M33_DEMO_EXT="elf"
+    cd "$search_dir"
 
-    # Remove all demos (*.elf) not in the IMX_M33_DEMO_INSTALL variable
-    for demo in $(find . -type f -name "*.elf" -printf "%P\n"); do
-        if ! echo "${IMX_M33_DEMO_INSTALL}" | grep -Fq "${demo}"; then
-            rm -f ${demo}
+    # Remove all demos (with .${ext} suffix) not in the IMX_M33_DEMO_INSTALL variable
+    for demo in $(find . -type f -name "*.${ext}" -printf "%P\n"); do
+        demo_base=$(basename "${demo}" ".${ext}")
+        if ! echo "${IMX_M33_DEMO_INSTALL}" | grep -Fq "${demo_base}"; then
+            rm -f "${demo}"
         fi
     done
 }
 
+do_install:append:mx93-nxp-bsp () {
+    remove_m33_demos "elf" "${D}${base_libdir}/firmware"
+}
+
 do_deploy:append:mx93-nxp-bsp () {
-    cd ${DEPLOYDIR}
-
-    IMX_M33_DEMO_EXT="bin"
-
-    # Remove all demos (*.bin) not in the IMX_M33_DEMO_INSTALL variable
-    for demo in $(find . -type f -name "*.bin" -printf "%P\n"); do
-        if ! echo "${IMX_M33_DEMO_INSTALL}" | grep -Fq "${demo}"; then
-            rm -f ${demo}
-        fi
-    done
+    remove_m33_demos "bin" "${DEPLOYDIR}"
 }
