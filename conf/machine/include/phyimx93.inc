@@ -26,6 +26,15 @@ EMMC_DEV:mx93-generic-bsp ?= "0"
 EXTERNAL_KERNEL_DEVICETREE ??= ""
 IMAGE_BOOT_FILES += "oftree ${EXTERNAL_KERNEL_DEVICETREE} bootenv.txt"
 
+# M33 core demos (bootaux)
+WKS_FILE_DEPENDS:append = " imx-m33-demos"
+IMX_M33_DEMO_INSTALL ??= " \
+    imx93-11x11-evk_m33_TCM_rpmsg_lite_str_echo_rtos.bin \
+    imx93-11x11-evk_m33_TCM_rpmsg_lite_pingpong_rtos_linux_remote.bin \
+    imx93-11x11-evk_m33_TCM_power_mode_switch.bin \
+"
+IMAGE_BOOT_FILES:append = "${IMX_M33_DEMO_INSTALL}"
+
 # partup
 IMAGE_CLASSES += "image-types-partup"
 include partup-layout-config.inc
