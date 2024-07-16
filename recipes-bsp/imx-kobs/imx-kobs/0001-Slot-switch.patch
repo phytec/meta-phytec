@@ -9,6 +9,8 @@ Adds switch to select on of the two firmware slots. This allow to safely
 update on slot while the other slot is still valid. Behavior taken from
 barebox.
 
+Upstream-Status: Pending
+
 Signed-off-by: Jan Remmet <j.remmet@phytec.de>
 ---
  src/main.c |  4 ++++

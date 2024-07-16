@@ -12,6 +12,8 @@ Now first the "unused" bootstream is written, than the FCB table and the
 "actual" boot stream.
 Making the update is power cut tolerant.
 
+Upstream-Status: Pending
+
 Signed-off-by: Jan Remmet <j.remmet@phytec.de>
 ---
  src/mtd.c | 225 ++++++++++++++++++++++++++++++++++++++------------------------
