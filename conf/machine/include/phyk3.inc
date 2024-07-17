@@ -69,6 +69,7 @@ PARTUP_BOOT_FILES = " \
     ${KERNEL_IMAGETYPE} \
     ${@make_dtb_boot_files(d)} oftree \
 "
+PARTUP_BOOT_FILES:secureboot = "fitImage"
 IMAGE_EFI_BOOT_FILES ?= "${IMAGE_BOOT_FILES}"
 
 IMAGE_CLASSES += "image-types-partup"
