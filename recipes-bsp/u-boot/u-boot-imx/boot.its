@@ -1,0 +1,11 @@
+/dts-v1/;
+/ {
+    description = "boot script";
+    images {
+	default = "script";
+        script {
+            data = /incbin/("./boot.cmd");
+            type = "script";
+        };
+    };
+};
