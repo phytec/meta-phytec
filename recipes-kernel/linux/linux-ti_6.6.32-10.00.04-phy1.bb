@@ -11,6 +11,7 @@ SRC_URI = " \
         file://lxc.scc \
         file://oci.scc \
         file://preempt-rt.scc \
+        file://systemd.scc \
 "
 
 # Apply rt patch in case of preempt-rt
@@ -23,6 +24,7 @@ SRC_URI[rt-patch.sha256sum] = "058b73df1634b54d3b0ca7d7d5998b9ecc1c69fff935c3bfc
 SRC_URI:append:phyboard-izar-am68x-1 = " file://eth-module.scc"
 
 KERNEL_FEATURES = " \
+    systemd.scc \
     ${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'lxc.scc oci.scc', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'preempt-rt', 'preempt-rt.scc', '', d)} \
 "
