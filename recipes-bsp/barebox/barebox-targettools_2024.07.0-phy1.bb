@@ -12,6 +12,11 @@ do_configure:append() {
     oe_runmake ARCH=sandbox targettools_defconfig
 }
 
+do_configure:append:ti33x() {
+    kconfig_set ARCH_OMAP_MULTI y
+    kconfig_set MACH_PHYTEC_SOM_AM335X y
+}
+
 do_compile () {
     oe_runmake scripts
 }
