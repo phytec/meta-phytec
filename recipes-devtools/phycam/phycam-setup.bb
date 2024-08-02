@@ -34,6 +34,10 @@ SRC_URI:append:j721s2 = " \
     file://setup-pipeline-csi1.sh \
 "
 
+SRC_URI:append:mx93-generic-bsp = " \
+    file://setup-pipeline-csi1.sh \
+"
+
 do_install() {
     install -d ${D}${nonarch_base_libdir}/udev/rules.d/
     install -m 0644 ${WORKDIR}/90-phycam.rules \
