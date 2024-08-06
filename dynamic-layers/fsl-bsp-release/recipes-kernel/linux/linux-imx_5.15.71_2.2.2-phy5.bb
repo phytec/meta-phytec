@@ -38,5 +38,4 @@ KERNEL_MODULE_PROBECONF:mx8mp-nxp-bsp += "imx8-media-dev"
 
 COMPATIBLE_MACHINE  = "^("
 COMPATIBLE_MACHINE .= "phyboard-zeta-imx7d-1"
-COMPATIBLE_MACHINE .= "|phycore-imx8x-1"
 COMPATIBLE_MACHINE .= ")$"
