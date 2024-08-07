@@ -20,7 +20,7 @@ SRC_URI:append = " \
     ${@bb.utils.contains('MACHINE_FEATURES', 'caam', 'file://caam.cfg', '', d)} \
 "
 
-SRCREV = "f87d73ec6a5ba5cf4c42f88baf843601757483ba"
+SRCREV = "f7e985204589f2b991e9d7fb90840c1e34c5e513"
 
 S = "${WORKDIR}/git"
 
