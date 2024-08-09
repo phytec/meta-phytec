@@ -27,6 +27,8 @@ EXTERNAL_KERNEL_DEVICETREE ??= ""
 IMAGE_BOOT_FILES += "oftree ${EXTERNAL_KERNEL_DEVICETREE} bootenv.txt"
 IMAGE_BOOT_FILES:secureboot:mx93-nxp-bsp = "fitImage bootenv.txt"
 
+INITRAMFS_MAXSIZE = "262144"
+
 # M33 core demos (bootaux)
 WKS_FILE_DEPENDS:append = " imx-m33-demos"
 IMX_M33_DEMO_INSTALL ??= " \
