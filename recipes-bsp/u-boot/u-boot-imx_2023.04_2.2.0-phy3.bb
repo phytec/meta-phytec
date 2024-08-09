@@ -3,7 +3,11 @@ DESCRIPTION = "i.MX U-Boot supporting i.MX reference boards."
 inherit phygittag
 require recipes-bsp/u-boot/u-boot.inc
 inherit python3native
+
+include u-boot-securiphy.inc
+include u-boot-hardening.inc
 include u-boot-rauc.inc
+include u-boot-imx-remove-symlinks.inc
 
 PROVIDES += "u-boot"
 DEPENDS:append = " flex-native bison-native bc-native dtc-native gnutls-native"
