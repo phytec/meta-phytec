@@ -21,6 +21,7 @@ PARTUP_PACKAGE_DEPENDS:append:mx8m-nxp-bsp = " \
 PARTUP_PACKAGE_DEPENDS:append:mx93-generic-bsp = " \
     ${@oe.utils.ifelse(d.getVar('UBOOT_PROVIDES_BOOT_CONTAINER') == '0', '${IMAGE_BOOTLOADER}', '')} \
     phytec-bootenv \
+    imx-m33-demos \
 "
 PARTUP_PACKAGE_DEPENDS:append:j721s2 = " \
     phytec-bootenv \
