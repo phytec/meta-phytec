@@ -12,6 +12,9 @@ SRC_URI:append:secureboot = " \
 SRC_URI:append:mx8m-generic-bsp:secureboot = " \
     file://hab.cfg \
 "
+SRC_URI:append:mx93-generic-bsp:secureboot = " \
+    file://ahab.cfg \
+"
 
 kconfig_set() {
     bbnote "Setting $1 in configs to $2"
