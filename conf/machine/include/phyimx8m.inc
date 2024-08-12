@@ -18,3 +18,5 @@ KERNEL_CLASSES += "kernel-fitimage"
 KERNEL_IMAGETYPES += "fitImage"
 
 ATF_BOOT_UART_BASE = "auto"
+
+INITRAMFS_MAXSIZE = "262144"
