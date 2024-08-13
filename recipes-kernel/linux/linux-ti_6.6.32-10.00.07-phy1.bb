@@ -63,6 +63,7 @@ FILES:${KERNEL_PACKAGE_NAME}-devicetree:append:am57xx = " /${KERNEL_IMAGEDEST}/o
 COMPATIBLE_MACHINE  = "^("
 COMPATIBLE_MACHINE .=  "phyboard-lyra-am62xx-2"
 COMPATIBLE_MACHINE .= "|phyboard-lyra-am62xx-3"
+COMPATIBLE_MACHINE .= "|phyboard-lyra-am62xx-4"
 
 COMPATIBLE_MACHINE .= "|phyboard-lyra-am62axx-1"
 COMPATIBLE_MACHINE .= "|phyboard-lyra-am62axx-2"
