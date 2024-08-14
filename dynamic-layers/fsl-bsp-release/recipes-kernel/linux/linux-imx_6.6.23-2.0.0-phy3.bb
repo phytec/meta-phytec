@@ -35,3 +35,14 @@ COMPATIBLE_MACHINE .= "|phycore-imx8x-1"
 COMPATIBLE_MACHINE .= "|phyboard-nash-imx93-1"
 COMPATIBLE_MACHINE .= "|phyboard-segin-imx93-2"
 COMPATIBLE_MACHINE .= ")$"
+
+do_deploy:append() {
+    if echo ${KERNEL_IMAGETYPES} | grep -wq "fitImage"; then
+        if [ -n "${INITRAMFS_IMAGE}" -a "${INITRAMFS_IMAGE_BUNDLE}" != "1" ]; then
+            # remove symlink to fitImage without initramfs
+            rm -f $deployDir/fitImage
+            # create symlink to fitImage with initramfs
+            ln -snf fitImage-${INITRAMFS_IMAGE_NAME}-${KERNEL_FIT_NAME}${KERNEL_FIT_BIN_EXT} "$deployDir/fitImage"
+        fi
+    fi
+}
