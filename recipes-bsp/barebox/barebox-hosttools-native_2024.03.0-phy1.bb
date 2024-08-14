@@ -7,6 +7,7 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/barebox/:"
 DEPENDS += "libusb1-native openssl-native zlib-native "
 
 inherit deploy pkgconfig
+inherit kconfig-set
 
 do_configure:append() {
     kconfig_set ARCH_IMX_IMXIMAGE y

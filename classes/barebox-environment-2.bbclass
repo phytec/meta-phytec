@@ -1,3 +1,5 @@
+inherit kconfig-set
+
 # Barebox Environment Handling - The Second version
 #
 # - Binary files in Environment are not supported. String must be Unicode
