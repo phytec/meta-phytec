@@ -46,11 +46,6 @@ set_image_to_fitimage () {
     sed_safely "s/image=Image/image=fitImage/g" board/phytec/phycore_*/*.env
 }
 
-set_loadaddress () {
-    sed_safely "s/CONFIG_SYS_LOAD_ADDR=0x.*/CONFIG_SYS_LOAD_ADDR=${UBOOT_ENTRYPOINT}/g" configs/phycore-imx8m*
-    sed_safely "s/CONFIG_SYS_LOAD_ADDR=0x.*/CONFIG_SYS_LOAD_ADDR=${UBOOT_ENTRYPOINT}/g" configs/imx8mm-phygate-tauri_defconfig
-}
-
 set_fitimage_key() {
     kconfig_set DEVICE_TREE_INCLUDES '"signature_node.dtsi"'
 }
@@ -64,7 +59,6 @@ set_tikey() {
 python do_patch:append:secureboot () {
     bb.build.exec_func("set_dofitboot_1", d)
     bb.build.exec_func("set_image_to_fitimage", d)
-    bb.build.exec_func("set_loadaddress", d)
 
     if oe.data.typed_value("FITIMAGE_SIGN", d) and d.getVar('FITIMAGE_SIGN_ENGINE') == 'software':
         bb.build.exec_func("set_fitimage_key", d)
