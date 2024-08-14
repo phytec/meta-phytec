@@ -20,7 +20,7 @@ SRC_URI:append = " \
 "
 
 inherit kernel-arch deploy
-inherit kconfig
+inherit kconfig kconfig-set
 
 # Barebox doesn't seperate arm 32bit and 64bit. So we have to set
 # ARCH to arm for 64bit.

@@ -1,4 +1,5 @@
 require barebox_${PV}.bb
+inherit kconfig-set
 
 SUMMERY = "barebox userspace tools"
 PROVIDES = "${PN}"
