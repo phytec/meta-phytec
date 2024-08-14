@@ -86,7 +86,6 @@ FITIMAGE_SIGN[type] = "boolean"
 FITIMAGE_SIGN_KEY_PATH ??= ""
 
 FITIMAGE_SIGN_ENGINE ??= "software"
-FITIMAGE_SIGN_ENGINE:mx8m-nxp-bsp ??= "nxphab"
 
 FITIMAGE_NO_DTB_OVERLAYS ??= "false"
 FITIMAGE_NO_DTB_OVERLAYS[type] = "boolean"
