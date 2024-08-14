@@ -35,6 +35,7 @@ set_dofitboot_1 () {
     sed_safely "s/\(setenv dofitboot \)[01]/\11/" include/configs/phycore_*.h
     sed_safely "s/\(setenv dofitboot \)[01]/\11/" configs/phycore-imx8m*
     sed_safely "s/\(setenv dofitboot \)[01]/\11/" configs/imx8mm-phygate-tauri_defconfig
+    sed_safely "s/\(dofitboot=\)[01]/\11/" board/phytec/phycore_am62x/phycore_am62x.env
 }
 
 set_image_to_fitimage () {
