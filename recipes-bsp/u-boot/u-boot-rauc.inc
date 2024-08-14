@@ -18,3 +18,9 @@ python do_patch:append:update () {
     bb.build.exec_func('set_doraucboot_1', d)
     bb.build.exec_func('enable_bootretry', d)
 }
+
+python do_patch:append:mx8m-nxp-bsp:update () {
+    bb.build.exec_func('set_dofitboot_1', d)
+    bb.build.exec_func('set_dolegacyboot_1', d)
+    bb.build.exec_func('set_image_to_fitimage', d)
+}
