@@ -1,4 +1,10 @@
+FILESEXTRAPATHS:prepend := "${THISDIR}/features:"
+
 inherit sed-safely
+
+SRC_URI:append:mx8m-nxp-bsp:update = " \
+    file://default-env.cfg \
+"
 
 set_doraucboot_1 () {
     bbnote "Setting \"doraucboot\" to \"1\""
