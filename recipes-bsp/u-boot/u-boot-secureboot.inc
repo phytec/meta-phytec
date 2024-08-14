@@ -52,7 +52,7 @@ set_loadaddress () {
 }
 
 set_fitimage_key() {
-    kconfig_set DEVICE_TREE_INCLUDES '"${FITIMAGE_PUBKEY_SIGNATURE_PATH}"'
+    kconfig_set DEVICE_TREE_INCLUDES '"signature_node.dtsi"'
 }
 
 set_tikey() {
@@ -72,4 +72,8 @@ python do_patch:append:secureboot () {
 
 python do_patch:append:k3:secureboot () {
     bb.build.exec_func("set_tikey", d)
+}
+
+do_configure:append:secureboot () {
+    cp "${FITIMAGE_PUBKEY_SIGNATURE_PATH}" "${S}/arch/arm/dts/"
 }
