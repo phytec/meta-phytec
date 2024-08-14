@@ -39,6 +39,7 @@ set_dofitboot_1 () {
     sed_safely "s/\(setenv dofitboot \)[01]/\11/" configs/phycore-imx8m*
     sed_safely "s/\(setenv dofitboot \)[01]/\11/" configs/imx8mm-phygate-tauri_defconfig
     sed_safely "s/\(dofitboot=\)[01]/\11/" include/environment/phytec/fit.env
+    sed_safely "s/\(dofitboot=\)[01]/\11/" include/env/phytec/fitboot.env
 }
 
 set_image_to_fitimage () {
@@ -56,6 +57,10 @@ set_tikey() {
     kconfig_set PHYTEC_K3_DEGENERATE_KEY '"${BOOTLOADER_TI_K3_DEGENERATE_KEY}"'
 }
 
+set_dolegacyboot_1 () {
+    sed_safely "s/\(dolegacyboot=\)[01]/\11/" board/phytec/phycore_imx8mp/phycore_imx8mp.env
+}
+
 python do_patch:append:secureboot () {
     bb.build.exec_func("set_dofitboot_1", d)
     bb.build.exec_func("set_image_to_fitimage", d)
@@ -66,6 +71,10 @@ python do_patch:append:secureboot () {
 
 python do_patch:append:k3:secureboot () {
     bb.build.exec_func("set_tikey", d)
+}
+
+python do_patch:append:mx8m-nxp-bsp:secureboot () {
+    bb.build.exec_func("set_dolegacyboot_1", d)
 }
 
 do_configure:append:secureboot () {
