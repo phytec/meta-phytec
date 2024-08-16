@@ -7,8 +7,7 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/${BPN}:"
 SRC_URI = "${FSL_MIRROR}/isp-imx-${PV}.bin;fsl-eula=true"
 SRC_URI += "\
     file://0001-units-isi-drv-Add-phyCAM-driver.patch \
-    file://0001-mediacontrol-V4L2File-Try-both-video-devices.patch \
-    file://0003-units-isi-drv-phycam-Allow-to-configure-a-min-fps-fr.patch \
+    file://0002-units-isi-drv-phycam-Allow-to-configure-a-min-fps-fr.patch \
     file://run_isp.sh \
     file://imx8-phycam-isp.service \
     file://90-phycam-isp.rules \
