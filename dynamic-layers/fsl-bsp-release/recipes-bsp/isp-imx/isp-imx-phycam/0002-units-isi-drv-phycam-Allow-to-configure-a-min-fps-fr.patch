@@ -1,4 +1,4 @@
-From c90173aa746aa762d8ced24f6fa31bbd061143bc Mon Sep 17 00:00:00 2001
+From e9e4ec539ecb83884d5507af4e3bf95a2c8a5efc Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Stefan=20Riedm=C3=BCller?= <s.riedmueller@phytec.de>
 Date: Wed, 18 Oct 2023 15:42:49 +0200
 Subject: [PATCH] units/isi/drv: phycam: Allow to configure a min fps from
