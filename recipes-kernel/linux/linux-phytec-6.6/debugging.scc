@@ -1,0 +1,4 @@
+define KFEATURE_DESCRIPTION "Enable debugging features for Phytec use cases"
+define KFEATURE_COMPATIBILITY all
+
+kconf non-hardware debugging.cfg
