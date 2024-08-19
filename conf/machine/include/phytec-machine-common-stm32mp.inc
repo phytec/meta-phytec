@@ -44,7 +44,7 @@ BOOTDEVICE_LABELS ??= "emmc nor-emmc nand-2-256 nand-2-64 nor-sdcard sdcard"
 # Machine settings
 # =========================================================================
 # Default machine feature
-MACHINE_FEATURES = "usbhost usbgadget alsa screen ext2"
+MACHINE_FEATURES = "camera usbhost usbgadget alsa screen ext2"
 MACHINE_FEATURES:append = " ${@bb.utils.contains('BOOTSCHEME_LABELS', 'optee', 'optee', '', d)} "
 MACHINE_FEATURES:append = " tpm2 "
 

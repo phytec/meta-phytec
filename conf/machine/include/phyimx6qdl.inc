@@ -6,6 +6,8 @@ include conf/machine/include/arm/armv7a/tune-cortexa9.inc
 
 SERIAL_CONSOLES ?= "115200;ttymxc3"
 
+MACHINE_FEATURES += "camera"
+
 # Sub-architecture support
 MACHINE_SOCARCH = "${TUNE_PKGARCH}-mx6qdl"
 PACKAGE_EXTRA_ARCHS:append = " ${MACHINE_SOCARCH}"

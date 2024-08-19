@@ -31,7 +31,7 @@ RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base = ""
 # cpu feature overwrite support
 MACHINEOVERRIDES .= ":imxpxp"
 
-MACHINE_FEATURES = "apm usbgadget usbhost vfat"
+MACHINE_FEATURES = "apm camera usbgadget usbhost vfat"
 
 QT_QPA_PLATFORM ?= "linuxfb"
 
