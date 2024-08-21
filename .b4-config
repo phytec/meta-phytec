@@ -1,0 +1,9 @@
+[b4]
+	linkmask = http://ls-patchwork2.phytec.de/project/meta-phytec/patch/%s
+	pw-url = http://ls-patchwork2.phytec.de/
+	pw-project = meta-phytec
+	pw-review-state = under-review
+	pw-accept-state = accepted
+	pw-discard-state = rejected
+	send-series-to = "meta-phytec <meta-phytec@lists.phytec.de>"
+	prep-pre-flight-checks = needs-checking
