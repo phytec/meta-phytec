@@ -21,14 +21,11 @@ SRC_URI:append = " \
 "
 SRC_URI[rt-patch.sha256sum] = "058b73df1634b54d3b0ca7d7d5998b9ecc1c69fff935c3bfc3f0f0279af96243"
 
-SRC_URI:append:phyboard-izar-am68x-1 = " file://eth-module.scc"
-
 KERNEL_FEATURES = " \
     systemd.scc \
     ${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'lxc.scc oci.scc', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'preempt-rt', 'preempt-rt.scc', '', d)} \
 "
-KERNEL_FEATURES:append:phyboard-izar-am68x-1 = " eth-module.scc"
 
 KBUILD_DEFCONFIG ?= "phytec_ti_defconfig"
 KCONFIG_MODE="alldefconfig"
@@ -52,14 +49,6 @@ EXTRA_DTC_ARGS += "DTC_FLAGS=-@"
 KERNEL_EXTRA_ARGS += "LOADADDR=${UBOOT_ENTRYPOINT} \
                       ${EXTRA_DTC_ARGS}"
 
-# Provide oftree in rootfs /boot directory on am57xx
-do_install:append:am57xx() {
-	dtb=`normalize_dtb "${@get_oftree(d)}"`
-	dtb_path=`get_real_dtb_path_in_kernel "$dtb"`
-	install -m 0644 $dtb_path ${D}/${KERNEL_IMAGEDEST}/oftree
-}
-FILES:${KERNEL_PACKAGE_NAME}-devicetree:append:am57xx = " /${KERNEL_IMAGEDEST}/oftree"
-
 COMPATIBLE_MACHINE  = "^("
 COMPATIBLE_MACHINE .=  "phyboard-lyra-am62xx-2"
 COMPATIBLE_MACHINE .= "|phyboard-lyra-am62xx-3"
@@ -71,14 +60,6 @@ COMPATIBLE_MACHINE .= "|phyboard-lyra-am62axx-2"
 COMPATIBLE_MACHINE .= "|phyboard-electra-am64xx-1"
 COMPATIBLE_MACHINE .= "|phyboard-electra-am64xx-2"
 
-COMPATIBLE_MACHINE .= "|phyboard-izar-am68x-1"
 COMPATIBLE_MACHINE .= "|phyboard-izar-am68x-2"
 COMPATIBLE_MACHINE .= "|phyboard-izar-am68x-3"
-
-COMPATIBLE_MACHINE .= "|phycore-am57xx-1"
-COMPATIBLE_MACHINE .= "|phycore-am57xx-2"
-COMPATIBLE_MACHINE .= "|phycore-am57xx-3"
-COMPATIBLE_MACHINE .= "|phycore-am57xx-4"
-COMPATIBLE_MACHINE .= "|phycore-am57xx-5"
-COMPATIBLE_MACHINE .= "|phycore-am57xx-6"
 COMPATIBLE_MACHINE .= ")$"
