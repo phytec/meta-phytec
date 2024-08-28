@@ -8,10 +8,11 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/linux-ti-6.6:${THISDIR}/linux-phytec-6.6:
 GIT_URL = "git://github.com/phytec/linux-phytec-ti.git;protocol=https"
 SRC_URI = " \
 	${GIT_URL};branch=${BRANCH} \
-        file://lxc.scc \
-        file://oci.scc \
-        file://preempt-rt.scc \
-        file://systemd.scc \
+	file://systemd.scc \
+	file://phytec_ti_platform.scc \
+	${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'file://lxc.scc', '', d)} \
+	${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'file://oci.scc', '', d)} \
+	${@bb.utils.contains('DISTRO_FEATURES', 'preempt-rt', 'file://preempt-rt.scc', '', d)} \
 "
 
 # Apply rt patch in case of preempt-rt
@@ -23,6 +24,7 @@ SRC_URI[rt-patch.sha256sum] = "058b73df1634b54d3b0ca7d7d5998b9ecc1c69fff935c3bfc
 
 KERNEL_FEATURES = " \
     systemd.scc \
+    phytec_ti_platform.scc \
     ${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'lxc.scc oci.scc', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'preempt-rt', 'preempt-rt.scc', '', d)} \
 "
