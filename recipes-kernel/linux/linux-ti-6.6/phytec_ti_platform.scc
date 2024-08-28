@@ -1,0 +1,4 @@
+define KFEATURE_DESCRIPTION "Enable additional drivers for PHYTEC TI SOMs"
+define KFEATURE_COMPATIBILITY board
+
+kconf non-hardware phytec_ti_platform.cfg
