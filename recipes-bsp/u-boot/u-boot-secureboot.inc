@@ -69,3 +69,7 @@ python do_patch:append:secureboot () {
 python do_patch:append:k3:secureboot () {
     bb.build.exec_func("set_tikey", d)
 }
+
+python do_patch:append:k3r5:secureboot () {
+    bb.build.exec_func("set_tikey", d)
+}
