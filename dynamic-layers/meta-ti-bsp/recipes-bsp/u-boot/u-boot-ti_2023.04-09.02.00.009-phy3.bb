@@ -25,6 +25,13 @@ SRC_URI:append:phyboard-electra-am64xx-2-k3r5 = "\
     file://0001-HACK-board-phycore_am64x-Add-Set-CLKOUT0-to-25MHz.patch \
 "
 
+SRC_URI:append:phyboard-electra-am64xx-3 = "\
+    file://0001-HACK-board-phycore_am64x-Add-Set-CLKOUT0-to-25MHz.patch \
+"
+SRC_URI:append:phyboard-electra-am64xx-3-k3r5 = "\
+    file://0001-HACK-board-phycore_am64x-Add-Set-CLKOUT0-to-25MHz.patch \
+"
+
 SRC_URI:append:phyboard-lyra-am62xx-2 = "\
     file://0001-HACK-board-phytec-phycore_am62x-Enable-OLDI0-AUDIO_R.patch \
 "
@@ -75,6 +82,8 @@ COMPATIBLE_MACHINE .= "|phyboard-electra-am64xx-1"
 COMPATIBLE_MACHINE .= "|phyboard-electra-am64xx-1-k3r5"
 COMPATIBLE_MACHINE .= "|phyboard-electra-am64xx-2"
 COMPATIBLE_MACHINE .= "|phyboard-electra-am64xx-2-k3r5"
+COMPATIBLE_MACHINE .= "|phyboard-electra-am64xx-3"
+COMPATIBLE_MACHINE .= "|phyboard-electra-am64xx-3-k3r5"
 
 COMPATIBLE_MACHINE .= "|phyboard-izar-am68x-1"
 COMPATIBLE_MACHINE .= "|phyboard-izar-am68x-1-k3r5"
