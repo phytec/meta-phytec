@@ -18,6 +18,9 @@ SRC_URI:append = " \
     ${@bb.utils.contains('DEBUG_BUILD', '1', 'file://debugging.cfg', '', d)} \
     ${@bb.utils.contains('MACHINE_FEATURES', 'tpm2', 'file://tpm2.cfg', '', d)} \
     ${@bb.utils.contains('MACHINE_FEATURES', 'caam', 'file://caam.cfg', '', d)} \
+    file://0001-tty-vt-conmakehash-Don-t-mention-the-full-path-of-th.patch \
+    file://0001-lib-build_OID_registry-don-t-mention-the-full-path-o.patch \
+    file://0001-video-logo-Drop-full-path-of-the-input-filename-in-g.patch \
 "
 
 SRCREV = "${AUTOREV}"
