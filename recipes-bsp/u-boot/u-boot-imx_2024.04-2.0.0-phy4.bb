@@ -49,6 +49,11 @@ do_deploy:append:mx8m-generic-bsp() {
     install -m 0644 ${S}/CRT.* ${DEPLOYDIR}
 }
 
+do_deploy:append:mx93-generic-bsp() {
+    # Deploy CRT.* from u-boot for stmm
+    install -m 0644 ${S}/CRT.*     ${DEPLOYDIR}
+}
+
 COMPATIBLE_MACHINE = "^("
 COMPATIBLE_MACHINE .= "phyboard-pollux-imx8mp-3"
 COMPATIBLE_MACHINE .= "|phyboard-polis-imx8mm-5"
