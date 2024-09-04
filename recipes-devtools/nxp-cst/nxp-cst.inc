@@ -1,4 +1,4 @@
-DEPENDS = "openssl-native byacc-native flex-native"
+DEPENDS += "openssl byacc flex"
 
 REQUIRED_DISTRO_FEATURES = "secureboot"
 inherit features_check
