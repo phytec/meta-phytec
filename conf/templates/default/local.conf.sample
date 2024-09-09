@@ -75,7 +75,9 @@ BB_DISKMON_DIRS ??= "\
 
 # Turn on debugging options of the kernel
 #DEBUG_BUILD:pn-linux-phytec = "1"
-# Turn on debugging options of the imx kernel
+# Turn on debugging options of the imx8/imx9 kernel
+#DEBUG_BUILD:pn-linux-phytec-imx = "1"
+## Turn on debugging options of the imx7 kernel
 #DEBUG_BUILD:pn-linux-imx = "1"
 # Turn on debugging options of the barebox
 #DEBUG_BUILD:pn-barebox = "1"
