@@ -5,7 +5,7 @@ require phytec-machine-common.inc
 PREFERRED_PROVIDER_virtual/bootloader:mx8-nxp-bsp ?= "u-boot-imx"
 PREFERRED_PROVIDER_virtual/bootloader ?= "u-boot-phytec"
 PREFERRED_PROVIDER_virtual/kernel ?= "linux-phytec"
-PREFERRED_PROVIDER_virtual/kernel:mx8-nxp-bsp ?= "linux-imx-phytec"
+PREFERRED_PROVIDER_virtual/kernel:mx8-nxp-bsp ?= "linux-phytec-imx"
 PREFERRED_PROVIDER_imx-boot="imx-boot-phytec"
 PREFERRED_PROVIDER_opencl-headers:imxgpu = "imx-gpu-viv"
 PREFERRED_PROVIDER_linux-imx-mfgtool:mx8-nxp-bsp = "linux-imx-mfgtool"
