@@ -4,7 +4,7 @@ require phytec-machine-common.inc
 require conf/machine/include/arm/armv8-2a/tune-cortexa55.inc
 
 PREFERRED_PROVIDER_virtual/bootloader ?= "u-boot-imx"
-PREFERRED_PROVIDER_virtual/kernel ?= "linux-imx-phytec"
+PREFERRED_PROVIDER_virtual/kernel ?= "linux-phytec-imx"
 
 # Don't install kernelimage to rootfs
 RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base = ""
