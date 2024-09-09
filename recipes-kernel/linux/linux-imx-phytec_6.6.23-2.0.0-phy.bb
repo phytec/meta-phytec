@@ -4,7 +4,7 @@ inherit kernel kernel-yocto
 inherit phygittag
 include recipes-kernel/linux/linux-common.inc
 
-SRCREV_machine = "de0f80cb0116beb2a995a2b4c651872a15cd07c8"
+SRCREV_machine = "3cd8da60bd5dc529129d73cfbf37b7769ef5d308"
 SRCREV_meta ?= "da275b53b13faafa834352e3f9dd3f91a2c03bb8"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/linux-phytec-6.6:"
