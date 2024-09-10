@@ -53,6 +53,15 @@ python __anonymous () {
                 d.appendVarFlag('do_assemble_fitimage_initramfs', 'depends', ' %s:do_populate_sysroot' % uboot_pn)
 }
 
+fitimage_ti_secure() {
+	if test -f "${TI_SECURE_DEV_PKG}/scripts/secure-binary-image.sh"; then
+		export TI_SECURE_DEV_PKG=${TI_SECURE_DEV_PKG}
+		${TI_SECURE_DEV_PKG}/scripts/secure-binary-image.sh $1 $2
+	else
+		cp $1 $2
+	fi
+}
+
 # Options for the device tree compiler passed to mkimage '-D' feature:
 UBOOT_MKIMAGE_DTCOPTS ??= ""
 
@@ -431,7 +440,8 @@ fitimage_assemble() {
 	fitimage_emit_section_maint ${1} imagestart
 
 	uboot_prep_kimage
-	fitimage_emit_section_kernel $1 $kernelcount linux.bin "$linux_comp"
+	fitimage_ti_secure linux.bin linux.bin.sec
+	fitimage_emit_section_kernel $1 $kernelcount linux.bin.sec "$linux_comp"
 
 	#
 	# Step 2: Prepare a DTB image section
@@ -451,7 +461,8 @@ fitimage_assemble() {
 
 			DTB=$(echo "${DTB}" | tr '/' '_')
 			DTBS="${DTBS} ${DTB}"
-			fitimage_emit_section_dtb ${1} ${DTB} ${DTB_PATH}
+			fitimage_ti_secure ${DTB_PATH} ${DTB_PATH}.sec
+			fitimage_emit_section_dtb ${1} ${DTB} ${DTB_PATH}.sec
 		done
 	fi
 
@@ -460,7 +471,8 @@ fitimage_assemble() {
 		for DTB in $(find "${EXTERNAL_KERNEL_DEVICETREE}" \( -name '*.dtb' -o -name '*.dtbo' \) -printf '%P\n' | sort); do
 			DTB=$(echo "${DTB}" | tr '/' '_')
 			DTBS="${DTBS} ${DTB}"
-			fitimage_emit_section_dtb ${1} ${DTB} "${EXTERNAL_KERNEL_DEVICETREE}/${DTB}"
+			fitimage_ti_secure ${DTB} "${EXTERNAL_KERNEL_DEVICETREE}/${DTB}".sec
+			fitimage_emit_section_dtb ${1} ${DTB} "${EXTERNAL_KERNEL_DEVICETREE}/${DTB}".sec
 		done
 	fi
 
@@ -495,7 +507,8 @@ fitimage_assemble() {
 			initramfs_path="${DEPLOY_DIR_IMAGE}/${INITRAMFS_IMAGE_NAME}.${img}"
 			echo "Using $initramfs_path"
 			if [ -e "${initramfs_path}" ]; then
-				fitimage_emit_section_ramdisk ${1} "${ramdiskcount}" "${initramfs_path}"
+				fitimage_ti_secure ${initramfs_path} ${initramfs_local}.sec
+				fitimage_emit_section_ramdisk ${1} "${ramdiskcount}" ${initramfs_local}.sec
 				break
 			fi
 		done
