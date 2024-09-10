@@ -18,10 +18,3 @@ OPTEEPAGER = "y"
 # FIT image for legacy HS devices
 KERNEL_CLASSES += " kernel-fitimage-legacyhs"
 KERNEL_IMAGETYPES += " fitImage"
-
-# FIT image settings
-FITIMAGE_HASH_ALGO = ""
-FITIMAGE_PACK_TEE = "0"
-FITIMAGE_DTB_BY_NAME = "1"
-FITIMAGE_TEE_BY_NAME = "1"
-FITIMAGE_CONF_BY_NAME = "1"
