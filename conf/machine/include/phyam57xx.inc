@@ -20,7 +20,7 @@ MACHINE_ESSENTIAL_EXTRA_RDEPENDS += "kernel-devicetree"
 # Bootloader and kernel from meta-phytec
 PREFERRED_PROVIDER_virtual/bootloader:${MACHINE} = "u-boot-ti"
 PREFERRED_PROVIDER_u-boot = "u-boot-ti"
-PREFERRED_PROVIDER_virtual/kernel:${MACHINE} = "linux-ti"
+PREFERRED_PROVIDER_virtual/kernel:${MACHINE} = "linux-phytec-ti"
 # Use standard binutils and gcc and not TI's packages
 PREFERRED_RPROVIDER_binutils-cross-canadian-arm ?= "binutils-cross-canadian-arm"
 PREFERRED_RPROVIDER_gcc-cross-canadian-arm ?= "gcc-cross-canadian-arm"

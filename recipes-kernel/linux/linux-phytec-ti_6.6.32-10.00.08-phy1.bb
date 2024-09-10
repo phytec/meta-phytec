@@ -4,7 +4,7 @@ require recipes-kernel/linux/linux-common.inc
 
 LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 
-FILESEXTRAPATHS:prepend := "${THISDIR}/linux-ti-6.6:${THISDIR}/linux-phytec-6.6:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/linux-phytec-ti-6.6:${THISDIR}/linux-phytec-6.6:"
 GIT_URL = "git://github.com/phytec/linux-phytec-ti.git;protocol=https"
 SRC_URI = " \
 	${GIT_URL};branch=${BRANCH} \
