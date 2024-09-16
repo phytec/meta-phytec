@@ -19,5 +19,5 @@ do_compile:append() {
 }
 
 do_deploy:append() {
-    install -m 644 ${WORKDIR}/${UBOOT_ENV_FIT_BINARY} ${DEPLOY_DIR_IMAGE}/${UBOOT_ENV_FIT_BINARY}
+    install -m 644 ${WORKDIR}/${UBOOT_ENV_FIT_BINARY} ${DEPLOYDIR}/${UBOOT_ENV_FIT_BINARY}
 }
