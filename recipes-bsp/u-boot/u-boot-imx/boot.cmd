@@ -1,7 +1,7 @@
 setenv image "fitImage"
 setenv loadimage "fatload mmc ${devnum}:${distro_bootpart} ${loadaddr} ${image}"
-setenv mmcargs "setenv bootargs console=${console} root=/dev/mmcblk${devnum}p${mmcroot} rootwait rw"
-setenv netargs "setenv bootargs console=${console} root=/dev/nfs ip='${nfsip}' nfsroot=${serverip}:'${nfsroot}',v3,tcp"
+setenv mmcargs "setenv bootargs console=${console} root=/dev/mmcblk${devnum}p${mmcroot} rootwait rw ${optargs}"
+setenv netargs "setenv bootargs console=${console} root=/dev/nfs ip='${nfsip}' nfsroot=${serverip}:'${nfsroot}',v3,tcp ${optargs}"
 setenv mmcautodetect "yes"
 setenv fitboot "\
 if test ${no_extensions} = 0; then \
