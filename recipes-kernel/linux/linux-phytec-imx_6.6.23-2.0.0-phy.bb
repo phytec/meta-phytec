@@ -41,6 +41,17 @@ KBUILD_DEFCONFIG ?= "imx8_phytec_defconfig"
 KBUILD_DEFCONFIG:mx93-nxp-bsp = "imx9_phytec_defconfig"
 KCONFIG_MODE="alldefconfig"
 
+do_deploy:append() {
+    if echo ${KERNEL_IMAGETYPES} | grep -wq "fitImage"; then
+        if [ -n "${INITRAMFS_IMAGE}" -a "${INITRAMFS_IMAGE_BUNDLE}" != "1" ]; then
+            # remove symlink to fitImage without initramfs
+            rm -f $deployDir/fitImage
+            # create symlink to fitImage with initramfs
+            ln -snf fitImage-${INITRAMFS_IMAGE_NAME}-${KERNEL_FIT_NAME}${KERNEL_FIT_BIN_EXT} "$deployDir/fitImage"
+        fi
+    fi
+}
+
 COMPATIBLE_MACHINE  = "^("
 COMPATIBLE_MACHINE .= "phyboard-pollux-imx8mp-3"
 COMPATIBLE_MACHINE .= "|phyboard-polis-imx8mm-5"
