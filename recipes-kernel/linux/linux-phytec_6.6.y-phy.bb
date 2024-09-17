@@ -3,9 +3,9 @@ inherit phygittag buildinfo kconfig
 include linux-common.inc
 include linux-barebox-dt-overlays.inc
 
-# NOTE: This recipe only works PHYTEC-internally! Access to the -phynext
-# branches is limited to internal developers.
-GIT_URL = "git://git@git.phytec.de/linux-phytec-dev.git;protocol=ssh"
+GIT_URL = "git://github.com/phytec/linux-phytec.git;protocol=https"
+GIT_URL:kernel-next-branch = "git://git@git.phytec.de/linux-phytec-dev.git;protocol=ssh"
+BRANCH:kernel-next-branch = "v6.6.y-phynext"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
 PR = "${INC_PR}.0"
