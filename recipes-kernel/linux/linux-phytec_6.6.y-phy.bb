@@ -1,5 +1,5 @@
-inherit kernel
-inherit phygittag buildinfo kconfig
+inherit kernel kernel-yocto
+inherit phygittag
 include linux-common.inc
 include linux-barebox-dt-overlays.inc
 
@@ -27,7 +27,10 @@ SRCREV = "${AUTOREV}"
 
 S = "${WORKDIR}/git"
 
-INTREE_DEFCONFIG:ti33x = "am335x_phytec_defconfig"
+KBUILD_DEFCONFIG:ti33x = "am335x_phytec_defconfig"
+KCONFIG_MODE = "alldefconfig"
+
+KERNEL_VERSION_SANITY_SKIP = "1"
 
 COMPATIBLE_MACHINE  = "^("
 COMPATIBLE_MACHINE .=  "phyboard-regor-am335x-1"
