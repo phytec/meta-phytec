@@ -11,8 +11,6 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/linux-phytec-6.6:"
 GIT_URL = "git://git.phytec.de/linux-imx;name=machine"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 SRC_URI:append = " git://git.yoctoproject.org/yocto-kernel-cache;type=kmeta;name=meta;branch=yocto-6.6;destsuffix=${KMETA};protocol=https \
-                   file://oci.scc \
-                   file://debugging.scc \
                    file://0001-tty-vt-conmakehash-Don-t-mention-the-full-path-of-th.patch \
                    file://0001-lib-build_OID_registry-don-t-mention-the-full-path-o.patch \
                    file://0001-video-logo-Drop-full-path-of-the-input-filename-in-g.patch \
