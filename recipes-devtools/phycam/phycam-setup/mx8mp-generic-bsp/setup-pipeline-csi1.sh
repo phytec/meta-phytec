@@ -70,7 +70,7 @@ fi
 
 # Get sensor default values.
 CAM_ENT="$(cat /sys/class/video4linux/$(readlink ${CAM})/name)"
-case $(echo ${CAM_ENT} | cut -d" " -f1) in
+case $(echo "${CAM_ENT}" | cut -d" " -f1) in
 	ar0144 )
 		CAM_BW_FMT="Y8_1X8"
 		CAM_COL_FMT="SGRBG8_1X8"
@@ -91,6 +91,32 @@ case $(echo ${CAM_ENT} | cut -d" " -f1) in
 		;;
 	* ) echo "Unknown camera" ; exit 1
 esac
+
+if [ "$IFACE" = "ISP" ] ; then
+	SENSOR_FILE="/opt/imx8-isp/bin/Sensor0_Entry.cfg"
+	if [ ! -L $SENSOR_FILE ] ; then
+		echo "Sensor0_Entry.cfg Link not set" ; exit 1
+	fi
+	MODE=$(grep "mode= " ${SENSOR_FILE} | cut -d " " -f2)
+	XML_FILE=$(grep -A1 "mode\.${MODE}" ${SENSOR_FILE} | grep -o "VM-.*\.xml")
+	SENSOR_RES=$(echo "${XML_FILE}" | sed 's/.*_\([0-9]\+x[0-9]\+\).*/\1/g')
+
+	case $(echo "${CAM_ENT}" | cut -d" " -f1) in
+		ar0144 )
+			CAM_BW_FMT="Y12_1X12"
+			CAM_COL_FMT="SGRBG12_1X12"
+			;;
+		ar0234 )
+			CAM_BW_FMT="Y10_1X10"
+			CAM_COL_FMT="SGRBG10_1X10"
+			;;
+		ar0521 )
+			CAM_BW_FMT="Y12_1X12"
+			CAM_COL_FMT="SGRBG12_1X12"
+			;;
+		* ) echo "Unknown camera" ; exit 1
+	esac
+fi
 
 # Evaluate if a monochrome or color sensor is connected by checking the
 # default MBUS code.
@@ -120,34 +146,21 @@ echo "============================"
 echo " Setting up MEDIA Links:"
 echo " -----------------------"
 
-# Disable all existing phyCAM-L links (if phyCAM-L is connected) so the new
-# setup can be selected.
-if [ -n "$SER_P0_ENT" ] && [ -n "$SER_P1_ENT" ] ; then
-	echo "  Disable both phyCAM-L Ports:"
-	echo "   $MC -l \"'${SER_P0_ENT}':1->'${DESER_ENT}':0[0]\""
-	$MC -l "'${SER_P0_ENT}':1->'${DESER_ENT}':0[0]" ${VERBOSE}
-	if [ ! -z "$VERBOSE" ] ; then echo "" ; fi
-
-	echo "   $MC -l \"'${SER_P0_ENT}':1->'${DESER_ENT}':1[0]\""
-	$MC -l "'${SER_P1_ENT}':1->'${DESER_ENT}':1[0]" ${VERBOSE}
-	echo ""
-fi
-
 if [ -n "$SER_P0_ENT" ] && [ -n "$DESER_ENT" ] && [ "$PORT" = "0" ] ; then
-	echo "Enabling phyCAM-L Port 0 on CSI1"
+	echo "  Enabling phyCAM-L Port 0 on CSI1"
 	echo "   $MC -l \"'${SER_P0_ENT}':1->'${DESER_ENT}':0[1]\""
 	$MC -l "'${SER_P0_ENT}':1->'${DESER_ENT}':0[1]" ${VERBOSE}
-	if [ ! -z "$VERBOSE" ] ; then echo "" ; fi
+	if [ -n "$VERBOSE" ] ; then echo "" ; fi
 
 	echo "   $MC -l \"'${DESER_ENT}':2->'${MIPI_ENT}':0[1]\""
 	$MC -l "'${DESER_ENT}':2->'${MIPI_ENT}':0[1]" ${VERBOSE}
 fi
 
 if [ -n "$SER_P1_ENT" ] && [ -n "$DESER_ENT" ] && [ "$PORT" = "1" ] ; then
-	echo "Enabling phyCAM-L Port 1 on CSI1"
+	echo "  Enabling phyCAM-L Port 1 on CSI1"
 	echo "   $MC -l \"'${SER_P1_ENT}':1->'${DESER_ENT}':1[1]\""
 	$MC -l "'${SER_P1_ENT}':1->'${DESER_ENT}':1[1]" ${VERBOSE}
-	if [ ! -z "$VERBOSE" ] ; then echo "" ; fi
+	if [ -n "$VERBOSE" ] ; then echo "" ; fi
 
 	echo "   $MC -l \"'${DESER_ENT}':2->'${MIPI_ENT}':0[1]\""
 	$MC -l "'${DESER_ENT}':2->'${MIPI_ENT}':0[1]" ${VERBOSE}
@@ -157,30 +170,73 @@ if [ -L /dev/cam-csi1 ] ; then
 	echo "  Enabling phyCAM-M Link on CSI1"
 	echo "   $MC -l \"'${CAM_ENT}':0->'${MIPI_ENT}':0[1]\""
 	$MC -l "'${CAM_ENT}':0->'${MIPI_ENT}':0[1]" ${VERBOSE}
-	if [ ! -z "$VERBOSE" ] ; then echo "" ; fi
+	if [ -n "$VERBOSE" ] ; then echo "" ; fi
 fi
 
-if [ "$IFACE" = "ISP" ] ; then
-	# ISP is used, nothing more to do here.
-	exit 0
+if [ "$IFACE" = "ISI" ] ; then
+	echo "   $MC -l \"'${MIPI_ENT}':4->'${ISI_ENT}':0[1]\""
+	$MC -l "'${MIPI_ENT}':4->'${ISI_ENT}':0[1]" ${VERBOSE}
+	if [ -n "$VERBOSE" ] ; then echo "" ; fi
+
+	echo "   $MC -l \"'${ISI_ENT}':12->'${CAP_ENT}':0[1]\""
+	$MC -l "'${ISI_ENT}':12->'${CAP_ENT}':0[1]" ${VERBOSE}
 fi
 
-echo "   $MC -l \"'${MIPI_ENT}':4->'${ISI_ENT}':0[1]\""
-$MC -l "'${MIPI_ENT}':4->'${ISI_ENT}':0[1]" ${VERBOSE}
-if [ ! -z "$VERBOSE" ] ; then echo "" ; fi
+if [ -n "$SER_P0_ENT" ] && [ -n "$DESER_ENT" ] && [ "$PORT" = "0" ] ; then
+	echo ""
+	echo "  Configure Routing for phyCAM-L Port 0 on CSI1"
+	echo "   $MC -R \"'${SER_P0_ENT}'[0/0->1/0[1]]\""
+	$MC -R "'${SER_P0_ENT}'[0/0->1/0[1]]"
+	if [ -n "$VERBOSE" ] ; then echo "" ; fi
 
-echo "   $MC -l \"'${ISI_ENT}':12->'${CAP_ENT}':0[1]\""
-$MC -l "'${ISI_ENT}':12->'${CAP_ENT}':0[1]" ${VERBOSE}
+	echo "   $MC -R \"'${DESER_ENT}'[0/0->2/0[1]]\""
+	$MC -R "'${DESER_ENT}'[0/0->2/0[1]]"
+fi
+
+if [ -n "$SER_P1_ENT" ] && [ -n "$DESER_ENT" ] && [ "$PORT" = "1" ] ; then
+	echo ""
+	echo "  Configure Routing for phyCAM-L Port 1 on CSI1"
+	echo "   $MC -R \"'${SER_P1_ENT}'[0/0->1/0[1]]\""
+	$MC -R "'${SER_P1_ENT}'[0/0->1/0[1]]"
+	if [ -n "$VERBOSE" ] ; then echo "" ; fi
+
+	echo "   $MC -R \"'${DESER_ENT}'[1/0->2/0[1]]\""
+	$MC -R "'${DESER_ENT}'[1/0->2/0[1]]"
+fi
+
 echo ""
-
 echo " Setting up MEDIA Formats with"
-echo " ${FMT}/${RES} ${OFFSET}/${FRES} for ${CAM_ENT}"
+echo " ${FMT}/${RES} for ${CAM_ENT}"
 echo " ----------------------------------------------------------------"
-echo "  Sensor CSI1:"
-echo "   $MC -V \"'${CAM_ENT}':0[fmt:${FMT}/${RES} ${OFFSET}/${FRES}]\""
-$MC -V "'${CAM_ENT}':0[fmt:${FMT}/${RES} ${OFFSET}/${FRES}]" ${VERBOSE}
-echo ""
+if [ "$IFACE" = "ISI" ] ; then
+	echo "  Sensor CSI1:"
+	echo "   $MC -V \"'${CAM_ENT}':0[fmt:${FMT}/${RES} ${OFFSET}/${FRES}]\""
+	$MC -V "'${CAM_ENT}':0[fmt:${FMT}/${RES} ${OFFSET}/${FRES}]" ${VERBOSE}
+	echo ""
+fi
+
+if [ -n "$SER_P0_ENT" ] && [ -n "$DESER_ENT" ] && [ "$PORT" = "0" ] ; then
+	echo "  phyCAM-L Port 0 Serializer on CSI1"
+	echo "   $MC -V \"'${SER_P0_ENT}':0/0[fmt:${FMT}/${RES}]\""
+	$MC -V "'${SER_P0_ENT}':0/0[fmt:${FMT}/${RES}]" ${VERBOSE}
+	echo ""
+	echo "  phyCAM-L Deserializer on CSI1"
+	echo "   $MC -V \"'${DESER_ENT}':0/0[fmt:${FMT}/${RES}]\""
+	$MC -V "'${DESER_ENT}':0/0[fmt:${FMT}/${RES}]" ${VERBOSE}
+	echo ""
+fi
+
+if [ -n "$SER_P1_ENT" ] && [ -n "$DESER_ENT" ] && [ "$PORT" = "1" ] ; then
+	echo "  phyCAM-L Port 1 Serializer on CSI1"
+	echo "   $MC -V \"'${SER_P1_ENT}':0/0[fmt:${FMT}/${RES}]\""
+	$MC -V "'${SER_P1_ENT}':0/0[fmt:${FMT}/${RES}]" ${VERBOSE}
+	echo ""
+	echo "  phyCAM-L Deserializer on CSI1"
+	echo "   $MC -V \"'${DESER_ENT}':1/0[fmt:${FMT}/${RES}]\""
+	$MC -V "'${DESER_ENT}':1/0[fmt:${FMT}/${RES}]" ${VERBOSE}
+	echo ""
+fi
+
 echo "  MIPI Interface CSI1:"
 echo "   $MC -V \"'${MIPI_ENT}':0[fmt:${FMT}/${RES}]\""
 $MC -V "'${MIPI_ENT}':0[fmt:${FMT}/${RES}]" ${VERBOSE}
-echo ""
