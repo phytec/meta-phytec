@@ -32,8 +32,6 @@ KERNEL_FEATURES:append = " ${@bb.utils.contains("MACHINE_FEATURES", "wifi", " fe
 KERNEL_FEATURES:append = " ${@bb.utils.contains("MACHINE_FEATURES", "bluetooth", " features/bluetooth/bluetooth.scc", "", d)}"
 KERNEL_FEATURES:append = " ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", " features/tpm/tpm-2.0.scc", "", d)}"
 KERNEL_FEATURES:append = " ${@bb.utils.contains("MACHINE_FEATURES", "pci", " features/pci/pci.scc", "", d)}"
-# TODO move sound to MACHINE_FEATURES
-KERNEL_FEATURES:append:mx8m-nxp-bsp = " cfg/sound.scc"
 
 KBUILD_DEFCONFIG ?= "imx8_phytec_defconfig"
 KBUILD_DEFCONFIG:mx93-nxp-bsp = "imx9_phytec_defconfig"
