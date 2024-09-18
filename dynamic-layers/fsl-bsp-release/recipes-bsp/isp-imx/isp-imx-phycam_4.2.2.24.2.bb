@@ -11,6 +11,8 @@ SRC_URI += "\
     file://run_isp.sh \
     file://imx8-phycam-isp.service \
     file://90-phycam-isp.rules \
+    file://isp-mode-select-csi1.sh \
+    file://isp-mode-select-csi2.sh \
 "
 
 S="${WORKDIR}/isp-imx-${PV}"
@@ -24,6 +26,7 @@ RDEPENDS:${PN} += " \
 "
 
 do_install() {
+    install -d ${D}${bindir}
     install -d ${D}/${libdir}
     install -d ${D}/opt/imx8-isp/bin
     install -d ${D}${nonarch_base_libdir}/udev/rules.d
@@ -41,9 +44,13 @@ do_install() {
         install -m 0644 ${WORKDIR}/imx8-phycam-isp.service \
             ${D}${systemd_system_unitdir}
     fi
+
+    install -m 0755 ${WORKDIR}/isp-mode-select-csi1.sh ${D}${bindir}/isp-mode-select-csi1
+    install -m 0755 ${WORKDIR}/isp-mode-select-csi2.sh ${D}${bindir}/isp-mode-select-csi2
 }
 
 FILES:${PN} += "${nonarch_base_libdir}"
+FILES:${PN} += "${bindir}"
 FILES:${PN}-dev += " \
     ${libdir}/libphycam.so \
 "
