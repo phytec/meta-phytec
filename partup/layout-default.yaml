@@ -29,8 +29,8 @@ partitions:
 
   - label: root
     type: primary
-    filesystem: null
+    filesystem: ${PARTUP_ROOT_FS}
     expand: true
     block-size: 4kiB
     input:
-      - filename: ${IMAGE_LINK_NAME}.ext4
+      - filename: ${IMAGE_LINK_NAME}.${PARTUP_ROOTFS_IMAGE_EXT}
