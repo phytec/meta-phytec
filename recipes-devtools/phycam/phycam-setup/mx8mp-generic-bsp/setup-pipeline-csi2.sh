@@ -114,21 +114,50 @@ ISI_ENT="mxc_isi.1"
 MIPI_ENT="mxc-mipi-csi2.1"
 MC="media-ctl"
 
+echo ""
+echo "Setting up MEDIACTL Pipeline"
+echo "============================"
+echo " Setting up MEDIA Links:"
+echo " -----------------------"
+
 # Disable all existing phyCAM-L links (if phyCAM-L is connected) so the new
 # setup can be selected.
 if [ -n "$SER_P0_ENT" ] && [ -n "$SER_P1_ENT" ] ; then
+	echo "  Disable both phyCAM-L Ports:"
+	echo "   $MC -l \"'${SER_P0_ENT}':1->'${DESER_ENT}':0[0]\""
 	$MC -l "'${SER_P0_ENT}':1->'${DESER_ENT}':0[0]" ${VERBOSE}
+	if [ ! -z "$VERBOSE" ] ; then echo "" ; fi
+
+	echo "   $MC -l \"'${SER_P0_ENT}':1->'${DESER_ENT}':1[0]\""
 	$MC -l "'${SER_P1_ENT}':1->'${DESER_ENT}':1[0]" ${VERBOSE}
+	echo ""
 fi
 
 if [ -n "$SER_P0_ENT" ] && [ -n "$DESER_ENT" ] && [ "$PORT" = "0" ] ; then
 	echo "Enabling phyCAM-L Port 0 on CSI2"
+	echo "   $MC -l \"'${SER_P0_ENT}':1->'${DESER_ENT}':0[1]\""
 	$MC -l "'${SER_P0_ENT}':1->'${DESER_ENT}':0[1]" ${VERBOSE}
+	if [ ! -z "$VERBOSE" ] ; then echo "" ; fi
+
+	echo "   $MC -l \"'${DESER_ENT}':2->'${MIPI_ENT}':0[1]\""
+	$MC -l "'${DESER_ENT}':2->'${MIPI_ENT}':0[1]" ${VERBOSE}
 fi
 
 if [ -n "$SER_P1_ENT" ] && [ -n "$DESER_ENT" ] && [ "$PORT" = "1" ] ; then
 	echo "Enabling phyCAM-L Port 1 on CSI2"
+	echo "   $MC -l \"'${SER_P1_ENT}':1->'${DESER_ENT}':1[1]\""
 	$MC -l "'${SER_P1_ENT}':1->'${DESER_ENT}':1[1]" ${VERBOSE}
+	if [ ! -z "$VERBOSE" ] ; then echo "" ; fi
+
+	echo "   $MC -l \"'${DESER_ENT}':2->'${MIPI_ENT}':0[1]\""
+	$MC -l "'${DESER_ENT}':2->'${MIPI_ENT}':0[1]" ${VERBOSE}
+fi
+
+if [ -L /dev/cam-csi2 ] ; then
+	echo "  Enabling phyCAM-M Link on CSI2"
+	echo "   $MC -l \"'${CAM_ENT}':0->'${MIPI_ENT}':0[1]\""
+	$MC -l "'${CAM_ENT}':0->'${MIPI_ENT}':0[1]" ${VERBOSE}
+	if [ ! -z "$VERBOSE" ] ; then echo "" ; fi
 fi
 
 if [ "$IFACE" = "ISP" ] ; then
@@ -136,10 +165,22 @@ if [ "$IFACE" = "ISP" ] ; then
 	exit 0
 fi
 
-echo "Setting ${FMT}/${RES} ${OFFSET}/${FRES} for ${CAM_ENT}"
-# Setup pipeline links.
+echo "   $MC -l \"'${MIPI_ENT}':4->'${ISI_ENT}':4[1]\""
 $MC -l "'${MIPI_ENT}':4->'${ISI_ENT}':4[1]" ${VERBOSE}
+if [ ! -z "$VERBOSE" ] ; then echo "" ; fi
+
+echo "   $MC -l \"'${ISI_ENT}':12->'${CAP_ENT}':0[1]\""
 $MC -l "'${ISI_ENT}':12->'${CAP_ENT}':0[1]" ${VERBOSE}
-# Setup the desired format on sensor, MIPI bridge and CSI interface.
+echo ""
+
+echo " Setting up MEDIA Formats with"
+echo " ${FMT}/${RES} ${OFFSET}/${FRES} for ${CAM_ENT}"
+echo " ----------------------------------------------------------------"
+echo "  Sensor CSI2:"
+echo "   $MC -V \"'${CAM_ENT}':0[fmt:${FMT}/${RES} ${OFFSET}/${FRES}]\""
 $MC -V "'${CAM_ENT}':0[fmt:${FMT}/${RES} ${OFFSET}/${FRES}]" ${VERBOSE}
+echo ""
+echo "  MIPI Interface CSI2:"
+echo "   $MC -V \"'${MIPI_ENT}':0[fmt:${FMT}/${RES}]\""
 $MC -V "'${MIPI_ENT}':0[fmt:${FMT}/${RES}]" ${VERBOSE}
+echo ""
