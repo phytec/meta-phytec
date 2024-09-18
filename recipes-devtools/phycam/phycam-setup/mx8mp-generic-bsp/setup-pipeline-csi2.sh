@@ -1,16 +1,17 @@
 #!/bin/sh
 
 display_help() {
-	echo "Usage: ./setup-pipeline-csi2.sh [-f <format>] [-s <frame size>] [-o <offset>] [-c <sensor size>] [-p <phycam-l port] [-v]"
+	echo "Usage: ./setup-pipeline-csi2.sh [-f <format>] [-s <frame size>] [-o <offset>] [-c <sensor size>] [-p <phycam-l port] [-i ISI|ISP] [-v]"
 }
 
-OPTIONS="hf:s:o:c:p:v"
+OPTIONS="hf:s:o:c:p:i:v"
 RES=
 FMT=
 OFFSET=
 FRES=
 VERBOSE=
 PORT=0
+IFACE="ISI"
 
 while getopts $OPTIONS option
 do
@@ -20,6 +21,7 @@ do
 		o ) OFFSET=$OPTARG;;
 		c ) FRES=$OPTARG;;
 		p ) PORT=$OPTARG;;
+		i ) IFACE=$OPTARG;;
 		v ) VERBOSE="-v";;
 		h  ) display_help; exit;;
 		\? ) echo "Unknown option: -$OPTARG" >&2; exit 1;;
@@ -27,6 +29,12 @@ do
 		*  ) echo "Unimplemented option: -$OPTARG" >&2; exit 1;;
 	esac
 done
+
+# Check for valid processor
+if [ "$IFACE" != "ISI" ] && [ "$IFACE" != "ISP" ] ; then
+	echo "Interface needs to be ISI or ISP (-i ISI or -i ISP)"
+	exit 1
+fi
 
 # Select the correct camera subdevice. Can be phyCAM-M or phyCAM-L (Port 0 or 1).
 if [ -L /dev/cam-csi2 ] ; then
@@ -123,7 +131,7 @@ if [ -n "$SER_P1_ENT" ] && [ -n "$DESER_ENT" ] && [ "$PORT" = "1" ] ; then
 	$MC -l "'${SER_P1_ENT}':1->'${DESER_ENT}':1[1]" ${VERBOSE}
 fi
 
-if [ ! -L /dev/video-isi-csi2 ] ; then
+if [ "$IFACE" = "ISP" ] ; then
 	# ISP is used, nothing more to do here.
 	exit 0
 fi
