@@ -9,14 +9,14 @@ ACTION=="add", \
 ACTION=="add", \
 	SUBSYSTEM=="video4linux", \
 	ATTR{name}=="ar0144*", \
-	ATTRS{name}=="i2c-2-mux (chan_id 0)", \
+	ATTRS{name}=="i2c-2-atr-0", \
 	SYMLINK+="cam-csi1-port0", \
 
 # phyCAM VM-016 (ar0144) CSI1 phyCAM-L Port1
 ACTION=="add", \
 	SUBSYSTEM=="video4linux", \
 	ATTR{name}=="ar0144*", \
-	ATTRS{name}=="i2c-2-mux (chan_id 1)", \
+	ATTRS{name}=="i2c-2-atr-1", \
 	SYMLINK+="cam-csi1-port1", \
 
 # phyCAM VM-016 (ar0144) CSI2
@@ -30,14 +30,14 @@ ACTION=="add", \
 ACTION=="add", \
 	SUBSYSTEM=="video4linux", \
 	ATTR{name}=="ar0144*", \
-	ATTRS{name}=="i2c-1-mux (chan_id 0)", \
+	ATTRS{name}=="i2c-1-atr-0", \
 	SYMLINK+="cam-csi2-port0", \
 
 # phyCAM VM-016 (ar0144) CSI2 phyCAM-L Port1
 ACTION=="add", \
 	SUBSYSTEM=="video4linux", \
 	ATTR{name}=="ar0144*", \
-	ATTRS{name}=="i2c-1-mux (chan_id 1)", \
+	ATTRS{name}=="i2c-1-atr-1", \
 	SYMLINK+="cam-csi2-port1", \
 
 # phyCAM VM-017 (ar0521) CSI1
@@ -51,14 +51,14 @@ ACTION=="add", \
 ACTION=="add", \
 	SUBSYSTEM=="video4linux", \
 	ATTR{name}=="ar0521*", \
-	ATTRS{name}=="i2c-2-mux (chan_id 0)", \
+	ATTRS{name}=="i2c-2-atr-0", \
 	SYMLINK+="cam-csi1-port0", \
 
 # phyCAM VM-017 (ar0521) CSI1 phyCAM-L Port1
 ACTION=="add", \
 	SUBSYSTEM=="video4linux", \
 	ATTR{name}=="ar0521*", \
-	ATTRS{name}=="i2c-2-mux (chan_id 1)", \
+	ATTRS{name}=="i2c-2-atr-1", \
 	SYMLINK+="cam-csi1-port1", \
 
 # phyCAM VM-017 (ar0521) CSI2
@@ -72,14 +72,14 @@ ACTION=="add", \
 ACTION=="add", \
 	SUBSYSTEM=="video4linux", \
 	ATTR{name}=="ar0521*", \
-	ATTRS{name}=="i2c-1-mux (chan_id 0)", \
+	ATTRS{name}=="i2c-1-atr-0", \
 	SYMLINK+="cam-csi2-port0", \
 
 # phyCAM VM-017 (ar0521) CSI2 phyCAM-L Port1
 ACTION=="add", \
 	SUBSYSTEM=="video4linux", \
 	ATTR{name}=="ar0521*", \
-	ATTRS{name}=="i2c-1-mux (chan_id 1)", \
+	ATTRS{name}=="i2c-1-atr-1", \
 	SYMLINK+="cam-csi2-port1", \
 
 # phyCAM VM-020 (ar0234) CSI1
@@ -93,14 +93,14 @@ ACTION=="add", \
 ACTION=="add", \
 	SUBSYSTEM=="video4linux", \
 	ATTR{name}=="ar0234*", \
-	ATTRS{name}=="i2c-2-mux (chan_id 0)", \
+	ATTRS{name}=="i2c-2-atr-0", \
 	SYMLINK+="cam-csi1-port0", \
 
 # phyCAM VM-020 (ar0234) CSI1 phyCAM-L Port1
 ACTION=="add", \
 	SUBSYSTEM=="video4linux", \
 	ATTR{name}=="ar0234*", \
-	ATTRS{name}=="i2c-2-mux (chan_id 1)", \
+	ATTRS{name}=="i2c-2-atr-1", \
 	SYMLINK+="cam-csi1-port1", \
 
 # phyCAM VM-020 (ar0234) CSI2
@@ -114,55 +114,55 @@ ACTION=="add", \
 ACTION=="add", \
 	SUBSYSTEM=="video4linux", \
 	ATTR{name}=="ar0234*", \
-	ATTRS{name}=="i2c-1-mux (chan_id 0)", \
+	ATTRS{name}=="i2c-1-atr-0", \
 	SYMLINK+="cam-csi2-port0", \
 
 # phyCAM VM-020 (ar0234) CSI2 phyCAM-L Port1
 ACTION=="add", \
 	SUBSYSTEM=="video4linux", \
 	ATTR{name}=="ar0234*", \
-	ATTRS{name}=="i2c-1-mux (chan_id 1)", \
+	ATTRS{name}=="i2c-1-atr-1", \
 	SYMLINK+="cam-csi2-port1", \
 
 # phyCAM-L Serializer (ds90ub953) Port0 CSI1
 ACTION=="add", \
 	SUBSYSTEM=="video4linux", \
-	ATTR{name}=="ds90ub953*", \
-	ATTRS{name}=="i2c-2-mux (chan_id 0)", \
+	ATTR{name}=="ds90ub953 2-0045", \
+	KERNELS=="30a40000.i2c", \
 	SYMLINK+="phycam-serializer-port0-csi1"
 
 # phyCAM-L Serializer (ds90ub953) Port1 CSI1
 ACTION=="add", \
 	SUBSYSTEM=="video4linux", \
-	ATTR{name}=="ds90ub953*", \
-	ATTRS{name}=="i2c-2-mux (chan_id 1)", \
+	ATTR{name}=="ds90ub953 2-0046", \
+	KERNELS=="30a40000.i2c", \
 	SYMLINK+="phycam-serializer-port1-csi1"
 
 # phyCAM-L Deserializer (ds90ub954) CSI1
 ACTION=="add", \
 	SUBSYSTEM=="video4linux", \
-	ATTR{name}=="ds90ub954*", \
+	ATTR{name}=="ds90ub960*", \
 	KERNELS=="30a40000.i2c", \
 	SYMLINK+="phycam-deserializer-csi1"
 
 # phyCAM-L Serializer (ds90ub953) Port0 CSI2
 ACTION=="add", \
 	SUBSYSTEM=="video4linux", \
-	ATTR{name}=="ds90ub953*", \
-	ATTRS{name}=="i2c-1-mux (chan_id 0)", \
+	ATTR{name}=="ds90ub953 1-0045", \
+	KERNELS=="30a30000.i2c", \
 	SYMLINK+="phycam-serializer-port0-csi2"
 
 # phyCAM-L Serializer (ds90ub953) Port1 CSI2
 ACTION=="add", \
 	SUBSYSTEM=="video4linux", \
-	ATTR{name}=="ds90ub953*", \
-	ATTRS{name}=="i2c-1-mux (chan_id 1)", \
+	ATTR{name}=="ds90ub953 1-0046", \
+	KERNELS=="30a30000.i2c", \
 	SYMLINK+="phycam-serializer-port1-csi2"
 
 # phyCAM-L Deserializer (ds90ub954) CSI2
 ACTION=="add", \
 	SUBSYSTEM=="video4linux", \
-	ATTR{name}=="ds90ub954*", \
+	ATTR{name}=="ds90ub960*", \
 	KERNELS=="30a30000.i2c", \
 	SYMLINK+="phycam-deserializer-csi2"
 #
