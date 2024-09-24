@@ -4,7 +4,9 @@ SRC_URI += " \
     file://0001-v2.6-stm32mp-phy1-MMC.patch \
     file://0002-v2.6-stm32mp-phy1-DEVICETREE.patch \
     file://0001-v2.6-stm32mp-phy2-DEVICETREE.patch \
+    file://0001-v2.6-stm32mp-phy3-DEVICETREE.patch \
     file://0002-v2.6-stm32mp-phy2-FWU.patch \
+    file://0001-stm32mp1-platform-update-st-version-to-r2.2.patch \
     "
 
 # ---------------------------------
@@ -13,7 +15,7 @@ SRC_URI += " \
 BBCLASSEXTEND = "devupstream:target"
 
 SRC_URI:class-devupstream = "git://git.phytec.de/tf-a-stm32mp;protocol=git;branch=${TF_A_VERSION}-phy"
-SRCREV:class-devupstream = "02e2ff4066b2a4124119b01c4c64427e2b66278c"
+SRCREV:class-devupstream = "c593a30a6033423d00fea901b2b6f4aa38b3d548"
 
 # ---------------------------------
 # Configure default preference to manage dynamic selection between tarball and github
