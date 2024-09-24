@@ -1,0 +1,341 @@
+From 1a10eb9d3eb61b6b7924ffdcbc83b2bc4fc4239d Mon Sep 17 00:00:00 2001
+From: Christophe Parant <c.parant@phytec.fr>
+Date: Mon, 16 Sep 2024 16:30:02 +0200
+Subject: [PATCH] 3.16.0 phy2
+
+---
+ .../arch/arm/dts/stm32mp13xx-phycore-som.dtsi |  18 ++-
+ .../stm32mp153a-phycore-som-nand-512mb.dts    |  26 +++
+ .../dts/stm32mp157f-phycore-som-emmc-1gib.dts |  26 +++
+ .../dts/stm32mp15xx-phycore-som-pinctrl.dtsi  | 150 ------------------
+ .../arch/arm/dts/stm32mp15xx-phycore-som.dtsi |   6 +-
+ 5 files changed, 65 insertions(+), 161 deletions(-)
+ create mode 100644 core/arch/arm/dts/stm32mp153a-phycore-som-nand-512mb.dts
+ create mode 100644 core/arch/arm/dts/stm32mp157f-phycore-som-emmc-1gib.dts
+
+diff --git a/core/arch/arm/dts/stm32mp13xx-phycore-som.dtsi b/core/arch/arm/dts/stm32mp13xx-phycore-som.dtsi
+index f32e5d8d0..169d5d8bd 100644
+--- a/core/arch/arm/dts/stm32mp13xx-phycore-som.dtsi
++++ b/core/arch/arm/dts/stm32mp13xx-phycore-som.dtsi
+@@ -202,7 +202,7 @@
+ 		CLK_ETH1_PLL4P
+ 		CLK_ETH2_PLL4P
+ 		CLK_SDMMC1_PLL4P
+-		CLK_SDMMC2_PLL4P
++		CLK_SDMMC2_PLL3R
+ 		CLK_STGEN_HSE
+ 		CLK_USBPHY_HSE
+ 		CLK_SPI1_PLL4P
+@@ -251,10 +251,9 @@
+ 			divmn = < 2 65 >;
+ 			frac = < 0x1400 >;
+ 		};
+-		pll3_vco_417Mhz: pll3-vco-417Mhz {
++		pll3_vco_624Mhz: pll3-vco-624Mhz {
+ 			src = < CLK_PLL3_HSE >;
+-			divmn = < 1 33 >;
+-			frac = < 0x1a04 >;
++			divmn = < 1 51 >;
+ 		};
+ 		pll4_vco_600Mhz: pll4-vco-600Mhz {
+ 			src = < CLK_PLL4_HSE >;
+@@ -267,18 +266,19 @@
+ 		reg = <0>;
+ 
+ 		st,pll = < &pll1_cfg1 >;
+-
++		/* VCO = 1300.0 MHz => P = 650 (CPU) */
+ 		pll1_cfg1: pll1_cfg1 {
+ 			st,pll_vco = < &pll1_vco_1300Mhz >;
+ 			st,pll_div_pqr = < 0 1 1 >;
+ 		};
+-
++		/* VCO = 2000.0 MHz => P = 1000 (CPU) */
+ 		pll1_cfg2: pll1_cfg2 {
+ 			st,pll_vco = < &pll1_vco_2000Mhz >;
+ 			st,pll_div_pqr = < 0 1 1 >;
+ 		};
+ 	};
+ 
++	/* VCO = 1066.0 MHz => P = 266 (AXI), Q = 266, R = 533 (DDR) */
+ 	pll2:st,pll@1 {
+ 		compatible = "st,stm32mp1-pll";
+ 		reg = <1>;
+@@ -291,6 +291,7 @@
+ 		};
+ 	};
+ 
++	/* VCO = 624 MHz => P = 208, Q = 24, R = 104 */
+ 	pll3:st,pll@2 {
+ 		compatible = "st,stm32mp1-pll";
+ 		reg = <2>;
+@@ -298,11 +299,12 @@
+ 		st,pll = < &pll3_cfg1 >;
+ 
+ 		pll3_cfg1: pll3_cfg1 {
+-			st,pll_vco = < &pll3_vco_417Mhz >;
+-			st,pll_div_pqr = < 1 16 36 >;
++			st,pll_vco = < &pll3_vco_624Mhz >;
++			st,pll_div_pqr = < 2 25 5 >;
+ 		};
+ 	};
+ 
++	/* VCO = 600.0 MHz => P = 50, Q = 10, R = 50 */
+ 	pll4:st,pll@3 {
+ 		compatible = "st,stm32mp1-pll";
+ 		reg = <3>;
+diff --git a/core/arch/arm/dts/stm32mp153a-phycore-som-nand-512mb.dts b/core/arch/arm/dts/stm32mp153a-phycore-som-nand-512mb.dts
+new file mode 100644
+index 000000000..57b2503b1
+--- /dev/null
++++ b/core/arch/arm/dts/stm32mp153a-phycore-som-nand-512mb.dts
+@@ -0,0 +1,26 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2020 PHYTEC Messtechnik GmbH
++ * Author: Dom Vovard <dom.vovard@linrt.com>
++ *	   Christophe Parant <c.parant@phytec.fr>
++ */
++
++/dts-v1/;
++
++/* ATF Specific */
++#include <dt-bindings/clock/stm32mp1-clksrc.h>
++#include <dt-bindings/power/stm32mp1-power.h>
++#include "stm32mp153.dtsi"
++#include "stm32mp15xa.dtsi"
++#include "stm32mp15xx-phycore-som.dtsi"
++
++/ {
++	model = "PHYTEC phyCORE-STM32MP153A with NAND and 512MB RAM";
++	compatible = "phytec,stm32mp153a-phycore-som-nand-512mb",
++		     "phytec,stm32mp153a-phycore-som.dtsi", "st,stm32mp153";
++
++	memory@c0000000 {
++		device_type = "memory";
++		reg = <0xc0000000 0x20000000>;
++	};
++};
+diff --git a/core/arch/arm/dts/stm32mp157f-phycore-som-emmc-1gib.dts b/core/arch/arm/dts/stm32mp157f-phycore-som-emmc-1gib.dts
+new file mode 100644
+index 000000000..1576dcdda
+--- /dev/null
++++ b/core/arch/arm/dts/stm32mp157f-phycore-som-emmc-1gib.dts
+@@ -0,0 +1,26 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2020 PHYTEC Messtechnik GmbH
++ * Author: Dom Vovard <dom.vovard@linrt.com>
++ *	   Christophe Parant <c.parant@phytec.fr>
++ */
++
++/dts-v1/;
++
++/* ATF Specific */
++#include <dt-bindings/clock/stm32mp1-clksrc.h>
++#include <dt-bindings/power/stm32mp1-power.h>
++#include "stm32mp157.dtsi"
++#include "stm32mp15xf.dtsi"
++#include "stm32mp15xx-phycore-som.dtsi"
++
++/ {
++	model = "PHYTEC phyCORE-STM32MP157F with eMMC and 1GiB RAM";
++	compatible = "phytec,stm32mp157f-phycore-som-emmc-1gib",
++		     "phytec,stm32mp157f-phycore-som.dtsi", "st,stm32mp157";
++
++	memory@c0000000 {
++		device_type = "memory";
++		reg = <0xc0000000 0x40000000>;
++	};
++};
+diff --git a/core/arch/arm/dts/stm32mp15xx-phycore-som-pinctrl.dtsi b/core/arch/arm/dts/stm32mp15xx-phycore-som-pinctrl.dtsi
+index 66352a348..6bde87633 100644
+--- a/core/arch/arm/dts/stm32mp15xx-phycore-som-pinctrl.dtsi
++++ b/core/arch/arm/dts/stm32mp15xx-phycore-som-pinctrl.dtsi
+@@ -9,156 +9,6 @@
+ 
+ &pinctrl {
+ 
+-	fmc_pins_mx: fmc_mx-0 {
+-		pins1 {
+-			pinmux = <STM32_PINMUX('D', 0, AF12)>, /* FMC_D2 */
+-				 <STM32_PINMUX('D', 1, AF12)>, /* FMC_D3 */
+-				 <STM32_PINMUX('D', 4, AF12)>, /* FMC_NOE */
+-				 <STM32_PINMUX('D', 5, AF12)>, /* FMC_NWE */
+-				 <STM32_PINMUX('D', 11, AF12)>, /* FMC_CLE */
+-				 <STM32_PINMUX('D', 12, AF12)>, /* FMC_ALE */
+-				 <STM32_PINMUX('D', 14, AF12)>, /* FMC_D0 */
+-				 <STM32_PINMUX('D', 15, AF12)>, /* FMC_D1 */
+-				 <STM32_PINMUX('E', 7, AF12)>, /* FMC_D4 */
+-				 <STM32_PINMUX('E', 8, AF12)>, /* FMC_D5 */
+-				 <STM32_PINMUX('E', 9, AF12)>, /* FMC_D6 */
+-				 <STM32_PINMUX('E', 10, AF12)>, /* FMC_D7 */
+-				 <STM32_PINMUX('G', 9, AF12)>; /* FMC_NCE */
+-			bias-disable;
+-			drive-push-pull;
+-			slew-rate = <1>;
+-		};
+-		pins2 {
+-			pinmux = <STM32_PINMUX('D', 6, AF12)>; /* FMC_NWAIT */
+-			bias-pull-up;
+-		};
+-	};
+-
+-	qspi_bk1_pins_a: qspi-bk1-0 {
+-		pins1 {
+-			pinmux = <STM32_PINMUX('F', 8, AF10)>, /* QSPI_BK1_IO0 */
+-				 <STM32_PINMUX('F', 9, AF10)>, /* QSPI_BK1_IO1 */
+-				 <STM32_PINMUX('F', 7, AF9)>, /* QSPI_BK1_IO2 */
+-				 <STM32_PINMUX('F', 6, AF9)>; /* QSPI_BK1_IO3 */
+-			bias-disable;
+-			drive-push-pull;
+-			slew-rate = <1>;
+-		};
+-		pins2 {
+-			pinmux = <STM32_PINMUX('B', 6, AF10)>; /* QSPI_BK1_NCS */
+-			bias-pull-up;
+-			drive-push-pull;
+-			slew-rate = <1>;
+-		};
+-	};
+-
+-	qspi_bk2_pins_a: qspi-bk2-0 {
+-		pins1 {
+-			pinmux = <STM32_PINMUX('H', 2, AF9)>, /* QSPI_BK2_IO0 */
+-				 <STM32_PINMUX('H', 3, AF9)>, /* QSPI_BK2_IO1 */
+-				 <STM32_PINMUX('G', 10, AF11)>, /* QSPI_BK2_IO2 */
+-				 <STM32_PINMUX('G', 7, AF11)>; /* QSPI_BK2_IO3 */
+-			bias-disable;
+-			drive-push-pull;
+-			slew-rate = <1>;
+-		};
+-		pins2 {
+-			pinmux = <STM32_PINMUX('C', 0, AF10)>; /* QSPI_BK2_NCS */
+-			bias-pull-up;
+-			drive-push-pull;
+-			slew-rate = <1>;
+-		};
+-	};
+-
+-	qspi_clk_pins_a: qspi-clk-0 {
+-		pins {
+-			pinmux = <STM32_PINMUX('F', 10, AF9)>; /* QSPI_CLK */
+-			bias-disable;
+-			drive-push-pull;
+-			slew-rate = <3>;
+-		};
+-	};
+-
+-	sdmmc1_b4_pins_a: sdmmc1-b4-0 {
+-		pins1 {
+-			pinmux = <STM32_PINMUX('C', 8, AF12)>, /* SDMMC1_D0 */
+-				 <STM32_PINMUX('C', 9, AF12)>, /* SDMMC1_D1 */
+-				 <STM32_PINMUX('E', 6, AF8)>, /* SDMMC1_D2 */
+-				 <STM32_PINMUX('C', 11, AF12)>, /* SDMMC1_D3 */
+-				 <STM32_PINMUX('D', 2, AF12)>; /* SDMMC1_CMD */
+-			slew-rate = <1>;
+-			drive-push-pull;
+-			bias-disable;
+-		};
+-		pins2 {
+-			pinmux = <STM32_PINMUX('C', 12, AF12)>; /* SDMMC1_CK */
+-			slew-rate = <2>;
+-			drive-push-pull;
+-			bias-disable;
+-		};
+-	};
+-
+-	sdmmc1_dir_pins_a: sdmmc1-dir-0 {
+-		pins1 {
+-			pinmux = <STM32_PINMUX('F', 2, AF11)>, /* SDMMC1_D0DIR */
+-				 <STM32_PINMUX('C', 7, AF8)>, /* SDMMC1_D123DIR */
+-				 <STM32_PINMUX('B', 9, AF11)>; /* SDMMC1_CDIR */
+-			slew-rate = <1>;
+-			drive-push-pull;
+-			bias-pull-up;
+-		};
+-		pins2{
+-			pinmux = <STM32_PINMUX('E', 4, AF8)>; /* SDMMC1_CKIN */
+-			bias-pull-up;
+-		};
+-	};
+-
+-	sdmmc1_dir_pins_b: sdmmc1-dir-1 {
+-		pins1 {
+-			pinmux = <STM32_PINMUX('E', 12, AF8)>, /* SDMMC1_D0DIR */
+-				 <STM32_PINMUX('E', 14, AF11)>, /* SDMMC1_D123DIR */
+-				 <STM32_PINMUX('B', 9, AF11)>; /* SDMMC1_CDIR */
+-			slew-rate = <3>;
+-			drive-push-pull;
+-			bias-pull-up;
+-		};
+-		pins2 {
+-			pinmux = <STM32_PINMUX('E', 4, AF8)>; /* SDMMC1_CKIN */
+-			bias-pull-up;
+-		};
+-	};
+-
+-	sdmmc2_b4_pins_a: sdmmc2-b4-0 {
+-		pins1 {
+-			pinmux = <STM32_PINMUX('B', 14, AF9)>, /* SDMMC2_D0 */
+-				 <STM32_PINMUX('B', 15, AF9)>, /* SDMMC2_D1 */
+-				 <STM32_PINMUX('B', 3, AF9)>, /* SDMMC2_D2 */
+-				 <STM32_PINMUX('B', 4, AF9)>, /* SDMMC2_D3 */
+-				 <STM32_PINMUX('G', 6, AF10)>; /* SDMMC2_CMD */
+-			slew-rate = <1>;
+-			drive-push-pull;
+-			bias-pull-up;
+-		};
+-		pins2 {
+-			pinmux = <STM32_PINMUX('E', 3, AF9)>; /* SDMMC2_CK */
+-			slew-rate = <2>;
+-			drive-push-pull;
+-			bias-pull-up;
+-		};
+-	};
+-
+-	sdmmc2_d47_pins_a: sdmmc2-d47-0 {
+-		pins {
+-			pinmux = <STM32_PINMUX('A', 8, AF9)>, /* SDMMC2_D4 */
+-				 <STM32_PINMUX('A', 9, AF10)>, /* SDMMC2_D5 */
+-				 <STM32_PINMUX('C', 6, AF10)>, /* SDMMC2_D6 */
+-				 <STM32_PINMUX('D', 3, AF9)>; /* SDMMC2_D7 */
+-			slew-rate = <1>;
+-			drive-push-pull;
+-			bias-pull-up;
+-		};
+-	};
+-
+ 	uart4_pins_a: uart4-0 {
+ 		pins1 {
+ 			pinmux = <STM32_PINMUX('B', 9, AF8)>; /* UART4_TX */
+diff --git a/core/arch/arm/dts/stm32mp15xx-phycore-som.dtsi b/core/arch/arm/dts/stm32mp15xx-phycore-som.dtsi
+index c261fd073..574120efd 100644
+--- a/core/arch/arm/dts/stm32mp15xx-phycore-som.dtsi
++++ b/core/arch/arm/dts/stm32mp15xx-phycore-som.dtsi
+@@ -338,7 +338,7 @@
+ 		CLK_CKPER_HSE
+ 		CLK_FMC_ACLK
+ 		CLK_QSPI_ACLK
+-		CLK_ETH_PLL4P
++		CLK_ETH_DISABLED
+ 		CLK_SDMMC12_PLL4P
+ 		CLK_DSI_DSIPLL
+ 		CLK_STGEN_HSE
+@@ -388,11 +388,11 @@
+ 		frac = <0x1a04>;
+ 	};
+ 
+-	/* VCO = 750.0 MHz => P=125, Q=62.5, R=62.5 */
++	/* VCO = 600.0 MHz => P=100, Q=75, R=75 */
+ 	pll4: st,pll@3 {
+ 		compatible = "st,stm32mp1-pll";
+ 		reg = <3>;
+-		cfg = <3 124 5 11 11 PQR(1,1,1)>;
++		cfg = <1 49 5 7 7 PQR(1,1,1)>;
+ 	};
+ };
+ 
+-- 
+2.25.1
+
