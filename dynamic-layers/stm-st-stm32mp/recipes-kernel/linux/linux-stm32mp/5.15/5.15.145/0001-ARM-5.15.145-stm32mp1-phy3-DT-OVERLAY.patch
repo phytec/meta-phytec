@@ -1,7 +1,7 @@
-From 6ed9311730325fb2db794024134bee4ad52d07d7 Mon Sep 17 00:00:00 2001
+From aedafcae7729d71916f981c0518ba0769fc518df Mon Sep 17 00:00:00 2001
 From: Christophe Parant <c.parant@phytec.fr>
-Date: Tue, 21 Feb 2023 11:47:45 +0100
-Subject: [PACTH 1/7] ARM 5.15.67 stm32mp1 phy1 DT OVERLAY
+Date: Mon, 16 Sep 2024 14:49:27 +0200
+Subject: [PATCH 1/8] ARM 5.15.145 stm32mp1 phy3 DT OVERLAY
 
 ---
  .../phyboard-stm32mp1-dsi-lcd-mb1407.dts      |  98 ++++++++
@@ -12,7 +12,7 @@ Subject: [PACTH 1/7] ARM 5.15.67 stm32mp1 phy1 DT OVERLAY
  ...ard-stm32mp1-pcm939-phycam-vm016-8bits.dts |  60 +++++
  ...rd-stm32mp1-pcm939l-phycam-vm016-8bits.dts |  60 +++++
  .../phyboard-stm32mp1-peb-av01-hdmi.dts       |  74 ++++++
- .../phyboard-stm32mp1-peb-av02-lcd.dts        | 103 +++++++++
+ .../phyboard-stm32mp1-peb-av02-lcd.dts        | 113 ++++++++++
  ...-stm32mp1-peb-wlbt-05-bluetooth-usart1.dts |  32 +++
  ...-stm32mp1-peb-wlbt-05-bluetooth-usart3.dts |  42 ++++
  .../phyboard-stm32mp1-peb-wlbt-05-wlan.dts    |  60 +++++
@@ -20,7 +20,13 @@ Subject: [PACTH 1/7] ARM 5.15.67 stm32mp1 phy1 DT OVERLAY
  .../phyboard-stm32mp1-pi-hat-redbear.dts      |  87 ++++++++
  .../dts/overlays/phyboard-stm32mp1-rs485.dts  |  21 ++
  .../phyboard-stm32mp1-uno-r3-extension.dts    |  73 ++++++
- 16 files changed, 1285 insertions(+)
+ ...32mp135x-phyboard-segin-peb-av-01-hdmi.dts |  73 ++++++
+ ...phyboard-segin-peb-av-02-lcd-resistive.dts |  99 ++++++++
+ ...m32mp135x-phyboard-segin-peb-av-02-lcd.dts | 107 +++++++++
+ ...tm32mp135x-phyboard-segin-phycam-vm016.dts |  55 +++++
+ ...mp13xx-phyboard-segin-peb-eval-01-jtag.dts |  16 ++
+ ...hyboard-segin-peb-eval-01-leds-buttons.dts |  61 +++++
+ 22 files changed, 1706 insertions(+)
  create mode 100644 arch/arm/boot/dts/overlays/phyboard-stm32mp1-dsi-lcd-mb1407.dts
  create mode 100644 arch/arm/boot/dts/overlays/phyboard-stm32mp1-dsi-rpi-official-display.dts
  create mode 100644 arch/arm/boot/dts/overlays/phyboard-stm32mp1-motor-control-m4.dts
@@ -37,6 +43,12 @@ Subject: [PACTH 1/7] ARM 5.15.67 stm32mp1 phy1 DT OVERLAY
  create mode 100644 arch/arm/boot/dts/overlays/phyboard-stm32mp1-pi-hat-redbear.dts
  create mode 100644 arch/arm/boot/dts/overlays/phyboard-stm32mp1-rs485.dts
  create mode 100644 arch/arm/boot/dts/overlays/phyboard-stm32mp1-uno-r3-extension.dts
+ create mode 100644 arch/arm/boot/dts/overlays/stm32mp135x-phyboard-segin-peb-av-01-hdmi.dts
+ create mode 100644 arch/arm/boot/dts/overlays/stm32mp135x-phyboard-segin-peb-av-02-lcd-resistive.dts
+ create mode 100644 arch/arm/boot/dts/overlays/stm32mp135x-phyboard-segin-peb-av-02-lcd.dts
+ create mode 100644 arch/arm/boot/dts/overlays/stm32mp135x-phyboard-segin-phycam-vm016.dts
+ create mode 100644 arch/arm/boot/dts/overlays/stm32mp13xx-phyboard-segin-peb-eval-01-jtag.dts
+ create mode 100644 arch/arm/boot/dts/overlays/stm32mp13xx-phyboard-segin-peb-eval-01-leds-buttons.dts
 
 diff --git a/arch/arm/boot/dts/overlays/phyboard-stm32mp1-dsi-lcd-mb1407.dts b/arch/arm/boot/dts/overlays/phyboard-stm32mp1-dsi-lcd-mb1407.dts
 new file mode 100644
@@ -917,10 +929,10 @@ index 000000000000..cea7e6f13f56
 +};
 diff --git a/arch/arm/boot/dts/overlays/phyboard-stm32mp1-peb-av02-lcd.dts b/arch/arm/boot/dts/overlays/phyboard-stm32mp1-peb-av02-lcd.dts
 new file mode 100644
-index 000000000000..b264b3a4a1f7
+index 000000000000..4f1ac570e19b
 --- /dev/null
 +++ b/arch/arm/boot/dts/overlays/phyboard-stm32mp1-peb-av02-lcd.dts
-@@ -0,0 +1,103 @@
+@@ -0,0 +1,113 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
 +/*
 + * Copyright (C) PHYTEC GmbH 2021 - All Rights Reserved
@@ -1012,9 +1024,19 @@ index 000000000000..b264b3a4a1f7
 +			#size-cells = <0>;
 +			status = "okay";
 +
-+			i2c_ts: touchscreen@38 {
++			edt_ts: touchscreen@38 {
 +				compatible = "edt,edt-ft5406", "edt,edt-ft5x06";
 +				reg = <0x38>;
++				interrupts = <8 2>;
++				interrupt-parent = <&gpioi>;
++				interrupt-controller;
++				reset-gpios = <&gpiod 9 1>;
++				status = "okay";
++			};
++
++			ili_ts: touchscreen@41 {
++				compatible = "ilitek,ili2130";
++				reg = <0x41>;
 +				interrupts = <8 2>;
 +				interrupt-parent = <&gpioi>;
 +				interrupt-controller;
@@ -1416,6 +1438,453 @@ index 000000000000..e70fd668cff4
 +	tim15_pwm_sleep_pins_mx: tim15_pwm_sleep_mx-0 {
 +		pins {
 +			pinmux = <STM32_PINMUX('E', 5, ANALOG)>; /* TIM15_CH1 */
++		};
++	};
++};
+diff --git a/arch/arm/boot/dts/overlays/stm32mp135x-phyboard-segin-peb-av-01-hdmi.dts b/arch/arm/boot/dts/overlays/stm32mp135x-phyboard-segin-peb-av-01-hdmi.dts
+new file mode 100644
+index 000000000000..28b2ca599c79
+--- /dev/null
++++ b/arch/arm/boot/dts/overlays/stm32mp135x-phyboard-segin-peb-av-01-hdmi.dts
+@@ -0,0 +1,73 @@
++// SPDX-License-Identifier: GPL-2.0+ 
++/*
++ * Copyright (C) 2023 PHYTEC Messtechnik GmbH
++ * Author: Christophe PARANT <c.parant@phytec.fr>
++ */
++
++/dts-v1/;
++/plugin/;
++
++#include <dt-bindings/gpio/gpio.h>
++
++/ {
++	compatible = "phytec,stm32mp13-pbacd-10";
++
++	fragment@0 {
++		target-path = "/";
++		__overlay__ {
++			reg_hdmi_en: hdmi_en {
++				compatible = "regulator-fixed";
++				regulator-name = "hdmi_en";
++				regulator-min-microvolt = <1800000>;
++				regulator-max-microvolt = <1800000>;
++				gpio = <&gpioi 0 GPIO_ACTIVE_HIGH>;
++				startup-delay-us = <100>;
++				enable-active-high;
++				regulator-always-on;
++			};
++		};
++	};
++
++	fragment@1 {
++		target = <&i2c5>;
++		__overlay__ {
++			#address-cells = <1>;
++			#size-cells = <0>;
++			status = "okay";
++
++			tda19988@70 {
++				compatible = "nxp,tda998x";
++				pinctrl-names = "default", "sleep";
++				pinctrl-0 = <&ltdc_pins_mx>;
++				pinctrl-1 = <&ltdc_sleep_pins_mx>;
++				reg = <0x70>;
++				status = "okay";
++
++				ports {
++					port@0 {
++						hdmi_in: endpoint@0 {
++							remote-endpoint = <&ltdc_ep0_out>;
++						};
++					};
++				};
++			};
++		};
++	};
++
++	fragment@2 {
++		target = <&ltdc>;
++		__overlay__ {
++			status = "okay";
++
++			port {
++				#address-cells = <1>;
++				#size-cells = <0>;
++
++				ltdc_ep0_out: endpoint@0 {
++					reg = <0>;
++					remote-endpoint = <&hdmi_in>;
++				};
++			};
++		};
++	};
++};
+diff --git a/arch/arm/boot/dts/overlays/stm32mp135x-phyboard-segin-peb-av-02-lcd-resistive.dts b/arch/arm/boot/dts/overlays/stm32mp135x-phyboard-segin-peb-av-02-lcd-resistive.dts
+new file mode 100644
+index 000000000000..b1c2ce12fca9
+--- /dev/null
++++ b/arch/arm/boot/dts/overlays/stm32mp135x-phyboard-segin-peb-av-02-lcd-resistive.dts
+@@ -0,0 +1,99 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Copyright (C) 2023 PHYTEC Messtechnik GmbH
++ * Author: Christophe PARANT <c.parant@phytec.fr>
++ */
++
++/dts-v1/;
++/plugin/;
++
++#include <dt-bindings/gpio/gpio.h>
++#include <dt-bindings/interrupt-controller/arm-gic.h>
++
++/ {
++	compatible = "phytec,stm32mp13-pbacd-10";
++
++	fragment@0 {
++		target-path = "/";
++		__overlay__ {
++			panel_rgb: panel {
++				compatible = "edt,etm0700g0edh6";
++				status = "okay";
++				backlight = <&panel_backlight>;
++				enable-gpios = <&gpiob 1 GPIO_ACTIVE_HIGH>;
++
++				port {
++					panel_in_rgb: endpoint {
++						remote-endpoint = <&ltdc_ep0_out>;
++					};
++				};
++			};
++
++			panel_backlight: panel-backlight {
++				compatible = "pwm-backlight";
++				status = "okay";
++				pwms = <&pwm_8 2 100000 0>;
++				power-supply = <&scmi_vdd>;
++				brightness-levels = <0 4 8 16 32 64 128 255>;
++				default-brightness-level = <6>;
++			};
++		};
++	};
++
++	fragment@1 {
++		target = <&timers8>;
++		__overlay__ {
++			status = "okay";
++			/delete-property/dmas;
++			/delete-property/dma-names;
++
++			pwm_8: pwm {
++				pinctrl-0 = <&tim8_pwm_pins_mx>;
++				pinctrl-1 = <&tim8_pwm_sleep_pins_mx>;
++				pinctrl-names = "default", "sleep";
++				status = "okay";
++			};
++		};
++	};
++
++	fragment@2 {
++		target = <&ltdc>;
++		__overlay__ {
++			status = "okay";
++
++			pinctrl-names = "default", "sleep";
++			pinctrl-0 = <&ltdc_pins_mx>;
++			pinctrl-1 = <&ltdc_sleep_pins_mx>;
++
++			port {
++				#address-cells = <1>;
++				#size-cells = <0>;
++
++				ltdc_ep0_out: endpoint@0 {
++					reg = <0>;
++					remote-endpoint = <&panel_in_rgb>;
++				};
++			};
++		};
++	};
++
++	fragment@3 {
++		target = <&i2c5>;
++		__overlay__ {
++			#address-cells = <1>;
++			#size-cells = <0>;
++			status = "okay";
++
++			tsc2004: touchscreen@49 {
++				compatible = "ti,tsc2004";
++				reg = <0x49>;
++				interrupts-extended = <&gpioa 13 IRQ_TYPE_LEVEL_LOW>;
++
++				touchscreen-inverted-x;
++				touchscreen-inverted-y;
++
++				status = "okay";
++			};
++		};
++	};
++};
+diff --git a/arch/arm/boot/dts/overlays/stm32mp135x-phyboard-segin-peb-av-02-lcd.dts b/arch/arm/boot/dts/overlays/stm32mp135x-phyboard-segin-peb-av-02-lcd.dts
+new file mode 100644
+index 000000000000..5665cf38998d
+--- /dev/null
++++ b/arch/arm/boot/dts/overlays/stm32mp135x-phyboard-segin-peb-av-02-lcd.dts
+@@ -0,0 +1,107 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Copyright (C) 2023 PHYTEC Messtechnik GmbH
++ * Author: Christophe PARANT <c.parant@phytec.fr>
++ */
++
++/dts-v1/;
++/plugin/;
++
++#include <dt-bindings/gpio/gpio.h>
++
++/ {
++	compatible = "phytec,stm32mp13-pbacd-10";
++
++	fragment@0 {
++		target-path = "/";
++		__overlay__ {
++			panel_rgb: panel {
++				compatible = "edt,etm0700g0edh6";
++				status = "okay";
++				backlight = <&panel_backlight>;
++				enable-gpios = <&gpiob 1 GPIO_ACTIVE_HIGH>;
++
++				port {
++					panel_in_rgb: endpoint {
++						remote-endpoint = <&ltdc_ep0_out>;
++					};
++				};
++			};
++
++			panel_backlight: panel-backlight {
++				compatible = "pwm-backlight";
++				status = "okay";
++				pwms = <&pwm_8 2 100000 0>;
++				power-supply = <&scmi_vdd>;
++				brightness-levels = <0 4 8 16 32 64 128 255>;
++				default-brightness-level = <6>;
++			};
++		};
++	};
++
++	fragment@1 {
++		target = <&timers8>;
++		__overlay__ {
++			status = "okay";
++			/delete-property/dmas;
++			/delete-property/dma-names;
++
++			pwm_8: pwm {
++				pinctrl-0 = <&tim8_pwm_pins_mx>;
++				pinctrl-1 = <&tim8_pwm_sleep_pins_mx>;
++				pinctrl-names = "default", "sleep";
++				status = "okay";
++			};
++		};
++	};
++
++	fragment@2 {
++		target = <&ltdc>;
++		__overlay__ {
++			status = "okay";
++
++			pinctrl-names = "default", "sleep";
++			pinctrl-0 = <&ltdc_pins_mx>;
++			pinctrl-1 = <&ltdc_sleep_pins_mx>;
++
++			port {
++				#address-cells = <1>;
++				#size-cells = <0>;
++
++				ltdc_ep0_out: endpoint@0 {
++					reg = <0>;
++					remote-endpoint = <&panel_in_rgb>;
++				};
++			};
++		};
++	};
++
++	fragment@3 {
++		target = <&i2c5>;
++		__overlay__ {
++			#address-cells = <1>;
++			#size-cells = <0>;
++			status = "okay";
++
++			edt_ts: touchscreen@38 {
++				compatible = "edt,edt-ft5406", "edt,edt-ft5x06";
++				reg = <0x38>;
++				interrupts = <5 2>;
++				interrupt-parent = <&gpiof>;
++				interrupt-controller;
++				reset-gpios = <&gpioi 0 1>;
++				status = "okay";
++			};
++
++			ili_ts: touchscreen@41 {
++				compatible = "ilitek,ili2130";
++				reg = <0x41>;
++				interrupts = <5 2>;
++				interrupt-parent = <&gpiof>;
++				interrupt-controller;
++				reset-gpios = <&gpioi 0 1>;
++				status = "okay";
++			};
++		};
++	};
++};
+diff --git a/arch/arm/boot/dts/overlays/stm32mp135x-phyboard-segin-phycam-vm016.dts b/arch/arm/boot/dts/overlays/stm32mp135x-phyboard-segin-phycam-vm016.dts
+new file mode 100644
+index 000000000000..c6b1d633105c
+--- /dev/null
++++ b/arch/arm/boot/dts/overlays/stm32mp135x-phyboard-segin-phycam-vm016.dts
+@@ -0,0 +1,55 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Copyright (C) 2023 PHYTEC Messtechnik GmbH
++ * Author: Christophe Parant <c.parant@phytec.fr>
++ */
++
++/dts-v1/;
++/plugin/;
++
++/ {
++	compatible = "phytec,stm32mp13-pbacd-10";
++};
++
++&i2c5 {
++	#address-cells = <1>;
++	#size-cells = <0>;
++	status = "okay";
++
++	vm016: camera@10 {
++		#address-cells = <0x1>;
++		#size-cells = <0x0>;
++
++		compatible = "onsemi,ar0144";
++		reg = <0x10>;
++		clock-names = "ext";
++		clocks = <&clk_mco1>;
++
++		port@0 {
++			reg = <0>;
++
++			vm016_ep0: endpoint {
++				remote-endpoint = <&dcmi_ep0>;
++				bus-type = <5>; /* Parallel */
++				bus-width = <8>;
++				data-shift = <4>;
++				link-frequencies = /bits/ 64 <74250000>;
++			};
++		};
++	};
++};
++
++&dcmipp {
++	status = "okay";
++
++	port {
++		dcmi_ep0: endpoint {
++			remote-endpoint = <&vm016_ep0>;
++			bus-width = <8>;
++			hsync-active = <0>;
++			vsync-active = <0>;
++			pclk-max-frequency = <77000000>;
++			pclk-sample = <1>;
++		};
++	};
++};
+diff --git a/arch/arm/boot/dts/overlays/stm32mp13xx-phyboard-segin-peb-eval-01-jtag.dts b/arch/arm/boot/dts/overlays/stm32mp13xx-phyboard-segin-peb-eval-01-jtag.dts
+new file mode 100644
+index 000000000000..1a948ed3e24e
+--- /dev/null
++++ b/arch/arm/boot/dts/overlays/stm32mp13xx-phyboard-segin-peb-eval-01-jtag.dts
+@@ -0,0 +1,16 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Copyright (C) 2023 PHYTEC Messtechnik GmbH
++ * Author: Christophe PARANT <c.parant@phytec.fr>
++ */
++
++/dts-v1/;
++/plugin/;
++
++/ {
++	compatible = "phytec,stm32mp13-pbacd-10";
++};
++
++&sai1{
++	status = "disabled";
++};
+diff --git a/arch/arm/boot/dts/overlays/stm32mp13xx-phyboard-segin-peb-eval-01-leds-buttons.dts b/arch/arm/boot/dts/overlays/stm32mp13xx-phyboard-segin-peb-eval-01-leds-buttons.dts
+new file mode 100644
+index 000000000000..de7024df5617
+--- /dev/null
++++ b/arch/arm/boot/dts/overlays/stm32mp13xx-phyboard-segin-peb-eval-01-leds-buttons.dts
+@@ -0,0 +1,61 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Copyright (C) 2023 PHYTEC Messtechnik GmbH
++ * Author: Christophe PARANT <c.parant@phytec.fr>
++ */
++
++/dts-v1/;
++/plugin/;
++
++#include <dt-bindings/gpio/gpio.h>
++#include <dt-bindings/input/linux-event-codes.h>
++
++/ {
++	compatible = "phytec,stm32mp13-pbacd-10";
++	fragment@1 {
++		target-path= "/";
++
++		__overlay__ {
++
++			gpio-keys {
++				compatible = "gpio-key";
++
++				button0 {
++					label = "Home";
++					linux,code = <KEY_HOME>;
++					gpios = <&gpiog 15 GPIO_ACTIVE_LOW>;
++					wakeup-source;
++				};
++
++				button1 {
++					label = "Enter";
++					linux,code = <KEY_ENTER>;
++					gpios = <&gpioa 6 GPIO_ACTIVE_LOW>;
++					wakeup-source;
++				};
++
++				button2 {
++					label = "Menu";
++					linux,code = <KEY_MENU>;
++					gpios = <&gpioh 2 GPIO_ACTIVE_LOW>;
++					wakeup-source;
++				};
++			};
++
++			user-leds {
++				compatible = "gpio-leds";
++
++				user-led1 {
++					gpios = <&gpioe 8 GPIO_ACTIVE_HIGH>;
++					linux,default-trigger = "heartbeat";
++				};
++
++				user-led2 {
++					gpios = <&gpioe 10 GPIO_ACTIVE_HIGH>;
++					linux,default-trigger = "gpio";
++					default-state = "on";
++				};
++			};
 +		};
 +	};
 +};

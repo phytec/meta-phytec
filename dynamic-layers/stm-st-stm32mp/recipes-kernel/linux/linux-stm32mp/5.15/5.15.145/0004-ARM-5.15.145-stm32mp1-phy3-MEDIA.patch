@@ -1,7 +1,7 @@
-From 5db5c94e3fc3102448698fbcaa69428fe9071fac Mon Sep 17 00:00:00 2001
+From 0c66ede8a086f953c60b5f80d50358385b9f38e6 Mon Sep 17 00:00:00 2001
 From: Christophe Parant <c.parant@phytec.fr>
-Date: Tue, 21 Feb 2023 12:03:57 +0100
-Subject: [PACTH 6/7] ARM 5.15.67 stm32mp1 phy1 MEDIA
+Date: Mon, 16 Sep 2024 15:00:42 +0200
+Subject: [PATCH 4/8] ARM 5.15.145 stm32mp1 phy3 MEDIA
 
 ---
  .../bindings/media/i2c/onsemi,ar0144.yaml     |  289 ++
@@ -10,7 +10,8 @@ Subject: [PACTH 6/7] ARM 5.15.67 stm32mp1 phy1 MEDIA
  drivers/media/i2c/ar0144.c                    | 3374 +++++++++++++++++
  drivers/media/i2c/vvsensor.h                  |  225 ++
  drivers/media/platform/stm32/stm32-dcmi.c     |   31 +-
- 6 files changed, 3928 insertions(+), 1 deletion(-)
+ .../platform/stm32/stm32-dcmipp/dcmipp-core.c |   29 +-
+ 7 files changed, 3949 insertions(+), 9 deletions(-)
  create mode 100644 Documentation/devicetree/bindings/media/i2c/onsemi,ar0144.yaml
  create mode 100644 drivers/media/i2c/ar0144.c
  create mode 100644 drivers/media/i2c/vvsensor.h
@@ -4015,6 +4016,57 @@ index c6d58e3ecd41..5e5e18327c81 100644
  
  	ret = media_create_pad_link(&subdev->entity, src_pad,
  				    &dcmi->vdev->entity, 0,
+diff --git a/drivers/media/platform/stm32/stm32-dcmipp/dcmipp-core.c b/drivers/media/platform/stm32/stm32-dcmipp/dcmipp-core.c
+index 7935ee3ead71..11dd9b1e773a 100644
+--- a/drivers/media/platform/stm32/stm32-dcmipp/dcmipp-core.c
++++ b/drivers/media/platform/stm32/stm32-dcmipp/dcmipp-core.c
+@@ -379,25 +379,38 @@ static int dcmipp_graph_notify_bound(struct v4l2_async_notifier *notifier,
+ 	int src_pad;
+ 	struct dcmipp_ent_device *sink;
+ 	struct device_node *np = dcmipp->dev->of_node;
++	struct device_node *remote_np = NULL;
+ 	struct v4l2_fwnode_endpoint ep = { .bus_type = 0 };
+ 
+ 	dev_dbg(dcmipp->dev, "Subdev \"%s\" bound\n", subdev->name);
+ 
++	/* Get bus characteristics from devicetree */
++	np = of_graph_get_next_endpoint(np, NULL);
++	if (!np) {
++		dev_err(dcmipp->dev, "Could not find the endpoint\n");
++		of_node_put(np);
++		return -ENODEV;
++	}
++
++	remote_np = of_graph_get_remote_endpoint(np);
++	if (!remote_np) {
++		dev_err(dcmipp->dev, "Could not find the remote endpoint\n");
++		return -ENODEV;
++	}
++
+ 	/*
+ 	 * Link this sub-device to DCMIPP, it could be
+ 	 * a parallel camera sensor or a CSI-2 to parallel bridge
+ 	 */
+ 
+ 	src_pad = media_entity_get_fwnode_pad(&subdev->entity,
+-					      subdev->fwnode,
++					      of_fwnode_handle(remote_np),
+ 					      MEDIA_PAD_FL_SOURCE);
+-
+-	/* Get bus characteristics from devicetree */
+-	np = of_graph_get_next_endpoint(np, NULL);
+-	if (!np) {
+-		dev_err(dcmipp->dev, "Could not find the endpoint\n");
+-		of_node_put(np);
+-		return -ENODEV;
++	of_node_put(remote_np);
++	if (src_pad < 0) {
++		dev_err(dcmipp->dev, "Failed to find source pad of %s (%d)\n",
++			 subdev->name, src_pad);
++		return src_pad;
+ 	}
+ 
+ 	ret = v4l2_fwnode_endpoint_parse(of_fwnode_handle(np), &ep);
 -- 
 2.25.1
 
