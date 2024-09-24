@@ -1,17 +1,17 @@
-From 0639301aeb78db51ed9a3f4457bd26b7e2306185 Mon Sep 17 00:00:00 2001
+From 9ea2b8372963c8876d1536c934877b5b77e91be7 Mon Sep 17 00:00:00 2001
 From: Christophe Parant <c.parant@phytec.fr>
-Date: Tue, 21 Feb 2023 12:04:44 +0100
-Subject: [PACTH 7/7] ARM 5.15.67 stm32mp1 phy1 SPI
+Date: Mon, 16 Sep 2024 15:38:27 +0200
+Subject: [PATCH 8/8] ARM 5.15.145 stm32mp1 phy3 SPI
 
 ---
  drivers/spi/spidev.c | 2 ++
  1 file changed, 2 insertions(+)
 
 diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index 1bd73e322b7b..5ecdda2db4f3 100644
+index 922d778df064..e20fabb4dd36 100644
 --- a/drivers/spi/spidev.c
 +++ b/drivers/spi/spidev.c
-@@ -682,6 +682,7 @@ static const struct spi_device_id spidev_spi_ids[] = {
+@@ -691,6 +691,7 @@ static const struct spi_device_id spidev_spi_ids[] = {
  	{ .name = "m53cpld" },
  	{ .name = "spi-petra" },
  	{ .name = "spi-authenta" },
@@ -19,7 +19,7 @@ index 1bd73e322b7b..5ecdda2db4f3 100644
  	{},
  };
  MODULE_DEVICE_TABLE(spi, spidev_spi_ids);
-@@ -696,6 +697,7 @@ static const struct of_device_id spidev_dt_ids[] = {
+@@ -705,6 +706,7 @@ static const struct of_device_id spidev_dt_ids[] = {
  	{ .compatible = "menlo,m53cpld" },
  	{ .compatible = "cisco,spi-petra" },
  	{ .compatible = "micron,spi-authenta" },
