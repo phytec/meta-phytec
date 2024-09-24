@@ -1,7 +1,7 @@
-From 5068811c979a889d092679555b46d15aff6f3f49 Mon Sep 17 00:00:00 2001
+From b0ac96722e53b0911cf0334a0d976bbfa32d124b Mon Sep 17 00:00:00 2001
 From: Christophe Parant <c.parant@phytec.fr>
-Date: Tue, 21 Feb 2023 12:02:18 +0100
-Subject: [PACTH 5/7] ARM 5.15.67 stm32mp1 phy1 RTC
+Date: Mon, 16 Sep 2024 15:36:51 +0200
+Subject: [PATCH 7/8] ARM 5.15.145 stm32mp1 phy3 RTC
 
 ---
  drivers/rtc/class.c      |  3 ++
