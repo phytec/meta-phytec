@@ -1,7 +1,7 @@
-From d7b0aa5554c7f299bea24edd6834fe9cab976c1e Mon Sep 17 00:00:00 2001
+From 9117efdf5d53c487ee1728e1355f6d8e542780c2 Mon Sep 17 00:00:00 2001
 From: Christophe Parant <c.parant@phytec.fr>
-Date: Tue, 21 Feb 2023 12:00:27 +0100
-Subject: [PACTH 4/7] ARM 5.15.67 stm32mp1 phy1 SOUND
+Date: Mon, 16 Sep 2024 15:07:21 +0200
+Subject: [PATCH 5/8] ARM 5.15.145 stm32mp1 phy3 SOUND
 
 ---
  sound/soc/codecs/tlv320aic3x.c | 27 +++++++++++++++++++++++++++

@@ -1,7 +1,7 @@
-From ba0028e33391e0226ec8a59a239b20207971f756 Mon Sep 17 00:00:00 2001
+From 59643b9442b7fe1c32d14f96350e74c1769ef652 Mon Sep 17 00:00:00 2001
 From: Christophe Parant <c.parant@phytec.fr>
-Date: Tue, 21 Feb 2023 11:58:58 +0100
-Subject: [PACTH 3/7] ARM 5.15.67 stm32mp1 phy1 DRM
+Date: Mon, 16 Sep 2024 14:58:35 +0200
+Subject: [PATCH 3/8] ARM 5.15.145 stm32mp1 phy3 DRM
 
 ---
  .../drm/panel/panel-raspberrypi-touchscreen.c | 43 ++++++++++++++++++-
