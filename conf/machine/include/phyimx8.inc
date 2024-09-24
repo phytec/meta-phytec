@@ -14,6 +14,9 @@ PREFERRED_PROVIDER_virtual/libgles3:mx8-nxp-bsp = "imx-gpu-viv"
 # dont install kernelimage to rootfs
 RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base = ""
 
+# remove ath10k firmware to save space
+MACHINE_FIRMWARE:remove:mx8-nxp-bsp = "linux-firmware-ath10k"
+
 # Wic
 IMAGE_CLASSES += "wic-helper"
 IMAGE_CLASSES:append:mx8-nxp-bsp = " wic-imx8-helper"
