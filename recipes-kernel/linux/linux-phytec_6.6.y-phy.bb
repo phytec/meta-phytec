@@ -1,5 +1,5 @@
 inherit kernel kernel-yocto
-inherit phygittag
+inherit phygittag kernel-deploy-oftree
 include linux-common.inc
 include linux-barebox-dt-overlays.inc
 

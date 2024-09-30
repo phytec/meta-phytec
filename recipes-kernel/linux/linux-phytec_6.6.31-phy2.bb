@@ -1,5 +1,5 @@
 inherit kernel
-inherit phygittag buildinfo kconfig
+inherit phygittag buildinfo kconfig kernel-deploy-oftree
 include linux-common.inc
 include linux-barebox-dt-overlays.inc
 

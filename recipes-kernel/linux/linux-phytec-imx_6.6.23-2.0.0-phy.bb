@@ -1,7 +1,7 @@
 # Copyright (C) 2024 PHYTEC Messtechnik GmbH,
 
 inherit kernel kernel-yocto
-inherit phygittag
+inherit phygittag kernel-deploy-oftree
 include recipes-kernel/linux/linux-common.inc
 
 SRCREV = "c95a2085215e74dd97271830398e536cda78aa74"

@@ -1,5 +1,5 @@
 inherit kernel kernel-yocto
-inherit phygittag buildinfo
+inherit phygittag buildinfo kernel-deploy-oftree
 require recipes-kernel/linux/linux-common.inc
 
 LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"

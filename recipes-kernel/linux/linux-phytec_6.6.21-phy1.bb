@@ -1,7 +1,7 @@
 # Copyright (C) 2024 PHYTEC Messtechnik GmbH
 
 inherit kernel
-inherit phygittag buildinfo kconfig
+inherit phygittag buildinfo kconfig kernel-deploy-oftree
 include linux-common.inc
 
 GIT_URL = "git://github.com/phytec/linux-phytec.git;protocol=https"
