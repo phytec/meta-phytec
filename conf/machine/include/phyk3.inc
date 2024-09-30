@@ -1,6 +1,42 @@
+# TI K3 Aarch64 profile for Cortex-A53/A72 cores
+
+SOC_FAMILY = "ti-soc"
+require conf/machine/include/soc-family.inc
+SOC_FAMILY:append = ":k3"
+
+require conf/machine/include/arm/arch-arm64.inc
+
+BBMULTICONFIG += "k3r5"
+
 require phytec-machine-common.inc
 
-require conf/machine/include/k3.inc
+KERNEL_CLASSES += "kernel-fitimage"
+
+UBOOT_ARCH = "arm"
+UBOOT_ENTRYPOINT = "0x81000000"
+UBOOT_LOADADDRESS = "0x81000000"
+UBOOT_RD_LOADADDRESS = "0x84000000"
+UBOOT_RD_ENTRYPOINT = "0x84000000"
+UBOOT_DTB_LOADADDRESS = "0x83000000"
+UBOOT_DTBO_LOADADDRESS = "0x83080000"
+UBOOT_DTBO_OFFSET = "0x00010000"
+
+SPL_BINARY = "tispl.bin"
+SPL_BINARYNAME = "tispl.bin"
+UBOOT_SUFFIX = "img"
+
+UBOOT_MKIMAGE_DTCOPTS = "-I dts -O dtb"
+UBOOT_SIGN_KEYNAME ?= "custMpk"
+UBOOT_SIGN_KEYDIR ?= "${TI_SECURE_DEV_PKG}/keys"
+FIT_HASH_ALG ?= "sha512"
+FIT_SIGN_ALG ?= "rsa4096"
+
+EXTRA_IMAGEDEPENDS += "virtual/bootloader"
+
+TFA_PLATFORM = "k3"
+
+do_image_wic[depends] += "virtual/bootloader:do_deploy"
+do_image[mcdepends] += "mc::k3r5:virtual/bootloader:do_deploy"
 
 SERIAL_CONSOLES = "115200;ttyS2"
 
@@ -14,7 +50,7 @@ PREFERRED_PROVIDER_virtual/kernel = "linux-phytec-ti"
 PREFERRED_PROVIDER_virtual/bootloader = "u-boot-phytec-ti"
 PREFERRED_PROVIDER_u-boot = "u-boot-phytec-ti"
 
-MACHINE_FEATURES += "optee efi"
+MACHINE_FEATURES = "apm usbgadget usbhost vfat ext2 alsa pci optee efi"
 
 # dont install kernelimage to rootfs
 RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base = ""
@@ -51,9 +87,6 @@ def make_dtb_boot_files(d):
 
     return ' '.join([transform(dtb) for dtb in alldtbs.split() if dtb])
 
-SPL_BINARY = "tispl.bin"
-SPL_BINARYNAME = "tispl.bin"
-UBOOT_SUFFIX = "img"
 K3_BOOTLOADER_FILES = "${SPL_BINARYNAME} u-boot.${UBOOT_SUFFIX} tiboot3.bin"
 
 IMAGE_BOOT_FILES = " \
@@ -71,6 +104,8 @@ PARTUP_BOOT_FILES = " \
 "
 PARTUP_BOOT_FILES:secureboot = "fitImage"
 IMAGE_EFI_BOOT_FILES ?= "${IMAGE_BOOT_FILES}"
+
+EFI_PROVIDER ?= "grub-efi"
 
 IMAGE_CLASSES += "image-types-partup"
 include partup-layout-config.inc
