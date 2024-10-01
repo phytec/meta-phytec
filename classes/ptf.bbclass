@@ -1,6 +1,8 @@
 # This class is used to extract yocto build data for our test environment.
 # ENV_PTF_* variables are consumed by our test system configs.
 
+do_image[depends] += "virtual/kernel:do_shared_workdir"
+do_image[depends] += "virtual/bootloader:do_unpack"
 do_image_cpio[depends] += "virtual/kernel:do_shared_workdir"
 do_image_cpio[depends] += "virtual/bootloader:do_unpack"
 
@@ -38,6 +40,8 @@ def build_ptf_data(d):
         data['ENV_PTF_BUSYBOX_VERSION'] = pkgs['busybox']['ver'].split('-')[0]
 
     data['ENV_PTF_YOCTO_RELEASE'] = d.getVar('DISTRO_CODENAME')
+    data['ENV_PTF_IMAGE'] = d.getVar('IMAGE_BASENAME')
+    data['ENV_PTF_DISTRO'] = d.getVar('DISTRO')
     mk = get_bootloader_makefile(d)
     data['ENV_PTF_BOOTLOADER_VERSION'] = get_bootloader_version(mk)
 
