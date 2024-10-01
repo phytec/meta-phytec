@@ -7,15 +7,17 @@ OPTEEMACHINE = "k3-am62x"
 TFA_K3_SYSTEM_SUSPEND = "1"
 
 # am62xx has a Rogue GPU core
-PREFERRED_PROVIDER_virtual/mesa ?= "mesa-pvr"
-PREFERRED_PROVIDER_virtual/egl ?= "mesa-pvr"
-PREFERRED_PROVIDER_virtual/libgles1 ?= "mesa-pvr"
-PREFERRED_PROVIDER_virtual/libgles2 ?= "mesa-pvr"
-PREFERRED_PROVIDER_virtual/libgles3 ?= "mesa-pvr"
-PREFERRED_PROVIDER_virtual/libgbm ?= "mesa-pvr"
-PREFERRED_PROVIDER_virtual/libglx ?= "mesa-pvr"
-PREFERRED_PROVIDER_virtual/libgl ?= "mesa-pvr"
-PREFERRED_PROVIDER_virtual/gpudriver ?= "ti-img-rogue-driver"
+PREFERRED_PROVIDER_virtual/mesa ?= "${@oe.utils.conditional("PREFERRED_PROVIDER_virtual/kernel", "linux-phytec-ti", "mesa-pvr", "mesa", d)}"
+PREFERRED_PROVIDER_virtual/egl ?= "${@oe.utils.conditional("PREFERRED_PROVIDER_virtual/kernel", "linux-phytec-ti", "mesa-pvr", "mesa", d)}"
+PREFERRED_PROVIDER_virtual/libgles1 ?= "${@oe.utils.conditional("PREFERRED_PROVIDER_virtual/kernel", "linux-phytec-ti", "mesa-pvr", "mesa", d)}"
+PREFERRED_PROVIDER_virtual/libgles2 ?= "${@oe.utils.conditional("PREFERRED_PROVIDER_virtual/kernel", "linux-phytec-ti", "mesa-pvr", "mesa", d)}"
+PREFERRED_PROVIDER_virtual/libgles3 ?= "${@oe.utils.conditional("PREFERRED_PROVIDER_virtual/kernel", "linux-phytec-ti", "mesa-pvr", "mesa", d)}"
+PREFERRED_PROVIDER_virtual/libgbm ?= "${@oe.utils.conditional("PREFERRED_PROVIDER_virtual/kernel", "linux-phytec-ti", "mesa-pvr", "mesa", d)}"
+PREFERRED_PROVIDER_virtual/libglx ?= "${@oe.utils.conditional("PREFERRED_PROVIDER_virtual/kernel", "linux-phytec-ti", "mesa-pvr", "mesa", d)}"
+PREFERRED_PROVIDER_virtual/libgl ?= "${@oe.utils.conditional("PREFERRED_PROVIDER_virtual/kernel", "linux-phytec-ti", "mesa-pvr", "mesa", d)}"
+PREFERRED_PROVIDER_virtual/gpudriver ?= "${@oe.utils.conditional("PREFERRED_PROVIDER_virtual/kernel", "linux-phytec-ti", "ti-img-rogue-driver", "", d)}"
+
+MACHINE_ESSENTIAL_EXTRA_RRECOMMENDS += "${@oe.utils.conditional("PREFERRED_PROVIDER_virtual/kernel", "linux-mainline", "linux-firmware-powervr", "", d)}"
 
 MACHINE_FEATURES += "screen"
 
