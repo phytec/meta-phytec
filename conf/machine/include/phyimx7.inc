@@ -22,10 +22,22 @@ BOOTLOADER_SEEK:mx7-generic-bsp ?= "1"
 # eMMC boot partition bootloader image offset
 BOOTLOADER_SEEK_EMMC:mx7-generic-bsp ?= "1"
 
+# Device information used by RAUC and some of its dependencies
+EMMC_DEV:mx7-generic-bsp ?= "2"
+
+# rootfs alignment required for RAUC adaptive update
+IMAGE_ROOTFS_ALIGNMENT:update = "4"
+
+# partup
+IMAGE_CLASSES += "image-types-partup"
+include partup-layout-config.inc
+
 # Default images to build
 IMAGE_FSTYPES = " \
     tar.xz \
     wic.xz \
     wic.bmap \
     ${@bb.utils.contains("MACHINE_FEATURES", "nand", "ubifs", "", d)} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "emmc", "partup", "", d)} \
 "
+IMAGE_FSTYPES:update = "partup"
