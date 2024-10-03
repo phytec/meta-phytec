@@ -42,6 +42,7 @@ BOOTLOADER_FILE ??= "u-boot.bin"
 BOOTLOADER_FILE:k3 ?= ""
 BOOTLOADER_FILE:mx6-generic-bsp ?= "${BAREBOX_BINARY}"
 BOOTLOADER_FILE:mx6ul-generic-bsp ?= "${BAREBOX_BINARY}"
+BOOTLOADER_FILE:mx7-generic-bsp ?= "u-boot-with-spl.imx"
 BOOTLOADER_FILE:mx8m-generic-bsp ?= "imx-boot"
 
 do_layout_config[vardeps] += " \
