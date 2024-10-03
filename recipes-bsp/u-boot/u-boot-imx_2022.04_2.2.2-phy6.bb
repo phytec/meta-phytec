@@ -27,6 +27,12 @@ S = "${WORKDIR}/git"
 
 BOOT_TOOLS = "imx-boot-tools"
 
+do_deploy:append:mx7-nxp-bsp(){
+    if [ -f ${DEPLOYDIR}/u-boot-with-spl.imx ]; then
+        ln -sf u-boot-with-spl.imx ${DEPLOYDIR}/u-boot.imx
+    fi
+}
+
 do_deploy:append:mx8m-nxp-bsp () {
     # Deploy the u-boot-nodtb.bin and fsl-imx8mq-XX.dtb, to be packaged in boot binary by imx-boot
     if [ -n "${UBOOT_CONFIG}" ]
