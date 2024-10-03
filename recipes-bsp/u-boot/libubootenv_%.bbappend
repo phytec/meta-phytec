@@ -5,13 +5,16 @@ SRC_URI += "file://fw_env.config"
 EMMC_DEV ??= "0"
 ENV_OFFSET ??= "0x3c0000"
 ENV_OFFSET:mx93-generic-bsp = "0x700000"
+ENV_OFFSET:mx7-generic-bsp = "0xe0000"
 ENV_OFFSET:k3 = "0x680000"
 ENV_OFFSET_REDUND ??= "0x3e0000"
 ENV_OFFSET_REDUND:mx93-generic-bsp = "0x720000"
 ENV_OFFSET_REDUND:k3 = "0x6c0000"
+ENV_OFFSET_REDUND:mx7-generic-bsp = "0x100000"
 ENV_SIZE ??= "0x10000"
 ENV_SIZE:k3 = "0x20000"
 ENV_SIZE:j721s2 = "0x40000"
+ENV_SIZE:mx7-generic-bsp = "0x2000"
 
 do_configure:append () {
 	sed -i \
