@@ -1,0 +1,29 @@
+From 11535e6b46816d4670b47654affed52362ef8b80 Mon Sep 17 00:00:00 2001
+From: vermaash <ashish.verma@st.com>
+Date: Fri, 26 Jul 2024 13:59:45 +0530
+Subject: [PATCH] Prepare v2021.10-stm32mp-r2.2
+
+Update version in Makefile to prepare the label v2021.10-stm32mp-r2.2
+for OpenSTLinux V4.1.2
+
+Signed-off-by: vermaash <ashish.verma@st.com>
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index 33c0b433bb..557f955785 100644
+--- a/Makefile
++++ b/Makefile
+@@ -3,7 +3,7 @@
+ VERSION = 2021
+ PATCHLEVEL = 10
+ SUBLEVEL =
+-EXTRAVERSION = -stm32mp-r2.1
++EXTRAVERSION = -stm32mp-r2.2
+ NAME =
+ 
+ # *DOCUMENTATION*
+-- 
+2.25.1
+

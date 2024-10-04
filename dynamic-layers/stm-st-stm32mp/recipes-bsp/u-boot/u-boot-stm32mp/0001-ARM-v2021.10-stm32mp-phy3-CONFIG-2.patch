@@ -1,0 +1,56 @@
+From a54a3e28ca647dd6cadcffff2477487b4093e934 Mon Sep 17 00:00:00 2001
+From: Christophe Parant <c.parant@phytec.fr>
+Date: Tue, 1 Oct 2024 15:50:31 +0200
+Subject: [PATCH] ARM v2021.10 stm32mp phy3 CONFIG 2
+
+---
+ configs/phycore-stm32mp13_defconfig | 4 ++--
+ configs/phycore-stm32mp15_defconfig | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/configs/phycore-stm32mp13_defconfig b/configs/phycore-stm32mp13_defconfig
+index c87b981b55..37b73fb453 100644
+--- a/configs/phycore-stm32mp13_defconfig
++++ b/configs/phycore-stm32mp13_defconfig
+@@ -4,7 +4,7 @@ CONFIG_TFABOOT=y
+ CONFIG_SYS_MALLOC_F_LEN=0x180000
+ CONFIG_SYS_MEMTEST_START=0xc0000000
+ CONFIG_SYS_MEMTEST_END=0xc4000000
+-CONFIG_ENV_OFFSET=0x900000
++CONFIG_ENV_OFFSET=0x480000
+ CONFIG_ENV_SECT_SIZE=0x40000
+ CONFIG_DEFAULT_DEVICE_TREE="stm32mp135f-phycore-som-emmc-1gib"
+ CONFIG_DEFAULT_FDT_FILE="oftree"
+@@ -12,7 +12,7 @@ CONFIG_STM32MP13x=y
+ CONFIG_DDR_CACHEABLE_SIZE=0x10000000
+ CONFIG_CMD_STM32KEY=y
+ CONFIG_TARGET_PHYTEC_PHYCORE_STM32MP13x=y
+-CONFIG_ENV_OFFSET_REDUND=0x940000
++CONFIG_ENV_OFFSET_REDUND=0x4C0000
+ CONFIG_CMD_STM32PROG=y
+ # CONFIG_ARMV7_NONSEC is not set
+ CONFIG_DISTRO_DEFAULTS=y
+diff --git a/configs/phycore-stm32mp15_defconfig b/configs/phycore-stm32mp15_defconfig
+index 7de3f89c0b..ad6c57cbeb 100644
+--- a/configs/phycore-stm32mp15_defconfig
++++ b/configs/phycore-stm32mp15_defconfig
+@@ -4,14 +4,14 @@ CONFIG_TFABOOT=y
+ CONFIG_SYS_MALLOC_F_LEN=0x80000
+ CONFIG_SYS_MEMTEST_START=0xc0000000
+ CONFIG_SYS_MEMTEST_END=0xc4000000
+-CONFIG_ENV_OFFSET=0x900000
++CONFIG_ENV_OFFSET=0x480000
+ CONFIG_ENV_SECT_SIZE=0x40000
+ CONFIG_DEFAULT_DEVICE_TREE="stm32mp157c-phycore-som-emmc-1gib"
+ CONFIG_DEFAULT_FDT_FILE="oftree"
+ CONFIG_DDR_CACHEABLE_SIZE=0x10000000
+ CONFIG_CMD_STM32KEY=y
+ CONFIG_TARGET_PHYTEC_PHYCORE_STM32MP15x=y
+-CONFIG_ENV_OFFSET_REDUND=0x940000
++CONFIG_ENV_OFFSET_REDUND=0x4C0000
+ CONFIG_CMD_STM32PROG=y
+ # CONFIG_ARMV7_NONSEC is not set
+ CONFIG_DISTRO_DEFAULTS=y
+-- 
+2.25.1
+
