@@ -1,0 +1,310 @@
+From ca74b88580f370de16c65285298084bf7b5ffc35 Mon Sep 17 00:00:00 2001
+From: Christophe Parant <c.parant@phytec.fr>
+Date: Mon, 16 Sep 2024 12:28:18 +0200
+Subject: [PATCH 1/4] ARM v2021.10 stm32mp phy3 DEVICETREE
+
+---
+ .../dts/stm32mp13xx-phycore-som-pinctrl.dtsi  |  8 +--
+ arch/arm/dts/stm32mp13xx-phycore-som.dtsi     |  2 +-
+ .../stm32mp153a-phycore-som-nand-512mb.dts    | 11 +++++
+ .../dts/stm32mp157c-phycore-som-emmc-1gib.dts | 16 ++++++
+ .../dts/stm32mp157f-phycore-som-emmc-1gib.dts | 16 ++++++
+ ...stm32mp15xx-phycore-som-common-u-boot.dtsi |  6 +--
+ .../dts/stm32mp15xx-phycore-som-pinctrl.dtsi  | 49 ++-----------------
+ arch/arm/dts/stm32mp15xx-phycore-som.dtsi     | 26 +---------
+ 8 files changed, 57 insertions(+), 77 deletions(-)
+
+diff --git a/arch/arm/dts/stm32mp13xx-phycore-som-pinctrl.dtsi b/arch/arm/dts/stm32mp13xx-phycore-som-pinctrl.dtsi
+index efc1cd5ede..ebcb3093b4 100644
+--- a/arch/arm/dts/stm32mp13xx-phycore-som-pinctrl.dtsi
++++ b/arch/arm/dts/stm32mp13xx-phycore-som-pinctrl.dtsi
+@@ -129,13 +129,13 @@
+ 					 <STM32_PINMUX('C', 7, AF10)>, /* SDMMC2_D7 */
+ 					 <STM32_PINMUX('F', 0, AF10)>, /* SDMMC2_D4 */
+ 					 <STM32_PINMUX('G', 6, AF10)>; /* SDMMC2_CMD */
+-			bias-disable;
++			bias-pull-up;
+ 			drive-push-pull;
+ 			slew-rate = <1>;
+ 		};
+ 		pins2 {
+ 			pinmux = <STM32_PINMUX('E', 3, AF10)>; /* SDMMC2_CK */
+-			bias-disable;
++			bias-pull-up;
+ 			drive-push-pull;
+ 			slew-rate = <2>;
+ 		};
+@@ -151,13 +151,13 @@
+ 					 <STM32_PINMUX('C', 6, AF10)>, /* SDMMC2_D6 */
+ 					 <STM32_PINMUX('C', 7, AF10)>, /* SDMMC2_D7 */
+ 					 <STM32_PINMUX('F', 0, AF10)>; /* SDMMC2_D4 */
+-			bias-disable;
++			bias-pull-up;
+ 			drive-push-pull;
+ 			slew-rate = <1>;
+ 		};
+ 		pins2 {
+ 			pinmux = <STM32_PINMUX('E', 3, AF10)>; /* SDMMC2_CK */
+-			bias-disable;
++			bias-pull-up;
+ 			drive-push-pull;
+ 			slew-rate = <2>;
+ 		};
+diff --git a/arch/arm/dts/stm32mp13xx-phycore-som.dtsi b/arch/arm/dts/stm32mp13xx-phycore-som.dtsi
+index 1554f63743..68ad6b3059 100644
+--- a/arch/arm/dts/stm32mp13xx-phycore-som.dtsi
++++ b/arch/arm/dts/stm32mp13xx-phycore-som.dtsi
+@@ -140,7 +140,7 @@
+ 	pinctrl-0 = <&sdmmc1_pins_mx>;
+ 	pinctrl-1 = <&sdmmc1_opendrain_pins_mx>;
+ 	pinctrl-2 = <&sdmmc1_sleep_pins_mx>;
+-	cd-gpios = <&gpiof 3 GPIO_ACTIVE_LOW>;
++	cd-gpios = <&gpioi 1 GPIO_ACTIVE_LOW>;
+ 	st,neg-edge;
+ 	bus-width = <4>;
+ 	max-frequency = <10000000>;
+diff --git a/arch/arm/dts/stm32mp153a-phycore-som-nand-512mb.dts b/arch/arm/dts/stm32mp153a-phycore-som-nand-512mb.dts
+index 2e3954f245..420b271728 100644
+--- a/arch/arm/dts/stm32mp153a-phycore-som-nand-512mb.dts
++++ b/arch/arm/dts/stm32mp153a-phycore-som-nand-512mb.dts
+@@ -15,6 +15,17 @@
+ 	model = "PHYTEC phyCORE-STM32MP153A with NAND and 512MB RAM";
+ 	compatible = "phytec,stm32mp153a-phycore-som-nand-512mb",
+ 		     "phytec,stm32mp153a-phycore-som", "st,stm32mp153";
++
++	memory@c0000000 {
++		reg = <0xc0000000 0x20000000>;
++	};
++
++	reserved-memory {
++		optee@de000000 {
++			reg = <0xde000000 0x2000000>;
++			no-map;
++		};
++	};
+ };
+ 
+ &dts {
+diff --git a/arch/arm/dts/stm32mp157c-phycore-som-emmc-1gib.dts b/arch/arm/dts/stm32mp157c-phycore-som-emmc-1gib.dts
+index 6f539044c3..d5a2fed78f 100644
+--- a/arch/arm/dts/stm32mp157c-phycore-som-emmc-1gib.dts
++++ b/arch/arm/dts/stm32mp157c-phycore-som-emmc-1gib.dts
+@@ -15,6 +15,22 @@
+ 	model = "PHYTEC phyCORE-STM32MP157C with eMMC and 1GiB RAM";
+ 	compatible = "phytec,stm32mp157c-phycore-som-emmc-1gib",
+ 		     "phytec,stm32mp157c-phycore-som", "st,stm32mp157";
++
++	memory@c0000000 {
++		reg = <0xc0000000 0x40000000>;
++	};
++
++	reserved-memory {
++		gpu_reserved: gpu@f6000000 {
++			reg = <0xf6000000 0x8000000>;
++			no-map;
++		};
++
++		optee@fe000000 {
++			reg = <0xfe000000 0x2000000>;
++			no-map;
++		};
++	};
+ };
+ 
+ &dts {
+diff --git a/arch/arm/dts/stm32mp157f-phycore-som-emmc-1gib.dts b/arch/arm/dts/stm32mp157f-phycore-som-emmc-1gib.dts
+index 0c21a7cece..52083a0111 100644
+--- a/arch/arm/dts/stm32mp157f-phycore-som-emmc-1gib.dts
++++ b/arch/arm/dts/stm32mp157f-phycore-som-emmc-1gib.dts
+@@ -15,6 +15,22 @@
+ 	model = "PHYTEC phyCORE-STM32MP157F with eMMC and 1GiB RAM";
+ 	compatible = "phytec,stm32mp157f-phycore-som-emmc-1gib",
+ 		     "phytec,stm32mp157f-phycore-som", "st,stm32mp157";
++
++	memory@c0000000 {
++		reg = <0xc0000000 0x40000000>;
++	};
++
++	reserved-memory {
++		gpu_reserved: gpu@f6000000 {
++			reg = <0xf6000000 0x8000000>;
++			no-map;
++		};
++
++		optee@fe000000 {
++			reg = <0xfe000000 0x2000000>;
++			no-map;
++		};
++	};
+ };
+ 
+ &dts {
+diff --git a/arch/arm/dts/stm32mp15xx-phycore-som-common-u-boot.dtsi b/arch/arm/dts/stm32mp15xx-phycore-som-common-u-boot.dtsi
+index 15df69401d..2ac9ce9271 100644
+--- a/arch/arm/dts/stm32mp15xx-phycore-som-common-u-boot.dtsi
++++ b/arch/arm/dts/stm32mp15xx-phycore-som-common-u-boot.dtsi
+@@ -113,7 +113,7 @@
+ 		CLK_CKPER_HSE
+ 		CLK_FMC_ACLK
+ 		CLK_QSPI_ACLK
+-		CLK_ETH_PLL4P
++		CLK_ETH_DISABLED
+ 		CLK_SDMMC12_PLL4P
+ 		CLK_DSI_DSIPLL
+ 		CLK_STGEN_HSE
+@@ -165,11 +165,11 @@
+ 		u-boot,dm-pre-reloc;
+ 	};
+ 
+-	/* VCO = 750.0 MHz, P=125, Q=62.5, R=62.5 */
++	/* VCO = 600 MHz, P=100, Q=75, R=75 */
+ 	pll4: st,pll@3 {
+ 		compatible = "st,stm32mp1-pll";
+ 		reg = <3>;
+-		cfg = <3 124 5 11 11 PQR(1,1,1)>;
++		cfg = <1 49 5 7 7 PQR(1,1,1)>;
+ 		u-boot,dm-pre-reloc;
+ 	};
+ };
+diff --git a/arch/arm/dts/stm32mp15xx-phycore-som-pinctrl.dtsi b/arch/arm/dts/stm32mp15xx-phycore-som-pinctrl.dtsi
+index db10ebc150..0fb3e42eb6 100644
+--- a/arch/arm/dts/stm32mp15xx-phycore-som-pinctrl.dtsi
++++ b/arch/arm/dts/stm32mp15xx-phycore-som-pinctrl.dtsi
+@@ -10,7 +10,8 @@
+ &pinctrl {
+ 	ethernet0_rgmii_pins_a: rgmii-0 {
+ 		pins1 {
+-			pinmux = <STM32_PINMUX('G', 4, AF11)>, /* ETH_RGMII_GTX_CLK */
++			pinmux = <STM32_PINMUX('G', 5, AF11)>, /* ETH_RGMII_CLK125 */
++				 <STM32_PINMUX('G', 4, AF11)>, /* ETH_RGMII_GTX_CLK */
+ 				 <STM32_PINMUX('G', 13, AF11)>, /* ETH_RGMII_TXD0 */
+ 				 <STM32_PINMUX('G', 14, AF11)>, /* ETH_RGMII_TXD1 */
+ 				 <STM32_PINMUX('C', 2, AF11)>, /* ETH_RGMII_TXD2 */
+@@ -35,7 +36,8 @@
+ 
+ 	ethernet0_rgmii_pins_sleep_a: rgmii-sleep-0 {
+ 		pins1 {
+-			pinmux = <STM32_PINMUX('G', 4, ANALOG)>, /* ETH_RGMII_GTX_CLK */
++			pinmux = <STM32_PINMUX('G', 5, ANALOG)>, /* ETH_RGMII_CLK125 */
++				 <STM32_PINMUX('G', 4, ANALOG)>, /* ETH_RGMII_GTX_CLK */
+ 				 <STM32_PINMUX('G', 13, ANALOG)>, /* ETH_RGMII_TXD0 */
+ 				 <STM32_PINMUX('G', 14, ANALOG)>, /* ETH_RGMII_TXD1 */
+ 				 <STM32_PINMUX('C', 2, ANALOG)>, /* ETH_RGMII_TXD2 */
+@@ -193,49 +195,6 @@
+ 		};
+ 	};
+ 
+-	sdmmc2_b4_pins_b: sdmmc2-b4-1 {
+-		pins1 {
+-			pinmux = <STM32_PINMUX('B', 14, AF9)>, /* SDMMC2_D0 */
+-				 <STM32_PINMUX('B', 15, AF9)>, /* SDMMC2_D1 */
+-				 <STM32_PINMUX('B', 3, AF9)>, /* SDMMC2_D2 */
+-				 <STM32_PINMUX('B', 4, AF9)>, /* SDMMC2_D3 */
+-				 <STM32_PINMUX('G', 6, AF10)>; /* SDMMC2_CMD */
+-			slew-rate = <1>;
+-			drive-push-pull;
+-			bias-disable;
+-		};
+-		pins2 {
+-			pinmux = <STM32_PINMUX('E', 3, AF9)>; /* SDMMC2_CK */
+-			slew-rate = <2>;
+-			drive-push-pull;
+-			bias-disable;
+-		};
+-	};
+-
+-	sdmmc2_b4_od_pins_b: sdmmc2-b4-od-1 {
+-		pins1 {
+-			pinmux = <STM32_PINMUX('B', 14, AF9)>, /* SDMMC2_D0 */
+-				 <STM32_PINMUX('B', 15, AF9)>, /* SDMMC2_D1 */
+-				 <STM32_PINMUX('B', 3, AF9)>, /* SDMMC2_D2 */
+-				 <STM32_PINMUX('B', 4, AF9)>; /* SDMMC2_D3 */
+-			slew-rate = <1>;
+-			drive-push-pull;
+-			bias-disable;
+-		};
+-		pins2 {
+-			pinmux = <STM32_PINMUX('E', 3, AF9)>; /* SDMMC2_CK */
+-			slew-rate = <2>;
+-			drive-push-pull;
+-			bias-disable;
+-		};
+-		pins3 {
+-			pinmux = <STM32_PINMUX('G', 6, AF10)>; /* SDMMC2_CMD */
+-			slew-rate = <1>;
+-			drive-open-drain;
+-			bias-disable;
+-		};
+-	};
+-
+ 	sdmmc2_d47_pins_a: sdmmc2-d47-0 {
+ 		pins {
+ 			pinmux = <STM32_PINMUX('A', 8, AF9)>, /* SDMMC2_D4 */
+diff --git a/arch/arm/dts/stm32mp15xx-phycore-som.dtsi b/arch/arm/dts/stm32mp15xx-phycore-som.dtsi
+index 4ec1833d21..393ba062ee 100644
+--- a/arch/arm/dts/stm32mp15xx-phycore-som.dtsi
++++ b/arch/arm/dts/stm32mp15xx-phycore-som.dtsi
+@@ -15,10 +15,6 @@
+ #include <dt-bindings/rtc/rtc-stm32.h>
+ 
+ / {
+-	memory@c0000000 {
+-		reg = <0xc0000000 0x20000000>;
+-	};
+-
+ 	aliases {
+ 		mmc0 = &sdmmc1;
+ 		mmc1 = &sdmmc2;
+@@ -78,11 +74,6 @@
+ 			reg = <0x10044000 0x4000>;
+ 			no-map;
+ 		};
+-
+-		gpu_reserved: gpu@f8000000 {
+-			reg = <0xf8000000 0x8000000>;
+-			no-map;
+-		};
+ 	};
+ 
+ 	vin: vin {
+@@ -323,19 +314,6 @@
+ 	phy-handle = <&phy0>;
+ 	nvmem-cells = <&ethernet_mac_address>;
+ 	nvmem-cell-names = "mac-address";
+-	st,eth-clk-sel = "true";
+-	clock-names = "stmmaceth",
+-		      "mac-clk-tx",
+-		      "mac-clk-rx",
+-		      "eth-ck",
+-		      "syscfg-clk",
+-		      "ethstp";
+-	clocks = <&rcc ETHMAC>,
+-		 <&rcc ETHTX>,
+-		 <&rcc ETHRX>,
+-		 <&rcc ETHCK_K>,
+-		 <&rcc SYSCFG>,
+-		 <&rcc ETHSTP>;
+ 
+ 	mdio0 {
+ 		#address-cells = <1>;
+@@ -352,7 +330,7 @@
+ 			ti,fifo-depth = <DP83867_PHYCR_FIFO_DEPTH_4_B_NIB>;
+ 			ti,min-output-impedance;
+ 			enet-phy-lane-no-swap;
+-			ti,clk-output-sel = <DP83867_CLK_O_SEL_OFF>;
++			ti,clk-output-sel = <DP83867_CLK_O_SEL_CHN_A_RCLK>;
+ 		};
+ 	};
+ };
+@@ -451,7 +429,7 @@
+ 	pinctrl-0 = <&sdmmc1_b4_pins_a>;
+ 	pinctrl-1 = <&sdmmc1_b4_od_pins_a>;
+ 	pinctrl-2 = <&sdmmc1_b4_sleep_pins_a>;
+-	cd-gpios = <&gpioi 1 GPIO_ACTIVE_LOW>;
++	cd-gpios = <&gpiof 3 GPIO_ACTIVE_LOW>;
+ 	st,neg-edge;
+ 	bus-width = <4>;
+ 	max-frequency = <10000000>;
+-- 
+2.25.1
+
