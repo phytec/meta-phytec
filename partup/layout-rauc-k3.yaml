@@ -41,7 +41,7 @@ partitions:
 
   - label: config
     type: primary
-    filesystem: ${PARTUP_ROOT_FS}
+    filesystem: ext4
     size: 64MiB
     input:
       - filename: config-partition.tar.gz
@@ -65,14 +65,14 @@ partitions:
 
   - label: app0
     type: logical
-    filesystem: ${PARTUP_ROOT_FS}
+    filesystem: ext4
     size: 1GiB
     input:
       - filename: rauc-appfs-example.tar.gz
 
   - label: app1
     type: logical
-    filesystem: ${PARTUP_ROOT_FS}
+    filesystem: ext4
     size: 1GiB
     input:
       - filename: rauc-appfs-example.tar.gz
