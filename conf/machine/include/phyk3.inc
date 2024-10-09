@@ -110,7 +110,7 @@ EFI_PROVIDER ?= "grub-efi"
 IMAGE_CLASSES += "image-types-partup"
 include partup-layout-config.inc
 
-IMAGE_FSTYPES = "tar.gz wic.xz wic.bmap partup"
+IMAGE_FSTYPES = "tar.xz wic.xz wic.bmap partup"
 IMAGE_FSTYPES:update = "partup"
 
 # rootfs alignment required for RAUC adaptive update
