@@ -61,7 +61,7 @@ SRC_URI:append:phyboard-izar-am68x-3-k3r5 = "\
 "
 
 PR = "r0"
-SRCREV = "824d3b3704ed72e1f6f1f45f6328cb7391b678f1"
+SRCREV = "98148f90e241a18d6161d734c17f4eeac8fb6baa"
 
 PACKAGECONFIG[optee] = "TEE=${STAGING_DIR_HOST}${nonarch_base_libdir}/firmware/tee-pager_v2.bin,,optee-os"
 
