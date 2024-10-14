@@ -53,13 +53,6 @@ SRC_URI:append:phyboard-lyra-am62xx-4-k3r5 = "\
     file://0001-HACK-board-phytec-phycore_am62x-Enable-OLDI0-AUDIO_R.patch \
 "
 
-SRC_URI:append:phyboard-izar-am68x-3 = "\
-    file://0002-HACK-board-phytec-am68x-Configure-8GB-ram.patch \
-"
-SRC_URI:append:phyboard-izar-am68x-3-k3r5 = "\
-    file://0002-HACK-board-phytec-am68x-Configure-8GB-ram.patch \
-"
-
 PR = "r0"
 SRCREV = "98148f90e241a18d6161d734c17f4eeac8fb6baa"
 
