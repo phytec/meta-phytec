@@ -11,6 +11,9 @@ PROVIDES = "virtual/bootloader"
 # Increase INC_PR everytime the include file is changed.
 INC_PR = "r7"
 
+CVE_PRODUCT = "pengutronix:barebox"
+CVE_VERSION = "${@d.getVar("PV").split('-')[0]}"
+
 FILESEXTRAPATHS:prepend := "${THISDIR}/barebox:"
 SRC_URI = "http://barebox.org/download/barebox-${PV}.tar.bz2"
 PATCHTOOL = "git"
