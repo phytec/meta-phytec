@@ -1,6 +1,6 @@
 inherit phygittag
-require recipes-bsp/u-boot/u-boot-common.inc
 require recipes-bsp/u-boot/u-boot-ti.inc
+require recipes-bsp/u-boot/u-boot-common-phytec.inc
 require recipes-bsp/u-boot/u-boot-rauc.inc
 require recipes-bsp/u-boot/u-boot-securiphy.inc
 
