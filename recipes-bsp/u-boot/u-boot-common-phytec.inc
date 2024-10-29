@@ -1,3 +1,11 @@
+DEPENDS += " \
+    bc-native \
+    dtc-native \
+    gnutls-native \
+"
+
+PROVIDES += "u-boot"
+
 do_deploy:append() {
     if [ -n "${UBOOT_CONFIG}" ]; then
         for defconfig in ${UBOOT_MACHINE}; do
