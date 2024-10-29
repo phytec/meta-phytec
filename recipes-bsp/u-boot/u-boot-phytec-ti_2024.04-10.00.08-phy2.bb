@@ -13,40 +13,23 @@ GIT_URL = "git://github.com/phytec/u-boot-phytec-ti.git;protocol=https"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
-SRC_URI:append:phyboard-electra-am64xx-1 = "\
+
+PATCHES = ""
+PATCHES:am62xx = " \
+    file://0001-HACK-board-phytec-phycore_am62x-Enable-OLDI0-AUDIO_R.patch \
+"
+PATCHES:k3r5-am62xx = " \
+    file://0001-HACK-board-phytec-phycore_am62x-Enable-OLDI0-AUDIO_R.patch \
+"
+SRC_URI:append:phyboard-lyra = " ${PATCHES}"
+
+PATCHES:am64xx = " \
     file://0001-HACK-board-phycore_am64x-Add-Set-CLKOUT0-to-25MHz.patch \
 "
-SRC_URI:append:phyboard-electra-am64xx-1-k3r5 = "\
+PATCHES:k3r5-am64xx = " \
     file://0001-HACK-board-phycore_am64x-Add-Set-CLKOUT0-to-25MHz.patch \
 "
-
-SRC_URI:append:phyboard-electra-am64xx-2 = "\
-    file://0001-HACK-board-phycore_am64x-Add-Set-CLKOUT0-to-25MHz.patch \
-"
-SRC_URI:append:phyboard-electra-am64xx-2-k3r5 = "\
-    file://0001-HACK-board-phycore_am64x-Add-Set-CLKOUT0-to-25MHz.patch \
-"
-
-SRC_URI:append:phyboard-lyra-am62xx-2 = "\
-    file://0001-HACK-board-phytec-phycore_am62x-Enable-OLDI0-AUDIO_R.patch \
-"
-SRC_URI:append:phyboard-lyra-am62xx-2-k3r5 = "\
-    file://0001-HACK-board-phytec-phycore_am62x-Enable-OLDI0-AUDIO_R.patch \
-"
-
-SRC_URI:append:phyboard-lyra-am62xx-3 = "\
-    file://0001-HACK-board-phytec-phycore_am62x-Enable-OLDI0-AUDIO_R.patch \
-"
-SRC_URI:append:phyboard-lyra-am62xx-3-k3r5 = "\
-    file://0001-HACK-board-phytec-phycore_am62x-Enable-OLDI0-AUDIO_R.patch \
-"
-
-SRC_URI:append:phyboard-lyra-am62xx-4 = "\
-    file://0001-HACK-board-phytec-phycore_am62x-Enable-OLDI0-AUDIO_R.patch \
-"
-SRC_URI:append:phyboard-lyra-am62xx-4-k3r5 = "\
-    file://0001-HACK-board-phytec-phycore_am62x-Enable-OLDI0-AUDIO_R.patch \
-"
+SRC_URI:append:phyboard-electra = " ${PATCHES}"
 
 PR = "r0"
 SRCREV = "b192e2a8b8367cf3f7c0ff0ab2f18fd3dab1bb55"
