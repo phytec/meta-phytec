@@ -4,3 +4,5 @@ require conf/machine/include/arm/armv8a/tune-cortexa53.inc
 
 MACHINE_FEATURES += "emmc pci wifi bluetooth"
 MACHINE_FEATURES:remove = "nxp8987"
+
+INITRAMFS_MAXSIZE = "262144"
