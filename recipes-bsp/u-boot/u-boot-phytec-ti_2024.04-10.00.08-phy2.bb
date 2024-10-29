@@ -1,8 +1,10 @@
 inherit phygittag
-require recipes-bsp/u-boot/u-boot-ti.inc
-require recipes-bsp/u-boot/u-boot-common-phytec.inc
-require recipes-bsp/u-boot/u-boot-rauc.inc
-require recipes-bsp/u-boot/u-boot-securiphy.inc
+require recipes-bsp/u-boot/u-boot-common.inc
+require recipes-bsp/u-boot/u-boot.inc
+require u-boot-phytec-ti.inc
+require u-boot-common-phytec.inc
+require u-boot-rauc.inc
+require u-boot-securiphy.inc
 
 LICENSE = "GPL-2.0-or-later"
 LIC_FILES_CHKSUM = "file://Licenses/README;md5=2ca5f2c35c8cc335f0a19756634782f1"
@@ -10,7 +12,7 @@ LIC_FILES_CHKSUM = "file://Licenses/README;md5=2ca5f2c35c8cc335f0a19756634782f1"
 GIT_URL = "git://github.com/phytec/u-boot-phytec-ti.git;protocol=https"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
-FILESEXTRAPATHS:prepend := "${THISDIR}/u-boot:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 SRC_URI:append:phyboard-electra-am64xx-1 = "\
     file://0001-HACK-board-phycore_am64x-Add-Set-CLKOUT0-to-25MHz.patch \
 "
