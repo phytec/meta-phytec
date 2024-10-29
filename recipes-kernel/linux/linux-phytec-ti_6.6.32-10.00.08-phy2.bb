@@ -59,16 +59,7 @@ KERNEL_EXTRA_ARGS += "LOADADDR=${UBOOT_ENTRYPOINT} \
                       ${EXTRA_DTC_ARGS}"
 
 COMPATIBLE_MACHINE  = "^("
-COMPATIBLE_MACHINE .=  "phyboard-lyra-am62xx-2"
-COMPATIBLE_MACHINE .= "|phyboard-lyra-am62xx-3"
-COMPATIBLE_MACHINE .= "|phyboard-lyra-am62xx-4"
-
-COMPATIBLE_MACHINE .= "|phyboard-lyra-am62axx-1"
-COMPATIBLE_MACHINE .= "|phyboard-lyra-am62axx-2"
-
-COMPATIBLE_MACHINE .= "|phyboard-electra-am64xx-1"
-COMPATIBLE_MACHINE .= "|phyboard-electra-am64xx-2"
-
-COMPATIBLE_MACHINE .= "|phyboard-izar-am68x-2"
-COMPATIBLE_MACHINE .= "|phyboard-izar-am68x-3"
+COMPATIBLE_MACHINE .=  "phyboard-lyra"
+COMPATIBLE_MACHINE .= "|phyboard-electra"
+COMPATIBLE_MACHINE .= "|phyboard-izar"
 COMPATIBLE_MACHINE .= ")$"
