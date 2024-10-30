@@ -10,7 +10,7 @@ SOC_FAMILY = "imx-generic-bsp:mx6-generic-bsp"
 PREFERRED_PROVIDER_virtual/bootloader ?= "barebox"
 
 # Kernel
-PREFERRED_PROVIDER_virtual/kernel ?= "linux-mainline"
+PREFERRED_PROVIDER_virtual/kernel ?= "linux-phytec"
 KERNEL_IMAGETYPE ?= "zImage"
 
 # dont install kernelimage to rootfs
