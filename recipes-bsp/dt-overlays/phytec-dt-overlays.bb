@@ -9,6 +9,7 @@ inherit devicetree
 SRC_URI += "file://README.md"
 
 DT_FILES_PATH = "${STAGING_KERNEL_DIR}/arch/${ARCH}/boot/dts/overlays/"
+DT_FILES_PATH:mx6-generic-bsp = "${STAGING_KERNEL_DIR}/arch/${ARCH}/boot/dts/nxp/imx/"
 DT_FILES_PATH:mx6ul-generic-bsp = "${STAGING_KERNEL_DIR}/arch/${ARCH}/boot/dts/nxp/imx/"
 DT_FILES_PATH:ti33x = "${STAGING_KERNEL_DIR}/arch/${ARCH}/boot/dts/ti/omap/"
 DT_OVERLAYS_INSTALL ?= ""
