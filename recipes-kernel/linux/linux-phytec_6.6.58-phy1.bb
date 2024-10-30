@@ -1,17 +1,14 @@
-# Copyright (C) 2017 PHYTEC Messtechnik GmbH,
-# Author: Stefan Riedmueller <s.riedmueller@phytec.de>
-
 inherit kernel
 inherit phygittag buildinfo kconfig kernel-deploy-oftree
 include linux-common.inc
 include linux-barebox-dt-overlays.inc
 
-GIT_URL = "git://git.phytec.de/${BPN}"
+GIT_URL = "git://github.com/phytec/linux-phytec.git;protocol=https"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
 PR = "${INC_PR}.0"
 
-FILESEXTRAPATHS:prepend := "${THISDIR}/linux-phytec-5.15:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/linux-phytec-6.6:"
 SRC_URI:append = " \
   ${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'file://lxc.cfg', '', d)} \
   ${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'file://oci.cfg', '', d)} \
@@ -19,11 +16,12 @@ SRC_URI:append = " \
   ${@bb.utils.contains('DEBUG_BUILD', '1', 'file://debugging.cfg', '', d)} \
   ${@bb.utils.contains('MACHINE_FEATURES', 'tpm2', 'file://tpm2.cfg', '', d)} \
   ${@bb.utils.contains('MACHINE_FEATURES', 'caam', 'file://caam.cfg', '',   d)} \
+  file://0001-tty-vt-conmakehash-Don-t-mention-the-full-path-of-th.patch \
 "
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "74a0c29960c47586f668151682bd08735ebe3b5f"
+SRCREV = "5ae46af15ea4ea3411bec18d60c087c54d941d79"
 
 S = "${WORKDIR}/git"
 
