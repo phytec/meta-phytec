@@ -91,7 +91,10 @@ FITIMAGE_NO_DTB_OVERLAYS ??= "false"
 FITIMAGE_NO_DTB_OVERLAYS[type] = "boolean"
 
 FITIMAGE_IMAGE_SUFFIX ??= ""
+FITIMAGE_IMAGE_BASE_NAME ??= "fitImage-${PN}-${PV}-${PR}-${MACHINE}${IMAGE_VERSION_SUFFIX}${FITIMAGE_IMAGE_SUFFIX}"
 FITIMAGE_IMAGE_LINK_NAME ??= "fitImage"
+FITIMAGE_ITS_BASE_NAME ??= "${PN}-${PV}-${PR}-${MACHINE}${IMAGE_VERSION_SUFFIX}"
+FITIMAGE_ITS_LINK_NAME ??= "${PN}-${MACHINE}"
 
 # Create dependency list from images
 python __anonymous() {
@@ -588,10 +591,10 @@ do_deploy() {
     # Update deploy directory
     install -d ${DEPLOYDIR}
 
-    its_base_name="${PN}-${PV}-${PR}-${MACHINE}${IMAGE_VERSION_SUFFIX}"
-    its_symlink_name="${PN}-${MACHINE}"
+    its_file_name="${FITIMAGE_ITS_BASE_NAME}.its"
+    its_symlink_name="${FITIMAGE_ITS_LINK_NAME}.its"
     printf 'Copying fit-image.its source file...'
-    install -m 0644 ${S}/manifest.its ${DEPLOYDIR}/${its_base_name}.its
+    install -m 0644 ${S}/manifest.its ${DEPLOYDIR}/${its_file_name}
 
     printf 'Copying all created fdt from type fdtapply'
     count=`ls -1 ${S}/*.dtb 2>/dev/null | wc -l`
@@ -599,17 +602,15 @@ do_deploy() {
         install -m 0644 ${S}/*.dtb ${DEPLOYDIR}/
     fi
 
-    linux_bin_base_name="fitImage-${PN}-${PV}-${PR}-${MACHINE}${IMAGE_VERSION_SUFFIX}${FITIMAGE_IMAGE_SUFFIX}"
-    linux_bin_symlink_name="${PN}-${MACHINE}${FITIMAGE_IMAGE_SUFFIX}"
-    if [ -n "${FITIMAGE_IMAGE_LINK_NAME}" ]; then
-        linux_bin_symlink_name="${FITIMAGE_IMAGE_LINK_NAME}${FITIMAGE_IMAGE_SUFFIX}"
-    fi
+    linux_bin_file_name="${FITIMAGE_IMAGE_BASE_NAME}${FITIMAGE_IMAGE_SUFFIX}"
+    linux_bin_symlink_name="${FITIMAGE_IMAGE_LINK_NAME}${FITIMAGE_IMAGE_SUFFIX}"
+
     printf 'Copying fitImage file...'
-    install -m 0644 ${B}/fitImage ${DEPLOYDIR}/${linux_bin_base_name}
+    install -m 0644 ${B}/fitImage ${DEPLOYDIR}/${linux_bin_file_name}
 
     cd ${DEPLOYDIR}
-    ln -sf ${its_base_name}.its ${its_symlink_name}.its
-    ln -sf ${linux_bin_base_name} ${linux_bin_symlink_name}
+    ln -sf ${its_file_name} ${its_symlink_name}
+    ln -sf ${linux_bin_file_name} ${linux_bin_symlink_name}
 }
 addtask deploy after do_fitimagebundle before do_build
 
