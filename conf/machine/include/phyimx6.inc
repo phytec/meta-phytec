@@ -31,7 +31,7 @@ MACHINE_EXTRA_RDEPENDS = "firmware-imx-sdma-imx6q"
 
 SERIAL_CONSOLES = "115200;ttymxc0"
 
-MACHINE_FEATURES = "apm usbgadget usbhost vfat caam gpu"
+MACHINE_FEATURES = "apm usbgadget usbhost vfat caam gpu screen"
 
 
 #WIC
