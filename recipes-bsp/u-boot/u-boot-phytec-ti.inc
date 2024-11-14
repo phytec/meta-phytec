@@ -26,3 +26,12 @@ PACKAGECONFIG:append:am62axx = " dm"
 BINMAN_INDIRS = "${STAGING_DIR_HOST}${nonarch_base_libdir}/firmware"
 
 EXTRA_OEMAKE += "${PACKAGECONFIG_CONFARGS} BINMAN_INDIRS=${BINMAN_INDIRS}"
+
+do_deploy:append:k3r5 () {
+    rm -f ${DEPLOYDIR}/u-boot-initial-env*
+    rm -f ${DEPLOYDIR}/${PN}-initial-env*
+    rm -f ${DEPLOYDIR}/u-boot-initial-env-${MACHINE}*
+    rm -f ${DEPLOYDIR}/${PN}-initial-env-${MACHINE}*
+    rm -f ${DEPLOYDIR}/u-boot-initial-env-${MACHINE}-${PV}-${PR}*
+    rm -f ${DEPLOYDIR}/${PN}-initial-env-${MACHINE}-${PV}-${PR}*
+}
