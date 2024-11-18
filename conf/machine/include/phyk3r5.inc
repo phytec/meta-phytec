@@ -12,7 +12,6 @@ require phytec-machine-common.inc
 
 # R5 u-boot
 SPL_SUFFIX = "bin"
-SPL_BINARY = "tiboot3-${SYSFW_SOC}-${SYSFW_SUFFIX}-${SYSFW_CONFIG}.${SPL_SUFFIX}"
 SPL_SYMLINK = "tiboot3.${SPL_SUFFIX}"
 UBOOT_SUFFIX = "bin"
 UBOOT_BINARY = "u-boot-r5spl.${UBOOT_SUFFIX}"
