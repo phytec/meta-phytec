@@ -1,6 +1,6 @@
-inherit kernel
-inherit phygittag buildinfo kconfig kernel-deploy-oftree
-include linux-common.inc
+inherit kernel kernel-yocto
+inherit phygittag buildinfo kernel-deploy-oftree
+require recipes-kernel/linux/linux-common.inc
 include linux-barebox-dt-overlays.inc
 
 GIT_URL = "git://github.com/phytec/linux-phytec.git;protocol=https"
@@ -10,22 +10,32 @@ PR = "${INC_PR}.0"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/linux-phytec-6.6:"
 SRC_URI:append = " \
-  ${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'file://lxc.cfg', '', d)} \
-  ${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'file://oci.cfg', '', d)} \
-  ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'file://systemd.cfg', '', d)} \
-  ${@bb.utils.contains('DEBUG_BUILD', '1', 'file://debugging.cfg', '', d)} \
-  ${@bb.utils.contains('MACHINE_FEATURES', 'tpm2', 'file://tpm2.cfg', '', d)} \
-  ${@bb.utils.contains('MACHINE_FEATURES', 'caam', 'file://caam.cfg', '',   d)} \
+  git://git.yoctoproject.org/yocto-kernel-cache;type=kmeta;name=meta;branch=yocto-6.6;destsuffix=${KMETA};protocol=https \
   file://0001-tty-vt-conmakehash-Don-t-mention-the-full-path-of-th.patch \
 "
+
+KERNEL_EXTRA_FEATURES = "cfg/systemd.scc"
+KERNEL_FEATURES = "${KERNEL_EXTRA_FEATURES}"
+KERNEL_FEATURES:append = " ${@bb.utils.contains("DISTRO_FEATURES", "virtualization", " cfg/lxc.scc oci.scc", "", d)}"
+KERNEL_FEATURES:append = " ${@bb.utils.contains("DEBUG_BUILD", "1", " debugging.scc", "", d)}"
+KERNEL_FEATURES:append = " ${@bb.utils.contains("MACHINE_FEATURES", "wifi", " features/wifi/wifi-sdio.scc", "", d)}"
+KERNEL_FEATURES:append = " ${@bb.utils.contains("MACHINE_FEATURES", "bluetooth", " features/bluetooth/bluetooth.scc", "", d)}"
+KERNEL_FEATURES:append = " ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", " features/tpm/tpm-2.0.scc", "", d)}"
+KERNEL_FEATURES:append = " ${@bb.utils.contains("MACHINE_FEATURES", "caam", " caam.scc", "", d)}"
+KERNEL_FEATURES:append = " ${@bb.utils.contains("MACHINE_FEATURES", "pci", " features/pci/pci.scc", "", d)}"
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
 # NOTE: Keep version in filename in sync with commit id!
 SRCREV = "0c0e5a134cb4187e6c01db10aff1f80d2a8d35d7"
+SRCREV_machine = "${SRCREV}"
+SRCREV_meta ?= "b1108273b878547b3d3281f21aba44a8c41ca741"
+
+KMETA = "kernel-meta"
 
 S = "${WORKDIR}/git"
 
-INTREE_DEFCONFIG = "imx_v6_v7_defconfig imx6_phytec_distro.config imx6_phytec_machine.config imx6_phytec_platform.config"
+KBUILD_DEFCONFIG = "imx6_phytec_defconfig"
+KCONFIG_MODE = "alldefconfig"
 
 COMPATIBLE_MACHINE  = "^("
 COMPATIBLE_MACHINE .=  "phyflex-imx6-1"
