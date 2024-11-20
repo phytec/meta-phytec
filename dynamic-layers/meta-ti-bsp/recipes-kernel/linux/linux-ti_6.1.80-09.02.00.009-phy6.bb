@@ -13,6 +13,10 @@ SRC_URI:append:phyboard-izar-am68x-1 = " \
 	file://eth-module.cfg \
 "
 
+SRC_URI:append:j721s2 = " \
+        file://drop-cpufreq.cfg \
+"
+
 PR = "${INC_PR}.0"
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
