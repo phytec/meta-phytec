@@ -133,7 +133,7 @@ of_fixup_status /regulator-wl-en
 of_fixup_status -d /gpio-keys
 of_fixup_status /soc/bus@2100000/serial@21ec000/bluetooth
 of_fixup_status -d /user-leds
-of_property -s -f -e $global.bootm.oftree /soc/bus@2100000/serial@21ec000 pinctrl-0 </soc/bus@2000000/pinctrl@20e0000/uart3grp_bt>
+of_property -s -f -e $global.bootm.oftree /soc/bus@2100000/serial@21ec000 pinctrl-0 </soc/bus@2000000/pinctrl@20e0000/uart3grp-bt>
 """)
     env_add(d, "nv/dev.eth0.mode", "static")
     env_add(d, "nv/dev.eth0.ipaddr", "192.168.3.11")
