@@ -54,7 +54,7 @@ SRC_URI:append:phyboard-lyra-am62xx-4-k3r5 = "\
 "
 
 PR = "r0"
-SRCREV = "98148f90e241a18d6161d734c17f4eeac8fb6baa"
+SRCREV = "038ad3b49d5d7497fd2d978d536ec8492ceabca3"
 
 PACKAGECONFIG[optee] = "TEE=${STAGING_DIR_HOST}${nonarch_base_libdir}/firmware/tee-pager_v2.bin,,optee-os"
 
