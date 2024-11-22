@@ -539,6 +539,10 @@ of_fixup_status -d /user-leds
     env_add_rauc_nand_boot_scripts(d, nandflashsize=512)
 }
 
+python do_env:append:phyboard-segin-imx6ul-2() {
+    env_add(d, "nv/linux.bootargs.cma", "cma=128M\n")
+}
+
 #No RAUC support for the low-cost Segin due to small NAND
 python do_env:append:phyboard-segin-imx6ul-3() {
     env_rm(d, "boot/system0")
@@ -549,6 +553,10 @@ python do_env:append:phyboard-segin-imx6ul-3() {
     #Default CMA size (128 MB) is too big for the 256 MB RAM so it has to be
     #reduced to 64 MB.
     env_add(d, "nv/linux.bootargs.cma", "cma=64M\n")
+}
+
+python do_env:append:phyboard-segin-imx6ul-4() {
+    env_add(d, "nv/linux.bootargs.cma", "cma=128M\n")
 }
 
 python do_env:append:phyboard-segin-imx6ul-5() {
@@ -565,6 +573,8 @@ python do_env:append:phyboard-segin-imx6ul-5() {
 #use this expansion when peb-wlbt-05 adapter is connected
 #. /env/expansions/imx6ul-phytec-peb-wlbt-05
 """)
+
+    env_add(d, "nv/linux.bootargs.cma", "cma=128M\n")
 }
 
 python do_env:append:phyboard-segin-imx6ul-6() {
@@ -573,10 +583,15 @@ python do_env:append:phyboard-segin-imx6ul-6() {
 
 python do_env:append:phyboard-segin-imx6ul-7() {
     env_rm_rauc_nand_boot_scripts(d)
+    env_add(d, "nv/linux.bootargs.cma", "cma=128M\n")
 }
 
 python do_env:append:phyboard-segin-imx6ul-8() {
     env_rm_rauc_nand_boot_scripts(d)
+    env_add(d, "nv/linux.bootargs.cma", "cma=128M\n")
+}
+
+python do_env:append:phygate-tauri-s-imx6ul-1() {
     env_add(d, "nv/linux.bootargs.cma", "cma=128M\n")
 }
 
