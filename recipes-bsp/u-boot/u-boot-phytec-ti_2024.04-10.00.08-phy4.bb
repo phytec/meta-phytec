@@ -35,7 +35,7 @@ SRC_URI:append:update = "\
 "
 
 PR = "r0"
-SRCREV = "8809ccea32efd861dbda690c7329049928de6a2b"
+SRCREV = "83e8d5904c0e67cd05cd97d96520059d339c3f34"
 
 PACKAGECONFIG[optee] = "TEE=${STAGING_DIR_HOST}${nonarch_base_libdir}/firmware/tee-pager_v2.bin,,optee-os"
 
