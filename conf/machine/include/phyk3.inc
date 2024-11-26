@@ -54,7 +54,6 @@ MACHINE_FEATURES = "apm usbgadget usbhost vfat ext2 alsa pci optee efi"
 
 # dont install kernelimage to rootfs
 RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base = ""
-MACHINE_ESSENTIAL_EXTRA_RDEPENDS:remove = "kernel-image-image kernel-devicetree"
 
 KERNEL_IMAGETYPE = "Image"
 KERNEL_IMAGETYPES = "Image vmlinux.gz"
