@@ -4,7 +4,7 @@ inherit kernel kernel-yocto
 inherit phygittag kernel-deploy-oftree
 include recipes-kernel/linux/linux-common.inc
 
-SRCREV = "f296dd2cafa2c1c47e9c190711d9bfb2ce16b1b8"
+SRCREV = "3af8c3a57b8c64dc425828192202ef229818a76d"
 SRCREV_machine = "${SRCREV}"
 SRCREV_meta ?= "da275b53b13faafa834352e3f9dd3f91a2c03bb8"
 
@@ -35,7 +35,6 @@ KERNEL_FEATURES:append = " ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", " fe
 KERNEL_FEATURES:append = " ${@bb.utils.contains("MACHINE_FEATURES", "pci", " features/pci/pci.scc", "", d)}"
 
 KBUILD_DEFCONFIG ?= "imx8_phytec_defconfig"
-KBUILD_DEFCONFIG:mx93-nxp-bsp = "imx9_phytec_defconfig"
 KCONFIG_MODE="alldefconfig"
 
 do_deploy:append() {
@@ -50,8 +49,6 @@ do_deploy:append() {
 }
 
 COMPATIBLE_MACHINE  = "^("
-COMPATIBLE_MACHINE .= "phyboard-pollux-imx8mp-3"
-COMPATIBLE_MACHINE .= "|phycore-imx8x-1"
-COMPATIBLE_MACHINE .= "|phyboard-nash-imx93-1"
-COMPATIBLE_MACHINE .= "|phyboard-segin-imx93-2"
+COMPATIBLE_MACHINE .= "phyboard-polis-imx8mm-5"
+COMPATIBLE_MACHINE .= "|phygate-tauri-l-imx8mm-2"
 COMPATIBLE_MACHINE .= ")$"
