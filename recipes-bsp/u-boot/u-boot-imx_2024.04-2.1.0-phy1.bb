@@ -13,12 +13,12 @@ DEPENDS += "flex-native bison-native bc-native dtc-native gnutls-native python3-
 
 LICENSE = "GPL-2.0-or-later"
 LIC_FILES_CHKSUM = "file://Licenses/gpl-2.0.txt;md5=b234ee4d69f5fce4486a80fdaf4a4263"
-BRANCH = "v2024.04-2.0.0-phy"
+BRANCH = "v2024.04-2.1.0-phy"
 GIT_URL = "git://git.phytec.de/${BPN}"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
 PR = "r0"
-SRCREV = "054dcccf9449d306fd33222b9f9e1ada49276ffc"
+SRCREV = "27ef6cec6819865e4744ce00dc7d88d69678fa97"
 
 S = "${WORKDIR}/git"
 
@@ -56,8 +56,6 @@ do_deploy:append:mx93-generic-bsp() {
 }
 
 COMPATIBLE_MACHINE = "^("
-COMPATIBLE_MACHINE .= "phyboard-pollux-imx8mp-3"
-COMPATIBLE_MACHINE .= "|phycore-imx8x-1"
-COMPATIBLE_MACHINE .= "|phyboard-nash-imx93-1"
-COMPATIBLE_MACHINE .= "|phyboard-segin-imx93-2"
+COMPATIBLE_MACHINE .= "phyboard-polis-imx8mm-5"
+COMPATIBLE_MACHINE .= "|phygate-tauri-l-imx8mm-2"
 COMPATIBLE_MACHINE .= ")$"
