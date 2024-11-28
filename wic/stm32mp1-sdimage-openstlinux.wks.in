@@ -1,5 +1,5 @@
 # short-description: Create SD card image with a boot partition
-# long-description: Creates a partitioned SD card image for STM32MP1 BSP
+# long-description: Creates a partitioned SD card image for STM32MP1 OpenSTLinux BSP
 #
 #  - -------- ----- ------------ -------- ---------- -------- --------
 # | | TFA(2) | FIP | U-BOOT ENV | bootfs | vendorfs | rootfs | userfs |
