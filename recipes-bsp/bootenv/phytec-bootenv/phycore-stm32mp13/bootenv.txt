@@ -1,0 +1,1 @@
+overlays=stm32mp135x-phyboard-segin-peb-av-02-lcd.dtbo stm32mp13xx-phyboard-segin-peb-eval-01-leds-buttons.dtbo
