@@ -1,4 +1,4 @@
-#@DESCRIPTION: STM32MP machine flashlayout deleteall configuration
+#@DESCRIPTION: STM32MP machine flashlayout deleteall configuration for OpenSTLinux
 
 # Add specific scheme to provide flashlayout that will erase all storage devices
 FLASHLAYOUT_BOOTSCHEME_LABELS += "deleteall"

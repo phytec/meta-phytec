@@ -1,6 +1,6 @@
-#@DESCRIPTION: STM32MP machine flashlayout configuration
+#@DESCRIPTION: STM32MP machine flashlayout configuration for OpenSTLinux
 
-inherit flashlayout-stm32mp
+inherit ${@bb.utils.contains('BBFILE_COLLECTIONS', 'stm-st-stm32mp', 'flashlayout-stm32mp', '', d)}
 
 # Add specific dependencies to get all binaries generated before flashlayout files
 FLASHLAYOUT_DEPEND_TASKS += "${@bb.utils.contains('EXTRA_IMAGEDEPENDS', 'virtual/trusted-firmware-a', 'virtual/trusted-firmware-a:do_deploy', '', d)}"
