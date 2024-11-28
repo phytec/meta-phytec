@@ -1,0 +1,30 @@
+# short-description: Create SD card image with a boot partition
+# long-description: Creates a partitioned SD card image for STM32MP1 ampliPHY BSP
+#
+#  - --------- --------- ------------- -------- ---------
+# | | TFA (2) |   FIP   |  u-boot-env | bootfs |  rootfs |
+#  - --------- --------- ------------- -------- ---------
+# ^ ^         ^         ^             ^        ^
+# | |         |         |             |        |
+# 0 17kB     529kB     4MB          4608K     24MB
+#
+# Warning: the first stage of boot (here fsbl1, fsbl2, ssbl) MUST be on GPT partition to be detected.
+#
+
+# FSBL partitions (TF-A BL2)
+part fsbl1 --source rawcopy --fstype=ext4 --fsoptions "noauto" --part-name=fsbl1 --sourceparams="file=${DEPLOY_DIR_IMAGE}/arm-trusted-firmware/tf-a-${STM32MP_DEVICETREE}-sdcard.stm32" --ondisk mmcblk --part-type 0x8301 --fixed-size 256K --align 17
+part fsbl2 --source rawcopy --fstype=ext4 --fsoptions "noauto" --part-name=fsbl2 --sourceparams="file=${DEPLOY_DIR_IMAGE}/arm-trusted-firmware/tf-a-${STM32MP_DEVICETREE}-sdcard.stm32" --ondisk mmcblk --part-type 0x8301 --fixed-size 256K
+
+# FIP partition
+part fip --source rawcopy --fstype=ext4 --fsoptions "noauto" --part-name=fip --sourceparams="file=${DEPLOY_DIR_IMAGE}/fip/fip-${STM32MP_DEVICETREE}-optee.bin" --ondisk mmcblk --part-type 0x8301 --fixed-size 4096K
+
+# u-boot env partition
+part u-boot-env --source empty --part-name=uboot-env --ondisk mmcblk --part-type 0x8301 --fixed-size 512K
+
+# boot partition
+part /boot --source bootimg-partition --ondisk mmcblk --fstype=ext4 --label boot --use-uuid --active --align 4096 --size ${WKS_BOOTIMAGESIZE}
+
+# root partition
+part / --source rootfs --ondisk mmcblk --fstype=ext4 --label root --align 1024 --use-uuid
+
+bootloader --ptable gpt
