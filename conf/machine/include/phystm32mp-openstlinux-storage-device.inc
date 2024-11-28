@@ -1,4 +1,4 @@
-#@DESCRIPTION: STM32MP machine storage device configuration
+#@DESCRIPTION: STM32MP machine storage device configuration for OpenSTLinux
 
 # -----------------------------------------------------------------------------
 # Define device storage name and type mapping

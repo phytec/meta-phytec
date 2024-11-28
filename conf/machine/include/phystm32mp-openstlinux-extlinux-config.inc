@@ -1,20 +1,10 @@
-#@DESCRIPTION: STM32MP machine extlinux file configuration
+#@DESCRIPTION: STM32MP machine extlinux file additional configuration for OpenSTLinux
 
 # Define FIT option for extlinux file generation
 UBOOT_EXTLINUX_FIT = "${@bb.utils.contains('MACHINE_FEATURES', 'fit', '1', '0', d)}"
-# Define default FDTDIR for all configs
-UBOOT_EXTLINUX_FDTDIR = "${@bb.utils.contains('MACHINE_FEATURES', 'phy-expansions', '', '/', d)}"
 # Define default boot config for all config
-UBOOT_EXTLINUX_DEFAULT_LABEL ?= "OpenSTLinux"
-# Define default INITRD for all configs
-INITRD_IMAGE ??= ""
-UBOOT_EXTLINUX_INITRD ?= "${@bb.utils.contains('COMBINED_FEATURES', 'initrd', '/${INITRD_IMAGE}', '', d)}"
-# Define extlinux kernel arguments
-UBOOT_EXTLINUX_KERNEL_ARGS ?= "rootwait rw"
-# Add additional kernel arguments
-UBOOT_EXTLINUX_KERNEL_ARGS += "${EXTRA_KERNEL_ARGS}"
-# Define default SPLASH SCREEN
-UBOOT_EXTLINUX_SPLASH ?= "${UBOOT_SPLASH_LANDSCAPE_IMAGE}"
+UBOOT_EXTLINUX_DEFAULT_LABEL:openstlinuxcommon ?= "OpenSTLinux"
+BOOT_EXTLINUX_SPLASH ?= "${UBOOT_SPLASH_LANDSCAPE_IMAGE}"
 
 # -----------------------------------------------------------------------------
 # Configurations
@@ -75,7 +65,7 @@ UBOOT_EXTLINUX_FDT:rootfs-m4-examples = "/${CUBE_M4_EXAMPLES_DT}.dtb"
 # -----------------------------------------------------------------------------
 # When using FIT image, UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG must be set to Kernel device tree name
 # Otherwise, disable by default UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG
-UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG ?= "${@bb.utils.contains_any('MACHINE_FEATURES', 'fit', '${KERNEL_DT}', '', d)}"
+UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG ?= "${@bb.utils.contains_any('MACHINE_FEATURES', 'fit', '${KERNEL_DEVICETREE}', '', d)}"
 UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG[none] ?= ""
 
 # Enable UBOOT_EXTLINUX_TARGETS_EXTRA_CONFIG var that allows to configure

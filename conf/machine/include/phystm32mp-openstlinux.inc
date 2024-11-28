@@ -1,38 +1,22 @@
-require phytec-machine-common.inc
+#@DESCRIPTION: Common Machine additional configuration for STM32MP with OpenSTLinux Distro
 
-#@DESCRIPTION: Common Machine configuration for STM32 systems
+require conf/machine/include/phystm32mp-openstlinux-extlinux-config.inc
+require conf/machine/include/phystm32mp-openstlinux-flashlayout.inc
+require conf/machine/include/phystm32mp-openstlinux-flashlayout-deleteall.inc
+require conf/machine/include/phystm32mp-openstlinux-storage-device.inc
 
-require conf/machine/include/phytec-machine-extlinux-config-stm32mp.inc
-require conf/machine/include/st-machine-features-stm32mp.inc
-require conf/machine/include/phytec-machine-flashlayout-stm32mp.inc
-require conf/machine/include/phytec-machine-flashlayout-deleteall-stm32mp.inc
-require conf/machine/include/phytec-machine-storage-device-stm32mp.inc
-
-# Define specific common machine name
-MACHINEOVERRIDES .= ":stcommon"
-
-# Define specific common layer name
-MACHINEOVERRIDES .= ":stm32mpcommon"
-
-MACHINE_SOCARCH = "${TUNE_PKGARCH}"
+include conf/machine/include/st-machine-features-stm32mp.inc
+include conf/machine/include/st-machine-providers-stm32mp.inc
 
 # Define the EULA file to use
 EULA_FILE_ST:stm32mpcommon = "${PHYCORE_STM32MP_BASE}/conf/eula/${MACHINE}"
 EULA_FILE_ST_MD5SUM:stm32mpcommon = "8b505090fb679839cefbcc784afe8ce9"
 
 # =========================================================================
-# SOC
-# =========================================================================
-STM32MP_SOC_NAME = ""
-STM32MP_SOC_NAME:append:stm32mp15common = " stm32mp15 "
-# Take care of nativesdk override use case
-STM32MP_SOC_NAME:append:class-nativesdk = " stm32mp15 "
-
-# =========================================================================
 # boot scheme
 # =========================================================================
 # List of supported boot schemes
-BOOTSCHEME_LABELS ??= "trusted optee"
+BOOTSCHEME_LABELS ??= "optee"
 
 # =========================================================================
 # boot device
@@ -44,34 +28,17 @@ BOOTDEVICE_LABELS ??= "emmc nor-emmc nand-2-256 nand-2-64 nor-sdcard sdcard"
 # Machine settings
 # =========================================================================
 # Default machine feature
-MACHINE_FEATURES = "usbhost usbgadget alsa screen ext2"
-MACHINE_FEATURES:append = " ${@bb.utils.contains('BOOTSCHEME_LABELS', 'optee', 'optee', '', d)} "
-MACHINE_FEATURES:append = " tpm2 "
+MACHINE_FEATURES:openstlinuxcommon += "tpm2"
 
 # Configure autoresize for any of the 'ext4' storage devices (through InitRD image)
-MACHINE_FEATURES:append = " ${@bb.utils.contains_any('BOOTDEVICE_LABELS',  ['emmc', 'sdcard'], 'autoresize', '', d)} "
+MACHINE_FEATURES:openstlinuxcommon += "${@bb.utils.contains_any('BOOTDEVICE_LABELS',  ['emmc', 'sdcard'], 'autoresize', '', d)} "
 
 # Enable installation of INITRD image on bootfs side
-MACHINE_FEATURES:append = " initrd "
+MACHINE_FEATURES:openstlinuxcommon += "initrd"
 # Remove InitRD package install from DISTRO_EXTRA_RRECOMMENDS to add it explicitly
 # in our bootfs image (this avoid dependency loops as rootfs depends on bootfs...)
 DISTRO_EXTRA_RRECOMMENDS:remove = " ${@bb.utils.contains('COMBINED_FEATURES', 'initrd', '${INITRD_PACKAGE}', '', d)} "
 
-# Enable firmware secure update feature when using RAUC distro feature
-MACHINE_FEATURES:append:update = " fw-update"
-
-# Default serial consoles (TTYs) to enable using getty
-# Before kernel 4.18, serial console are ttyS3 but after is ttySTM0
-SERIAL_CONSOLES = "115200;ttySTM0"
-
-# Don't include kernels in standard images
-RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base = ""
-
-# Ship all kernel modules by default
-MACHINE_EXTRA_RRECOMMENDS = " kernel-modules"
-
-# Set default supported device tree for the bootloaders
-STM32MP_DEVICETREE = "${BOOTLOADER_DT}"
 
 # =========================================================================
 # Machine specific packages
@@ -79,8 +46,6 @@ STM32MP_DEVICETREE = "${BOOTLOADER_DT}"
 # Enable Software watchdog when sysvinit
 MACHINE_EXTRA_RRECOMMENDS:append = " ${@bb.utils.contains('DISTRO_FEATURES','sysvinit',' watchdog ','',d)} "
 
-# Install edid firmware files for hdmi
-MACHINE_EXTRA_RRECOMMENDS:append = " ${@bb.utils.contains("MACHINE_FEATURES", "hdmi", "linux-firmware-edid", "", d)}"
 
 # Specify WIFI and Bluetooth firmwares to install
 # For PEB-WLBT-05 expansions we use the Laird Sterling LWB firmware
@@ -178,7 +143,7 @@ PARTITIONS_BOOTLOADER_CONFIG[sdcard] ?= "\
 # Image
 # =========================================================================
 # For sparse, align on 4096b
-IMAGE_ROOTFS_ALIGNMENT ?= "4"
+IMAGE_ROOTFS_ALIGNMENT:openstlinuxcommon ?= "4"
 
 # Enable licence summary and configure License content generation
 ENABLE_IMAGE_LICENSE_SUMMARY ?= "1"
@@ -218,7 +183,7 @@ STM32MP_ROOTFS_MAXSIZE_NAND ?= "${@bb.utils.contains('ENABLE_FLASHLAYOUT_CONFIG_
 IMAGE_ROOTFS_MAXSIZE ?= "${STM32MP_ROOTFS_MAXSIZE_NAND}"
 
 # Partitions configuration
-IMAGE_CLASSES += "st-partitions-image"
+IMAGE_CLASSES:openstlinuxcommon += "st-partitions-image"
 
 # Enable use of extra partition(s)
 ST_BOOTFS   ?= "1"
@@ -329,7 +294,7 @@ PARTITIONS_CONFIG[nor-emmc] ?= "${PARTITIONS_CONFIG_MMC}"
 PARTITIONS_CONFIG[sdcard] ?= "${PARTITIONS_CONFIG_MMC}"
 
 # UBI Configuration
-IMAGE_CLASSES += "image_types-stubi"
+IMAGE_CLASSES:openstlinuxcommon += "image_types-stubi"
 
 # Define two empty volumes to manage U-Boot config beginning of multivolume UBIFS
 STM32MP_UBI_VOLUME:prepend = "uboot_config:256:empty uboot_config_r:256:empty "
@@ -365,22 +330,16 @@ EXTRA_UBIFS_SIZE:nand_2_64 = "2304"
 
 ##############################################################################################################
 
-# Default FSTYPES requested
-WKS_IMAGE_FSTYPES ?= ""
-IMAGE_FSTYPES ?= "${WKS_IMAGE_FSTYPES} tar.xz ext4"
-# Append ubi FSTYPES to default ones for nand volumes
-IMAGE_FSTYPES += "${@bb.utils.contains_any('BOOTDEVICE_LABELS', [ 'nand-2-256', 'nand-2-64' ], 'stmultiubi', '', d)}"
-
 # Define specific EXT4 command line:
 #   - Create minimal inode number (as it is done by default in image_types.bbclass)
 #   - Add label name (maximum length of the volume label is 16 bytes)
 #     So use IMAGE_NAME_SUFFIX name by removing the '.' and truncing to 16 caracters
 #   - Deactivate metadata_csum and dir_index (hashed b-trees): update not supported
 #     by U-Boot
-EXTRA_IMAGECMD:ext4 = "-i 4096 -L ${@d.getVar('IMAGE_NAME_SUFFIX').replace('.', '', 1)[:16]} -O ^metadata_csum,^dir_index"
+EXTRA_IMAGECMD:ext4:openstlinuxcommon = "-i 4096 -L ${@d.getVar('IMAGE_NAME_SUFFIX').replace('.', '', 1)[:16]} -O ^metadata_csum,^dir_index"
 
 # Allow debug on the platform with gdb and openocd tools
-EXTRA_IMAGEDEPENDS:append = " \
+EXTRA_IMAGEDEPENDS:append:openstlinuxcommon = " \
     gdb-cross-${TARGET_ARCH} \
     openocd-stm32mp-native \
     stm32wrapper4dbg-native \
@@ -481,20 +440,20 @@ ST_DEPENDENCIES_BUILD_FOR_SDK:append = " \
   "
 
 # for populate_sdk, we will have all the tools
-TOOLCHAIN_HOST_TASK:append = " ${ST_TOOLS_FOR_SDK} "
-TOOLCHAIN_HOST_TASK:append = " ${ST_DEPENDENCIES_BUILD_FOR_SDK} "
+TOOLCHAIN_HOST_TASK:append:openstlinuxcommon = " ${ST_TOOLS_FOR_SDK} "
+TOOLCHAIN_HOST_TASK:append:openstlinuxcommon = " ${ST_DEPENDENCIES_BUILD_FOR_SDK} "
 # for populate_sdk_ext, the tools are not desired as mandatory tools (aka basic
 # tools for devtool)
-TOOLCHAIN_HOST_TASK:remove:task-populate-sdk-ext = " ${ST_TOOLS_FOR_SDK} "
-TOOLCHAIN_HOST_TASK:remove:task-populate-sdk-ext = " ${ST_DEPENDENCIES_BUILD_FOR_SDK} "
+TOOLCHAIN_HOST_TASK:remove:task-populate-sdk-ext:openstlinuxcommon = " ${ST_TOOLS_FOR_SDK} "
+TOOLCHAIN_HOST_TASK:remove:task-populate-sdk-ext:openstlinuxcommon = " ${ST_DEPENDENCIES_BUILD_FOR_SDK} "
 # buildtools is used only by populate_sdk_ext
 # populate_sdk_ext = buildtools + uninative + layer
 # buildtools: sdk part of esdk (like sdk generated by populate_sdk)
 # uninative: basic tools for devtool
-TOOLCHAIN_HOST_TASK:remove:pn-buildtools-tarball = " ${ST_TOOLS_FOR_SDK_PERL} "
+TOOLCHAIN_HOST_TASK:remove:pn-buildtools-tarball:openstlinuxcommon = " ${ST_TOOLS_FOR_SDK_PERL} "
 
-TOOLCHAIN_TARGET_TASK += " bash-dev libgomp-dev"
-TOOLCHAIN_TARGET_TASK:remove:pn-buildtools-tarball = " bash-dev libgomp-dev"
+TOOLCHAIN_TARGET_TASK:openstlinuxcommon += " bash-dev libgomp-dev"
+TOOLCHAIN_TARGET_TASK:remove:pn-buildtools-tarball:openstlinuxcommon = " bash-dev libgomp-dev"
 
 # =========================================================================
 # Debug trace
@@ -505,114 +464,23 @@ ST_DEBUG_TRACE ?= "1"
 # =========================================================================
 # Kernel
 # =========================================================================
-
-# Kernel image type
-KERNEL_IMAGETYPE     =  "${@bb.utils.contains('MACHINE_FEATURES', 'fit', 'fitImage', 'uImage', d)}"
-KERNEL_ALT_IMAGETYPE =  " Image "
-KERNEL_ALT_IMAGETYPE =+ " vmlinux "
-KERNEL_ALT_IMAGETYPE =+ " ${@bb.utils.contains('MACHINE_FEATURES', 'fit', 'uImage', 'zImage', d)} "
-
-KERNEL_CLASSES = " ${@bb.utils.contains('MACHINE_FEATURES', 'fit', 'kernel-fitimage', 'kernel-uimage', d)} "
-
 # Maxsize authorized for uncompressed kernel binary
 # Define to null to skip kernel image size check
-KERNEL_IMAGE_MAXSIZE ?= ""
+KERNEL_IMAGE_MAXSIZE:openstlinuxcommon ?= ""
 
 # Enable kernel config file deploy
 KERNEL_CONFIG_DEPLOY ?= "1"
 
-# For fit usage
-UBOOT_ENTRYPOINT = "0xC0800000"
-
-# List of device tree to install
-KERNEL_DEVICETREE ?= "${STM32MP_KERNEL_DEVICETREE}"
-
-STM32MP_KERNEL_DEVICETREE += "${@' '.join('%s.dtb' % d for d in '${KERNEL_DT}'.split())}"
-STM32MP_KERNEL_DEVICETREE += "${@' '.join('%s.dtb' % d for d in '${CUBE_M4_EXAMPLES_DT}'.split())}"
-STM32MP_KERNEL_DEVICETREE += "${@' '.join('%s.dtb' % d for d in '${LINUX_A7_EXAMPLES_DT}'.split())}"
-
-# List of device tree overlays to install for phyBOARD-Sargas
-PHY_EXPANSIONS:phycore-stm32mp15 = "${PHY_EXPANSIONS_SARGAS}"
-# Displays
-PHY_EXPANSIONS_SARGAS += "phyboard-stm32mp1-peb-av02-lcd.dtbo"
-PHY_EXPANSIONS_SARGAS += "${@bb.utils.contains('MACHINE_FEATURES', 'hdmi', 'phyboard-stm32mp1-peb-av01-hdmi.dtbo', '', d)}"
-PHY_EXPANSIONS_SARGAS += "${@bb.utils.contains('MACHINE_FEATURES', 'mipi-dsi', 'phyboard-stm32mp1-dsi-lcd-mb1407.dtbo', '', d)}"
-PHY_EXPANSIONS_SARGAS += "${@bb.utils.contains('MACHINE_FEATURES', 'mipi-dsi', 'phyboard-stm32mp1-dsi-rpi-official-display.dtbo', '', d)}"
-# Configurations examples for the specific connectors
-PHY_EXPANSIONS_SARGAS += "phyboard-stm32mp1-pi-hat-extension.dtbo"
-PHY_EXPANSIONS_SARGAS += "phyboard-stm32mp1-uno-r3-extension.dtbo"
-PHY_EXPANSIONS_SARGAS += "phyboard-stm32mp1-motor-control.dtbo"
-PHY_EXPANSIONS_SARGAS += "phyboard-stm32mp1-motor-control-m4.dtbo"
-# Wireless expansions
-PHY_EXPANSIONS_SARGAS += "${@bb.utils.contains('MACHINE_FEATURES', 'wifi', 'phyboard-stm32mp1-peb-wlbt-05-wlan.dtbo', '', d)}"
-PHY_EXPANSIONS_SARGAS += "${@bb.utils.contains('MACHINE_FEATURES', 'bluetooth', 'phyboard-stm32mp1-peb-wlbt-05-bluetooth-usart3.dtbo', '', d)}"
-PHY_EXPANSIONS_SARGAS += "${@bb.utils.contains('MACHINE_FEATURES', 'bluetooth', 'phyboard-stm32mp1-peb-wlbt-05-bluetooth-usart1.dtbo', '', d)}"
-PHY_EXPANSIONS_SARGAS += "${@bb.utils.contains_any('MACHINE_FEATURES', 'wifi bluetooth', 'phyboard-stm32mp1-pi-hat-redbear.dtbo', '', d)}"
-# phyCAM-P
-PHY_EXPANSIONS_SARGAS += "phyboard-stm32mp1-pcm939l-phycam-vm016-8bits.dtbo"
-PHY_EXPANSIONS_SARGAS += "phyboard-stm32mp1-pcm939-phycam-vm016-8bits.dtbo"
-PHY_EXPANSIONS_SARGAS += "phyboard-stm32mp1-pcm939-phycam-vm016-10bits.dtbo"
-
-# DT overlay to enable RS485 at boot time
-PHY_EXPANSIONS_SARGAS += "phyboard-stm32mp1-rs485.dtbo"
-
-# List of device tree overlays to install for phyBOARD-Segin
-PHY_EXPANSIONS:phycore-stm32mp13 = "${PHY_EXPANSIONS_SEGIN}"
-# Displays
-PHY_EXPANSIONS_SEGIN += "stm32mp135x-phyboard-segin-peb-av-02-lcd.dtbo"
-PHY_EXPANSIONS_SEGIN += "stm32mp135x-phyboard-segin-peb-av-02-lcd-resistive.dtbo"
-PHY_EXPANSIONS_SEGIN += "${@bb.utils.contains('MACHINE_FEATURES', 'hdmi', 'stm32mp135x-phyboard-segin-peb-av-01-hdmi.dtbo', '', d)}"
-# Evaluation board
-PHY_EXPANSIONS_SEGIN += "stm32mp13xx-phyboard-segin-peb-eval-01-leds-buttons.dtbo"
-PHY_EXPANSIONS_SEGIN += "stm32mp13xx-phyboard-segin-peb-eval-01-jtag.dtbo"
-# phyCAM-P
-PHY_EXPANSIONS_SEGIN += "stm32mp135x-phyboard-segin-phycam-vm016.dtbo"
-
-
-# Set LOADADDR
-# Set this address to 0xC2000040, which is 0xC2000000 + 0x40.
-# 0xC2000000 is the memory address where U-Boot will copy from flash the file uImage and 0x40 is uImage header size (64Bytes).
-# With this value, U-Boot will be able to execute in place the zImage contained in uImage.
-ST_KERNEL_LOADADDR ?= "0xC2000040"
+# List of additional device tree to install
+KERNEL_DEVICETREE:openstlinux += "${@' '.join('%s.dtb' % d for d in '${CUBE_M4_EXAMPLES_DT}'.split())}"
+KERNEL_DEVICETREE:openstlinux += "${@' '.join('%s.dtb' % d for d in '${LINUX_A7_EXAMPLES_DT}'.split())}"
 
 # Define the devicetree for Linux A7 examples
 LINUX_A7_EXAMPLES_DT ?= ""
 
-# Extra kernel bootargs
-EXTRA_KERNEL_ARGS ?= ""
-# Use HDMI EDID firmware to set a specific resolution (when "hdmi_resolution" env var defined on u-boot)
-# Example to set 1280x720: on u-boot, set the following var: hdmi_resolution=HDMI-A-1:edid/1280x720.bin
-HDMI_EDID_KERNEL_ARGS = "drm.edid_firmware=${hdmi_resolution}"
-EXTRA_KERNEL_ARGS += "${HDMI_EDID_KERNEL_ARGS}"
-# bootargs to remove trace on kernel
-ST_CMD_LINE_DEBUG_TRACE ?= "loglevel=1 quiet"
-EXTRA_KERNEL_ARGS += "${@bb.utils.contains('ST_DEBUG_TRACE', '1', '', '${ST_CMD_LINE_DEBUG_TRACE}', d)}"
-# bootargs to set the RAUC slot
-EXTRA_KERNEL_ARGS:update += "rauc.slot=${bootslot}"
-
 # =========================================================================
 # u-boot
 # =========================================================================
-EXTRA_IMAGEDEPENDS += "virtual/bootloader"
-
-# Define default U-Boot config
-UBOOT_CONFIG = ""
-# STM32MP15
-UBOOT_CONFIG:append:stm32mp15common = "${@bb.utils.contains_any('BOOTSCHEME_LABELS', 'optee trusted', 'trusted_stm32mp15', '', d)}"
-# STM32MP13
-UBOOT_CONFIG:append:stm32mp13common = "${@bb.utils.contains_any('BOOTSCHEME_LABELS', 'optee trusted', 'trusted_stm32mp13', '', d)}"
-
-# Select u-boot binary that needs specific devicetree suffix (from UBOOT_DEVICETREE)
-# 'u-boot-nodtb.bin' and 'u-boot.dtb' : prefer 'u-boot.dtb' binary as 'u-boot-nodtb.bin'
-# doesn't need any devicetree suffix (specific case for 'u-boot-nodtb' binary
-# implemented on u-boot-stm32mp recipe)
-# Define u-boot defconfig and binary to use for each UBOOT_CONFIG
-UBOOT_CONFIG[trusted_stm32mp15] = "phycore-stm32mp15_defconfig,,u-boot.dtb"
-UBOOT_CONFIG[trusted_stm32mp13] = "phycore-stm32mp13_defconfig,,u-boot.dtb"
-
-# List of U-Boot device tree to use
-UBOOT_DEVICETREE = "${STM32MP_DEVICETREE}"
-
 # Define U-boot splashscreen file naming
 UBOOT_SPLASH_PORTRAIT_IMAGE = "splash_portrait"
 UBOOT_SPLASH_LANDSCAPE_IMAGE = "splash_landscape"
@@ -630,7 +498,7 @@ UBOOT_MTDPART_CHECK ?= "\
     ${@bb.utils.contains('BOOTDEVICE_LABELS', 'nor-emmc', 'CONFIG_MTDPARTS_NOR0_BOOT=${UBOOT_MTDPART_NOR_BOOT}', '', d)} \
     "
 
-MACHINE_EXTRA_RRECOMMENDS:append:stm32mp1common = " \
+MACHINE_EXTRA_RRECOMMENDS:append:openstlinuxcommon = " \
     u-boot-fw-config-stm32mp \
 "
 ST_UBOOT_DEBUG_TRACE ?= "${@bb.utils.contains('ST_DEBUG_TRACE', '1', '1', '0', d)}"
@@ -638,10 +506,11 @@ ST_UBOOT_DEBUG_TRACE ?= "${@bb.utils.contains('ST_DEBUG_TRACE', '1', '1', '0', d
 # =========================================================================
 # trusted-firmware-a
 # =========================================================================
-# Add optionnaly trusted-firmware-a
-EXTRA_IMAGEDEPENDS += "${@bb.utils.contains_any('BOOTSCHEME_LABELS', 'optee trusted', 'virtual/trusted-firmware-a', '', d)}"
-
 # Configure trusted-firmware-a build
+
+# With OpenSTlinux, TF_A_DEVICETREE must be empty as it is internal to TF_A_CONFIG var expansion
+TF_A_DEVICETREE:openstlinuxcommon ?= ""
+
 TF_A_CONFIG += "${@bb.utils.contains('BOOTSCHEME_LABELS', 'optee', 'optee', '', d)}"
 TF_A_CONFIG += "${@bb.utils.contains('BOOTSCHEME_LABELS', 'trusted', 'trusted', '', d)}"
 # Manage specific config settings
@@ -673,9 +542,6 @@ ST_TF_A_DEBUG_TRACE ?= "${@bb.utils.contains('ST_DEBUG_TRACE', '1', '1', '0', d)
 # =========================================================================
 # optee
 # =========================================================================
-# Map OPTEE configuration to device tree list
-OPTEE_CONF = "${STM32MP_DEVICETREE}"
-
 ST_OPTEE_DEBUG_TRACE ?= "${@bb.utils.contains('ST_DEBUG_TRACE', '1', '1', '0', d)}"
 
 # =========================================================================
@@ -703,7 +569,7 @@ FIP_SIGN_SUFFIX ?= "${@bb.utils.contains('FIP_SIGN_ENABLE', '1', '_Signed', '', 
 # =========================================================================
 # Xserver
 # =========================================================================
-XSERVER ?= " \
+XSERVER:openstlinuxcommon ?= " \
     xserver-xorg \
     xserver-xorg-module-libint10 \
     xf86-input-evdev \
@@ -711,14 +577,9 @@ XSERVER ?= " \
 "
 
 # =========================================================================
-# Enable deploy of bootloader elf files
-# =========================================================================
-ELF_DEBUG_ENABLE = "1"
-
-# =========================================================================
 # sysdig
 # =========================================================================
-PREFERRED_PROVIDER_sysdig = "sysdig-stm32mp"
+PREFERRED_PROVIDER_sysdig:openstlinuxcommon = "sysdig-stm32mp"
 
 # =========================================================================
 # M4 copro
@@ -743,8 +604,8 @@ GCNANO_USERLAND_OUTPUT_LIBDIR = "${@bb.utils.contains('ST_VENDORFS', '1', '${STM
 # =========================================================================
 # WIC for sdcard raw image
 # =========================================================================
-WIC_CREATE_EXTRA_ARGS = "--no-fstab-update"
-WKS_FILE_DEPENDS ?= " \
+WIC_CREATE_EXTRA_ARGS:openstlinuxcommon = "--no-fstab-update"
+WKS_FILE_DEPENDS:openstlinuxcommon ?= " \
     virtual/bootloader \
     virtual/trusted-firmware-a \
     ${@bb.utils.contains('BOOTSCHEME_LABELS', 'optee', 'virtual/optee-os', '', d)} \
@@ -752,10 +613,9 @@ WKS_FILE_DEPENDS ?= " \
     ${@bb.utils.contains('ST_VENDORFS', '1', '${STM32MP_VENDORFS_IMAGE}', '', d)} \
     ${@bb.utils.contains('ST_USERFS', '1', '${STM32MP_USERFS_IMAGE}', '', d)} \
 "
-WKS_IMAGE_FSTYPES += "wic wic.bz2 wic.bmap"
 
 # If optee is part of the selected boot chains, consider optee by default.
 # This default value (BOOTSCHEME) can be used for example for the WIC file generation or rauc bundle build.
 BOOTSCHEME = "${@bb.utils.contains('BOOTSCHEME_LABELS', 'optee', 'optee', 'trusted', d)}"
 
-WKS_FILE += "stm32mp1-sdimage.wks.in"
+WKS_FILES:openstlinuxcommon ?= "stm32mp1-sdimage-openstlinux.wks.in"
