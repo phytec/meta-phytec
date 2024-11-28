@@ -11,8 +11,8 @@ do_compile[postfuncs] += "${@bb.utils.contains('MACHINE_FEATURES', 'fit', 'remam
 
 remame_extlinux_file() {
 	subdir=$(find ${B}/* -maxdepth 0 -type d)
-	if [ "$(echo ${KERNEL_DT} | wc -w)" -eq 1 ] ; then
-		dvtree=$(echo ${KERNEL_DT})
+	if [ "$(echo ${KERNEL_DEVICETREE} | wc -w)" -eq 1 ] ; then
+		dvtree=$(echo ${KERNEL_DEVICETREE} | cut -d'.' -f1 | cut -d'/' -f2)
 		bbnote "Only one kernel devicetree defined: ${dvtree}"
 		if [ -f ${subdir}/${dvtree}_extlinux.conf ]; then
 			bbnote "Moving ${dvtree}_extlinux.conf to extlinux.conf file"
