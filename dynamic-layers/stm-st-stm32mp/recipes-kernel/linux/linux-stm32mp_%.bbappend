@@ -89,11 +89,12 @@ KERNEL_EXTRA_ARGS += "${@bb.utils.contains('MACHINE_FEATURES', 'phy-expansions',
 # -------------------------------------------------------------------------
 # Create a symbolic link of the main device tree to get a generic file name
 # -------------------------------------------------------------------------
-FIRST_DTS = "${KERNEL_DT}.dtb"
+FIRST_DTS = "${KERNEL_DEVICETREE}"
 DTS_FILE = "oftree"
 
 do_deploy:append() {
-    ln -sf ${FIRST_DTS} ${DEPLOYDIR}/${DTS_FILE}
+    first_dts=$(echo "${KERNEL_DEVICETREE}" | cut -d'/' -f2)
+    ln -sf ${first_dts} ${DEPLOYDIR}/${DTS_FILE}
 }
 
 do_install:append() {
