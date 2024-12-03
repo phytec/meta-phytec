@@ -37,8 +37,6 @@ SRC_URI:append:update = "\
 PR = "r0"
 SRCREV = "83e8d5904c0e67cd05cd97d96520059d339c3f34"
 
-PACKAGECONFIG[optee] = "TEE=${STAGING_DIR_HOST}${nonarch_base_libdir}/firmware/tee-pager_v2.bin,,optee-os"
-
 COMPATIBLE_MACHINE = "^("
 COMPATIBLE_MACHINE .=  "phyboard-lyra"
 COMPATIBLE_MACHINE .= "|phyboard-electra"
