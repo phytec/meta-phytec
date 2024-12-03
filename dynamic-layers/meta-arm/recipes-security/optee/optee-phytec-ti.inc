@@ -11,13 +11,3 @@ EXTRA_OEMAKE:append:j721s2 = "${@ ' CFG_CONSOLE_UART='+ d.getVar('OPTEE_K3_USART
 
 # This is needed for bl32.elf
 INSANE_SKIP:${PN}:append = " textrel"
-
-do_compile:append() {
-    cp ${B}/core/tee-pager_v2.bin ${B}/bl32.bin
-    cp ${B}/core/tee.elf ${B}/bl32.elf
-}
-
-do_deploy:append() {
-    ln -sf optee/bl32.bin ${DEPLOYDIR}/
-    ln -sf optee/bl32.elf ${DEPLOYDIR}/
-}
