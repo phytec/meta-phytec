@@ -69,7 +69,7 @@ python do_patch:append:secureboot () {
         bb.build.exec_func("set_fitimage_key", d)
 }
 
-python do_patch:append:k3:secureboot () {
+python do_patch:append:secureenforced () {
     bb.build.exec_func("set_tikey", d)
 }
 
