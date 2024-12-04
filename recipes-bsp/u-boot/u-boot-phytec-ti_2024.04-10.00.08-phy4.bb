@@ -30,10 +30,6 @@ PATCHES:k3r5-am64xx = " \
 "
 SRC_URI:append:phyboard-electra = " ${PATCHES}"
 
-SRC_URI:append:update = "\
-    file://rauc.cfg \
-"
-
 PR = "r0"
 SRCREV = "83e8d5904c0e67cd05cd97d96520059d339c3f34"
 
