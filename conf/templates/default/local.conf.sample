@@ -118,6 +118,14 @@ EXTRA_IMAGE_FEATURES += "allow-empty-password empty-root-password allow-root-log
 # certificate location for signing bundles
 #CERT_PATH = "${TOPDIR}/../sources/meta-ampliphy/openssl-ca"
 
+##########################
+# Security configuration #
+##########################
+
+# Keys for signing TI K3 products
+BOOTLOADER_TI_K3_MPK_KEY ?= "${CERT_PATH}/ti_k3/keys/phytecSMPK.pem"
+BOOTLOADER_TI_K3_DEGENERATE_KEY ?= "${CERT_PATH}/ti_k3/keys/ti-degenerate-key.pem"
+
 ####################
 # QT configuration #
 ####################
