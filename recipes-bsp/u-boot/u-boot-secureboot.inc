@@ -73,6 +73,9 @@ python do_patch:append:secureenforced () {
     bb.build.exec_func("set_tikey", d)
 }
 
+DEPENDS:append:secureenforced = " phytec-dev-ca-native"
+do_patch[depends] += "${@bb.utils.contains("MACHINEOVERRIDES", "secureenforced", "phytec-dev-ca-native:do_install", "", d)}"
+
 python do_patch:append:mx8m-nxp-bsp:secureboot () {
     bb.build.exec_func("set_dolegacyboot_1", d)
 }
