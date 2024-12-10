@@ -4,7 +4,7 @@ setenv mmcargs "setenv bootargs console=${console} root=/dev/mmcblk${devnum}p${m
 setenv netargs "setenv bootargs console=${console} root=/dev/nfs ip='${nfsip}' nfsroot=${serverip}:'${nfsroot}',v3,tcp ${optargs}"
 setenv mmcautodetect "yes"
 setenv fitboot "\
-if test ${no_extensions} = 0; then \
+if env exists no_extensions && test ${no_extensions} = 0; then \
     if env exists overlays; then \
         bootm ${loadaddr}#${fit_fdtconf}${fit_extensions}#'${overlays}'; \
     else \
@@ -22,8 +22,8 @@ if test ${devtype} = mmc; then
 	mmc dev ${devnum};
 	if run loadimage; then
 		echo Booting from mmc ...;
-		if test ${no_bootenv} = 0; then
-			if run mmc_load_bootenv; then
+		if env exists no_bootenv && test ${no_bootenv} = 0; then
+			if env exists mmc_load_bootenv && run mmc_load_bootenv; then
 				env import -t ${bootenv_addr_r} ${filesize};
 			fi;
 		fi;
@@ -41,8 +41,8 @@ else
 		fi;
 		if ${get_cmd} ${loadaddr} ${image}; then
 			echo Booting from net ...;
-			if test ${no_bootenv} = 0; then
-				if run net_load_bootenv; then
+			if env exists no_bootenv && test ${no_bootenv} = 0; then
+				if env exists net_load_bootenv run net_load_bootenv; then
 					env import -t ${bootenv_addr_r} ${filesize};
 				fi;
 			fi;
