@@ -17,13 +17,26 @@ do_deploy() {
     install -d ${DEPLOYDIR}
     install -m 0644 ${S}/bootenv.txt ${DEPLOYDIR}
 
-    # Replace multiple whitespaces by single one.
-    OVERLAYS_APPEND=$(echo "${BOOTENV_OVERLAYS_APPEND}" | sed -e "s/\s\+/ /g")
+    if echo ${KERNEL_IMAGETYPES} | grep -wq "fitImage"; then
+        # Replace whitespaces by a single #.
+        OVERLAYS_APPEND=$(echo "${BOOTENV_OVERLAYS_APPEND}" | sed -e "s/\s\+/#/g")
 
-    sed -i -e "s/\(overlays=.*\)/\1 ${OVERLAYS_APPEND}/" ${DEPLOYDIR}/bootenv.txt
+        sed -i -e "s/\(overlays=.*\)/\1#${OVERLAYS_APPEND}/" -e "s/\(overlays=#\)/\overlays=/" ${DEPLOYDIR}/bootenv.txt
 
-    # Remove trailing whitespaces.
-    sed -i -e "s/\ *$//g" ${DEPLOYDIR}/bootenv.txt
+        # Remove trailing whitespaces.
+        sed -i -e "s/\ *$//g" ${DEPLOYDIR}/bootenv.txt
+
+        # Remove trailing hashtags
+        sed -i -e "s/#*$//g" ${DEPLOYDIR}/bootenv.txt
+    else
+        # Replace multiple whitespaces by single one.
+        OVERLAYS_APPEND=$(echo "${BOOTENV_OVERLAYS_APPEND}" | sed -e "s/\s\+/ /g")
+
+        sed -i -e "s/\(overlays=.*\)/\1 ${OVERLAYS_APPEND}/" ${DEPLOYDIR}/bootenv.txt
+
+        # Remove trailing whitespaces.
+        sed -i -e "s/\ *$//g" ${DEPLOYDIR}/bootenv.txt
+    fi
 }
 addtask deploy before do_build after do_unpack
 
