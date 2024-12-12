@@ -26,7 +26,7 @@ KERNEL_FEATURES:append = " ${@bb.utils.contains("MACHINE_FEATURES", "pci", " fea
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "898d4d48e39a69712097df8e8037b500f8b68939"
+SRCREV = "d51de9a4422a3a0673dc482ef1f423f5929e4865"
 SRCREV_machine = "${SRCREV}"
 SRCREV_meta ?= "b1108273b878547b3d3281f21aba44a8c41ca741"
 
