@@ -20,3 +20,7 @@ do_install:append:mx93-nxp-bsp () {
 do_deploy:append:mx93-nxp-bsp () {
     remove_m33_demos "bin" "${DEPLOYDIR}"
 }
+
+do_deploy:append:mx93-nxp-bsp () {
+    install -m 0644 ${S}/*.${DEPLOY_FILE_EXT} ${DEPLOYDIR}
+}
