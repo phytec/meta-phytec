@@ -42,7 +42,7 @@ else
 		if ${get_cmd} ${loadaddr} ${image}; then
 			echo Booting from net ...;
 			if env exists no_bootenv && test ${no_bootenv} = 0; then
-				if env exists net_load_bootenv run net_load_bootenv; then
+				if env exists net_load_bootenv && run net_load_bootenv; then
 					env import -t ${bootenv_addr_r} ${filesize};
 				fi;
 			fi;
