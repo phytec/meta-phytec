@@ -52,6 +52,4 @@ do_deploy:append() {
 COMPATIBLE_MACHINE  = "^("
 COMPATIBLE_MACHINE .= "phyboard-pollux-imx8mp-3"
 COMPATIBLE_MACHINE .= "|phycore-imx8x-1"
-COMPATIBLE_MACHINE .= "|phyboard-nash-imx93-1"
-COMPATIBLE_MACHINE .= "|phyboard-segin-imx93-2"
 COMPATIBLE_MACHINE .= ")$"
