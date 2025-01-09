@@ -4,17 +4,15 @@ inherit kernel kernel-yocto
 inherit phygittag kernel-deploy-oftree
 include recipes-kernel/linux/linux-common.inc
 
-SRCREV = "3af8c3a57b8c64dc425828192202ef229818a76d"
+SRCREV = "69435b034d97291e26bea5e3f53ae0c8823d9897"
 SRCREV_machine = "${SRCREV}"
-SRCREV_meta ?= "da275b53b13faafa834352e3f9dd3f91a2c03bb8"
+SRCREV_meta ?= "5cefbe3e2770576771fe59b611d3b5fcf5860a1f"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/linux-phytec-6.6:"
 GIT_URL = "git://github.com/phytec/linux-phytec-imx.git;name=machine;protocol=https"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 SRC_URI:append = " git://git.yoctoproject.org/yocto-kernel-cache;type=kmeta;name=meta;branch=yocto-6.6;destsuffix=${KMETA};protocol=https \
                    file://0001-tty-vt-conmakehash-Don-t-mention-the-full-path-of-th.patch \
-                   file://0001-lib-build_OID_registry-don-t-mention-the-full-path-o.patch \
-                   file://0001-video-logo-Drop-full-path-of-the-input-filename-in-g.patch \
 "
 
 PR = "${INC_PR}.0"
@@ -51,4 +49,6 @@ do_deploy:append() {
 COMPATIBLE_MACHINE  = "^("
 COMPATIBLE_MACHINE .= "phyboard-polis-imx8mm-5"
 COMPATIBLE_MACHINE .= "|phygate-tauri-l-imx8mm-2"
+COMPATIBLE_MACHINE .= "|phyboard-nash-imx93-1"
+COMPATIBLE_MACHINE .= "|phyboard-segin-imx93-2"
 COMPATIBLE_MACHINE .= ")$"
