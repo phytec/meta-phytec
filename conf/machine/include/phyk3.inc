@@ -114,3 +114,5 @@ IMAGE_FSTYPES:update = "partup"
 
 # rootfs alignment required for RAUC adaptive update
 IMAGE_ROOTFS_ALIGNMENT:update = "4"
+
+INITRAMFS_MAXSIZE = "262144"
