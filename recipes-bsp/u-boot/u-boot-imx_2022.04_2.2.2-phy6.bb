@@ -59,10 +59,7 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 COMPATIBLE_MACHINE = "^("
 COMPATIBLE_MACHINE .= "phyboard-zeta-imx7d-1"
-COMPATIBLE_MACHINE .= "|phyboard-polis-imx8mm-5"
 COMPATIBLE_MACHINE .= "|phyboard-polis-imx8mn-2"
-COMPATIBLE_MACHINE .= "|phyboard-pollux-imx8mp-3"
-COMPATIBLE_MACHINE .= "|phygate-tauri-l-imx8mm-2"
 COMPATIBLE_MACHINE .= ")$"
 
 UBOOT_NAME:mx8-nxp-bsp = "u-boot-${MACHINE}.bin-${UBOOT_CONFIG}"
