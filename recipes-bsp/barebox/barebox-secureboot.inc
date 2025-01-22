@@ -11,8 +11,6 @@ BAREBOX_BIN_SIGNEDUSB ?= "images/${BAREBOX_BASE_BIN}-us.img"
 
 BAREBOX_LINK_NAME ?= "barebox"
 
-BOOTLOADER_SIGN ??= "true"
-BOOTLOADER_SIGN[type] = "boolean"
 CERT_PATH ??= "${OEROOT}/../../phytec-dev-ca"
 # for NXP HABv4 based systems
 BOOTLOADER_SIGN_IMG_PATH ??= "${CERT_PATH}/nxp_habv4_pki/crts/IMG1_1_sha256_4096_65537_v3_usr_crt.pem"
@@ -47,26 +45,24 @@ do_patch:append:secureboot() {
         file.write("# CONFIG_CMD_OF_OVERLAY is not set\n")
         file.write("# CONFIG_NET_NETCONSOLE is not set\n")
 
-        if oe.data.typed_value("BOOTLOADER_SIGN", d):
-            check_bootloader_keyring(d)
-            #activated HAB
-            file.write("CONFIG_HAB=y\n")
-            file.write("CONFIG_HABV4=y\n")
-            file.write('CONFIG_HABV4_SRK_INDEX=%s\n' % d.getVar("BOOTLOADER_HABV4_SRK_INDEX"))
-            file.write('CONFIG_HABV4_TABLE_BIN="%s"\n' % d.getVar("BOOTLOADER_SIGN_SRKFUSE_PATH"))
-            file.write('CONFIG_HABV4_CSF_CRT_PEM="%s"\n' % d.getVar("BOOTLOADER_SIGN_CSF_PATH"))
-            file.write('CONFIG_HABV4_IMG_CRT_PEM="%s"\n' % d.getVar("BOOTLOADER_SIGN_IMG_PATH"))
-            #add hab command for burning fuses
-            file.write("CONFIG_CMD_HAB=y\n")
-            #signing images
-            file.write("CONFIG_HABV4_IMAGE_SIGNED=y\n")
-            file.write("CONFIG_HABV4_IMAGE_SIGNED_USB=y\n")
-            #no loading of environment from the flash and use compile in environment
-            file.write("# CONFIG_ENV_HANDLING is not set\n")
-            file.write("CONFIG_DEFAULT_ENVIRONMENT=y\n")
-            file.write("# CONFIG_CMD_SAVEENV is not set\n")
-            file.write("# CONFIG_CMD_LOADENV is not set\n")
-
+        check_bootloader_keyring(d)
+        #activated HAB
+        file.write("CONFIG_HAB=y\n")
+        file.write("CONFIG_HABV4=y\n")
+        file.write('CONFIG_HABV4_SRK_INDEX=%s\n' % d.getVar("BOOTLOADER_HABV4_SRK_INDEX"))
+        file.write('CONFIG_HABV4_TABLE_BIN="%s"\n' % d.getVar("BOOTLOADER_SIGN_SRKFUSE_PATH"))
+        file.write('CONFIG_HABV4_CSF_CRT_PEM="%s"\n' % d.getVar("BOOTLOADER_SIGN_CSF_PATH"))
+        file.write('CONFIG_HABV4_IMG_CRT_PEM="%s"\n' % d.getVar("BOOTLOADER_SIGN_IMG_PATH"))
+        #add hab command for burning fuses
+        file.write("CONFIG_CMD_HAB=y\n")
+        #signing images
+        file.write("CONFIG_HABV4_IMAGE_SIGNED=y\n")
+        file.write("CONFIG_HABV4_IMAGE_SIGNED_USB=y\n")
+        #no loading of environment from the flash and use compile in environment
+        file.write("# CONFIG_ENV_HANDLING is not set\n")
+        file.write("CONFIG_DEFAULT_ENVIRONMENT=y\n")
+        file.write("# CONFIG_CMD_SAVEENV is not set\n")
+        file.write("# CONFIG_CMD_LOADENV is not set\n")
 
         if oe.data.typed_value("FITIMAGE_SIGN", d):
             check_fitimage_keyring(d)
