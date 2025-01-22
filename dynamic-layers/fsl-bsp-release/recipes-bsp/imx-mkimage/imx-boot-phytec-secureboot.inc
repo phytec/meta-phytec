@@ -168,10 +168,6 @@ python do_sign() {
         imxboot_targets = d.getVar('IMXBOOT_TARGETS').split()
         uboot_configs = d.getVar('UBOOT_CONFIG').split()
 
-        if not oe.data.typed_value("BOOTLOADER_SIGN", d):
-            bb.note('Not signing bootloader image as signing disabled')
-            return
-
         workdir = d.getVar('WORKDIR')
         source_dir = d.getVar('S')
         boot_name = d.getVar('BOOT_NAME')
