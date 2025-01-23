@@ -4,7 +4,7 @@ setenv mmcargs "setenv bootargs console=${console} root=/dev/mmcblk${devnum}p${m
 setenv netargs "setenv bootargs console=${console} root=/dev/nfs ip='${nfsip}' nfsroot=${serverip}:'${nfsroot}',v3,tcp ${optargs}"
 setenv mmcautodetect "yes"
 setenv fitboot "\
-if env exists no_extensions && test ${no_extensions} = 0; then \
+if env exists no_extensions && itest ${no_extensions} == 0; then \
     if env exists overlays; then \
         bootm ${loadaddr}#${fit_fdtconf}${fit_extensions}#'${overlays}'; \
     else \
@@ -18,11 +18,11 @@ else \
     fi; \
 fi;"
 
-if test ${devtype} = mmc; then
+if itest.s ${devtype} == mmc; then
 	mmc dev ${devnum};
 	if run loadimage; then
 		echo Booting from mmc ...;
-		if env exists no_bootenv && test ${no_bootenv} = 0; then
+		if env exists no_bootenv && itest ${no_bootenv} == 0; then
 			if env exists mmc_load_bootenv && run mmc_load_bootenv; then
 				env import -t ${bootenv_addr_r} ${filesize};
 			fi;
@@ -31,8 +31,8 @@ if test ${devtype} = mmc; then
 		run fitboot;
 	fi;
 else
-	if test ${devtype} = ethernet; then
-		if test ${ip_dyn} = yes; then
+	if itest.s ${devtype} == ethernet; then
+		if itest.s ${ip_dyn} == yes; then
 			setenv nfsip dhcp;
 			setenv get_cmd dhcp;
 		else
@@ -41,7 +41,7 @@ else
 		fi;
 		if ${get_cmd} ${loadaddr} ${image}; then
 			echo Booting from net ...;
-			if env exists no_bootenv && test ${no_bootenv} = 0; then
+			if env exists no_bootenv && itest ${no_bootenv} == 0; then
 				if env exists net_load_bootenv && run net_load_bootenv; then
 					env import -t ${bootenv_addr_r} ${filesize};
 				fi;
