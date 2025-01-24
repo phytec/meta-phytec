@@ -26,7 +26,7 @@ python do_sign:append:mx93-generic-bsp() {
     image_path = os.path.join(d.getVar('BOOT_STAGING'), flashbin)
     for target in d.getVar('IMXBOOT_TARGETS').split():
         bb.note(f'Signing for target \'{target}\'')
-        signed_image_path = d.expand(f'${{S}}/${{BOOT_CONFIG_MACHINE}}-{target}-signed')
+        signed_image_path = d.expand(f'${{S}}/imx-boot${{BOOT_VARIANT}}-${{MACHINE}}-${{UBOOT_CONFIG}}.bin-{target}-signed')
         make_process = subprocess.run(['make', '-C', d.getVar('S'),
                 d.expand('SOC=${IMX_BOOT_SOC_TARGET}'), target],
                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
@@ -37,7 +37,13 @@ python do_sign:append:mx93-generic-bsp() {
 
 do_sign[dirs] = "${BUILD_SIGN_DIR}"
 do_sign[cleandirs] = "${BUILD_SIGN_DIR}"
-addtask sign after do_compile before do_deploy
+addtask sign after do_compile before do_install
+
+do_install:append:secureboot() {
+    for target in ${IMXBOOT_TARGETS}; do
+        install -m 0644 ${S}/imx-boot${BOOT_VARIANT}-${MACHINE}-${UBOOT_CONFIG}.bin-${target}-signed ${D}/boot/
+    done
+}
 
 do_deploy:append:secureboot() {
     for target in ${IMXBOOT_TARGETS}; do
@@ -46,8 +52,8 @@ do_deploy:append:secureboot() {
             IMAGE_IMXBOOT_TARGET="$target"
             echo "Setting boot target as $IMAGE_IMXBOOT_TARGET"
         fi
-        install -m 0644 ${S}/${BOOT_CONFIG_MACHINE}-${target}-signed ${DEPLOYDIR}
+        install -m 0644 ${S}/imx-boot${BOOT_VARIANT}-${MACHINE}-${UBOOT_CONFIG}.bin-${target}-signed ${DEPLOYDIR}
     done
 
-    ln -sf ${BOOT_CONFIG_MACHINE}-${IMAGE_IMXBOOT_TARGET}-signed ${DEPLOYDIR}/${BOOT_NAME}
+    ln -sf imx-boot${BOOT_VARIANT}-${MACHINE}-${UBOOT_CONFIG}.bin-${IMAGE_IMXBOOT_TARGET}-signed ${DEPLOYDIR}/imx-boot
 }
