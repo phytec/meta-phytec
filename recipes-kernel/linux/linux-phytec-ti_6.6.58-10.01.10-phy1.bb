@@ -14,17 +14,14 @@ SRC_URI = " \
 	${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'file://oci.scc', '', d)} \
 	${@bb.utils.contains('DISTRO_FEATURES', 'preempt-rt', 'file://preempt-rt.scc', '', d)} \
 	${@bb.utils.contains('MACHINE_FEATURES', 'lwb5p', 'file://lwb5p_backports.scc', '', d)} \
-        file://0001-tty-vt-conmakehash-Don-t-mention-the-full-path-of-th.patch \
-        file://0001-lib-build_OID_registry-don-t-mention-the-full-path-o.patch \
-        file://0001-video-logo-Drop-full-path-of-the-input-filename-in-g.patch \
 "
 
 # Apply rt patch in case of preempt-rt
-RT_PATCH = "${KERNELORG_MIRROR}/linux/kernel/projects/rt/6.6/older/patch-6.6.32-rt32.patch.xz;name=rt-patch"
+RT_PATCH = "${KERNELORG_MIRROR}/linux/kernel/projects/rt/6.6/older/patch-6.6.58-rt45.patch.xz;name=rt-patch"
 SRC_URI:append = " \
     ${@bb.utils.contains('DISTRO_FEATURES', 'preempt-rt', "${RT_PATCH}", '', d)} \
 "
-SRC_URI[rt-patch.sha256sum] = "058b73df1634b54d3b0ca7d7d5998b9ecc1c69fff935c3bfc3f0f0279af96243"
+SRC_URI[rt-patch.sha256sum] = "ec3089ab5ebf326fc1a015bb6de5ce451702fcec613c887b61637c3169f3fb5a"
 
 KERNEL_FEATURES = " \
     systemd.scc \
@@ -43,7 +40,7 @@ PR = "${INC_PR}.0"
 # NOTE: Keep version in filename in sync with commit id!
 # NOTE: Keep version of TI_LINUX_FW_SRCREV in sync, configured in
 #       dynamic-layers/meta-ti-bsp/recipes-bsp/ti-linux-fw/ti-linux-fw-freeze.inc
-SRCREV = "d0f7e62e3eb6ed415c54b310c7291c05209c5c6d"
+SRCREV = "4d26117e33e375f349cea1740eabbd83c1e34493"
 S = "${WORKDIR}/git"
 
 # Special configuration for remoteproc/rpmsg IPC modules
