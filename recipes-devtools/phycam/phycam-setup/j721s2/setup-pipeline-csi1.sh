@@ -86,7 +86,7 @@ esac
 
 # Evaluate if a monochrome or color sensor is connected by checking the
 # default MBUS code.
-COLOR="$(v4l2-ctl -d ${CAM} --get-subdev-fmt 0 | \
+COLOR="$(v4l2-ctl -d ${CAM} --get-subdev-fmt | \
 	 grep "Mediabus Code" | \
 	 sed 's/.*BUS_FMT_\([A-Z]*\).*/\1/g')"
 if [ $COLOR = "Y" ]; then
