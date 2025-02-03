@@ -106,61 +106,92 @@ MIPI_ENT="csis-32e30000.mipi-csi-upstream"
 MC="media-ctl"
 
 echo ""
-echo "Setting up MEDIA Pipeline with"
-echo "${FMT}/${RES} ${OFFSET}/${FRES} for ${CAM_ENT}"
-echo "========================================================="
+echo "Setting up MEDIACTL Pipeline"
+echo "============================"
 echo " Setting up MEDIA Links:"
 echo " -----------------------"
-
-# Disable all existing phyCAM-L links (if phyCAM-L is connected) so the new
-# setup can be selected.
-if [ -n "$SER_P0_ENT" ] && [ -n "$SER_P1_ENT" ] ; then
-	echo "  Disable both phyCAM-L Ports:"
-	echo "   $MC -l \"'${SER_P0_ENT}':1->'${DESER_ENT}':0[0]\""
-	$MC -l "'${SER_P0_ENT}':1->'${DESER_ENT}':0[0]" ${VERBOSE}
-	if [ ! -z "$VERBOSE" ] ; then echo "" ; fi
-
-	echo "   $MC -l \"'${SER_P0_ENT}':1->'${DESER_ENT}':1[0]\""
-	$MC -l "'${SER_P1_ENT}':1->'${DESER_ENT}':1[0]" ${VERBOSE}
-	echo ""
-fi
 
 if [ -n "$SER_P0_ENT" ] && [ -n "$DESER_ENT" ] && [ "$PORT" = "0" ] ; then
 	echo "  Enabling phyCAM-L Port 0 on CSI1"
 	echo "   $MC -l \"'${SER_P0_ENT}':1->'${DESER_ENT}':0[1]\""
 	$MC -l "'${SER_P0_ENT}':1->'${DESER_ENT}':0[1]" ${VERBOSE}
-	if [ ! -z "$VERBOSE" ] ; then echo "" ; fi
+	if [ -n "$VERBOSE" ] ; then echo "" ; fi
 
 	echo "   $MC -l \"'${DESER_ENT}':2->'${MIPI_ENT}':0[1]\""
 	$MC -l "'${DESER_ENT}':2->'${MIPI_ENT}':0[1]" ${VERBOSE}
-	echo ""
 fi
 
 if [ -n "$SER_P1_ENT" ] && [ -n "$DESER_ENT" ] && [ "$PORT" = "1" ] ; then
 	echo "  Enabling phyCAM-L Port 1 on CSI1"
 	echo "   $MC -l \"'${SER_P1_ENT}':1->'${DESER_ENT}':1[1]\""
 	$MC -l "'${SER_P1_ENT}':1->'${DESER_ENT}':1[1]" ${VERBOSE}
-	if [ ! -z "$VERBOSE" ] ; then echo "" ; fi
+	if [ -n "$VERBOSE" ] ; then echo "" ; fi
 
 	echo "   $MC -l \"'${DESER_ENT}':2->'${MIPI_ENT}':0[1]\""
 	$MC -l "'${DESER_ENT}':2->'${MIPI_ENT}':0[1]" ${VERBOSE}
-	echo ""
 fi
 
 if [ -L /dev/cam-csi1 ] ; then
 	echo "  Enabling phyCAM-M Link:"
 	echo "   $MC -l \"'${CAM_ENT}':0->'${MIPI_ENT}':0[1]\""
 	$MC -l "'${CAM_ENT}':0->'${MIPI_ENT}':0[1]" ${VERBOSE}
-	echo ""
+	if [ -n "$VERBOSE" ] ; then echo "" ; fi
 fi
 
-echo " Setting up MEDIA Formats:"
-echo " -------------------------"
-echo "  Sensor:"
+if [ -n "$SER_P0_ENT" ] && [ -n "$DESER_ENT" ] && [ "$PORT" = "0" ] ; then
+	echo ""
+	echo "  Configure Routing for phyCAM-L Port 0 on CSI1"
+	echo "   $MC -R \"'${SER_P0_ENT}'[0/0->1/0[1]]\""
+	$MC -R "'${SER_P0_ENT}'[0/0->1/0[1]]"
+	if [ -n "$VERBOSE" ] ; then echo "" ; fi
+
+	echo "   $MC -R \"'${DESER_ENT}'[0/0->2/0[1]]\""
+	$MC -R "'${DESER_ENT}'[0/0->2/0[1]]"
+fi
+
+if [ -n "$SER_P1_ENT" ] && [ -n "$DESER_ENT" ] && [ "$PORT" = "1" ] ; then
+	echo ""
+	echo "  Configure Routing for phyCAM-L Port 1 on CSI1"
+	echo "   $MC -R \"'${SER_P1_ENT}'[0/0->1/0[1]]\""
+	$MC -R "'${SER_P1_ENT}'[0/0->1/0[1]]"
+	if [ -n "$VERBOSE" ] ; then echo "" ; fi
+
+	echo "   $MC -R \"'${DESER_ENT}'[1/0->2/0[1]]\""
+	$MC -R "'${DESER_ENT}'[1/0->2/0[1]]"
+fi
+
+echo ""
+echo " Setting up MEDIA Formats with"
+echo " ${FMT}/${RES} for ${CAM_ENT}"
+echo " ----------------------------------------------------------------"
+echo "  Sensor CSI1:"
 echo "   $MC -V \"'${CAM_ENT}':0[fmt:${FMT}/${RES} ${OFFSET}/${FRES}]\""
 $MC -V "'${CAM_ENT}':0[fmt:${FMT}/${RES} ${OFFSET}/${FRES}]" ${VERBOSE}
 echo ""
-echo "  MIPI Interface:"
+
+if [ -n "$SER_P0_ENT" ] && [ -n "$DESER_ENT" ] && [ "$PORT" = "0" ] ; then
+	echo "  phyCAM-L Port 0 Serializer on CSI1"
+	echo "   $MC -V \"'${SER_P0_ENT}':0/0[fmt:${FMT}/${RES} field:none]\""
+	$MC -V "'${SER_P0_ENT}':0/0[fmt:${FMT}/${RES} field:none]" ${VERBOSE}
+	echo ""
+	echo "  phyCAM-L Deserializer on CSI1"
+	echo "   $MC -V \"'${DESER_ENT}':0/0[fmt:${FMT}/${RES} field:none]\""
+	$MC -V "'${DESER_ENT}':0/0[fmt:${FMT}/${RES} field:none]" ${VERBOSE}
+	echo ""
+fi
+
+if [ -n "$SER_P1_ENT" ] && [ -n "$DESER_ENT" ] && [ "$PORT" = "1" ] ; then
+	echo "  phyCAM-L Port 1 Serializer on CSI1"
+	echo "   $MC -V \"'${SER_P1_ENT}':0/0[fmt:${FMT}/${RES} field:none]\""
+	$MC -V "'${SER_P1_ENT}':0/0[fmt:${FMT}/${RES} field:none]" ${VERBOSE}
+	echo ""
+	echo "  phyCAM-L Deserializer on CSI1"
+	echo "   $MC -V \"'${DESER_ENT}':1/0[fmt:${FMT}/${RES} field:none]\""
+	$MC -V "'${DESER_ENT}':1/0[fmt:${FMT}/${RES} field:none]" ${VERBOSE}
+	echo ""
+fi
+
+echo "  MIPI Interface CSI1:"
 echo "   $MC -V \"'${MIPI_ENT}':0[fmt:${FMT}/${RES}]\""
 $MC -V "'${MIPI_ENT}':0[fmt:${FMT}/${RES}]" ${VERBOSE}
 echo ""
