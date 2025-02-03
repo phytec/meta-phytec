@@ -1,1 +1,1 @@
-overlays=imx8mm-phygate-tauri-rs232-rs485.dtbo
+overlays=conf-imx8mm-phygate-tauri-l-rs232-rs485.dtbo
