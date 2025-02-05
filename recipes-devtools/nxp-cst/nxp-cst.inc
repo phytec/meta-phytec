@@ -3,6 +3,14 @@ DEPENDS = "openssl-native byacc-native flex-native"
 REQUIRED_DISTRO_FEATURES = "secureboot"
 inherit features_check
 
+LICENSE = "BSD-3-Clause"
+
+LIC_FILES_CHKSUM = " \
+    file://LICENSE.bsd3;md5=14aba05f9fa6c25527297c8aac95fcf6 \
+    file://LICENSE.hidapi;md5=e0ea014f523f64f0adb13409055ee59e \
+    file://LICENSE.openssl;md5=3441526b1df5cc01d812c7dfc218cea6 \
+"
+
 SRC_URI = " \
     git://gitlab.apertis.org/pkg/imx-code-signing-tool.git;protocol=https;branch=${BRANCH} \
     file://cst-wrapper.sh \
