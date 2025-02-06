@@ -59,6 +59,7 @@ set_tikey() {
 
 set_dolegacyboot_1 () {
     sed_safely "s/\(dolegacyboot=\)[01]/\11/" board/phytec/phycore_imx8mp/phycore_imx8mp.env
+    sed_safely "s/\(dolegacyboot=\)[01]/\11/" board/phytec/phycore_imx8mm/phycore_imx8mm.env
 }
 
 python do_patch:append:secureboot () {
