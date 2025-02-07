@@ -1,7 +1,7 @@
-From e9e4ec539ecb83884d5507af4e3bf95a2c8a5efc Mon Sep 17 00:00:00 2001
+From 76c92c5f0c888d4a05dd20902edfe1a1f4016133 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Stefan=20Riedm=C3=BCller?= <s.riedmueller@phytec.de>
 Date: Wed, 18 Oct 2023 15:42:49 +0200
-Subject: [PATCH] units/isi/drv: phycam: Allow to configure a min fps from
+Subject: [PATCH 2/2] units/isi/drv: phycam: Allow to configure a min fps from
  config file
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -87,3 +87,6 @@ index 9e7192eb1c3b..888e7be12b55 100644
      pPhyCamCtx->Configured = BOOL_TRUE;
  
      ALOGD("%s: (exit)", __func__);
+-- 
+2.25.1
+

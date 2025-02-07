@@ -1,7 +1,7 @@
-From f674d23add9cf45f0a1eaf609ef3eb1cb42eb9b3 Mon Sep 17 00:00:00 2001
+From 0d615c6a36daa33a57a4cc79014e4f5c82c2bff2 Mon Sep 17 00:00:00 2001
 From: Stefan Riedmueller <s.riedmueller@phytec.de>
 Date: Fri, 28 Jan 2022 16:34:34 +0100
-Subject: [PATCH] units/isi/drv: Add phyCAM driver
+Subject: [PATCH 1/2] units/isi/drv: Add phyCAM driver
 
 Add a generic phyCAM driver to support both VM-017 and VM-016 PHYTEC
 cameras.
@@ -9,20 +9,20 @@ cameras.
 Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
 ---
  build-all-isp.sh                    |   5 +-
- units/isi/CMakeLists.txt            |   2 +
+ units/isi/CMakeLists.txt            |   4 +-
  units/isi/drv/phyCAM/CMakeLists.txt |  92 +++
  units/isi/drv/phyCAM/phycam.c       | 873 ++++++++++++++++++++++++++++
  units/isi/drv/phyCAM/phycam_log.h   |  45 ++
- 5 files changed, 1015 insertions(+), 2 deletions(-)
+ 5 files changed, 1016 insertions(+), 3 deletions(-)
  create mode 100755 units/isi/drv/phyCAM/CMakeLists.txt
  create mode 100644 units/isi/drv/phyCAM/phycam.c
  create mode 100644 units/isi/drv/phyCAM/phycam_log.h
 
 diff --git a/build-all-isp.sh b/build-all-isp.sh
-index 607286f1f868..ec744de95f9d 100755
+index 312cd1338788..4a0b318bcfb0 100755
 --- a/build-all-isp.sh
 +++ b/build-all-isp.sh
-@@ -87,8 +87,9 @@ BUILD_DIR=debug
+@@ -92,8 +92,9 @@ BUILD_DIR=debug
  fi
  
  cp -a appshell/build/generated/${BUILD_DIR}/lib/*.so* ${ISP_LIB_DIR}
@@ -35,10 +35,10 @@ index 607286f1f868..ec744de95f9d 100755
  cp -a appshell/build/generated/${BUILD_TYPE}/bin/*_test ${ISP_BIN_DIR}
  cp -a appshell/build/generated/${BUILD_DIR}/bin/*.cfg ${ISP_BIN_DIR}/
 diff --git a/units/isi/CMakeLists.txt b/units/isi/CMakeLists.txt
-index 8cd95b5f1670..53eef749ad4b 100755
+index a91699b4a1a5..c8b654dbbdd6 100755
 --- a/units/isi/CMakeLists.txt
 +++ b/units/isi/CMakeLists.txt
-@@ -72,11 +72,13 @@ if (GENERATE_PARTITION_BUILD)
+@@ -69,6 +69,7 @@ endif( DEFINED APPSHELL_TOP_COMPILE)
  add_subdirectory( drv/OV2775 )
  add_subdirectory( drv/OS08a20 )
  add_subdirectory( drv/AR1335 )
@@ -46,12 +46,21 @@ index 8cd95b5f1670..53eef749ad4b 100755
  #add_subdirectory( drv/OV5630 )
  ###add_subdirectory( drv/OV8810 )
  #add_subdirectory( drv/OV14825 )
- #add_subdirectory( drv/OV5640 )
- else (GENERATE_PARTITION_BUILD)
+@@ -87,6 +88,7 @@ include_directories(
+     )
+ 
  add_subdirectory( drv/OS08a20 )
 +add_subdirectory( drv/phyCAM )
+ 
+ add_custom_target(copy_shell_libs_${module} ALL
+        COMMENT "##Copy isi drv cfg to shell libs"
+@@ -98,4 +100,4 @@ add_dependencies(copy_shell_libs_${module} drv/OS08a20)
  endif (GENERATE_PARTITION_BUILD)
  
+ # create common targets for this module
+-include(${UNITS_TOP_DIRECTORY}/targets.cmake)
+\ No newline at end of file
++include(${UNITS_TOP_DIRECTORY}/targets.cmake)
 diff --git a/units/isi/drv/phyCAM/CMakeLists.txt b/units/isi/drv/phyCAM/CMakeLists.txt
 new file mode 100755
 index 000000000000..f032a3dd3bc6
@@ -1080,3 +1089,6 @@ index 000000000000..6d4385bf5f33
 +    if (isp_log_level() >= ISP_LOG_LEVEL_ERROR) printf("\033[1;30;31mERROR  : " __ALOG_INT(__VA_ARGS__, "\n"))  // red
 +
 +#endif  // _PHYCAM_LOG_H_
+-- 
+2.25.1
+
