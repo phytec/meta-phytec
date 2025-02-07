@@ -1,7 +1,7 @@
-From 1579e7b5d1f80eb786feaef1c76dd2585fe66621 Mon Sep 17 00:00:00 2001
+From de5dea3444bd9cea3377295d96d8af4546bc281f Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Stefan=20Riedm=C3=BCller?= <s.riedmueller@phytec.de>
 Date: Wed, 20 Sep 2023 11:42:23 +0200
-Subject: [PATCH] v4l2: video: Allow the framerate to be set from gstreamer
+Subject: [PATCH 2/2] v4l2: video: Allow the framerate to be set from gstreamer
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -17,36 +17,39 @@ when setting up the sensor from the userspace driver.
 Since gstreamer issues the S_PARM call after the S_FMT call, which is
 fine in general, setting the framerate from the gstreamer pipeline does
 no longer work with isp-imx-4.2.2.20.0. Fix this by posting the
-VIV_VIDEO_EVENT_SET_FMT event when S_PARM is called, instead of during
-the S_FMT call.
+VIV_VIDEO_EVENT_SET_FMT event also when S_PARM is called.
 
 If a S_PARM call is omitted for some reason, VIV_VIDEO_EVENT_SET_FMT is
 still posted during the REQBUFS call.
 
 Signed-off-by: Stefan Riedmüller <s.riedmueller@phytec.de>
 ---
- vvcam/v4l2/video/video.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ vvcam/v4l2/video/video.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/vvcam/v4l2/video/video.c b/vvcam/v4l2/video/video.c
-index b1c15038c7e0..a2fadc708010 100644
+index 3497b3a973a2..de38f3461e95 100644
 --- a/vvcam/v4l2/video/video.c
 +++ b/vvcam/v4l2/video/video.c
-@@ -1207,8 +1207,6 @@ static int vidioc_s_fmt_vid_cap(struct file *file, void *priv,
- 	event.id = VIV_VIDEO_EVENT_SET_COMPOSE;
+@@ -1446,6 +1446,7 @@ static int vidioc_s_parm(struct file *file, void *fh,
+ 	if (fps > vdev->camera_mode.fps)
+ 		return -EINVAL;
+ 
++	mutex_lock(&vdev->mlock);
+ 	handle->vdev->timeperframe = a->parm.capture.timeperframe;
+ 	mutex_lock(&vdev->event_lock);
+ 	sprintf(vdev->ctrls.buf_va,"{<id>:<s.fps>;<fps>:%u}", fps);
+@@ -1460,6 +1461,10 @@ static int vidioc_s_parm(struct file *file, void *fh,
  	viv_post_event(&event, &handle->vfh, true);
- 
--	viv_post_fmt_event(file);
--
- 	return ret;
- }
- 
-@@ -1440,6 +1438,8 @@ static int vidioc_s_parm(struct file *file, void *fh,
- 
- 	viv_post_event(&event, &handle->vfh, true);
+ 	mutex_unlock(&vdev->event_lock);
  
 +	viv_post_fmt_event(file);
++
++	mutex_unlock(&vdev->mlock);
 +
  	return 0;
  }
  
+-- 
+2.25.1
+
