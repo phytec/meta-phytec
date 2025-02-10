@@ -17,7 +17,7 @@ GIT_URL = "git://github.com/phytec/u-boot-phytec.git;protocol=https"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
 PR = "r0"
-SRCREV = "f919c3a889f0ec7d63a48b5d0ed064386b0980bd"
+SRCREV = "b52a41641f544defae8b7071f31d6fe88fe60a83"
 
 COMPATIBLE_MACHINE = "^("
 COMPATIBLE_MACHINE .= "|phyboard-lyra"
