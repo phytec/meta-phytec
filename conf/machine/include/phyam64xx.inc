@@ -27,3 +27,7 @@ KERNEL_OVERLAYS:append:phyboard-electra = " \
     ti/k3-am642-phyboard-electra-gpio-fan.dtbo \
     ${@oe.utils.conditional("PREFERRED_PROVIDER_virtual/kernel", "linux-phytec", "${KERNEL_OVERLAYS_PHYTEC}", "", d)} \
 "
+
+PREFERRED_PROVIDER_virtual/kernel ?= "linux-phytec"
+PREFERRED_PROVIDER_virtual/bootloader ?= "u-boot-phytec"
+PREFERRED_PROVIDER_u-boot ?= "u-boot-phytec"
