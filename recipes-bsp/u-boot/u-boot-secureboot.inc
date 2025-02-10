@@ -57,6 +57,11 @@ set_tikey() {
     kconfig_set PHYTEC_K3_DEGENERATE_KEY '"${BOOTLOADER_TI_K3_DEGENERATE_KEY}"'
 }
 
+set_tikey_symlinks() {
+    ln -sf ${BOOTLOADER_TI_K3_MPK_KEY} ${S}/arch/arm/mach-k3/keys/custMpk.pem
+    ln -sf ${BOOTLOADER_TI_K3_DEGENERATE_KEY} ${S}/arch/arm/mach-k3/keys/ti-degenerate-key.pem
+}
+
 set_dolegacyboot_1 () {
     sed_safely "s/\(dolegacyboot=\)[01]/\11/" board/phytec/phycore_imx8mp/phycore_imx8mp.env
     sed_safely "s/\(dolegacyboot=\)[01]/\11/" board/phytec/phycore_imx8mm/phycore_imx8mm.env
@@ -72,6 +77,10 @@ python do_patch:append:secureboot () {
 
 python do_patch:append:secureenforced () {
     bb.build.exec_func("set_tikey", d)
+}
+
+python do_unpack:append:secureenforced () {
+    bb.build.exec_func('set_tikey_symlinks', d)
 }
 
 DEPENDS:append:secureenforced = " phytec-dev-ca-native"
