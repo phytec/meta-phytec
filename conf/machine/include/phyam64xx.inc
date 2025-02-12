@@ -18,14 +18,14 @@ KERNEL_OVERLAYS ?= " \
 
 # phyBOARD-Electra downstream kernel overlays
 KERNEL_OVERLAYS_PHYTEC = " \
-    ti/k3-am64-phyboard-electra-x27-uart3-spi1.dtbo \
+    ti/k3-am642-phyboard-electra-x27-gpio1-spi1-uart3.dtbo \
 "
 
 # phyBOARD-Electra overlays
 KERNEL_OVERLAYS:append:phyboard-electra = " \
     ti/k3-am642-phyboard-electra-pcie-usb2.dtbo \
     ti/k3-am642-phyboard-electra-gpio-fan.dtbo \
-    ${@oe.utils.conditional("PREFERRED_PROVIDER_virtual/kernel", "linux-phytec-ti", "${KERNEL_OVERLAYS_PHYTEC}", "", d)} \
+    ${@oe.utils.conditional("PREFERRED_PROVIDER_virtual/kernel", "linux-phytec", "${KERNEL_OVERLAYS_PHYTEC}", "", d)} \
 "
 
 PREFERRED_PROVIDER_virtual/kernel ?= "linux-phytec"
