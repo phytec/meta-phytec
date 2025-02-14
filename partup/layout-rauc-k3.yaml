@@ -21,6 +21,14 @@ mmc:
         input:
           filename: u-boot.img
 
+# BEGIN_CLEAN
+clean:
+  - offset: ${UBOOT_ENV_OFFSET}
+    size: 128kiB
+  - offset: ${UBOOT_ENV_OFFSET_REDUND}
+    size: 128kiB
+# END_CLEAN
+
 partitions:
   - label: boot0
     type: primary
