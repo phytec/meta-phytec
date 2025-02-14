@@ -31,7 +31,7 @@ PATCHES:k3r5-am64xx = " \
 SRC_URI:append:phyboard-electra = " ${PATCHES}"
 
 PR = "r0"
-SRCREV = "e284106bf61af0b5f349080cd71a7505947f0755"
+SRCREV = "7917fe9904700fc411a202079ab135b4df9f3ca8"
 
 COMPATIBLE_MACHINE = "^("
 COMPATIBLE_MACHINE .=  "phyboard-lyra"
