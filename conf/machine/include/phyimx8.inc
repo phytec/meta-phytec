@@ -68,3 +68,5 @@ OPTEEMACHINE:mx8mp-generic-bsp ?= "imx-mx8mpevk"
 PREFERRED_VERSION_optee-os:mx8-nxp-bsp ?= "4.4.0.imx"
 PREFERRED_VERSION_optee-client:mx8-nxp-bsp ?= "4.4.0.imx"
 PREFERRED_VERSION_optee-test:mx8-nxp-bsp ?= "4.4.0.imx"
+
+QEMUVERSION = "8.2%"
