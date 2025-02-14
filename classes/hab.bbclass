@@ -62,20 +62,12 @@ def create_csf_template():
 
 # Helper that formats the blocks in the passed list so they can be passed to NXP's cst tool
 def make_csf_hab_block(blocks: list):
-    result = ''
-    if(len(blocks) > 1):
-        for block in blocks[:-1]:
-            result += '0x%X 0x%X 0x%X "%s", \\\n' % (block['addr'],
-                                                     block['offset'],
-                                                     block['size'],
-                                                     block['filename'])
-    block = blocks[-1]
-    result += '0x%X 0x%X 0x%X "%s"' % (block['addr'],
-                                       block['offset'],
-                                       block['size'],
-                                       block['filename'])
-    return result
-
+    def _block2str(block: dict):
+        return '0x%X 0x%X 0x%X "%s"' % (block['addr'],
+                                        block['offset'],
+                                        block['size'],
+                                        block['filename'])
+    return ', \\\n'.join(_block2str(b) for b in blocks)
 
 # Generates a HAB instruction vector table from the passed parameters
 def gen_ivt(signature: int, loadaddr: int, res1: int, dcdptr: int,
