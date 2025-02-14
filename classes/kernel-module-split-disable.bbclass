@@ -30,7 +30,7 @@ python split_kernel_module_packages:append () {
         # After that the package 'kernel-modules' doesn't pull these packages onto
         # the rootfs automatically.
         kernel_modules = d.getVar("KERNEL_MODULES_META_PACKAGE")
-        rdepends = d.getVar("RDEPENDS:%s" % (kernel_modules,), True)
+        rdepends = d.getVar("RDEPENDS:%s" % (kernel_modules,))
         if rdepends is not None:
             rdepends = [pkg for pkg in rdepends.split(" ") if pkg not in disabled_modules]
             d.setVar("RDEPENDS:%s" % (kernel_modules), ' '.join(rdepends))

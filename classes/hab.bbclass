@@ -105,7 +105,7 @@ def get_linux_image_size(image_path):
 
 
 def cst_sign(d, input_csf_path : str, output_image_path : str):
-    pkcs11_module_path = d.getVar("PKCS11_MODULE_PATH", True)
+    pkcs11_module_path = d.getVar("PKCS11_MODULE_PATH")
     if pkcs11_module_path != None and pkcs11_module_path != "":
         os.environ["PKCS11_MODULE_PATH"] = pkcs11_module_path
     return execcmd('cst -i {0} -o {1}'.format(input_csf_path, output_image_path)) == 0
