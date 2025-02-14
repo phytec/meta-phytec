@@ -16,7 +16,6 @@ PARTUP_PACKAGE_FILES:append:update = " config-partition.tar.gz"
 PARTUP_PACKAGE_DEPENDS:append:update = " config-partition"
 PARTUP_PACKAGE_FILES:append:rauc-appfs = " rauc-appfs-example.tar.gz"
 PARTUP_PACKAGE_DEPENDS:append:rauc-appfs = " rauc-appfs-example"
-PARTUP_PACKAGE_FILES:append:k3 = " ${K3_BOOTLOADER_FILES}"
 
 PARTUP_PACKAGE_DEPENDS:append:mx7-generic-bsp = " \
     phytec-bootenv \
