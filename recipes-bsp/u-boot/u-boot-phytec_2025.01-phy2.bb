@@ -17,7 +17,7 @@ GIT_URL = "git://github.com/phytec/u-boot-phytec.git;protocol=https"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
 PR = "r0"
-SRCREV = "b52a41641f544defae8b7071f31d6fe88fe60a83"
+SRCREV = "6980061fa87574c69f5f37a9d0948545eb958552"
 
 COMPATIBLE_MACHINE = "^("
 COMPATIBLE_MACHINE .=  "phyboard-electra"
