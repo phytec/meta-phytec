@@ -1,6 +1,7 @@
 VENDOR_INC = ""
 VENDOR_INC:imx-generic-bsp = "optee-phytec-imx.inc"
 VENDOR_INC:ti-soc = "optee-phytec-ti.inc"
+VENDOR_INC:stm32mp1common = "optee-phytec-stm.inc"
 require ${VENDOR_INC}
 
 inherit features_check
