@@ -1,0 +1,491 @@
+From 5eac3991adf532f51ddc639cb9e4acfc9ff6b898 Mon Sep 17 00:00:00 2001
+From: Nicolas Raimundo <n.raimundo@phytec.fr>
+Date: Thu, 30 Jan 2025 10:10:11 +0100
+Subject: [PATCH 1/3] dts: stm32: add stm32mp157c-phycore-som
+
+Signed-off-by: Nicolas Raimundo <n.raimundo@phytec.fr>
+---
+ core/arch/arm/dts/stm32mp157c-phycore-som.dts |  23 ++
+ .../dts/stm32mp15xx-phycore-som-pinctrl.dtsi  | 199 +++++++++++++++
+ .../arch/arm/dts/stm32mp15xx-phycore-som.dtsi | 233 ++++++++++++++++++
+ 3 files changed, 455 insertions(+)
+ create mode 100644 core/arch/arm/dts/stm32mp157c-phycore-som.dts
+ create mode 100644 core/arch/arm/dts/stm32mp15xx-phycore-som-pinctrl.dtsi
+ create mode 100644 core/arch/arm/dts/stm32mp15xx-phycore-som.dtsi
+
+diff --git a/core/arch/arm/dts/stm32mp157c-phycore-som.dts b/core/arch/arm/dts/stm32mp157c-phycore-som.dts
+new file mode 100644
+index 000000000..4dbf50af9
+--- /dev/null
++++ b/core/arch/arm/dts/stm32mp157c-phycore-som.dts
+@@ -0,0 +1,23 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2025 PHYTEC Messtechnik GmbH
++ * Author: Christophe Parant <c.parant@phytec.fr>
++ */
++
++/dts-v1/;
++
++/* ATF Specific */
++#include "stm32mp157.dtsi"
++#include "stm32mp15xc.dtsi"
++#include "stm32mp15xx-phycore-som.dtsi"
++
++/ {
++	model = "PHYTEC phyCORE-STM32MP157C";
++	compatible = "phytec,stm32mp157c-phycore-som",
++		     "phytec,stm32mp157c-phycore-som.dtsi", "st,stm32mp157";
++
++	memory@c0000000 {
++		device_type = "memory";
++		reg = <0xc0000000 0x40000000>;
++	};
++};
+diff --git a/core/arch/arm/dts/stm32mp15xx-phycore-som-pinctrl.dtsi b/core/arch/arm/dts/stm32mp15xx-phycore-som-pinctrl.dtsi
+new file mode 100644
+index 000000000..312808c36
+--- /dev/null
++++ b/core/arch/arm/dts/stm32mp15xx-phycore-som-pinctrl.dtsi
+@@ -0,0 +1,199 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2025 PHYTEC Messtechnik GmbH
++ * Author: Christophe Parant <c.parant@phytec.fr>
++ */
++
++#include <dt-bindings/pinctrl/stm32-pinfunc.h>
++
++&pinctrl {
++
++	fmc_pins_mx: fmc_mx-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('D', 0, AF12)>, /* FMC_D2 */
++				 <STM32_PINMUX('D', 1, AF12)>, /* FMC_D3 */
++				 <STM32_PINMUX('D', 4, AF12)>, /* FMC_NOE */
++				 <STM32_PINMUX('D', 5, AF12)>, /* FMC_NWE */
++				 <STM32_PINMUX('D', 11, AF12)>, /* FMC_CLE */
++				 <STM32_PINMUX('D', 12, AF12)>, /* FMC_ALE */
++				 <STM32_PINMUX('D', 14, AF12)>, /* FMC_D0 */
++				 <STM32_PINMUX('D', 15, AF12)>, /* FMC_D1 */
++				 <STM32_PINMUX('E', 7, AF12)>, /* FMC_D4 */
++				 <STM32_PINMUX('E', 8, AF12)>, /* FMC_D5 */
++				 <STM32_PINMUX('E', 9, AF12)>, /* FMC_D6 */
++				 <STM32_PINMUX('E', 10, AF12)>, /* FMC_D7 */
++				 <STM32_PINMUX('G', 9, AF12)>; /* FMC_NCE */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <1>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('D', 6, AF12)>; /* FMC_NWAIT */
++			bias-pull-up;
++		};
++	};
++
++	qspi_bk1_pins_a: qspi-bk1-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('F', 8, AF10)>, /* QSPI_BK1_IO0 */
++				 <STM32_PINMUX('F', 9, AF10)>, /* QSPI_BK1_IO1 */
++				 <STM32_PINMUX('F', 7, AF9)>, /* QSPI_BK1_IO2 */
++				 <STM32_PINMUX('F', 6, AF9)>; /* QSPI_BK1_IO3 */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <1>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('B', 6, AF10)>; /* QSPI_BK1_NCS */
++			bias-pull-up;
++			drive-push-pull;
++			slew-rate = <1>;
++		};
++	};
++
++	qspi_bk2_pins_a: qspi-bk2-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('H', 2, AF9)>, /* QSPI_BK2_IO0 */
++				 <STM32_PINMUX('H', 3, AF9)>, /* QSPI_BK2_IO1 */
++				 <STM32_PINMUX('G', 10, AF11)>, /* QSPI_BK2_IO2 */
++				 <STM32_PINMUX('G', 7, AF11)>; /* QSPI_BK2_IO3 */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <1>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('C', 0, AF10)>; /* QSPI_BK2_NCS */
++			bias-pull-up;
++			drive-push-pull;
++			slew-rate = <1>;
++		};
++	};
++
++	qspi_clk_pins_a: qspi-clk-0 {
++		pins {
++			pinmux = <STM32_PINMUX('F', 10, AF9)>; /* QSPI_CLK */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <3>;
++		};
++	};
++
++	sdmmc1_b4_pins_a: sdmmc1-b4-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('C', 8, AF12)>, /* SDMMC1_D0 */
++				 <STM32_PINMUX('C', 9, AF12)>, /* SDMMC1_D1 */
++				 <STM32_PINMUX('E', 6, AF8)>, /* SDMMC1_D2 */
++				 <STM32_PINMUX('C', 11, AF12)>, /* SDMMC1_D3 */
++				 <STM32_PINMUX('D', 2, AF12)>; /* SDMMC1_CMD */
++			slew-rate = <1>;
++			drive-push-pull;
++			bias-disable;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('C', 12, AF12)>; /* SDMMC1_CK */
++			slew-rate = <2>;
++			drive-push-pull;
++			bias-disable;
++		};
++	};
++
++	sdmmc1_dir_pins_a: sdmmc1-dir-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('F', 2, AF11)>, /* SDMMC1_D0DIR */
++				 <STM32_PINMUX('C', 7, AF8)>, /* SDMMC1_D123DIR */
++				 <STM32_PINMUX('B', 9, AF11)>; /* SDMMC1_CDIR */
++			slew-rate = <1>;
++			drive-push-pull;
++			bias-pull-up;
++		};
++		pins2{
++			pinmux = <STM32_PINMUX('E', 4, AF8)>; /* SDMMC1_CKIN */
++			bias-pull-up;
++		};
++	};
++
++	sdmmc1_dir_pins_b: sdmmc1-dir-1 {
++		pins1 {
++			pinmux = <STM32_PINMUX('E', 12, AF8)>, /* SDMMC1_D0DIR */
++				 <STM32_PINMUX('E', 14, AF11)>, /* SDMMC1_D123DIR */
++				 <STM32_PINMUX('B', 9, AF11)>; /* SDMMC1_CDIR */
++			slew-rate = <3>;
++			drive-push-pull;
++			bias-pull-up;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('E', 4, AF8)>; /* SDMMC1_CKIN */
++			bias-pull-up;
++		};
++	};
++
++	sdmmc2_b4_pins_a: sdmmc2-b4-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('B', 14, AF9)>, /* SDMMC2_D0 */
++				 <STM32_PINMUX('B', 15, AF9)>, /* SDMMC2_D1 */
++				 <STM32_PINMUX('B', 3, AF9)>, /* SDMMC2_D2 */
++				 <STM32_PINMUX('B', 4, AF9)>, /* SDMMC2_D3 */
++				 <STM32_PINMUX('G', 6, AF10)>; /* SDMMC2_CMD */
++			slew-rate = <1>;
++			drive-push-pull;
++			bias-pull-up;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('E', 3, AF9)>; /* SDMMC2_CK */
++			slew-rate = <2>;
++			drive-push-pull;
++			bias-pull-up;
++		};
++	};
++
++	sdmmc2_d47_pins_a: sdmmc2-d47-0 {
++		pins {
++			pinmux = <STM32_PINMUX('A', 8, AF9)>, /* SDMMC2_D4 */
++				 <STM32_PINMUX('A', 9, AF10)>, /* SDMMC2_D5 */
++				 <STM32_PINMUX('C', 6, AF10)>, /* SDMMC2_D6 */
++				 <STM32_PINMUX('D', 3, AF9)>; /* SDMMC2_D7 */
++			slew-rate = <1>;
++			drive-push-pull;
++			bias-pull-up;
++		};
++	};
++
++	uart4_pins_a: uart4-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('B', 9, AF8)>; /* UART4_TX */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <0>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('B', 2, AF8)>; /* UART4_RX */
++			bias-disable;
++		};
++	};
++
++	usart3_pins_a: usart3-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('B', 10, AF7)>; /* USART3_TX */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <0>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('B', 12, AF8)>; /* USART3_RX */
++			bias-disable;
++		};
++	};
++};
++
++&pinctrl_z {
++
++	i2c4_pins_a: i2c4-0 {
++		pins {
++			pinmux = <STM32_PINMUX('Z', 4, AF6)>, /* I2C4_SCL */
++				 <STM32_PINMUX('Z', 5, AF6)>; /* I2C4_SDA */
++			bias-disable;
++			drive-open-drain;
++			slew-rate = <0>;
++		};
++	};
++};
+diff --git a/core/arch/arm/dts/stm32mp15xx-phycore-som.dtsi b/core/arch/arm/dts/stm32mp15xx-phycore-som.dtsi
+new file mode 100644
+index 000000000..5885a919f
+--- /dev/null
++++ b/core/arch/arm/dts/stm32mp15xx-phycore-som.dtsi
+@@ -0,0 +1,233 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2025 PHYTEC Messtechnik GmbH
++ * Author: Christophe Parant <c.parant@phytec.fr>
++ */
++
++#include "stm32mp15xx-phycore-som-pinctrl.dtsi"
++#include "stm32mp15xxac-pinctrl.dtsi"
++
++/ {
++
++	aliases {
++		serial0 = &uart4;
++		serial1 = &usart3;
++	};
++
++	chosen {
++		stdout-path = "serial0:115200n8";
++	};
++
++	vin: vin {
++		compatible = "regulator-fixed";
++		regulator-name = "vin";
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++		regulator-always-on;
++	};
++};
++
++&bsec {
++	board_id: board_id@ec {
++		reg = <0xec 0x4>;
++		st,non-secure-otp;
++	};
++};
++
++&clk_hse {
++	st,digbypass;
++};
++
++&cpu0{
++	cpu-supply = <&vddcore>;
++};
++
++&cpu1{
++	cpu-supply = <&vddcore>;
++};
++
++&i2c4 {
++	compatible = "st,stm32mp15-i2c-non-secure";
++	pinctrl-names = "default";
++	pinctrl-0 = <&i2c4_pins_a>;
++	i2c-scl-rising-time-ns = <185>;
++	i2c-scl-falling-time-ns = <20>;
++	status = "okay";
++
++	pmic: stpmic@33 {
++		compatible = "st,stpmic1";
++		reg = <0x33>;
++		interrupt-controller;
++		#interrupt-cells = <2>;
++		status = "okay";
++
++		regulators {
++			compatible = "st,stpmic1-regulators";
++			buck1-supply = <&vin>;
++			buck2-supply = <&vin>;
++			buck3-supply = <&vin>;
++			buck4-supply = <&vin>;
++			ldo1-supply = <&v3v3>;
++			ldo2-supply = <&v3v3>;
++			ldo3-supply = <&vdd_ddr>;
++			ldo4-supply = <&vin>;
++			ldo5-supply = <&v3v3>;
++			ldo6-supply = <&v3v3>;
++			vref_ddr-supply = <&vin>;
++			boost-supply = <&vin>;
++			pwr_sw1-supply = <&bst_out>;
++			pwr_sw2-supply = <&bst_out>;
++
++			vddcore: buck1 {
++				regulator-name = "vddcore";
++				regulator-min-microvolt = <1200000>;
++				regulator-max-microvolt = <1350000>;
++				regulator-always-on;
++				regulator-initial-mode = <0>;
++				regulator-over-current-protection;
++			};
++
++			vdd_ddr: buck2 {
++				regulator-name = "vdd_ddr";
++				regulator-min-microvolt = <1350000>;
++				regulator-max-microvolt = <1350000>;
++				regulator-always-on;
++				regulator-initial-mode = <0>;
++				regulator-over-current-protection;
++			};
++
++			vdd: buck3 {
++				regulator-name = "vdd";
++				regulator-min-microvolt = <3300000>;
++				regulator-max-microvolt = <3300000>;
++				regulator-always-on;
++				st,mask-reset;
++				regulator-initial-mode = <0>;
++				regulator-over-current-protection;
++			};
++
++			v3v3: buck4 {
++				regulator-name = "v3v3";
++				regulator-min-microvolt = <3300000>;
++				regulator-max-microvolt = <3300000>;
++				regulator-always-on;
++				regulator-over-current-protection;
++				regulator-initial-mode = <0>;
++			};
++
++			v1v8_audio: ldo1 {
++				regulator-name = "v1v8_audio";
++				regulator-min-microvolt = <1800000>;
++				regulator-max-microvolt = <1800000>;
++				regulator-always-on;
++			};
++
++			vdd_eth_2v5: ldo2 {
++				regulator-name = "vdd_eth_2v5";
++				regulator-min-microvolt = <2500000>;
++				regulator-max-microvolt = <2500000>;
++				regulator-always-on;
++			};
++
++			vtt_ddr: ldo3 {
++				regulator-name = "vtt_ddr";
++				regulator-always-on;
++				regulator-over-current-protection;
++				st,regulator-sink-source;
++			};
++
++			vdd_usb: ldo4 {
++				regulator-name = "vdd_usb";
++				regulator-min-microvolt = <3300000>;
++				regulator-max-microvolt = <3300000>;
++			};
++
++			vdda: ldo5 {
++				regulator-name = "vdda";
++				regulator-min-microvolt = <2900000>;
++				regulator-max-microvolt = <2900000>;
++				regulator-boot-on;
++			};
++
++			vdd_eth_1v0: ldo6 {
++				regulator-name = "vdd_eth_1v0";
++				regulator-min-microvolt = <1000000>;
++				regulator-max-microvolt = <1000000>;
++				regulator-always-on;
++			};
++
++			vref_ddr: vref_ddr {
++				regulator-name = "vref_ddr";
++				regulator-always-on;
++			};
++
++			bst_out: boost {
++				regulator-name = "bst_out";
++			};
++
++			vbus_otg: pwr_sw1 {
++				regulator-name = "vbus_otg";
++			};
++
++			vbus_sw: pwr_sw2 {
++				regulator-name = "vbus_sw";
++				regulator-active-discharge = <1>;
++			};
++		};
++	};
++};
++
++&iwdg2 {
++	timeout-sec = <32>;
++	status = "disabled";
++};
++
++&pwr_regulators {
++	vdd-supply = <&vdd>;
++	vdd_3v3_usbfs-supply = <&vdd_usb>;
++};
++
++&rcc {
++	st,hsi-cal;
++	st,csi-cal;
++	st,cal-sec = <60>;
++
++	st,clkdiv = <
++		1 /*MPU*/
++		0 /*AXI*/
++		0 /*MCU*/
++		1 /*APB1*/
++		1 /*APB2*/
++		1 /*APB3*/
++		1 /*APB4*/
++		2 /*APB5*/
++		23 /*RTC*/
++		0 /*MCO1*/
++		0 /*MCO2*/
++	>;
++};
++
++&rng1 {
++	status = "okay";
++};
++
++&rtc {
++	status = "okay";
++};
++
++&timers12 {
++	st,hsi-cal-input = <1>;
++	st,csi-cal-input = <2>;
++};
++
++&uart4 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&uart4_pins_a>;
++	status = "okay";
++};
++
++&usart3 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&usart3_pins_a>;
++	status = "disabled";
++};
+-- 
+2.34.1
+

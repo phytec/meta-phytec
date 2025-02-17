@@ -1,0 +1,55 @@
+From f660b3e7ad9a26d0bd73920a4d976ec37d35fa89 Mon Sep 17 00:00:00 2001
+From: Nicolas Raimundo <n.raimundo@phytec.fr>
+Date: Tue, 26 Nov 2024 15:19:26 +0100
+Subject: [PATCH 3/3] plat-stm32mp1: add stm32mp15*-phycore-som*
+
+Signed-off-by: Nicolas Raimundo <n.raimundo@phytec.fr>
+---
+ core/arch/arm/plat-stm32mp1/conf.mk | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
+
+diff --git a/core/arch/arm/plat-stm32mp1/conf.mk b/core/arch/arm/plat-stm32mp1/conf.mk
+index 782020221..39bbfd826 100644
+--- a/core/arch/arm/plat-stm32mp1/conf.mk
++++ b/core/arch/arm/plat-stm32mp1/conf.mk
+@@ -9,6 +9,8 @@ flavor_dts_file-157A_DK1_SCMI = stm32mp157a-dk1-scmi.dts
+ flavor_dts_file-157C_DK2_SCMI = stm32mp157c-dk2-scmi.dts
+ flavor_dts_file-157C_ED1_SCMI = stm32mp157c-ed1-scmi.dts
+ flavor_dts_file-157C_EV1_SCMI = stm32mp157c-ev1-scmi.dts
++flavor_dts_file-157C_PHYCORE = stm32mp157c-phycore-som.dts
++flavor_dts_file-153A_PHYCORE_NAND_512MB = stm32mp153a-phycore-som-nand-512mb.dts
+ 
+ flavor_dts_file-135F_DK = stm32mp135f-dk.dts
+ 
+@@ -17,13 +19,15 @@ flavorlist-cryp-512M = $(flavor_dts_file-157C_DK2) \
+ 		       $(flavor_dts_file-135F_DK)
+ 
+ flavorlist-no_cryp-512M = $(flavor_dts_file-157A_DK1) \
+-			  $(flavor_dts_file-157A_DK1_SCMI)
++			  $(flavor_dts_file-157A_DK1_SCMI) \
++			  $(flavor_dts_file-153A_PHYCORE_NAND_512MB)
+ 
+ flavorlist-cryp-1G = $(flavor_dts_file-157C_DHCOM_PDK2) \
+ 		     $(flavor_dts_file-157C_ED1) \
+ 		     $(flavor_dts_file-157C_EV1) \
+ 		     $(flavor_dts_file-157C_ED1_SCMI) \
+-		     $(flavor_dts_file-157C_EV1_SCMI)
++		     $(flavor_dts_file-157C_EV1_SCMI) \
++		     $(flavor_dts_file-157C_PHYCORE_1GB)
+ 
+ flavorlist-no_cryp-1G = $(flavor_dts_file-157A_DHCOR_AVENGER96)
+ 
+@@ -54,7 +58,9 @@ flavorlist-MP15 = $(flavor_dts_file-157A_DHCOR_AVENGER96) \
+ 		  $(flavor_dts_file-157A_DK1_SCMI) \
+ 		  $(flavor_dts_file-157C_DK2_SCMI) \
+ 		  $(flavor_dts_file-157C_ED1_SCMI) \
+-		  $(flavor_dts_file-157C_EV1_SCMI)
++		  $(flavor_dts_file-157C_EV1_SCMI) \
++		  $(flavor_dts_file-157C_PHYCORE) \
++		  $(flavor_dts_file-153A_PHYCORE_NAND_512MB)
+ 
+ flavorlist-MP13 = $(flavor_dts_file-135F_DK)
+ 
+-- 
+2.34.1
+

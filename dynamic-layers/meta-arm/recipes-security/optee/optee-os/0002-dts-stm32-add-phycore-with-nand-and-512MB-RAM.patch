@@ -1,0 +1,43 @@
+From 841c84a12f691a9e77c086a391d76c92d2b05148 Mon Sep 17 00:00:00 2001
+From: Christophe Parant <c.parant@phytec.fr>
+Date: Wed, 22 Jan 2025 17:11:19 +0100
+Subject: [PATCH 2/3] dts: stm32: add phycore with nand and 512MB RAM
+
+Signed-off-by: Christophe Parant <c.parant@phytec.fr>
+---
+ .../stm32mp153a-phycore-som-nand-512mb.dts    | 23 +++++++++++++++++++
+ 1 file changed, 23 insertions(+)
+ create mode 100644 core/arch/arm/dts/stm32mp153a-phycore-som-nand-512mb.dts
+
+diff --git a/core/arch/arm/dts/stm32mp153a-phycore-som-nand-512mb.dts b/core/arch/arm/dts/stm32mp153a-phycore-som-nand-512mb.dts
+new file mode 100644
+index 000000000..01fd29954
+--- /dev/null
++++ b/core/arch/arm/dts/stm32mp153a-phycore-som-nand-512mb.dts
+@@ -0,0 +1,23 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2020 PHYTEC Messtechnik GmbH
++ * Author: Dom Vovard <dom.vovard@linrt.com>
++ *	   Christophe Parant <c.parant@phytec.fr>
++ */
++
++/dts-v1/;
++
++/* ATF Specific */
++#include "stm32mp153.dtsi"
++#include "stm32mp15xx-phycore-som.dtsi"
++
++/ {
++	model = "PHYTEC phyCORE-STM32MP153A with NAND and 512MB RAM";
++	compatible = "phytec,stm32mp153a-phycore-som-nand-512mb",
++		     "phytec,stm32mp153a-phycore-som.dtsi", "st,stm32mp153";
++
++	memory@c0000000 {
++		device_type = "memory";
++		reg = <0xc0000000 0x20000000>;
++	};
++};
+-- 
+2.34.1
+
