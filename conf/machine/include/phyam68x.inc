@@ -14,7 +14,7 @@ PREFERRED_PROVIDER_virtual/libgl ?= "mesa-pvr"
 PREFERRED_PROVIDER_virtual/gpudriver ?= "ti-img-rogue-driver"
 
 MACHINE_ESSENTIAL_EXTRA_RRECOMMENDS += "cadence-mhdp-fw cnm-wave-fw"
-MACHINE_FEATURES += "screen"
+MACHINE_FEATURES += "screen touchscreen pcie"
 
 IMAGE_CLASSES:append = " wic-bootenv-helper"
 IMAGE_BOOT_FILES += "bootenv.txt"

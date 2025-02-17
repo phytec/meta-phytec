@@ -6,6 +6,8 @@ OPTEEMACHINE = "k3-am64x"
 
 MACHINE_ESSENTIAL_EXTRA_RRECOMMENDS += "prueth-fw pruhsr-fw prusw-fw"
 
+MACHINE_FEATURES += "pcie"
+
 BBMULTICONFIG = "k3r5"
 
 # phyCORE-AM64x overlays
