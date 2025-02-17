@@ -31,3 +31,7 @@ KERNEL_OVERLAYS:append:phyboard-electra = " \
 PREFERRED_PROVIDER_virtual/kernel ?= "linux-phytec"
 PREFERRED_PROVIDER_virtual/bootloader ?= "u-boot-phytec"
 PREFERRED_PROVIDER_u-boot ?= "u-boot-phytec"
+PREFERRED_PROVIDER_ti-sci-fw ?= "ti-firmware"
+PREFERRED_PROVIDER_prueth-fw ?= "ti-firmware"
+PREFERRED_PROVIDER_pruhsr-fw ?= "ti-firmware"
+PREFERRED_PROVIDER_prusw-fw ?= "ti-firmware"
