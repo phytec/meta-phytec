@@ -51,7 +51,7 @@ PREFERRED_PROVIDER_virtual/bootloader ??= "u-boot-phytec-ti"
 PREFERRED_PROVIDER_u-boot ??= "u-boot-phytec-ti"
 PREFERRED_PROVIDER_ti-sci-fw ??= "ti-sci-fw"
 
-MACHINE_FEATURES = "apm usbgadget usbhost vfat ext2 alsa pci optee efi"
+MACHINE_FEATURES = "apm usbgadget usbhost vfat ext2 alsa rtc optee efi"
 
 # dont install kernelimage to rootfs
 RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base = ""

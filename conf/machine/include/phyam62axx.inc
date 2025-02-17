@@ -8,7 +8,7 @@ MACHINE_ESSENTIAL_EXTRA_RRECOMMENDS += "cnm-wave-fw"
 
 TFA_K3_SYSTEM_SUSPEND = "1"
 
-MACHINE_FEATURES += "screen"
+MACHINE_FEATURES += "screen touchscreen"
 
 # phyCORE-AM62x overlays
 KERNEL_OVERLAYS ?= " \

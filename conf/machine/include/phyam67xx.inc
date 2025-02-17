@@ -19,4 +19,4 @@ PREFERRED_PROVIDER_virtual/gpudriver ?= "ti-img-rogue-driver"
 
 MACHINE_ESSENTIAL_EXTRA_RRECOMMENDS += "cnm-wave-fw"
 
-MACHINE_FEATURES += "screen"
+MACHINE_FEATURES += "screen touchscreen pcie"

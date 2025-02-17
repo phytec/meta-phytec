@@ -19,7 +19,7 @@ PREFERRED_PROVIDER_virtual/gpudriver ?= "${@oe.utils.conditional("PREFERRED_PROV
 
 MACHINE_ESSENTIAL_EXTRA_RRECOMMENDS += "${@oe.utils.conditional("PREFERRED_PROVIDER_virtual/kernel", "linux-mainline", "linux-firmware-powervr", "", d)}"
 
-MACHINE_FEATURES += "screen"
+MACHINE_FEATURES += "screen touchscreen"
 
 # phyCORE-AM62x overlays
 KERNEL_OVERLAYS ?= " \
