@@ -49,6 +49,7 @@ UBOOT_SIGN_ENABLE = "0"
 PREFERRED_PROVIDER_virtual/kernel ??= "linux-phytec-ti"
 PREFERRED_PROVIDER_virtual/bootloader ??= "u-boot-phytec-ti"
 PREFERRED_PROVIDER_u-boot ??= "u-boot-phytec-ti"
+PREFERRED_PROVIDER_ti-sci-fw ??= "ti-sci-fw"
 
 MACHINE_FEATURES = "apm usbgadget usbhost vfat ext2 alsa pci optee efi"
 
