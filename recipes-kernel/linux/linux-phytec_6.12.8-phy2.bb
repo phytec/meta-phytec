@@ -27,7 +27,7 @@ KERNEL_FEATURES = " \
     ${@bb.utils.contains('DISTRO_FEATURES', 'preempt-rt', 'preempt-rt.scc', '', d)} \
 "
 
-KBUILD_DEFCONFIG ?= "defconfig"
+KBUILD_DEFCONFIG ?= "phytec_ti_defconfig"
 KCONFIG_MODE = "alldefconfig"
 
 PR = "${INC_PR}.0"
