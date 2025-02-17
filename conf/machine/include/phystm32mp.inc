@@ -51,8 +51,8 @@ MACHINE_EXTRA_RRECOMMENDS:append = " ${@bb.utils.contains("MACHINE_FEATURES", "h
 PREFERRED_PROVIDER_virtual/kernel ?= "linux-phytec"
 PREFERRED_PROVIDER_virtual/bootloader ?= "u-boot-phytec"
 PREFERRED_PROVIDER_virtual/trusted-firmware-a ?= "tf-a-phytec"
-PREFERRED_PROVIDER_virtual/optee-os ?= "optee-os-phytec"
-VIRTUAL-RUNTIME_optee-os = "optee-os-phytec"
+PREFERRED_PROVIDER_virtual/optee-os ?= "optee-os"
+VIRTUAL-RUNTIME_optee-os = "optee-os"
 
 # Default FSTYPES requested
 WKS_IMAGE_FSTYPES ?= ""
@@ -183,17 +183,18 @@ TF_A_DEVICETREE = "${STM32MP_DEVICETREE}"
 # Map OPTEE configuration to device tree list
 OPTEE_CONF = "${STM32MP_DEVICETREE}"
 
-VIRTUAL-RUNTIME_optee-os = "optee-os-phytec"
-
 #EXTRA_IMAGEDEPENDS += "virtual-optee-os"
 
 
 #OPTEE_CONF_EXTENDED = "stm32mp157c-dk2:PLATFORM=stm32mp1-157C_DK2"
 # need to have a version of optee-client and optee-test aligned with optee-os
-#PREFERRED_PROVIDER_optee-client = "optee-client-phytec"
-PREFERRED_PROVIDER_optee-test = "optee-test-phytec"
+#PREFERRED_PROVIDER_optee-client = "optee-client"
+PREFERRED_PROVIDER_optee-test = "optee-test"
 
 ST_OPTEE_NO_SHAREDMEMORY = "1"
+
+OPTEEMACHINE = "stm32mp1"
+OPTEEOUTPUTMACHINE = "stm32mp1"
 
 # =========================================================================
 # Enable deploy of bootloader elf files
