@@ -48,10 +48,16 @@ XSERVER = "xserver-xorg \
            xf86-input-keyboard"
 
 # OpenGLES support for AM335x SGX Core
-PREFERRED_PROVIDER_virtual/libgles1 ?= "ti-sgx-ddk-um"
-PREFERRED_PROVIDER_virtual/libgles2 ?= "ti-sgx-ddk-um"
-PREFERRED_PROVIDER_virtual/egl ?= "ti-sgx-ddk-um"
-PREFERRED_PROVIDER_virtual/libgbm ?= "ti-sgx-ddk-um"
+PREFERRED_PROVIDER_virtual/mesa ?= "mesa-pvr"
+PREFERRED_PROVIDER_virtual/egl ?= "mesa-pvr"
+PREFERRED_PROVIDER_virtual/libgles1 ?= "mesa-pvr"
+PREFERRED_PROVIDER_virtual/libgles2 ?= "mesa-pvr"
+PREFERRED_PROVIDER_virtual/libgles3 ?= "mesa-pvr"
+PREFERRED_PROVIDER_virtual/libgbm ?= "mesa-pvr"
+PREFERRED_PROVIDER_virtual/libglx ?= "mesa-pvr"
+PREFERRED_PROVIDER_virtual/libgl ?= "mesa-pvr"
+
+PREFERRED_PROVIDER_virtual/gpudriver ?= "ti-sgx-ddk-km"
 
 QT_QPA_DEFAULT_PLATFORM ?= "${@bb.utils.contains('MACHINE_FEATURES', 'gpu', 'eglfs', 'linuxfb', d)}"
 
