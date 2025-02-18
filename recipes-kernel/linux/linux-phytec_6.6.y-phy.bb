@@ -28,6 +28,8 @@ S = "${WORKDIR}/git"
 KBUILD_DEFCONFIG:ti33x = "am335x_phytec_defconfig"
 KCONFIG_MODE = "alldefconfig"
 
+KERNEL_DTC_FLAGS:append = " -@"
+
 KERNEL_VERSION_SANITY_SKIP = "1"
 
 COMPATIBLE_MACHINE  = "^("
