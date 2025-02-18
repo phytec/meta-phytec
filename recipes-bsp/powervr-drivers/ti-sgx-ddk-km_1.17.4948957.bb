@@ -1,7 +1,7 @@
 DESCRIPTION =  "Kernel drivers for the PowerVR SGX chipset found in the TI SoCs"
 HOMEPAGE = "https://git.ti.com/graphics/omap5-sgx-ddk-linux"
 LICENSE = "MIT | GPL-2.0-only"
-LIC_FILES_CHKSUM = "file://eurasia_km/README;beginline=13;endline=22;md5=74506d9b8e5edbce66c2747c50fcef12"
+LIC_FILES_CHKSUM = "file://GPL-COPYING;md5=60422928ba677faaa13d6ab5f5baaa1e"
 
 inherit module features_check
 
@@ -9,7 +9,6 @@ REQUIRED_MACHINE_FEATURES = "gpu"
 
 COMPATIBLE_MACHINE = "ti33x"
 
-PR = "r0"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
@@ -17,26 +16,34 @@ DEPENDS = "virtual/kernel"
 
 PROVIDES = "virtual/gpudriver"
 
-BRANCH = "ti-img-sgx/${PV}/k5.10"
+BRANCH = "${PV}/mesa/k6.1"
 
 SRC_URI = "git://git.ti.com/git/graphics/omap5-sgx-ddk-linux.git;protocol=https;branch=${BRANCH}"
 SRC_URI += " \
-        file://0001-Makefiles-Fix-arch-assignement.patch \
-        file://0002-pvr_linux_fence.c-Rename-functions.patch \
-        file://0003-module-Remove-MODULE_SUPPORTED_DEVICE.patch \
+    file://0001-Makefiles-Fix-arch-assignement.patch \
 "
+
 S = "${WORKDIR}/git"
 
-SRCREV = "eda7780bfd5277e16913c9bc0b0e6892b4e79063"
+SRCREV = "3005cf8145a6720daa47e4e273f9e421ff77cb58"
 
-TARGET_PRODUCT:ti33x = "ti335x"
+TARGET_PRODUCT:ti33x = "ti335x_linux"
+PVR_BUILD = "release"
+PVR_WS = "lws-generic"
 
-EXTRA_OEMAKE += 'KERNELDIR="${STAGING_KERNEL_DIR}" TARGET_PRODUCT=${TARGET_PRODUCT} WINDOW_SYSTEM=nulldrmws'
+EXTRA_OEMAKE += 'KERNELDIR="${STAGING_KERNEL_DIR}" BUILD=${PVR_BUILD} \
+    WINDOW_SYSTEM=${PVR_WS} PVR_BUILD_DIR=${TARGET_PRODUCT}'
 
-do_compile:prepend() {
-    cd ${S}/eurasia_km/eurasiacon/build/linux2/omap_linux
-}
+# There are useful flags here that are interpreted by the final kbuild pass
+# These variables are not necessary when compiling outside of Yocto
+export KERNEL_CC
+export KERNEL_LD
+export KERNEL_AR
+export KERNEL_OBJCOPY
+export KERNEL_STRIP
 
 do_install() {
-    make -C ${STAGING_KERNEL_DIR} M=${B}/eurasia_km/eurasiacon/binary_omap_linux_nulldrmws_release/target_armhf/kbuild INSTALL_MOD_PATH=${D}${root_prefix} PREFIX=${STAGING_DIR_HOST} modules_install
+    make -C ${STAGING_KERNEL_DIR} M=${B}/eurasiacon/binary_${TARGET_PRODUCT}_${PVR_WS}_${PVR_BUILD}/target_armhf/kbuild INSTALL_MOD_PATH=${D}${root_prefix} PREFIX=${STAGING_DIR_HOST} modules_install
 }
+
+RRECOMMENDS:${PN} += "ti-sgx-ddk-um"
