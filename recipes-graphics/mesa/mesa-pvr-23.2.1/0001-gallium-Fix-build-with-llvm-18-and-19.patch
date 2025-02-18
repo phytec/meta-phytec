@@ -1,0 +1,52 @@
+From 6c5033bb01a3a1341d4db5007586a5f2e2727b0a Mon Sep 17 00:00:00 2001
+From: Ryan Eatmon <reatmon@ti.com>
+Date: Mon, 4 Nov 2024 13:37:29 -0600
+Subject: [PATCH] gallium: Fix build with llvm 18 and 19
+
+- CodeGenOpt::Level changed to CodeGenOoptLevel. [1]
+- llvm::sys::getHostCPUFeatures() now returns the features instead of
+modifying the passed in argument. [2]
+
+Upstream-Status: Backport [1][https://gitlab.freedesktop.org/mesa/mesa/-/commit/f79617fe804ea6524651ff1bc3a91098d3199179]
+Upstream-Status: Backport [2][https://gitlab.freedesktop.org/mesa/mesa/-/commit/fa9cd89a85b904615ebc11da609445b5b751e68d]
+
+Signed-off-by: Ryan Eatmon <reatmon@ti.com>
+---
+ src/gallium/auxiliary/gallivm/lp_bld_misc.cpp | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/src/gallium/auxiliary/gallivm/lp_bld_misc.cpp b/src/gallium/auxiliary/gallivm/lp_bld_misc.cpp
+index 5e7a30a6cc2..dbc777e3096 100644
+--- a/src/gallium/auxiliary/gallivm/lp_bld_misc.cpp
++++ b/src/gallium/auxiliary/gallivm/lp_bld_misc.cpp
+@@ -366,7 +366,11 @@ lp_build_create_jit_compiler_for_module(LLVMExecutionEngineRef *OutJIT,
+    builder.setEngineKind(EngineKind::JIT)
+           .setErrorStr(&Error)
+           .setTargetOptions(options)
++#if LLVM_VERSION_MAJOR >= 18
++          .setOptLevel((CodeGenOptLevel)OptLevel);
++#else
+           .setOptLevel((CodeGenOpt::Level)OptLevel);
++#endif
+
+ #if DETECT_OS_WINDOWS
+     /*
+@@ -394,8 +398,14 @@ lp_build_create_jit_compiler_for_module(LLVMExecutionEngineRef *OutJIT,
+     * which allows us to enable/disable code generation based
+     * on the results of cpuid on these architectures.
+     */
+-   llvm::StringMap<bool> features;
+-   llvm::sys::getHostCPUFeatures(features);
++   #if LLVM_VERSION_MAJOR >= 19
++      /* llvm-19+ returns StringMap from getHostCPUFeatures.
++      */
++      auto features = llvm::sys::getHostCPUFeatures();
++   #else
++      llvm::StringMap<bool> features;
++      llvm::sys::getHostCPUFeatures(features);
++   #endif
+
+    for (StringMapIterator<bool> f = features.begin();
+         f != features.end();
+--
+2.17.1
