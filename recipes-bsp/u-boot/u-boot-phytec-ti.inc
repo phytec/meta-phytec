@@ -1,3 +1,5 @@
+FILESEXTRAPATHS:prepend := "${THISDIR}/features:"
+
 DEPENDS:append = " \
     ti-sci-fw \
     python3-pyelftools-native \
@@ -30,6 +32,10 @@ PACKAGECONFIG:append:j722s = " dm"
 BINMAN_INDIRS = "${STAGING_DIR_HOST}${nonarch_base_libdir}/firmware"
 
 EXTRA_OEMAKE += "${PACKAGECONFIG_CONFARGS} BINMAN_INDIRS=${BINMAN_INDIRS}"
+
+SRC_URI:append:k3r5 = " \
+    ${@bb.utils.contains('MACHINE_FEATURES', 'ecc', 'file://k3-inline-ecc.cfg', '', d)} \
+"
 
 do_deploy:append:k3r5 () {
     rm -f ${DEPLOYDIR}/u-boot-initial-env*
