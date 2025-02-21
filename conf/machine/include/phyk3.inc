@@ -35,7 +35,7 @@ EXTRA_IMAGEDEPENDS += "virtual/bootloader"
 
 TFA_PLATFORM = "k3"
 
-do_image_wic[depends] += "virtual/bootloader:do_deploy"
+do_image_wic[depends] += "ti-boot-container:do_deploy"
 do_image[mcdepends] += "mc::k3r5:virtual/bootloader:do_deploy"
 
 SERIAL_CONSOLES = "115200;ttyS2"
