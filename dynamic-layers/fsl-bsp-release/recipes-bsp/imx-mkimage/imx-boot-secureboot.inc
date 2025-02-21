@@ -11,31 +11,14 @@ python do_sign() {
 }
 
 python do_sign:append:mx91-generic-bsp() {
-    logfile = os.path.join(d.getVar('WORKDIR'), 'temp/log.do_compile')
-
-    target = 'u-boot-atf-container.img'
-    image_path = os.path.join(d.getVar('BOOT_STAGING'), target)
-    signed_image_path = os.path.join(d.getVar('BOOT_STAGING'), f'{target}-signed')
-    offset_ch, offset_sb = csf_get_offsets_from_file(target, logfile)
-    ahab_sign(image_path, signed_image_path, offset_ch, offset_sb, d)
-
-    bb.note(f'Copying signed ATF container {signed_image_path} to {image_path}')
-    shutil.copy2(signed_image_path, image_path)
-
-    flashbin = 'flash.bin'
-    image_path = os.path.join(d.getVar('BOOT_STAGING'), flashbin)
-    for target in d.getVar('IMXBOOT_TARGETS').split():
-        bb.note(f'Signing for target \'{target}\'')
-        signed_image_path = d.expand(f'${{S}}/${{BOOT_CONFIG_MACHINE}}-{target}-signed')
-        make_process = subprocess.run(['make', '-C', d.getVar('S'),
-                d.expand('SOC=${IMX_BOOT_SOC_TARGET}'), target],
-                stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        offset_ch, offset_sb = csf_get_offsets_from_string(flashbin,
-                make_process.stdout.decode('utf-8'))
-        ahab_sign(image_path, signed_image_path, offset_ch, offset_sb, d)
+    bb.build.exec_func("sign_imx91_imx93", d)
 }
 
 python do_sign:append:mx93-generic-bsp() {
+    bb.build.exec_func("sign_imx91_imx93", d)
+}
+
+python sign_imx91_imx93() {
     logfile = os.path.join(d.getVar('WORKDIR'), 'temp/log.do_compile')
 
     target = 'u-boot-atf-container.img'
