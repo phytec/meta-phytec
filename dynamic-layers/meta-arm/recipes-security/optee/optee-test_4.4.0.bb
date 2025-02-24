@@ -1,4 +1,4 @@
-FILESEXTRAPATHS:prepend := "${OEROOT}/../meta-arm/recipes-security/optee/${PN}:"
+FILESEXTRAPATHS:prepend := "${OEROOT}/../meta-arm/meta-arm/recipes-security/optee/${PN}:"
 require recipes-security/optee/optee-test.inc
 
 SRCREV = "695231ef8987866663a9ed5afd8f77d1bae3dc08"
