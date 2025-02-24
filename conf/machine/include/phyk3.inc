@@ -50,6 +50,9 @@ PREFERRED_PROVIDER_virtual/kernel ??= "linux-phytec-ti"
 PREFERRED_PROVIDER_virtual/bootloader ??= "u-boot-phytec-ti"
 PREFERRED_PROVIDER_u-boot ??= "u-boot-phytec-ti"
 PREFERRED_PROVIDER_ti-sci-fw ??= "ti-sci-fw"
+PREFERRED_VERSION_optee-os ??= "4.1.0"
+PREFERRED_VERSION_optee-client ??= "4.1.0"
+PREFERRED_VERSION_optee-test ??= "4.1.0"
 
 MACHINE_FEATURES = "apm usbgadget usbhost vfat ext2 alsa rtc optee efi"
 
