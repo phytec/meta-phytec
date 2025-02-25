@@ -67,7 +67,7 @@ EMMC_DEV = "0"
 # eMMC boot partition bootloader image offset
 BOOTLOADER_SEEK_EMMC = "0"
 # combined bootloader image for RAUC bootloader update
-IMAGE_BOOTLOADER = "ti-boot"
+IMAGE_BOOTLOADER = "ti-boot-container"
 
 def make_dtb_boot_files(d):
     # Generate IMAGE_BOOT_FILES entries for device tree files listed in
