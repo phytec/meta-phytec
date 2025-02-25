@@ -59,6 +59,8 @@ RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base = ""
 KERNEL_IMAGETYPE = "Image"
 KERNEL_IMAGETYPES = "Image vmlinux.gz"
 
+KERNEL_MODULE_AUTOLOAD += "cryptodev"
+
 WKS_FILE = "${@bb.utils.contains("MACHINE_FEATURES", "efi", "k3-sdimage-efi.wks.in", "k3-sdimage.wks", d)}"
 EMMC_DEV = "0"
 # eMMC boot partition bootloader image offset
