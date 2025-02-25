@@ -10,7 +10,7 @@ LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://COPYING.MIT;md5=017e4848cc19ac0eb4e3f461b957234b"
 
 SRC_URI = "git://github.com/phytec/${BPN}.git;protocol=https;branch=main"
-SRCREV = "5b6582f7c3b9b4143287ad996b5436f0009dda14"
+SRCREV = "fb71869fc03c6ffec7c013dc52b9863dbcf02117"
 
 S="${WORKDIR}/git"
 
