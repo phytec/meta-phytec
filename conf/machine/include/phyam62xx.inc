@@ -18,6 +18,7 @@ PREFERRED_PROVIDER_virtual/libgl ?= "${@oe.utils.conditional("PREFERRED_PROVIDER
 PREFERRED_PROVIDER_virtual/gpudriver ?= "${@oe.utils.conditional("PREFERRED_PROVIDER_virtual/kernel", "linux-phytec-ti", "ti-img-rogue-driver", "", d)}"
 
 MACHINE_ESSENTIAL_EXTRA_RRECOMMENDS += "${@oe.utils.conditional("PREFERRED_PROVIDER_virtual/kernel", "linux-mainline", "linux-firmware-powervr", "", d)}"
+MACHINE_ESSENTIAL_EXTRA_RRECOMMENDS += "${@oe.utils.conditional("PREFERRED_PROVIDER_virtual/kernel", "linux-phytec", "linux-firmware-powervr", "", d)}"
 
 MACHINE_FEATURES += "screen touchscreen"
 
