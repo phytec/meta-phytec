@@ -15,7 +15,7 @@ SRC_URI = " \
 "
 
 # Apply rt patch in case of preempt-rt
-RT_PATCH = "${KERNELORG_MIRROR}/linux/kernel/projects/rt/6.12/patch-6.12.8-rt8.patch.xz;name=rt-patch"
+RT_PATCH = "${KERNELORG_MIRROR}/linux/kernel/projects/rt/6.12/older/patch-6.12.8-rt8.patch.xz;name=rt-patch"
 SRC_URI:append = " \
     ${@bb.utils.contains('DISTRO_FEATURES', 'preempt-rt', "${RT_PATCH}", '', d)} \
 "
