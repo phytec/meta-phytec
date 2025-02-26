@@ -5,9 +5,6 @@ BUILD_SIGN_DIR = "${WORKDIR}/build-sign"
 python do_sign() {
     if 'secureboot' not in d.getVar('DISTRO_FEATURES'):
         return
-
-    import subprocess
-    import shutil
 }
 
 python do_sign:append:mx91-generic-bsp() {
@@ -19,6 +16,9 @@ python do_sign:append:mx93-generic-bsp() {
 }
 
 python sign_imx91_imx93() {
+    import subprocess
+    import shutil
+
     logfile = os.path.join(d.getVar('WORKDIR'), 'temp/log.do_compile')
 
     target = 'u-boot-atf-container.img'
@@ -42,10 +42,9 @@ python sign_imx91_imx93() {
                 make_process.stdout.decode('utf-8'))
         ahab_sign(image_path, signed_image_path, offset_ch, offset_sb, d)
 }
-
 do_sign[dirs] = "${BUILD_SIGN_DIR}"
 do_sign[cleandirs] = "${BUILD_SIGN_DIR}"
-addtask sign after do_compile before do_install
+addtask sign after do_compile before do_deploy do_install
 
 do_install:append:secureboot() {
     for target in ${IMXBOOT_TARGETS}; do
