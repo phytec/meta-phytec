@@ -5,6 +5,7 @@ inherit phygittag
 require recipes-bsp/u-boot/u-boot-common.inc
 require recipes-bsp/u-boot/u-boot.inc
 require u-boot-common-phytec.inc
+require u-boot-securiphy.inc
 require u-boot-rauc.inc
 
 VENDOR_INC = ""
