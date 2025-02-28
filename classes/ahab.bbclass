@@ -63,7 +63,11 @@ def ahab_sign(image_path, signed_image_path, offset_container_header, offset_sig
                 offset_signature_block, d))
 
     bb.note('AHAB: Running CST')
-    subprocess.run(['cst', '-i', csf_path, '-o', signed_image_path])
+    cmd = ['cst', '-i', csf_path, '-o', signed_image_path]
+    if d.getVar("CST_KEY_SOURCE") == "token":
+        # Add pkcs11 backend
+        cmd.extend(["-b", "pkcs11"])
+    subprocess.run(cmd)
 
     if not os.path.isfile(signed_image_path):
         bb.fatal(f'File {signed_image_path} not found! CST probably failed!')
