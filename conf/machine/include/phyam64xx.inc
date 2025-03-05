@@ -20,6 +20,7 @@ KERNEL_OVERLAYS ?= " \
 
 # phyBOARD-Electra downstream kernel overlays
 KERNEL_OVERLAYS_PHYTEC = " \
+    ti/k3-am642-phyboard-electra-peb-c-010.dtbo \
     ti/k3-am642-phyboard-electra-x27-gpio1-spi1-uart3.dtbo \
 "
 
