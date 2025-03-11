@@ -3,6 +3,8 @@ header:
   includes:
     - repo: meta-phytec
       file: kas/include/poky-local-conf.yml
+    - repo: meta-phytec
+      file: kas/include/ti-deploy-settings.yaml
 
 machine: phyboard-lyra-am62xx-3
 distro: poky
