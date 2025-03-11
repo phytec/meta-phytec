@@ -36,3 +36,5 @@ repos:
 local_conf_header:
   kernel-version: |
     require conf/linux-mainline/mainline.inc
+  oeroot:
+    OEROOT = "${TOPDIR}/../poky"
