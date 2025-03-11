@@ -17,13 +17,14 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 CLEANBROKEN = "1"
 
-PACKAGES = "ti-sci-fw prueth-fw pruhsr-fw prusw-fw"
-PROVIDES = "ti-sci-fw prueth-fw pruhsr-fw prusw-fw"
+PACKAGES = "ti-sci-fw prueth-fw pruhsr-fw prusw-fw ti-dm-fw"
+PROVIDES = "ti-sci-fw prueth-fw pruhsr-fw prusw-fw ti-dm-fw"
 
 FILES:ti-sci-fw += "${nonarch_base_libdir}/firmware/ti-sysfw/*"
 FILES:prueth-fw += "${nonarch_base_libdir}/firmware/ti-pruss/*-prueth-fw.elf"
 FILES:pruhsr-fw += "${nonarch_base_libdir}/firmware/ti-pruss/*-pruhsr-fw.elf"
 FILES:prusw-fw += "${nonarch_base_libdir}/firmware/ti-pruss/*-prusw-fw.elf"
+FILES:ti-dm-fw += "${nonarch_base_libdir}/ti-dm/am62xx/ipc_echo_testb_mcu1_0_release_strip.xer5f"
 
 INHIBIT_PACKAGE_STRIP = "1"
 INHIBIT_SYSROOT_STRIP = "1"
@@ -69,6 +70,12 @@ do_install() {
 }
 
 do_deploy(){
+}
+
+do_deploy:append:am62xx() {
+    # DM Firmware is needed for building U-Boot
+    install -d ${DEPLOYDIR}/ti-dm/am62xx
+    install -m 0644 ${S}/ti-dm/am62xx/ipc_echo_testb_mcu1_0_release_strip.xer5f ${DEPLOYDIR}/ti-dm/am62xx
 }
 
 do_deploy:k3r5() {
