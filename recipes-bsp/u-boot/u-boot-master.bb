@@ -37,6 +37,8 @@ ATF_MACHINE_NAME = "bl31-${ATF_PLATFORM}.bin"
 ATF_MACHINE_NAME:append = "${@bb.utils.contains('MACHINE_FEATURES', 'optee', '-optee', '', d)}"
 
 IMX_BOOT_CONTAINER_FIRMWARE_SOC ?= ""
+IMX_BOOT_CONTAINER_FIRMWARE_SOC:mx95-generic-bsp ?= "oei-m33-ddr.bin oei-m33-tcm.bin m33_image.bin \
+                                                     mx95a0-ahab-container.img"
 IMX_BOOT_CONTAINER_FIRMWARE ?= " \
     ${IMX_BOOT_CONTAINER_FIRMWARE_SOC} \
     ${DDR_FIRMWARE_NAME} \
