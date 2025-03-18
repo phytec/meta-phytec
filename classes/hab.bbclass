@@ -116,7 +116,12 @@ def cst_sign(d, input_csf_path : str, output_image_path : str):
     pkcs11_module_path = d.getVar("PKCS11_MODULE_PATH", True)
     if pkcs11_module_path != None and pkcs11_module_path != "":
         os.environ["PKCS11_MODULE_PATH"] = pkcs11_module_path
-    return execcmd('cst -i {0} -o {1}'.format(input_csf_path, output_image_path)) == 0
+
+    cmd = 'cst -i {0} -o {1}'.format(input_csf_path, output_image_path)
+    if d.getVar("CST_KEY_SOURCE") == "token":
+    # Add pkcs11 backend
+        cmd += " -b pkcs11"
+    return execcmd(cmd) == 0
 
 # Signs an image using NXP's cst tool. Appends IVT and CSF to the end of the image
 #
