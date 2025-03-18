@@ -88,7 +88,7 @@ def sign_hab(d, input_image_path, output_image_path, imxboot_logfile, \
     sld_hab_block = parsed_blocks['SLD_HAB_BLOCK']
 
     # generate csf for SPL
-    template = readfull(csf_template_path_spl)
+    template_spl = readfull(csf_template_path_spl)
     workdir = d.getVar('WORKDIR')
 
     csf_spl_txt_path = os.path.join(workdir, 'csf_spl.txt')
@@ -97,7 +97,7 @@ def sign_hab(d, input_image_path, output_image_path, imxboot_logfile, \
     csf_spl_bin_path = os.path.join(workdir, 'csf_fit.bin.signed')
     csf_fit_bin_path = os.path.join(workdir, 'csf_spl.bin.signed')
 
-    gen_csf(d, template, make_csf_hab_block([spl_hab_block]),
+    gen_csf(d, template_spl, make_csf_hab_block([spl_hab_block]),
             os.path.join(workdir, csf_spl_txt_path))
 
     # generate csf for fit
@@ -138,8 +138,8 @@ def sign_hab(d, input_image_path, output_image_path, imxboot_logfile, \
 
         hablist.append(teeblock)
 
-    template = readfull(csf_template_path_fit)
-    gen_csf(d, template, make_csf_hab_block(hablist), csf_fit_txt_path)
+    template_fit = readfull(csf_template_path_fit)
+    gen_csf(d, template_fit, make_csf_hab_block(hablist), csf_fit_txt_path)
 
     # sign images
     if not cst_sign(d, csf_spl_txt_path, csf_spl_bin_path):
@@ -161,6 +161,12 @@ def sign_hab(d, input_image_path, output_image_path, imxboot_logfile, \
     output_fd.seek(parsed_blocks['CSF_FIT_OFFSET'])
     output_fd.write(signed_fit_csf)
     output_fd.close()
+
+    image_name = os.path.basename(input_image_path)
+    json_path = os.path.join(workdir, f'hab_info_{image_name}.json')
+    store_resign_info(json_path,
+       parsed_blocks['CSF_SPL_OFFSET'], parsed_blocks['CSF_FIT_OFFSET'],
+       [spl_hab_block], hablist, template_spl, template_fit, output_image_path)
 
 
 python do_sign() {
@@ -216,6 +222,7 @@ do_deploy:append:secureboot() {
             fi
         done
  done
+ find ${WORKDIR} -type f -name "hab_info_*.json" -exec install -m 0644 {} "${DEPLOYDIR}/" \;
 }
 
 addtask sign after do_compile before do_deploy
