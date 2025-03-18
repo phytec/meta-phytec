@@ -172,3 +172,49 @@ def sign_inplace(d, image_path : str, padding_offset : int, loadaddr : int, addi
     signed_image_csf = readfull_bin(csf_image_path_bin)
     fd.write(signed_image_csf)
     fd.close()
+
+
+def find_offset(embedded_image_path, image_path):
+    # Search the offset of an embeeded file, -1 for not found
+    from pathlib import Path
+    embedded_image_path =  Path(embedded_image_path).read_bytes()
+    image = Path(image_path).read_bytes()
+    return image.find(embedded_image_path)
+
+
+def store_resign_info(filename: str,
+                      csf_spl_offset: int, csf_fit_offset: int,
+                      spl_blocks: list, fit_blocks: list,
+                      csf_spl_template, csf_fit_template, signed_image):
+    # Store information collected from build to resign the bootloader images.
+    import os
+    import json
+
+    # Collect HAB block list and offsets, make a copy of the lists
+    json_data = {
+        'csf_spl_offset': csf_spl_offset,
+        'csf_fit_offset': csf_fit_offset,
+        'spl_blocks': [],
+        'fit_blocks': [],
+        'csf_spl_template': csf_spl_template,
+        'csf_fit_template': csf_fit_template,
+        'signed_image': os.path.basename(signed_image),
+    }
+
+    # replace the complete path by the name of the file.
+    # add the offset of the copy in signed_image
+    for block in spl_blocks:
+        new_block = block.copy()
+        new_block['filename'] = os.path.basename(block['filename'])
+        new_block['signed-offset'] = find_offset(block['filename'], signed_image)
+        json_data['spl_blocks'].append(new_block)
+
+    for block in fit_blocks:
+        new_block = block.copy()
+        new_block['filename'] = os.path.basename(block['filename'])
+        new_block['signed-offset'] = find_offset(block['filename'], signed_image)
+        json_data['fit_blocks'].append(new_block)
+
+    # store the infos in json file
+    with open(filename, 'w') as output:
+        json.dump(json_data, output)
