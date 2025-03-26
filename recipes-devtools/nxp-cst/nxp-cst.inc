@@ -1,8 +1,5 @@
 DEPENDS += "openssl byacc flex"
 
-REQUIRED_DISTRO_FEATURES = "secureboot"
-inherit features_check
-
 LICENSE = "BSD-3-Clause"
 
 LIC_FILES_CHKSUM = " \
