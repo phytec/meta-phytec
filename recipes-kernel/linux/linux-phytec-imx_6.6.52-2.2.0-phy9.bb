@@ -39,6 +39,7 @@ KERNEL_FEATURES:append = " ${@bb.utils.contains("MACHINE_FEATURES", "pci", " fea
 KBUILD_DEFCONFIG ?= "imx8_phytec_defconfig"
 KBUILD_DEFCONFIG:mx91-nxp-bsp = "imx9_phytec_defconfig"
 KBUILD_DEFCONFIG:mx93-nxp-bsp = "imx9_phytec_defconfig"
+KBUILD_DEFCONFIG:mx95-nxp-bsp = "imx_v8_defconfig"
 KCONFIG_MODE="alldefconfig"
 
 do_deploy:append() {
@@ -61,4 +62,5 @@ COMPATIBLE_MACHINE .= "|phyboard-nash-imx93-1"
 COMPATIBLE_MACHINE .= "|phyboard-segin-imx91-1"
 COMPATIBLE_MACHINE .= "|phyboard-segin-imx93-2"
 COMPATIBLE_MACHINE .= "|imx8mp-libra-fpsc-1"
+COMPATIBLE_MACHINE .= "|imx95-libra-fpsc-1"
 COMPATIBLE_MACHINE .= ")$"
