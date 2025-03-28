@@ -37,6 +37,7 @@ class BSP_Switcher(BoardSupportPackage):
         print('')
         for i, (machine, distro, targets) in enumerate(configs, 1):
             # split description at first comma and print it as a two-liner
+            assert machine in self.src.machines, 'Machine %s not found' % (machine)
             description = lambda x: self.src.machines[x]['DESCRIPTION'].split(',',1)
             print('%2d: %s: %s' % (i, machine, description(machine)[0].strip()))
             if len(description(machine)) > 1:
