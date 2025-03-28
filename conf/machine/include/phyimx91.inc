@@ -12,7 +12,7 @@ RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base = ""
 # Wic
 IMAGE_CLASSES += "wic-helper"
 IMAGE_CLASSES:append:mx91-nxp-bsp = " wic-bootenv-helper"
-WKS_FILES:mx91-generic-bsp ?= "imx91_imx93-sdimage.wks"
+WKS_FILES:mx91-generic-bsp ?= "imx9-sdimage.wks"
 WKS_BOOTIMAGESIZE ?= "64"
 WIC_CREATE_EXTRA_ARGS:remove = "--no-fstab-update"
 

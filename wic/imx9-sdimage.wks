@@ -1,5 +1,5 @@
-# short-description: Create a Phytec i.MX91/i.MX93 disk image (SD card)
-# long-description: Creates a partitioned disk image for Phytec i.MX91/i.MX93 BSPs
+# short-description: Create a Phytec i.MX9* disk image (SD card)
+# long-description: Creates a partitioned disk image for Phytec i.MX9* BSPs
 # boards that the user can directly dd to an SD card and boot.
 
 part U-BOOT --source rawcopy --sourceparams="file=imx-boot" --ondisk mmcblk --no-table --offset ${BOOTLOADER_SEEK}
