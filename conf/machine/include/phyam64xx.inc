@@ -1,4 +1,5 @@
 require conf/machine/include/phyk3.inc
+require conf/machine/include/mc_k3r5.inc
 SOC_FAMILY:append = ":am64xx"
 
 TFA_BOARD = "lite"

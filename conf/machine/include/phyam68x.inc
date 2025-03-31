@@ -1,5 +1,5 @@
 require conf/machine/include/phyk3.inc
-
+require conf/machine/include/mc_k3r5.inc
 SOC_FAMILY:append = ":j721s2"
 
 # j721s2 has a Rogue GPU core
