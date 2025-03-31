@@ -6,8 +6,6 @@ SOC_FAMILY:append = ":k3"
 
 require conf/machine/include/arm/arch-arm64.inc
 
-BBMULTICONFIG += "k3r5"
-
 require phytec-machine-common.inc
 
 KERNEL_CLASSES += "kernel-fitimage"
@@ -36,7 +34,6 @@ EXTRA_IMAGEDEPENDS += "virtual/bootloader"
 TFA_PLATFORM = "k3"
 
 do_image_wic[depends] += "ti-boot-container:do_deploy"
-do_image[mcdepends] += "mc::k3r5:virtual/bootloader:do_deploy"
 
 SERIAL_CONSOLES = "115200;ttyS2"
 
