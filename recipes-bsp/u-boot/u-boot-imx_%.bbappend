@@ -14,10 +14,10 @@ UBOOT_ENV_FIT_BINARY = "boot.scr.uimg"
 do_compile:append() {
     if [ -n "${UBOOT_ENV_FIT_SRC}" ]
     then
-        ${UBOOT_MKIMAGE} -C none -A ${UBOOT_ARCH} -f ${WORKDIR}/${UBOOT_ENV_FIT_SRC} ${WORKDIR}/${UBOOT_ENV_FIT_BINARY}
+        ${UBOOT_MKIMAGE} -C none -A ${UBOOT_ARCH} -f ${UNPACKDIR}/${UBOOT_ENV_FIT_SRC} ${UNPACKDIR}/${UBOOT_ENV_FIT_BINARY}
     fi
 }
 
 do_deploy:append() {
-    install -m 644 ${WORKDIR}/${UBOOT_ENV_FIT_BINARY} ${DEPLOYDIR}/${UBOOT_ENV_FIT_BINARY}
+    install -m 644 ${UNPACKDIR}/${UBOOT_ENV_FIT_BINARY} ${DEPLOYDIR}/${UBOOT_ENV_FIT_BINARY}
 }
