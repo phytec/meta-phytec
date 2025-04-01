@@ -40,30 +40,30 @@ SRC_URI:append:mx93-generic-bsp = " \
 
 do_install() {
     install -d ${D}${nonarch_base_libdir}/udev/rules.d/
-    install -m 0644 ${WORKDIR}/90-phycam.rules \
+    install -m 0644 ${UNPACKDIR}/90-phycam.rules \
                     ${D}${nonarch_base_libdir}/udev/rules.d/
 
-    if [ -e ${WORKDIR}/setup-pipeline-csi0.sh ]; then
+    if [ -e ${UNPACKDIR}/setup-pipeline-csi0.sh ]; then
         install -d ${D}${bindir}
-        install -m 0755 ${WORKDIR}/setup-pipeline-csi0.sh \
+        install -m 0755 ${UNPACKDIR}/setup-pipeline-csi0.sh \
                         ${D}${bindir}/setup-pipeline-csi0
     fi
 
-    if [ -e ${WORKDIR}/setup-pipeline-csi1.sh ]; then
+    if [ -e ${UNPACKDIR}/setup-pipeline-csi1.sh ]; then
         install -d ${D}${bindir}
-        install -m 0755 ${WORKDIR}/setup-pipeline-csi1.sh \
+        install -m 0755 ${UNPACKDIR}/setup-pipeline-csi1.sh \
                         ${D}${bindir}/setup-pipeline-csi1
     fi
 
-    if [ -e ${WORKDIR}/setup-pipeline-csi2.sh ]; then
+    if [ -e ${UNPACKDIR}/setup-pipeline-csi2.sh ]; then
         install -d ${D}${bindir}
-        install -m 0755 ${WORKDIR}/setup-pipeline-csi2.sh \
+        install -m 0755 ${UNPACKDIR}/setup-pipeline-csi2.sh \
                         ${D}${bindir}/setup-pipeline-csi2
     fi
 
-    if [ -e ${WORKDIR}/setup-pipeline-dcmipp.sh ]; then
+    if [ -e ${UNPACKDIR}/setup-pipeline-dcmipp.sh ]; then
         install -d ${D}${bindir}
-        install -m 0755 ${WORKDIR}/setup-pipeline-dcmipp.sh \
+        install -m 0755 ${UNPACKDIR}/setup-pipeline-dcmipp.sh \
                         ${D}${bindir}/setup-pipeline-dcmipp
     fi
 }
