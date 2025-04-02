@@ -6,6 +6,7 @@ local_conf_header:
     # Use a single deploy directory in a multiconfig environment
     DEPLOY_DIR = "${TOPDIR}/deploy"
     DEPLOY_DIR_IMAGE:ti-soc = "${DEPLOY_DIR}/images/${MACHINE}"
+    TI_COMMON_DEPLOY = "${DEPLOY_DIR}"
 
     # Sharing a deploy directory in a multiconfig setup leads to
     # build errors as poky started to restrict deployment of identical
