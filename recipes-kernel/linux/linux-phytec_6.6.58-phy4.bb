@@ -1,6 +1,6 @@
 inherit kernel kernel-yocto
 inherit phygittag buildinfo kernel-deploy-oftree
-require recipes-kernel/linux/linux-common.inc
+require linux-common.inc
 include linux-barebox-dt-overlays.inc
 
 GIT_URL = "git://github.com/phytec/linux-phytec.git;protocol=https"
