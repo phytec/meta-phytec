@@ -46,9 +46,9 @@ do_deploy:append() {
     if echo ${KERNEL_IMAGETYPES} | grep -wq "fitImage"; then
         if [ -n "${INITRAMFS_IMAGE}" -a "${INITRAMFS_IMAGE_BUNDLE}" != "1" ]; then
             # remove symlink to fitImage without initramfs
-            rm -f $deployDir/fitImage
+            rm -f ${DEPLOYDIR}/fitImage
             # create symlink to fitImage with initramfs
-            ln -snf fitImage-${INITRAMFS_IMAGE_NAME}-${KERNEL_FIT_NAME}${KERNEL_FIT_BIN_EXT} "$deployDir/fitImage"
+            ln -snf fitImage-${INITRAMFS_IMAGE_NAME}-${KERNEL_FIT_NAME}${KERNEL_FIT_BIN_EXT} "${DEPLOYDIR}/fitImage"
         fi
     fi
 }

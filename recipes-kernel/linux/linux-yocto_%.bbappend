@@ -13,10 +13,10 @@ def get_oftree(d):
 
 FIRST_DTS = "${@get_oftree(d)}"
 do_deploy:append:phytec-machine() {
-    install -m 644 ${B}/.config $deployDir/$baseName.config
-    ln -sf $baseName.config $deployDir/${KERNEL_IMAGETYPE}.config
+    install -m 644 ${B}/.config ${DEPLOYDIR}/$baseName.config
+    ln -sf $baseName.config ${DEPLOYDIR}/${KERNEL_IMAGETYPE}.config
     dtdtb=`normalize_dtb "$FIRST_DTS"`
     dtb_ext=${dtb##*.}
     dtb_base_name=`basename $dtb .$dtb_ext`
-    ln -sf ${dtb_base_name}.${dtb_ext}  $deployDir/oftree
+    ln -sf ${dtb_base_name}.${dtb_ext}  ${DEPLOYDIR}/oftree
 }
