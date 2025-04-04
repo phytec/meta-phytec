@@ -18,6 +18,7 @@ UBOOT_RD_ENTRYPOINT = "0x84000000"
 UBOOT_DTB_LOADADDRESS = "0x83000000"
 UBOOT_DTBO_LOADADDRESS = "0x83080000"
 UBOOT_DTBO_OFFSET = "0x00010000"
+INITRAMFS_IMAGE = "phytec-initramfs-image"
 
 SPL_BINARY = "tispl.bin"
 SPL_BINARYNAME = "tispl.bin"
@@ -53,8 +54,8 @@ MACHINE_FEATURES = "apm usbgadget usbhost vfat ext2 alsa rtc optee efi"
 # dont install kernelimage to rootfs
 RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base = ""
 
-KERNEL_IMAGETYPE = "Image"
-KERNEL_IMAGETYPES = "Image vmlinux.gz"
+KERNEL_IMAGETYPE ?= "Image"
+KERNEL_IMAGETYPES ?= "Image fitImage"
 
 KERNEL_MODULE_AUTOLOAD += "cryptodev"
 
