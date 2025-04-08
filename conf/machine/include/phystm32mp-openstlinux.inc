@@ -51,6 +51,15 @@ BLUETOOTH_LIST = "laird-sterling-firmware"
 # =========================================================================
 ENABLE_FLASHLAYOUT_CONFIG_FWUP = "${@bb.utils.contains('MACHINE_FEATURES', 'fw-update', '1', '0', d)}"
 
+# Workaround to fix warning when ENABLE_FLASHLAYOUT_CONFIG_FWUP is set to '0':
+# Redefine "STM32MP_SSBL1_PROGRAMMER_NAME" to "None" instead of empty string
+STM32MP_SSBL1_PROGRAMMER_NAME = "None"
+PARTITIONS_PROGRAMMER_CONFIG = "\
+    ${@ '${STM32MP_FSBL_PROGRAMMER_DATA},${STM32MP_FSBL_PROGRAMMER_NAME},,Binary' if '${STM32MP_FSBL_PROGRAMMER_NAME}' else ''} \
+    ${@ '${STM32MP_SSBL1_PROGRAMMER_DATA},${STM32MP_SSBL1_PROGRAMMER_NAME},,FIP' if '${STM32MP_SSBL1_PROGRAMMER_NAME}' != 'None' else ''} \
+    ${@ '${STM32MP_SSBL2_PROGRAMMER_DATA},${STM32MP_SSBL2_PROGRAMMER_NAME},,FIP' if '${STM32MP_SSBL2_PROGRAMMER_NAME}' else ''} \
+    "
+
 # =========================================================================
 # Image
 # =========================================================================
