@@ -27,6 +27,7 @@ BOOTDEVICE_LABELS ??= "emmc nor-emmc nand-2-256 nand-2-64 nor-sdcard sdcard"
 # Define list of devicetree per supported storage
 STM32MP_DT_FILES_EMMC   += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'emmc', '${BOOTLOADER_DT}', '', d)}"
 STM32MP_DT_FILES_SDCARD += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'sdcard', '${BOOTLOADER_DT}', '', d)}"
+STM32MP_DT_FILES_NOR += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nor-emmc', '${BOOTLOADER_DT}', '', d)}"
 
 # Add list of default OpenSTLinux machine features to remove
 MACHINE_FEATURES_REMOVE_LIST ?= ""
@@ -175,6 +176,10 @@ UBOOT_DEVICETREE:openstlinuxcommon ?= ""
 # =========================================================================
 # With OpenSTlinux, TF_A_DEVICETREE must be empty as it is internal to TF_A_CONFIG var expansion
 TF_A_DEVICETREE:openstlinuxcommon ?= ""
+
+# Enable FIP and TF-A config for NOR-EMMC boot
+FIP_CONFIG += "${@bb.utils.contains('BOOTSCHEME_LABELS', 'optee', bb.utils.contains('BOOTDEVICE_LABELS', 'nor-emmc', 'optee-nor', '', d), '', d)}"
+TF_A_CONFIG += "${@bb.utils.contains('BOOTSCHEME_LABELS', 'optee', bb.utils.contains('BOOTDEVICE_LABELS', 'nor-emmc', 'optee-nor', '', d), '', d)}"
 
 # =========================================================================
 # WIC for sdcard raw image
