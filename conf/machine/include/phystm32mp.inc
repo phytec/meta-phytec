@@ -3,21 +3,7 @@ require phystm32mp-openstlinux.inc
 
 #@DESCRIPTION: Common Machine configuration for STM32MP boards
 
-# Define specific common machine name
-MACHINEOVERRIDES .= ":stcommon"
-
-# Define specific common layer name
-MACHINEOVERRIDES .= ":stm32mpcommon"
-
 MACHINE_SOCARCH = "${TUNE_PKGARCH}"
-
-# =========================================================================
-# SOC
-# =========================================================================
-STM32MP_SOC_NAME = ""
-STM32MP_SOC_NAME:append:stm32mp15common = " stm32mp15 "
-# Take care of nativesdk override use case
-STM32MP_SOC_NAME:append:class-nativesdk = " stm32mp15 "
 
 # =========================================================================
 # Machine settings
@@ -81,16 +67,12 @@ UBOOT_ENTRYPOINT = "0xC0800000"
 # With this value, U-Boot will be able to execute in place the zImage contained in uImage.
 ST_KERNEL_LOADADDR ?= "0xC2000040"
 
-
 # Extra kernel bootargs
 EXTRA_KERNEL_ARGS ?= ""
 # Use HDMI EDID firmware to set a specific resolution (when "hdmi_resolution" env var defined on u-boot)
 # Example to set 1280x720: on u-boot, set the following var: hdmi_resolution=HDMI-A-1:edid/1280x720.bin
 HDMI_EDID_KERNEL_ARGS = "drm.edid_firmware=${hdmi_resolution}"
 EXTRA_KERNEL_ARGS += "${HDMI_EDID_KERNEL_ARGS}"
-# bootargs to remove trace on kernel
-ST_CMD_LINE_DEBUG_TRACE ?= "loglevel=1 quiet"
-EXTRA_KERNEL_ARGS += "${@bb.utils.contains('ST_DEBUG_TRACE', '1', '', '${ST_CMD_LINE_DEBUG_TRACE}', d)}"
 # bootargs to set the RAUC slot
 EXTRA_KERNEL_ARGS:update += "rauc.slot=${bootslot}"
 
@@ -185,8 +167,6 @@ OPTEE_CONF = "${STM32MP_DEVICETREE}"
 
 #EXTRA_IMAGEDEPENDS += "virtual-optee-os"
 
-
-#OPTEE_CONF_EXTENDED = "stm32mp157c-dk2:PLATFORM=stm32mp1-157C_DK2"
 # need to have a version of optee-client and optee-test aligned with optee-os
 #PREFERRED_PROVIDER_optee-client = "optee-client"
 PREFERRED_PROVIDER_optee-test = "optee-test"
