@@ -28,6 +28,15 @@ BOOTDEVICE_LABELS ??= "emmc nor-emmc nand-2-256 nand-2-64 nor-sdcard sdcard"
 STM32MP_DT_FILES_EMMC   += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'emmc', '${BOOTLOADER_DT}', '', d)}"
 STM32MP_DT_FILES_SDCARD += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'sdcard', '${BOOTLOADER_DT}', '', d)}"
 
+# Add list of default OpenSTLinux machine features to remove
+MACHINE_FEATURES_REMOVE_LIST ?= ""
+MACHINE_FEATURES:remove:openstlinuxcommon = "${MACHINE_FEATURES_REMOVE_LIST}"
+
+# Remove firmware secure update feature by default
+# Keep the feature only for RAUC
+MACHINE_FEATURES_REMOVE_LIST += "fw-update"
+MACHINE_FEATURES_REMOVE_LIST:remove:update = "fw-update"
+
 # =========================================================================
 # Machine specific packages
 # =========================================================================
@@ -35,6 +44,11 @@ STM32MP_DT_FILES_SDCARD += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'sdcard', 
 # For PEB-WLBT-05 expansions we use the Laird Sterling LWB firmware
 WIFI_LIST = "laird-sterling-firmware"
 BLUETOOTH_LIST = "laird-sterling-firmware"
+
+# =========================================================================
+# Flashlayout configuration
+# =========================================================================
+ENABLE_FLASHLAYOUT_CONFIG_FWUP = "${@bb.utils.contains('MACHINE_FEATURES', 'fw-update', '1', '0', d)}"
 
 # =========================================================================
 # Image
