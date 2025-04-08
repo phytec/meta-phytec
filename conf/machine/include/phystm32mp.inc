@@ -25,9 +25,6 @@ RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base = ""
 # Ship all kernel modules by default
 MACHINE_EXTRA_RRECOMMENDS = " kernel-modules"
 
-# Set default supported device tree for the bootloaders
-STM32MP_DEVICETREE = "${BOOTLOADER_DT}"
-
 # Install edid firmware files for hdmi
 MACHINE_EXTRA_RRECOMMENDS:append = " ${@bb.utils.contains("MACHINE_FEATURES", "hdmi", "linux-firmware-edid", "", d)}"
 
@@ -120,16 +117,16 @@ EXTRA_IMAGEDEPENDS += "virtual/bootloader"
 # Define default U-Boot config
 UBOOT_CONFIG = ""
 # STM32MP15
-UBOOT_CONFIG:append:stm32mp15common = "stm32mp15"
+UBOOT_CONFIG:append:stm32mp15common = "default_stm32mp15"
 # STM32MP13
-UBOOT_CONFIG:append:stm32mp13common = "stm32mp13"
+UBOOT_CONFIG:append:stm32mp13common = "default_stm32mp13"
 
 # Define u-boot defconfig and binary to use for each UBOOT_CONFIG
-UBOOT_CONFIG[stm32mp15] = "phycore-stm32mp15_defconfig,,u-boot.dtb"
-UBOOT_CONFIG[stm32mp13] = "phycore-stm32mp13_defconfig,,u-boot.dtb"
+UBOOT_CONFIG[default_stm32mp15] = "phycore-stm32mp15_defconfig,,u-boot.dtb"
+UBOOT_CONFIG[default_stm32mp13] = "phycore-stm32mp13_defconfig,,u-boot.dtb"
 
 # List of U-Boot device tree to use
-UBOOT_DEVICETREE = "${STM32MP_DEVICETREE}"
+UBOOT_DEVICETREE = "${BOOTLOADER_DT}"
 
 # =========================================================================
 # u-boot extlinux configuration
@@ -157,13 +154,13 @@ UBOOT_EXTLINUX_KERNEL_ARGS += "${EXTRA_KERNEL_ARGS}"
 EXTRA_IMAGEDEPENDS += "virtual/trusted-firmware-a"
 
 # TF-A device tree to use
-TF_A_DEVICETREE = "${STM32MP_DEVICETREE}"
+TF_A_DEVICETREE = "${BOOTLOADER_DT}"
 
 # =========================================================================
 # optee
 # =========================================================================
-# Map OPTEE configuration to device tree list
-OPTEE_CONF = "${STM32MP_DEVICETREE}"
+# Map OPTEE configuration to optee device tree to use
+OPTEE_CONF = "${BOOTLOADER_DT}"
 
 #EXTRA_IMAGEDEPENDS += "virtual-optee-os"
 

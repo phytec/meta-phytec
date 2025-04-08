@@ -7,10 +7,26 @@ EULA_FILE_ST:stm32mpcommon = "${PHYCORE_STM32MP_BASE}/conf/eula/${MACHINE}"
 EULA_FILE_ST_MD5SUM:stm32mpcommon = "8b505090fb679839cefbcc784afe8ce9"
 
 # =========================================================================
+# PREFERRED_PROVIDER
+# =========================================================================
+PREFERRED_PROVIDER_virtual/kernel:openstlinuxcommon= "linux-stm32mp"
+PREFERRED_PROVIDER_virtual/bootloader:openstlinuxcommon = "u-boot-stm32mp"
+PREFERRED_PROVIDER_virtual/trusted-firmware-a:openstlinuxcommon = "tf-a-stm32mp"
+PREFERRED_PROVIDER_virtual-optee-os = "optee-os-stm32mp"
+VIRTUAL-RUNTIME_optee-os:openstlinuxcommon = "optee-os-stm32mp"
+
+# =========================================================================
 # boot device
 # =========================================================================
 # List of supported boot devices
 BOOTDEVICE_LABELS ??= "emmc nor-emmc nand-2-256 nand-2-64 nor-sdcard sdcard"
+
+# =========================================================================
+# Machine settings
+# =========================================================================
+# Define list of devicetree per supported storage
+STM32MP_DT_FILES_EMMC   += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'emmc', '${BOOTLOADER_DT}', '', d)}"
+STM32MP_DT_FILES_SDCARD += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'sdcard', '${BOOTLOADER_DT}', '', d)}"
 
 # =========================================================================
 # Machine specific packages
@@ -68,7 +84,7 @@ PARTITIONS_IMAGES_UPDATABLE:update = "bootfs vendorfs rootfs"
 
 # Redefine 'partImage2partConfig' function defined in 'flashlayout-stm32mp.bbclass'
 # to add A/B partionning in flashlayout when using RAUC distro feature
-def partImage2partConfig(config, fstype, d):
+def partImage2partConfig(d, config, fstype=None):
     """
     Convert PARTITIONS_IMAGES['config'] setting format to format expected to feed
     PARTITIONS_CONFIG[xxx].
@@ -78,16 +94,21 @@ def partImage2partConfig(config, fstype, d):
     add a secondary partition (B) to duplicate the primary partition (A),
     but without binary (empty partition).
         FROM: <image_name>,<partition_label>,<mountpoint>,<size>,<type>
-        TO  : <binary_name>,<partition_label>,<size>,<type> [,<partition_b_label>,<size>,<type>]
+        TO  : <binary_name>,<partition_label>,<size>,<type>
     """
 
     items = d.getVarFlag('PARTITIONS_IMAGES', config).split(',') or ""
     if len(items) != 5:
-        bb.fatal('Wrong settings for PARTITIONS_IMAGES[%s] : %s' % (config, items))
-    if items[2] != '':
-        bin_name = items[0] + '-${DISTRO}-${MACHINE}' + '.' + fstype
+        bb.fatal('[partImage2partConfig] Wrong settings for PARTITIONS_IMAGES[%s] : %s' % (config, items))
+    overrides = d.getVar('OVERRIDES')
+    if items[2] == '' and 'openstlinuxcommon' not in overrides.split(':'):
+        bin_suffix = '-${MACHINE}'
     else:
-        bin_name = items[0] + '-${MACHINE}' + '.' + fstype
+        bin_suffix = '-${DISTRO}-${MACHINE}'
+    if fstype:
+        bin_name = items[0] + bin_suffix + '.' + items[1] + '.' + fstype
+    else:
+        bin_name = items[0] + bin_suffix + '.' + items[1]
     # Set string for PARTITIONS_CONFIG item: <binary_name>,<partlabel>,<size>,<type>
     part_format = bin_name + ',' + items[1] + ',' + items[3] + ',' + items[4]
 
@@ -130,6 +151,12 @@ KERNEL_DEVICETREE:openstlinux += "${@' '.join('%s.dtb' % d for d in '${CUBE_M4_E
 KERNEL_DEVICETREE:openstlinux += "${@' '.join('%s.dtb' % d for d in '${LINUX_A7_EXAMPLES_DT}'.split())}"
 
 # =========================================================================
+# U-boot
+# =========================================================================
+# With OpenSTlinux, UBOOT_DEVICETREE must be empty as it is internal for var expansion
+UBOOT_DEVICETREE:openstlinuxcommon ?= ""
+
+# =========================================================================
 # trusted-firmware-a
 # =========================================================================
 # With OpenSTlinux, TF_A_DEVICETREE must be empty as it is internal to TF_A_CONFIG var expansion
@@ -142,7 +169,7 @@ WIC_CREATE_EXTRA_ARGS:openstlinuxcommon = "--no-fstab-update"
 WKS_FILE_DEPENDS:openstlinuxcommon ?= " \
     virtual/bootloader \
     virtual/trusted-firmware-a \
-    ${@bb.utils.contains('BOOTSCHEME_LABELS', 'optee', 'virtual/optee-os', '', d)} \
+    ${@bb.utils.contains('BOOTSCHEME_LABELS', 'optee', 'virtual-optee-os', '', d)} \
     ${STM32MP_BOOTFS_IMAGE} \
     ${@bb.utils.contains('ST_VENDORFS', '1', '${STM32MP_VENDORFS_IMAGE}', '', d)} \
     ${@bb.utils.contains('ST_USERFS', '1', '${STM32MP_USERFS_IMAGE}', '', d)} \
