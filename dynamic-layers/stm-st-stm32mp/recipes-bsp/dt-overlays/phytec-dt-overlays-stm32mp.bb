@@ -14,7 +14,7 @@ SRC_URI += "file://README_stm32mp13xx_segin.md"
 README = "README_stm32mp15xx_sargas.md"
 README:phycore-stm32mp13 = "README_stm32mp13xx_segin.md"
 
-DT_FILES_PATH = "${STAGING_KERNEL_DIR}/arch/${ARCH}/boot/dts/overlays/"
+DT_FILES_PATH = "${STAGING_KERNEL_DIR}/arch/${ARCH}/boot/dts/st/overlays/"
 DT_OVERLAYS_INSTALL_DIR ?= "boot/overlays"
 
 PHY_EXPANSIONS ?= ""
