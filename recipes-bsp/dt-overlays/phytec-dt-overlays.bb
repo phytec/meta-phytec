@@ -12,7 +12,7 @@ DT_FILES_PATH = "${STAGING_KERNEL_DIR}/arch/${ARCH}/boot/dts/overlays/"
 DT_FILES_PATH:mx6-generic-bsp = "${STAGING_KERNEL_DIR}/arch/${ARCH}/boot/dts/nxp/imx/"
 DT_FILES_PATH:mx6ul-generic-bsp = "${STAGING_KERNEL_DIR}/arch/${ARCH}/boot/dts/nxp/imx/"
 DT_FILES_PATH:ti33x = "${STAGING_KERNEL_DIR}/arch/${ARCH}/boot/dts/ti/omap/"
-DT_FILES_PATH:stm32mpcommon = "${STAGING_KERNEL_DIR}/arch/${ARCH}/boot/dts/st/overlays/"
+DT_FILES_PATH:stm32mp1common = "${STAGING_KERNEL_DIR}/arch/${ARCH}/boot/dts/st/overlays/"
 DT_OVERLAYS_INSTALL ?= ""
 
 do_patch[depends] += "virtual/kernel:do_shared_workdir"
@@ -37,4 +37,4 @@ do_deploy() {
 
 FILES:${PN} = "/overlays/*.dtbo /overlays/README.md"
 
-COMPATIBLE_MACHINE  = "^(mx6-generic-bsp|mx6ul-generic-bsp|ti33x|stm32mpcommon)$"
+COMPATIBLE_MACHINE  = "^(mx6-generic-bsp|mx6ul-generic-bsp|ti33x|stm32mp1common)$"
