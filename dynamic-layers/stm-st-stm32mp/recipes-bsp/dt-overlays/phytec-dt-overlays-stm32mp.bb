@@ -25,7 +25,7 @@ do_install() {
     echo "overlay=${DEFAULT_PHY_EXPANSIONS}" > ${WORKDIR}/${LINUX_VERSION}/overlays.txt
     install -m 0644 ${WORKDIR}/${LINUX_VERSION}/overlays.txt ${D}/${DT_OVERLAYS_INSTALL_DIR}/overlays.txt
 
-    for DTB_FILE in ${PHY_EXPANSIONS}; do
+    for DTB_FILE in ${DT_OVERLAYS_INSTALL}; do
         install -m 0644 ${B}/${DTB_FILE} ${D}/${DT_OVERLAYS_INSTALL_DIR}/${DTB_FILE}
     done
 
@@ -33,7 +33,7 @@ do_install() {
 }
 
 do_deploy() {
-    for DTB_FILE in ${PHY_EXPANSIONS}; do
+    for DTB_FILE in ${DT_OVERLAYS_INSTALL}; do
         install -Dm 0644 ${B}/${DTB_FILE} ${DEPLOYDIR}/dt-overlays/${DTB_FILE}
     done
 }
