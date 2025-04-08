@@ -161,8 +161,8 @@ EXTRA_UBIFS_SIZE:nand_2_64 = "2304"
 # Kernel
 # =========================================================================
 # List of additional device tree to install
-KERNEL_DEVICETREE:openstlinux += "${@' '.join('%s.dtb' % d for d in '${CUBE_M4_EXAMPLES_DT}'.split())}"
-KERNEL_DEVICETREE:openstlinux += "${@' '.join('%s.dtb' % d for d in '${LINUX_A7_EXAMPLES_DT}'.split())}"
+KERNEL_DEVICETREE:append:openstlinuxcommon = " ${@' '.join('%s.dtb' % d for d in '${CUBE_M4_EXAMPLES_DT}'.split())}"
+KERNEL_DEVICETREE:append:openstlinuxcommon = " ${@' '.join('%s.dtb' % d for d in '${LINUX_A7_EXAMPLES_DT}'.split())}"
 
 # =========================================================================
 # U-boot

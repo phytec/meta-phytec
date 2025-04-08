@@ -71,7 +71,7 @@ EXTRA_KERNEL_ARGS ?= ""
 HDMI_EDID_KERNEL_ARGS = "drm.edid_firmware=${hdmi_resolution}"
 EXTRA_KERNEL_ARGS += "${HDMI_EDID_KERNEL_ARGS}"
 # bootargs to set the RAUC slot
-EXTRA_KERNEL_ARGS:update += "rauc.slot=${bootslot}"
+EXTRA_KERNEL_ARGS:append:update = " rauc.slot=${bootslot}"
 
 # List of device tree overlays to install for phyBOARD-Sargas
 DT_OVERLAYS_INSTALL:phycore-stm32mp15 = "${@bb.utils.contains('MACHINE_FEATURES', 'phy-expansions', '${PHY_EXPANSIONS_SARGAS}', '', d)}"
