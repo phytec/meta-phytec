@@ -141,7 +141,7 @@ You now have two possible workflows for your changes:
 1. Work inside the git repository:
 Copy and paste the following snippet to your "local.conf":
 
-SRC_URI:pn-{PN} = "git://${{HOME}}/git/{PN};branch=${{BRANCH}}"
+GIT_URL:pn-{PN} = "git://${{HOME}}/git/{PN};branch=${{BRANCH}}"
 SRCREV:pn-{PN} = "${{AUTOREV}}"
 BRANCH:pn-{PN} = "{branchname}"
 
