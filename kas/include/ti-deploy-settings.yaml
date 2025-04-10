@@ -13,3 +13,5 @@ local_conf_header:
     # license files. Split licenses directory into subdirectories in
     # a multiconfig environment for native packages.
     LICENSE_DIRECTORY:class-native = "${DEPLOY_DIR}/licenses/${BB_CURRENT_MC}"
+    # Same situation with SPDX files
+    DEPLOY_DIR_SPDX:class-native = "${DEPLOY_DIR}/spdx/${BB_CURRENT_MC}/${SPDX_VERSION}"
