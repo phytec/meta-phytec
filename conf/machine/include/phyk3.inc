@@ -19,6 +19,9 @@ UBOOT_DTB_LOADADDRESS = "0x83000000"
 UBOOT_DTBO_LOADADDRESS = "0x83080000"
 UBOOT_DTBO_OFFSET = "0x00010000"
 INITRAMFS_IMAGE = "phytec-initramfs-image"
+# Don't create fitImages holding initramfs in case of update
+# Prevents circular dependencies between partup & linux/kernel-fitimage
+INITRAMFS_IMAGE:update = ""
 
 SPL_BINARY = "tispl.bin"
 SPL_BINARYNAME = "tispl.bin"
