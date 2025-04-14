@@ -27,12 +27,6 @@ SPL_BINARY = "tispl.bin"
 SPL_BINARYNAME = "tispl.bin"
 UBOOT_SUFFIX = "img"
 
-UBOOT_MKIMAGE_DTCOPTS = "-I dts -O dtb"
-UBOOT_SIGN_KEYNAME ?= "custMpk"
-UBOOT_SIGN_KEYDIR ?= "${TI_SECURE_DEV_PKG}/keys"
-FIT_HASH_ALG ?= "sha512"
-FIT_SIGN_ALG ?= "rsa4096"
-
 EXTRA_IMAGEDEPENDS += "virtual/bootloader"
 
 TFA_PLATFORM = "k3"
