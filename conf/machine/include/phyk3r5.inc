@@ -10,6 +10,8 @@ require conf/machine/include/arm/armv7a/tune-cortexa8.inc
 
 require phytec-machine-common.inc
 
+UBOOT_SIGN_ENABLE = "0"
+
 # R5 u-boot
 SPL_SUFFIX = "bin"
 SPL_SYMLINK = "tiboot3.${SPL_SUFFIX}"
