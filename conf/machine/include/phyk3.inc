@@ -45,8 +45,6 @@ SERIAL_CONSOLES = "115200;ttyS2"
 PACKAGE_INSTALL:append = " kernel-modules"
 INITRAMFS_FSTYPES = "cpio.xz"
 
-UBOOT_SIGN_ENABLE = "0"
-
 PREFERRED_PROVIDER_virtual/kernel ??= "linux-phytec-ti"
 PREFERRED_PROVIDER_virtual/bootloader ??= "u-boot-phytec-ti"
 PREFERRED_PROVIDER_u-boot ??= "u-boot-phytec-ti"
