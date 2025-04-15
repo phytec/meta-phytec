@@ -104,6 +104,8 @@ def image_typedeps(d):
 
 IMAGE_TYPEDEP:partup = "${@image_typedeps(d)}"
 
+IMAGE_NAME_SUFFIX ?= ""
+
 python() {
     if oe.data.typed_value('USING_PARTUP', d):
         task_deps = ['do_image_' + f.split('.')[0] for f in image_typedeps(d).split(' ')]
