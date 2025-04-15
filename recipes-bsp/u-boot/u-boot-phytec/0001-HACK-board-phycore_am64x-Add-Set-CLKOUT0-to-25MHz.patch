@@ -8,6 +8,7 @@ Configure RMII Clock Output to 25 MHz.
 This change is board specific, does not belong to the SoM
 initialization and therefore marked as a hack.
 
+Upstream-Status: Inappropriate
 Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
 ---
  board/phytec/phycore_am64x/phycore-am64x.c | 8 ++++++++
