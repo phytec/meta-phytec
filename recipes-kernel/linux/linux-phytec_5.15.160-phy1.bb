@@ -16,6 +16,7 @@ SRC_URI:append = " \
   ${@bb.utils.contains('DEBUG_BUILD', '1', 'file://debugging.cfg', '', d)} \
   ${@bb.utils.contains('MACHINE_FEATURES', 'tpm2', 'file://tpm2.cfg', '', d)} \
   ${@bb.utils.contains('MACHINE_FEATURES', 'caam', 'file://caam.cfg', '',   d)} \
+  file://mtd-partitioned-master.cfg \
 "
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.

@@ -18,6 +18,7 @@ SRC_URI:append = " \
     ${@bb.utils.contains('DEBUG_BUILD', '1', 'file://debugging.cfg', '', d)} \
     ${@bb.utils.contains('MACHINE_FEATURES', 'tpm2', 'file://tpm2.cfg', '', d)} \
     ${@bb.utils.contains('MACHINE_FEATURES', 'caam', 'file://caam.cfg', '', d)} \
+    file://mtd-partitioned-master.cfg \
     file://0001-tty-vt-conmakehash-Don-t-mention-the-full-path-of-th.patch \
 "
 

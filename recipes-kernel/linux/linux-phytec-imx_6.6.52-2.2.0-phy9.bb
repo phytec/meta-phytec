@@ -13,6 +13,7 @@ GIT_URL = "git://github.com/phytec/linux-phytec-imx.git;name=machine;protocol=ht
 SRC_URI = " \
         ${GIT_URL};branch=${BRANCH} \
         ${@bb.utils.contains("DEBUG_BUILD", "1", "file://debugging.scc", "", d)} \
+        file://mtd-partitioned-master.scc \
 "
 
 SRC_URI:append = " git://git.yoctoproject.org/yocto-kernel-cache;type=kmeta;name=meta;branch=yocto-6.6;destsuffix=${KMETA};protocol=https \
@@ -26,7 +27,7 @@ S = "${WORKDIR}/git"
 KMETA = "kernel-meta"
 ARCH:aarch64 = "arm64"
 
-KERNEL_EXTRA_FEATURES = "cfg/systemd.scc"
+KERNEL_EXTRA_FEATURES = "cfg/systemd.scc mtd-partitioned-master.scc"
 KERNEL_FEATURES = "${KERNEL_EXTRA_FEATURES}"
 KERNEL_FEATURES:append = " ${@bb.utils.contains("DISTRO_FEATURES", "virtualization", " cfg/lxc.scc oci.scc", "", d)}"
 KERNEL_FEATURES:append = " ${@bb.utils.contains("DISTRO_FEATURES", "preempt-rt", "preempt-rt.scc", "", d)}"
