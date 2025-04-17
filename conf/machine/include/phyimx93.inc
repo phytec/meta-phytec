@@ -3,7 +3,7 @@ require phytec-machine-common.inc
 # Common settings for PHYTEC's i.MX93 boards
 require conf/machine/include/arm/armv8-2a/tune-cortexa55.inc
 
-PREFERRED_PROVIDER_virtual/bootloader ?= "u-boot-imx"
+PREFERRED_PROVIDER_virtual/bootloader ?= "u-boot-phytec-imx"
 PREFERRED_PROVIDER_virtual/kernel ?= "linux-phytec-imx"
 
 # Don't install kernelimage to rootfs
