@@ -1,0 +1,4 @@
+define KFEATURE_DESCRIPTION "Enable master MTD device, used for partitioning"
+define KFEATURE_COMPATIBILITY all
+
+kconf non-hardware mtd-partitioned-master.cfg

@@ -11,10 +11,11 @@ PR = "${INC_PR}.0"
 FILESEXTRAPATHS:prepend := "${THISDIR}/linux-phytec-6.6:"
 SRC_URI:append = " \
   git://git.yoctoproject.org/yocto-kernel-cache;type=kmeta;name=meta;branch=yocto-6.6;destsuffix=${KMETA};protocol=https \
+  file://mtd-partitioned-master.scc \
   file://0001-tty-vt-conmakehash-Don-t-mention-the-full-path-of-th.patch \
 "
 
-KERNEL_EXTRA_FEATURES = "cfg/systemd.scc"
+KERNEL_EXTRA_FEATURES = "cfg/systemd.scc mtd-partitioned-master.scc"
 KERNEL_FEATURES = "${KERNEL_EXTRA_FEATURES}"
 KERNEL_FEATURES:append = " ${@bb.utils.contains("DISTRO_FEATURES", "virtualization", " cfg/lxc.scc oci.scc", "", d)}"
 KERNEL_FEATURES:append = " ${@bb.utils.contains("DEBUG_BUILD", "1", " debugging.scc", "", d)}"

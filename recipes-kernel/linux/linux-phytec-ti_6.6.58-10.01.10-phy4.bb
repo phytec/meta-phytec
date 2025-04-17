@@ -11,6 +11,7 @@ SRC_URI = " \
 	${GIT_URL};branch=${BRANCH} \
 	file://systemd.scc \
 	file://phytec_ti_platform.scc \
+	file://mtd-partitioned-master.scc \
 	${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'file://lxc.scc', '', d)} \
 	${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'file://oci.scc', '', d)} \
 	${@bb.utils.contains('DISTRO_FEATURES', 'preempt-rt', 'file://preempt-rt.scc', '', d)} \
@@ -27,6 +28,7 @@ SRC_URI[rt-patch.sha256sum] = "ec3089ab5ebf326fc1a015bb6de5ce451702fcec613c887b6
 KERNEL_FEATURES = " \
     systemd.scc \
     phytec_ti_platform.scc \
+    mtd-partitioned-master.scc \
     ${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'lxc.scc oci.scc', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'preempt-rt', 'preempt-rt.scc', '', d)} \
     ${@bb.utils.contains('MACHINE_FEATURES', 'lwb5p', 'lwb5p_backports.scc', '', d)} \

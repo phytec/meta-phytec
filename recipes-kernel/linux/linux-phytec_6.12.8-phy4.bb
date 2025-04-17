@@ -10,6 +10,7 @@ GIT_URL = "git://github.com/phytec/linux-phytec.git;protocol=https"
 SRC_URI = " \
 	${GIT_URL};branch=${BRANCH} \
 	file://systemd.scc \
+	file://mtd-partitioned-master.scc \
 	${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'file://lxc.scc', '', d)} \
 	${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'file://oci.scc', '', d)} \
 	${@bb.utils.contains('DISTRO_FEATURES', 'preempt-rt', 'file://preempt-rt.scc', '', d)} \
@@ -24,6 +25,7 @@ SRC_URI[rt-patch.sha256sum] = "e54f4d6571c1f7cf0c16023b38e3218714ba5d4fb8d5560f3
 
 KERNEL_FEATURES = " \
     systemd.scc \
+    mtd-partitioned-master.scc \
     ${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'lxc.scc oci.scc', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'preempt-rt', 'preempt-rt.scc', '', d)} \
 "
