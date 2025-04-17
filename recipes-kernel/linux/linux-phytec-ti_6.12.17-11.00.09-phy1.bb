@@ -14,7 +14,6 @@ SRC_URI = " \
 	${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'file://lxc.scc', '', d)} \
 	${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'file://oci.scc', '', d)} \
 	${@bb.utils.contains('DISTRO_FEATURES', 'preempt-rt', 'file://preempt-rt.scc', '', d)} \
-	${@bb.utils.contains('MACHINE_FEATURES', 'lwb5p', 'file://lwb5p_backports.scc', '', d)} \
 "
 
 # Apply rt patch in case of preempt-rt
@@ -29,7 +28,6 @@ KERNEL_FEATURES = " \
     phytec_ti_platform.scc \
     ${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'lxc.scc oci.scc', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'preempt-rt', 'preempt-rt.scc', '', d)} \
-    ${@bb.utils.contains('MACHINE_FEATURES', 'lwb5p', 'lwb5p_backports.scc', '', d)} \
 "
 
 KBUILD_DEFCONFIG ?= "phytec_ti_defconfig"
