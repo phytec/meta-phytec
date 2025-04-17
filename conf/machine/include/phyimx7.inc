@@ -3,8 +3,8 @@ require phytec-machine-common.inc
 # Common settings for PHYTEC's i.MX7 boards
 
 PREFERRED_PROVIDER_virtual/kernel = "linux-imx"
-PREFERRED_PROVIDER_virtual/bootloader = "u-boot-imx"
-PREFERRED_PROVIDER_u-boot = "u-boot-imx"
+PREFERRED_PROVIDER_virtual/bootloader = "u-boot-phytec-imx"
+PREFERRED_PROVIDER_u-boot = "u-boot-phytec-imx"
 
 # UBIFS
 UBI_VOLNAME = "root"
