@@ -27,3 +27,6 @@ KERNEL_OVERLAYS:phyboard-lyra = " \
     ti/k3-am62x-phyboard-lyra-gpio-fan.dtbo \
     ${@oe.utils.conditional("PREFERRED_PROVIDER_virtual/kernel", "linux-phytec-ti", "${KERNEL_OVERLAYS_PHYTEC}", "", d)} \
 "
+
+PREFERRED_PROVIDER_virtual/bootloader ?= "u-boot-phytec"
+PREFERRED_PROVIDER_u-boot ?= "u-boot-phytec"
