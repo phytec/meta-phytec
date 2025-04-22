@@ -6,11 +6,11 @@ LIC_FILES_CHKSUM = "file://LICENSE.ti;md5=b5aebf0668bdf95621259288c4a46d76"
 
 inherit deploy
 
-PV = "10.01.08"
+PV = "11.00.09"
 PR = "r0"
 
 SRC_URI = "git://git.ti.com/git/processor-firmware/ti-linux-firmware.git;protocol=https;branch=ti-linux-firmware"
-SRCREV = "5eb6ab596437555386df84e031887963e5e3a3b7"
+SRCREV = "27003b6bff61a55dd1fff2cc777e5e07b092b1f7"
 
 S = "${WORKDIR}/git"
 PACKAGE_ARCH = "${MACHINE_ARCH}"
