@@ -12,7 +12,7 @@ LIC_FILES_CHKSUM = "file://COPYING.MIT;md5=017e4848cc19ac0eb4e3f461b957234b"
 SRC_URI = "git://github.com/phytec/${BPN}.git;protocol=https;branch=main"
 SRCREV = "fb71869fc03c6ffec7c013dc52b9863dbcf02117"
 
-S="${WORKDIR}/git"
+S = "${WORKDIR}/git"
 
 inherit setuptools3
 

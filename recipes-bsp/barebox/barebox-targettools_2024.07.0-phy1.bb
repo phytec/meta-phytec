@@ -7,7 +7,7 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/barebox/:"
 
 PR = "${INC_PR}.0"
 
-export userccflags="${TARGET_CC_ARCH} ${TOOLCHAIN_OPTIONS} ${CFLAGS} ${LDFLAGS}"
+export userccflags = "${TARGET_CC_ARCH} ${TOOLCHAIN_OPTIONS} ${CFLAGS} ${LDFLAGS}"
 
 do_configure:append() {
     oe_runmake ARCH=sandbox targettools_defconfig
