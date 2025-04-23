@@ -41,7 +41,7 @@ KBUILD_DEFCONFIG ?= "imx8_phytec_defconfig"
 KBUILD_DEFCONFIG:mx91-nxp-bsp = "imx9_phytec_defconfig"
 KBUILD_DEFCONFIG:mx93-nxp-bsp = "imx9_phytec_defconfig"
 KBUILD_DEFCONFIG:mx95-nxp-bsp = "imx_v8_defconfig"
-KCONFIG_MODE="alldefconfig"
+KCONFIG_MODE = "alldefconfig"
 
 do_deploy:append() {
     if echo ${KERNEL_IMAGETYPES} | grep -wq "fitImage"; then

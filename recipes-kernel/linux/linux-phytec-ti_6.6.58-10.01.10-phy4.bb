@@ -35,7 +35,7 @@ KERNEL_FEATURES = " \
 "
 
 KBUILD_DEFCONFIG ?= "phytec_ti_defconfig"
-KCONFIG_MODE="alldefconfig"
+KCONFIG_MODE = "alldefconfig"
 
 PR = "${INC_PR}.0"
 
