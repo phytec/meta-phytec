@@ -1,3 +1,5 @@
+require u-boot-capsule.inc
+
 DEPENDS += " \
     bc-native \
     dtc-native \
