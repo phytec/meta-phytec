@@ -20,6 +20,8 @@ UBOOT_BINARY = "u-boot-r5spl.${UBOOT_SUFFIX}"
 UBOOT_IMAGE = "u-boot-r5spl-${MAINMACHINE}-${PV}-${PR}.${UBOOT_SUFFIX}"
 UBOOT_SYMLINK = "u-boot-r5spl-${MAINMACHINE}.${UBOOT_SUFFIX}"
 
+UBOOT_CAPSULE:k3r5 = "tiboot3-capsule.bin"
+
 MACHINE_ESSENTIAL_EXTRA_RDEPENDS += "kernel-devicetree"
 
 PREFERRED_PROVIDER_virtual/kernel ??= "linux-dummy"
