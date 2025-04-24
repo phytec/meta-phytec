@@ -38,6 +38,12 @@ SRC_URI:append:mx93-generic-bsp = " \
     file://setup-pipeline-csi1.sh \
 "
 
+SRC_URI:append:mx95-generic-bsp = " \
+    file://setup-pipeline-csi1.sh \
+    file://setup-pipeline-csi2.sh \
+    file://setup-isi-routing.sh \
+"
+
 do_install() {
     install -d ${D}${nonarch_base_libdir}/udev/rules.d/
     install -m 0644 ${WORKDIR}/90-phycam.rules \
@@ -59,6 +65,12 @@ do_install() {
         install -d ${D}${bindir}
         install -m 0755 ${WORKDIR}/setup-pipeline-csi2.sh \
                         ${D}${bindir}/setup-pipeline-csi2
+    fi
+
+    if [ -e ${WORKDIR}/setup-isi-routing.sh ]; then
+        install -d ${D}${bindir}
+        install -m 0755 ${WORKDIR}/setup-isi-routing.sh \
+                        ${D}${bindir}/setup-isi-routing
     fi
 
     if [ -e ${WORKDIR}/setup-pipeline-dcmipp.sh ]; then
