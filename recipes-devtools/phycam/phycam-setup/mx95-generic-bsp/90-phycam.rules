@@ -1,0 +1,229 @@
+# phyCAM VM-016 (ar0144) CSI1
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="ar0144 2-0010", \
+	KERNELS=="42530000.i2c", \
+	SYMLINK+="cam-csi1", \
+
+# phyCAM VM-016 (ar0144) CSI1 phyCAM-L Port0
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="ar0144*", \
+	KERNELS=="2-0045", \
+	DRIVERS=="ds90ub953", \
+	SYMLINK+="cam-csi1-port0", \
+
+# phyCAM VM-016 (ar0144) CSI1 phyCAM-L Port1
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="ar0144*", \
+	KERNELS=="2-0046", \
+	DRIVERS=="ds90ub953", \
+	SYMLINK+="cam-csi1-port1", \
+
+# phyCAM VM-016 (ar0144) CSI2
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="ar0144 3-0010", \
+	KERNELS=="42540000.i2c", \
+	SYMLINK+="cam-csi2", \
+
+# phyCAM VM-016 (ar0144) CSI2 phyCAM-L Port0
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="ar0144*", \
+	KERNELS=="3-0045", \
+	DRIVERS=="ds90ub953", \
+	SYMLINK+="cam-csi2-port0", \
+
+# phyCAM VM-016 (ar0144) CSI2 phyCAM-L Port1
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="ar0144*", \
+	KERNELS=="3-0046", \
+	DRIVERS=="ds90ub953", \
+	SYMLINK+="cam-csi2-port1", \
+
+# phyCAM VM-017 (ar0521) CSI1
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="ar0521 2-0036", \
+	KERNELS=="42530000.i2c", \
+	SYMLINK+="cam-csi1", \
+
+# phyCAM VM-017 (ar0251) CSI1 phyCAM-L Port0
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="ar0521*", \
+	KERNELS=="2-0045", \
+	DRIVERS=="ds90ub953", \
+	SYMLINK+="cam-csi1-port0", \
+
+# phyCAM VM-017 (ar0521) CSI1 phyCAM-L Port1
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="ar0521*", \
+	KERNELS=="2-0046", \
+	DRIVERS=="ds90ub953", \
+	SYMLINK+="cam-csi1-port1", \
+
+# phyCAM VM-017 (ar0521) CSI2
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="ar0521 3-0036", \
+	KERNELS=="42540000.i2c", \
+	SYMLINK+="cam-csi2", \
+
+# phyCAM VM-017 (ar0251) CSI2 phyCAM-L Port0
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="ar0521*", \
+	KERNELS=="3-0045", \
+	DRIVERS=="ds90ub953", \
+	SYMLINK+="cam-csi2-port0", \
+
+# phyCAM VM-017 (ar0521) CSI2 phyCAM-L Port1
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="ar0521*", \
+	KERNELS=="3-0046", \
+	DRIVERS=="ds90ub953", \
+	SYMLINK+="cam-csi2-port1", \
+
+# phyCAM VM-020 (ar0234) CSI1
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="ar0234 2-0010", \
+	KERNELS=="42530000.i2c", \
+	SYMLINK+="cam-csi1", \
+
+# phyCAM VM-020 (ar0234) CSI1 phyCAM-L Port0
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="ar0234*", \
+	KERNELS=="2-0045", \
+	DRIVERS=="ds90ub953", \
+	SYMLINK+="cam-csi1-port0", \
+
+# phyCAM VM-020 (ar0234) CSI1 phyCAM-L Port1
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="ar0234*", \
+	KERNELS=="2-0046", \
+	DRIVERS=="ds90ub953", \
+	SYMLINK+="cam-csi1-port1", \
+
+# phyCAM VM-020 (ar0234) CSI2
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="ar0234 3-0010", \
+	KERNELS=="42540000.i2c", \
+	SYMLINK+="cam-csi2", \
+
+# phyCAM VM-020 (ar0234) CSI2 phyCAM-L Port0
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="ar0234*", \
+	KERNELS=="3-0045", \
+	DRIVERS=="ds90ub953", \
+	SYMLINK+="cam-csi2-port0", \
+
+# phyCAM VM-020 (ar0234) CSI2 phyCAM-L Port1
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="ar0234*", \
+	KERNELS=="3-0046", \
+	DRIVERS=="ds90ub953", \
+	SYMLINK+="cam-csi2-port1", \
+
+# phyCAM-L Serializer (ds90ub953) Port0 CSI1
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="ds90ub953 2-0045", \
+	KERNELS=="42530000.i2c", \
+	SYMLINK+="phycam-serializer-port0-csi1"
+
+# phyCAM-L Serializer (ds90ub953) Port1 CSI1
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="ds90ub953 2-0046", \
+	KERNELS=="42530000.i2c", \
+	SYMLINK+="phycam-serializer-port1-csi1"
+
+# phyCAM-L Deserializer (ds90ub954) CSI1
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="ds90ub960*", \
+	KERNELS=="42530000.i2c", \
+	SYMLINK+="phycam-deserializer-csi1"
+
+# phyCAM-L Serializer (ds90ub953) Port0 CSI2
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="ds90ub953 3-0045", \
+	KERNELS=="42540000.i2c", \
+	SYMLINK+="phycam-serializer-port0-csi2"
+
+# phyCAM-L Serializer (ds90ub953) Port1 CSI2
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="ds90ub953 3-0046", \
+	KERNELS=="42540000.i2c", \
+	SYMLINK+="phycam-serializer-port1-csi2"
+
+# phyCAM-L Deserializer (ds90ub954) CSI2
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="ds90ub960*", \
+	KERNELS=="42540000.i2c", \
+	SYMLINK+="phycam-deserializer-csi2"
+
+# CSI1 ISI Video Device
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="mxc_isi.0.capture", \
+	DRIVERS=="mxc-isi", \
+	SYMLINK+="video-isi-csi1"
+
+# CSI1 ISI Video Device
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="mxc_isi.0.capture", \
+	DRIVERS=="mxc-isi", \
+	SYMLINK+="video-isi-csi1-port0"
+
+# CSI1 ISI Video Device
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="mxc_isi.2.capture", \
+	DRIVERS=="mxc-isi", \
+	SYMLINK+="video-isi-csi1-port1"
+
+# CSI2 ISI Video Device
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="mxc_isi.4.capture", \
+	DRIVERS=="mxc-isi", \
+	SYMLINK+="video-isi-csi2"
+
+# CSI2 ISI Video Device
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="mxc_isi.4.capture", \
+	DRIVERS=="mxc-isi", \
+	SYMLINK+="video-isi-csi2-port0"
+
+# CSI2 ISI Video Device
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="mxc_isi.6.capture", \
+	DRIVERS=="mxc-isi", \
+	SYMLINK+="video-isi-csi2-port1"
+
+# ISI Media Device
+ACTION=="add", \
+	SUBSYSTEM=="media", \
+	ATTR{model}=="FSL Capture Media Device", \
+	KERNELS=="4ad50000.isi", \
+	DRIVERS=="mxc-isi", \
+	SYMLINK+="media-isi"
