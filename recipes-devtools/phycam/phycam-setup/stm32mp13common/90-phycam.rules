@@ -7,7 +7,7 @@ ACTION=="add", \
 # DCMIPP parallel entity
 ACTION=="add", \
         SUBSYSTEM=="video4linux", \
-        ATTR{name}=="dcmipp_parallel", \
+        ATTR{name}=="dcmipp_input", \
         DRIVERS=="dcmipp", \
         SYMLINK+="parallel-dcmipp"
 
