@@ -130,7 +130,10 @@ def partImage2partConfig(d, config, fstype=None):
     else:
         bin_suffix = '-${DISTRO}-${MACHINE}'
     if fstype:
-        bin_name = items[0] + bin_suffix + '.' + items[1] + '.' + fstype
+        if items[1][-2:] != 'fs':
+            bin_name = items[0] + bin_suffix + '.' + items[1] + 'fs.' + fstype
+        else:
+            bin_name = items[0] + bin_suffix + '.' + items[1] + '.' + fstype
     else:
         bin_name = items[0] + bin_suffix + '.' + items[1]
     # Set string for PARTITIONS_CONFIG item: <binary_name>,<partlabel>,<size>,<type>
