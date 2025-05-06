@@ -59,44 +59,21 @@ PARTITIONS_PROGRAMMER_CONFIG = "\
     ${@ '${STM32MP_SSBL1_PROGRAMMER_DATA},${STM32MP_SSBL1_PROGRAMMER_NAME},,FIP' if '${STM32MP_SSBL1_PROGRAMMER_NAME}' != 'None' else ''} \
     ${@ '${STM32MP_SSBL2_PROGRAMMER_DATA},${STM32MP_SSBL2_PROGRAMMER_NAME},,FIP' if '${STM32MP_SSBL2_PROGRAMMER_NAME}' else ''} \
     "
+# For RAUC, decrease rootfs partition size to 1GiB
+# Othewise default rootfs sizes are two big (4GiB for sdcard, 3GiB for eMMC)
+# For A partition:
+FLASHLAYOUT_PARTITION_SIZE:emmc:${STM32MP_ROOTFS_LABEL}:update = "1048576"
+FLASHLAYOUT_PARTITION_SIZE:nor-emmc:${STM32MP_ROOTFS_LABEL}:update = "1048576"
+FLASHLAYOUT_PARTITION_SIZE:sdcard:${STM32MP_ROOTFS_LABEL}:update = "1048576"
+# For B partition:
+STM32MP_ROOTFS_B_LABEL = "rootfs-b"
+FLASHLAYOUT_PARTITION_SIZE:emmc:${STM32MP_ROOTFS_B_LABEL}:update = "1048576"
+FLASHLAYOUT_PARTITION_SIZE:nor-emmc:${STM32MP_ROOTFS_B_LABEL}:update = "1048576"
+FLASHLAYOUT_PARTITION_SIZE:sdcard:${STM32MP_ROOTFS_B_LABEL}:update = "1048576"
 
 # =========================================================================
 # Image
 # =========================================================================
-# Define image partition size (supposed to be set as max size in image recipe)
-
-# Proposed value for rootfs should fit our highest constraint: NAND size (1GiB)
-#   With fw-update we have the following partitions:
-#       FSBL1 + FSBL2 + METADATA1+ METADATA2 + FIP-A1 + FIP-A2 + FIP-B1 + FIP-B2 + Multivolume UBI = NAND size
-#       Multivolume UBI = 1GiB - (512KiB + 512KiB + 512KiB + 512KiB + 4MiB + 4MiB + 4MiB + 4MiB) = 1006MiB
-# Without fw-update we have the following partitions:
-#   FSBL1 + FIP + FIP2 + Multivolume UBI = NAND size
-#   Multivolume UBI = 1GiB - (2MiB + 4MiB + 4MiB) = 1014MiB
-# With multivolume UBI split:
-#   Multivolume UBI > uboot_config + uboot_config_r + bootfs + vendorfs + rootfs + userfs + UBI Overhead
-# From http://www.linux-mtd.infradead.org/doc/ubi.html#L_overhead, we compute
-# the UBI overhead for our NAND:
-#   With fw-update:
-#       (20*4096/1024 + 4) * 256KiB + (256KiB - 248KiB) * (1006MiB/256KiB - 20*4096/1024 - 4) = 53024KiB
-#   Without fw-update:
-#       (20*4096/1024 + 4) * 256KiB + (256KiB - 248KiB) * (1014MiB/256KiB - 20*4096/1024 - 4) = 53280KiB
-# In addition, for each UBIFS, our NAND consummed 9 extra eraseblocks
-# So:
-#   rootfs < Multivolume UBI - (uboot_config + uboot_config_r + bootfs + vendorfs + userfs + UBI Overhead + 4 * 9*eraseblocks)
-#   With fw-update:
-#       rootfs < 1006MiB - (256KiB + 256KiB + 64MiB + 16MiB + 128MiB + 53024KiB + 4 * 9 * 256KiB)
-#       rootfs < 736.7MiB
-#   Without fw-update:
-#       rootfs < 1014MiB - (256KiB + 256KiB + 64MiB + 16MiB + 128MiB + 53280KiB + 4 * 9 * 256KiB)
-#       rootfs < 744.5MiB
-# Proposed value for rootfs is:
-#   With fw-update   : 736MiB
-#   Without fw-update: 744MiB
-# Define max size for ROOTFS image being built to this value
-STM32MP_ROOTFS_MAXSIZE_NAND ?= "${@bb.utils.contains('ENABLE_FLASHLAYOUT_CONFIG_FWUP', '1', '753664', '762336', d)}"
-# And configure the IMAGE_ROOTFS_MAXSIZE variable accordingly
-IMAGE_ROOTFS_MAXSIZE ?= "${STM32MP_ROOTFS_MAXSIZE_NAND}"
-
 # For RAUC distro feature, redefine labels of the updatable primary partitions (A/B partitions system)
 STM32MP_BOOTFS_LABEL:update   = "bootfs-a"
 STM32MP_ROOTFS_LABEL:update   = "rootfs-a"
