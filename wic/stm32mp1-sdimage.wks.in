@@ -12,11 +12,11 @@
 #
 
 # FSBL partitions (TF-A BL2)
-part fsbl1 --source rawcopy --fstype=ext4 --fsoptions "noauto" --part-name=fsbl1 --sourceparams="file=${DEPLOY_DIR_IMAGE}/arm-trusted-firmware/tf-a-${STM32MP_DEVICETREE}-sdcard.stm32" --ondisk mmcblk --part-type 0x8301 --fixed-size 256K --align 17
-part fsbl2 --source rawcopy --fstype=ext4 --fsoptions "noauto" --part-name=fsbl2 --sourceparams="file=${DEPLOY_DIR_IMAGE}/arm-trusted-firmware/tf-a-${STM32MP_DEVICETREE}-sdcard.stm32" --ondisk mmcblk --part-type 0x8301 --fixed-size 256K
+part fsbl1 --source rawcopy --fstype=ext4 --fsoptions "noauto" --part-name=fsbl1 --sourceparams="file=${DEPLOY_DIR_IMAGE}/arm-trusted-firmware/tf-a-${BOOTLOADER_DT}-sdcard.stm32" --ondisk mmcblk --part-type 0x8301 --fixed-size 256K --align 17
+part fsbl2 --source rawcopy --fstype=ext4 --fsoptions "noauto" --part-name=fsbl2 --sourceparams="file=${DEPLOY_DIR_IMAGE}/arm-trusted-firmware/tf-a-${BOOTLOADER_DT}-sdcard.stm32" --ondisk mmcblk --part-type 0x8301 --fixed-size 256K
 
 # FIP partition
-part fip --source rawcopy --fstype=ext4 --fsoptions "noauto" --part-name=fip --sourceparams="file=${DEPLOY_DIR_IMAGE}/fip/fip-${STM32MP_DEVICETREE}-optee.bin" --ondisk mmcblk --part-type 0x8301 --fixed-size 4096K
+part fip --source rawcopy --fstype=ext4 --fsoptions "noauto" --part-name=fip --sourceparams="file=${DEPLOY_DIR_IMAGE}/fip/fip-${BOOTLOADER_DT}-optee.bin" --ondisk mmcblk --part-type 0x8301 --fixed-size 4096K
 
 # u-boot env partition
 part u-boot-env --source empty --part-name=uboot-env --ondisk mmcblk --part-type 0x8301 --fixed-size 512K
