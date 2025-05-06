@@ -183,6 +183,11 @@ KERNEL_DEVICETREE:append:openstlinuxcommon = " ${@' '.join('%s.dtb' % d for d in
 # With OpenSTlinux, UBOOT_DEVICETREE must be empty as it is internal for var expansion
 UBOOT_DEVICETREE:openstlinuxcommon ?= ""
 
+# Define u-boot defconfig for specific ST programmer binaries
+# Use same defconfig as the default ones
+UBOOT_CONFIG[programmer_stm32mp15] = "phycore-stm32mp15_defconfig,,u-boot.dtb"
+UBOOT_CONFIG[programmer_stm32mp13] = "phycore-stm32mp13_defconfig,,u-boot.dtb"
+
 # =========================================================================
 # trusted-firmware-a
 # =========================================================================
