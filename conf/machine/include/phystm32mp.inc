@@ -147,6 +147,7 @@ UBOOT_EXTLINUX_INITRD ?= "${@bb.utils.contains('COMBINED_FEATURES', 'initrd', '/
 UBOOT_EXTLINUX_KERNEL_ARGS ?= "rootwait rw"
 # Add additional kernel arguments
 UBOOT_EXTLINUX_KERNEL_ARGS += "${EXTRA_KERNEL_ARGS}"
+UBOOT_EXTLINUX_ROOT:target-emmc:update ?= "root=PARTUUID=${uuidrootfs}"
 
 # =========================================================================
 # trusted-firmware-a
