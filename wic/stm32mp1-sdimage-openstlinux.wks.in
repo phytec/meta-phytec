@@ -24,12 +24,12 @@ part fip   --source rawcopy --fstype=ext4 --fsoptions "noauto" --part-name=fip -
 part u-boot-env --source empty --part-name=u-boot-env --ondisk mmcblk --part-type 0x8301 --fixed-size ${STM32MP_UENV_SIZE}K
 
 # Bootfs
-part bootfs --source rawcopy --sourceparams="file=${STM32MP_BOOTFS_IMAGE}-${DISTRO}-${MACHINE}.bootfs.ext4" --ondisk mmcblk --fstype=ext4 --part-name bootfs --active --fixed-size ${STM32MP_BOOTFS_SIZE}K
+part bootfs --source rawcopy --sourceparams="file=${STM32MP_BOOTFS_IMAGE}-${DISTRO}-${MACHINE}${IMAGE_NAME_SUFFIX:pn-st-image-bootfs}.ext4" --ondisk mmcblk --fstype=ext4 --part-name bootfs --active --fixed-size ${STM32MP_BOOTFS_SIZE}K
 # Vendorfs
-part vendorfs --source rawcopy --sourceparams="file=${STM32MP_VENDORFS_IMAGE}-${DISTRO}-${MACHINE}.vendorfs.ext4" --ondisk mmcblk --fstype=ext4 --part-name vendorfs --fixed-size ${STM32MP_VENDORFS_SIZE}K
+part vendorfs --source rawcopy --sourceparams="file=${STM32MP_VENDORFS_IMAGE}-${DISTRO}-${MACHINE}${IMAGE_NAME_SUFFIX:pn-st-image-vendorfs}.ext4" --ondisk mmcblk --fstype=ext4 --part-name vendorfs --fixed-size ${STM32MP_VENDORFS_SIZE}K
 # Rootfs
 part / --source rootfs --ondisk mmcblk --fstype=ext4 --part-name rootfs --fixed-size ${IMAGE_ROOTFS_MAXSIZE}K --uuid ${DEVICE_PARTUUID_ROOTFS:SDCARD}
 # Userfs
-part userfs --source rawcopy --sourceparams="file=${STM32MP_USERFS_IMAGE}-${DISTRO}-${MACHINE}.userfs.ext4" --ondisk mmcblk --fstype=ext4 --part-name userfs --fixed-size ${STM32MP_USERFS_SIZE}K
+part userfs --source rawcopy --sourceparams="file=${STM32MP_USERFS_IMAGE}-${DISTRO}-${MACHINE}${IMAGE_NAME_SUFFIX:pn-st-image-userfs}.ext4" --ondisk mmcblk --fstype=ext4 --part-name userfs --fixed-size ${STM32MP_USERFS_SIZE}K
 
 bootloader --ptable gpt
