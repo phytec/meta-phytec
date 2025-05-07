@@ -15,7 +15,7 @@ PREFERRED_PROVIDER_virtual/bootloader ?= "u-boot"
 SPL_BINARY = "spl/u-boot-spl-dtb.bin"
 
 # Install modules in initramfs and rootfs
-PACKAGE_INSTALL:append = " kernel-modules"
+MACHINE_EXTRA_RRECOMMENDS += "kernel-modules"
 
 SERIAL_CONSOLES = "115200;ttyS2"
 
