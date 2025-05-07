@@ -23,7 +23,7 @@ PREFERRED_PROVIDER_virtual/kernel ?= "linux-phytec"
 PREFERRED_PROVIDER_amx3-cm3 ?= "amx3-cm3-phy"
 KERNEL_IMAGETYPE ?= "zImage"
 # Install modules in initramfs and rootfs
-PACKAGE_INSTALL:append = " kernel-modules"
+MACHINE_EXTRA_RRECOMMENDS += "kernel-modules"
 KERNEL_MODULE_AUTOLOAD += " cryptodev"
 
 SERIAL_CONSOLES ?= "115200;ttyS0"
