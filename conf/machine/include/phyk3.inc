@@ -36,7 +36,7 @@ do_image_wic[depends] += "ti-boot-container:do_deploy"
 SERIAL_CONSOLES = "115200;ttyS2"
 
 # Install modules in initramfs and roofs
-PACKAGE_INSTALL:append = " kernel-modules"
+MACHINE_EXTRA_RRECOMMENDS += "kernel-modules"
 INITRAMFS_FSTYPES = "cpio.xz"
 
 PREFERRED_PROVIDER_virtual/kernel ??= "linux-phytec-ti"
