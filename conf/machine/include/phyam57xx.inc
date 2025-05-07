@@ -12,7 +12,7 @@ MACHINE_FEATURES += "can touchscreen resistivetouch wifi bluetooth"
 SERIAL_CONSOLES = "115200;ttyS2"
 
 # Install modules in initramfs and roofs
-PACKAGE_INSTALL:append = " kernel-modules"
+MACHINE_EXTRA_RRECOMMENDS += "kernel-modules"
 
 # Install device-trees in rootfs
 MACHINE_ESSENTIAL_EXTRA_RDEPENDS += "kernel-devicetree"
