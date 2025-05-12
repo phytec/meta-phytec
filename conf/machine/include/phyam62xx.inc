@@ -30,3 +30,6 @@ KERNEL_OVERLAYS:phyboard-lyra = " \
 
 PREFERRED_PROVIDER_virtual/bootloader ?= "u-boot-phytec"
 PREFERRED_PROVIDER_u-boot ?= "u-boot-phytec"
+
+UBOOT_CAPSULE = "uboot-capsule.bin"
+SPL_CAPSULE = "tispl-capsule.bin"

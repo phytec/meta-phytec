@@ -30,3 +30,6 @@ PREFERRED_PROVIDER_ti-sci-fw ?= "ti-firmware"
 PREFERRED_PROVIDER_prueth-fw ?= "ti-firmware"
 PREFERRED_PROVIDER_pruhsr-fw ?= "ti-firmware"
 PREFERRED_PROVIDER_prusw-fw ?= "ti-firmware"
+
+UBOOT_CAPSULE = "uboot-capsule.bin"
+SPL_CAPSULE = "tispl-capsule.bin"

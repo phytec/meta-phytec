@@ -24,9 +24,6 @@ SPL_BINARY = "tispl.bin"
 SPL_BINARYNAME = "tispl.bin"
 UBOOT_SUFFIX = "img"
 
-UBOOT_CAPSULE = "uboot-capsule.bin"
-SPL_CAPSULE = "tispl-capsule.bin"
-
 EXTRA_IMAGEDEPENDS += "virtual/bootloader"
 
 TFA_PLATFORM = "k3"
