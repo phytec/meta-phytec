@@ -54,12 +54,6 @@ set_fitimage_key() {
     kconfig_set DEVICE_TREE_INCLUDES '"signature_node.dtsi"'
 }
 
-set_tikey() {
-    kconfig_set PHYTEC_K3_KEY_BLOB_COPY n
-    kconfig_set PHYTEC_K3_MPK_KEY '"${BOOTLOADER_TI_K3_MPK_KEY}"'
-    kconfig_set PHYTEC_K3_DEGENERATE_KEY '"${BOOTLOADER_TI_K3_DEGENERATE_KEY}"'
-}
-
 set_tikey_symlinks() {
     ln -sf ${BOOTLOADER_TI_K3_MPK_KEY} ${S}/arch/arm/mach-k3/keys/custMpk.pem
     ln -sf ${BOOTLOADER_TI_K3_DEGENERATE_KEY} ${S}/arch/arm/mach-k3/keys/ti-degenerate-key.pem
@@ -76,10 +70,6 @@ python do_patch:append:secureboot () {
 
     if oe.data.typed_value("FITIMAGE_SIGN", d) and d.getVar('FITIMAGE_SIGN_ENGINE') == 'software':
         bb.build.exec_func("set_fitimage_key", d)
-}
-
-python do_patch:append:secureenforced () {
-    bb.build.exec_func("set_tikey", d)
 }
 
 python do_unpack:append:secureenforced () {
