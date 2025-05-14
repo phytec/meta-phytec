@@ -37,10 +37,9 @@ KERNEL_FEATURES:append = " ${@bb.utils.contains("MACHINE_FEATURES", "bluetooth",
 KERNEL_FEATURES:append = " ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", " features/tpm/tpm-2.0.scc", "", d)}"
 KERNEL_FEATURES:append = " ${@bb.utils.contains("MACHINE_FEATURES", "pci", " features/pci/pci.scc", "", d)}"
 
-KBUILD_DEFCONFIG ?= "imx8_phytec_defconfig"
-KBUILD_DEFCONFIG:mx91-nxp-bsp = "imx9_phytec_defconfig"
-KBUILD_DEFCONFIG:mx93-nxp-bsp = "imx9_phytec_defconfig"
-KBUILD_DEFCONFIG:mx95-nxp-bsp = "imx_v8_defconfig"
+KBUILD_DEFCONFIG ?= "imx_v8_defconfig"
+KBUILD_DEFCONFIG:mx8-nxp-bsp = "imx8_phytec_defconfig"
+KBUILD_DEFCONFIG:mx9-nxp-bsp = "imx9_phytec_defconfig"
 KCONFIG_MODE = "alldefconfig"
 
 do_deploy:append() {
