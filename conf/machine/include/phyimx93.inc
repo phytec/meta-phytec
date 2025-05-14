@@ -59,5 +59,6 @@ IMAGE_FSTYPES:update = "partup"
 IMAGE_ROOTFS_ALIGNMENT:update = "4"
 
 MACHINE_FEATURES += "caam optee wifi bluetooth"
+MACHINE_FEATURES:remove:use-mainline-bsp = " optee"
 
 QEMUVERSION = "8.2%"
