@@ -40,6 +40,11 @@ UBOOT_PROVIDES_BOOT_CONTAINER:use-mainline-bsp = "1"
 KERNEL_CLASSES += "kernel-fitimage"
 KERNEL_IMAGETYPES += "fitImage"
 
+# TFA
+IMX_DEFAULT_ATF_PROVIDER:use-mainline-bsp ?= "trusted-firmware-a"
+TFA_BUILD_TARGET = "bl31"
+TFA_PLATFORM = "${ATF_PLATFORM}"
+
 INITRAMFS_MAXSIZE = "262144"
 
 # M33 core demos (bootaux)
