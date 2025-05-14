@@ -1,3 +1,5 @@
+inherit kernel-deploy-oftree
+
 COMPATIBLE_MACHINE  = "^("
 COMPATIBLE_MACHINE .=  "phyboard-polis-imx8mm-5"
 COMPATIBLE_MACHINE .= "|phyboard-pollux-imx8mp-3"
