@@ -15,7 +15,7 @@ IMX_OEI_SRC ?= "git://github.com/phytec/imx-oei-phytec.git;protocol=https"
 BRANCH = "master-phy"
 BRANCH:use-nxp-bsp = "6.6.52-2.2.0-phy"
 SRCREV = "${AUTOREV}"
-SRCREV:use-nxp-bsp = "${AUTOREV}"
+SRCREV:use-nxp-bsp = "06fc4de31427a5336c3c1a77a8475f8f47ccc900"
 
 S = "${WORKDIR}/git"
 
