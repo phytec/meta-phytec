@@ -10,7 +10,7 @@ IMX_SM_SRC = "git://github.com/phytec/imx-sm-phytec.git;protocol=https"
 BRANCH = "master-phy"
 BRANCH:use-nxp-bsp = "6.6.52-2.2.0-phy"
 SRCREV = "${AUTOREV}"
-SRCREV:use-nxp-bsp = "${AUTOREV}"
+SRCREV:use-nxp-bsp = "5e39ce5d178219871cb48de9bf84cd22459279e0"
 
 S = "${WORKDIR}/git"
 
