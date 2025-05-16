@@ -14,14 +14,6 @@ SRC_URI = "${GIT_URL};branch=${BRANCH}"
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 PATCHES = ""
-PATCHES:am62xx = " \
-    file://0001-HACK-board-phytec-phycore_am62x-Enable-OLDI0-AUDIO_R.patch \
-"
-PATCHES:k3r5-am62xx = " \
-    file://0001-HACK-board-phytec-phycore_am62x-Enable-OLDI0-AUDIO_R.patch \
-"
-SRC_URI:append:phyboard-lyra = " ${PATCHES}"
-
 PATCHES:am64xx = " \
     file://0001-HACK-board-phycore_am64x-Add-Set-CLKOUT0-to-25MHz.patch \
 "
