@@ -74,6 +74,8 @@ python do_layout_config() {
     with open(config_out, 'w') as f:
         f.write(re.sub(r'[\t ]+\n', r'\n', content, flags=reflags))
 }
+PARTUP_LAYOUT_CONFIG_CHECKSUM = "${@'${PARTUP_LAYOUT_CONFIG_FULL_PATH}:%s' % os.path.exists('${PARTUP_LAYOUT_CONFIG_FULL_PATH}') if oe.data.typed_value('USING_PARTUP', d) else ''}"
+do_layout_config[file-checksums] += "${PARTUP_LAYOUT_CONFIG_CHECKSUM}"
 do_layout_config[vardeps] += " \
     PARTUP_LAYOUT_CONFIG \
     PARTUP_SECTIONS \
