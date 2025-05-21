@@ -13,15 +13,6 @@ SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
-PATCHES = ""
-PATCHES:am64xx = " \
-    file://0001-HACK-board-phycore_am64x-Add-Set-CLKOUT0-to-25MHz.patch \
-"
-PATCHES:k3r5-am64xx = " \
-    file://0001-HACK-board-phycore_am64x-Add-Set-CLKOUT0-to-25MHz.patch \
-"
-SRC_URI:append:phyboard-electra = " ${PATCHES}"
-
 PR = "r0"
 SRCREV = "5ba0e9f74e586332b11e8bfc61d886913584986d"
 
