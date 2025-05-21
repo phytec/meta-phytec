@@ -56,6 +56,7 @@ python do_layout_config() {
         content = d.expand(f.read())
         for s in sections:
             d.setVarFlag('PARTUP_SECTION_' + s, 'type', 'boolean')
+            d.appendVarFlag('do_layout_config', 'vardeps', ' PARTUP_SECTION_' + s)
             if oe.data.typed_value('PARTUP_SECTION_' + s, d):
                 exp = r'#\s?(BEGIN|END)_{0}(\n|$)'.format(s.upper())
                 content = re.sub(exp, r'', content, flags=reflags)
