@@ -18,6 +18,8 @@ clean:
   - offset: ${UBOOT_ENV_OFFSET_REDUND}
     size: 64kiB
 # END_CLEAN
+
+# BEGIN_PARTITIONS
 partitions:
   - label: boot
     type: primary
@@ -34,3 +36,4 @@ partitions:
     block-size: 4kiB
     input:
       - filename: ${IMAGE_LINK_NAME}.${PARTUP_ROOTFS_IMAGE_EXT}
+# END_PARTITIONS
