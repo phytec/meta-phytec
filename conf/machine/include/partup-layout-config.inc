@@ -7,7 +7,7 @@ PARTUP_PACKAGE_FILES = " \
     ${PARTUP_BOOT_FILES} \
     ${IMAGE_LINK_NAME}.${PARTUP_ROOTFS_IMAGE_EXT} \
 "
-PARTUP_PACKAGE_DEPENDS = " \
+PARTUP_PACKAGE_DEPENDS ?= " \
     virtual/kernel \
     virtual/bootloader \
 "
