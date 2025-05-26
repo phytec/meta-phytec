@@ -20,10 +20,10 @@ SRC_URI = " \
 
 # Apply rt patch in case of preempt-rt
 RT_PATCH = "${KERNELORG_MIRROR}/linux/kernel/projects/rt/6.6/older/patch-6.6.58-rt45.patch.xz;name=rt-patch"
-SRC_URI:append = " \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'preempt-rt', "${RT_PATCH}", '', d)} \
-"
+SRC_URI:append:preempt-rt = " ${RT_PATCH}"
 SRC_URI[rt-patch.sha256sum] = "ec3089ab5ebf326fc1a015bb6de5ce451702fcec613c887b61637c3169f3fb5a"
+LINUX_KERNEL_TYPE:preempt-rt = "preempt-rt"
+LINUX_VERSION:preempt-rt = "6.6.58-rt45"
 
 KERNEL_FEATURES = " \
     systemd.scc \
@@ -59,9 +59,7 @@ KERNEL_EXTRA_ARGS += "LOADADDR=${UBOOT_ENTRYPOINT} \
                       ${EXTRA_DTC_ARGS}"
 
 COMPATIBLE_MACHINE  = "^("
-COMPATIBLE_MACHINE .=  "phyboard-lyra"
-COMPATIBLE_MACHINE .= "|phyboard-electra"
-COMPATIBLE_MACHINE .= "|phyboard-izar"
+COMPATIBLE_MACHINE .= "phyboard-izar"
 COMPATIBLE_MACHINE .= "|phyboard-lynx"
 COMPATIBLE_MACHINE .= "|phyboard-rigel"
 COMPATIBLE_MACHINE .= ")$"
