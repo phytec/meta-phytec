@@ -10,7 +10,6 @@ GIT_URL = "git://github.com/phytec/linux-phytec-ti.git;protocol=https"
 SRC_URI = " \
 	${GIT_URL};branch=${BRANCH} \
 	file://systemd.scc \
-	file://phytec_ti_platform.scc \
 	${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'file://lxc.scc', '', d)} \
 	${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'file://oci.scc', '', d)} \
 	${@bb.utils.contains('DISTRO_FEATURES', 'preempt-rt', 'file://preempt-rt.scc', '', d)} \
@@ -25,7 +24,6 @@ LINUX_VERSION:preempt-rt = "6.12.16-rt9"
 
 KERNEL_FEATURES = " \
     systemd.scc \
-    phytec_ti_platform.scc \
     ${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'lxc.scc oci.scc', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'preempt-rt', 'preempt-rt.scc', '', d)} \
 "
