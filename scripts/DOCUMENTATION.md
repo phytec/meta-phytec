@@ -32,8 +32,7 @@ The script copies the latest images files from the deploy/images directory.
 It's useful for deploying images for a Release or KSP projects, because also it
 creates checksums.  To deploy a release images execute
 
-    $ ./for_all_machines.py bitbake phytec-qt5demo-image   # or
-    $ MACHINE=ksp-machine-1  bitbake phytec-qt5demo-image  # and execute
+    $ MACHINE=ksp-machine-1  bitbake phytec-headless-image
     $ ./copy-deploy-images deploy/images ~/deploy/folder/images/
 
 To check the files against the checksum after deployment, execute
