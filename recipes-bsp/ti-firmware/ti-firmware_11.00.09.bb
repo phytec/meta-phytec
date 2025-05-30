@@ -24,7 +24,7 @@ FILES:ti-sci-fw += "${nonarch_base_libdir}/firmware/ti-sysfw/*"
 FILES:prueth-fw += "${nonarch_base_libdir}/firmware/ti-pruss/*-prueth-fw.elf"
 FILES:pruhsr-fw += "${nonarch_base_libdir}/firmware/ti-pruss/*-pruhsr-fw.elf"
 FILES:prusw-fw += "${nonarch_base_libdir}/firmware/ti-pruss/*-prusw-fw.elf"
-FILES:ti-dm-fw += "${nonarch_base_libdir}/ti-dm/am62xx/ipc_echo_testb_mcu1_0_release_strip.xer5f"
+FILES:ti-dm-fw += "${nonarch_base_libdir}/firmware/ti-dm/am62xx/ipc_echo_testb_mcu1_0_release_strip.xer5f"
 
 INHIBIT_PACKAGE_STRIP = "1"
 INHIBIT_SYSROOT_STRIP = "1"
@@ -67,6 +67,11 @@ do_install() {
     for f in ${PRU_FW}; do
         install -m 0644 ${S}/ti-pruss/$f ${D}${nonarch_base_libdir}/firmware/ti-pruss/$f
     done
+}
+
+do_install:append:am62xx() {
+    install -d ${D}${nonarch_base_libdir}/firmware/ti-dm/am62xx
+    install -m 644 ${S}/ti-dm/am62xx/ipc_echo_testb_mcu1_0_release_strip.xer5f ${D}${nonarch_base_libdir}/firmware/ti-dm/am62xx
 }
 
 do_deploy(){
