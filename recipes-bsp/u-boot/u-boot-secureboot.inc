@@ -65,9 +65,7 @@ set_dolegacyboot_1 () {
 python do_patch:append:secureboot () {
     bb.build.exec_func("set_dofitboot_1", d)
     bb.build.exec_func("set_image_to_fitimage", d)
-
-    if oe.data.typed_value("FITIMAGE_SIGN", d) and d.getVar('FITIMAGE_SIGN_ENGINE') == 'software':
-        bb.build.exec_func("set_fitimage_key", d)
+    bb.build.exec_func("set_fitimage_key", d)
 }
 
 python do_unpack:append:secureenforced () {
