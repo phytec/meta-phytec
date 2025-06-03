@@ -38,7 +38,6 @@ kconfig_set() {
 
 set_dofitboot_1 () {
     bbnote "Setting \"dofitboot\" to \"1\""
-    sed_safely "s/\(setenv dofitboot \)[01]/\11/" include/configs/phycore_*.h
     sed_safely "s/\(setenv dofitboot \)[01]/\11/" configs/phycore-imx8m*
     sed_safely "s/\(setenv dofitboot \)[01]/\11/" configs/imx8mm-phygate-tauri_defconfig
     sed_safely "s/\(dofitboot=\)[01]/\11/" include/env/phytec/fit.env
@@ -46,7 +45,6 @@ set_dofitboot_1 () {
 }
 
 set_image_to_fitimage () {
-    sed_safely "s/image=Image\\0/image=fitImage\\0/g" include/configs/phycore_*.h
     sed_safely "s/image=Image/image=fitImage/g" board/phytec/phycore_*/*.env
 }
 
