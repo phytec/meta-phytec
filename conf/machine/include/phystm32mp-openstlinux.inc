@@ -76,6 +76,10 @@ PARTITIONS_BOOTLOADER_CONFIG[nand-2-128-256] = "\
 FLASHLAYOUT_TYPE_LABELS:nand-2-128-256 = "${STM32MP_DT_FILES_NAND}"
 FLASHLAYOUT_PARTITION_DEVICE:nand-2-128-256 = "none:${FLASHLAYOUT_PROGRAMMER_SECTIONS},${DEVICE:NAND}:default"
 
+# No specific partition offset for NOR device
+FLASHLAYOUT_PARTITION_OFFSET:nor-emmc:${STM32MP_FSBL1_NAME} = ""
+FLASHLAYOUT_PARTITION_OFFSET:nor-emmc:${STM32MP_FSBL2_NAME} = ""
+
 # For RAUC, decrease rootfs partition size to 1GiB
 # Othewise default rootfs sizes are two big (4GiB for sdcard, 3GiB for eMMC)
 # For A partition:
