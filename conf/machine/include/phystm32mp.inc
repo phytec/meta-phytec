@@ -39,6 +39,8 @@ VIRTUAL-RUNTIME_optee-os = "optee-os"
 
 # Default FSTYPES requested
 WKS_IMAGE_FSTYPES ?= ""
+# Do note generate wic image for rauc
+WKS_IMAGE_FSTYPES:update= ""
 IMAGE_FSTYPES ?= "${WKS_IMAGE_FSTYPES} tar.xz ext4"
 
 # =========================================================================
