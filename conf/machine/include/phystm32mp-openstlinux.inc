@@ -19,7 +19,7 @@ VIRTUAL-RUNTIME_optee-os:openstlinuxcommon = "optee-os-stm32mp"
 # boot device
 # =========================================================================
 # List of supported boot devices
-BOOTDEVICE_LABELS ??= "emmc nor-emmc nand-2-256 nand-2-64 nor-sdcard sdcard"
+BOOTDEVICE_LABELS ??= "emmc nor-emmc nand-2-128-256 nor-sdcard sdcard"
 
 # =========================================================================
 # Machine settings
@@ -28,6 +28,7 @@ BOOTDEVICE_LABELS ??= "emmc nor-emmc nand-2-256 nand-2-64 nor-sdcard sdcard"
 STM32MP_DT_FILES_EMMC   += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'emmc', '${BOOTLOADER_DT}', '', d)}"
 STM32MP_DT_FILES_SDCARD += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'sdcard', '${BOOTLOADER_DT}', '', d)}"
 STM32MP_DT_FILES_NOR += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nor-emmc', '${BOOTLOADER_DT}', '', d)}"
+STM32MP_DT_FILES_NAND += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nand-2-128-256', '${BOOTLOADER_DT}', '', d)}"
 
 # Add list of default OpenSTLinux machine features to remove
 MACHINE_FEATURES_REMOVE_LIST ?= ""
@@ -59,6 +60,10 @@ PARTITIONS_PROGRAMMER_CONFIG = "\
     ${@ '${STM32MP_SSBL1_PROGRAMMER_DATA},${STM32MP_SSBL1_PROGRAMMER_NAME},,FIP' if '${STM32MP_SSBL1_PROGRAMMER_NAME}' != 'None' else ''} \
     ${@ '${STM32MP_SSBL2_PROGRAMMER_DATA},${STM32MP_SSBL2_PROGRAMMER_NAME},,FIP' if '${STM32MP_SSBL2_PROGRAMMER_NAME}' else ''} \
     "
+
+FLASHLAYOUT_TYPE_LABELS:nand-2-128-256 = "${STM32MP_DT_FILES_NAND}"
+FLASHLAYOUT_PARTITION_DEVICE:nand-2-128-256 = "none:${FLASHLAYOUT_PROGRAMMER_SECTIONS},${DEVICE:NAND}:default"
+
 # For RAUC, decrease rootfs partition size to 1GiB
 # Othewise default rootfs sizes are two big (4GiB for sdcard, 3GiB for eMMC)
 # For A partition:
@@ -122,31 +127,6 @@ def partImage2partConfig(d, config, fstype=None):
 
     return part_format
 
-#########################################################################################################
-# Define UBI labels to build
-#   Naming rules for UBI partitions:
-#      nand_<PageSize>_<BlockSize>
-#      nor_<BlockSize>
-#   Like that a same UBI partition can be used for severals NAND/NOR providers
-MULTIUBI_BUILD += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nand-2-256', 'nand_2_256', '', d)}"
-MULTIUBI_BUILD += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nand-2-64', 'nand_2_64', '', d)}"
-
-# UBI Args for 512MB NAND soldered by default on phyCORE-STM32MP1
-# Micron MT29F8G08ABACAWP
-# LEB = BLOCK_SIZE - (2 * page size): 64*2048 - (2*2048)
-MKUBIFS_ARGS:nand_2_256 = "--min-io-size 2048 --leb-size 126976 --max-leb-cnt 972 --space-fixup"
-UBINIZE_ARGS:nand_2_256 = "--min-io-size 2048 --peb-size 128KiB"
-EXTRA_UBIFS_SIZE:nand_2_256 = "2304"
-
-# UBI Args for 128MB NAND soldered by default on phyCORE-STM32MP1
-# Micron MT29F1G08ABAEAWP
-# LEB = BLOCK_SIZE - (2 * page size): 64*2048 - (2*2048)
-MKUBIFS_ARGS:nand_2_64 = "--min-io-size 2048 --leb-size 126976 --max-leb-cnt 972 --space-fixup"
-UBINIZE_ARGS:nand_2_64 = "--min-io-size 2048 --peb-size 128KiB"
-EXTRA_UBIFS_SIZE:nand_2_64 = "2304"
-
-##############################################################################################################
-
 # =========================================================================
 # Kernel
 # =========================================================================
@@ -174,6 +154,10 @@ TF_A_DEVICETREE:openstlinuxcommon ?= ""
 # Enable FIP and TF-A config for NOR-EMMC boot
 FIP_CONFIG += "${@bb.utils.contains('BOOTSCHEME_LABELS', 'optee', bb.utils.contains('BOOTDEVICE_LABELS', 'nor-emmc', 'optee-nor', '', d), '', d)}"
 TF_A_CONFIG += "${@bb.utils.contains('BOOTSCHEME_LABELS', 'optee', bb.utils.contains('BOOTDEVICE_LABELS', 'nor-emmc', 'optee-nor', '', d), '', d)}"
+
+# Enable FIP and TF-A config for NAND boot
+FIP_CONFIG += "${@bb.utils.contains('BOOTSCHEME_LABELS', 'optee', bb.utils.contains('BOOTDEVICE_LABELS', 'nand-2-128-256', 'optee-nand', '', d), '', d)}"
+TF_A_CONFIG += "${@bb.utils.contains('BOOTSCHEME_LABELS', 'optee', bb.utils.contains('BOOTDEVICE_LABELS', 'nand-2-128-256', 'optee-nand', '', d), '', d)}"
 
 # =========================================================================
 # WIC for sdcard raw image

@@ -40,8 +40,6 @@ VIRTUAL-RUNTIME_optee-os = "optee-os"
 # Default FSTYPES requested
 WKS_IMAGE_FSTYPES ?= ""
 IMAGE_FSTYPES ?= "${WKS_IMAGE_FSTYPES} tar.xz ext4"
-# Append ubi FSTYPES to default ones for nand volumes
-IMAGE_FSTYPES += "${@bb.utils.contains_any('BOOTDEVICE_LABELS', [ 'nand-2-256', 'nand-2-64' ], 'stmultiubi', '', d)}"
 
 # =========================================================================
 # Kernel
