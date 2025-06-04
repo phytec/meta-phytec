@@ -1,0 +1,60 @@
+From 29f31942f347522ee5c1db28d9f2222563134139 Mon Sep 17 00:00:00 2001
+From: Christophe Parant <c.parant@phytec.fr>
+Date: Mon, 26 May 2025 10:44:11 +0200
+Subject: [PATCH] configs: phycore-stm32mp1x: update env offset for firmware
+ update The current default u-boot environment offsets doesn't match the
+ default partitionning used for TF-A firmware update feature. Configure the
+ offsets for this feature.
+
+Signed-off-by: Christophe Parant <c.parant@phytec.fr>
+---
+ configs/phycore-stm32mp13_defconfig | 4 ++--
+ configs/phycore-stm32mp15_defconfig | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/configs/phycore-stm32mp13_defconfig b/configs/phycore-stm32mp13_defconfig
+index 569c80e1742..34583d1f3e8 100644
+--- a/configs/phycore-stm32mp13_defconfig
++++ b/configs/phycore-stm32mp13_defconfig
+@@ -4,7 +4,7 @@ CONFIG_ARCH_STM32MP=y
+ CONFIG_TFABOOT=y
+ CONFIG_SYS_MALLOC_F_LEN=0x180000
+ CONFIG_CUSTOM_SYS_INIT_SP_ADDR=0xc0400000
+-CONFIG_ENV_OFFSET=0x480000
++CONFIG_ENV_OFFSET=0x900000
+ CONFIG_ENV_SECT_SIZE=0x40000
+ CONFIG_DEFAULT_DEVICE_TREE="stm32mp135f-phycore-som-1gib"
+ CONFIG_DEFAULT_FDT_FILE="oftree"
+@@ -12,7 +12,7 @@ CONFIG_STM32MP13X=y
+ CONFIG_DDR_CACHEABLE_SIZE=0x8000000
+ CONFIG_CMD_STM32KEY=y
+ CONFIG_TARGET_PHYTEC_PHYCORE_STM32MP13X=y
+-CONFIG_ENV_OFFSET_REDUND=0x4C0000
++CONFIG_ENV_OFFSET_REDUND=0x940000
+ CONFIG_CMD_STM32PROG=y
+ # CONFIG_ARMV7_NONSEC is not set
+ CONFIG_SYS_LOAD_ADDR=0xc2000000
+diff --git a/configs/phycore-stm32mp15_defconfig b/configs/phycore-stm32mp15_defconfig
+index e2c360432ec..bec818ba619 100644
+--- a/configs/phycore-stm32mp15_defconfig
++++ b/configs/phycore-stm32mp15_defconfig
+@@ -3,14 +3,14 @@ CONFIG_ARCH_STM32MP=y
+ CONFIG_TFABOOT=y
+ CONFIG_SYS_MALLOC_F_LEN=0x80000
+ CONFIG_CUSTOM_SYS_INIT_SP_ADDR=0xc0100000
+-CONFIG_ENV_OFFSET=0x480000
++CONFIG_ENV_OFFSET=0x900000
+ CONFIG_ENV_SECT_SIZE=0x40000
+ CONFIG_DEFAULT_DEVICE_TREE="stm32mp157c-phycore-som-1gib"
+ CONFIG_DEFAULT_FDT_FILE="oftree"
+ CONFIG_DDR_CACHEABLE_SIZE=0x8000000
+ CONFIG_CMD_STM32KEY=y
+ CONFIG_TARGET_PHYTEC_PHYCORE_STM32MP15X=y
+-CONFIG_ENV_OFFSET_REDUND=0x4C0000
++CONFIG_ENV_OFFSET_REDUND=0x940000
+ CONFIG_CMD_STM32PROG=y
+ # CONFIG_ARMV7_NONSEC is not set
+ CONFIG_SYS_LOAD_ADDR=0xc2000000
+-- 
+2.34.1
+
