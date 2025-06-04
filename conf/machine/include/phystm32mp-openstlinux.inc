@@ -71,7 +71,7 @@ FLASHLAYOUT_PARTITION_SIZE:emmc:${STM32MP_ROOTFS_LABEL}:update = "1048576"
 FLASHLAYOUT_PARTITION_SIZE:nor-emmc:${STM32MP_ROOTFS_LABEL}:update = "1048576"
 FLASHLAYOUT_PARTITION_SIZE:sdcard:${STM32MP_ROOTFS_LABEL}:update = "1048576"
 # For B partition:
-STM32MP_ROOTFS_B_LABEL = "rootfs-b"
+STM32MP_ROOTFS_B_LABEL = "rootbfs"
 FLASHLAYOUT_PARTITION_SIZE:emmc:${STM32MP_ROOTFS_B_LABEL}:update = "1048576"
 FLASHLAYOUT_PARTITION_SIZE:nor-emmc:${STM32MP_ROOTFS_B_LABEL}:update = "1048576"
 FLASHLAYOUT_PARTITION_SIZE:sdcard:${STM32MP_ROOTFS_B_LABEL}:update = "1048576"
@@ -80,9 +80,9 @@ FLASHLAYOUT_PARTITION_SIZE:sdcard:${STM32MP_ROOTFS_B_LABEL}:update = "1048576"
 # Image
 # =========================================================================
 # For RAUC distro feature, redefine labels of the updatable primary partitions (A/B partitions system)
-STM32MP_BOOTFS_LABEL:update   = "bootfs-a"
-STM32MP_ROOTFS_LABEL:update   = "rootfs-a"
-STM32MP_VENDORFS_LABEL:update = "vendorfs-a"
+STM32MP_BOOTFS_LABEL:update   = "bootafs"
+STM32MP_ROOTFS_LABEL:update   = "rootafs"
+STM32MP_VENDORFS_LABEL:update = "vendorafs"
 
 # For RAUC distro feature, define the updatable partitions images
 PARTITIONS_IMAGES_UPDATABLE ?= ""
@@ -122,7 +122,7 @@ def partImage2partConfig(d, config, fstype=None):
     part_format = bin_name + ',' + items[1] + ',' + items[3] + ',' + items[4]
 
     if config in d.getVar('PARTITIONS_IMAGES_UPDATABLE'):
-        part_b_label = items[1].replace('-a', '-b')
+        part_b_label = items[1].replace('afs', 'bfs')
         part_format = part_format + ' ' + ',' + part_b_label + ',' + items[3] + ',' + items[4]
 
     return part_format
