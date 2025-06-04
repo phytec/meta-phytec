@@ -146,6 +146,23 @@ UBOOT_CONFIG[programmer_stm32mp15] = "phycore-stm32mp15_defconfig,,u-boot.dtb"
 UBOOT_CONFIG[programmer_stm32mp13] = "phycore-stm32mp13_defconfig,,u-boot.dtb"
 
 # =========================================================================
+# u-boot extlinux configuration
+# =========================================================================
+# Enable other device tree examples when specified
+LABEL_A7_EXAMPLES += "${@ 'rootfs-a7-examples' if '${LINUX_A7_EXAMPLES_DT}' else ''}"
+LABEL_M4_EXAMPLES += "${@ 'rootfs-m4-examples' if '${CUBE_M4_EXAMPLES_DT}' else ''}"
+UBOOT_EXTLINUX_LABELS:target-sdcard += "${LABEL_A7_EXAMPLES} ${LABEL_M4_EXAMPLES}"
+UBOOT_EXTLINUX_LABELS:target-emmc += "${LABEL_A7_EXAMPLES} ${LABEL_M4_EXAMPLES}"
+UBOOT_EXTLINUX_LABELS:target-nand += "${LABEL_A7_EXAMPLES} ${LABEL_M4_EXAMPLES}"
+# Define MENU DESCRIPTION overrides for new A7 labels
+UBOOT_EXTLINUX_MENU_DESCRIPTION:rootfs-a7-examples = "${@ '${LINUX_A7_EXAMPLES_DT}'[3:]}"
+# Define FDT overrides for new A7 labels
+UBOOT_EXTLINUX_FDT:rootfs-a7-examples = "${@ '${LINUX_A7_EXAMPLES_DT}.dtb'[2:]}"
+UBOOT_EXTLINUX_MENU_DESCRIPTION:rootfs-m4-examples = "${@ '${CUBE_M4_EXAMPLES_DT}'[3:]}"
+# Define FDT overrides for new M4 labels
+UBOOT_EXTLINUX_FDT:rootfs-m4-examples = "${@ '${CUBE_M4_EXAMPLES_DT}.dtb'[2:]}"
+
+# =========================================================================
 # trusted-firmware-a
 # =========================================================================
 # With OpenSTlinux, TF_A_DEVICETREE must be empty as it is internal to TF_A_CONFIG var expansion
