@@ -1,14 +1,7 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/${BPN}:"
 
 SRC_URI += " \
-    file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0001-ARM-5.15.145-stm32mp1-phy3-DT-OVERLAY.patch \
-    file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0002-ARM-5.15.145-stm32mp1-phy3-DEVICETREE.patch \
-    file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0003-ARM-5.15.145-stm32mp1-phy3-DRM.patch \
-    file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0004-ARM-5.15.145-stm32mp1-phy3-MEDIA.patch \
-    file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0005-ARM-5.15.145-stm32mp1-phy3-SOUND.patch \
-    file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0006-ARM-5.15.145-stm32mp1-phy3-NET.patch \
-    file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0007-ARM-5.15.145-stm32mp1-phy3-RTC.patch \
-    file://${LINUX_VERSION}/${LINUX_VERSION}.${LINUX_SUBVERSION}/0008-ARM-5.15.145-stm32mp1-phy3-SPI.patch \
+    file://${LINUX_VERSION}/${LINUX_VERSION}${LINUX_SUBVERSION}/0001-v6.6-stm32mp-phy1.patch \
 "
 
 # -------------------------------------------------------------
@@ -50,7 +43,7 @@ SRC_URI += "file://${LINUX_VERSION}/fragment-19-capacitive-touch.config;subdir=f
 BBCLASSEXTEND = "devupstream:target"
 
 SRC_URI:class-devupstream = "git://git.phytec.de/linux-stm32mp;protocol=git;branch=v${LINUX_VERSION}-phy"
-SRCREV:class-devupstream = "a072387b94a93c91f9a91376a79191e19c5c2f48"
+SRCREV:class-devupstream = "272f5e32ceea98dd46e9cb885526498163de8c41"
 
 # -----------------------------------------------------------------------------------
 # Configure default preference to manage dynamic selection between tarball and github
@@ -64,7 +57,8 @@ DEFAULT_PREFERENCE = "${@bb.utils.contains('STM32MP_SOURCE_SELECTION', 'git.phyt
 SRC_URI:class-devupstream += "file://${LINUX_VERSION}/fragment-03-systemd.config;subdir=fragments"
 SRC_URI:class-devupstream += "file://${LINUX_VERSION}/fragment-04-modules.config;subdir=fragments"
 SRC_URI:class-devupstream += "file://${LINUX_VERSION}/optional-fragment-05-signature.config;subdir=fragments"
-SRC_URI:class-devupstream += "file://${LINUX_VERSION}/optional-fragment-06-smp.config;subdir=fragments"
+SRC_URI:class-devupstream += "file://${LINUX_VERSION}/optional-fragment-06-nosmp.config;subdir=fragments/features"
+SRC_URI:class-devupstream += "file://${LINUX_VERSION}/optional-fragment-07-efi.config;subdir=fragments/features"
 
 SRC_URI:class-devupstream += "file://${LINUX_VERSION}/fragment-06-rtc.config;subdir=fragments"
 SRC_URI:class-devupstream += "file://${LINUX_VERSION}/fragment-07-eeprom.config;subdir=fragments"
@@ -93,12 +87,13 @@ FIRST_DTS = "${KERNEL_DEVICETREE}"
 DTS_FILE = "oftree"
 
 do_deploy:append() {
-    first_dts=$(echo "${KERNEL_DEVICETREE}" | cut -d'/' -f2)
+    first_dts=$(echo "${KERNEL_DEVICETREE}" | awk ' { print $1 } ')
     ln -sf ${first_dts} ${DEPLOYDIR}/${DTS_FILE}
 }
 
 do_install:append() {
-    ln -sf ${FIRST_DTS} ${KERNEL_OUTPUT_DIR}/dts/${DTS_FILE}
+    first_dts=$(echo "${KERNEL_DEVICETREE}" | awk ' { print $1 } ')
+    ln -sf ${first_dts} ${KERNEL_OUTPUT_DIR}/dts/${DTS_FILE}
     install -m 0644 ${KERNEL_OUTPUT_DIR}/dts/${DTS_FILE} ${D}/${KERNEL_IMAGEDEST}
 }
 
