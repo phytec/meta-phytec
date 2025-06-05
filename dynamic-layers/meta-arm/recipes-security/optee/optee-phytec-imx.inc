@@ -4,6 +4,14 @@ OPTEE_PKCS11_TA_HEAP_SIZE ??= "32768"
 OPTEE_IN_TREE_EARLY_TAS ??= "pkcs11/fd02c9da-306c-48c7-a49c-bbd827ae86ee trusted_keys/f04a0fe7-1f5d-4b9b-abf7-619b85b4ce8c"
 
 # Compiled In TA
+EXTRA_OEMAKE:append:mx91-generic-bsp = ' \
+    CFG_IN_TREE_EARLY_TAS="${OPTEE_IN_TREE_EARLY_TAS}" \
+'
+
+EXTRA_OEMAKE:append:mx93-generic-bsp = ' \
+    CFG_IN_TREE_EARLY_TAS="${OPTEE_IN_TREE_EARLY_TAS}" \
+'
+
 EXTRA_OEMAKE:append:mx8m-generic-bsp = ' \
     CFG_IN_TREE_EARLY_TAS="${OPTEE_IN_TREE_EARLY_TAS}" \
     OPENSSL_MODULES=${STAGING_LIBDIR_NATIVE}/ossl-modules \
