@@ -17,7 +17,7 @@ SRC_URI = " \
     file://0001-video-logo-Drop-full-path-of-the-input-filename-in-g.patch \
 "
 
-SRCREV = "2da1b824a19ac245cf9cec36ebf6a76bbeb23839"
+SRCREV = "83799a53ea51213958009d2a76d1d150b7bb3fa0"
 SRCREV_machine = "${SRCREV}"
 SRCREV_meta ?= "5b185a8716c8c62dc1c7751e6d12f8b67f58274f"
 
