@@ -48,12 +48,12 @@ IMAGE_FSTYPES += "${@bb.utils.contains_any('BOOTDEVICE_LABELS', [ 'nand-2-256', 
 # =========================================================================
 
 # Kernel image type
-KERNEL_IMAGETYPE     =  "${@bb.utils.contains('MACHINE_FEATURES', 'fit', 'fitImage', 'uImage', d)}"
+KERNEL_IMAGETYPE     =  "uImage"
 KERNEL_ALT_IMAGETYPE =  " Image "
 KERNEL_ALT_IMAGETYPE =+ " vmlinux "
-KERNEL_ALT_IMAGETYPE =+ " ${@bb.utils.contains('MACHINE_FEATURES', 'fit', 'uImage', 'zImage', d)} "
+KERNEL_ALT_IMAGETYPE =+ "zImage"
 
-KERNEL_CLASSES = " ${@bb.utils.contains('MACHINE_FEATURES', 'fit', 'kernel-fitimage', 'kernel-uimage', d)} "
+KERNEL_CLASSES = "kernel-uimage"
 
 # For fit usage
 UBOOT_ENTRYPOINT = "0xC0800000"

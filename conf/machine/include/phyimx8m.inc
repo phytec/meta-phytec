@@ -11,12 +11,11 @@ IMAGE_BOOT_FILES = "fitImage boot.scr.uimg"
 IMAGE_BOOT_FILES:mx8m-nxp-bsp = "fitImage bootenv.txt boot.scr.uimg"
 IMAGE_BOOT_FILES:mx8m-nxp-bsp:secureboot = "fitImage bootenv.txt"
 IMAGE_BOOT_FILES:mx8m-nxp-bsp:update = "fitImage bootenv.txt"
+KERNEL_CLASSES += "kernel-fit-extra-artifacts"
+IMAGE_INSTALL:append = "linux-yocto-fitimage"
 
 UBOOT_DTB_LOADADDRESS = "0x48000000"
 UBOOT_DTBO_LOADADDRESS = "0x49000000"
-
-KERNEL_CLASSES += "kernel-fitimage"
-KERNEL_IMAGETYPES += "fitImage"
 
 ATF_BOOT_UART_BASE = "auto"
 TFA_BUILD_TARGET = "bl31"
