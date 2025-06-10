@@ -3,6 +3,7 @@
 inherit kernel kernel-yocto
 inherit phygittag kernel-deploy-oftree
 include recipes-kernel/linux/linux-common.inc
+require linux-phytec-fitimage.inc
 
 SRCREV = "8aedafbe9d27d8000ff960e5c94ef981980a2acb"
 SRCREV_machine = "${SRCREV}"
@@ -41,20 +42,6 @@ KBUILD_DEFCONFIG ?= "imx_v8_defconfig"
 KBUILD_DEFCONFIG:mx8-nxp-bsp = "imx8_phytec_defconfig"
 KBUILD_DEFCONFIG:mx9-nxp-bsp = "imx9_phytec_defconfig"
 KCONFIG_MODE = "alldefconfig"
-
-do_deploy:append() {
-    if echo ${KERNEL_IMAGETYPES} | grep -wq "fitImage"; then
-        ln -snf fitImage-its-${KERNEL_FIT_NAME}.its "${DEPLOYDIR}/fitImage.its"
-        if [ -n "${INITRAMFS_IMAGE}" -a "${INITRAMFS_IMAGE_BUNDLE}" != "1" ]; then
-            # remove symlink to fitImage without initramfs
-            rm -f ${DEPLOYDIR}/fitImage
-            rm -f ${DEPLOYDIR}/fitImage.its
-            # create symlink to fitImage with initramfs
-            ln -snf fitImage-${INITRAMFS_IMAGE_NAME}-${KERNEL_FIT_NAME}${KERNEL_FIT_BIN_EXT} "${DEPLOYDIR}/fitImage"
-            ln -snf fitImage-its-${INITRAMFS_IMAGE_NAME}-${KERNEL_FIT_NAME}.its "${DEPLOYDIR}/fitImage.its"
-        fi
-    fi
-}
 
 COMPATIBLE_MACHINE  = "^("
 COMPATIBLE_MACHINE .= "phyboard-pollux-imx8mp-3"
