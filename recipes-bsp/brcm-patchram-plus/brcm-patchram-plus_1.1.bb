@@ -11,7 +11,7 @@ SRC_URI[sha256sum] = "02397334a7a797c936ae5739beccb5f2a3dc6e512f685cbc27fc944d17
 
 S = "${WORKDIR}/brcm_patchram-brcm_patchram_plus_${PV}"
 
-CLEANBROKEN ="1"
+CLEANBROKEN = "1"
 
 do_install:append() {
 	install -d ${D}/usr/bin
