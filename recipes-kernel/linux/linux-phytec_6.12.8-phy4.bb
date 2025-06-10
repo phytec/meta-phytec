@@ -1,7 +1,7 @@
 inherit kernel kernel-yocto
 inherit phygittag buildinfo kernel-deploy-oftree
 require linux-common.inc
-require linux-phytec-ti.inc
+require linux-phytec-fitimage.inc
 
 LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 
