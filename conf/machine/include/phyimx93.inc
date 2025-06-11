@@ -63,7 +63,7 @@ IMAGE_FSTYPES:update = "partup"
 # rootfs alignment required for RAUC adaptive update
 IMAGE_ROOTFS_ALIGNMENT:update = "4"
 
-MACHINE_FEATURES += "caam optee wifi bluetooth"
+MACHINE_FEATURES += "optee wifi bluetooth"
 MACHINE_FEATURES:remove:use-mainline-bsp = " optee"
 
 QEMUVERSION = "8.2%"
