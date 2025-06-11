@@ -8,7 +8,7 @@ require conf/machine/include/arm/arch-arm64.inc
 
 require phytec-machine-common.inc
 
-KERNEL_CLASSES += "kernel-fitimage"
+KERNEL_CLASSES += "kernel-fit-extra-artifacts"
 
 UBOOT_ARCH = "arm"
 UBOOT_ENTRYPOINT = "0x81000000"
