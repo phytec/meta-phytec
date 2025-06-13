@@ -21,6 +21,11 @@ PREFERRED_PROVIDER_virtual/bootloader ?= "barebox"
 PREFERRED_PROVIDER_virtual/kernel ?= "linux-phytec"
 KERNEL_IMAGETYPE ?= "zImage"
 
+# optee
+PREFERRED_VERSION_optee-os ??= "4.1.0"
+PREFERRED_VERSION_optee-client ??= "4.1.0"
+PREFERRED_VERSION_optee-test ??= "4.1.0"
+
 # Ship kernel modules
 MACHINE_EXTRA_RRECOMMENDS = "kernel-modules"
 MACHINE_EXTRA_RDEPENDS = "firmware-imx-sdma-imx6q"
