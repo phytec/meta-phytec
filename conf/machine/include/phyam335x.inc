@@ -80,4 +80,5 @@ NAND_DEV:ti33x ?= "0"
 IMAGE_ROOTFS_ALIGNMENT:update = "4"
 
 # default images to build
-IMAGE_FSTYPES ?= "tar.gz wic wic.bmap ubifs ext4"
+IMAGE_FSTYPES ?= "tar.gz wic wic.bmap ext4 \
+    ${@bb.utils.contains('MACHINE_FEATURES', 'emmc', 'emmc', 'ubifs', d)}"
