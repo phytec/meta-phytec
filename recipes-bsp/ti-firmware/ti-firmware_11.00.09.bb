@@ -4,8 +4,6 @@ DESCRIPTION = "Provides TI firmware files for various components"
 LICENSE = "TI-TFL"
 LIC_FILES_CHKSUM = "file://LICENSE.ti;md5=b5aebf0668bdf95621259288c4a46d76"
 
-inherit deploy
-
 PV = "11.00.09"
 PR = "r0"
 
@@ -73,21 +71,3 @@ do_install:append:am62xx() {
     install -d ${D}${nonarch_base_libdir}/firmware/ti-dm/am62xx
     install -m 644 ${S}/ti-dm/am62xx/ipc_echo_testb_mcu1_0_release_strip.xer5f ${D}${nonarch_base_libdir}/firmware/ti-dm/am62xx
 }
-
-do_deploy(){
-}
-
-do_deploy:append:am62xx() {
-    # DM Firmware is needed for building U-Boot
-    install -d ${DEPLOYDIR}/ti-dm/am62xx
-    install -m 0644 ${S}/ti-dm/am62xx/ipc_echo_testb_mcu1_0_release_strip.xer5f ${DEPLOYDIR}/ti-dm/am62xx
-}
-
-do_deploy:k3r5() {
-    install -d ${DEPLOYDIR}/ti-sysfw
-    install -m 644 ${S}/ti-sysfw/ti-sci-firmware-* ${DEPLOYDIR}/ti-sysfw
-    install -m 644 ${S}/ti-sysfw/ti-fs-firmware-* ${DEPLOYDIR}/ti-sysfw
-    install -m 644 ${S}/ti-sysfw/ti-fs-stub-firmware-* ${DEPLOYDIR}/ti-sysfw
-}
-
-addtask deploy before do_build after do_compile
