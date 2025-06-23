@@ -55,6 +55,19 @@ PRU_FW = " \
     am65x-sr2-txpru1-pruhsr-fw.elf \
 "
 
+DM_FIRMWARE = "ipc_echo_testb_mcu1_0_release_strip.xer5f"
+
+DM_FW_LIST = ""
+DM_FW_LIST:am62xx = "${DM_FIRMWARE}"
+DM_FW_LIST:am62axx = "${DM_FIRMWARE}"
+
+PLAT_SFX = ""
+PLAT_SFX:am62xx = "am62xx"
+PLAT_SFX:am62axx = "am62axx"
+
+DM_FW_DIR = "ti-dm/${PLAT_SFX}"
+INSTALL_DM_FW_DIR  = "${nonarch_base_libdir}/firmware/${DM_FW_DIR}"
+
 do_install() {
     install -d ${D}${nonarch_base_libdir}/firmware/ti-sysfw
     install -m 644 ${S}/ti-sysfw/ti-sci-firmware-* ${D}${nonarch_base_libdir}/firmware/ti-sysfw
@@ -65,9 +78,13 @@ do_install() {
     for f in ${PRU_FW}; do
         install -m 0644 ${S}/ti-pruss/$f ${D}${nonarch_base_libdir}/firmware/ti-pruss/$f
     done
-}
 
-do_install:append:am62xx() {
-    install -d ${D}${nonarch_base_libdir}/firmware/ti-dm/am62xx
-    install -m 644 ${S}/ti-dm/am62xx/ipc_echo_testb_mcu1_0_release_strip.xer5f ${D}${nonarch_base_libdir}/firmware/ti-dm/am62xx
+    # DM Firmware
+    if [ -n "${DM_FW_LIST}" ]; then
+        install -d ${D}${INSTALL_DM_FW_DIR}
+        for FW_NAME in ${DM_FW_LIST}
+        do
+            install -m 0644 ${S}/${DM_FW_DIR}/${FW_NAME} ${D}${INSTALL_DM_FW_DIR}/
+        done
+    fi
 }
