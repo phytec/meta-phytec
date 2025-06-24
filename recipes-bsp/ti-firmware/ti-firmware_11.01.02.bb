@@ -4,11 +4,11 @@ DESCRIPTION = "Provides TI firmware files for various components"
 LICENSE = "TI-TFL"
 LIC_FILES_CHKSUM = "file://LICENSE.ti;md5=b5aebf0668bdf95621259288c4a46d76"
 
-PV = "11.00.09"
+PV = "11.01.02"
 PR = "r0"
 
 SRC_URI = "git://git.ti.com/git/processor-firmware/ti-linux-firmware.git;protocol=https;branch=ti-linux-firmware"
-SRCREV = "27003b6bff61a55dd1fff2cc777e5e07b092b1f7"
+SRCREV = "a37c82f0e25e0e3c99fdf03f1d57f7b08314a2bc"
 
 S = "${WORKDIR}/git"
 PACKAGE_ARCH = "${MACHINE_ARCH}"
