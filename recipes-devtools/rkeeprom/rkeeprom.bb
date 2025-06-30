@@ -7,8 +7,7 @@ PR = "r0"
 
 SRC_URI = "file://rkeeprom.py"
 
-S = "${WORKDIR}/sources"
-UNPACKDIR = "${S}"
+S = "${UNPACKDIR}"
 
 RDEPENDS:${PN} = "python3-core python3-smbus2"
 

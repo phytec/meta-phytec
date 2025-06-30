@@ -14,8 +14,7 @@ SRC_URI[sha256sum] = "09547c211ce25aba4cdf4f35b1cf65cc07676e61eaa5b8f9adaf7b43de
 
 CLEANBROKEN = "1"
 
-S = "${WORKDIR}/sources"
-UNPACKDIR = "${S}"
+S = "${UNPACKDIR}"
 
 do_compile() {
 	:

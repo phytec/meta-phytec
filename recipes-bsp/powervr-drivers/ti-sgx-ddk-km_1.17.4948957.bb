@@ -23,7 +23,6 @@ SRC_URI += " \
     file://0001-Makefiles-Fix-arch-assignement.patch \
 "
 
-S = "${WORKDIR}/git"
 
 SRCREV = "3005cf8145a6720daa47e4e273f9e421ff77cb58"
 

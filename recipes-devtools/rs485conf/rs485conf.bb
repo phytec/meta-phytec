@@ -7,8 +7,6 @@ SRCREV = "37a54432f5b4aae4ab100125f9ec0b42c72e6e5b"
 
 SRC_URI = "git://github.com/mniestroj/rs485conf.git;branch=master;protocol=https"
 
-S = "${WORKDIR}/git"
-
 do_compile() {
     oe_runmake CC="${CC}" all
 }

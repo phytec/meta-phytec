@@ -7,9 +7,6 @@ SRCREV = "0b7ecd60c56de6eb36ed553cfa9ebecf34aea8c1"
 
 SRC_URI = "git://github.com/rm-hull/spidev-test.git;branch=master;protocol=https"
 
-S = "${WORKDIR}/git"
-
-
 do_compile() {
     ${CC} ${CFLAGS} spidev_test.c -o spidev_test ${LDFLAGS}
 }

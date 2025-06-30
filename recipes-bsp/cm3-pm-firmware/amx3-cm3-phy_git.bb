@@ -14,7 +14,6 @@ BRANCH ?= "ti-v4.1.y"
 SRC_URI = "git://git.ti.com/processor-firmware/ti-amx3-cm3-pm-firmware.git;protocol=git;branch=${BRANCH}"
 SRC_URI += "file://am335x-pcm060-scale-data.bin"
 
-S = "${WORKDIR}/git"
 
 do_compile() {
 	make CROSS_COMPILE="${TARGET_PREFIX}" CC="${TARGET_PREFIX}gcc ${TOOLCHAIN_OPTIONS} ${SECURITY_NOPIE_CFLAGS}"

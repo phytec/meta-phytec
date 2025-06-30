@@ -20,7 +20,6 @@ SRCBRANCH ?= "master"
 SRCREV = "805987bff74af13fcb14ff111955206f1c92554d"
 SRC_URI = "git://github.com/Freescale/gstreamer-imx.git;branch=${SRCBRANCH};protocol=https"
 
-S = "${WORKDIR}/git"
 
 inherit pkgconfig waf
 

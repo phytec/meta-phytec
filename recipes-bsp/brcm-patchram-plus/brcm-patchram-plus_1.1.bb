@@ -9,7 +9,7 @@ SRC_URI = "https://github.com/LairdCP/brcm_patchram/archive/brcm_patchram_plus_1
 SRC_URI[md5sum] = "3c03e03ce4ce11ea131702779906c6b3"
 SRC_URI[sha256sum] = "02397334a7a797c936ae5739beccb5f2a3dc6e512f685cbc27fc944d17cc4f79"
 
-S = "${WORKDIR}/brcm_patchram-brcm_patchram_plus_${PV}"
+S = "${UNPACKDIR}/brcm_patchram-brcm_patchram_plus_${PV}"
 
 CLEANBROKEN = "1"
 

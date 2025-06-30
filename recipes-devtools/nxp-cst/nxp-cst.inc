@@ -12,7 +12,6 @@ SRC_URI = " \
     git://gitlab.apertis.org/pkg/imx-code-signing-tool.git;protocol=https;branch=${BRANCH} \
 "
 
-S = "${WORKDIR}/git"
 
 CST_KEY_SOURCE ??= "file"
 

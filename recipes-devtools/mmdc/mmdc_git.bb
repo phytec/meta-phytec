@@ -10,7 +10,6 @@ SRC_URI = "git://github.com/FrankBau/mmdc;protocol=https;branch=master \
 PV = "1.0+git${SRCPV}"
 SRCREV = "603e23e1c8e34773218e1820a1d17164ab9d9732"
 
-S = "${WORKDIR}/git"
 
 PATCHTOOL = "git"
 

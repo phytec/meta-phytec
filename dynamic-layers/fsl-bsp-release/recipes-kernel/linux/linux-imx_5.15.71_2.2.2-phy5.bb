@@ -25,7 +25,6 @@ SRC_URI:append = " \
 # NOTE: Keep version in filename in sync with commit id!
 SRCREV = "e9e8ba9a4a23122d15d525c1fec74fff1e61036d"
 
-S = "${WORKDIR}/git"
 
 INTREE_DEFCONFIG = "imx_v8_defconfig imx8_phytec_distro.config imx8_phytec_platform.config"
 INTREE_DEFCONFIG:mx7-nxp-bsp = "imx7_phyboard_zeta_defconfig"

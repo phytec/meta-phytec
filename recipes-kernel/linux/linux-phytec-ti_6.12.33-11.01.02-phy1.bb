@@ -38,7 +38,6 @@ PR = "${INC_PR}.0"
 # NOTE: Keep version of TI_LINUX_FW_SRCREV in sync, configured in
 #       dynamic-layers/meta-ti-bsp/recipes-bsp/ti-linux-fw/ti-linux-fw-freeze.inc
 SRCREV = "6ba885dff59a9e7670b18498254f9318fcb01bbd"
-S = "${WORKDIR}/git"
 
 # Special configuration for remoteproc/rpmsg IPC modules
 module_conf_rpmsg_client_sample = "blacklist rpmsg_client_sample"

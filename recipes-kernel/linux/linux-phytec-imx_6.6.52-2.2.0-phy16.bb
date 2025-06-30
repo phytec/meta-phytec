@@ -23,7 +23,6 @@ SRC_URI:append = " git://git.yoctoproject.org/yocto-kernel-cache;type=kmeta;name
 
 PR = "${INC_PR}.0"
 
-S = "${WORKDIR}/git"
 
 KMETA = "kernel-meta"
 ARCH:aarch64 = "arm64"

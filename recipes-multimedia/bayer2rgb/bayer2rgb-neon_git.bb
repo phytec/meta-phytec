@@ -10,7 +10,6 @@ BRANCH = "master"
 GIT_URL = "git://gitlab-ext.sigma-chemnitz.de/ensc/bayer2rgb.git;protocol=https"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
-S = "${WORKDIR}/git"
 
 UPSTREAM_CHECK_COMMITS = "1"
 
