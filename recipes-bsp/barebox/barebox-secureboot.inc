@@ -64,7 +64,7 @@ do_patch:append:secureboot() {
         file.write("# CONFIG_CMD_SAVEENV is not set\n")
         file.write("# CONFIG_CMD_LOADENV is not set\n")
 
-        if oe.data.typed_value("FITIMAGE_SIGN", d):
+        if d.getVar("UBOOT_SIGN_ENABLE") == "1":
             check_fitimage_keyring(d)
             file.write("CONFIG_FITIMAGE=y\n")
             file.write("CONFIG_FITIMAGE_SIGNATURE=y\n")
