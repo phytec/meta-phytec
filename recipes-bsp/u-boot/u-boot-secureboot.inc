@@ -6,7 +6,7 @@ inherit u-boot-dts-pubkeynode
 SRC_URI:append:secureboot = " \
     file://deselect-commands.cfg \
     file://default-env.cfg \
-    ${@bb.utils.contains('FITIMAGE_SIGN','true','file://fitimage.cfg', '', d)} \
+    ${@bb.utils.contains('UBOOT_SIGN_ENABLE','1','file://fitimage.cfg', '', d)} \
 "
 
 SRC_URI:append:mx8m-generic-bsp:secureboot = " \

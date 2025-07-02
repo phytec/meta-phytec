@@ -38,11 +38,12 @@
 #
 # Additionally, you need to provide a path where to find a key file
 #
-#    FITIMAGE_SIGN_KEY_PATH = "${CERT_PATH}/fit/FIT-4096.key"
+#    UBOOT_SIGN_KEYDIR = "${CERT_PATH}/fit"
+#    UBOOT_SIGN_KEYNAME = "FIT-4096"
 #
 # or use
 #
-#    FITIMAGE_SIGN = "false"
+#    UBOOT_SIGN_ENABLE = "0"
 #
 # for an unsigned fitimage
 
@@ -58,8 +59,6 @@ deltask do_package_qa
 do_unpack[depends] += "dtc-native:do_populate_sysroot"
 do_fitimagebundle[depends] += "libp11-native:do_populate_sysroot"
 DEPENDS = "u-boot-mkimage-native dtc-native"
-FITIMAGE_HASH ??= "sha256"
-FITIMAGE_SIGNATURE_ENCRYPTION ??= "rsa4096"
 FITIMAGE_LOADADDRESS ??= ""
 FITIMAGE_LOADADDRESS:mx8m-nxp-bsp ?= "0x48000000"
 FITIMAGE_LOADADDRESS:mx91-nxp-bsp ?= "0x88000000"
@@ -84,10 +83,6 @@ FITIMAGE_TEE_LOADADDRESS ??= ""
 FITIMAGE_TEE_ENTRYPOINT ??= ""
 FIT_CONF_PREFIX ??= ""
 FIT_CONF_PREFIX:k3 ?= "conf-"
-
-FITIMAGE_SIGN ??= "true"
-FITIMAGE_SIGN[type] = "boolean"
-FITIMAGE_SIGN_KEY_PATH ??= ""
 
 FITIMAGE_SIGN_ENGINE ??= "software"
 
@@ -154,7 +149,7 @@ def fitimage_emit_section_maint(d,fd,var):
 
 def fitimage_emit_section_kernel(d,fd,imgpath,imgsource,imgcomp):
     kernelcount = 1
-    kernel_csum = d.expand("${FITIMAGE_HASH}")
+    kernel_csum = d.expand("${FIT_HASH_ALG}")
     kernel_entryline = ""
     kernel_loadline = ""
     if len(d.expand("${FITIMAGE_LOADADDRESS}")) > 0:
@@ -188,7 +183,7 @@ def fitimage_emit_section_kernel(d,fd,imgpath,imgsource,imgcomp):
 # Emit the fitImage ITS DTB section
 #
 def fitimage_emit_section_dtb(d,fd,dtb_file,dtb_path):
-    dtb_csum = d.expand("${FITIMAGE_HASH}")
+    dtb_csum = d.expand("${FIT_HASH_ALG}")
     arch = d.getVar("TARGET_ARCH")
     arch = "arm64" if arch == "aarch64" else arch
 
@@ -212,7 +207,7 @@ def fitimage_emit_section_dtb(d,fd,dtb_file,dtb_path):
 # Emit the fitImage ITS DTB overlay section
 #
 def fitimage_emit_section_dtb_overlay(d,fd,dtb_file,dtb_path):
-    dtb_csum = d.expand("${FITIMAGE_HASH}")
+    dtb_csum = d.expand("${FIT_HASH_ALG}")
     arch = d.getVar("TARGET_ARCH")
     arch = "arm64" if arch == "aarch64" else arch
 
@@ -238,7 +233,7 @@ def fitimage_emit_section_dtb_overlay(d,fd,dtb_file,dtb_path):
 #
 def fitimage_emit_section_ramdisk(d,fd,img_file,img_path):
     ramdisk_count = "1"
-    ramdisk_csum = d.expand("${FITIMAGE_HASH}")
+    ramdisk_csum = d.expand("${FIT_HASH_ALG}")
     arch = d.getVar("TARGET_ARCH")
     arch = "arm64" if arch == "aarch64" else arch
     ramdisk_loadline = "load = <00000000>;"
@@ -264,7 +259,7 @@ def fitimage_emit_section_ramdisk(d,fd,img_file,img_path):
     fd.write('\t\t'     + '};\n')
 
 def fitimage_emit_section_bootscript(d,fd,imgpath,imgsource):
-    bootscript_csum = d.expand("${FITIMAGE_HASH}")
+    bootscript_csum = d.expand("${FIT_HASH_ALG}")
     arch = d.getVar("TARGET_ARCH")
     arch = "arm64" if arch == "aarch64" else arch
 
@@ -284,7 +279,7 @@ def fitimage_emit_section_bootscript(d,fd,imgpath,imgsource):
 # Emit the fitImage Trusted Execution Section
 #
 def fitimage_emit_section_tee(d,fd,teecount,imgpath,imgsource,imgcomp):
-    tee_csum = d.expand("${FITIMAGE_HASH}")
+    tee_csum = d.expand("${FIT_HASH_ALG}")
     tee_entryline = ""
     tee_loadline = ""
     if len(d.expand("${FITIMAGE_TEE_LOADADDRESS}")) > 0:
@@ -311,10 +306,10 @@ def fitimage_emit_section_tee(d,fd,teecount,imgpath,imgsource,imgcomp):
 # Emit the fitImage ITS configuration section
 #
 def fitimage_emit_section_config(d,fd,dtb,teecount,kernelcount,ramdiskcount,setupcount,bootscriptid,i):
-    conf_csum = d.expand("${FITIMAGE_HASH}")
-    conf_encrypt = d.getVar("FITIMAGE_SIGNATURE_ENCRYPTION") or ""
+    conf_csum = d.expand("${FIT_HASH_ALG}")
+    conf_encrypt = d.getVar("FIT_SIGN_ALG") or ""
 
-    conf_sign_keyname = get_key_name_hint(d.getVar("FITIMAGE_SIGN_KEY_PATH"))
+    conf_sign_keyname = d.getVar("UBOOT_SIGN_KEYNAME")
 
     conf_desc="Linux kernel"
     kernel_line="kernel = \"kernel-1\";"
@@ -369,11 +364,9 @@ def fitimage_emit_section_config(d,fd,dtb,teecount,kernelcount,ramdiskcount,setu
        fd.write('\t\t\t\t' +   'algo = "%s,%s";\n' % (conf_csum, conf_encrypt))
        fd.write('\t\t\t\t' +   'key-name-hint = "%s";\n' % conf_sign_keyname)
        fd.write('\t\t\t\t' +   '%s\n' % sign_line)
-       fd.write('\t\t\t\t' +   'signer-name = "%s";\n' % d.getVar("FITIMAGE_SIGNER"))
-       fd.write('\t\t\t\t' +   'signer-version = "%s";\n' % d.getVar("FITIMAGE_SIGNER_VERSION"))
        fd.write('\t\t\t'   + '};\n')
     else:
-       bb.warn(d.expand("${FITIMAGE_SIGN_KEY_PATH} No Key File for signing FIT Image => FIT Image don't get a signature"))
+       bb.warn(d.expand("${UBOOT_SIGN_KEYNAME} No Key File for signing FIT Image => FIT Image don't get a signature"))
 
     fd.write('\t\t'  + '};\n')
 
@@ -381,10 +374,10 @@ def fitimage_emit_section_config(d,fd,dtb,teecount,kernelcount,ramdiskcount,setu
 # Emits a device tree overlay config section
 #
 def fitimage_emit_section_config_fdto(d,fd,dtb):
-    conf_csum = d.expand("${FITIMAGE_HASH}")
-    conf_encrypt = d.getVar("FITIMAGE_SIGNATURE_ENCRYPTION") or ""
+    conf_csum = d.expand("${FIT_HASH_ALG}")
+    conf_encrypt = d.getVar("FIT_SIGN_ALG") or ""
 
-    conf_sign_keyname = get_key_name_hint(d.getVar("FITIMAGE_SIGN_KEY_PATH"))
+    conf_sign_keyname = d.getVar("UBOOT_SIGN_KEYNAME")
 
 
     conf_desc="Device Tree Overlay"
@@ -402,11 +395,9 @@ def fitimage_emit_section_config_fdto(d,fd,dtb):
        fd.write('\t\t\t\t' +   'algo = "%s,%s";\n' % (conf_csum, conf_encrypt))
        fd.write('\t\t\t\t' +   'key-name-hint = "%s";\n' % conf_sign_keyname)
        fd.write('\t\t\t\t' +   '%s;\n' % sign_line)
-       fd.write('\t\t\t\t' +   'signer-name = "%s";\n' % d.getVar("FITIMAGE_SIGNER"))
-       fd.write('\t\t\t\t' +   'signer-version = "%s";\n' % d.getVar("FITIMAGE_SIGNER_VERSION"))
        fd.write('\t\t\t'   + '};\n')
     else:
-       bb.warn(d.expand("${FITIMAGE_SIGN_KEY_PATH} No Key File for signing FIT Image => FIT Image don't get a signature"))
+       bb.warn(d.expand("${UBOOT_SIGN_KEYNAME} No Key File for signing FIT Image => FIT Image don't get a signature"))
 
     fd.write('\t\t'  + '};\n')
 
@@ -545,18 +536,15 @@ do_unpack:append() {
 
 do_fitimagebundle () {
     is_pkcs11=0
-    echo "${FITIMAGE_SIGN_KEY_PATH}" | grep -q "^pkcs11:" && is_pkcs11=1
-    if [ "${FITIMAGE_SIGN}" = "true" -a "${FITIMAGE_SIGN_ENGINE}" != "nxphab" ] ; then
+    echo "${UBOOT_SIGN_KEYDIR}" | grep -q "^pkcs11:" && is_pkcs11=1
+    if [ "${UBOOT_SIGN_ENABLE}" = "1" -a "${FITIMAGE_SIGN_ENGINE}" != "nxphab" ] ; then
         path_key=""
         engine=""
         if [ $is_pkcs11 -eq 0 ] ; then
-            if [ ! -f "${FITIMAGE_SIGN_KEY_PATH}" ] ; then
-                bberror "Key file ${FITIMAGE_SIGN_KEY_PATH} to sign FIT image was not found"
-            fi
-            path_key=$(dirname "${FITIMAGE_SIGN_KEY_PATH}")
+            path_key="${UBOOT_SIGN_KEYDIR}"
         else
             # mkimage expects the URI without the pkcs11: prefix
-            path_key=$(echo "${FITIMAGE_SIGN_KEY_PATH}" | cut -c 8-)
+            path_key=$(echo "${UBOOT_SIGN_KEYDIR}" | cut -c 8-)
             engine="-N pkcs11"
             setup_pkcs11_env
         fi
@@ -578,7 +566,7 @@ do_fitimagebundle[dirs] = "${B}"
 addtask fitimagebundle after do_configure before do_build
 
 python do_signhab() {
-    if oe.data.typed_value('FITIMAGE_SIGN', d) and d.getVar('FITIMAGE_SIGN_ENGINE') == 'nxphab':
+    if d.getVar('UBOOT_SIGN_ENABLE') == '1' and d.getVar('FITIMAGE_SIGN_ENGINE') == 'nxphab':
         loadaddr = int(d.getVar('UBOOT_ENTRYPOINT'), 16)
         build_dir = d.getVar("B")
         image_path = os.path.join(build_dir, 'fitImage')
