@@ -1,0 +1,29 @@
+From 2a3421fda0fc29b3bf2400587cb27fa35347e129 Mon Sep 17 00:00:00 2001
+From: Dominik Haller <d.haller@phytec.de>
+Date: Thu, 8 May 2025 10:40:40 +0200
+Subject: [PATCH 2/2] fdts: k3-am62l-ddr: Set RAM to 1GB
+
+Upstream-Status: Inappropriate [downstream TI specific]
+Signed-off-by: Dominik Haller <d.haller@phytec.de>
+---
+ fdts/k3-am62l-ddr.dts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/fdts/k3-am62l-ddr.dts b/fdts/k3-am62l-ddr.dts
+index b483e1b4b8cf..596fc1b83932 100644
+--- a/fdts/k3-am62l-ddr.dts
++++ b/fdts/k3-am62l-ddr.dts
+@@ -11,8 +11,8 @@
+ 
+         memory@80000000 {
+                 device_type = "memory";
+-                /* 2G RAM */
+-                reg = <0x00000000 0x80000000 0x00000000 0x80000000>;
++                /* 1G RAM */
++                reg = <0x00000000 0x80000000 0x00000000 0x40000000>;
+         };
+ 
+ 	memorycontroller: memorycontroller@f300000 {
+-- 
+2.43.0
+
