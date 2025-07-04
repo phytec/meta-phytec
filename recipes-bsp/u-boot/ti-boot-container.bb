@@ -4,7 +4,9 @@ LICENSE = "MIT"
 inherit deploy
 
 do_compile[depends] += "virtual/bootloader:do_deploy"
-do_compile[mcdepends] += "mc::k3r5:virtual/bootloader:do_deploy"
+EXTRA_DO_COMPILE_MCDEPENDS:k3 = "mc::k3r5:virtual/bootloader:do_deploy"
+EXTRA_DO_COMPILE_MCDEPENDS:am62lxx = ""
+do_compile[mcdepends] += "${EXTRA_DO_COMPILE_MCDEPENDS}"
 
 do_compile() {
     dd if=${DEPLOY_DIR_IMAGE}/tiboot3.bin of=${B}/ti-boot-container.img count=1024 conv=fsync
