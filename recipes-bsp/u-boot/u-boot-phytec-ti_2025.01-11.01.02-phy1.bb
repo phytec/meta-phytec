@@ -13,6 +13,10 @@ SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
+SRC_URI:append:am62lxx-libra-fpsc-2 = " \
+    file://0001-dts-arm64-am62l-phycore-fpsc-Configure-1GiB-RAM.patch \
+"
+
 PR = "r0"
 SRCREV = "9665efacb477c087a10ed09f4f2c5bb2f63323c4"
 
