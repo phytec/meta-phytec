@@ -18,8 +18,10 @@ PLAT_SFX:am62xx = "am62xx"
 PLAT_SFX:am62axx = "am62axx"
 PLAT_SFX:am62pxx = "am62pxx"
 PLAT_SFX:j722s = "j722s"
+PLAT_SFX:am62lxx = "am62lxx"
 
 PACKAGECONFIG[atf] = "BL31=${STAGING_DIR_HOST}/firmware/bl31.bin,,trusted-firmware-a"
+PACKAGECONFIG[ap-trusted-rom] = "BL1=${STAGING_DIR_HOST}/firmware/bl1.bin,,trusted-firmware-a"
 PACKAGECONFIG[optee] = "TEE=${STAGING_DIR_HOST}${nonarch_base_libdir}/firmware/tee-pager_v2.bin,,optee-os"
 PACKAGECONFIG[dm] = "DM=${STAGING_DIR_HOST}${nonarch_base_libdir}/firmware/ti-dm/${PLAT_SFX}/${DM_FIRMWARE},,ti-dm-fw"
 
@@ -28,6 +30,7 @@ PACKAGECONFIG:append:am62xx = " dm"
 PACKAGECONFIG:append:am62axx = " dm"
 PACKAGECONFIG:append:am62pxx = " dm"
 PACKAGECONFIG:append:j722s = " dm"
+PACKAGECONFIG:append:am62lxx = " ap-trusted-rom"
 
 BINMAN_INDIRS = "${STAGING_DIR_HOST}${nonarch_base_libdir}/firmware"
 
