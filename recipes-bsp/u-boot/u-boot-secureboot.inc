@@ -82,3 +82,9 @@ python do_patch:append:mx8m-nxp-bsp:secureboot () {
 do_configure:append:secureboot () {
     cp "${FITIMAGE_PUBKEY_SIGNATURE_PATH}" "${S}/arch/arm/dts/"
 }
+
+do_uboot_assemble_fitimage:prepend:secureboot () {
+    if echo "${UBOOT_SIGN_KEYDIR}" | grep -q "pkcs11:"; then
+        setup_pkcs11_env
+    fi
+}
