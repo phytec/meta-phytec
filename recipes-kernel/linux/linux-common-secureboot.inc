@@ -1,4 +1,4 @@
-inherit hab
+inherit hab signing-helpers
 
 LINUX_LOAD_ADDR = "${UBOOT_ENTRYPOINT}"
 #true for most mx8*.
@@ -56,3 +56,15 @@ do_deploy:append:secureboot() {
 }
 
 addtask sign after do_compile before do_deploy
+
+do_assemble_fitimage:prepend:secureboot() {
+    if echo "${UBOOT_SIGN_KEYDIR}" | grep -q "pkcs11:"; then
+        setup_pkcs11_env
+    fi
+}
+
+do_assemble_fitimage_initramfs:prepend:secureboot() {
+    if echo "${UBOOT_SIGN_KEYDIR}" | grep -q "pkcs11:"; then
+        setup_pkcs11_env
+    fi
+}
