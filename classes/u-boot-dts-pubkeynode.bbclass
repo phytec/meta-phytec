@@ -103,15 +103,15 @@ python do_create_dynamic_dtree:append:secureboot() {
 
         path = d.getVar("UBOOT_SIGN_KEYDIR")
 
-        engine = ""
-
         if path.startswith("pkcs11:"):
-            engine = "-N pkcs11"
-
+            path = path[7:]
             setup_pkcs11_env(d)
 
-
-        exec_command("mkimage {0} -f {1} -k {2} -K {3} -r {4}".format(engine, workdir + "/signature_creation.its",      path, signature_node_path_dtb, workdir + "/dummy.img"))
+        exec_command(f"mkimage {d.getVar('UBOOT_MKIMAGE_SIGN_ARGS')} \
+            -f {workdir + '/signature_creation.its'} \
+            -k {path} \
+            -K {signature_node_path_dtb} \
+            -r {workdir + '/dummy.img'}")
 
         exec_command("dtc -I dtb {0} -o {1}".format(signature_node_path_dtb,  signature_node_path_tmp))
 
