@@ -12,6 +12,9 @@ SRC_URI:append:secureboot = " \
 SRC_URI:append:mx8m-generic-bsp:secureboot = " \
     file://hab.cfg \
 "
+SRC_URI:append:mx8m-nxp-bsp:secureboot = " \
+    ${@bb.utils.contains('FITIMAGE_SIGN_ENGINE','nxphab','file://disable-fit-signature.cfg', '', d)} \
+"
 SRC_URI:append:mx91-generic-bsp:secureboot = " \
     file://ahab.cfg \
 "
