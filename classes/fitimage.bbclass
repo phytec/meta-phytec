@@ -83,8 +83,11 @@ FITIMAGE_TEE_LOADADDRESS ??= ""
 FITIMAGE_TEE_ENTRYPOINT ??= ""
 FIT_CONF_PREFIX ??= ""
 FIT_CONF_PREFIX:k3 ?= "conf-"
+FIT_CONF_PREFIX:mx8m-nxp-bsp ?= "conf-"
 
 FITIMAGE_SIGN_ENGINE ??= "software"
+FITIMAGE_UBOOT_ENTRYPOINT ??= "UBOOT_ENTRYPOINT"
+FITIMAGE_UBOOT_ENTRYPOINT:mx8m-nxp-bsp ??= "0x40480000"
 
 FITIMAGE_NO_DTB_OVERLAYS ??= "false"
 FITIMAGE_NO_DTB_OVERLAYS[type] = "boolean"
@@ -567,7 +570,7 @@ addtask fitimagebundle after do_configure before do_build
 
 python do_signhab() {
     if d.getVar('UBOOT_SIGN_ENABLE') == '1' and d.getVar('FITIMAGE_SIGN_ENGINE') == 'nxphab':
-        loadaddr = int(d.getVar('UBOOT_ENTRYPOINT'), 16)
+        loadaddr = int(d.getVar('FITIMAGE_UBOOT_ENTRYPOINT'), 16)
         build_dir = d.getVar("B")
         image_path = os.path.join(build_dir, 'fitImage')
         image_size = os.stat(image_path).st_size
