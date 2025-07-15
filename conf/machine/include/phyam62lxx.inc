@@ -4,7 +4,6 @@ SOC_FAMILY:append = ":am62lxx"
 
 TFA_BOARD = "am62l"
 OPTEEMACHINE = "k3-am62lx"
-SPL_SYMLINK = "tiboot3.bin"
 
 MACHINE_FEATURES += "screen touchscreen"
 
