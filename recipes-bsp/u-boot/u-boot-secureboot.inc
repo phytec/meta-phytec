@@ -50,6 +50,7 @@ set_image_to_fitimage () {
 
 set_fitimage_key() {
     kconfig_set DEVICE_TREE_INCLUDES '"signature_node.dtsi"'
+    cp "${FITIMAGE_PUBKEY_SIGNATURE_PATH}" "${S}/arch/arm/dts/"
 }
 
 set_tikey_symlinks() {
@@ -65,7 +66,9 @@ set_dolegacyboot_1 () {
 python do_patch:append:secureboot () {
     bb.build.exec_func("set_dofitboot_1", d)
     bb.build.exec_func("set_image_to_fitimage", d)
-    bb.build.exec_func("set_fitimage_key", d)
+
+    if d.getVar("UBOOT_SIGN_ENABLE") == "1" and d.getVar('FITIMAGE_SIGN_ENGINE') != 'nxphab':
+        bb.build.exec_func("set_fitimage_key", d)
 }
 
 python do_unpack:append:secureenforced () {
@@ -77,10 +80,6 @@ do_patch[depends] += "${@bb.utils.contains("MACHINEOVERRIDES", "secureenforced",
 
 python do_patch:append:mx8m-nxp-bsp:secureboot () {
     bb.build.exec_func("set_dolegacyboot_1", d)
-}
-
-do_configure:append:secureboot () {
-    cp "${FITIMAGE_PUBKEY_SIGNATURE_PATH}" "${S}/arch/arm/dts/"
 }
 
 do_uboot_assemble_fitimage:prepend:secureboot () {
