@@ -4,7 +4,6 @@
 LICENSE = "MIT"
 
 inherit signing-helpers
-DEPENDS:append:secureboot = " u-boot-mkimage-native dtc-native libp11-native"
 
 FITIMAGE_SIGN_ENGINE ??= "software"
 FITIMAGE_PUBKEY_SIGNATURE_PATH ??= "${WORKDIR}/signature_node.dtsi"
@@ -128,5 +127,6 @@ python do_create_dynamic_dtree:append:secureboot() {
 do_create_dynamic_dtree[depends] += "\
     dtc-native:do_populate_sysroot \
     u-boot-mkimage-native:do_populate_sysroot \
+    libp11-native:do_populate_sysroot \
 "
-addtask do_create_dynamic_dtree before do_configure after do_patch
+addtask do_create_dynamic_dtree before do_patch
