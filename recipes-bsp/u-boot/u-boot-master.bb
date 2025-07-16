@@ -17,30 +17,9 @@ PR = "r0"
 SRCREV = "${AUTOREV}"
 BRANCH = "master"
 
-FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
-SRC_URI:append = " \
-    file://boot.cmd \
-    file://boot.its \
-    "
-
 DEFAULT_PREFERENCE = "-1"
 
 PROVIDES += "u-boot"
-
-UBOOT_ENV_FIT_SRC = "boot.its"
-UBOOT_ENV_FIT_BINARY = "boot.scr.uimg"
-
-# Use FIT image boot script
-do_compile:append() {
-    if [ -n "${UBOOT_ENV_FIT_SRC}" ]
-    then
-        ${UBOOT_MKIMAGE} -C none -A ${UBOOT_ARCH} -f ${UNPACKDIR}/${UBOOT_ENV_FIT_SRC} ${WORKDIR}/${UBOOT_ENV_FIT_BINARY}
-    fi
-}
-
-do_deploy:append() {
-    install -m 644 ${WORKDIR}/${UBOOT_ENV_FIT_BINARY} ${DEPLOYDIR}/${UBOOT_ENV_FIT_BINARY}
-}
 
 COMPATIBLE_MACHINE  = "^("
 COMPATIBLE_MACHINE .=  "phyboard-polis-imx8mm-5"
