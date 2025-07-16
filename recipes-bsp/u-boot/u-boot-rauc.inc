@@ -17,6 +17,5 @@ python do_patch:append:update () {
 
 python do_patch:append:mx8m-nxp-bsp:update () {
     bb.build.exec_func('set_dofitboot_1', d)
-    bb.build.exec_func('set_dolegacyboot_1', d)
     bb.build.exec_func('set_image_to_fitimage', d)
 }
