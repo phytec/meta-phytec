@@ -21,3 +21,9 @@ SRCREV:class-devupstream = "73713d8fb455ac067799fc1f9bbee0343b9143a4"
 STM32MP_SOURCE_SELECTION ?= "tarball"
 
 DEFAULT_PREFERENCE = "${@bb.utils.contains('STM32MP_SOURCE_SELECTION', 'git.phytec', '-1', '1', d)}"
+
+# Redefine 'set_doraucboot_1' to match the correct stm32mp u-boot RAUC config file
+set_doraucboot_1 () {
+    bbnote "Setting \"doraucboot\" to \"1\""
+    sed_safely "s/\(setenv doraucboot \)[01]/\11/" include/configs/phycore_*.h
+}
