@@ -41,6 +41,7 @@ BOOTLOADER_SEEK_EMMC:mx8mp-generic-bsp ?= "0"
 UBOOT_ARCH = "arm64"
 UBOOT_ENTRYPOINT:mx8m-generic-bsp = "0x5A080000"
 UBOOT_BINARY = "flash.bin"
+UBOOT_SYMLINK = "u-boot-${MACHINE}.bin"
 
 # Device information used by RAUC and some of its dependencies
 EMMC_DEV:mx8mq-generic-bsp ?= "0"
