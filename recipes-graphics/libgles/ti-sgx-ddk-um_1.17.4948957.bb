@@ -27,6 +27,7 @@ RDEPENDS:${PN} += "libdrm"
 
 RRECOMMENDS:${PN} += "ti-sgx-ddk-km"
 
+S = "${WORKDIR}/git"
 
 do_install () {
     oe_runmake install DESTDIR=${D} TARGET_PRODUCT=${TARGET_PRODUCT} SYSTEMD=true

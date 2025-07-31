@@ -10,6 +10,7 @@ PR = "r0"
 SRC_URI = "git://git.ti.com/git/processor-firmware/ti-linux-firmware.git;protocol=https;branch=ti-linux-firmware"
 SRCREV = "33bec0e2ea9a25362c0c8243b2f1ed392dbc5b02"
 
+S = "${WORKDIR}/git"
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 CLEANBROKEN = "1"

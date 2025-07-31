@@ -26,6 +26,7 @@ SRC_URI:append = " \
 # NOTE: Keep version in filename in sync with commit id!
 SRCREV = "c99c63789ff6e40d9e6f1187a64c46085feb1afe"
 
+S = "${WORKDIR}/git"
 
 INTREE_DEFCONFIG = "imx_v6_v7_defconfig imx6_phytec_distro.config imx6_phytec_machine.config imx6_phytec_platform.config"
 

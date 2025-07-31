@@ -22,6 +22,7 @@ SRCREV_machine = "${SRCREV}"
 SRCREV_meta ?= "5b185a8716c8c62dc1c7751e6d12f8b67f58274f"
 
 PR = "${INC_PR}.0"
+S = "${WORKDIR}/git"
 
 KMETA = "kernel-meta"
 ARCH:aarch64 = "arm64"

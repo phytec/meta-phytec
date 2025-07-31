@@ -13,6 +13,7 @@ SRC_URI = "git://github.com/NXPmicro/imx-kobs.git;protocol=https;branch=master \
            file://0001-mtd-write-boot-streams-separately.patch \
 "
 SRCREV = "228dbb9b1a202892d884bd01985dd3522ad49d59"
+S = "${WORKDIR}/git"
 
 inherit autotools pkgconfig
 

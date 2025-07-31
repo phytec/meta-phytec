@@ -12,6 +12,7 @@ BRANCH:use-nxp-bsp = "6.6.52-2.2.0-phy"
 SRCREV = "${AUTOREV}"
 SRCREV:use-nxp-bsp = "5e39ce5d178219871cb48de9bf84cd22459279e0"
 
+S = "${WORKDIR}/git"
 
 # Set generic compiler for system manager core
 INHIBIT_DEFAULT_DEPS = "1"

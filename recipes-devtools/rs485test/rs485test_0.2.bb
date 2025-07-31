@@ -9,7 +9,8 @@ SRC_URI = " \
     file://LICENSE \
 "
 
-S = "${UNPACKDIR}"
+S = "${WORKDIR}/sources"
+UNPACKDIR = "${S}"
 
 do_compile() {
     ${CC} ${CFLAGS} rs485test.c -o rs485test ${LDFLAGS}

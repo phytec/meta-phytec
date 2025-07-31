@@ -24,6 +24,7 @@ SRC_URI:append = " \
 
 SRCREV = "${AUTOREV}"
 
+S = "${WORKDIR}/git"
 
 KBUILD_DEFCONFIG:ti33x = "am335x_phytec_defconfig"
 KCONFIG_MODE = "alldefconfig"

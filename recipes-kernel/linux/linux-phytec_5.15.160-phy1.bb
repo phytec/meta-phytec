@@ -23,6 +23,7 @@ SRC_URI:append = " \
 # NOTE: Keep version in filename in sync with commit id!
 SRCREV = "bd3d95ea50372b31bae094f8eea5432281f358c8"
 
+S = "${WORKDIR}/git"
 
 KBUILD_DEFCONFIG ?= "am335x_phytec_defconfig"
 KCONFIG_MODE = "alldefconfig"

@@ -13,6 +13,7 @@ include barebox-boot-scripts.inc
 GIT_URL = "git://git.phytec.de/barebox"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
+S = "${WORKDIR}/git"
 
 PR = "${INC_PR}.0"
 

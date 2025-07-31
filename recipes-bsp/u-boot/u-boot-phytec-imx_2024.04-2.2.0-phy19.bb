@@ -20,6 +20,7 @@ SRC_URI = "${GIT_URL};branch=${BRANCH}"
 PR = "r0"
 SRCREV = "fd2c0dd92e9092badba5907dd391bab00ef4eb4d"
 
+S = "${WORKDIR}/git"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 

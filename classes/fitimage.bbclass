@@ -124,7 +124,8 @@ python __anonymous() {
             d.appendVarFlag('do_unpack', 'depends', ' ' + image + ':do_deploy')
 }
 
-S = "${UNPACKDIR}"
+S = "${WORKDIR}/sources"
+UNPACKDIR = "${S}"
 B = "${WORKDIR}/build"
 
 #

@@ -6,7 +6,7 @@ to where the script is currently located."
 HOMEPAGE = "https://github.com/phytec/phytec-eeprom-flashtool"
 SECTION = "devel"
 
-S = "${UNPACKDIR}/${BPN}-${PV}"
+S = "${WORKDIR}/${BPN}-${PV}"
 
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://COPYING.MIT;md5=1117940313875d7598ccbb05f20129a7"
@@ -21,6 +21,7 @@ SRC_URI = " \
 
 SRCREV = "6e582ed3316d6492656ab9931c1f07c37c4a6937"
 
+S = "${WORKDIR}/git"
 
 do_install () {
         install -d ${D}${bindir}/${BPN}

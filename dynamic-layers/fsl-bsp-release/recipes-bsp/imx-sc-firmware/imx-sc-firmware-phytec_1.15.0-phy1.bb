@@ -21,7 +21,7 @@ SRC_URI = "https://download.phytec.de/Software/Linux/Driver/imx-sc-firmware_${PV
 SRC_URI[md5sum] = "a6cd313850b39d0684d1941bf626662d"
 SRC_URI[sha256sum] = "1c63e976576babfd9fb109b9362fdac98831d2aa2a44d5877eff9a95563b6d13"
 
-S = "${UNPACKDIR}/imx-sc-firmware_${PV}"
+S = "${WORKDIR}/imx-sc-firmware_${PV}"
 BOARD_TYPE ?= "${MACHINE}"
 SC_FIRMWARE_NAME ?= "INVALID"
 SC_FIRMWARE_NAME:mx8qxp-nxp-bsp = "mx8qx-${BOARD_TYPE}-scfw-tcm.bin"

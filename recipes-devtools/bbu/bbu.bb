@@ -10,7 +10,8 @@ SRC_URI = "file://bbu.sh"
 SRC_URI:append:mx6-generic-bsp = " file://bbu_emmc.sh"
 SRC_URI:append:mx6ul-generic-bsp = " file://bbu_emmc.sh"
 
-S = "${UNPACKDIR}"
+S = "${WORKDIR}/sources"
+UNPACKDIR = "${S}"
 
 # Depends on tools like hexdump, tr, grep, awk which are part of our
 # busybox configuration
