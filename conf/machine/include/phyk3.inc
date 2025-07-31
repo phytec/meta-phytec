@@ -46,7 +46,7 @@ MACHINE_FEATURES = "apm usbgadget usbhost vfat ext2 alsa rtc optee efi"
 RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base = ""
 
 KERNEL_IMAGETYPE ?= "Image"
-KERNEL_IMAGETYPES ?= "Image"
+KERNEL_IMAGETYPES ?= "Image fitImage"
 
 KERNEL_MODULE_AUTOLOAD += "cryptodev"
 

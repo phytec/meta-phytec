@@ -37,6 +37,9 @@ UBOOT_DTB_LOADADDRESS = "0x8A380000"
 UBOOT_DTBO_LOADADDRESS = "0x8A440000"
 UBOOT_PROVIDES_BOOT_CONTAINER:use-mainline-bsp = "1"
 
+KERNEL_CLASSES += "kernel-fitimage"
+KERNEL_IMAGETYPES += "fitImage"
+
 # TFA
 IMX_DEFAULT_ATF_PROVIDER:use-mainline-bsp ?= "trusted-firmware-a"
 TFA_BUILD_TARGET = "bl31"

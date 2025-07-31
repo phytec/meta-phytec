@@ -15,6 +15,10 @@ OPTEEFLAVOR = "am57xx"
 OPTEEOUTPUTMACHINE = "ti"
 OPTEEPAGER = "y"
 
+# FIT image for legacy HS devices
+KERNEL_CLASSES += " kernel-fitimage-legacyhs"
+KERNEL_IMAGETYPES += " fitImage"
+
 # FIT image settings
 FITIMAGE_HASH_ALGO = ""
 FITIMAGE_PACK_TEE = "0"
