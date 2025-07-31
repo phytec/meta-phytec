@@ -12,14 +12,17 @@ mmc:
         output-offset: 0kiB
         input:
           filename: tiboot3.bin
+          sha256sum: ${@partup_sha256sum('tiboot3.bin', d)}
       - input-offset: 0kiB
         output-offset: 512kiB
         input:
           filename: tispl.bin
+          sha256sum: ${@partup_sha256sum('tispl.bin', d)}
       - input-offset: 0kiB
         output-offset: 2560kiB
         input:
           filename: u-boot.img
+          sha256sum: ${@partup_sha256sum('u-boot.img', d)}
 
 # BEGIN_CLEAN
 clean:
