@@ -1,4 +1,4 @@
-From 449a713c115d2dc18063aad18bda5c1acfb68afb Mon Sep 17 00:00:00 2001
+From 8aece7310ac28a78790af6e0287dd8e9ce4f096e Mon Sep 17 00:00:00 2001
 From: Benjamin Hahn <B.Hahn@phytec.de>
 Date: Thu, 27 Feb 2025 14:53:27 +0100
 Subject: [PATCH] plat: imx95: Make UART BASE ADDR configurable
@@ -9,15 +9,16 @@ variable.
 Upstream-Status: Denied [NXP does not take contributions]
 
 Signed-off-by: Benjamin Hahn <B.Hahn@phytec.de>
+Signed-off-by: Yannic Moog <y.moog@phytec.de>
 ---
- plat/imx/imx95/include/platform_def.h |  6 ------
- plat/imx/imx95/platform.mk            | 11 +++++++++++
+ plat/imx/imx9/imx95/include/platform_def.h |  6 ------
+ plat/imx/imx9/imx95/platform.mk            | 11 +++++++++++
  2 files changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/plat/imx/imx95/include/platform_def.h b/plat/imx/imx95/include/platform_def.h
-index d2eff001f548..bd3943336568 100644
---- a/plat/imx/imx95/include/platform_def.h
-+++ b/plat/imx/imx95/include/platform_def.h
+diff --git a/plat/imx/imx9/imx95/include/platform_def.h b/plat/imx/imx9/imx95/include/platform_def.h
+index e156b63c7..b643d0e5c 100644
+--- a/plat/imx/imx9/imx95/include/platform_def.h
++++ b/plat/imx/imx9/imx95/include/platform_def.h
 @@ -52,12 +52,6 @@
  #define MAX_MMAP_REGIONS		32
  #endif
@@ -31,25 +32,25 @@ index d2eff001f548..bd3943336568 100644
  #define IMX_BOOT_UART_CLK_IN_HZ		24000000 /* Select 24MHz oscillator */
  #define IMX_CONSOLE_BAUDRATE		115200
  
-diff --git a/plat/imx/imx95/platform.mk b/plat/imx/imx95/platform.mk
-index e3de10a6e2d0..12dce7d60637 100644
---- a/plat/imx/imx95/platform.mk
-+++ b/plat/imx/imx95/platform.mk
-@@ -63,3 +63,14 @@ BL32_BASE               ?=      0x8C000000
+diff --git a/plat/imx/imx9/imx95/platform.mk b/plat/imx/imx9/imx95/platform.mk
+index 08340fa75..af056415a 100644
+--- a/plat/imx/imx9/imx95/platform.mk
++++ b/plat/imx/imx9/imx95/platform.mk
+@@ -64,3 +64,14 @@ BL32_BASE               ?=      0x8C000000
  BL32_SIZE               ?=      0x02000000
  $(eval $(call add_define,BL32_BASE))
  $(eval $(call add_define,BL32_SIZE))
 +
 +ifdef IMX_EMU
-+IMX_LPUART_BASE		?=	0x42570000
++	IMX_LPUART_BASE                ?=      0x42570000
 +else
-+IMX_LPUART_BASE		?=	0x44380000
++	IMX_LPUART_BASE                ?=      0x44380000
 +endif
 +
 +ifdef IMX_BOOT_UART_BASE
-+IMX_LPUART_BASE		:=	${IMX_BOOT_UART_BASE}
++	IMX_LPUART_BASE                :=      ${IMX_BOOT_UART_BASE}
 +endif
 +$(eval $(call add_define,IMX_LPUART_BASE))
 -- 
-2.34.1
+2.43.0
 
