@@ -15,6 +15,23 @@ PSEUDO_IGNORE_PATHS .= ",${WORKDIR}/build-partup"
 PARTUP_SECTIONS ??= ""
 PARTUP_ARRAYS ??= ""
 
+def partup_sha256sum(filename, d):
+    import hashlib
+
+    filepath = os.path.join(d.getVar('PARTUP_BUILD_DIR'), filename)
+    h = hashlib.sha256()
+    buf = bytearray(128 * 1024)
+    view = memoryview(buf)
+
+    with open(filepath, 'rb', buffering=0) as f:
+        while True:
+            size = f.readinto(buf)
+            if size == 0:
+                break
+            h.update(view[:size])
+
+    return h.hexdigest()
+
 python do_copy_source_files() {
     import shutil
 
