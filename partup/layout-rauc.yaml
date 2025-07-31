@@ -9,12 +9,14 @@ mmc:
         output-offset: ${BOOTLOADER_SEEK_EMMC}kiB
         input:
           filename: ${BOOTLOADER_FILE}
+          sha256sum: ${@partup_sha256sum(d.getVar('BOOTLOADER_FILE'), d)}
 
 raw:
   - input-offset: ${BOOTLOADER_SKIP}kiB
     output-offset: ${BOOTLOADER_SEEK}kiB
     input:
       filename: ${BOOTLOADER_FILE}
+      sha256sum: ${@partup_sha256sum(d.getVar('BOOTLOADER_FILE'), d)}
 
 # BEGIN_CLEAN
 clean:
