@@ -10,6 +10,7 @@ raw:
     output-offset: ${BOOTLOADER_SEEK}kiB
     input:
       filename: ${BOOTLOADER_FILE}
+      sha256sum: ${@partup_sha256sum(d.getVar('BOOTLOADER_FILE'), d)}
 
 # BEGIN_CLEAN
 clean:
