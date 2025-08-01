@@ -2,9 +2,9 @@ require phytec-machine-common.inc
 
 # Common settings for PHYTEC's i.MX8 boards
 
-PREFERRED_PROVIDER_virtual/bootloader ?= "u-boot-master"
+PREFERRED_PROVIDER_virtual/bootloader ?= "u-boot-phytec"
 PREFERRED_PROVIDER_virtual/bootloader:mx8-nxp-bsp ?= "u-boot-phytec-imx"
-PREFERRED_PROVIDER_virtual/kernel ?= "linux-yocto-dev"
+PREFERRED_PROVIDER_virtual/kernel ?= "linux-phytec"
 PREFERRED_PROVIDER_virtual/kernel:mx8-nxp-bsp ?= "linux-phytec-imx"
 PREFERRED_PROVIDER_imx-boot = "imx-boot-phytec"
 PREFERRED_PROVIDER_opencl-headers:imxgpu = "imx-gpu-viv"
