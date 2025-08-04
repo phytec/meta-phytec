@@ -15,6 +15,7 @@ SRC_URI = " \
     file://mtd-partitioned-master.scc \
     file://0001-tty-vt-conmakehash-Don-t-mention-the-full-path-of-th.patch \
     file://0001-video-logo-Drop-full-path-of-the-input-filename-in-g.patch \
+    file://0001-lib-build_OID_registry-don-t-mention-the-full-path-o.patch \
 "
 
 SRCREV = "83799a53ea51213958009d2a76d1d150b7bb3fa0"
