@@ -1,5 +1,12 @@
 inherit kernel-deploy-oftree
 
+FILESEXTRAPATHS:prepend := "${THISDIR}/linux-yocto-dev:"
+SRC_URI:append = " \
+  file://audit-disable.scc \
+"
+
+KERNEL_FEATURES += "audit-disable.scc"
+
 COMPATIBLE_MACHINE  = "^("
 COMPATIBLE_MACHINE .=  "phyboard-polis-imx8mm-5"
 COMPATIBLE_MACHINE .= "|phyboard-pollux-imx8mp-3"

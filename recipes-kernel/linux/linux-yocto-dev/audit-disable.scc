@@ -1,0 +1,4 @@
+define KFEATURE_DESCRIPTION "Disable kernel auditing
+define KFEATURE_COMPATIBILITY all
+
+kconf non-hardware deselect-audit.cfg
