@@ -16,13 +16,6 @@ SRC_URI = " \
 	${@bb.utils.contains('DISTRO_FEATURES', 'preempt-rt', 'file://preempt-rt.scc', '', d)} \
 "
 
-# Apply rt patch in case of preempt-rt
-RT_PATCH = "${KERNELORG_MIRROR}/linux/kernel/projects/rt/6.12/older/patch-6.12.8-rt8.patch.xz;name=rt-patch"
-SRC_URI:append = " \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'preempt-rt', "${RT_PATCH}", '', d)} \
-"
-SRC_URI[rt-patch.sha256sum] = "e54f4d6571c1f7cf0c16023b38e3218714ba5d4fb8d5560f392bef7e79be1484"
-
 KERNEL_FEATURES = " \
     systemd.scc \
     mtd-partitioned-master.scc \
