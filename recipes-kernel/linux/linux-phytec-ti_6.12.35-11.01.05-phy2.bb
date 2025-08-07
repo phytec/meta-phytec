@@ -15,13 +15,6 @@ SRC_URI = " \
 	${@bb.utils.contains('DISTRO_FEATURES', 'preempt-rt', 'file://preempt-rt.scc', '', d)} \
 "
 
-# Apply rt patch in case of preempt-rt
-RT_PATCH = "${KERNELORG_MIRROR}/linux/kernel/projects/rt/6.12/older/patch-6.12.16-rt9.patch.xz;name=rt-patch"
-SRC_URI:append:preempt-rt = " ${RT_PATCH}"
-SRC_URI[rt-patch.sha256sum] = "d78490bb1aea4d36d263d104839556b30a85113cb30aeb74c61c1331d104dac1"
-LINUX_KERNEL_TYPE:preempt-rt = "preempt-rt"
-LINUX_VERSION:preempt-rt = "6.12.16-rt9"
-
 KERNEL_FEATURES = " \
     systemd.scc \
     ${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'lxc.scc oci.scc', '', d)} \
