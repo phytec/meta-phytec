@@ -13,14 +13,12 @@ DEPENDS += "flex-native bison-native bc-native dtc-native gnutls-native python3-
 
 LICENSE = "GPL-2.0-or-later"
 LIC_FILES_CHKSUM = "file://Licenses/gpl-2.0.txt;md5=b234ee4d69f5fce4486a80fdaf4a4263"
-BRANCH = "v2024.04-2.2.0-phy"
+BRANCH = "v2025.04-2.0.0-phy"
 GIT_URL = "git://github.com/phytec/${BPN};protocol=https"
-SRC_URI = "${GIT_URL};branch=${BRANCH} \
-    file://0001-scripts-dtc-pylibfdt-libfdt.i_shipped-Use-SWIG_Appen.patch \
-"
+SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
 PR = "r0"
-SRCREV = "6e91b424a9ad03a4ee7de43a24ec7f3de3f79a90"
+SRCREV = "66695b64025f1a8e7cbbbfbcd4c5bc25b6d2d4eb"
 
 S = "${WORKDIR}/git"
 
@@ -39,7 +37,7 @@ do_deploy:append:mx8m-generic-bsp() {
                 if [ $j -eq $i ]
                 then
                     install -d ${DEPLOYDIR}/imx-boot-tools
-                    install -m 0777 ${B}/${config}/arch/arm/dts/${UBOOT_DTB_NAME} ${DEPLOYDIR}/imx-boot-tools
+                    install -m 0777 ${B}/${config}/dts/upstream/src/arm64/freescale/${UBOOT_DTB_NAME} ${DEPLOYDIR}/imx-boot-tools
                     install -m 0777 ${B}/${config}/u-boot-nodtb.bin  ${DEPLOYDIR}/${BOOT_TOOLS}/u-boot-nodtb.bin-${MACHINE}-${type}
                 fi
             done
@@ -52,18 +50,8 @@ do_deploy:append:mx8m-generic-bsp() {
     install -m 0644 ${S}/CRT.*     ${DEPLOYDIR}
 }
 
-do_deploy:append:mx93-generic-bsp() {
-    # Deploy CRT.* from u-boot for stmm
-    install -m 0644 ${S}/CRT.*     ${DEPLOYDIR}
-}
-
 COMPATIBLE_MACHINE = "^("
-COMPATIBLE_MACHINE .= "phyboard-polis-imx8mm-5"
-COMPATIBLE_MACHINE .= "|phygate-tauri-l-imx8mm-2"
-COMPATIBLE_MACHINE .= "|phycore-imx8x-1"
-COMPATIBLE_MACHINE .= "|phyboard-segin-imx91-1"
-COMPATIBLE_MACHINE .= "|phyboard-segin-imx93-2"
-COMPATIBLE_MACHINE .= "|phyboard-nash-imx93-1"
-COMPATIBLE_MACHINE .= "|imx8mp-libra-fpsc-1"
-COMPATIBLE_MACHINE .= "|imx95-libra-fpsc-1"
+COMPATIBLE_MACHINE .= "phyboard-pollux-imx8mp-3"
 COMPATIBLE_MACHINE .= ")$"
+
+UBOOT_NAME:mx8-nxp-bsp = "u-boot-${MACHINE}.bin-${UBOOT_CONFIG}"
