@@ -45,6 +45,13 @@ KCONFIG_CONFIG_COMMAND:pn-busybox = "menuconfig"
 # SDK will be build for that cpu
 #SDKMACHINE ?= "x86_64"
 
+# Log information on images and packages
+#INHERIT += "buildhistory"
+#INHERIT += "buildstats"
+
+#run QA tests on recipes
+#INHERIT += "recipe_sanity"
+
 # bitbake disk monitor setup
 BB_DISKMON_DIRS ??= "\
     STOPTASKS,${TMPDIR},1G,100K \
