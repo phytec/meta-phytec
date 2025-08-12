@@ -15,6 +15,7 @@ UNPACKDIR = "${S}"
 BOOTENV_OVERLAYS_APPEND ?= ""
 
 BOOTENV_FILE ?= "bootenv.txt"
+BOOTENV_FILE:am62lx-libra = "overlays.txt"
 
 inherit deploy
 do_deploy() {
