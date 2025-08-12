@@ -1,1 +1,1 @@
-# Default empty external u-boot evironment
+# Default empty external u-boot environment
