@@ -2,7 +2,7 @@ require conf/machine/include/phyk3.inc
 require conf/machine/include/mc_k3r5.inc
 require conf/machine/include/mesa-pvr.inc
 
-SOC_FAMILY:append = ":j722s"
+SOC_FAMILY:append = ":j722s:am67xx"
 
 TFA_BOARD = "lite"
 OPTEEMACHINE = "k3-am62x"
