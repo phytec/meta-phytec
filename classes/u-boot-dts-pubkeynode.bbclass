@@ -127,6 +127,6 @@ python do_create_dynamic_dtree:append:secureboot() {
 do_create_dynamic_dtree[depends] += "\
     dtc-native:do_populate_sysroot \
     u-boot-mkimage-native:do_populate_sysroot \
-    libp11-native:do_populate_sysroot \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'secureboot', 'libp11-native:do_populate_sysroot', '', d)} \
 "
 addtask do_create_dynamic_dtree before do_patch
