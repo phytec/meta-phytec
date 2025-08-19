@@ -4,7 +4,7 @@
 
 part U-BOOT --source rawcopy --sourceparams="file=imx-boot" --ondisk mmc --no-table --offset ${BOOTLOADER_SEEK}
 
-part /boot --source bootimg-partition --fstype=vfat --label boot --ondisk mmc --use-uuid --active --align 4096 --size ${WKS_BOOTIMAGESIZE}
+part /boot --source bootimg_partition --fstype=vfat --label boot --ondisk mmc --use-uuid --active --align 4096 --size ${WKS_BOOTIMAGESIZE}
 part / --source rootfs --fstype=ext4 --label root --ondisk mmc --align 1024 --use-uuid
 
 bootloader --timeout=0

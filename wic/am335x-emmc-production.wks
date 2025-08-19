@@ -3,6 +3,6 @@
 # and kernel images for Phytec AM335x BSPs boards. They are meant to update the vfat
 # partition of a sdcard or emmc.
 
-part --source bootimg-partition --fstype=vfat --label boot --ondisk mmc --active --align 4096 --size ${WKS_BOOTIMAGESIZE}
+part --source bootimg_partition --fstype=vfat --label boot --ondisk mmc --active --align 4096 --size ${WKS_BOOTIMAGESIZE}
 
 bootloader --timeout=0

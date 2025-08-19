@@ -2,7 +2,7 @@
 # long-description: Creates a partitioned disk image for Phytec AM335x BSPs
 # boards that the user can directly dd to an SD card and boot.
 
-part --source bootimg-partition --fstype=vfat --label boot --mkfs-extraopts "-g 255/63 -a" --ondisk mmc --active --align 4096 --size ${WKS_BOOTIMAGESIZE}
+part --source bootimg_partition --fstype=vfat --label boot --mkfs-extraopts "-g 255/63 -a" --ondisk mmc --active --align 4096 --size ${WKS_BOOTIMAGESIZE}
 part / --source rootfs --fstype=ext4 --label root --ondisk mmc --align 1024 --use-uuid
 
 bootloader --timeout=0

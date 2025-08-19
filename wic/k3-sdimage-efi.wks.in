@@ -3,5 +3,5 @@
 # supports EFI.  Boot files are located in the first vfat partition with extra
 # reserved space.  We cannot use a GPT here.
 bootloader --timeout=3 --append="rootfstype=ext4"
-part /boot --source bootimg-efi --sourceparams="loader=${EFI_PROVIDER}" --fstype=vfat --label boot --active --align 1024 --offset 8192 --use-uuid --fixed-size 128M
+part /boot --source bootimg_efi --sourceparams="loader=${EFI_PROVIDER}" --fstype=vfat --label boot --active --align 1024 --offset 8192 --use-uuid --fixed-size 128M
 part / --source rootfs --fstype=ext4 --label root --align 1024 --use-uuid --exclude-path=boot
