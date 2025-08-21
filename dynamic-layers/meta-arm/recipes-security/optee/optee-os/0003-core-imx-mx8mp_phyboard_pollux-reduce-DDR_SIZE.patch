@@ -1,0 +1,34 @@
+From c97ab2eaabb8615d41d58d11610de415250fc1f7 Mon Sep 17 00:00:00 2001
+From: Yannic Moog <y.moog@phytec.de>
+Date: Wed, 23 Jul 2025 08:03:33 +0200
+Subject: [PATCH 3/3] core: imx: mx8mp_phyboard_pollux: reduce DDR_SIZE
+
+Set pollux CFG_DDR_SIZE to 1GiB to let the conf.mk automatically set the
+TZDRAM_START (to a valid address for 1GiB variants).
+
+Upstream-Status: Backport [4.8.0]
+
+Acked-by: Sahil Malhotra <sahil.malhotra@nxp.com>
+Acked-by: Jens Wiklander <jens.wiklander@linaro.org>
+Reviewed-by: Benjamin Hahn <B.Hahn@phytec.de>
+Signed-off-by: Yannic Moog <y.moog@phytec.de>
+---
+ core/arch/arm/plat-imx/conf.mk | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/core/arch/arm/plat-imx/conf.mk b/core/arch/arm/plat-imx/conf.mk
+index 4a13cab05..455da8288 100644
+--- a/core/arch/arm/plat-imx/conf.mk
++++ b/core/arch/arm/plat-imx/conf.mk
+@@ -441,7 +441,7 @@ $(call force,CFG_CORE_ARM64_PA_BITS,36)
+ endif
+
+ ifneq (,$(filter $(PLATFORM_FLAVOR),mx8mp_phyboard_pollux))
+-CFG_DDR_SIZE ?= 0x80000000
++CFG_DDR_SIZE ?= 0x40000000
+ CFG_UART_BASE ?= UART1_BASE
+ $(call force,CFG_CORE_LARGE_PHYS_ADDR,y)
+ $(call force,CFG_CORE_ARM64_PA_BITS,36)
+--
+2.43.0
+

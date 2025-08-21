@@ -1,5 +1,12 @@
 # optee-os overrides for PHYTEC NXP SoMs
 
+FILESEXTRAPATHS:prepend := "${THISDIR}/optee-os:"
+SRC_URI += " \
+    file://0001-plat-imx-add-phytec-imx8mm-based-boards.patch \
+    file://0002-core-imx-add-imx8mp-libra-fpsc.patch \
+    file://0003-core-imx-mx8mp_phyboard_pollux-reduce-DDR_SIZE.patch \
+"
+
 OPTEE_PKCS11_TA_HEAP_SIZE ??= "32768"
 OPTEE_IN_TREE_EARLY_TAS ??= "pkcs11/fd02c9da-306c-48c7-a49c-bbd827ae86ee trusted_keys/f04a0fe7-1f5d-4b9b-abf7-619b85b4ce8c"
 
