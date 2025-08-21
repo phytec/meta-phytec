@@ -6,6 +6,7 @@ COMPATIBLE_MACHINE .= ")$"
 #i.MX8M specific settings
 EXTRA_OEMAKE:append:mx8-mainline-bsp = "\
         IMX_BOOT_UART_BASE=auto \
+        BL32_BASE=${ATF_BL32_BASE} \
 "
 
 # When built with opteed, tf-a will jump to BL32_BASE load address.

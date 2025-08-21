@@ -58,12 +58,7 @@ include partup-layout-config.inc
 IMAGE_FSTYPES = "tar.gz wic.xz wic.bmap partup"
 IMAGE_FSTYPES:update = "partup"
 
-MACHINE_FEATURES += "caam optee"
+MACHINE_FEATURES:use-nxp-bsp += "caam optee"
 MACHINE_FEATURES:remove:mx8x-nxp-bsp = " optee"
-MACHINE_FEATURES:remove:mx8m-mainline-bsp = "optee"
-
-OPTEEMACHINE:mx8mm-generic-bsp ?= "imx-mx8mmevk"
-OPTEEMACHINE:mx8mn-generic-bsp ?= "imx-mx8mnevk"
-OPTEEMACHINE:mx8mp-generic-bsp ?= "imx-mx8mpevk"
 
 QEMUVERSION = "8.2%"
