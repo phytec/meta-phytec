@@ -4,8 +4,12 @@ VENDOR_INC = ""
 VENDOR_INC:imx-generic-bsp = "u-boot-imx.inc"
 require ${VENDOR_INC}
 
-DEPENDS += "bc-native dtc-native gnutls-native u-boot-mkimage-native \
-    ${@bb.utils.contains('MACHINE_FEATURES', 'optee', 'optee-os', '', d)} \
+DEPENDS += "\
+    bc-native \
+    dtc-native \
+    gnutls-native \
+    u-boot-mkimage-native \
+    ${@bb.utils.contains('MACHINE_FEATURES', 'optee', 'optee-os python3-pyelftools-native', '', d)} \
 "
 
 GIT_URL = "git://source.denx.de/u-boot/u-boot.git;protocol=https"

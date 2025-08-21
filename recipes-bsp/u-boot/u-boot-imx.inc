@@ -17,11 +17,10 @@ IMX_BOOT_CONTAINER_FIRMWARE ?= " \
 do_configure[depends] += " \
     ${@' '.join('%s:do_deploy' % r for r in '${IMX_EXTRA_FIRMWARE}'.split() )} \
     ${IMX_DEFAULT_ATF_PROVIDER}:do_deploy \
+    ${@bb.utils.contains('MACHINE_FEATURES', 'optee', 'optee-os:do_deploy', '', d)} \
 "
 
-# Used by imx
 ATF_MACHINE_NAME = "bl31-${ATF_PLATFORM}.bin"
-ATF_MACHINE_NAME:append = "${@bb.utils.contains('MACHINE_FEATURES', 'optee', '-optee', '', d)}"
 
 # Define an additional task that collects binary output from dependent packages
 # and deploys them into the U-Boot build directory
@@ -40,6 +39,9 @@ do_configure:append() {
                         cp ${DEPLOY_DIR_IMAGE}/${ATF_MACHINE_NAME} ${B}/${config}/bl31.bin
                     else
                         bberror "ATF binary is undefined, result binary would be unusable!"
+                    fi
+                    if [ "${@bb.utils.contains('MACHINE_FEATURES', 'optee', '1' , '0' , d)}" = "1" ] ; then
+                        cp ${DEPLOY_DIR_IMAGE}/optee/tee-raw.bin ${B}/${config}/tee.bin
                     fi
                 fi
             done
