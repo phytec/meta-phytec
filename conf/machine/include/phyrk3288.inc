@@ -29,9 +29,6 @@ WKS_BOOTIMAGESIZE ?= "20"
 # Device information used by RAUC and some of its dependencies
 EMMC_DEV:rk3288 ?= "1"
 
-# rootfs alignment required for RAUC adaptive update
-IMAGE_ROOTFS_ALIGNMENT:update = "4"
-
 # default images to build
 IMAGE_FSTYPES ?= "tar.gz wic"
 IMAGE_FSTYPES:append:update = " ext4"

@@ -27,9 +27,6 @@ BOOTLOADER_SEEK_EMMC:mx7-generic-bsp ?= "1"
 # Device information used by RAUC and some of its dependencies
 EMMC_DEV:mx7-generic-bsp ?= "2"
 
-# rootfs alignment required for RAUC adaptive update
-IMAGE_ROOTFS_ALIGNMENT:update = "4"
-
 # partup
 IMAGE_CLASSES += "image-types-partup"
 include partup-layout-config.inc

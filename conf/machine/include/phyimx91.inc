@@ -41,9 +41,6 @@ include partup-layout-config.inc
 IMAGE_FSTYPES = "tar.gz wic.bmap wic.xz partup"
 IMAGE_FSTYPES:update = "partup"
 
-# rootfs alignment required for RAUC adaptive update
-IMAGE_ROOTFS_ALIGNMENT:update = "4"
-
 MACHINE_FEATURES += "optee wifi bluetooth"
 
 QEMUVERSION = "8.2%"
