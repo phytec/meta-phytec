@@ -102,9 +102,6 @@ include partup-layout-config.inc
 IMAGE_FSTYPES = "tar.xz wic.xz wic.bmap partup"
 IMAGE_FSTYPES:update = "partup"
 
-# rootfs alignment required for RAUC adaptive update
-IMAGE_ROOTFS_ALIGNMENT:update = "4"
-
 # OSPI Flash Layout for initramfs
 # 0x700000: FDT (max 1 MiB)
 # 0x800000: Image (max 26 MiB) - linux-mainline uses defconfig
