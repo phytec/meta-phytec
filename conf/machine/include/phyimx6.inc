@@ -54,9 +54,6 @@ BOOTLOADER_SEEK_EMMC:mx6-generic-bsp ?= "0"
 EMMC_DEV:mx6-generic-bsp ?= "3"
 NAND_DEV:mx6-generic-bsp ?= "0"
 
-# rootfs alignment required for RAUC adaptive update
-IMAGE_ROOTFS_ALIGNMENT:update = "4"
-
 # partup
 IMAGE_CLASSES += "image-types-partup"
 include partup-layout-config.inc

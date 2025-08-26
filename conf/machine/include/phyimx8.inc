@@ -49,9 +49,6 @@ EMMC_DEV:mx8mm-generic-bsp ?= "2"
 EMMC_DEV:mx8mn-generic-bsp ?= "2"
 EMMC_DEV:mx8mp-generic-bsp ?= "2"
 
-# rootfs alignment required for RAUC adaptive update
-IMAGE_ROOTFS_ALIGNMENT:update = "4"
-
 # partup
 IMAGE_CLASSES += "image-types-partup"
 include partup-layout-config.inc
