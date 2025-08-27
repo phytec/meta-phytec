@@ -84,6 +84,8 @@ COMPATIBLE_MACHINE .= "|phyboard-izar-am68x-2"
 COMPATIBLE_MACHINE .= "|phyboard-izar-am68x-2-k3r5"
 COMPATIBLE_MACHINE .= "|phyboard-izar-am68x-3"
 COMPATIBLE_MACHINE .= "|phyboard-izar-am68x-3-k3r5"
+COMPATIBLE_MACHINE .= "|phyboard-izar-am68x-4"
+COMPATIBLE_MACHINE .= "|phyboard-izar-am68x-4-k3r5"
 
 COMPATIBLE_MACHINE .= "|phycore-am57xx-1"
 COMPATIBLE_MACHINE .= "|phycore-am57xx-2"
