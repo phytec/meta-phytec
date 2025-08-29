@@ -17,6 +17,7 @@ MACHINE_FEATURES += "screen touchscreen pcie"
 KERNEL_OVERLAYS_PHYTEC = " \
     ti/k3-am62p5-phyboard-lynx-oldi-lcd185.dtbo \
     ti/k3-am67-phyboard-rigel-dsi-lcd282.dtbo \
+    ti/k3-am67-phyboard-rigel-gpio-fan.dtbo \
     ti/k3-am67-phyboard-rigel-m2-cc3351.dtbo \
     ti/k3-am67-phyboard-rigel-mcu-mcans.dtbo \
     ti/k3-am67-phyboard-rigel-vm016-mipi-csi0.dtbo \
