@@ -79,7 +79,7 @@ def make_dtb_boot_files(d):
 
     return ' '.join([transform(dtb) for dtb in alldtbs.split() if dtb])
 
-K3_BOOTLOADER_FILES = "${SPL_BINARYNAME} u-boot.${UBOOT_SUFFIX} tiboot3.bin"
+K3_BOOTLOADER_FILES = "${SPL_BINARYNAME} u-boot.${UBOOT_SUFFIX} tiboot3.bin ti-boot-container.img"
 
 IMAGE_BOOT_FILES = " \
     ${K3_BOOTLOADER_FILES} \
