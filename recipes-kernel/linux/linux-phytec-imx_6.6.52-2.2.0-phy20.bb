@@ -13,12 +13,12 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/linux-phytec-6.6:"
 GIT_URL = "git://github.com/phytec/linux-phytec-imx.git;name=machine;protocol=https"
 SRC_URI = " \
         ${GIT_URL};branch=${BRANCH} \
-        ${@bb.utils.contains("DEBUG_BUILD", "1", "file://debugging.scc", "", d)} \
-        file://mtd-partitioned-master.scc \
 "
 
 SRC_URI:append = " git://git.yoctoproject.org/yocto-kernel-cache;type=kmeta;name=meta;branch=yocto-6.6;destsuffix=${KMETA};protocol=https \
                    file://0001-tty-vt-conmakehash-Don-t-mention-the-full-path-of-th.patch \
+                   ${@bb.utils.contains("DEBUG_BUILD", "1", "file://debugging.scc", "", d)} \
+                   file://mtd-partitioned-master.scc \
 "
 
 PR = "${INC_PR}.0"
