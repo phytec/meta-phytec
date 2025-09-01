@@ -2,4 +2,4 @@
 # Linux/U-boot version.
 
 # 11.01.05
-TI_LINUX_FW_SRCREV = "33bec0e2ea9a25362c0c8243b2f1ed392dbc5b02"
+TI_LINUX_FW_SRCREV = "92a31c8e9ecb5671371cc3a48eb5a4b8340221a4"
