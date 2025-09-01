@@ -16,7 +16,8 @@ LIC_FILES_CHKSUM = "file://Licenses/gpl-2.0.txt;md5=b234ee4d69f5fce4486a80fdaf4a
 BRANCH = "v2024.04-2.2.0-phy"
 GIT_URL = "git://github.com/phytec/${BPN};protocol=https"
 SRC_URI = "${GIT_URL};branch=${BRANCH} \
-    file://0001-scripts-dtc-pylibfdt-libfdt.i_shipped-Use-SWIG_Appen.patch \
+"
+SRC_URI:append = " file://0001-scripts-dtc-pylibfdt-libfdt.i_shipped-Use-SWIG_Appen.patch \
 "
 
 PR = "r0"
