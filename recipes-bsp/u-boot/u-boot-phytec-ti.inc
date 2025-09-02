@@ -11,7 +11,9 @@ DEPENDS:append = " \
 # TI's DM firmware is currently hosted in
 # git://git.ti.com/processor-firmware/ti-linux-firmware.git
 DM_FIRMWARE = "ipc_echo_testb_mcu1_0_release_strip.xer5f"
+DM_FIRMWARE:am62axx = "dm_edgeai_mcu1_0_release_strip.out"
 
+DM_FIRMWARE = "ipc_echo_testb_mcu1_0_release_strip.xer5f"
 PLAT_SFX = ""
 PLAT_SFX:am64xx = "am64xx"
 PLAT_SFX:am62xx = "am62xx"
