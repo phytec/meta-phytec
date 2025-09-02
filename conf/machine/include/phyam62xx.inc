@@ -13,6 +13,7 @@ MACHINE_FEATURES += "screen touchscreen"
 # phyBOARD-Lyra downstream kernel overlays
 KERNEL_OVERLAYS_PHYTEC = " \
     ti/k3-am62-phyboard-lyra-lpm.dtbo \
+    ti/k3-am62-phyboard-lyra-m2-cc3351.dtbo \
     ti/k3-am62-phyboard-lyra-m2-lwb5p.dtbo \
     ti/k3-am62-phyboard-lyra-oldi-lcd185.dtbo \
     ti/k3-am62-phyboard-lyra-oldi-ac200.dtbo \
