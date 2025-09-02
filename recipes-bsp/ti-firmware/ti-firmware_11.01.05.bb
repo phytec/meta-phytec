@@ -22,7 +22,7 @@ FILES:ti-sci-fw += "${nonarch_base_libdir}/firmware/ti-sysfw/*"
 FILES:prueth-fw += "${nonarch_base_libdir}/firmware/ti-pruss/*-prueth-fw.elf"
 FILES:pruhsr-fw += "${nonarch_base_libdir}/firmware/ti-pruss/*-pruhsr-fw.elf"
 FILES:prusw-fw += "${nonarch_base_libdir}/firmware/ti-pruss/*-prusw-fw.elf"
-FILES:ti-dm-fw += "${nonarch_base_libdir}/firmware/ti-dm/am62xx/ipc_echo_testb_mcu1_0_release_strip.xer5f"
+FILES:ti-dm-fw += "${nonarch_base_libdir}/firmware/ti-dm/${PLAT_SFX}/${DM_FIRMWARE}"
 
 INHIBIT_PACKAGE_STRIP = "1"
 INHIBIT_SYSROOT_STRIP = "1"
@@ -56,6 +56,7 @@ PRU_FW = " \
 "
 
 DM_FIRMWARE = "ipc_echo_testb_mcu1_0_release_strip.xer5f"
+DM_FIRMWARE:am62axx = "dm_edgeai_mcu1_0_release_strip.out"
 
 DM_FW_LIST = ""
 DM_FW_LIST:am62xx = "${DM_FIRMWARE}"
