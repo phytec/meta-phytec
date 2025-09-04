@@ -14,8 +14,7 @@ S = "${UNPACKDIR}"
 BOOTENV_OVERLAYS_APPEND ?= ""
 
 BOOTENV_FILE ?= "bootenv.txt"
-BOOTENV_FILE:am62lx-libra = "overlays.txt"
-BOOTENV_FILE:phyboard-izar = "overlays.txt"
+BOOTENV_FILE:k3 = "overlays.txt"
 
 inherit deploy
 do_deploy() {
@@ -52,8 +51,7 @@ COMPATIBLE_MACHINE .= "|mx8x-nxp-bsp"
 COMPATIBLE_MACHINE .= "|mx91-nxp-bsp"
 COMPATIBLE_MACHINE .= "|mx93-nxp-bsp"
 COMPATIBLE_MACHINE .= "|mx95-nxp-bsp"
-COMPATIBLE_MACHINE .= "|phyboard-izar"
-COMPATIBLE_MACHINE .= "|am62lx-libra"
+COMPATIBLE_MACHINE .= "|k3"
 COMPATIBLE_MACHINE .= "|phycore-stm32mp15"
 COMPATIBLE_MACHINE .= "|phycore-stm32mp13"
 COMPATIBLE_MACHINE .= ")$"
