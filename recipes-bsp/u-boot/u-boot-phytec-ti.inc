@@ -21,6 +21,7 @@ PLAT_SFX:am62axx = "am62axx"
 PLAT_SFX:am62pxx = "am62pxx"
 PLAT_SFX:j722s = "j722s"
 PLAT_SFX:am62lxx = "am62lxx"
+PLAT_SFX:j721s2 = "j721s2"
 
 PACKAGECONFIG[atf] = "BL31=${STAGING_DIR_HOST}/firmware/bl31.bin,,trusted-firmware-a"
 PACKAGECONFIG[ap-trusted-rom] = "BL1=${STAGING_DIR_HOST}/firmware/bl1.bin,,trusted-firmware-a"
@@ -33,6 +34,7 @@ PACKAGECONFIG:append:am62axx = " dm"
 PACKAGECONFIG:append:am62pxx = " dm"
 PACKAGECONFIG:append:j722s = " dm"
 PACKAGECONFIG:append:am62lxx = " ap-trusted-rom"
+PACKAGECONFIG:append:j721s2 = " dm"
 
 BINMAN_INDIRS = "${STAGING_DIR_HOST}${nonarch_base_libdir}/firmware"
 
