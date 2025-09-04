@@ -84,6 +84,7 @@ IMAGE_BOOT_FILES = " \
     ${K3_BOOTLOADER_FILES} \
     ${KERNEL_IMAGETYPE} \
     ${@make_dtb_boot_files(d)} oftree \
+    overlays.txt \
 "
 IMAGE_BOOT_FILES:secureboot = " \
     ${K3_BOOTLOADER_FILES} \
@@ -93,7 +94,7 @@ IMAGE_EFI_BOOT_FILES ?= "${IMAGE_BOOT_FILES}"
 
 EFI_PROVIDER ?= "grub-efi"
 
-IMAGE_CLASSES += "image-types-partup"
+IMAGE_CLASSES += "image-types-partup wic-bootenv-helper"
 include partup-layout-config.inc
 
 IMAGE_FSTYPES = "tar.xz wic.xz wic.bmap partup"
