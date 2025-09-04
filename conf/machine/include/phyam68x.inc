@@ -8,7 +8,7 @@ MACHINE_ESSENTIAL_EXTRA_RRECOMMENDS += "cadence-mhdp-fw cnm-wave-fw"
 MACHINE_FEATURES += "screen touchscreen pcie"
 
 IMAGE_CLASSES:append = " wic-bootenv-helper"
-IMAGE_BOOT_FILES += "bootenv.txt"
+IMAGE_BOOT_FILES += "overlays.txt"
 
 TFA_BOARD = "generic"
 TFA_K3_USART = "0x8"
