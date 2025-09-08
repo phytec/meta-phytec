@@ -122,9 +122,17 @@ if [ -z $RES ] ; then RES="$SENSOR_RES" ; fi
 if [ -z $FRES ] ; then FRES="$SENSOR_RES" ; fi
 if [ -z $OFFSET ] ; then OFFSET="$OFFSET_SENSOR" ; fi
 
- #FIXME different for variable CSI! fix via udev or case?
-CSI_ENT="4500000.ticsi2rx"
-MIPI_ENT="cdns_csi2rx.4504000.csi-bridge"
+if [ -L /dev/phycam-csi2rx-csi${CSI} ]; then
+	CSI_ENT="$(cat /sys/class/video4linux/$(readlink /dev/phycam-csi2rx-csi${CSI})/name)"
+else
+	echo "CSI device not found" ; exit 1
+fi
+if [ -L /dev/phycam-mipi-csi${CSI} ]; then
+	MIPI_ENT="$(cat /sys/class/video4linux/$(readlink /dev/phycam-mipi-csi${CSI})/name)"
+else
+	echo "MIPI bridge device not found" ; exit 1
+fi
+
 MC_CSI="media-ctl -d /dev/media-csi${CSI}"
 
 echo ""
