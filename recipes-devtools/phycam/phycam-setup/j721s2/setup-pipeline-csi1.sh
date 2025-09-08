@@ -1,7 +1,7 @@
 #!/bin/sh
 
 display_help() {
-	echo "Usage: ./setup-pipeline-csi1.sh [-f <format>] [-s <frame size>] [-o <offset>] [-c <sensor size>] [-p <phycam-l port>] [-v]"
+	echo "Usage: ${0} [-f <format>] [-s <frame size>] [-o <offset>] [-c <sensor size>] [-p <phycam-l port>] [-v]"
 }
 
 read_port() {
@@ -24,6 +24,7 @@ FMT=
 OFFSET=
 FRES=
 VERBOSE=
+CSI="1"
 PORT0=false
 PORT1=false
 
@@ -44,28 +45,28 @@ do
 done
 
 # Select the correct camera subdevice. Can be phyCAM-M or phyCAM-L (Port 0 or 1).
-if [ -L /dev/cam-csi1 ] && [ "${PORT0}" = false ] && [ "${PORT1}" = false ]; then
-	CAM="/dev/cam-csi1"
-elif [ -L /dev/cam-csi1-port0 ] && [ "${PORT0}" = true ] ; then
-	CAM0="/dev/cam-csi1-port0"
-	if [ -L /dev/cam-csi1-port1 ] && [ "${PORT1}" = true ] ; then
-		CAM1="/dev/cam-csi1-port1"
+if [ -L /dev/cam-csi${CSI} ] && [ "${PORT0}" = false ] && [ "${PORT1}" = false ]; then
+	CAM="/dev/cam-csi${CSI}"
+elif [ -L /dev/cam-csi${CSI}-port0 ] && [ "${PORT0}" = true ] ; then
+	CAM0="/dev/cam-csi${CSI}-port0"
+	if [ -L /dev/cam-csi${CSI}-port1 ] && [ "${PORT1}" = true ] ; then
+		CAM1="/dev/cam-csi${CSI}-port1"
 		CAM1_ENT="$(cat /sys/class/video4linux/$(readlink ${CAM1})/name)"
 	fi
-elif [ -L /dev/cam-csi1-port1 ] && [ "${PORT1}" = true ] ; then
-	CAM0="/dev/cam-csi1-port1"
+elif [ -L /dev/cam-csi${CSI}-port1 ] && [ "${PORT1}" = true ] ; then
+	CAM0="/dev/cam-csi${CSI}-port1"
 else
-	echo "No cameras found on CSI1"
+	echo "No cameras found on CSI${CSI}"
 	exit 1
 fi
 CAM0_ENT="$(cat /sys/class/video4linux/$(readlink ${CAM0})/name)"
 
 # Check if we have a phyCAM-L interface connected.
-SER_P0="/dev/phycam-serializer-port0-csi1"
+SER_P0="/dev/phycam-serializer-port0-csi${CSI}"
 SER_P0_ENT=
-SER_P1="/dev/phycam-serializer-port1-csi1"
+SER_P1="/dev/phycam-serializer-port1-csi${CSI}"
 SER_P1_ENT=
-DESER="/dev/phycam-deserializer-csi1"
+DESER="/dev/phycam-deserializer-csi${CSI}"
 DESER_ENT=
 
 if [ -L $SER_P0 ] ; then
@@ -122,7 +123,7 @@ if [ -z $OFFSET ] ; then OFFSET="$OFFSET_SENSOR" ; fi
 
 CSI_ENT="4510000.ticsi2rx"
 MIPI_ENT="cdns_csi2rx.4514000.csi-bridge"
-MC_CSI="media-ctl -d /dev/media-csi1"
+MC_CSI="media-ctl -d /dev/media-csi${CSI}"
 
 echo ""
 echo "Setting up MEDIA Pipeline with"
@@ -134,7 +135,7 @@ echo " -------------------------"
 echo "  Sensor:"
 echo "   ${MC_CSI} -V \"'${CAM0_ENT}':0[fmt:${FMT}/${RES} ${OFFSET}/${FRES}]\""
 ${MC_CSI} -V "'${CAM0_ENT}':0[fmt:${FMT}/${RES} ${OFFSET}/${FRES}]" ${VERBOSE}
-if [ -n "$CAM1_ENT" ] ; then
+if [ -n "${CAM1_ENT}" ] ; then
 	echo "   ${MC_CSI} -V \"'${CAM1_ENT}':0[fmt:${FMT}/${RES} ${OFFSET}/${FRES}]\""
 	${MC_CSI} -V "'${CAM1_ENT}':0[fmt:${FMT}/${RES} ${OFFSET}/${FRES}]" ${VERBOSE}
 fi

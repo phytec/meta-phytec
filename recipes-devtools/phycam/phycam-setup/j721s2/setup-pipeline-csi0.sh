@@ -1,7 +1,7 @@
 #!/bin/sh
 
 display_help() {
-	echo "Usage: ./setup-pipeline-csi0.sh [-f <format>] [-s <frame size>] [-o <offset>] [-c <sensor size>] [-p <phycam-l port>] [-v]"
+	echo "Usage: ${0} [-f <format>] [-s <frame size>] [-o <offset>] [-c <sensor size>] [-p <phycam-l port>] [-v]"
 }
 
 read_port() {
@@ -24,6 +24,7 @@ FMT=
 OFFSET=
 FRES=
 VERBOSE=
+CSI="0"
 PORT0=false
 PORT1=false
 
@@ -44,28 +45,28 @@ do
 done
 
 # Select the correct camera subdevice. Can be phyCAM-M or phyCAM-L (Port 0 or 1).
-if [ -L /dev/cam-csi0 ] && [ "${PORT0}" = false ] && [ "${PORT1}" = false ]; then
-	CAM0="/dev/cam-csi0"
-elif [ -L /dev/cam-csi0-port0 ] && [ "${PORT0}" = true ] ; then
-	CAM0="/dev/cam-csi0-port0"
-	if [ -L /dev/cam-csi0-port1 ] && [ "${PORT1}" = true ] ; then
-		CAM1="/dev/cam-csi0-port1"
+if [ -L /dev/cam-csi${CSI} ] && [ "${PORT0}" = false ] && [ "${PORT1}" = false ]; then
+	CAM0="/dev/cam-csi${CSI}"
+elif [ -L /dev/cam-csi${CSI}-port0 ] && [ "${PORT0}" = true ] ; then
+	CAM0="/dev/cam-csi${CSI}-port0"
+	if [ -L /dev/cam-csi${CSI}-port1 ] && [ "${PORT1}" = true ] ; then
+		CAM1="/dev/cam-csi${CSI}-port1"
 		CAM1_ENT="$(cat /sys/class/video4linux/$(readlink ${CAM1})/name)"
 	fi
-elif [ -L /dev/cam-csi0-port1 ] && [ "${PORT1}" = true ] ; then
-	CAM0="/dev/cam-csi0-port1"
+elif [ -L /dev/cam-csi${CSI}-port1 ] && [ "${PORT1}" = true ] ; then
+	CAM0="/dev/cam-csi${CSI}-port1"
 else
-	echo "No cameras found on CSI0"
+	echo "No cameras found on CSI${CSI}"
 	exit 1
 fi
 CAM0_ENT="$(cat /sys/class/video4linux/$(readlink ${CAM0})/name)"
 
 # Check if we have a phyCAM-L interface connected.
-SER_P0="/dev/phycam-serializer-port0-csi0"
+SER_P0="/dev/phycam-serializer-port0-csi${CSI}"
 SER_P0_ENT=
-SER_P1="/dev/phycam-serializer-port1-csi0"
+SER_P1="/dev/phycam-serializer-port1-csi${CSI}"
 SER_P1_ENT=
-DESER="/dev/phycam-deserializer-csi0"
+DESER="/dev/phycam-deserializer-csi${CSI}"
 DESER_ENT=
 
 if [ -L $SER_P0 ] ; then
@@ -121,9 +122,10 @@ if [ -z $RES ] ; then RES="$SENSOR_RES" ; fi
 if [ -z $FRES ] ; then FRES="$SENSOR_RES" ; fi
 if [ -z $OFFSET ] ; then OFFSET="$OFFSET_SENSOR" ; fi
 
+ #FIXME different for variable CSI! fix via udev or case?
 CSI_ENT="4500000.ticsi2rx"
 MIPI_ENT="cdns_csi2rx.4504000.csi-bridge"
-MC_CSI="media-ctl -d /dev/media-csi0"
+MC_CSI="media-ctl -d /dev/media-csi${CSI}"
 
 echo ""
 echo "Setting up MEDIA Pipeline with"
@@ -135,7 +137,7 @@ echo " -------------------------"
 echo "  Sensor:"
 echo "   ${MC_CSI} -V \"'${CAM0_ENT}':0[fmt:${FMT}/${RES} ${OFFSET}/${FRES}]\""
 ${MC_CSI} -V "'${CAM0_ENT}':0[fmt:${FMT}/${RES} ${OFFSET}/${FRES}]" ${VERBOSE}
-if [ -n "$CAM1_ENT" ] ; then
+if [ -n "${CAM1_ENT}" ] ; then
 	echo "   ${MC_CSI} -V \"'${CAM1_ENT}':0[fmt:${FMT}/${RES} ${OFFSET}/${FRES}]\""
 	${MC_CSI} -V "'${CAM1_ENT}':0[fmt:${FMT}/${RES} ${OFFSET}/${FRES}]" ${VERBOSE}
 fi
