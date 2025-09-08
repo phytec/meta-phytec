@@ -174,20 +174,36 @@ ACTION=="add", \
 	KERNELS=="2050000.i2c", \
 	SYMLINK+="phycam-deserializer-csi1"
 
-# CSI0 Video Device
+# CSI0 (Port0) Video Device
 ACTION=="add", \
 	SUBSYSTEM=="video4linux", \
 	ATTR{name}=="4500000.ticsi2rx context 0", \
 	DRIVERS=="j721e-csi2rx", \
-	SYMLINK+="video-csi0"
+	SYMLINK+="video-csi0", \
+	SYMLINK+="video-csi0-port0"
 
-# CSI1 Video Device
+# CSI0 Port1 Video Device
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="4500000.ticsi2rx context 1", \
+	DRIVERS=="j721e-csi2rx", \
+	SYMLINK+="video-csi0-port1"
+
+# CSI1 (Port0) Video Device
 ACTION=="add", \
 	SUBSYSTEM=="video4linux", \
 	ATTR{name}=="4510000.ticsi2rx context 0", \
 	DRIVERS=="j721e-csi2rx", \
-	SYMLINK+="video-csi1"
-#
+	SYMLINK+="video-csi1", \
+	SYMLINK+="video-csi1-port0"
+
+# CSI1 Port1 Video Device
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="4510000.ticsi2rx context 1", \
+	DRIVERS=="j721e-csi2rx", \
+	SYMLINK+="video-csi1-port1"
+
 # CSI0 Media Device
 ACTION=="add", \
 	SUBSYSTEM=="media", \
