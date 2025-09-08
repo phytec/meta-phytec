@@ -22,5 +22,5 @@ do_deploy:append:mx93-nxp-bsp () {
 }
 
 do_deploy:append:mx93-nxp-bsp () {
-    install -m 0644 ${S}/*.${DEPLOY_FILE_EXT} ${DEPLOYDIR}
+    install -m 0644 ${S}/*.${MCORE_DEMO_FILE_EXTENSION} ${DEPLOYDIR}
 }
