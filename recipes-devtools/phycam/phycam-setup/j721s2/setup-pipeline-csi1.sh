@@ -10,7 +10,7 @@ FMT=
 OFFSET=
 FRES=
 VERBOSE=
-PORT=0
+PORT=
 
 while getopts $OPTIONS option
 do
@@ -29,7 +29,7 @@ do
 done
 
 # Select the correct camera subdevice. Can be phyCAM-M or phyCAM-L (Port 0 or 1).
-if [ -L /dev/cam-csi1 ] ; then
+if [ -L /dev/cam-csi1 ] && [ -z "$PORT" ]; then
 	CAM="/dev/cam-csi1"
 elif [ -L /dev/cam-csi1-port0 ] && [ "$PORT" = "0" ] ; then
 	CAM="/dev/cam-csi1-port0"
@@ -103,7 +103,7 @@ if [ -z $OFFSET ] ; then OFFSET="$OFFSET_SENSOR" ; fi
 
 CSI_ENT="4510000.ticsi2rx"
 MIPI_ENT="cdns_csi2rx.4514000.csi-bridge"
-MC="media-ctl -d /dev/media-csi1"
+MC_CSI="media-ctl -d /dev/media-csi1"
 
 echo ""
 echo "Setting up MEDIA Pipeline with"
@@ -113,14 +113,27 @@ echo "========================================================="
 echo " Setting up MEDIA Formats:"
 echo " -------------------------"
 echo "  Sensor:"
-echo "   $MC -V \"'${CAM_ENT}':0[fmt:${FMT}/${RES} ${OFFSET}/${FRES}]\""
-$MC -V "'${CAM_ENT}':0[fmt:${FMT}/${RES} ${OFFSET}/${FRES}]" ${VERBOSE}
+echo "   ${MC_CSI} -V \"'${CAM_ENT}':0[fmt:${FMT}/${RES} ${OFFSET}/${FRES}]\""
+${MC_CSI} -V "'${CAM_ENT}':0[fmt:${FMT}/${RES} ${OFFSET}/${FRES}]" ${VERBOSE}
 echo ""
 echo "  MIPI Interface:"
-echo "   $MC -V \"'${MIPI_ENT}':1[fmt:${FMT}/${RES}]\""
-$MC -V "'${MIPI_ENT}':1[fmt:${FMT}/${RES}]" ${VERBOSE}
+echo "   ${MC_CSI} -V \"'${MIPI_ENT}':1[fmt:${FMT}/${RES} field:none]\""
+${MC_CSI} -V "'${MIPI_ENT}':1[fmt:${FMT}/${RES} field:none]" ${VERBOSE}
 echo ""
 echo "  CSI Interface:"
-echo "   $MC -V \"'${CSI_ENT}':1[fmt:${FMT}/${RES}]\""
-$MC -V "'${CSI_ENT}':1[fmt:${FMT}/${RES}]" ${VERBOSE}
+echo "   ${MC_CSI} -V \"'${CSI_ENT}':1[fmt:${FMT}/${RES} field:none]\""
+${MC_CSI} -V "'${CSI_ENT}':1[fmt:${FMT}/${RES} field:none]" ${VERBOSE}
 echo ""
+echo "  De-/Serializer:"
+if [ -n "${DESER_ENT}" ] ; then
+	echo "   ${MC_CSI} -V \"'${DESER_ENT}':0[fmt:${FMT}/${RES} field:none]\""
+	${MC_CSI} -V "'${DESER_ENT}':0[fmt:${FMT}/${RES} field:none]" ${VERBOSE}
+	if [ -n "${SER_P0_ENT}" ] && [ "${PORT}" = "0" ] ; then
+		echo "   ${MC_CSI} -V \"'${SER_P0_ENT}':0[fmt:${FMT}/${RES} field:none]\""
+		${MC_CSI} -V "'${SER_P0_ENT}':0[fmt:${FMT}/${RES} field:none]" ${VERBOSE}
+	fi
+	if [ -n "${SER_P1_ENT}" ] && [ "${PORT}" = "1" ] ; then
+		echo "   ${MC_CSI} -V \"'${SER_P1_ENT}':0[fmt:${FMT}/${RES} field:none]\""
+		${MC_CSI} -V "'${SER_P1_ENT}':0[fmt:${FMT}/${RES} field:none]" ${VERBOSE}
+	fi
+fi
