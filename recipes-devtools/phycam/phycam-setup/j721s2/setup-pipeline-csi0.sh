@@ -28,7 +28,7 @@ do
 	esac
 done
 
-# Select the correct camera subdevice. Can be phyCAM-M or phyCAM-L (Port 0 or 1).
+# Select the correct camera subdevice. Can be phyCAM-M or phyCAM-L (Port 0 xor 1).
 if [ -L /dev/cam-csi0 ] && [ -z "$PORT" ]; then
 	CAM="/dev/cam-csi0"
 elif [ -L /dev/cam-csi0-port0 ] && [ "$PORT" = "0" ] ; then
@@ -116,24 +116,72 @@ echo "  Sensor:"
 echo "   ${MC_CSI} -V \"'${CAM_ENT}':0[fmt:${FMT}/${RES} ${OFFSET}/${FRES}]\""
 ${MC_CSI} -V "'${CAM_ENT}':0[fmt:${FMT}/${RES} ${OFFSET}/${FRES}]" ${VERBOSE}
 echo ""
-echo "  MIPI Interface:"
-echo "   ${MC_CSI} -V \"'${MIPI_ENT}':0[fmt:${FMT}/${RES} field:none]\""
-${MC_CSI} -V "'${MIPI_ENT}':0[fmt:${FMT}/${RES} field:none]" ${VERBOSE}
-echo ""
-echo "  CSI Interface:"
-echo "   ${MC_CSI} -V \"'${CSI_ENT}':0[fmt:${FMT}/${RES} field:none]\""
-${MC_CSI} -V "'${CSI_ENT}':0[fmt:${FMT}/${RES} field:none]" ${VERBOSE}
-echo ""
-echo "  De-/Serializer:"
+
 if [ -n "${DESER_ENT}" ] ; then
-	echo "   ${MC_CSI} -V \"'${DESER_ENT}':0[fmt:${FMT}/${RES} field:none]\""
-	${MC_CSI} -V "'${DESER_ENT}':0[fmt:${FMT}/${RES} field:none]" ${VERBOSE}
+	echo "  De-/Serializer:"
+
+	VC_P0_DESER="0/0->2/0[1]"
+	VC_P1_DESER="1/0->2/1[1]"
+
+	VC_P0_MIPI="0/0->1/0[1]"
+	VC_P1_MIPI="0/1->1/1[1]"
+
+	VC_P0_CSI="0/0->1/0[1]"
+	VC_P1_CSI="0/1->2/0[1]"
+
+	# TODO check ports, what about both?!->rework to allow setting both!
+	VC_DESER="${VC_P0_DESER}" # comma separation if use both!
+	VC_MIPI="${VC_P0_MIPI}"
+	VC_CSI="${VC_P0_CSI}"
+
+	if [ "${PORT}" = "1" ] ; then
+		VC_DESER="${VC_P1_DESER}"
+		VC_MIPI="${VC_P1_MIPI}"
+		VC_CSI="${VC_P1_CSI}"
+	fi
+
+	echo "   media-ctl -R \"'${DESER_ENT}'[${VC_DESER}]\""
+	media-ctl -R "'${DESER_ENT}'[${VC_DESER}]"
+
+	echo "   media-ctl -R \"'${MIPI_ENT}'[${VC_MIPI}]\""
+	media-ctl -R "'${MIPI_ENT}'[${VC_MIPI}]"
+
+	echo "   media-ctl -R \"'${CSI_ENT}'[${VC_CSI}]\""
+	media-ctl -R "'${CSI_ENT}'[${VC_CSI}]"
+	echo ""
+
 	if [ -n "${SER_P0_ENT}" ] && [ "${PORT}" = "0" ] ; then
-		echo "   ${MC_CSI} -V \"'${SER_P0_ENT}':0[fmt:${FMT}/${RES} field:none]\""
-		${MC_CSI} -V "'${SER_P0_ENT}':0[fmt:${FMT}/${RES} field:none]" ${VERBOSE}
+		echo "   ${MC_CSI} -V \"'${SER_P0_ENT}':0/0[fmt:${FMT}/${RES} field:none]\""
+		${MC_CSI} -V "'${SER_P0_ENT}':0/0[fmt:${FMT}/${RES} field:none]" ${VERBOSE}
+		echo "   ${MC_CSI} -V \"'${DESER_ENT}':0/0[fmt:${FMT}/${RES} field:none]\""
+		${MC_CSI} -V "'${DESER_ENT}':0/0[fmt:${FMT}/${RES} field:none]" ${VERBOSE}
+		echo ""
+		echo "  MIPI/CSI Interface VC0:"
+		echo "   ${MC_CSI} -V \"'${MIPI_ENT}':0/0[fmt:${FMT}/${RES} field:none]\""
+		${MC_CSI} -V "'${MIPI_ENT}':0/0[fmt:${FMT}/${RES} field:none]" ${VERBOSE}
+		echo "   ${MC_CSI} -V \"'${CSI_ENT}':0/0[fmt:${FMT}/${RES} field:none]\""
+		${MC_CSI} -V "'${CSI_ENT}':0/0[fmt:${FMT}/${RES} field:none]" ${VERBOSE}
+
 	fi
 	if [ -n "${SER_P1_ENT}" ] && [ "${PORT}" = "1" ] ; then
-		echo "   ${MC_CSI} -V \"'${SER_P1_ENT}':0[fmt:${FMT}/${RES} field:none]\""
-		${MC_CSI} -V "'${SER_P1_ENT}':0[fmt:${FMT}/${RES} field:none]" ${VERBOSE}
+		echo "   ${MC_CSI} -V \"'${SER_P1_ENT}':0/0[fmt:${FMT}/${RES} field:none]\""
+		${MC_CSI} -V "'${SER_P1_ENT}':0/0[fmt:${FMT}/${RES} field:none]" ${VERBOSE}
+		echo "   ${MC_CSI} -V \"'${DESER_ENT}':1/0[fmt:${FMT}/${RES} field:none]\""
+		${MC_CSI} -V "'${DESER_ENT}':1/0[fmt:${FMT}/${RES} field:none]" ${VERBOSE}
+		echo ""
+		echo "  MIPI/CSI Interface VC1:"
+		echo "   ${MC_CSI} -V \"'${MIPI_ENT}':0/1[fmt:${FMT}/${RES} field:none]\""
+		${MC_CSI} -V "'${MIPI_ENT}':0/1[fmt:${FMT}/${RES} field:none]" ${VERBOSE}
+		echo "   ${MC_CSI} -V \"'${CSI_ENT}':0/1[fmt:${FMT}/${RES} field:none]\""
+		${MC_CSI} -V "'${CSI_ENT}':0/1[fmt:${FMT}/${RES} field:none]" ${VERBOSE}
 	fi
+else
+	echo "  MIPI Interface:"
+	echo "   ${MC_CSI} -V \"'${MIPI_ENT}':0[fmt:${FMT}/${RES} field:none]\""
+	${MC_CSI} -V "'${MIPI_ENT}':0[fmt:${FMT}/${RES} field:none]" ${VERBOSE}
+	echo ""
+	echo "  CSI Interface:"
+	echo "   ${MC_CSI} -V \"'${CSI_ENT}':0[fmt:${FMT}/${RES} field:none]\""
+	${MC_CSI} -V "'${CSI_ENT}':0[fmt:${FMT}/${RES} field:none]" ${VERBOSE}
 fi
+echo ""
