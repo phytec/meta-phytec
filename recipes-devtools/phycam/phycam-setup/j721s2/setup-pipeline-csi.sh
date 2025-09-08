@@ -18,35 +18,36 @@ read_port() {
 	fi
 }
 
-OPTIONS="hf:s:o:c:p:v"
+OPTIONS="hi:f:s:o:c:p:v"
 RES=
 FMT=
 OFFSET=
 FRES=
 VERBOSE=
-CSI="1"
+CSI="0"
 PORT0=false
 PORT1=false
 
 while getopts $OPTIONS option
 do
 	case $option in
-		f ) FMT=$OPTARG;;
-		s ) RES=$OPTARG;;
-		o ) OFFSET=$OPTARG;;
-		c ) FRES=$OPTARG;;
+		i ) CSI=${OPTARG};;
+		f ) FMT=${OPTARG};;
+		s ) RES=${OPTARG};;
+		o ) OFFSET=${OPTARG};;
+		c ) FRES=${OPTARG};;
 		p ) read_port "${OPTARG}";;
 		v ) VERBOSE="-v";;
 		h  ) display_help; exit;;
-		\? ) echo "Unknown option: -$OPTARG" >&2; exit 1;;
-		:  ) echo "Missing option argument for -$OPTARG" >&2; exit 1;;
-		*  ) echo "Unimplemented option: -$OPTARG" >&2; exit 1;;
+		\? ) echo "Unknown option: -${OPTARG}" >&2; exit 1;;
+		:  ) echo "Missing option argument for -${OPTARG}" >&2; exit 1;;
+		*  ) echo "Unimplemented option: -${OPTARG}" >&2; exit 1;;
 	esac
 done
 
 # Select the correct camera subdevice. Can be phyCAM-M or phyCAM-L (Port 0 or 1).
 if [ -L /dev/cam-csi${CSI} ] && [ "${PORT0}" = false ] && [ "${PORT1}" = false ]; then
-	CAM="/dev/cam-csi${CSI}"
+	CAM0="/dev/cam-csi${CSI}"
 elif [ -L /dev/cam-csi${CSI}-port0 ] && [ "${PORT0}" = true ] ; then
 	CAM0="/dev/cam-csi${CSI}-port0"
 	if [ -L /dev/cam-csi${CSI}-port1 ] && [ "${PORT1}" = true ] ; then
@@ -81,6 +82,7 @@ if [ -L $DESER ] ; then
 	DESER_ENT="$(cat /sys/class/video4linux/$(readlink ${DESER})/name)"
 fi
 
+##TODO not supported yet: different sensors; we only get the info from sensor0, sensor1 are assumed to be same!
 # Get sensor default values.
 case $(echo ${CAM0_ENT} | cut -d" " -f1) in
 	ar0144 )
