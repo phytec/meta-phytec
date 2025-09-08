@@ -109,43 +109,6 @@ echo ""
 echo "Setting up MEDIA Pipeline with"
 echo "${FMT}/${RES} ${OFFSET}/${FRES} for ${CAM_ENT}"
 echo "========================================================="
-echo " Setting up MEDIA Links:"
-echo " -----------------------"
-
-# Disable all existing phyCAM-L links (if phyCAM-L is connected) so the new
-# setup can be selected.
-if [ -n "$SER_P0_ENT" ] && [ -n "$SER_P1_ENT" ] ; then
-	echo "  Disable both phyCAM-L Ports:"
-	echo "   $MC -l \"'${SER_P0_ENT}':1->'${DESER_ENT}':0[0]\""
-	$MC -l "'${SER_P0_ENT}':1->'${DESER_ENT}':0[0]" ${VERBOSE}
-	if [ ! -z "$VERBOSE" ] ; then echo "" ; fi
-
-	echo "   $MC -l \"'${SER_P0_ENT}':1->'${DESER_ENT}':1[0]\""
-	$MC -l "'${SER_P1_ENT}':1->'${DESER_ENT}':1[0]" ${VERBOSE}
-	echo ""
-fi
-
-if [ -n "$SER_P0_ENT" ] && [ -n "$DESER_ENT" ] && [ "$PORT" = "0" ] ; then
-	echo "  Enabling phyCAM-L Port 0 on CSI0"
-	echo "   $MC -l \"'${SER_P0_ENT}':1->'${DESER_ENT}':0[1]\""
-	$MC -l "'${SER_P0_ENT}':1->'${DESER_ENT}':0[1]" ${VERBOSE}
-	if [ ! -z "$VERBOSE" ] ; then echo "" ; fi
-
-	echo "   $MC -l \"'${DESER_ENT}':2->'${MIPI_ENT}':0[1]\""
-	$MC -l "'${DESER_ENT}':2->'${MIPI_ENT}':0[1]" ${VERBOSE}
-	echo ""
-fi
-
-if [ -n "$SER_P1_ENT" ] && [ -n "$DESER_ENT" ] && [ "$PORT" = "1" ] ; then
-	echo "  Enabling phyCAM-L Port 1 on CSI0"
-	echo "   $MC -l \"'${SER_P1_ENT}':1->'${DESER_ENT}':1[1]\""
-	$MC -l "'${SER_P1_ENT}':1->'${DESER_ENT}':1[1]" ${VERBOSE}
-	if [ ! -z "$VERBOSE" ] ; then echo "" ; fi
-
-	echo "   $MC -l \"'${DESER_ENT}':2->'${MIPI_ENT}':0[1]\""
-	$MC -l "'${DESER_ENT}':2->'${MIPI_ENT}':0[1]" ${VERBOSE}
-	echo ""
-fi
 
 echo " Setting up MEDIA Formats:"
 echo " -------------------------"
