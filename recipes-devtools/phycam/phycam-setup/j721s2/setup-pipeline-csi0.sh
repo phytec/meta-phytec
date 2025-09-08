@@ -1,7 +1,21 @@
 #!/bin/sh
 
 display_help() {
-	echo "Usage: ./setup-pipeline-csi0.sh [-f <format>] [-s <frame size>] [-o <offset>] [-c <sensor size>] [-p <phycam-l port] [-v]"
+	echo "Usage: ./setup-pipeline-csi0.sh [-f <format>] [-s <frame size>] [-o <offset>] [-c <sensor size>] [-p <phycam-l port>] [-v]"
+}
+
+read_port() {
+	PORT="$1"
+	if [ ${PORT} = "0" ]; then
+		PORT0=true
+	elif [ ${PORT} = "1" ]; then
+		PORT1=true
+	elif [ ${PORT} = "both" ]; then
+		PORT0=true
+		PORT1=true
+	else
+		echo "Invalid port argument, use '0', '1' or 'both'!"
+	fi
 }
 
 OPTIONS="hf:s:o:c:p:v"
@@ -10,7 +24,8 @@ FMT=
 OFFSET=
 FRES=
 VERBOSE=
-PORT=
+PORT0=false
+PORT1=false
 
 while getopts $OPTIONS option
 do
@@ -19,7 +34,7 @@ do
 		s ) RES=$OPTARG;;
 		o ) OFFSET=$OPTARG;;
 		c ) FRES=$OPTARG;;
-		p ) PORT=$OPTARG;;
+		p ) read_port "${OPTARG}";;
 		v ) VERBOSE="-v";;
 		h  ) display_help; exit;;
 		\? ) echo "Unknown option: -$OPTARG" >&2; exit 1;;
@@ -29,14 +44,15 @@ do
 done
 
 # Select the correct camera subdevice. Can be phyCAM-M or phyCAM-L (Port 0 xor 1).
-if [ -L /dev/cam-csi0 ] && [ -z "$PORT" ]; then
+	# TODO here we are still XOR ->rework to allow setting both!
+if [ -L /dev/cam-csi0 ] && [ "${PORT0}" = false ] && [ "${PORT1}" = false ]; then
 	CAM="/dev/cam-csi0"
-elif [ -L /dev/cam-csi0-port0 ] && [ "$PORT" = "0" ] ; then
+elif [ -L /dev/cam-csi0-port0 ] && [ "${PORT0}" = true ] ; then
 	CAM="/dev/cam-csi0-port0"
-elif [ -L /dev/cam-csi0-port1 ] && [ "$PORT" = "1" ] ; then
+elif [ -L /dev/cam-csi0-port1 ] && [ "${PORT1}" = true ] ; then
 	CAM="/dev/cam-csi0-port1"
 else
-	echo "No camera found on CSI0"
+	echo "No cameras found on CSI0"
 	exit 1
 fi
 
@@ -129,15 +145,25 @@ if [ -n "${DESER_ENT}" ] ; then
 	VC_P0_CSI="0/0->1/0[1]"
 	VC_P1_CSI="0/1->2/0[1]"
 
-	# TODO check ports, what about both?!->rework to allow setting both!
-	VC_DESER="${VC_P0_DESER}" # comma separation if use both!
-	VC_MIPI="${VC_P0_MIPI}"
-	VC_CSI="${VC_P0_CSI}"
+	VC_DESER=
+	VC_MIPI=
+	VC_CSI=
 
-	if [ "${PORT}" = "1" ] ; then
+	if [ "${PORT0}" = true ] && [ "${PORT1}" = true ] ; then
+		VC_DESER="${VC_P0_DESER},${VC_P1_DESER}" # comma separation if use both!
+		VC_MIPI="${VC_P0_MIPI},${VC_P1_MIPI}"
+		VC_CSI="${VC_P0_CSI},${VC_P1_CSI}"
+	elif [ "${PORT0}" = true ]; then
+		VC_DESER="${VC_P0_DESER}"
+		VC_MIPI="${VC_P0_MIPI}"
+		VC_CSI="${VC_P0_CSI}"
+	elif [ "${PORT1}" = true ]; then
 		VC_DESER="${VC_P1_DESER}"
 		VC_MIPI="${VC_P1_MIPI}"
 		VC_CSI="${VC_P1_CSI}"
+	else
+		echo "   Deserializer defined, but no port given! Exit ..."
+		exit 1
 	fi
 
 	echo "   media-ctl -R \"'${DESER_ENT}'[${VC_DESER}]\""
@@ -150,7 +176,7 @@ if [ -n "${DESER_ENT}" ] ; then
 	media-ctl -R "'${CSI_ENT}'[${VC_CSI}]"
 	echo ""
 
-	if [ -n "${SER_P0_ENT}" ] && [ "${PORT}" = "0" ] ; then
+	if [ -n "${SER_P0_ENT}" ] && [ "${PORT0}" = true ] ; then
 		echo "   ${MC_CSI} -V \"'${SER_P0_ENT}':0/0[fmt:${FMT}/${RES} field:none]\""
 		${MC_CSI} -V "'${SER_P0_ENT}':0/0[fmt:${FMT}/${RES} field:none]" ${VERBOSE}
 		echo "   ${MC_CSI} -V \"'${DESER_ENT}':0/0[fmt:${FMT}/${RES} field:none]\""
@@ -163,7 +189,7 @@ if [ -n "${DESER_ENT}" ] ; then
 		${MC_CSI} -V "'${CSI_ENT}':0/0[fmt:${FMT}/${RES} field:none]" ${VERBOSE}
 
 	fi
-	if [ -n "${SER_P1_ENT}" ] && [ "${PORT}" = "1" ] ; then
+	if [ -n "${SER_P1_ENT}" ] && [ "${PORT1}" = true ] ; then
 		echo "   ${MC_CSI} -V \"'${SER_P1_ENT}':0/0[fmt:${FMT}/${RES} field:none]\""
 		${MC_CSI} -V "'${SER_P1_ENT}':0/0[fmt:${FMT}/${RES} field:none]" ${VERBOSE}
 		echo "   ${MC_CSI} -V \"'${DESER_ENT}':1/0[fmt:${FMT}/${RES} field:none]\""
