@@ -30,14 +30,19 @@ SRC_URI:append:stm32mp13common = " \
 "
 
 SRC_URI:append:j721s2 = " \
-    file://setup-pipeline-csi0.sh \
-    file://setup-pipeline-csi1.sh \
+    file://setup-pipeline-csi.sh \
 "
 
 do_install() {
     install -d ${D}${nonarch_base_libdir}/udev/rules.d/
     install -m 0644 ${WORKDIR}/90-phycam.rules \
                     ${D}${nonarch_base_libdir}/udev/rules.d/
+
+    if [ -e ${WORKDIR}/setup-pipeline-csi.sh ]; then
+        install -d ${D}${bindir}
+        install -m 0755 ${WORKDIR}/setup-pipeline-csi.sh \
+                        ${D}${bindir}/setup-pipeline-csi
+    fi
 
     if [ -e ${WORKDIR}/setup-pipeline-csi0.sh ]; then
         install -d ${D}${bindir}
