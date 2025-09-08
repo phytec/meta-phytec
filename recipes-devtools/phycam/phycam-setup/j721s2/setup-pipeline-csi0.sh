@@ -43,18 +43,22 @@ do
 	esac
 done
 
-# Select the correct camera subdevice. Can be phyCAM-M or phyCAM-L (Port 0 xor 1).
-	# TODO here we are still XOR ->rework to allow setting both!
+# Select the correct camera subdevice. Can be phyCAM-M or phyCAM-L (Port 0 or 1).
 if [ -L /dev/cam-csi0 ] && [ "${PORT0}" = false ] && [ "${PORT1}" = false ]; then
-	CAM="/dev/cam-csi0"
+	CAM0="/dev/cam-csi0"
 elif [ -L /dev/cam-csi0-port0 ] && [ "${PORT0}" = true ] ; then
-	CAM="/dev/cam-csi0-port0"
+	CAM0="/dev/cam-csi0-port0"
+	if [ -L /dev/cam-csi0-port1 ] && [ "${PORT1}" = true ] ; then
+		CAM1="/dev/cam-csi0-port1"
+		CAM1_ENT="$(cat /sys/class/video4linux/$(readlink ${CAM1})/name)"
+	fi
 elif [ -L /dev/cam-csi0-port1 ] && [ "${PORT1}" = true ] ; then
-	CAM="/dev/cam-csi0-port1"
+	CAM0="/dev/cam-csi0-port1"
 else
 	echo "No cameras found on CSI0"
 	exit 1
 fi
+CAM0_ENT="$(cat /sys/class/video4linux/$(readlink ${CAM0})/name)"
 
 # Check if we have a phyCAM-L interface connected.
 SER_P0="/dev/phycam-serializer-port0-csi0"
@@ -76,9 +80,9 @@ if [ -L $DESER ] ; then
 	DESER_ENT="$(cat /sys/class/video4linux/$(readlink ${DESER})/name)"
 fi
 
+##TODO not supported yet: different sensors; we only get the info from sensor0, sensor1 are assumed to be same!
 # Get sensor default values.
-CAM_ENT="$(cat /sys/class/video4linux/$(readlink ${CAM})/name)"
-case $(echo ${CAM_ENT} | cut -d" " -f1) in
+case $(echo ${CAM0_ENT} | cut -d" " -f1) in
 	ar0144 )
 		CAM_BW_FMT="Y8_1X8"
 		CAM_COL_FMT="SGRBG8_1X8"
@@ -102,7 +106,7 @@ esac
 
 # Evaluate if a monochrome or color sensor is connected by checking the
 # default MBUS code.
-COLOR="$(v4l2-ctl -d ${CAM} --get-subdev-fmt | \
+COLOR="$(v4l2-ctl -d ${CAM0} --get-subdev-fmt | \
 	 grep "Mediabus Code" | \
 	 sed 's/.*BUS_FMT_\([A-Z]*\).*/\1/g')"
 if [ $COLOR = "Y" ]; then
@@ -123,14 +127,18 @@ MC_CSI="media-ctl -d /dev/media-csi0"
 
 echo ""
 echo "Setting up MEDIA Pipeline with"
-echo "${FMT}/${RES} ${OFFSET}/${FRES} for ${CAM_ENT}"
+echo "${FMT}/${RES} ${OFFSET}/${FRES} for ${CAM0_ENT}"
 echo "========================================================="
 
 echo " Setting up MEDIA Formats:"
 echo " -------------------------"
 echo "  Sensor:"
-echo "   ${MC_CSI} -V \"'${CAM_ENT}':0[fmt:${FMT}/${RES} ${OFFSET}/${FRES}]\""
-${MC_CSI} -V "'${CAM_ENT}':0[fmt:${FMT}/${RES} ${OFFSET}/${FRES}]" ${VERBOSE}
+echo "   ${MC_CSI} -V \"'${CAM0_ENT}':0[fmt:${FMT}/${RES} ${OFFSET}/${FRES}]\""
+${MC_CSI} -V "'${CAM0_ENT}':0[fmt:${FMT}/${RES} ${OFFSET}/${FRES}]" ${VERBOSE}
+if [ -n "$CAM1_ENT" ] ; then
+	echo "   ${MC_CSI} -V \"'${CAM1_ENT}':0[fmt:${FMT}/${RES} ${OFFSET}/${FRES}]\""
+	${MC_CSI} -V "'${CAM1_ENT}':0[fmt:${FMT}/${RES} ${OFFSET}/${FRES}]" ${VERBOSE}
+fi
 echo ""
 
 if [ -n "${DESER_ENT}" ] ; then

@@ -47,13 +47,18 @@ done
 if [ -L /dev/cam-csi1 ] && [ "${PORT0}" = false ] && [ "${PORT1}" = false ]; then
 	CAM="/dev/cam-csi1"
 elif [ -L /dev/cam-csi1-port0 ] && [ "${PORT0}" = true ] ; then
-	CAM="/dev/cam-csi1-port0"
+	CAM0="/dev/cam-csi1-port0"
+	if [ -L /dev/cam-csi1-port1 ] && [ "${PORT1}" = true ] ; then
+		CAM1="/dev/cam-csi1-port1"
+		CAM1_ENT="$(cat /sys/class/video4linux/$(readlink ${CAM1})/name)"
+	fi
 elif [ -L /dev/cam-csi1-port1 ] && [ "${PORT1}" = true ] ; then
-	CAM="/dev/cam-csi1-port1"
+	CAM0="/dev/cam-csi1-port1"
 else
 	echo "No cameras found on CSI1"
 	exit 1
 fi
+CAM0_ENT="$(cat /sys/class/video4linux/$(readlink ${CAM0})/name)"
 
 # Check if we have a phyCAM-L interface connected.
 SER_P0="/dev/phycam-serializer-port0-csi1"
@@ -76,8 +81,7 @@ if [ -L $DESER ] ; then
 fi
 
 # Get sensor default values.
-CAM_ENT="$(cat /sys/class/video4linux/$(readlink ${CAM})/name)"
-case $(echo ${CAM_ENT} | cut -d" " -f1) in
+case $(echo ${CAM0_ENT} | cut -d" " -f1) in
 	ar0144 )
 		CAM_BW_FMT="Y8_1X8"
 		CAM_COL_FMT="SGRBG8_1X8"
@@ -101,7 +105,7 @@ esac
 
 # Evaluate if a monochrome or color sensor is connected by checking the
 # default MBUS code.
-COLOR="$(v4l2-ctl -d ${CAM} --get-subdev-fmt | \
+COLOR="$(v4l2-ctl -d ${CAM0} --get-subdev-fmt | \
 	 grep "Mediabus Code" | \
 	 sed 's/.*BUS_FMT_\([A-Z]*\).*/\1/g')"
 if [ $COLOR = "Y" ]; then
@@ -122,14 +126,18 @@ MC_CSI="media-ctl -d /dev/media-csi1"
 
 echo ""
 echo "Setting up MEDIA Pipeline with"
-echo "${FMT}/${RES} ${OFFSET}/${FRES} for ${CAM_ENT}"
+echo "${FMT}/${RES} ${OFFSET}/${FRES} for ${CAM0_ENT}"
 echo "========================================================="
 
 echo " Setting up MEDIA Formats:"
 echo " -------------------------"
 echo "  Sensor:"
-echo "   ${MC_CSI} -V \"'${CAM_ENT}':0[fmt:${FMT}/${RES} ${OFFSET}/${FRES}]\""
-${MC_CSI} -V "'${CAM_ENT}':0[fmt:${FMT}/${RES} ${OFFSET}/${FRES}]" ${VERBOSE}
+echo "   ${MC_CSI} -V \"'${CAM0_ENT}':0[fmt:${FMT}/${RES} ${OFFSET}/${FRES}]\""
+${MC_CSI} -V "'${CAM0_ENT}':0[fmt:${FMT}/${RES} ${OFFSET}/${FRES}]" ${VERBOSE}
+if [ -n "$CAM1_ENT" ] ; then
+	echo "   ${MC_CSI} -V \"'${CAM1_ENT}':0[fmt:${FMT}/${RES} ${OFFSET}/${FRES}]\""
+	${MC_CSI} -V "'${CAM1_ENT}':0[fmt:${FMT}/${RES} ${OFFSET}/${FRES}]" ${VERBOSE}
+fi
 echo ""
 
 if [ -n "${DESER_ENT}" ] ; then
