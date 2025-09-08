@@ -18,7 +18,7 @@ GIT_URL = "git://github.com/phytec/${BPN};protocol=https"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
 PR = "r0"
-SRCREV = "6e91b424a9ad03a4ee7de43a24ec7f3de3f79a90"
+SRCREV = "0ad703a5e744bd8d9eedd92d14b039e72f05e316"
 
 S = "${WORKDIR}/git"
 
