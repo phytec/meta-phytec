@@ -211,9 +211,33 @@ ACTION=="add", \
 	DRIVERS=="j721e-csi2rx", \
 	SYMLINK+="media-csi0"
 
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="4500000.ticsi2rx", \
+	SYMLINK+="phycam-csi2rx-csi0"
+
 # CSI1 Media Device
 ACTION=="add", \
 	SUBSYSTEM=="media", \
 	KERNELS=="4510000.ticsi2rx", \
 	DRIVERS=="j721e-csi2rx", \
 	SYMLINK+="media-csi1"
+
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="4510000.ticsi2rx", \
+	SYMLINK+="phycam-csi2rx-csi1"
+
+# CSI0 MIPI Bridge
+ACTION=="add", \
+	SUBSYSTEM==
+	ATTR{name}=="cdns_csi2rx.4504000.csi-bridge", \
+	DRIVERS=="j721e-csi2rx", \
+	SYMLINK+="phycam-mipi-csi0"
+
+# CSI1 MIPI Bridge
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="cdns_csi2rx.4514000.csi-bridge", \
+	DRIVERS=="j721e-csi2rx", \
+	SYMLINK+="phycam-mipi-csi1"
