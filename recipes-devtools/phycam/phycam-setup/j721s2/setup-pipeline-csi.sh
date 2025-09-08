@@ -70,16 +70,28 @@ SER_P1_ENT=
 DESER="/dev/phycam-deserializer-csi${CSI}"
 DESER_ENT=
 
-if [ -L $SER_P0 ] ; then
-	SER_P0_ENT="$(cat /sys/class/video4linux/$(readlink ${SER_P0})/name)"
+if [ "${PORT0}" = true ]; then
+	if [ -L $SER_P0 ]; then
+		SER_P0_ENT="$(cat /sys/class/video4linux/$(readlink ${SER_P0})/name)"
+	else
+		echo "Serializer for port0 not found (CSI${CSI})"; exit 1
+	fi
 fi
 
-if [ -L $SER_P1 ] ; then
-	SER_P1_ENT="$(cat /sys/class/video4linux/$(readlink ${SER_P1})/name)"
+if [ "${PORT1}" = true ]; then
+	if [ -L $SER_P1 ]; then
+		SER_P1_ENT="$(cat /sys/class/video4linux/$(readlink ${SER_P1})/name)"
+	else
+		echo "Serializer for port1 not found (CSI${CSI})"; exit 1
+	fi
 fi
 
-if [ -L $DESER ] ; then
-	DESER_ENT="$(cat /sys/class/video4linux/$(readlink ${DESER})/name)"
+if [ "${PORT0}" = true ] || [ "${PORT1}" = true ]; then
+	if [ -L $DESER ] ; then
+		DESER_ENT="$(cat /sys/class/video4linux/$(readlink ${DESER})/name)"
+	else
+		echo "Deserializer not found (CSI${CSI})"; exit 1
+	fi
 fi
 
 ##TODO not supported yet: different sensors; we only get the info from sensor0, sensor1 are assumed to be same!
@@ -195,7 +207,7 @@ if [ -n "${DESER_ENT}" ] ; then
 	media-ctl -R "'${CSI_ENT}'[${VC_CSI}]"
 	echo ""
 
-	if [ -n "${SER_P0_ENT}" ] && [ "${PORT0}" = true ] ; then
+	if [ -n "${SER_P0_ENT}" ]; then
 		echo "   ${MC_CSI} -V \"'${SER_P0_ENT}':0/0[fmt:${FMT}/${RES} field:none]\""
 		${MC_CSI} -V "'${SER_P0_ENT}':0/0[fmt:${FMT}/${RES} field:none]" ${VERBOSE}
 		echo "   ${MC_CSI} -V \"'${DESER_ENT}':0/0[fmt:${FMT}/${RES} field:none]\""
@@ -208,7 +220,7 @@ if [ -n "${DESER_ENT}" ] ; then
 		${MC_CSI} -V "'${CSI_ENT}':0/0[fmt:${FMT}/${RES} field:none]" ${VERBOSE}
 
 	fi
-	if [ -n "${SER_P1_ENT}" ] && [ "${PORT1}" = true ] ; then
+	if [ -n "${SER_P1_ENT}" ]; then
 		echo "   ${MC_CSI} -V \"'${SER_P1_ENT}':0/0[fmt:${FMT}/${RES} field:none]\""
 		${MC_CSI} -V "'${SER_P1_ENT}':0/0[fmt:${FMT}/${RES} field:none]" ${VERBOSE}
 		echo "   ${MC_CSI} -V \"'${DESER_ENT}':1/0[fmt:${FMT}/${RES} field:none]\""
