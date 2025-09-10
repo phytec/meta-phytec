@@ -9,6 +9,6 @@ SRC_URI_append = " \
 "
 
 do_install_append () {
-	install -m 0644 ${WORKDIR}/wl1271-nvs.bin ${D}/lib/firmware/ti-connectivity/wl1271-nvs.bin
-	install -m 0644 ${WORKDIR}/wl127x-fw-5-plt.bin ${D}/lib/firmware/ti-connectivity/wl127x-fw-5-plt.bin
+	install -m 0644 ${WORKDIR}/wl1271-nvs.bin ${D}/${nonarch_base_libdir}/firmware/ti-connectivity/wl1271-nvs.bin
+	install -m 0644 ${WORKDIR}/wl127x-fw-5-plt.bin ${D}/${nonarch_base_libdir}/firmware/ti-connectivity/wl127x-fw-5-plt.bin
 }
