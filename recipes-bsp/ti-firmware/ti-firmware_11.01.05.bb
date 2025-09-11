@@ -65,6 +65,8 @@ DM_FW_LIST:am62axx = "${DM_FIRMWARE}"
 PLAT_SFX = ""
 PLAT_SFX:am62xx = "am62xx"
 PLAT_SFX:am62axx = "am62axx"
+PLAT_SFX:k3r5-am62xx = "am62xx"
+PLAT_SFX:k3r5-am62axx = "am62axx"
 
 DM_FW_DIR = "ti-dm/${PLAT_SFX}"
 INSTALL_DM_FW_DIR  = "${nonarch_base_libdir}/firmware/${DM_FW_DIR}"
