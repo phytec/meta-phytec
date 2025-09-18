@@ -9,9 +9,9 @@ EXTRA_DO_COMPILE_MCDEPENDS:am62lxx = ""
 do_compile[mcdepends] += "${EXTRA_DO_COMPILE_MCDEPENDS}"
 
 do_compile() {
-    dd if=${DEPLOY_DIR_IMAGE}/tiboot3.bin of=${B}/ti-boot-container.img count=1024 conv=fsync
-    dd if=${DEPLOY_DIR_IMAGE}/tispl.bin of=${B}/ti-boot-container.img seek=1024 count=3072 conv=fsync
-    dd if=${DEPLOY_DIR_IMAGE}/u-boot.img of=${B}/ti-boot-container.img seek=5120 count=3072 conv=fsync
+    dd if=${DEPLOY_DIR_IMAGE}/tiboot3.bin of=${B}/ti-boot-container.img conv=fsync
+    dd if=${DEPLOY_DIR_IMAGE}/tispl.bin of=${B}/ti-boot-container.img seek=1024 conv=fsync
+    dd if=${DEPLOY_DIR_IMAGE}/u-boot.img of=${B}/ti-boot-container.img seek=5120 conv=fsync
 }
 
 do_deploy() {
