@@ -18,7 +18,7 @@ SRC_URI:append:am62lxx-libra-fpsc-2 = " \
 "
 
 PR = "r0"
-SRCREV = "ff96c26238636d9a11d0de219fca8a7619b9c1d9"
+SRCREV = "79a6dfa627b23042bbcd8eb6ba3c7b407af175b7"
 
 COMPATIBLE_MACHINE = "^("
 COMPATIBLE_MACHINE .=  "am62lx-libra"
