@@ -163,8 +163,11 @@ def sign_hab(d, input_image_path, output_image_path, imxboot_logfile, \
     output_fd.close()
 
     image_name = os.path.basename(input_image_path)
-    json_path = os.path.join(workdir, f'hab_info_{image_name}.json')
-    store_resign_info(json_path,
+    json_path = os.path.join(workdir, 'hab_info')
+    if not os.path.exists(json_path):
+        os.mkdir(json_path)
+    json_file_path = os.path.join(json_path, f'hab_info_{image_name}.json')
+    store_resign_info(json_file_path,
        parsed_blocks['CSF_SPL_OFFSET'], parsed_blocks['CSF_FIT_OFFSET'],
        [spl_hab_block], hablist, template_spl, template_fit, output_image_path)
 
@@ -226,7 +229,8 @@ do_deploy:append:secureboot() {
             fi
         done
  done
- find ${WORKDIR} -type f -name "hab_info_*.json" -exec install -m 0644 {} "${DEPLOYDIR}/" \;
+
+ install -m 0644 ${WORKDIR}/hab_info/* ${DEPLOYDIR}/
 }
 
 addtask sign after do_compile before do_deploy
