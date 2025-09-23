@@ -1,0 +1,4 @@
+define KFEATURE_DESCRIPTION "Additional Configs for K3 Products"
+define KFEATURE_COMPATIBILITY board
+
+kconf hardware platform-k3.cfg
