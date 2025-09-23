@@ -88,11 +88,11 @@ ${PHYTEC_DIR}/scripts/init_machine.py
 container_usage() {
 	CONTAINER=$(sed -n 's:.*build_container="\([^"]*\).*:\1:p' ${ROOTDIR}/.repo/manifest.xml)
 	if [ ! -z "${CONTAINER}" ]; then
-		echo "A docker image can also be used as your build environment.\n"
+		echo "A build container can also be used as your build environment.\n"
 		echo "Set up your shell environment with:\n"
-		echo "    $ docker run --rm -it -v \${PWD}:/\${PWD} --workdir=\${PWD} ${CONTAINER} bash\n"
+		echo "    $ podman run --rm=true -v /home:/home --userns=keep-id --workdir=\${PWD} -it ${CONTAINER} bash \n"
 		echo "Or start a build with:\n"
-		echo "    $ docker run --rm -it -v \${PWD}:/\${PWD} --workdir=\${PWD} ${CONTAINER} \\"
+		echo "    $ podman run --rm=true -v /home:/home --userns=keep-id --workdir=\${PWD} -it ${CONTAINER} \\"
 		echo "      bash -c '. sources/poky/oe-init-build-env && bitbake phytec-headless-image'"
 		echo ""
 		echo ""
