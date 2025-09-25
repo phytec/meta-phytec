@@ -1,4 +1,4 @@
 SRC_URI = "https://github.com/phytec/partup/releases/download/v${PV}/${BPN}-${PV}.tar.gz"
-SRC_URI[sha256sum] = "466cd7e1bd6cdab3a379ec3e46d13432578b8e3ddee7faf32d7af68c58982a64"
+SRC_URI[sha256sum] = "88d58599d2d78639579599a34810f5347c4363e42b24a86e9250fdeb882afb36"
 
 UPSTREAM_CHECK_URI = "https://github.com/phytec/partup/releases"
