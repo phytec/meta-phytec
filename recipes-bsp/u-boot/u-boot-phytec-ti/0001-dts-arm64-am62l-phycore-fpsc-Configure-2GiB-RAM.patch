@@ -1,10 +1,13 @@
-From a3129ea20a78eb391d0c98e3728f3fae67cfebe3 Mon Sep 17 00:00:00 2001
+From c902156529d4be75ca25d169fae1a152225cc50a Mon Sep 17 00:00:00 2001
 From: Dominik Haller <d.haller@phytec.de>
-Date: Wed, 2 Jul 2025 14:18:43 +0200
+Date: Thu, 25 Sep 2025 11:15:45 -0700
 Subject: [PATCH U-Boot v2025.01] dts: arm64: am62l-phycore-fpsc: Configure
- 1GiB RAM
+ 2GiB RAM
 
-Set memory to 1GiB for the PCL-082-PROTO-002.A0 variant.
+Set memory to 2GiB for the PCL-082-PROTO-001/PFL-G-03-PT002 variant.
+
+EEPROM based DDR size detection can be activated once the
+PCL-082->PFL-G-03 transition is done.
 
 Signed-off-by: Dominik Haller <d.haller@phytec.de>
 ---
@@ -12,18 +15,18 @@ Signed-off-by: Dominik Haller <d.haller@phytec.de>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/dts/upstream/src/arm64/ti/k3-am62l-phycore-fpsc.dtsi b/dts/upstream/src/arm64/ti/k3-am62l-phycore-fpsc.dtsi
-index f2b721dbc1c..6f0a91d2f1e 100644
+index 4664d1f5f041..7d5f9ceb7d60 100644
 --- a/dts/upstream/src/arm64/ti/k3-am62l-phycore-fpsc.dtsi
 +++ b/dts/upstream/src/arm64/ti/k3-am62l-phycore-fpsc.dtsi
 @@ -23,7 +23,7 @@
  
  	memory@80000000 {
  		device_type = "memory";
--		reg = <0x00000000 0x80000000 0x00000000 0x80000000>;
-+		reg = <0x00000000 0x80000000 0x00000000 0x40000000>;
+-		reg = <0x00000000 0x80000000 0x00000000 0x40000000>;
++		reg = <0x00000000 0x80000000 0x00000000 0x80000000>;
  		bootph-all;
  	};
  
 -- 
-2.25.1
+2.43.0
 
