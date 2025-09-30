@@ -16,7 +16,7 @@ state.phyBOARDRigel {
 	control.2 {
 		iface MIXER
 		name 'ADC Capture Switch'
-		value false
+		value true
 		comment {
 			access 'read write'
 			type BOOLEAN
@@ -26,7 +26,7 @@ state.phyBOARDRigel {
 	control.3 {
 		iface MIXER
 		name 'ADC Capture Volume'
-		value 24
+		value 26
 		comment {
 			access 'read write'
 			type INTEGER
@@ -34,7 +34,7 @@ state.phyBOARDRigel {
 			range '0 - 64'
 			dbmin -2000
 			dbmax 1200
-			dbvalue.0 -800
+			dbvalue.0 -700
 		}
 	}
 	control.4 {
@@ -140,8 +140,8 @@ state.phyBOARDRigel {
 	control.11 {
 		iface MIXER
 		name 'HP Analog Playback Volume'
-		value.0 37
-		value.1 37
+		value.0 74
+		value.1 74
 		comment {
 			access 'read write'
 			type INTEGER
@@ -149,8 +149,8 @@ state.phyBOARDRigel {
 			range '0 - 127'
 			dbmin -6350
 			dbmax 0
-			dbvalue.0 -4500
-			dbvalue.1 -4500
+			dbvalue.0 -2650
+			dbvalue.1 -2650
 		}
 	}
 	control.12 {
