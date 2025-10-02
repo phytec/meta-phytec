@@ -1,0 +1,23 @@
+api-version: 3
+supported-device-types:
+  - mtd
+partitions:
+  - name: tiboot3
+    input:
+      filename: tiboot3.bin
+      sha256sum: ${@partup_sha256sum('tiboot3.bin', d)}
+    size: 512kiB
+  - name: tispl
+    input:
+      filename: tispl.bin
+      sha256sum: ${@partup_sha256sum('tispl.bin', d)}
+    size: 2MiB
+  - name: u-boot
+    input:
+      filename: u-boot.img
+      sha256sum: ${@partup_sha256sum('u-boot.img', d)}
+    size: 4MiB
+  - name: env
+    size: 256kiB
+  - name: env.backup
+    size: 256kiB

@@ -1,0 +1,13 @@
+api-version: 3
+supported-device-types:
+  - mtd
+partitions:
+  - name: u-boot
+    input:
+      filename: ${BOOTLOADER_FILE}
+      sha256sum: ${@partup_sha256sum(d.getVar('BOOTLOADER_FILE'), d)}
+    size: 3840kiB
+  - name: env
+    size: 128kiB
+  - name: env_redund
+    size: 128kiB
