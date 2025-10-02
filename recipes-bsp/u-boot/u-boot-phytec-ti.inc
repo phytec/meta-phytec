@@ -55,7 +55,8 @@ do_deploy:append:k3r5 () {
 do_deploy:append:am62lxx () {
         for f in ${B}/tiboot3*.bin; do
                 if [ -f "$f" ]; then
-                        install -m 644 $f ${DEPLOYDIR}/
+                        install -m 0644 $f ${DEPLOYDIR}/
+                        ln -sf $(basename $f) ${DEPLOYDIR}/tiboot3-${MACHINE}.bin
                 fi
         done
 }
