@@ -1,4 +1,0 @@
-define KFEATURE_DESCRIPTION "Enable RT capabilities"
-define KFEATURE_COMPATIBILITY board
-
-kconf non-hardware phytec_ti_rt.cfg
