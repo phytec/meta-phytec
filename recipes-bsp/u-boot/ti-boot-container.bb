@@ -18,3 +18,5 @@ do_deploy() {
     install -m 644 ${B}/ti-boot-container.img ${DEPLOYDIR}
 }
 addtask deploy after do_compile
+
+COMPATIBLE_MACHINE = "(k3)"
