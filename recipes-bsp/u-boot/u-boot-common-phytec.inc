@@ -10,14 +10,14 @@ PROVIDES += "u-boot"
 
 do_deploy:append() {
     if [ -n "${UBOOT_CONFIG}" ]; then
-        for defconfig in ${UBOOT_MACHINE}; do
+        for config in ${UBOOT_MACHINE}; do
             i=$(expr $i + 1);
             for type in ${UBOOT_CONFIG}; do
                 j=$(expr $j + 1);
                 if [ $j -eq $i ]; then
-                    install -m 644 ${B}/${defconfig}/.config ${DEPLOYDIR}/${UBOOT_BINARY}-${MACHINE}-${defconfig}.config
-                    ln -sf ${UBOOT_BINARY}-${MACHINE}-${defconfig}.config ${DEPLOYDIR}/${UBOOT_BINARY}-${type}.config
-                    ln -sf ${UBOOT_BINARY}-${MACHINE}-${defconfig}.config ${DEPLOYDIR}/${UBOOT_BINARY}.config
+                    install -m 644 ${B}/${config}-${type}/.config ${DEPLOYDIR}/${UBOOT_BINARY}-${MACHINE}-${config}-${type}.config
+                    ln -sf ${UBOOT_BINARY}-${MACHINE}-${config}.config ${DEPLOYDIR}/${UBOOT_BINARY}-${type}.config
+                    ln -sf ${UBOOT_BINARY}-${MACHINE}-${config}.config ${DEPLOYDIR}/${UBOOT_BINARY}.config
                 fi
             done
             unset  j
@@ -36,8 +36,8 @@ do_compile:prepend:k3r5() {
             for type in ${UBOOT_CONFIG}; do
                 j=$(expr $j + 1);
                 if [ $j -eq $i ]; then
-                    if ! [ -L ${B}/${config}/${UBOOT_BINARY} ] && ! [ -f ${B}/${config}/${UBOOT_BINARY} ]; then
-                        ln -s ${B}/${config}/spl/u-boot-spl.${UBOOT_SUFFIX} ${B}/${config}/${UBOOT_BINARY}
+                    if ! [ -L ${B}/${config}-${type}/${UBOOT_BINARY} ] && ! [ -f ${B}/${config}-${type}/${UBOOT_BINARY} ]; then
+                        ln -s ${B}/${config}-${type}/spl/u-boot-spl.${UBOOT_SUFFIX} ${B}/${config}-${type}/${UBOOT_BINARY}
                     fi
                 fi
             done

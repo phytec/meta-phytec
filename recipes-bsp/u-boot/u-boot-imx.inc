@@ -32,16 +32,16 @@ do_configure:append() {
                 j=$(expr $j + 1);
                 if [ $j -eq $i ]; then
                     for firmware in ${IMX_BOOT_CONTAINER_FIRMWARE}; do
-                        bbnote "Copy firmware: ${firmware} from ${DEPLOY_DIR_IMAGE} -> ${B}/${config}/"
-                        cp ${DEPLOY_DIR_IMAGE}/${firmware} ${B}/${config}/
+                        bbnote "Copy firmware: ${firmware} from ${DEPLOY_DIR_IMAGE} -> ${B}/${config}-${type}/"
+                        cp ${DEPLOY_DIR_IMAGE}/${firmware} ${B}/${config}-${type}/
                     done
                     if [ -n "${ATF_MACHINE_NAME}" ]; then
-                        cp ${DEPLOY_DIR_IMAGE}/${ATF_MACHINE_NAME} ${B}/${config}/bl31.bin
+                        cp ${DEPLOY_DIR_IMAGE}/${ATF_MACHINE_NAME} ${B}/${config}-${type}/bl31.bin
                     else
                         bberror "ATF binary is undefined, result binary would be unusable!"
                     fi
                     if [ "${@bb.utils.contains('MACHINE_FEATURES', 'optee', '1' , '0' , d)}" = "1" ] ; then
-                        cp ${DEPLOY_DIR_IMAGE}/optee/tee-raw.bin ${B}/${config}/tee.bin
+                        cp ${DEPLOY_DIR_IMAGE}/optee/tee-raw.bin ${B}/${config}-${type}/tee.bin
                     fi
                 fi
             done

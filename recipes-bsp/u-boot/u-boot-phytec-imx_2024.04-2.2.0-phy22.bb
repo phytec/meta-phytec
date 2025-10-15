@@ -36,8 +36,8 @@ do_deploy:append:mx8m-generic-bsp() {
                 if [ $j -eq $i ]
                 then
                     install -d ${DEPLOYDIR}/imx-boot-tools
-                    install -m 0777 ${B}/${config}/arch/arm/dts/${UBOOT_DTB_NAME} ${DEPLOYDIR}/imx-boot-tools
-                    install -m 0777 ${B}/${config}/u-boot-nodtb.bin  ${DEPLOYDIR}/${BOOT_TOOLS}/u-boot-nodtb.bin-${MACHINE}-${type}
+                    install -m 0777 ${B}/${config}-${type}/arch/arm/dts/${UBOOT_DTB_NAME} ${DEPLOYDIR}/imx-boot-tools
+                    install -m 0777 ${B}/${config}-${type}/u-boot-nodtb.bin  ${DEPLOYDIR}/${BOOT_TOOLS}/u-boot-nodtb.bin-${MACHINE}-${type}
                 fi
             done
             unset  j
