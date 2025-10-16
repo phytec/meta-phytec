@@ -44,8 +44,8 @@ MACHINE_FEATURES_REMOVE_LIST:remove:update = "fw-update"
 # =========================================================================
 # Specify WIFI and Bluetooth firmwares to install
 # For PEB-WLBT-05 expansions we use the Laird Sterling LWB firmware
-WIFI_LIST = "laird-sterling-firmware"
-BLUETOOTH_LIST = "laird-sterling-firmware"
+WIFI_LIST = "ezurio-sterling-firmware"
+BLUETOOTH_LIST = "ezurio-sterling-firmware"
 
 # =========================================================================
 # Flashlayout configuration
