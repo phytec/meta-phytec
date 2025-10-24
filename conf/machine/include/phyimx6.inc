@@ -64,6 +64,5 @@ IMAGE_FSTYPES ?= " \
     ${@bb.utils.contains('MACHINE_FEATURES', 'emmc', '', 'ubifs', d)} \
 "
 IMAGE_FSTYPES:update = " \
-    partup \
-    ${@bb.utils.contains('MACHINE_FEATURES', 'emmc', '', 'ubifs', d)} \
+    ${@bb.utils.contains('MACHINE_FEATURES', 'emmc', 'partup', 'ubifs', d)} \
 "
