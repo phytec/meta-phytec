@@ -1,27 +1,31 @@
-SUMMARY = "Laird Sterling LWB firmware files for broadcom (cypress) 2.4G and 5G radio module"
+SUMMARY = "Ezurio Sterling LWB firmware files for broadcom (Infineon cypress) 2.4G and 5G radio module"
 SECTION = "kernel"
 
 inherit allarch
 
-LRD_LWB_URI_BASE = "https://github.com/LairdCP/Sterling-LWB-and-LWB5-Release-Packages/releases/download/LRD-REL-${PV}"
+LRD_LWB_URI_BASE = "https://github.com/Ezurio/SonaIF-Release-Packages/releases/download/LRD-REL-${PV}"
 
 SRC_URI:append = " \
-    ${LRD_LWB_URI_BASE}/laird-lwb-etsi-firmware-${PV}.tar.bz2;name=laird \
-    ${LRD_LWB_URI_BASE}/laird-lwb5-etsi-firmware-${PV}.tar.bz2;name=laird5G \
+    ${LRD_LWB_URI_BASE}/summit-lwb-etsi-firmware-${PV}.tar.bz2;name=laird \
+    ${LRD_LWB_URI_BASE}/summit-lwb5-etsi-firmware-${PV}.tar.bz2;name=laird5G \
 "
 
-SRC_URI[laird.md5sum] = "7654dabc934e535a97eda31d5475a8b1"
-SRC_URI[laird.sha256sum] = "12ccc8931ce0ed90cab897ab6d165a97db021271d99fe03b5495583eb1ec4d94"
-SRC_URI[laird5G.md5sum] = "2b10109554f8677aeb942c7f74d39383"
-SRC_URI[laird5G.sha256sum] = "bd609b249b176500f03cf21c76a88356d09ee4d8a1623ced2f781c8bd32b3f9c"
+SRC_URI[laird.md5sum] = "e4dda97ce1258e1699e0b5b086328ef8"
+SRC_URI[laird.sha256sum] = "0ea5081d0bc5232e6979d884652e9e1d855c9ad2c50eef899aba90c9378e8076"
+SRC_URI[laird5G.md5sum] = "79f0bfbe9351612d91f7798910bbb614"
+SRC_URI[laird5G.sha256sum] = "13e6c54a70d4b2637f257bb40a1124ce259a66cdf5444c177d918fc1dbd4941a"
 
 RCONFLICTS:${PN} = "linux-firmware-bcm43430 linux-firmware-bcm4339"
 RREPLACES:${PN} = "linux-firmware-bcm43430 linux-firmware-bcm4339"
 RPROVIDES:${PN} = "linux-firmware-bcm43430 linux-firmware-bcm4339"
 
-LICENSE = "Laird"
-NO_GENERIC_LICENSE[Laird] = "LICENSE"
-LIC_FILES_CHKSUM = "file://LICENSE;md5=53d3628b28a0bc3caea61587feade5f9"
+LICENSE = "Cypress & Ezurio"
+NO_GENERIC_LICENSE[Cypress] = "LICENSE.cypress"
+NO_GENERIC_LICENSE[Ezurio] = "LICENSE.ezurio"
+LIC_FILES_CHKSUM = " \
+    file://LICENSE.cypress;md5=cbc5f665d04f741f1e006d2096236ba7 \
+    file://LICENSE.ezurio;md5=fd3dd0630b215465b6f50540642d5b93 \
+"
 
 do_configure[noexec] = "1"
 do_compile[noexec] = "1"
