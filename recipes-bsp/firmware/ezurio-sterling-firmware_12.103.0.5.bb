@@ -34,6 +34,9 @@ S = "${WORKDIR}/sources"
 UNPACKDIR = "${S}"
 FIRMWARE_PATH = "/lib/firmware/brcm"
 
+BRCM4339_FW_NAME ?= "brcmfmac4339-sdio.bin"
+BRCM4343_FW_NAME ?= "brcmfmac43430-sdio.bin"
+
 do_install() {
     # Clear country code entry
     sed -i 's:\(ccode=\).\+:\1:' ${S}${FIRMWARE_PATH}/*-sdio.txt
@@ -41,21 +44,21 @@ do_install() {
     install -d ${D}${nonarch_base_libdir}/firmware/brcm/
 
     install -m 644 ${S}${FIRMWARE_PATH}/BCM43430A1.hcd ${D}${nonarch_base_libdir}/firmware/brcm/
-    install -m 644 ${S}${FIRMWARE_PATH}/brcmfmac43430-sdio.bin ${D}${nonarch_base_libdir}/firmware/brcm/
+    install -m 644 ${S}${FIRMWARE_PATH}/brcmfmac43430-sdio.bin ${D}${nonarch_base_libdir}/firmware/brcm/${BRCM4343_FW_NAME}
     install -m 644 ${S}${FIRMWARE_PATH}/brcmfmac43430-sdio.clm_blob ${D}${nonarch_base_libdir}/firmware/brcm/
     install -m 644 ${S}${FIRMWARE_PATH}/brcmfmac43430-sdio.txt ${D}${nonarch_base_libdir}/firmware/brcm/
 
     install -m 644 ${S}${FIRMWARE_PATH}/BCM4335C0.hcd ${D}${nonarch_base_libdir}/firmware/brcm/
-    install -m 644 ${S}${FIRMWARE_PATH}/brcmfmac4339-sdio.bin ${D}${nonarch_base_libdir}/firmware/brcm/
+    install -m 644 ${S}${FIRMWARE_PATH}/brcmfmac4339-sdio.bin ${D}${nonarch_base_libdir}/firmware/brcm/${BRCM4339_FW_NAME}
     install -m 644 ${S}${FIRMWARE_PATH}/brcmfmac4339-sdio.txt ${D}${nonarch_base_libdir}/firmware/brcm/
 }
 
 FILES:${PN}:append = " \
     ${nonarch_base_libdir}/firmware/brcm/BCM43430A1.hcd \
-    ${nonarch_base_libdir}/firmware/brcm/brcmfmac43430-sdio.bin \
+    ${nonarch_base_libdir}/firmware/brcm/${BRCM4343_FW_NAME} \
     ${nonarch_base_libdir}/firmware/brcm/brcmfmac43430-sdio.clm_blob \
     ${nonarch_base_libdir}/firmware/brcm/brcmfmac43430-sdio.txt \
     ${nonarch_base_libdir}/firmware/brcm/BCM4335C0.hcd \
-    ${nonarch_base_libdir}/firmware/brcm/brcmfmac4339-sdio.bin \
+    ${nonarch_base_libdir}/firmware/brcm/${BRCM4339_FW_NAME} \
     ${nonarch_base_libdir}/firmware/brcm/brcmfmac4339-sdio.txt \
 "
