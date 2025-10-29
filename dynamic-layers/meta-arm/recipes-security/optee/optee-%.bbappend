@@ -1,5 +1,6 @@
 COMPATIBLE_MACHINE  = "^("
 COMPATIBLE_MACHINE .= "k3"
 COMPATIBLE_MACHINE .= "|phyboard-segin-imx6ul-6"
+COMPATIBLE_MACHINE .= "|phyboard-segin-imx6ul-8"
 COMPATIBLE_MACHINE .= "|mx8m-generic-bsp"
 COMPATIBLE_MACHINE .= ")$"
