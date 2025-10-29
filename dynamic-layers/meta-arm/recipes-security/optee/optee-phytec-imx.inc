@@ -51,6 +51,11 @@ EXTRA_OEMAKE:append:mx8mp-nxp-bsp = " \
 
 EXTRA_OEMAKE:append:mx6ul-generic-bsp = " \
     CFG_WITH_SOFTWARE_PRNG=n \
-    ${@bb.utils.contains('MACHINE_FEATURES', 'caam', '', 'CFG_IMX_RNGB=y', d)} \
+    ${@bb.utils.contains('OPTEE_CORE_LOG_LEVEL', '0', 'CFG_TEE_CORE_TA_TRACE=n', '', d)} \
+    CFG_CC_OPT_LEVEL=2 \
+    CFG_UNWIND=n\
+    CFG_CORE_HUK_SUBKEY_COMPAT=y CFG_CORE_HUK_SUBKEY_COMPAT_USE_OTP_DIE_ID=y \
+    CFG_HWRNG_PTA=y CFG_HWRNG_QUALITY=1024 \
+    ${@bb.utils.contains('MACHINE_FEATURES', 'caam', 'CFG_NXP_CAAM=y CFG_IMX_CAAM=n CFG_CRYPTO_DRIVER=y CFG_NXP_CAAM_ECC_DRV=n', 'CFG_IMX_RNGB=y', d)} \
     ${@bb.utils.contains('MACHINE_FEATURES', 'emmc', '', 'CFG_RPMB_FS=n', d)} \
 "
