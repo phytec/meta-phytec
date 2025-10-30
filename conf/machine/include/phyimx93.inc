@@ -14,7 +14,6 @@ IMAGE_CLASSES += "wic-helper"
 IMAGE_CLASSES:append:mx93-nxp-bsp = " wic-bootenv-helper"
 WKS_FILES:mx93-generic-bsp ?= "imx9-sdimage.wks"
 WKS_BOOTIMAGESIZE ?= "64"
-WIC_CREATE_EXTRA_ARGS:remove = "--no-fstab-update"
 
 # MMC user area bootloader image offset
 BOOTLOADER_SEEK:mx93-generic-bsp ?= "32"
