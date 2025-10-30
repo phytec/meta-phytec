@@ -11,7 +11,9 @@ EULA_FILE_ST_MD5SUM:stm32mpcommon = "8b505090fb679839cefbcc784afe8ce9"
 # =========================================================================
 PREFERRED_PROVIDER_virtual/kernel:openstlinuxcommon= "linux-stm32mp"
 PREFERRED_PROVIDER_virtual/bootloader:openstlinuxcommon = "u-boot-stm32mp"
+PREFERRED_PROVIDER_u-boot:openstlinuxcommon ??= "u-boot-stm32mp"
 PREFERRED_PROVIDER_virtual/trusted-firmware-a:openstlinuxcommon = "tf-a-stm32mp"
+PREFERRED_PROVIDER_virtual/trusted-firmware-m:openstlinuxcommon ??= "tf-m-stm32mp"
 PREFERRED_PROVIDER_virtual-optee-os = "optee-os-stm32mp"
 VIRTUAL-RUNTIME_optee-os:openstlinuxcommon = "optee-os-stm32mp"
 
