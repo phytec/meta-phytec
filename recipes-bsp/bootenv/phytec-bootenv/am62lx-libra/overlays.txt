@@ -1,1 +1,1 @@
-overlays=k3-am62l3-libra-fpsc-lvds-ac209.dtbo
+overlays=k3-am62l3-phyflex-libra-lvds-ac209.dtbo
