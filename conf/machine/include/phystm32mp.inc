@@ -48,10 +48,19 @@ IMAGE_FSTYPES ?= "${WKS_IMAGE_FSTYPES} tar.xz ext4"
 # =========================================================================
 
 # Kernel image type
-KERNEL_IMAGETYPE     =  "uImage"
-KERNEL_ALT_IMAGETYPE =  " Image "
-KERNEL_ALT_IMAGETYPE =+ " vmlinux "
-KERNEL_ALT_IMAGETYPE =+ "zImage"
+KERNEL_DEFAULT_NAME = "uImage"
+KERNEL_DEFAULT_NAME:aarch64 = "Image.gz"
+
+# arm32 bits
+KERNEL_EFI_NAME = "${@bb.utils.contains('MACHINE_FEATURES', 'efi', 'zImage', 'uImage', d)}"
+KERNEL_EFI_ALT_NAME = "${@bb.utils.contains('MACHINE_FEATURES', 'efi', 'uImage', 'zImage', d)}"
+# arm64 bits
+KERNEL_EFI_NAME:aarch64 = "${@bb.utils.contains('MACHINE_FEATURES', 'efi', 'Image', 'Image.gz', d)}"
+KERNEL_EFI_ALT_NAME:aarch64 = "${@bb.utils.contains('MACHINE_FEATURES', 'efi', 'Image.gz', 'Image', d)}"
+
+KERNEL_IMAGETYPE     = "${@bb.utils.contains('MACHINE_FEATURES', 'fit', 'fitImage', '${KERNEL_EFI_NAME}', d)}"
+KERNEL_ALT_IMAGETYPE = " vmlinux "
+KERNEL_ALT_IMAGETYPE =+ " ${@bb.utils.contains('MACHINE_FEATURES', 'fit', '${KERNEL_DEFAULT_NAME}', '${KERNEL_EFI_ALT_NAME}', d)} "
 
 KERNEL_CLASSES = "kernel-uimage"
 
