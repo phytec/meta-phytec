@@ -166,6 +166,7 @@ UBOOT_DEVICETREE:openstlinuxcommon ?= ""
 
 # Define u-boot defconfig for specific ST programmer binaries
 # Use same defconfig as the default ones
+UBOOT_CONFIG[programmer_stm32mp25] = "phyflex_stm32mp2_defconfig,,u-boot.dtb"
 UBOOT_CONFIG[programmer_stm32mp15] = "phycore-stm32mp15_defconfig,,u-boot.dtb"
 UBOOT_CONFIG[programmer_stm32mp13] = "phycore-stm32mp13_defconfig,,u-boot.dtb"
 

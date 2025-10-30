@@ -124,12 +124,15 @@ PHY_EXPANSIONS_SEGIN += "stm32mp135x-phyboard-segin-phycam-vm016.dtbo"
 EXTRA_IMAGEDEPENDS += "virtual/bootloader"
 
 # Define default U-Boot config
+# STM32MP25
+UBOOT_CONFIG:stm32mp25common ?= "default_stm32mp25"
 # STM32MP15
 UBOOT_CONFIG:stm32mp15common ?= "default_stm32mp15"
 # STM32MP13
 UBOOT_CONFIG:stm32mp13common ?= "default_stm32mp13"
 
 # Define u-boot defconfig and binary to use for each UBOOT_CONFIG
+UBOOT_CONFIG[default_stm32mp25] = "phyflex_stm32mp2_defconfig,,u-boot.dtb"
 UBOOT_CONFIG[default_stm32mp15] = "phycore-stm32mp15_defconfig,,u-boot.dtb"
 UBOOT_CONFIG[default_stm32mp13] = "phycore-stm32mp13_defconfig,,u-boot.dtb"
 
