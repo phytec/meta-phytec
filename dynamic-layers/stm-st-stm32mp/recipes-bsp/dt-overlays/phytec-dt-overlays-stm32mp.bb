@@ -4,17 +4,20 @@ SECTION = "kernel"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
-COMPATIBLE_MACHINE = "(stm32mp1common)"
+COMPATIBLE_MACHINE = "(stm32mpcommon)"
 
 inherit devicetree
 
 SRC_URI += "file://README_stm32mp15xx_sargas.md"
 SRC_URI += "file://README_stm32mp13xx_segin.md"
+SRC_URI += "file://README_stm32mp25xx_libra.md"
 
-README = "README_stm32mp15xx_sargas.md"
+README:phycore-stm32mp15 = "README_stm32mp15xx_sargas.md"
 README:phycore-stm32mp13 = "README_stm32mp13xx_segin.md"
+README:stm32mp25x-libra = "README_stm32mp25xx_libra.md"
 
 DT_FILES_PATH = "${STAGING_KERNEL_DIR}/arch/${ARCH}/boot/dts/st/overlays/"
+
 DT_OVERLAYS_INSTALL_DIR ?= "boot/overlays"
 
 PHY_EXPANSIONS ?= ""
