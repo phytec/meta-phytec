@@ -218,4 +218,4 @@ WKS_FILE_DEPENDS:openstlinuxcommon ?= " \
 # This default value (BOOTSCHEME) can be used for example for the WIC file generation or rauc bundle build.
 BOOTSCHEME = "${@bb.utils.contains('BOOTSCHEME_LABELS', 'optee', 'optee', 'trusted', d)}"
 
-WKS_FILES:openstlinuxcommon ?= "stm32mp1-sdimage-openstlinux.wks.in"
+WKS_FILES:openstlinuxcommon ?= "stm32mp-sdimage-openstlinux.wks.in"
