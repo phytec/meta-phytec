@@ -27,7 +27,6 @@ IMAGE_BOOT_FILES += "oftree ${EXTERNAL_KERNEL_DEVICETREE}"
 WKS_FILES:mx8m-generic-bsp ?= "imx8m-sdimage.wks"
 WKS_FILES:mx8x-nxp-bsp ?= "imx8x-sdimage.wks"
 WKS_BOOTIMAGESIZE ?= "50"
-WIC_CREATE_EXTRA_ARGS:remove = "--no-fstab-update"
 
 IMX_DEFAULT_ATF_PROVIDER:use-mainline-bsp ?= "trusted-firmware-a"
 # MMC user area bootloader image offset
