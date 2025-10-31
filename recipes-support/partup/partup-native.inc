@@ -10,6 +10,7 @@ RDEPENDS:${PN} += " \
     dosfstools-native \
     e2fsprogs-mke2fs-native \
     e2fsprogs-resize2fs-native \
+    e2fsprogs-tune2fs-native \
     mtd-utils-native \
     squashfs-tools-native \
     tar-native \
