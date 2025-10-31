@@ -8,6 +8,7 @@ RDEPENDS:${PN} += " \
     dosfstools \
     e2fsprogs-mke2fs \
     e2fsprogs-resize2fs \
+    e2fsprogs-tune2fs \
     mtd-utils \
     squashfs-tools \
     tar \
