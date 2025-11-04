@@ -5,7 +5,7 @@ SOC_FAMILY:append = ":am64xx"
 TFA_BOARD = "lite"
 OPTEEMACHINE = "k3-am64x"
 
-MACHINE_ESSENTIAL_EXTRA_RRECOMMENDS += "prueth-fw pruhsr-fw prusw-fw"
+MACHINE_ESSENTIAL_EXTRA_RRECOMMENDS += "ti-firmware-pru"
 
 MACHINE_FEATURES += "pcie"
 
@@ -28,9 +28,6 @@ PREFERRED_PROVIDER_virtual/kernel ?= "linux-phytec"
 PREFERRED_PROVIDER_virtual/bootloader ?= "u-boot-phytec"
 PREFERRED_PROVIDER_u-boot ?= "u-boot-phytec"
 PREFERRED_PROVIDER_ti-sci-fw ?= "ti-firmware-sysfw"
-PREFERRED_PROVIDER_prueth-fw ?= "ti-firmware-pru"
-PREFERRED_PROVIDER_pruhsr-fw ?= "ti-firmware-pru"
-PREFERRED_PROVIDER_prusw-fw ?= "ti-firmware-pru"
 
 UBOOT_CAPSULE = "uboot-capsule.bin"
 SPL_CAPSULE = "tispl-capsule.bin"
