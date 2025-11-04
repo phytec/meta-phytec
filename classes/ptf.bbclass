@@ -2,24 +2,38 @@
 # ENV_PTF_* variables are consumed by our test system configs.
 
 do_image[depends] += "virtual/kernel:do_shared_workdir"
-do_image[depends] += "virtual/bootloader:do_unpack"
+do_image[depends] += "virtual/bootloader:do_deploy"
 do_image_cpio[depends] += "virtual/kernel:do_shared_workdir"
-do_image_cpio[depends] += "virtual/bootloader:do_unpack"
+do_image_cpio[depends] += "virtual/bootloader:do_deploy"
 do_bundle[depends] += "virtual/kernel:do_shared_workdir"
-do_bundle[depends] += "virtual/bootloader:do_unpack"
+do_bundle[depends] += "virtual/bootloader:do_deploy"
 
-def get_bootloader_makefile(d):
+def get_bootloader_version(d):
+    import os, re, bb
+
     bootloader = d.getVar('PREFERRED_PROVIDER_virtual/bootloader')
-    mult = os.path.join(d.getVar('BASE_WORKDIR'), d.getVar('MULTIMACH_TARGET_SYS'))
-    bl_mkfile = '%s/*/git/Makefile' % os.path.join(mult, bootloader)
-    import glob
-    return open(glob.glob(bl_mkfile)[0], 'r').read()
+    uboot_file = d.getVar('UBOOT_BINARY')
+    barebox_file = "barebox.config"
+    bootloader_file = barebox_file if "barebox" in bootloader else uboot_file
 
-def get_bootloader_version(makefile):
-    import re
-    version = re.compile(r'(VERSION = \d\d\d\d)').findall(makefile)
-    patchlevel = re.compile(r'(PATCHLEVEL = \d\d)').findall(makefile)
-    return '%s.%s' % (version[0].split(' = ')[1], patchlevel[0].split(' = ')[1])
+    deploy_dir = d.getVar('DEPLOY_DIR_IMAGE')
+    image_path = os.path.join(deploy_dir, bootloader_file)
+
+    if not os.path.exists(image_path):
+        bb.fatal("Bootloader image not found: %s" % image_path)
+
+    barebox_ver_re = re.compile(rb'(\d+\.\d+\.\d+)\s+Configuration')
+    uboot_ver_re = re.compile(rb'U-Boot\s+(\d{4}\.\d{2})')
+    pattern = barebox_ver_re if "barebox" in bootloader else uboot_ver_re
+
+    with open(image_path, 'rb') as stream:
+        data = stream.read()
+
+    match = pattern.search(data)
+    if not match:
+        bb.fatal("Could not parse version from bootloader file")
+
+    return match.group(1).decode()
 
 def get_kernelversion_file(p):
     fn = p + '/kernel-abiversion'
@@ -44,8 +58,7 @@ def build_ptf_data(d):
     data['ENV_PTF_YOCTO_RELEASE'] = d.getVar('DISTRO_CODENAME')
     data['ENV_PTF_IMAGE'] = d.getVar('IMAGE_BASENAME')
     data['ENV_PTF_DISTRO'] = d.getVar('DISTRO')
-    mk = get_bootloader_makefile(d)
-    data['ENV_PTF_BOOTLOADER_VERSION'] = get_bootloader_version(mk)
+    data['ENV_PTF_BOOTLOADER_VERSION'] = get_bootloader_version(d)
 
     return data
 
