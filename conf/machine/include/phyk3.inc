@@ -22,6 +22,7 @@ UBOOT_DTBO_OFFSET = "0x00010000"
 SPL_BINARY = "tispl.bin"
 SPL_BINARYNAME = "tispl.bin"
 UBOOT_SUFFIX = "img"
+UBOOT_BINARY = "u-boot.${UBOOT_SUFFIX}"
 
 EXTRA_IMAGEDEPENDS += "virtual/bootloader"
 
