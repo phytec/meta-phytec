@@ -92,10 +92,10 @@ if [ -f "${ROOTDIR}/build/conf/bblayers.conf" ] || [ -f "${ROOTDIR}/${1}/conf/bb
 fi
 
 get_init_env_dir() {
-	if [ -e "${ROOTDIR}/sources/poky" ]; then
+	if [ -e "${ROOTDIR}/sources/oe-core" ]; then
+                echo sources/oe-core
+	elif [ -e "${ROOTDIR}/sources/poky" ]; then
 		echo sources/poky
-	elif [ -e "${ROOTDIR}/sources/oe-core" ]; then
-		echo sources/oe-core
 	else
 		echo >&2 "poky/oe-core build environment script not found."
 		exit 1
