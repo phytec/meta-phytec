@@ -15,6 +15,7 @@ require ${VENDOR_INC}
 inherit ${@oe.utils.ifelse(d.getVar('UBOOT_PROVIDES_BOOT_CONTAINER') == '1', 'imx-boot-container', '')}
 
 GIT_URL = "git://github.com/phytec/u-boot-phytec.git;protocol=https"
+GIT_URL:phynext = "git://git@github.com/phytec/u-boot-phytec-dev.git;protocol=ssh"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"

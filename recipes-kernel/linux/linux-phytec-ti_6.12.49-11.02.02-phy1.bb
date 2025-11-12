@@ -7,6 +7,7 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/linux-phytec-ti-6.12:${THISDIR}/linux-phytec-6.12:"
 GIT_URL = "git://github.com/phytec/linux-phytec-ti.git;protocol=https"
+GIT_URL:phynext = "git://git@github.com/phytec/linux-phytec-ti-dev.git;protocol=ssh"
 SRC_URI = " \
 	${GIT_URL};branch=${BRANCH} \
 	file://systemd.scc \

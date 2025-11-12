@@ -15,6 +15,7 @@ LICENSE = "GPL-2.0-or-later"
 LIC_FILES_CHKSUM = "file://Licenses/gpl-2.0.txt;md5=b234ee4d69f5fce4486a80fdaf4a4263"
 BRANCH = "v2024.04-2.2.0-phy"
 GIT_URL = "git://github.com/phytec/${BPN};protocol=https"
+GIT_URL:phynext = "git://git@git.phytec.de/u-boot-phytec-imx-dev.git;protocol=ssh"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
 PR = "r0"
