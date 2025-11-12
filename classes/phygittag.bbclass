@@ -120,3 +120,5 @@ def git_tag_to_integration_branch(_pv_file):
         # Is a original upstream version like "2014.11.0" or "4.1.18".
         return "v" +  _pv_file + "-phy"
 BRANCH = "${@git_tag_to_integration_branch("${_PV_FILE}")}"
+BRANCH:phynext = "${@git_tag_to_integration_branch("${_PV_FILE}")}next"
+SRCREV:phynext = "${AUTOREV}"
