@@ -9,11 +9,11 @@ TFA_TI:am62lxx = "recipes-bsp/trusted-firmware-a/trusted-firmware-a-ti.inc"
 require ${TFA_TI}
 
 SRC_URI:append:am62lxx-libra-fpsc-1 = " \
-    file://0001-fdts-Override-DDRSS-register-for-PCL-082.patch \
+    file://0001-fdts-Override-DDRSS-register-for-PFL-G-03.patch \
 "
 
 SRC_URI:append:am62lxx-libra-fpsc-2 = " \
-    file://0001-fdts-Override-DDRSS-register-for-PCL-082.patch \
+    file://0001-fdts-Override-DDRSS-register-for-PFL-G-03.patch \
     file://0002-fdts-k3-am62l-ddr-Set-RAM-to-1GB.patch \
 "
 

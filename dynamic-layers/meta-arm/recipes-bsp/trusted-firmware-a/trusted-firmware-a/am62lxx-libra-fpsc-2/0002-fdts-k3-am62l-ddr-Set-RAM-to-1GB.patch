@@ -1,4 +1,4 @@
-From 2a3421fda0fc29b3bf2400587cb27fa35347e129 Mon Sep 17 00:00:00 2001
+From 8f85e7b3df1c26e03fdd0d0f153f0f743123227e Mon Sep 17 00:00:00 2001
 From: Dominik Haller <d.haller@phytec.de>
 Date: Thu, 8 May 2025 10:40:40 +0200
 Subject: [PATCH 2/2] fdts: k3-am62l-ddr: Set RAM to 1GB
