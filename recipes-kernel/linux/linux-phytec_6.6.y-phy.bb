@@ -4,8 +4,7 @@ include linux-common.inc
 include linux-barebox-dt-overlays.inc
 
 GIT_URL = "git://github.com/phytec/linux-phytec.git;protocol=https"
-GIT_URL:kernel-next-branch = "git://git@git.phytec.de/linux-phytec-dev.git;protocol=ssh"
-BRANCH:kernel-next-branch = "v6.6.y-phynext"
+GIT_URL:phynext = "git://git@git.phytec.de/linux-phytec-dev.git;protocol=ssh"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
 PR = "${INC_PR}.0"

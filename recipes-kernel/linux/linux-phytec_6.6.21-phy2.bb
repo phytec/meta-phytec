@@ -6,6 +6,7 @@ include linux-common.inc
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/linux-phytec-6.6:"
 GIT_URL = "git://github.com/phytec/linux-phytec.git;protocol=https"
+GIT_URL:phynext = "git://git@git.phytec.de/linux-phytec-dev.git;protocol=ssh"
 SRC_URI = " \
     ${GIT_URL};name=machine;branch=${BRANCH} \
     git://git.yoctoproject.org/yocto-kernel-cache;type=kmeta;name=meta;branch=yocto-6.6;destsuffix=${KMETA};protocol=https \
