@@ -1,4 +1,5 @@
-inherit hab signing-helpers
+inherit signing-helpers
+inherit_defer ${@ "hab" if "imx-generic-bsp" in d.getVar("OVERRIDES").split(":") else "" }
 
 LINUX_LOAD_ADDR = "${UBOOT_ENTRYPOINT}"
 #true for most mx8*.
@@ -8,7 +9,7 @@ LINUX_IMAGE_PATH = "${B}/${KERNEL_OUTPUT_DIR}/Image"
 LINUX_IMAGE_PATH_SIGNED = "${B}/${KERNEL_OUTPUT_DIR}/Image-signed"
 DTBS_PATH = "${B}/${KERNEL_OUTPUT_DIR}/dts/"
 
-DEPENDS:append:secureboot = " nxp-cst-native"
+DEPENDS:append:imx-generic-bsp:secureboot = " nxp-cst-native"
 
 python do_sign() {
     if "secureboot" in d.getVar('DISTRO_FEATURES'):
