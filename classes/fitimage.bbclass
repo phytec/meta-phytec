@@ -48,7 +48,7 @@
 # for an unsigned fitimage
 
 LICENSE = "MIT"
-inherit hab
+inherit_defer ${@ "hab" if "imx-generic-bsp" in d.getVar("OVERRIDES").split(":") else "" }
 inherit deploy
 inherit signing-helpers
 
