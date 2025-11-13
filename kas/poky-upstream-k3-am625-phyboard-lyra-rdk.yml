@@ -2,8 +2,6 @@ header:
   version: 14
   includes:
     - repo: meta-phytec
-      file: kas/include/poky-local-conf.yml
-    - repo: meta-phytec
       file: kas/include/ti-deploy-settings.yml
 
 machine: phyboard-lyra-am62xx-3
@@ -15,10 +13,19 @@ defaults:
     branch: scarthgap
 
 repos:
-  poky:
-    url: https://github.com/yoctoproject/poky
+  openembedded-core:
+    url: git://git.openembedded.org/openembedded-core.git
     layers:
       meta:
+
+  bitbake:
+    url: git://git.openembedded.org/bitbake.git
+    layers:
+      bitbake: disabled
+
+  meta-yocto:
+    url: git://git.yoctoproject.org/git/meta-yocto.git
+    layers:
       meta-poky:
 
   meta-phytec:
@@ -37,4 +44,4 @@ local_conf_header:
   kernel-version: |
     require conf/linux-mainline/mainline.inc
   oeroot:
-    OEROOT = "${TOPDIR}/../poky"
+    OEROOT = "${TOPDIR}/../openembedded-core/"

@@ -13,10 +13,19 @@ defaults:
     branch: master
 
 repos:
-  poky:
-    url: https://github.com/yoctoproject/poky
+  openembedded-core:
+    url: git://git.openembedded.org/openembedded-core.git
     layers:
       meta:
+
+  bitbake:
+    url: git://git.openembedded.org/bitbake.git
+    layers:
+      bitbake: disabled
+
+  meta-yocto:
+    url: git://git.yoctoproject.org/git/meta-yocto.git
+    layers:
       meta-poky:
 
   meta-phytec:
