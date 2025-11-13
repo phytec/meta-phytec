@@ -10,7 +10,7 @@ target: core-image-base
 
 defaults:
   repos:
-    branch: scarthgap
+    branch: master
 
 repos:
   openembedded-core:
