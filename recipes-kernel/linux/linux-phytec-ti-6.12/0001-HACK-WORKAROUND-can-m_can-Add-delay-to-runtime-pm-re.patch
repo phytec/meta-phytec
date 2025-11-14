@@ -1,0 +1,40 @@
+From a907b4d7cdd39d56a8f3d367a216056b75d9b909 Mon Sep 17 00:00:00 2001
+From: Dominik Haller <d.haller@phytec.de>
+Date: Wed, 12 Nov 2025 15:40:17 -0800
+Subject: [PATCH v6.12.49-11.02.02-phy] HACK/WORKAROUND: can: m_can: Add delay
+ to runtime pm resume
+
+Add a delay in runtime resume as there appears to be some odd bug
+causing kernel crashes in between BL31 firmware and kernel code using
+m_can device resources.
+
+Upstream-Status: Inappropriate [downstream am62l specific]
+Signed-off-by: Dominik Haller <d.haller@phytec.de>
+---
+ drivers/net/can/m_can/m_can_platform.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/net/can/m_can/m_can_platform.c b/drivers/net/can/m_can/m_can_platform.c
+index 40bd10f71f0e..9208816fb44f 100644
+--- a/drivers/net/can/m_can/m_can_platform.c
++++ b/drivers/net/can/m_can/m_can_platform.c
+@@ -8,6 +8,7 @@
+ #include <linux/hrtimer.h>
+ #include <linux/phy/phy.h>
+ #include <linux/platform_device.h>
++#include <linux/delay.h>
+ 
+ #include "m_can.h"
+ 
+@@ -209,6 +210,8 @@ static int __maybe_unused m_can_runtime_resume(struct device *dev)
+ 	if (err)
+ 		clk_disable_unprepare(mcan_class->hclk);
+ 
++	mdelay(50);
++
+ 	return err;
+ }
+ 
+-- 
+2.43.0
+
