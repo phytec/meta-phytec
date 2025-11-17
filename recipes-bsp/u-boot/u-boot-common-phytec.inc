@@ -16,8 +16,8 @@ do_deploy:append() {
                 j=$(expr $j + 1);
                 if [ $j -eq $i ]; then
                     install -m 644 ${B}/${config}-${type}/.config ${DEPLOYDIR}/${UBOOT_BINARY}-${MACHINE}-${config}-${type}.config
-                    ln -sf ${UBOOT_BINARY}-${MACHINE}-${config}.config ${DEPLOYDIR}/${UBOOT_BINARY}-${type}.config
-                    ln -sf ${UBOOT_BINARY}-${MACHINE}-${config}.config ${DEPLOYDIR}/${UBOOT_BINARY}.config
+                    ln -sf ${UBOOT_BINARY}-${MACHINE}-${config}-${type}.config ${DEPLOYDIR}/${UBOOT_BINARY}-${type}.config
+                    ln -sf ${UBOOT_BINARY}-${MACHINE}-${config}-${type}.config ${DEPLOYDIR}/${UBOOT_BINARY}.config
                 fi
             done
             unset  j
