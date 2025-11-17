@@ -61,8 +61,9 @@ do_install:append () {
 uboot_install_capsule_config () {
     config=$1
     type=$2
+    builddir="${config}-${type}"
 
-    install -m 644 ${B}/${config}/${UBOOT_CAPSULE} ${D}/boot/${UBOOT_CAPSULE_BINARYNAME}-${type}-${PV}-${PR}.${UBOOT_CAPSULE_SUFFIX}
+    install -m 644 ${B}/${builddir}/${UBOOT_CAPSULE} ${D}/boot/${UBOOT_CAPSULE_BINARYNAME}-${type}-${PV}-${PR}.${UBOOT_CAPSULE_SUFFIX}
     ln -sf ${UBOOT_CAPSULE_BINARYNAME}-${type}-${PV}-${PR}.${UBOOT_CAPSULE_SUFFIX} ${D}/boot/${UBOOT_CAPSULE}-${type}
     ln -sf ${UBOOT_CAPSULE_BINARYNAME}-${type}-${PV}-${PR}.${UBOOT_CAPSULE_SUFFIX} ${D}/boot/${UBOOT_CAPSULE}
 }
@@ -75,8 +76,9 @@ uboot_install_capsule () {
 uboot_install_spl_capsule_config () {
     config=$1
     type=$2
+    builddir="${config}-${type}"
 
-    install -m 644 ${B}/${config}/${SPL_CAPSULE} ${D}/boot/${SPL_CAPSULE_BINARYNAME}-${type}-${PV}-${PR}.${SPL_CAPSULE_SUFFIX}
+    install -m 644 ${B}/${builddir}/${SPL_CAPSULE} ${D}/boot/${SPL_CAPSULE_BINARYNAME}-${type}-${PV}-${PR}.${SPL_CAPSULE_SUFFIX}
     ln -sf ${SPL_CAPSULE_BINARYNAME}-${type}-${PV}-${PR}.${SPL_CAPSULE_SUFFIX} ${D}/boot/${SPL_CAPSULE}-${type}
     ln -sf ${SPL_CAPSULE_BINARYNAME}-${type}-${PV}-${PR}.${SPL_CAPSULE_SUFFIX} ${D}/boot/${SPL_CAPSULE}
 }
@@ -133,8 +135,9 @@ do_deploy:append () {
 uboot_deploy_capsule_config () {
     config=$1
     type=$2
+    builddir="${config}-${type}"
 
-    install -m 644 ${B}/${config}/${UBOOT_CAPSULE} ${DEPLOYDIR}/${UBOOT_CAPSULE_BINARYNAME}-${type}-${PV}-${PR}.${UBOOT_CAPSULE_SUFFIX}
+    install -m 644 ${B}/${builddir}/${UBOOT_CAPSULE} ${DEPLOYDIR}/${UBOOT_CAPSULE_BINARYNAME}-${type}-${PV}-${PR}.${UBOOT_CAPSULE_SUFFIX}
     ln -sf ${UBOOT_CAPSULE_BINARYNAME}-${type}-${PV}-${PR}.${UBOOT_CAPSULE_SUFFIX} ${DEPLOYDIR}/${UBOOT_CAPSULE}-${type}
     ln -sf ${UBOOT_CAPSULE_BINARYNAME}-${type}-${PV}-${PR}.${UBOOT_CAPSULE_SUFFIX} ${DEPLOYDIR}/${UBOOT_CAPSULE}
     ln -sf ${UBOOT_CAPSULE_BINARYNAME}-${type}-${PV}-${PR}.${UBOOT_CAPSULE_SUFFIX} ${DEPLOYDIR}/${UBOOT_CAPSULE_SYMLINK}-${type}
@@ -150,8 +153,9 @@ uboot_deploy_capsule () {
 uboot_deploy_spl_capsule_config () {
     config=$1
     type=$2
+    builddir="${config}-${type}"
 
-    install -m 644 ${B}/${config}/${SPL_CAPSULE} ${DEPLOYDIR}/${SPL_CAPSULE_BINARYNAME}-${type}-${PV}-${PR}.${SPL_CAPSULE_SUFFIX}
+    install -m 644 ${B}/${builddir}/${SPL_CAPSULE} ${DEPLOYDIR}/${SPL_CAPSULE_BINARYNAME}-${type}-${PV}-${PR}.${SPL_CAPSULE_SUFFIX}
     rm -f ${DEPLOYDIR}/${SPL_CAPSULE_BINARYFILE} ${DEPLOYDIR}/${SPL_CAPSULE_SYMLINK}
     ln -sf ${SPL_CAPSULE_BINARYNAME}-${type}-${PV}-${PR}.${SPL_CAPSULE_SUFFIX} ${DEPLOYDIR}/${SPL_CAPSULE_BINARYFILE}-${type}
     ln -sf ${SPL_CAPSULE_BINARYNAME}-${type}-${PV}-${PR}.${SPL_CAPSULE_SUFFIX} ${DEPLOYDIR}/${SPL_CAPSULE_BINARYFILE}
