@@ -7,8 +7,8 @@ SRC_URI:append:secureboot=" \
                           file://csf_fit_template.txt"
 DEPENDS:append:secureboot = " nxp-cst-native phytec-dev-ca-native"
 
-CSF_TEMPLATE_PATH_SPL="${WORKDIR}/csf_spl_template.txt"
-CSF_TEMPLATE_PATH_FIT="${WORKDIR}/csf_fit_template.txt"
+CSF_TEMPLATE_PATH_SPL="${UNPACKDIR}/csf_spl_template.txt"
+CSF_TEMPLATE_PATH_FIT="${UNPACKDIR}/csf_fit_template.txt"
 
 BL31_BIN_PATH="${BOOT_STAGING}/bl31.bin"
 BL32_BIN_PATH="${BOOT_STAGING}/tee.bin"
