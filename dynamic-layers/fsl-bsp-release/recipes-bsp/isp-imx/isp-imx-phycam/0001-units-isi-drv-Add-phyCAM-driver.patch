@@ -6,6 +6,8 @@ Subject: [PATCH 1/2] units/isi/drv: Add phyCAM driver
 Add a generic phyCAM driver to support both VM-017 and VM-016 PHYTEC
 cameras.
 
+Upstream-Status: Inappropriate [No upstream maintenance]
+
 Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
 ---
  build-all-isp.sh                    |   5 +-
