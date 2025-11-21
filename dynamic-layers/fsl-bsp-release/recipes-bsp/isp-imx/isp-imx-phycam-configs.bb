@@ -29,10 +29,10 @@ do_install() {
     install -d ${D}/opt/imx8-isp/bin/xml
     install -d ${D}/opt/imx8-isp/bin/dwe
 
-    install -m 0644 ${WORKDIR}/xml/* ${D}/opt/imx8-isp/bin/xml
-    install -m 0644 ${WORKDIR}/dwe/* ${D}/opt/imx8-isp/bin/dwe
+    install -m 0644 ${UNPACKDIR}/xml/* ${D}/opt/imx8-isp/bin/xml
+    install -m 0644 ${UNPACKDIR}/dwe/* ${D}/opt/imx8-isp/bin/dwe
 
-    for file in $(find ${WORKDIR}/ -maxdepth 1 -name "Sensor_Entry.cfg.*" -type f); do
+    for file in $(find ${UNPACKDIR}/ -maxdepth 1 -name "Sensor_Entry.cfg.*" -type f); do
         APPENDIX="$(echo ${file} | sed 's/^.*Sensor_Entry\.cfg\(.*\)/\1/g')"
         install -m 0644 ${file} ${D}/opt/imx8-isp/bin/Sensor0_Entry.cfg${APPENDIX}
         install -m 0644 ${file} ${D}/opt/imx8-isp/bin/Sensor1_Entry.cfg${APPENDIX}

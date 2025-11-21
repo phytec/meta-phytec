@@ -38,17 +38,17 @@ do_install() {
     cp -r ${B}/generated/release/bin/*.drv ${D}/opt/imx8-isp/bin
     cp -r ${B}/generated/release/lib/*.so* ${D}/${libdir}
 
-    install -m 0775 ${WORKDIR}/run_isp.sh ${D}/opt/imx8-isp/bin
-    install -m 0644 ${WORKDIR}/90-phycam-isp.rules ${D}${nonarch_base_libdir}/udev/rules.d/
+    install -m 0775 ${UNPACKDIR}/run_isp.sh ${D}/opt/imx8-isp/bin
+    install -m 0644 ${UNPACKDIR}/90-phycam-isp.rules ${D}${nonarch_base_libdir}/udev/rules.d/
 
     if ${@bb.utils.contains('DISTRO_FEATURES','systemd','true','false',d)}; then
         install -d ${D}${systemd_system_unitdir}
-        install -m 0644 ${WORKDIR}/imx8-phycam-isp.service \
+        install -m 0644 ${UNPACKDIR}/imx8-phycam-isp.service \
             ${D}${systemd_system_unitdir}
     fi
 
-    install -m 0755 ${WORKDIR}/isp-mode-select-csi1.sh ${D}${bindir}/isp-mode-select-csi1
-    install -m 0755 ${WORKDIR}/isp-mode-select-csi2.sh ${D}${bindir}/isp-mode-select-csi2
+    install -m 0755 ${UNPACKDIR}/isp-mode-select-csi1.sh ${D}${bindir}/isp-mode-select-csi1
+    install -m 0755 ${UNPACKDIR}/isp-mode-select-csi2.sh ${D}${bindir}/isp-mode-select-csi2
 }
 
 FILES:${PN} += "${nonarch_base_libdir}"
