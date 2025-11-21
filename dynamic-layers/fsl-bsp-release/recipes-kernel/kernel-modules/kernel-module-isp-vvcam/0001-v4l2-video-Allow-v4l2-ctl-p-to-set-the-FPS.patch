@@ -11,6 +11,8 @@ work with the current implementation, as it only uses the denominator to
 check and set the FPS. Fix this by calculating the FPS from numerator
 and denominator instead of only using the denominator.
 
+Upstream-Status: Inappropriate [PHYTEC specific]
+
 Signed-off-by: Stefan Riedmüller <s.riedmueller@phytec.de>
 ---
  vvcam/v4l2/video/video.c | 12 ++++++++----
