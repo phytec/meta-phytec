@@ -22,6 +22,8 @@ VIV_VIDEO_EVENT_SET_FMT event also when S_PARM is called.
 If a S_PARM call is omitted for some reason, VIV_VIDEO_EVENT_SET_FMT is
 still posted during the REQBUFS call.
 
+Upstream-Status: Inappropriate [PHYTEC specific]
+
 Signed-off-by: Stefan Riedmüller <s.riedmueller@phytec.de>
 ---
  vvcam/v4l2/video/video.c | 5 +++++
