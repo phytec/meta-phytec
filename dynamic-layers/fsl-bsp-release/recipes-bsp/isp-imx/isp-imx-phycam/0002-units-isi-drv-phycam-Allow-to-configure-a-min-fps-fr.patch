@@ -10,6 +10,8 @@ Content-Transfer-Encoding: 8bit
 Allow to configure a minimal allowed FPS setting, supplied to the sensor
 driver, via the '/opt/imx8-isp/bin/phycam-min-fps.conf' config file.
 
+Upstream-Status: Inappropriate [No upstream maintenance]
+
 Signed-off-by: Stefan Riedmüller <s.riedmueller@phytec.de>
 ---
  units/isi/drv/phyCAM/phycam.c | 35 +++++++++++++++++++++++++++++++++++
