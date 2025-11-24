@@ -1,0 +1,32 @@
+From 1d6c1f24e0d2988c63ee09cf51609ff678258933 Mon Sep 17 00:00:00 2001
+From: Jan Remmet <j.remmet@phytec.de>
+Date: Fri, 21 Nov 2025 11:59:15 +0100
+Subject: [PATCH] plat: imx95: Assign GPIO1 pins to non-secure world by default
+
+We also use GPIO1 from Linux on phyFLEX-i.MX95.
+
+Upstream-Status: Inappropriate [phyFLEX-i.MX95 specific]
+
+Signed-off-by: Jan Remmet <j.remmet@phytec.de>
+---
+ plat/imx/imx9/imx95/imx95_bl31_setup.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/plat/imx/imx9/imx95/imx95_bl31_setup.c b/plat/imx/imx9/imx95/imx95_bl31_setup.c
+index 6f8d68b60576..5fddf6f9cf68 100644
+--- a/plat/imx/imx9/imx95/imx95_bl31_setup.c
++++ b/plat/imx/imx9/imx95/imx95_bl31_setup.c
+@@ -109,6 +109,11 @@ void bl31_early_platform_setup2(u_register_t arg0, u_register_t arg1,
+ void bl31_plat_arch_setup(void)
+ {
+ 	/* Assign all the GPIO pins to non-secure world by default */
++	mmio_write_32(GPIO1_BASE + 0x10, 0xffffffff);
++	mmio_write_32(GPIO1_BASE + 0x14, 0x3);
++	mmio_write_32(GPIO1_BASE + 0x18, 0xffffffff);
++	mmio_write_32(GPIO1_BASE + 0x1c, 0x3);
++
+ 	mmio_write_32(GPIO2_BASE + 0x10, 0xffffffff);
+ 	mmio_write_32(GPIO2_BASE + 0x14, 0x3);
+ 	mmio_write_32(GPIO2_BASE + 0x18, 0xffffffff);
+-- 
+2.43.0
