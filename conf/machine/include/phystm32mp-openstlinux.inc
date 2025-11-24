@@ -45,9 +45,13 @@ MACHINE_FEATURES_REMOVE_LIST:remove:update = "fw-update"
 # Machine specific packages
 # =========================================================================
 # Specify WIFI and Bluetooth firmwares to install
-# For PEB-WLBT-05 expansions we use the Laird Sterling LWB firmware
+# Firmwares from Laird for PEB-WLBT-05 expansions used on STM32MP15x phyBOARD-Sargas:
 WIFI_LIST = "ezurio-sterling-firmware"
 BLUETOOTH_LIST = "ezurio-sterling-firmware"
+
+# Firmwares from Murata for KSP-0221 expansions used on STM32MP2 Libra board:
+WIFI_LIST:stm32mp25x-libra = "linux-firmware-addons-bcm43xx"
+BLUETOOTH_LIST:stm32mp25x-libra = "linux-firmware-addons-bcm43xx"
 
 # =========================================================================
 # Flashlayout configuration
