@@ -9,5 +9,5 @@ ACTION=="add", \
 ACTION=="add", \
 	SUBSYSTEM=="video4linux", \
 	ATTR{name}=="mxc_isi.0.capture", \
-	DRIVERS=="mxc-md", \
+	DRIVERS=="mxc-isi", \
 	SYMLINK+="video-isi-csi1"
