@@ -65,13 +65,16 @@ if [ -z $OFFSET ] ; then OFFSET="$OFFSET_SENSOR" ; fi
 
 CAP_ENT="mxc_isi.0.capture"
 ISI_ENT="mxc_isi.0"
-MIPI_ENT="mxc-mipi-csi2.0"
+XBAR_ENT="crossbar"
+MIPI_ENT="csidev-4ae00000.csi"
 MC="media-ctl"
 
 echo "Setting ${FMT}/${RES} ${OFFSET}/${FRES} for ${CAM_ENT}"
 # Setup pipeline links.
-$MC -l "'${MIPI_ENT}':4->'${ISI_ENT}':0[1]" ${VERBOSE}
-$MC -l "'${ISI_ENT}':12->'${CAP_ENT}':0[1]" ${VERBOSE}
+$MC -l "'${CAM_ENT}':0->'${MIPI_ENT}':0[1]" ${VERBOSE}
+
 # Setup the desired format on sensor, MIPI bridge and CSI interface.
-$MC -V "'${CAM_ENT}':0[fmt:${FMT}/${RES} ${OFFSET}/${FRES}]" ${VERBOSE}
-$MC -V "'${MIPI_ENT}':0[fmt:${FMT}/${RES}]" ${VERBOSE}
+$MC -V "'${CAM_ENT}':0[fmt:${FMT}/${RES} field:none]" ${VERBOSE}
+$MC -V "'${MIPI_ENT}':0[fmt:${FMT}/${RES} field:none]" ${VERBOSE}
+$MC -V "'${XBAR_ENT}':0[fmt:${FMT}/${RES} field:none]" ${VERBOSE}
+$MC -V "'${ISI_ENT}':0[fmt:${FMT}/${RES} field:none]" ${VERBOSE}
