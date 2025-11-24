@@ -14,8 +14,8 @@
 #
 
 # FSBL partitions (TF-A BL2)
-part fsbl1 --source rawcopy --fstype=ext4 --fsoptions "noauto" --part-name=fsbl1 --sourceparams="file=${DEPLOY_DIR_IMAGE}/arm-trusted-firmware/tf-a-${BOOTLOADER_DT}-${BOOTSCHEME}-sdcard.stm32" --ondisk mmcblk --part-type 0x8301 --fixed-size ${STM32MP_FSBL1_SIZE}K --align 17
-part fsbl2 --source rawcopy --fstype=ext4 --fsoptions "noauto" --part-name=fsbl2 --sourceparams="file=${DEPLOY_DIR_IMAGE}/arm-trusted-firmware/tf-a-${BOOTLOADER_DT}-${BOOTSCHEME}-sdcard.stm32" --ondisk mmcblk --part-type 0x8301 --fixed-size ${STM32MP_FSBL2_SIZE}K
+part ${STM32MP_FSBL1_NAME} --source rawcopy --fstype=ext4 --fsoptions "noauto" --part-name=${STM32MP_FSBL1_NAME} --sourceparams="file=${DEPLOY_DIR_IMAGE}/arm-trusted-firmware/tf-a-${BOOTLOADER_DT}-${BOOTSCHEME}-sdcard.stm32" --ondisk mmcblk --part-type 0x8301 --fixed-size ${STM32MP_FSBL1_SIZE}K --align 17
+part ${STM32MP_FSBL2_NAME} --source rawcopy --fstype=ext4 --fsoptions "noauto" --part-name=${STM32MP_FSBL2_NAME} --sourceparams="file=${DEPLOY_DIR_IMAGE}/arm-trusted-firmware/tf-a-${BOOTLOADER_DT}-${BOOTSCHEME}-sdcard.stm32" --ondisk mmcblk --part-type 0x8301 --fixed-size ${STM32MP_FSBL2_SIZE}K
 
 # Fip partition
 part fip   --source rawcopy --fstype=ext4 --fsoptions "noauto" --part-name=fip --sourceparams="file=${DEPLOY_DIR_IMAGE}/fip/fip-${BOOTLOADER_DT}-${BOOTSCHEME}-sdcard.bin" --ondisk mmcblk --part-type 0x8301 --fixed-size ${STM32MP_SSBL1_SIZE}K
