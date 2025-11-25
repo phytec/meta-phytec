@@ -1,0 +1,6130 @@
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index 0fd5fee226d..e92c097f99a 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -1283,7 +1283,9 @@ dtb-$(CONFIG_ASPEED_AST2600) += ast2600-evb.dtb
+ dtb-$(CONFIG_ARCH_STI) += stih410-b2260.dtb
+ 
+ dtb-$(CONFIG_STM32MP13X) += \
+-	stm32mp135f-dk.dtb
++	stm32mp135f-dk.dtb \
++	stm32mp135f-phycore-som-1gib.dtb \
++	stm32mp135f-phycore-som-512mb.dtb
+ 
+ dtb-$(CONFIG_STM32MP15X) += \
+ 	stm32mp157a-dk1.dtb \
+@@ -1308,7 +1310,16 @@ dtb-$(CONFIG_STM32MP15X) += \
+ 	stm32mp15xx-dhcom-picoitx.dtb \
+ 	stm32mp15xx-dhcor-avenger96.dtb \
+ 	stm32mp15xx-dhcor-drc-compact.dtb \
+-	stm32mp15xx-dhcor-testbench.dtb
++	stm32mp15xx-dhcor-testbench.dtb \
++	stm32mp157c-phycore-som-1gib.dtb \
++	stm32mp157f-phycore-som-1gib.dtb \
++	stm32mp153a-phycore-som-nand-512mb.dtb
++
++dtb-$(CONFIG_STM32MP21X) += \
++	stm32mp215f-dk.dtb
++
++dtb-$(CONFIG_STM32MP23X) += \
++	stm32mp235f-dk.dtb
+ 
+ dtb-$(CONFIG_STM32MP21X) += \
+ 	stm32mp215f-dk.dtb
+@@ -1318,7 +1329,9 @@ dtb-$(CONFIG_STM32MP23X) += \
+ 
+ dtb-$(CONFIG_STM32MP25X) += \
+ 	stm32mp257f-dk.dtb \
+-	stm32mp257f-ev1.dtb
++	stm32mp257f-ev1.dtb \
++	stm32mp257f-phyflex-fpsc-g-som.dtb \
++	stm32mp257f-phyflex-fpsc-g-som-4Gb.dtb
+ 
+ dtb-$(CONFIG_SOC_K3_AM654) += \
+ 	k3-am654-base-board.dtb \
+diff --git a/arch/arm/dts/stm32mp135f-phycore-som-1gib-u-boot.dtsi b/arch/arm/dts/stm32mp135f-phycore-som-1gib-u-boot.dtsi
+new file mode 100644
+index 00000000000..2e0d029c803
+--- /dev/null
++++ b/arch/arm/dts/stm32mp135f-phycore-som-1gib-u-boot.dtsi
+@@ -0,0 +1,7 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2023 PHYTEC Messtechnik GmbH
++ * Author: Christophe PARANT <c.parant@phytec.fr>.
++ */
++
++#include "stm32mp13xx-phycore-som-common-u-boot.dtsi"
+diff --git a/arch/arm/dts/stm32mp135f-phycore-som-1gib.dts b/arch/arm/dts/stm32mp135f-phycore-som-1gib.dts
+new file mode 100644
+index 00000000000..cd1a7e78f2a
+--- /dev/null
++++ b/arch/arm/dts/stm32mp135f-phycore-som-1gib.dts
+@@ -0,0 +1,65 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2023 PHYTEC Messtechnik GmbH
++ * Authors: Christophe Parant <c.parant@phytec.fr>
++ */
++
++/dts-v1/;
++
++#include "stm32mp135.dtsi"
++#include "stm32mp13xf.dtsi"
++#include "stm32mp13xx-phycore-som.dtsi"
++
++/ {
++	model = "PHYTEC phyCORE-STM32MP135f 1GiB RAM";
++	compatible = "phytec,stm32mp135f-pcl076-1gib", "st,stm32mp135";
++
++	memory@c0000000 {
++		device_type = "memory";
++		reg = <0xc0000000 0x40000000>;
++	};
++
++	reserved-memory {
++		#address-cells = <1>;
++		#size-cells = <1>;
++		ranges;
++
++		optee_framebuffer@dd000000 {
++			reg = <0xfd000000 0x1000000>;
++			no-map;
++		};
++
++		optee@de000000 {
++			reg = <0xfe000000 0x2000000>;
++			no-map;
++		};
++	};
++};
++
++&i2c5_eeprom {
++	status = "okay";
++};
++
++&sdmmc1 {
++	status = "okay";
++};
++
++&sdmmc2 {
++	status = "okay";
++};
++
++&ethernet1 {
++	status = "okay";
++};
++
++&usbotg_hs {
++	status = "okay";
++};
++
++&usbh_ehci {
++	status = "okay";
++};
++
++&usbh_ohci{
++	status = "okay";
++};
+diff --git a/arch/arm/dts/stm32mp135f-phycore-som-512mb-u-boot.dtsi b/arch/arm/dts/stm32mp135f-phycore-som-512mb-u-boot.dtsi
+new file mode 100644
+index 00000000000..2e0d029c803
+--- /dev/null
++++ b/arch/arm/dts/stm32mp135f-phycore-som-512mb-u-boot.dtsi
+@@ -0,0 +1,7 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2023 PHYTEC Messtechnik GmbH
++ * Author: Christophe PARANT <c.parant@phytec.fr>.
++ */
++
++#include "stm32mp13xx-phycore-som-common-u-boot.dtsi"
+diff --git a/arch/arm/dts/stm32mp135f-phycore-som-512mb.dts b/arch/arm/dts/stm32mp135f-phycore-som-512mb.dts
+new file mode 100644
+index 00000000000..47859897e00
+--- /dev/null
++++ b/arch/arm/dts/stm32mp135f-phycore-som-512mb.dts
+@@ -0,0 +1,65 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2023 PHYTEC Messtechnik GmbH
++ * Authors: Christophe Parant <c.parant@phytec.fr>
++ */
++
++/dts-v1/;
++
++#include "stm32mp135.dtsi"
++#include "stm32mp13xf.dtsi"
++#include "stm32mp13xx-phycore-som.dtsi"
++
++/ {
++	model = "PHYTEC phyCORE-STM32MP135f 512MB RAM";
++	compatible = "phytec,stm32mp135f-pcl076-512mb", "st,stm32mp135";
++
++	memory@c0000000 {
++		device_type = "memory";
++		reg = <0xc0000000 0x20000000>;
++	};
++
++	reserved-memory {
++		#address-cells = <1>;
++		#size-cells = <1>;
++		ranges;
++
++		optee_framebuffer@dd000000 {
++			reg = <0xdd000000 0x1000000>;
++			no-map;
++		};
++
++		optee@de000000 {
++			reg = <0xde000000 0x2000000>;
++			no-map;
++		};
++	};
++};
++
++&i2c5_eeprom {
++	status = "okay";
++};
++
++&sdmmc1 {
++	status = "okay";
++};
++
++&sdmmc2 {
++	status = "okay";
++};
++
++&ethernet1 {
++	status = "okay";
++};
++
++&usbotg_hs {
++	status = "okay";
++};
++
++&usbh_ehci {
++	status = "okay";
++};
++
++&usbh_ohci{
++	status = "okay";
++};
+diff --git a/arch/arm/dts/stm32mp13xx-phycore-som-common-u-boot.dtsi b/arch/arm/dts/stm32mp13xx-phycore-som-common-u-boot.dtsi
+new file mode 100644
+index 00000000000..d099f7c9b31
+--- /dev/null
++++ b/arch/arm/dts/stm32mp13xx-phycore-som-common-u-boot.dtsi
+@@ -0,0 +1,42 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) PHYTEC GmbH 2023 - All Rights Reserved
++ * Author: Christophe PARANT <c.parant@phytec.fr>.
++ */
++
++#include "stm32mp13-u-boot.dtsi"
++
++/ {
++	aliases {
++		mmc0 = &sdmmc1;
++		mmc1 = &sdmmc2;
++		usb0 = &usbotg_hs;
++	};
++
++	config {
++		u-boot,mmc-env-partition = "u-boot-env";
++	};
++
++	fwu-mdata {
++		compatible = "u-boot,fwu-mdata-gpt";
++		fwu-mdata-store = <&sdmmc2>;
++	};
++};
++
++&uart4 {
++	bootph-all;
++};
++
++&uart4_pins_mx {
++	bootph-all;
++	pins1 {
++		bootph-all;
++	};
++	pins2 {
++		bootph-all;
++	};
++};
++
++&usbotg_hs {
++	u-boot,force-b-session-valid;
++};
+diff --git a/arch/arm/dts/stm32mp13xx-phycore-som-pinctrl.dtsi b/arch/arm/dts/stm32mp13xx-phycore-som-pinctrl.dtsi
+new file mode 100644
+index 00000000000..0e715bc395c
+--- /dev/null
++++ b/arch/arm/dts/stm32mp13xx-phycore-som-pinctrl.dtsi
+@@ -0,0 +1,221 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2023 PHYTEC Messtechnik GmbH
++ * Authors: Christophe Parant <c.parant@phytec.fr>
++ */
++
++#include <dt-bindings/pinctrl/stm32-pinfunc.h>
++
++&pinctrl {
++
++	eth1_pins_mx: eth1-mx-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('A', 1, AF11)>, /* ETH1_REF_CLK */
++					 <STM32_PINMUX('B', 11, AF11)>, /* ETH1_TX_EN */
++					 <STM32_PINMUX('G', 2, AF11)>, /* ETH1_MDC */
++					 <STM32_PINMUX('G', 13, AF11)>, /* ETH1_TXD0 */
++					 <STM32_PINMUX('G', 14, AF11)>; /* ETH1_TXD1 */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <1>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('A', 2, AF11)>; /* ETH1_MDIO */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <0>;
++		};
++		pins3 {
++			pinmux = <STM32_PINMUX('C', 1, AF10)>, /* ETH1_CRS_DV */
++					 <STM32_PINMUX('C', 4, AF11)>, /* ETH1_RXD0 */
++					 <STM32_PINMUX('C', 5, AF11)>; /* ETH1_RXD1 */
++			bias-disable;
++		};
++	};
++
++	eth1_sleep_pins_mx: eth1-sleep-mx-0 {
++		pins {
++			pinmux = <STM32_PINMUX('A', 1, ANALOG)>, /* ETH1_REF_CLK */
++					 <STM32_PINMUX('A', 2, ANALOG)>, /* ETH1_MDIO */
++					 <STM32_PINMUX('B', 11, ANALOG)>, /* ETH1_TX_EN */
++					 <STM32_PINMUX('C', 1, ANALOG)>, /* ETH1_CRS_DV */
++					 <STM32_PINMUX('C', 4, ANALOG)>, /* ETH1_RXD0 */
++					 <STM32_PINMUX('C', 5, ANALOG)>, /* ETH1_RXD1 */
++					 <STM32_PINMUX('G', 2, ANALOG)>, /* ETH1_MDC */
++					 <STM32_PINMUX('G', 13, ANALOG)>, /* ETH1_TXD0 */
++					 <STM32_PINMUX('G', 14, ANALOG)>; /* ETH1_TXD1 */
++		};
++	};
++
++	i2c5_pins_mx: i2c5-mx-0 {
++		pins {
++			pinmux = <STM32_PINMUX('D', 1, AF4)>, /* I2C5_SCL */
++					 <STM32_PINMUX('H', 6, AF4)>; /* I2C5_SDA */
++			bias-disable;
++			drive-open-drain;
++			slew-rate = <0>;
++		};
++	};
++
++	i2c5_sleep_pins_mx: i2c5-sleep-mx-0 {
++		pins {
++			pinmux = <STM32_PINMUX('D', 1, ANALOG)>, /* I2C5_SCL */
++					 <STM32_PINMUX('H', 6, ANALOG)>; /* I2C5_SDA */
++		};
++	};
++
++	sdmmc1_pins_mx: sdmmc1-mx-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('C', 8, AF12)>, /* SDMMC1_D0 */
++					 <STM32_PINMUX('C', 9, AF12)>, /* SDMMC1_D1 */
++					 <STM32_PINMUX('C', 10, AF12)>, /* SDMMC1_D2 */
++					 <STM32_PINMUX('C', 11, AF12)>, /* SDMMC1_D3 */
++					 <STM32_PINMUX('D', 2, AF12)>; /* SDMMC1_CMD */
++			bias-pull-up;
++			drive-push-pull;
++			slew-rate = <1>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('C', 12, AF12)>; /* SDMMC1_CK */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <2>;
++		};
++	};
++
++	sdmmc1_opendrain_pins_mx: sdmmc1-opendrain-mx-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('C', 8, AF12)>, /* SDMMC1_D0 */
++					 <STM32_PINMUX('C', 9, AF12)>, /* SDMMC1_D1 */
++					 <STM32_PINMUX('C', 10, AF12)>, /* SDMMC1_D2 */
++					 <STM32_PINMUX('C', 11, AF12)>; /* SDMMC1_D3 */
++			bias-pull-up;
++			drive-push-pull;
++			slew-rate = <1>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('C', 12, AF12)>; /* SDMMC1_CK */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <2>;
++		};
++		pins3 {
++			pinmux = <STM32_PINMUX('D', 2, AF12)>; /* SDMMC1_CMD */
++			bias-pull-up;
++			drive-open-drain;
++			slew-rate = <1>;
++		};
++	};
++
++	sdmmc1_sleep_pins_mx: sdmmc1-sleep-mx-0 {
++		pins {
++			pinmux = <STM32_PINMUX('C', 8, ANALOG)>, /* SDMMC1_D0 */
++					 <STM32_PINMUX('C', 9, ANALOG)>, /* SDMMC1_D1 */
++					 <STM32_PINMUX('C', 10, ANALOG)>, /* SDMMC1_D2 */
++					 <STM32_PINMUX('C', 11, ANALOG)>, /* SDMMC1_D3 */
++					 <STM32_PINMUX('C', 12, ANALOG)>, /* SDMMC1_CK */
++					 <STM32_PINMUX('D', 2, ANALOG)>; /* SDMMC1_CMD */
++		};
++	};
++
++	sdmmc2_pins_mx: sdmmc2-mx-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('B', 3, AF10)>, /* SDMMC2_D2 */
++					 <STM32_PINMUX('B', 4, AF10)>, /* SDMMC2_D3 */
++					 <STM32_PINMUX('B', 9, AF10)>, /* SDMMC2_D5 */
++					 <STM32_PINMUX('B', 14, AF10)>, /* SDMMC2_D0 */
++					 <STM32_PINMUX('B', 15, AF10)>, /* SDMMC2_D1 */
++					 <STM32_PINMUX('C', 6, AF10)>, /* SDMMC2_D6 */
++					 <STM32_PINMUX('C', 7, AF10)>, /* SDMMC2_D7 */
++					 <STM32_PINMUX('F', 0, AF10)>, /* SDMMC2_D4 */
++					 <STM32_PINMUX('G', 6, AF10)>; /* SDMMC2_CMD */
++			bias-pull-up;
++			drive-push-pull;
++			slew-rate = <1>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('E', 3, AF10)>; /* SDMMC2_CK */
++			bias-pull-up;
++			drive-push-pull;
++			slew-rate = <2>;
++		};
++	};
++
++	sdmmc2_opendrain_pins_mx: sdmmc2-opendrain-mx-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('B', 3, AF10)>, /* SDMMC2_D2 */
++					 <STM32_PINMUX('B', 4, AF10)>, /* SDMMC2_D3 */
++					 <STM32_PINMUX('B', 9, AF10)>, /* SDMMC2_D5 */
++					 <STM32_PINMUX('B', 14, AF10)>, /* SDMMC2_D0 */
++					 <STM32_PINMUX('B', 15, AF10)>, /* SDMMC2_D1 */
++					 <STM32_PINMUX('C', 6, AF10)>, /* SDMMC2_D6 */
++					 <STM32_PINMUX('C', 7, AF10)>, /* SDMMC2_D7 */
++					 <STM32_PINMUX('F', 0, AF10)>; /* SDMMC2_D4 */
++			bias-pull-up;
++			drive-push-pull;
++			slew-rate = <1>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('E', 3, AF10)>; /* SDMMC2_CK */
++			bias-pull-up;
++			drive-push-pull;
++			slew-rate = <2>;
++		};
++		pins3 {
++			pinmux = <STM32_PINMUX('G', 6, AF10)>; /* SDMMC2_CMD */
++			bias-disable;
++			drive-open-drain;
++			slew-rate = <1>;
++		};
++	};
++
++	sdmmc2_sleep_pins_mx: sdmmc2-sleep-mx-0 {
++		pins {
++			pinmux = <STM32_PINMUX('B', 3, ANALOG)>, /* SDMMC2_D2 */
++					 <STM32_PINMUX('B', 4, ANALOG)>, /* SDMMC2_D3 */
++					 <STM32_PINMUX('B', 9, ANALOG)>, /* SDMMC2_D5 */
++					 <STM32_PINMUX('B', 14, ANALOG)>, /* SDMMC2_D0 */
++					 <STM32_PINMUX('B', 15, ANALOG)>, /* SDMMC2_D1 */
++					 <STM32_PINMUX('C', 6, ANALOG)>, /* SDMMC2_D6 */
++					 <STM32_PINMUX('C', 7, ANALOG)>, /* SDMMC2_D7 */
++					 <STM32_PINMUX('E', 3, ANALOG)>, /* SDMMC2_CK */
++					 <STM32_PINMUX('F', 0, ANALOG)>, /* SDMMC2_D4 */
++					 <STM32_PINMUX('G', 6, ANALOG)>; /* SDMMC2_CMD */
++		};
++	};
++
++	uart4_pins_mx: uart4-mx-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('D', 6, AF8)>; /* UART4_TX */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <0>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('D', 8, AF8)>; /* UART4_RX */
++			bias-pull-up;
++		};
++	};
++
++	uart4_sleep_pins_mx: uart4-sleep-mx-0 {
++		pins {
++			pinmux = <STM32_PINMUX('D', 6, ANALOG)>, /* UART4_TX */
++					 <STM32_PINMUX('D', 8, ANALOG)>; /* UART4_RX */
++		};
++	};
++
++	usb_otg_hs_pins_mx: usb-otg-hs-mx-0 {
++		pins {
++			pinmux = <STM32_PINMUX('A', 10, ANALOG)>, /* USB_OTG_HS_ID */
++					 <STM32_PINMUX('I', 7, ANALOG)>; /* USB_OTG_HS_VBUS */
++		};
++	};
++
++	usb_otg_hs_sleep_pins_mx: usb-otg-hs-sleep-mx-0 {
++		pins {
++			pinmux = <STM32_PINMUX('A', 10, ANALOG)>, /* USB_OTG_HS_ID */
++					 <STM32_PINMUX('I', 7, ANALOG)>; /* USB_OTG_HS_VBUS */
++		};
++	};
++
++};
+diff --git a/arch/arm/dts/stm32mp13xx-phycore-som.dtsi b/arch/arm/dts/stm32mp13xx-phycore-som.dtsi
+new file mode 100644
+index 00000000000..e474a84031f
+--- /dev/null
++++ b/arch/arm/dts/stm32mp13xx-phycore-som.dtsi
+@@ -0,0 +1,173 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2023 PHYTEC Messtechnik GmbH
++ * Authors: Christophe Parant <c.parant@phytec.fr>
++ */
++
++#include "stm32mp13xx-phycore-som-pinctrl.dtsi"
++#include <dt-bindings/gpio/gpio.h>
++#include <dt-bindings/input/input.h>
++#include <dt-bindings/net/ti-dp83867.h>
++
++/ {
++	aliases {
++		ethernet0 = &ethernet1;
++		serial0 = &uart4;
++	};
++
++	chosen {
++		stdout-path = "serial0:115200n8";
++	};
++
++	vdd: vdd {
++		compatible = "regulator-fixed";
++		regulator-name = "vdd";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		regulator-always-on;
++	};
++
++	vdd_usb: vdd-usb {
++		compatible = "regulator-fixed";
++		regulator-name = "vdd_usb";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++	};
++};
++
++&dts {
++	status = "okay";
++};
++
++&bsec{
++	status = "okay";
++};
++
++&crc1 {
++	status = "okay";
++};
++
++&cryp{
++	status = "okay";
++};
++
++&i2c5 {
++	pinctrl-names = "default", "sleep";
++	pinctrl-0 = <&i2c5_pins_mx>;
++	pinctrl-1 = <&i2c5_sleep_pins_mx>;
++	i2c-scl-rising-time-ns = <185>;
++	i2c-scl-falling-time-ns = <20>;
++	status = "okay";
++	/* spare dmas for other usage */
++	/delete-property/dmas;
++	/delete-property/dma-names;
++
++	i2c5_eeprom: eeprom@50 {
++		compatible = "microchip,24c32", "atmel,24c32";
++		reg = <0x50>;
++		status = "disabled";
++	};
++};
++
++&arm_wdt {
++	timeout-sec = <32>;
++	status = "okay";
++};
++
++&rtc {
++	status = "okay";
++};
++
++&ethernet1{
++	pinctrl-names = "default", "sleep";
++	pinctrl-0 = <&eth1_pins_mx>;
++	pinctrl-1 = <&eth1_sleep_pins_mx>;
++	phy-mode = "rmii";
++	max-speed = <100>;
++	phy-handle = <&phy0_eth1>;
++	nvmem-cells = <&ethernet_mac1_address>;
++	nvmem-cell-names = "mac-address";
++	status = "disabled";
++
++	mdio1 {
++		#address-cells = <1>;
++		#size-cells = <0>;
++		compatible = "snps,dwmac-mdio";
++
++		phy0_eth1: ethernet-phy@1 {
++			compatible = "ethernet-phy-ieee802.3-c22";
++			reg = <1>;
++			interrupt-parent = <&gpioi>;
++			interrupts = <3 IRQ_TYPE_EDGE_FALLING>;
++			wakeup-source;
++		};
++	};
++};
++
++&sdmmc2 {
++	pinctrl-names = "default", "opendrain", "sleep";
++	pinctrl-0 = <&sdmmc2_pins_mx>;
++	pinctrl-1 = <&sdmmc2_opendrain_pins_mx>;
++	pinctrl-2 = <&sdmmc2_sleep_pins_mx>;
++	non-removable;
++	no-sd;
++	no-sdio;
++	st,neg-edge;
++	bus-width = <8>;
++	vmmc-supply = <&vdd>;
++	vqmmc-supply = <&vdd>;
++	mmc-ddr-3_3v;
++	status = "disabled";
++};
++
++&sdmmc1 {
++	pinctrl-names = "default", "opendrain", "sleep";
++	pinctrl-0 = <&sdmmc1_pins_mx>;
++	pinctrl-1 = <&sdmmc1_opendrain_pins_mx>;
++	pinctrl-2 = <&sdmmc1_sleep_pins_mx>;
++	cd-gpios = <&gpioi 1 GPIO_ACTIVE_LOW>;
++	st,neg-edge;
++	bus-width = <4>;
++	max-frequency = <10000000>;
++	vmmc-supply = <&vdd>;
++	status = "disabled";
++};
++
++&uart4 {
++	pinctrl-names = "default", "sleep";
++	pinctrl-0 = <&uart4_pins_mx>;
++	pinctrl-1 = <&uart4_sleep_pins_mx>;
++	/delete-property/dmas;
++	/delete-property/dma-names;
++	status = "okay";
++};
++
++&usbh_ehci {
++	phys = <&usbphyc_port0>;
++	phy-names = "usb";
++	status = "disabled";
++};
++
++&usbh_ohci {
++	phys = <&usbphyc_port0>;
++	phy-names = "usb";
++	status = "disabled";
++};
++
++&usbotg_hs {
++	phys = <&usbphyc_port1 0>;
++	phy-names = "usb2-phy";
++	status = "disabled";
++};
++
++&usbphyc {
++	status = "okay";
++};
++
++&usbphyc_port0 {
++	phy-supply = <&vdd_usb>;
++};
++
++&usbphyc_port1 {
++	phy-supply = <&vdd_usb>;
++};
+diff --git a/arch/arm/dts/stm32mp153a-phycore-scmi.dtsi b/arch/arm/dts/stm32mp153a-phycore-scmi.dtsi
+new file mode 100644
+index 00000000000..b58ced9aa69
+--- /dev/null
++++ b/arch/arm/dts/stm32mp153a-phycore-scmi.dtsi
+@@ -0,0 +1,16 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2025 PHYTEC Messtechnik GmbH
++ * Authors: Christophe Parant <c.parant@phytec.fr>
++ */
++
++#include "stm32mp15xx-phycore-scmi.dtsi"
++
++/ {
++	reserved-memory {
++		optee@de000000 {
++			reg = <0xde000000 0x2000000>;
++			no-map;
++		};
++	};
++};
+diff --git a/arch/arm/dts/stm32mp153a-phycore-som-nand-512mb-u-boot.dtsi b/arch/arm/dts/stm32mp153a-phycore-som-nand-512mb-u-boot.dtsi
+new file mode 100644
+index 00000000000..251e7e162f3
+--- /dev/null
++++ b/arch/arm/dts/stm32mp153a-phycore-som-nand-512mb-u-boot.dtsi
+@@ -0,0 +1,8 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2021 PHYTEC Messtechnik GmbH
++ * Author: Christophe PARANT <c.parant@phytec.fr>.
++ */
++
++#include "stm32mp15xx-phycore-som-common-u-boot.dtsi"
++#include "stm32mp15xx-phycore-som-ddr3-2x2Gb-1066-binG.dtsi"
+diff --git a/arch/arm/dts/stm32mp153a-phycore-som-nand-512mb.dts b/arch/arm/dts/stm32mp153a-phycore-som-nand-512mb.dts
+new file mode 100644
+index 00000000000..3c4fc277f12
+--- /dev/null
++++ b/arch/arm/dts/stm32mp153a-phycore-som-nand-512mb.dts
+@@ -0,0 +1,47 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2020 PHYTEC Messtechnik GmbH
++ * Authors: Dom Vovard <dom.vovard@linrt.com>
++ *	    Christophe Parant <c.parant@phytec.fr>
++ */
++
++/dts-v1/;
++
++#include "stm32mp153.dtsi"
++#include "stm32mp15xa.dtsi"
++#include "stm32mp153a-phycore-scmi.dtsi"
++#include "stm32mp15xx-phycore-som.dtsi"
++
++/ {
++	model = "PHYTEC phyCORE-STM32MP153A with NAND and 512MB RAM";
++	compatible = "phytec,stm32mp153a-phycore-som-nand-512mb",
++		     "phytec,stm32mp153a-phycore-som", "st,stm32mp153";
++
++	memory@c0000000 {
++		reg = <0xc0000000 0x20000000>;
++	};
++};
++
++&dts {
++	status = "okay";
++};
++
++&i2c4_rtc {
++	status = "okay";
++};
++
++&i2c4_eeprom {
++	status = "okay";
++};
++
++&qspi {
++	status = "disabled";
++};
++
++&fmc {
++	status = "okay";
++};
++
++&sdmmc2 {
++	status = "disabled";
++};
+diff --git a/arch/arm/dts/stm32mp157c-phycore-scmi.dtsi b/arch/arm/dts/stm32mp157c-phycore-scmi.dtsi
+new file mode 100644
+index 00000000000..ed74bad3843
+--- /dev/null
++++ b/arch/arm/dts/stm32mp157c-phycore-scmi.dtsi
+@@ -0,0 +1,25 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2025 PHYTEC Messtechnik GmbH
++ * Authors: Christophe Parant <c.parant@phytec.fr>
++ */
++
++#include "stm32mp15xx-phycore-scmi.dtsi"
++
++/ {
++	reserved-memory {
++		optee@de000000 {
++			reg = <0xfe000000 0x2000000>;
++			no-map;
++		};
++	};
++};
++
++&cryp1 {
++	clocks = <&scmi_clk CK_SCMI_CRYP1>;
++	resets = <&scmi_reset RST_SCMI_CRYP1>;
++};
++
++&dsi {
++	clocks = <&rcc DSI>, <&scmi_clk CK_SCMI_HSE>, <&rcc DSI_PX>;
++};
+diff --git a/arch/arm/dts/stm32mp157c-phycore-som-1gib-u-boot.dtsi b/arch/arm/dts/stm32mp157c-phycore-som-1gib-u-boot.dtsi
+new file mode 100644
+index 00000000000..188f1854521
+--- /dev/null
++++ b/arch/arm/dts/stm32mp157c-phycore-som-1gib-u-boot.dtsi
+@@ -0,0 +1,8 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2021 PHYTEC Messtechnik GmbH
++ * Author: Christophe PARANT <c.parant@phytec.fr>.
++ */
++
++#include "stm32mp15xx-phycore-som-common-u-boot.dtsi"
++#include "stm32mp15xx-phycore-som-ddr3-2x4Gb-1066-binG.dtsi"
+diff --git a/arch/arm/dts/stm32mp157c-phycore-som-1gib.dts b/arch/arm/dts/stm32mp157c-phycore-som-1gib.dts
+new file mode 100644
+index 00000000000..1e4a2720388
+--- /dev/null
++++ b/arch/arm/dts/stm32mp157c-phycore-som-1gib.dts
+@@ -0,0 +1,63 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2020 PHYTEC Messtechnik GmbH
++ * Authors: Dom Vovard <dom.vovard@linrt.com>
++ *	    Christophe Parant <c.parant@phytec.fr>
++ */
++
++/dts-v1/;
++
++#include "stm32mp157.dtsi"
++#include "stm32mp15xc.dtsi"
++#include "stm32mp157c-phycore-scmi.dtsi"
++#include "stm32mp15xx-phycore-som.dtsi"
++
++/ {
++	model = "PHYTEC phyCORE-STM32MP157C 1GiB RAM";
++	compatible = "phytec,stm32mp157c-phycore-som-1gib",
++		     "phytec,stm32mp157c-phycore-som", "st,stm32mp157";
++
++	memory@c0000000 {
++		reg = <0xc0000000 0x40000000>;
++	};
++
++	reserved-memory {
++		gpu_reserved: gpu@f6000000 {
++			reg = <0xf6000000 0x8000000>;
++			no-map;
++		};
++	};
++};
++
++&dts {
++	status = "okay";
++};
++
++&gpu {
++	status = "okay";
++	contiguous-area = <&gpu_reserved>;
++};
++
++&i2c4_rtc {
++	status = "okay";
++};
++
++&i2c4_eeprom {
++	status = "okay";
++};
++
++&qspi {
++	status = "okay";
++};
++
++&fmc {
++	status = "disabled";
++};
++
++&sdmmc2 {
++	status = "okay";
++};
++
++&cryp1 {
++	status = "okay";
++};
+diff --git a/arch/arm/dts/stm32mp157f-phycore-som-1gib-u-boot.dtsi b/arch/arm/dts/stm32mp157f-phycore-som-1gib-u-boot.dtsi
+new file mode 100644
+index 00000000000..188f1854521
+--- /dev/null
++++ b/arch/arm/dts/stm32mp157f-phycore-som-1gib-u-boot.dtsi
+@@ -0,0 +1,8 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2021 PHYTEC Messtechnik GmbH
++ * Author: Christophe PARANT <c.parant@phytec.fr>.
++ */
++
++#include "stm32mp15xx-phycore-som-common-u-boot.dtsi"
++#include "stm32mp15xx-phycore-som-ddr3-2x4Gb-1066-binG.dtsi"
+diff --git a/arch/arm/dts/stm32mp157f-phycore-som-1gib.dts b/arch/arm/dts/stm32mp157f-phycore-som-1gib.dts
+new file mode 100644
+index 00000000000..984fdfe4f28
+--- /dev/null
++++ b/arch/arm/dts/stm32mp157f-phycore-som-1gib.dts
+@@ -0,0 +1,63 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2020 PHYTEC Messtechnik GmbH
++ * Authors: Dom Vovard <dom.vovard@linrt.com>
++ *	    Christophe Parant <c.parant@phytec.fr>
++ */
++
++/dts-v1/;
++
++#include "stm32mp157.dtsi"
++#include "stm32mp15xf.dtsi"
++#include "stm32mp157c-phycore-scmi.dtsi"
++#include "stm32mp15xx-phycore-som.dtsi"
++
++/ {
++	model = "PHYTEC phyCORE-STM32MP157F 1GiB RAM";
++	compatible = "phytec,stm32mp157f-phycore-som-1gib",
++		     "phytec,stm32mp157f-phycore-som", "st,stm32mp157";
++
++	memory@c0000000 {
++		reg = <0xc0000000 0x40000000>;
++	};
++
++	reserved-memory {
++		gpu_reserved: gpu@f6000000 {
++			reg = <0xf6000000 0x8000000>;
++			no-map;
++		};
++	};
++};
++
++&dts {
++	status = "okay";
++};
++
++&gpu {
++	status = "okay";
++	contiguous-area = <&gpu_reserved>;
++};
++
++&i2c4_rtc {
++	status = "okay";
++};
++
++&i2c4_eeprom {
++	status = "okay";
++};
++
++&qspi {
++	status = "okay";
++};
++
++&fmc {
++	status = "disabled";
++};
++
++&sdmmc2 {
++	status = "okay";
++};
++
++&cryp1 {
++	status = "okay";
++};
+diff --git a/arch/arm/dts/stm32mp15xx-phycore-scmi.dtsi b/arch/arm/dts/stm32mp15xx-phycore-scmi.dtsi
+new file mode 100644
+index 00000000000..c6a798343d5
+--- /dev/null
++++ b/arch/arm/dts/stm32mp15xx-phycore-scmi.dtsi
+@@ -0,0 +1,89 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2025 PHYTEC Messtechnik GmbH
++ * Authors: Christophe Parant <c.parant@phytec.fr>
++ */
++
++#include "stm32mp15-scmi.dtsi"
++
++&cpu0 {
++	clocks = <&scmi_clk CK_SCMI_MPU>;
++};
++
++&cpu1 {
++	clocks = <&scmi_clk CK_SCMI_MPU>;
++};
++
++&gpioz {
++	clocks = <&scmi_clk CK_SCMI_GPIOZ>;
++};
++
++&hash1 {
++	clocks = <&scmi_clk CK_SCMI_HASH1>;
++	resets = <&scmi_reset RST_SCMI_HASH1>;
++};
++
++&i2c4 {
++	clocks = <&scmi_clk CK_SCMI_I2C4>;
++	resets = <&scmi_reset RST_SCMI_I2C4>;
++};
++
++&i2c6 {
++	clocks = <&scmi_clk CK_SCMI_I2C6>;
++	resets = <&scmi_reset RST_SCMI_I2C6>;
++};
++
++&iwdg2 {
++	clocks = <&rcc IWDG2>, <&scmi_clk CK_SCMI_LSI>;
++};
++
++&m4_rproc {
++	resets = <&scmi_reset RST_SCMI_MCU>,
++		 <&scmi_reset RST_SCMI_MCU_HOLD_BOOT>;
++	reset-names = "mcu_rst", "hold_boot";
++	/delete-property/ st,syscfg-holdboot;
++};
++
++&m_can1 {
++        clocks = <&scmi_clk CK_SCMI_HSE>, <&rcc FDCAN_K>;
++};
++
++&m_can2 {
++	clocks = <&scmi_clk CK_SCMI_HSE>, <&rcc FDCAN_K>;
++};
++
++&mdma1 {
++	resets = <&scmi_reset RST_SCMI_MDMA>;
++};
++
++&mlahb {
++	resets = <&scmi_reset RST_SCMI_MCU>;
++};
++
++&rcc {
++	compatible = "st,stm32mp1-rcc-secure", "syscon";
++	clock-names = "hse", "hsi", "csi", "lse", "lsi";
++	clocks = <&scmi_clk CK_SCMI_HSE>,
++		 <&scmi_clk CK_SCMI_HSI>,
++		 <&scmi_clk CK_SCMI_CSI>,
++		 <&scmi_clk CK_SCMI_LSE>,
++		 <&scmi_clk CK_SCMI_LSI>;
++};
++
++&rng1 {
++	clocks = <&scmi_clk CK_SCMI_RNG1>;
++	resets = <&scmi_reset RST_SCMI_RNG1>;
++};
++
++&rtc {
++	clocks = <&scmi_clk CK_SCMI_RTCAPB>, <&scmi_clk CK_SCMI_RTC>;
++};
++
++&spi6 {
++	clocks = <&scmi_clk CK_SCMI_SPI6>;
++	resets = <&scmi_reset RST_SCMI_SPI6>;
++};
++
++&usart1 {
++	clocks = <&scmi_clk CK_SCMI_USART1>;
++};
+diff --git a/arch/arm/dts/stm32mp15xx-phycore-som-common-u-boot.dtsi b/arch/arm/dts/stm32mp15xx-phycore-som-common-u-boot.dtsi
+new file mode 100644
+index 00000000000..14bd2e1401e
+--- /dev/null
++++ b/arch/arm/dts/stm32mp15xx-phycore-som-common-u-boot.dtsi
+@@ -0,0 +1,258 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) PHYTEC GmbH 2020-2021 - All Rights Reserved
++ * Author: Christophe PARANT <c.parant@phytec.fr>.
++ */
++
++#include <dt-bindings/clock/stm32mp1-clksrc.h>
++#include "stm32mp15-scmi-u-boot.dtsi"
++
++/ {
++	aliases {
++		i2c3 = &i2c4;
++		mmc0 = &sdmmc1;
++		mmc1 = &sdmmc2;
++		spi0 = &qspi;
++		usb0 = &usbotg_hs;
++	};
++
++	config {
++		u-boot,boot-led = "heartbeat";
++		u-boot,mmc-env-partition = "u-boot-env";
++		st,fastboot-gpios = <&gpioa 13 GPIO_ACTIVE_LOW>;
++		st,stm32prog-gpios = <&gpioa 14 GPIO_ACTIVE_LOW>;
++	};
++
++	fwu-mdata {
++		compatible = "u-boot,fwu-mdata-gpt";
++		fwu-mdata-store = <&sdmmc2>;
++	};
++
++#ifdef CONFIG_STM32MP15x_STM32IMAGE
++	config {
++		u-boot,mmc-env-partition = "ssbl";
++	};
++#endif
++
++	led {
++		blue {
++			default-state = "on";
++		};
++	};
++};
++
++#ifndef CONFIG_TFABOOT
++&qspi {
++	bootph-pre-ram;
++};
++
++&qspi_clk_pins_a {
++	bootph-pre-ram;
++	pins {
++		bootph-pre-ram;
++	};
++};
++
++&qspi_bk1_pins_a {
++	bootph-pre-ram;
++	pins1 {
++		bootph-pre-ram;
++	};
++	pins2 {
++		bootph-pre-ram;
++	};
++};
++
++&clk_hse {
++	st,digbypass;
++};
++
++&i2c4 {
++	bootph-all;
++};
++
++&i2c4_pins_a {
++	bootph-all;
++	pins {
++		bootph-all;
++	};
++};
++
++&pmic {
++	bootph-all;
++};
++
++&rcc {
++	st,clksrc = <
++		CLK_MPU_PLL1P
++		CLK_AXI_PLL2P
++		CLK_MCU_PLL3P
++		CLK_PLL12_HSE
++		CLK_PLL3_HSE
++		CLK_PLL4_HSE
++		CLK_RTC_LSE
++		CLK_MCO1_DISABLED
++		CLK_MCO2_DISABLED
++	>;
++
++	st,clkdiv = <
++		1 /*MPU*/
++		0 /*AXI*/
++		0 /*MCU*/
++		1 /*APB1*/
++		1 /*APB2*/
++		1 /*APB3*/
++		1 /*APB4*/
++		2 /*APB5*/
++		23 /*RTC*/
++		0 /*MCO1*/
++		0 /*MCO2*/
++	>;
++
++	st,pkcs = <
++		CLK_CKPER_HSE
++		CLK_FMC_ACLK
++		CLK_QSPI_ACLK
++		CLK_ETH_DISABLED
++		CLK_SDMMC12_PLL4P
++		CLK_DSI_DSIPLL
++		CLK_STGEN_HSE
++		CLK_USBPHY_HSE
++		CLK_FDCAN_HSE
++		CLK_SPI2S1_PLL3Q
++		CLK_SPI2S23_PLL3Q
++		CLK_SPI45_HSI
++		CLK_SPI6_HSI
++		CLK_I2C46_HSI
++		CLK_SDMMC3_PLL4P
++		CLK_USBO_USBPHY
++		CLK_ADC_CKPER
++		CLK_CEC_LSE
++		CLK_I2C12_HSI
++		CLK_I2C35_HSI
++		CLK_UART1_HSI
++		CLK_UART24_HSI
++		CLK_UART35_HSI
++		CLK_UART6_HSI
++		CLK_UART78_HSI
++		CLK_SPDIF_PLL4P
++		CLK_SAI1_PLL3Q
++		CLK_SAI2_PLL3Q
++		CLK_SAI3_PLL3Q
++		CLK_SAI4_PLL3Q
++		CLK_RNG1_LSI
++		CLK_RNG2_LSI
++		CLK_LPTIM1_PCLK1
++		CLK_LPTIM23_PCLK3
++		CLK_LPTIM45_LSE
++	>;
++
++	/* VCO = 1066.0 MHz => P = 266 (AXI), Q = 533 (GPU), R = 533 (DDR) */
++	pll2: st,pll@1 {
++		compatible = "st,stm32mp1-pll";
++		reg = <1>;
++		cfg = < 2 65 1 0 0 PQR(1,1,1) >;
++		frac = < 0x1400 >;
++		bootph-all;
++	};
++
++	/* VCO = 417.8 MHz => P = 209, Q = 24, R = 11 */
++	pll3: st,pll@2 {
++		compatible = "st,stm32mp1-pll";
++		reg = <2>;
++		cfg = < 1 33 1 16 36 PQR(1,1,1) >;
++		frac = < 0x1a04 >;
++		bootph-all;
++	};
++
++	/* VCO = 600 MHz, P=100, Q=75, R=75 */
++	pll4: st,pll@3 {
++		compatible = "st,stm32mp1-pll";
++		reg = <3>;
++		cfg = <1 49 5 7 7 PQR(1,1,1)>;
++		bootph-all;
++	};
++};
++#endif
++
++&uart4 {
++	bootph-all;
++};
++
++&uart4_pins_a {
++	bootph-all;
++	pins1 {
++		bootph-all;
++	};
++	pins2 {
++		bootph-all;
++	};
++};
++
++&usbotg_hs {
++	u-boot,force-b-session-valid;
++	hnp-srp-disable;
++};
++
++&fmc {
++	nand-controller@4,0 {
++		nand@0 {
++			partitions {
++				compatible = "fixed-partitions";
++				#address-cells = <1>;
++				#size-cells = <1>;
++
++				partition@0 {
++					label = "fsbl1";
++					reg = <0x00000000 0x00080000>;
++				};
++				partition@80000 {
++					label = "fsbl2";
++					reg = <0x00080000 0x00080000>;
++				};
++				partition@100000 {
++					label = "fip";
++					reg = <0x00100000 0x00200000>;
++				};
++				partition@300000 {
++					label = "fip2";
++					reg = <0x00300000 0x00200000>;
++				};
++				partition@500000 {
++					label = "UBI";
++					reg = <0x00500000 0x1fb00000>;
++				};
++			};
++		};
++	};
++};
++
++&flash0 {
++	bootph-pre-ram;
++	partitions {
++		compatible = "fixed-partitions";
++		#address-cells = <1>;
++		#size-cells = <1>;
++
++		partition@0 {
++			label = "fsbl1";
++			reg = <0x00000000 0x00040000>;
++		};
++		partition@40000 {
++			label = "fsbl2";
++			reg = <0x00040000 0x00040000>;
++		};
++		partition@100000 {
++			label = "fip";
++			reg = <0x00080000 0x00200000>;
++		};
++		partition@900000 {
++			label = "u-boot-env";
++			reg = <0x00280000 0x00080000>;
++		};
++		partition@980000 {
++			label = "nor-user";
++			reg = <0x00300000 0x00d00000>;
++		};
++	};
++};
+diff --git a/arch/arm/dts/stm32mp15xx-phycore-som-ddr3-2x2Gb-1066-binG.dtsi b/arch/arm/dts/stm32mp15xx-phycore-som-ddr3-2x2Gb-1066-binG.dtsi
+new file mode 100644
+index 00000000000..30b169e5111
+--- /dev/null
++++ b/arch/arm/dts/stm32mp15xx-phycore-som-ddr3-2x2Gb-1066-binG.dtsi
+@@ -0,0 +1,120 @@
++// SPDX-License-Identifier: GPL-2.0+ OR BSD-3-Clause
++/*
++ * Copyright (C) Phytec GmbH 2019-2020 - All Rights Reserved
++ *
++ * phyCORE-STM32MP1 512MB DDR configuration
++ * 2x DDR3L 2Gb each, 16-bit, 533MHz, Single Die Package in flyby topology.
++ * Reference used NT5CC256M16DP-DI from NANYA
++ *
++ * DDR type / Platform	DDR3/3L
++ * freq		533MHz
++ * width	32
++ * datasheet	0  = MT41K128M16-187 / DDR3-1066 bin G
++ * DDR density	4Gb
++ * timing mode	optimized
++ * Scheduling/QoS options : type = 2
++ * address mapping : RBC
++ * Tc > + 85C : N
++ */
++#define DDR_MEM_NAME "DDR3-1066/888 bin G 2x2Gb 533MHz v1.45"
++#define DDR_MEM_SPEED 533000
++#define DDR_MEM_SIZE 0x20000000
++
++#define DDR_MSTR 0x00040401
++#define DDR_MRCTRL0 0x00000010
++#define DDR_MRCTRL1 0x00000000
++#define DDR_DERATEEN 0x00000000
++#define DDR_DERATEINT 0x00800000
++#define DDR_PWRCTL 0x00000000
++#define DDR_PWRTMG 0x00400010
++#define DDR_HWLPCTL 0x00000000
++#define DDR_RFSHCTL0 0x00210000
++#define DDR_RFSHCTL3 0x00000000
++#define DDR_RFSHTMG 0x0081008B
++#define DDR_CRCPARCTL0 0x00000000
++#define DDR_DRAMTMG0 0x121B2414
++#define DDR_DRAMTMG1 0x000A041C
++#define DDR_DRAMTMG2 0x0608090F
++#define DDR_DRAMTMG3 0x0050400C
++#define DDR_DRAMTMG4 0x08040608
++#define DDR_DRAMTMG5 0x06060403
++#define DDR_DRAMTMG6 0x02020002
++#define DDR_DRAMTMG7 0x00000202
++#define DDR_DRAMTMG8 0x00001005
++#define DDR_DRAMTMG14 0x000000A0
++#define DDR_ZQCTL0 0xC2000040
++#define DDR_DFITMG0 0x02060105
++#define DDR_DFITMG1 0x00000202
++#define DDR_DFILPCFG0 0x07000000
++#define DDR_DFIUPD0 0xC0400003
++#define DDR_DFIUPD1 0x00000000
++#define DDR_DFIUPD2 0x00000000
++#define DDR_DFIPHYMSTR 0x00000000
++#define DDR_ADDRMAP1 0x00080808
++#define DDR_ADDRMAP2 0x00000000
++#define DDR_ADDRMAP3 0x00000000
++#define DDR_ADDRMAP4 0x00001F1F
++#define DDR_ADDRMAP5 0x07070707
++#define DDR_ADDRMAP6 0x0F0F0707
++#define DDR_ADDRMAP9 0x00000000
++#define DDR_ADDRMAP10 0x00000000
++#define DDR_ADDRMAP11 0x00000000
++#define DDR_ODTCFG 0x06000600
++#define DDR_ODTMAP 0x00000001
++#define DDR_SCHED 0x00000C01
++#define DDR_SCHED1 0x00000000
++#define DDR_PERFHPR1 0x01000001
++#define DDR_PERFLPR1 0x08000200
++#define DDR_PERFWR1 0x08000400
++#define DDR_DBG0 0x00000000
++#define DDR_DBG1 0x00000000
++#define DDR_DBGCMD 0x00000000
++#define DDR_POISONCFG 0x00000000
++#define DDR_PCCFG 0x00000010
++#define DDR_PCFGR_0 0x00010000
++#define DDR_PCFGW_0 0x00000000
++#define DDR_PCFGQOS0_0 0x02100C03
++#define DDR_PCFGQOS1_0 0x00800100
++#define DDR_PCFGWQOS0_0 0x01100C03
++#define DDR_PCFGWQOS1_0 0x01000200
++#define DDR_PCFGR_1 0x00010000
++#define DDR_PCFGW_1 0x00000000
++#define DDR_PCFGQOS0_1 0x02100C03
++#define DDR_PCFGQOS1_1 0x00800040
++#define DDR_PCFGWQOS0_1 0x01100C03
++#define DDR_PCFGWQOS1_1 0x01000200
++#define DDR_PGCR 0x01442E02
++#define DDR_PTR0 0x0022AA5B
++#define DDR_PTR1 0x04841104
++#define DDR_PTR2 0x042DA068
++#define DDR_ACIOCR 0x10400812
++#define DDR_DXCCR 0x00000C40
++#define DDR_DSGCR 0xF200011F
++#define DDR_DCR 0x0000000B
++#define DDR_DTPR0 0x38D488D0
++#define DDR_DTPR1 0x098B00D8
++#define DDR_DTPR2 0x10023600
++#define DDR_MR0 0x00000840
++#define DDR_MR1 0x00000000
++#define DDR_MR2 0x00000208
++#define DDR_MR3 0x00000000
++#define DDR_ODTCR 0x00010000
++#define DDR_ZQ0CR1 0x00000038
++#define DDR_DX0GCR 0x0000CE81
++#define DDR_DX0DLLCR 0x40000000
++#define DDR_DX0DQTR 0xFFFFFFFF
++#define DDR_DX0DQSTR 0x3DB02000
++#define DDR_DX1GCR 0x0000CE81
++#define DDR_DX1DLLCR 0x40000000
++#define DDR_DX1DQTR 0xFFFFFFFF
++#define DDR_DX1DQSTR 0x3DB02000
++#define DDR_DX2GCR 0x0000CE81
++#define DDR_DX2DLLCR 0x40000000
++#define DDR_DX2DQTR 0xFFFFFFFF
++#define DDR_DX2DQSTR 0x3DB02000
++#define DDR_DX3GCR 0x0000CE81
++#define DDR_DX3DLLCR 0x40000000
++#define DDR_DX3DQTR 0xFFFFFFFF
++#define DDR_DX3DQSTR 0x3DB02000
++
++#include "stm32mp15-ddr.dtsi"
+diff --git a/arch/arm/dts/stm32mp15xx-phycore-som-ddr3-2x4Gb-1066-binG.dtsi b/arch/arm/dts/stm32mp15xx-phycore-som-ddr3-2x4Gb-1066-binG.dtsi
+new file mode 100644
+index 00000000000..dd83ba0299b
+--- /dev/null
++++ b/arch/arm/dts/stm32mp15xx-phycore-som-ddr3-2x4Gb-1066-binG.dtsi
+@@ -0,0 +1,120 @@
++// SPDX-License-Identifier: GPL-2.0+ OR BSD-3-Clause
++/*
++ * Copyright (C) Phytec GmbH 2019-2020 - All Rights Reserved
++ *
++ * phyCORE-STM32MP1 1GB DDR configuration
++ * 2x DDR3L 4Gb each, 16-bit, 533MHz, Single Die Package in flyby topology.
++ * Reference used NT5CC256M16DP-DI from NANYA
++ *
++ * DDR type / Platform	DDR3/3L
++ * freq		533MHz
++ * width	32
++ * datasheet	0  = MT41J256M16-187 / DDR3-1066 bin G
++ * DDR density	8Gb
++ * timing mode	optimized
++ * Scheduling/QoS options : type = 2
++ * address mapping : RBC
++ * Tc > + 85C : N
++ */
++#define DDR_MEM_NAME "DDR3-1066/888 bin G 2x4Gb 533MHz v1.45"
++#define DDR_MEM_SPEED 533000
++#define DDR_MEM_SIZE 0x40000000
++
++#define DDR_MSTR 0x00040401
++#define DDR_MRCTRL0 0x00000010
++#define DDR_MRCTRL1 0x00000000
++#define DDR_DERATEEN 0x00000000
++#define DDR_DERATEINT 0x00800000
++#define DDR_PWRCTL 0x00000000
++#define DDR_PWRTMG 0x00400010
++#define DDR_HWLPCTL 0x00000000
++#define DDR_RFSHCTL0 0x00210000
++#define DDR_RFSHCTL3 0x00000000
++#define DDR_RFSHTMG 0x0081008B
++#define DDR_CRCPARCTL0 0x00000000
++#define DDR_DRAMTMG0 0x121B2414
++#define DDR_DRAMTMG1 0x000A041C
++#define DDR_DRAMTMG2 0x0608090F
++#define DDR_DRAMTMG3 0x0050400C
++#define DDR_DRAMTMG4 0x08040608
++#define DDR_DRAMTMG5 0x06060403
++#define DDR_DRAMTMG6 0x02020002
++#define DDR_DRAMTMG7 0x00000202
++#define DDR_DRAMTMG8 0x00001005
++#define DDR_DRAMTMG14 0x000000A0
++#define DDR_ZQCTL0 0xC2000040
++#define DDR_DFITMG0 0x02060105
++#define DDR_DFITMG1 0x00000202
++#define DDR_DFILPCFG0 0x07000000
++#define DDR_DFIUPD0 0xC0400003
++#define DDR_DFIUPD1 0x00000000
++#define DDR_DFIUPD2 0x00000000
++#define DDR_DFIPHYMSTR 0x00000000
++#define DDR_ADDRMAP1 0x00080808
++#define DDR_ADDRMAP2 0x00000000
++#define DDR_ADDRMAP3 0x00000000
++#define DDR_ADDRMAP4 0x00001F1F
++#define DDR_ADDRMAP5 0x07070707
++#define DDR_ADDRMAP6 0x0F070707
++#define DDR_ADDRMAP9 0x00000000
++#define DDR_ADDRMAP10 0x00000000
++#define DDR_ADDRMAP11 0x00000000
++#define DDR_ODTCFG 0x06000600
++#define DDR_ODTMAP 0x00000001
++#define DDR_SCHED 0x00000C01
++#define DDR_SCHED1 0x00000000
++#define DDR_PERFHPR1 0x01000001
++#define DDR_PERFLPR1 0x08000200
++#define DDR_PERFWR1 0x08000400
++#define DDR_DBG0 0x00000000
++#define DDR_DBG1 0x00000000
++#define DDR_DBGCMD 0x00000000
++#define DDR_POISONCFG 0x00000000
++#define DDR_PCCFG 0x00000010
++#define DDR_PCFGR_0 0x00010000
++#define DDR_PCFGW_0 0x00000000
++#define DDR_PCFGQOS0_0 0x02100C03
++#define DDR_PCFGQOS1_0 0x00800100
++#define DDR_PCFGWQOS0_0 0x01100C03
++#define DDR_PCFGWQOS1_0 0x01000200
++#define DDR_PCFGR_1 0x00010000
++#define DDR_PCFGW_1 0x00000000
++#define DDR_PCFGQOS0_1 0x02100C03
++#define DDR_PCFGQOS1_1 0x00800040
++#define DDR_PCFGWQOS0_1 0x01100C03
++#define DDR_PCFGWQOS1_1 0x01000200
++#define DDR_PGCR 0x01442E02
++#define DDR_PTR0 0x0022AA5B
++#define DDR_PTR1 0x04841104
++#define DDR_PTR2 0x042DA068
++#define DDR_ACIOCR 0x10400812
++#define DDR_DXCCR 0x00000C40
++#define DDR_DSGCR 0xF200011F
++#define DDR_DCR 0x0000000B
++#define DDR_DTPR0 0x38D488D0
++#define DDR_DTPR1 0x098B00D8
++#define DDR_DTPR2 0x10023600
++#define DDR_MR0 0x00000840
++#define DDR_MR1 0x00000000
++#define DDR_MR2 0x00000208
++#define DDR_MR3 0x00000000
++#define DDR_ODTCR 0x00010000
++#define DDR_ZQ0CR1 0x00000038
++#define DDR_DX0GCR 0x0000CE81
++#define DDR_DX0DLLCR 0x40000000
++#define DDR_DX0DQTR 0xFFFFFFFF
++#define DDR_DX0DQSTR 0x3DB02000
++#define DDR_DX1GCR 0x0000CE81
++#define DDR_DX1DLLCR 0x40000000
++#define DDR_DX1DQTR 0xFFFFFFFF
++#define DDR_DX1DQSTR 0x3DB02000
++#define DDR_DX2GCR 0x0000CE81
++#define DDR_DX2DLLCR 0x40000000
++#define DDR_DX2DQTR 0xFFFFFFFF
++#define DDR_DX2DQSTR 0x3DB02000
++#define DDR_DX3GCR 0x0000CE81
++#define DDR_DX3DLLCR 0x40000000
++#define DDR_DX3DQTR 0xFFFFFFFF
++#define DDR_DX3DQSTR 0x3DB02000
++
++#include "stm32mp15-ddr.dtsi"
+diff --git a/arch/arm/dts/stm32mp15xx-phycore-som-pinctrl.dtsi b/arch/arm/dts/stm32mp15xx-phycore-som-pinctrl.dtsi
+new file mode 100644
+index 00000000000..0fb3e42eb60
+--- /dev/null
++++ b/arch/arm/dts/stm32mp15xx-phycore-som-pinctrl.dtsi
+@@ -0,0 +1,321 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2020 PHYTEC Messtechnik GmbH
++ * Authors: Dom Vovard <dom.vovard@linrt.com>
++ *	    Christophe Parant <c.parant@phytec.fr>
++ */
++
++#include <dt-bindings/pinctrl/stm32-pinfunc.h>
++
++&pinctrl {
++	ethernet0_rgmii_pins_a: rgmii-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('G', 5, AF11)>, /* ETH_RGMII_CLK125 */
++				 <STM32_PINMUX('G', 4, AF11)>, /* ETH_RGMII_GTX_CLK */
++				 <STM32_PINMUX('G', 13, AF11)>, /* ETH_RGMII_TXD0 */
++				 <STM32_PINMUX('G', 14, AF11)>, /* ETH_RGMII_TXD1 */
++				 <STM32_PINMUX('C', 2, AF11)>, /* ETH_RGMII_TXD2 */
++				 <STM32_PINMUX('E', 2, AF11)>, /* ETH_RGMII_TXD3 */
++				 <STM32_PINMUX('B', 11, AF11)>, /* ETH_RGMII_TX_CTL */
++				 <STM32_PINMUX('A', 2, AF11)>, /* ETH_MDIO */
++				 <STM32_PINMUX('C', 1, AF11)>; /* ETH_MDC */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <2>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('C', 4, AF11)>, /* ETH_RGMII_RXD0 */
++				 <STM32_PINMUX('C', 5, AF11)>, /* ETH_RGMII_RXD1 */
++				 <STM32_PINMUX('H', 6, AF11)>, /* ETH_RGMII_RXD2 */
++				 <STM32_PINMUX('B', 1, AF11)>, /* ETH_RGMII_RXD3 */
++				 <STM32_PINMUX('A', 1, AF11)>, /* ETH_RGMII_RX_CLK */
++				 <STM32_PINMUX('A', 7, AF11)>; /* ETH_RGMII_RX_CTL */
++			bias-disable;
++		};
++	};
++
++	ethernet0_rgmii_pins_sleep_a: rgmii-sleep-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('G', 5, ANALOG)>, /* ETH_RGMII_CLK125 */
++				 <STM32_PINMUX('G', 4, ANALOG)>, /* ETH_RGMII_GTX_CLK */
++				 <STM32_PINMUX('G', 13, ANALOG)>, /* ETH_RGMII_TXD0 */
++				 <STM32_PINMUX('G', 14, ANALOG)>, /* ETH_RGMII_TXD1 */
++				 <STM32_PINMUX('C', 2, ANALOG)>, /* ETH_RGMII_TXD2 */
++				 <STM32_PINMUX('E', 2, ANALOG)>, /* ETH_RGMII_TXD3 */
++				 <STM32_PINMUX('B', 11, ANALOG)>, /* ETH_RGMII_TX_CTL */
++				 <STM32_PINMUX('A', 2, ANALOG)>, /* ETH_MDIO */
++				 <STM32_PINMUX('C', 1, ANALOG)>, /* ETH_MDC */
++				 <STM32_PINMUX('C', 4, ANALOG)>, /* ETH_RGMII_RXD0 */
++				 <STM32_PINMUX('C', 5, ANALOG)>, /* ETH_RGMII_RXD1 */
++				 <STM32_PINMUX('H', 6, ANALOG)>, /* ETH_RGMII_RXD2 */
++				 <STM32_PINMUX('B', 1, ANALOG)>, /* ETH_RGMII_RXD3 */
++				 <STM32_PINMUX('A', 1, ANALOG)>, /* ETH_RGMII_RX_CLK */
++				 <STM32_PINMUX('A', 7, ANALOG)>; /* ETH_RGMII_RX_CTL */
++		};
++	};
++
++	fmc_pins_a: fmc-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('D', 4, AF12)>, /* FMC_NOE */
++				 <STM32_PINMUX('D', 5, AF12)>, /* FMC_NWE */
++				 <STM32_PINMUX('D', 11, AF12)>, /* FMC_A16_FMC_CLE */
++				 <STM32_PINMUX('D', 12, AF12)>, /* FMC_A17_FMC_ALE */
++				 <STM32_PINMUX('D', 14, AF12)>, /* FMC_D0 */
++				 <STM32_PINMUX('D', 15, AF12)>, /* FMC_D1 */
++				 <STM32_PINMUX('D', 0, AF12)>, /* FMC_D2 */
++				 <STM32_PINMUX('D', 1, AF12)>, /* FMC_D3 */
++				 <STM32_PINMUX('E', 7, AF12)>, /* FMC_D4 */
++				 <STM32_PINMUX('E', 8, AF12)>, /* FMC_D5 */
++				 <STM32_PINMUX('E', 9, AF12)>, /* FMC_D6 */
++				 <STM32_PINMUX('E', 10, AF12)>, /* FMC_D7 */
++				 <STM32_PINMUX('G', 9, AF12)>; /* FMC_NE2_FMC_NCE */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <1>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('D', 6, AF12)>; /* FMC_NWAIT */
++			bias-pull-up;
++		};
++	};
++
++	fmc_sleep_pins_a: fmc-sleep-0 {
++		pins {
++			pinmux = <STM32_PINMUX('D', 4, ANALOG)>, /* FMC_NOE */
++				 <STM32_PINMUX('D', 5, ANALOG)>, /* FMC_NWE */
++				 <STM32_PINMUX('D', 11, ANALOG)>, /* FMC_A16_FMC_CLE */
++				 <STM32_PINMUX('D', 12, ANALOG)>, /* FMC_A17_FMC_ALE */
++				 <STM32_PINMUX('D', 14, ANALOG)>, /* FMC_D0 */
++				 <STM32_PINMUX('D', 15, ANALOG)>, /* FMC_D1 */
++				 <STM32_PINMUX('D', 0, ANALOG)>, /* FMC_D2 */
++				 <STM32_PINMUX('D', 1, ANALOG)>, /* FMC_D3 */
++				 <STM32_PINMUX('E', 7, ANALOG)>, /* FMC_D4 */
++				 <STM32_PINMUX('E', 8, ANALOG)>, /* FMC_D5 */
++				 <STM32_PINMUX('E', 9, ANALOG)>, /* FMC_D6 */
++				 <STM32_PINMUX('E', 10, ANALOG)>, /* FMC_D7 */
++				 <STM32_PINMUX('D', 6, ANALOG)>, /* FMC_NWAIT */
++				 <STM32_PINMUX('G', 9, ANALOG)>; /* FMC_NE2_FMC_NCE */
++		};
++	};
++
++	qspi_bk1_pins_a: qspi-bk1-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('F', 8, AF10)>, /* QSPI_BK1_IO0 */
++				 <STM32_PINMUX('F', 9, AF10)>, /* QSPI_BK1_IO1 */
++				 <STM32_PINMUX('F', 7, AF9)>, /* QSPI_BK1_IO2 */
++				 <STM32_PINMUX('F', 6, AF9)>; /* QSPI_BK1_IO3 */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <1>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('B', 6, AF10)>; /* QSPI_BK1_NCS */
++			bias-pull-up;
++			drive-push-pull;
++			slew-rate = <1>;
++		};
++	};
++
++	qspi_bk1_sleep_pins_a: qspi-bk1-sleep-0 {
++		pins {
++			pinmux = <STM32_PINMUX('F', 8, ANALOG)>, /* QSPI_BK1_IO0 */
++				 <STM32_PINMUX('F', 9, ANALOG)>, /* QSPI_BK1_IO1 */
++				 <STM32_PINMUX('F', 7, ANALOG)>, /* QSPI_BK1_IO2 */
++				 <STM32_PINMUX('F', 6, ANALOG)>, /* QSPI_BK1_IO3 */
++				 <STM32_PINMUX('B', 6, ANALOG)>; /* QSPI_BK1_NCS */
++		};
++	};
++
++	qspi_clk_pins_a: qspi-clk-0 {
++		pins {
++			pinmux = <STM32_PINMUX('F', 10, AF9)>; /* QSPI_CLK */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <3>;
++		};
++	};
++
++	qspi_clk_sleep_pins_a: qspi-clk-sleep-0 {
++		pins {
++			pinmux = <STM32_PINMUX('F', 10, ANALOG)>; /* QSPI_CLK */
++		};
++	};
++
++	sdmmc2_b4_pins_a: sdmmc2-b4-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('B', 14, AF9)>, /* SDMMC2_D0 */
++				 <STM32_PINMUX('B', 15, AF9)>, /* SDMMC2_D1 */
++				 <STM32_PINMUX('B', 3, AF9)>, /* SDMMC2_D2 */
++				 <STM32_PINMUX('B', 4, AF9)>, /* SDMMC2_D3 */
++				 <STM32_PINMUX('G', 6, AF10)>; /* SDMMC2_CMD */
++			slew-rate = <1>;
++			drive-push-pull;
++			bias-pull-up;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('E', 3, AF9)>; /* SDMMC2_CK */
++			slew-rate = <2>;
++			drive-push-pull;
++			bias-pull-up;
++		};
++	};
++
++	sdmmc2_b4_od_pins_a: sdmmc2-b4-od-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('B', 14, AF9)>, /* SDMMC2_D0 */
++				 <STM32_PINMUX('B', 15, AF9)>, /* SDMMC2_D1 */
++				 <STM32_PINMUX('B', 3, AF9)>, /* SDMMC2_D2 */
++				 <STM32_PINMUX('B', 4, AF9)>; /* SDMMC2_D3 */
++			slew-rate = <1>;
++			drive-push-pull;
++			bias-pull-up;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('E', 3, AF9)>; /* SDMMC2_CK */
++			slew-rate = <2>;
++			drive-push-pull;
++			bias-pull-up;
++		};
++		pins3 {
++			pinmux = <STM32_PINMUX('G', 6, AF10)>; /* SDMMC2_CMD */
++			slew-rate = <1>;
++			drive-open-drain;
++			bias-pull-up;
++		};
++	};
++
++	sdmmc2_b4_sleep_pins_a: sdmmc2-b4-sleep-0 {
++		pins {
++			pinmux = <STM32_PINMUX('B', 14, ANALOG)>, /* SDMMC2_D0 */
++				 <STM32_PINMUX('B', 15, ANALOG)>, /* SDMMC2_D1 */
++				 <STM32_PINMUX('B', 3, ANALOG)>, /* SDMMC2_D2 */
++				 <STM32_PINMUX('B', 4, ANALOG)>, /* SDMMC2_D3 */
++				 <STM32_PINMUX('E', 3, ANALOG)>, /* SDMMC2_CK */
++				 <STM32_PINMUX('G', 6, ANALOG)>; /* SDMMC2_CMD */
++		};
++	};
++
++	sdmmc2_d47_pins_a: sdmmc2-d47-0 {
++		pins {
++			pinmux = <STM32_PINMUX('A', 8, AF9)>, /* SDMMC2_D4 */
++				 <STM32_PINMUX('A', 9, AF10)>, /* SDMMC2_D5 */
++				 <STM32_PINMUX('C', 6, AF10)>, /* SDMMC2_D6 */
++				 <STM32_PINMUX('D', 3, AF9)>; /* SDMMC2_D7 */
++			slew-rate = <1>;
++			drive-push-pull;
++			bias-pull-up;
++		};
++	};
++
++	sdmmc2_d47_sleep_pins_a: sdmmc2-d47-sleep-0 {
++		pins {
++			pinmux = <STM32_PINMUX('A', 8, ANALOG)>, /* SDMMC2_D4 */
++				 <STM32_PINMUX('A', 9, ANALOG)>, /* SDMMC2_D5 */
++				 <STM32_PINMUX('C', 6, ANALOG)>, /* SDMMC2_D6 */
++				 <STM32_PINMUX('D', 3, ANALOG)>; /* SDMMC2_D7 */
++		};
++	};
++
++	sdmmc1_b4_pins_a: sdmmc1-b4-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('C', 8, AF12)>, /* SDMMC1_D0 */
++				 <STM32_PINMUX('C', 9, AF12)>, /* SDMMC1_D1 */
++				 <STM32_PINMUX('E', 6, AF8)>, /* SDMMC1_D2 */
++				 <STM32_PINMUX('C', 11, AF12)>, /* SDMMC1_D3 */
++				 <STM32_PINMUX('D', 2, AF12)>; /* SDMMC1_CMD */
++			slew-rate = <1>;
++			drive-push-pull;
++			bias-disable;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('C', 12, AF12)>; /* SDMMC1_CK */
++			slew-rate = <2>;
++			drive-push-pull;
++			bias-disable;
++		};
++	};
++
++	sdmmc1_b4_od_pins_a: sdmmc1-b4-od-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('C', 8, AF12)>, /* SDMMC1_D0 */
++				 <STM32_PINMUX('C', 9, AF12)>, /* SDMMC1_D1 */
++				 <STM32_PINMUX('E', 6, AF8)>, /* SDMMC1_D2 */
++				 <STM32_PINMUX('C', 11, AF12)>; /* SDMMC1_D3 */
++			slew-rate = <1>;
++			drive-push-pull;
++			bias-disable;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('C', 12, AF12)>; /* SDMMC1_CK */
++			slew-rate = <2>;
++			drive-push-pull;
++			bias-disable;
++		};
++		pins3 {
++			pinmux = <STM32_PINMUX('D', 2, AF12)>; /* SDMMC1_CMD */
++			slew-rate = <1>;
++			drive-open-drain;
++			bias-disable;
++		};
++	};
++
++	sdmmc1_b4_sleep_pins_a: sdmmc1-b4-sleep-0 {
++		pins {
++			pinmux = <STM32_PINMUX('C', 8, ANALOG)>, /* SDMMC1_D0 */
++				 <STM32_PINMUX('C', 9, ANALOG)>, /* SDMMC1_D1 */
++				 <STM32_PINMUX('E', 6, ANALOG)>, /* SDMMC1_D2 */
++				 <STM32_PINMUX('C', 11, ANALOG)>, /* SDMMC1_D3 */
++				 <STM32_PINMUX('C', 12, ANALOG)>, /* SDMMC1_CK */
++				 <STM32_PINMUX('D', 2, ANALOG)>; /* SDMMC1_CMD */
++		};
++	};
++
++	uart4_pins_a: uart4-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('B', 9, AF8)>; /* UART4_TX */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <0>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('B', 2, AF8)>; /* UART4_RX */
++			bias-disable;
++		};
++	};
++
++	uart4_idle_pins_a: uart4-idle-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('B', 9, ANALOG)>; /* UART4_TX */
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('B', 2, AF8)>; /* UART4_RX */
++			bias-disable;
++		};
++	};
++
++	uart4_sleep_pins_a: uart4-sleep-0 {
++		pins {
++			pinmux = <STM32_PINMUX('B', 9, ANALOG)>, /* UART4_TX */
++				 <STM32_PINMUX('B', 2, ANALOG)>; /* UART4_RX */
++		};
++	};
++};
++
++&pinctrl_z {
++	i2c4_pins_a: i2c4-0 {
++		pins {
++			pinmux = <STM32_PINMUX('Z', 4, AF6)>, /* I2C4_SCL */
++				 <STM32_PINMUX('Z', 5, AF6)>; /* I2C4_SDA */
++			bias-disable;
++			drive-open-drain;
++			slew-rate = <0>;
++		};
++	};
++
++	i2c4_pins_sleep_a: i2c4-1 {
++		pins {
++			pinmux = <STM32_PINMUX('Z', 4, ANALOG)>, /* I2C4_SCL */
++				 <STM32_PINMUX('Z', 5, ANALOG)>; /* I2C4_SDA */
++		};
++	};
++};
+diff --git a/arch/arm/dts/stm32mp15xx-phycore-som.dtsi b/arch/arm/dts/stm32mp15xx-phycore-som.dtsi
+new file mode 100644
+index 00000000000..2668447ec72
+--- /dev/null
++++ b/arch/arm/dts/stm32mp15xx-phycore-som.dtsi
+@@ -0,0 +1,465 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2020 PHYTEC Messtechnik GmbH
++ * Authors: Dom Vovard <dom.vovard@linrt.com>
++ *	    Christophe Parant <c.parant@phytec.fr>
++ */
++
++#include "stm32mp15xx-phycore-som-pinctrl.dtsi"
++#include "stm32mp15xxac-pinctrl.dtsi"
++#include "stm32mp15-m4-srm.dtsi"
++#include <dt-bindings/gpio/gpio.h>
++#include <dt-bindings/input/input.h>
++#include <dt-bindings/mfd/st,stpmic1.h>
++#include <dt-bindings/net/ti-dp83867.h>
++#include <dt-bindings/rtc/rtc-stm32.h>
++
++/ {
++	aliases {
++		mmc0 = &sdmmc1;
++		mmc1 = &sdmmc2;
++		ethernet0 = &ethernet0;
++		rtc0 = &i2c4_rtc;
++		rtc1 = &rtc;
++		serial0 = &uart4;
++	};
++
++	chosen {
++		stdout-path = "serial0:115200n8";
++	};
++
++	reserved-memory {
++		#address-cells = <1>;
++		#size-cells = <1>;
++		ranges;
++
++		retram: retram@0x38000000 {
++			compatible = "shared-dma-pool";
++			reg = <0x38000000 0x10000>;
++			no-map;
++		};
++
++		mcuram: mcuram@0x30000000 {
++			compatible = "shared-dma-pool";
++			reg = <0x30000000 0x40000>;
++			no-map;
++		};
++
++		mcuram2: mcuram2@0x10000000 {
++			compatible = "shared-dma-pool";
++			reg = <0x10000000 0x40000>;
++			no-map;
++		};
++
++		mcu_rsc_table: mcu-rsc-table@10048000 {
++			compatible = "shared-dma-pool";
++			reg = <0x10048000 0x8000>;
++			no-map;
++		};
++
++		vdev0vring0: vdev0vring0@10040000 {
++			compatible = "shared-dma-pool";
++			reg = <0x10040000 0x2000>;
++			no-map;
++		};
++
++		vdev0vring1: vdev0vring1@10042000 {
++			compatible = "shared-dma-pool";
++			reg = <0x10042000 0x2000>;
++			no-map;
++		};
++
++		vdev0buffer: vdev0buffer@10044000 {
++			compatible = "shared-dma-pool";
++			reg = <0x10044000 0x4000>;
++			no-map;
++		};
++	};
++
++	vin: vin {
++		compatible = "regulator-fixed";
++		regulator-name = "vin";
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++		regulator-always-on;
++	};
++
++	usb_phy_tuning: usb-phy-tuning {
++		st,hs-dc-level = <2>;
++		st,fs-rftime-tuning;
++		st,hs-rftime-reduction;
++		st,hs-current-trim = <15>;
++		st,hs-impedance-trim = <1>;
++		st,squelch-level = <3>;
++		st,hs-rx-offset = <2>;
++		st,no-lsfs-sc;
++	};
++};
++
++&cpu0{
++	cpu-supply = <&vddcore>;
++};
++
++&cpu1{
++	cpu-supply = <&vddcore>;
++};
++
++&dts {
++	status = "okay";
++};
++
++&hash1 {
++	status = "okay";
++};
++
++&crc1 {
++	status = "okay";
++};
++
++&i2c4 {
++	pinctrl-names = "default", "sleep";
++	pinctrl-0 = <&i2c4_pins_a>;
++	pinctrl-1 = <&i2c4_pins_sleep_a>;
++	i2c-scl-rising-time-ns = <185>;
++	i2c-scl-falling-time-ns = <20>;
++	status = "okay";
++	/* spare dmas for other usage */
++	/delete-property/dmas;
++	/delete-property/dma-names;
++
++	pmic: stpmic@33 {
++		compatible = "st,stpmic1";
++		reg = <0x33>;
++		interrupts-extended = <&exti 55 IRQ_TYPE_EDGE_FALLING>;
++		interrupt-controller;
++		#interrupt-cells = <2>;
++		status = "okay";
++		wakeup-source;
++
++		regulators {
++			compatible = "st,stpmic1-regulators";
++			buck1-supply = <&vin>;
++			buck2-supply = <&vin>;
++			buck3-supply = <&vin>;
++			buck4-supply = <&vin>;
++			ldo1-supply = <&v3v3>;
++			ldo2-supply = <&v3v3>;
++			ldo3-supply = <&vdd_ddr>;
++			ldo4-supply = <&vin>;
++			ldo5-supply = <&v3v3>;
++			ldo6-supply = <&v3v3>;
++			vref_ddr-supply = <&vin>;
++			boost-supply = <&vin>;
++			pwr_sw1-supply = <&bst_out>;
++			pwr_sw2-supply = <&bst_out>;
++
++			vddcore: buck1 {
++				regulator-name = "vddcore";
++				regulator-min-microvolt = <1200000>;
++				regulator-max-microvolt = <1350000>;
++				regulator-always-on;
++				regulator-initial-mode = <0>;
++				regulator-over-current-protection;
++			};
++
++			vdd_ddr: buck2 {
++				regulator-name = "vdd_ddr";
++				regulator-min-microvolt = <1350000>;
++				regulator-max-microvolt = <1350000>;
++				regulator-always-on;
++				regulator-initial-mode = <0>;
++				regulator-over-current-protection;
++			};
++
++			vdd: buck3 {
++				regulator-name = "vdd";
++				regulator-min-microvolt = <3300000>;
++				regulator-max-microvolt = <3300000>;
++				regulator-always-on;
++				st,mask-reset;
++				regulator-initial-mode = <0>;
++				regulator-over-current-protection;
++			};
++
++			v3v3: buck4 {
++				regulator-name = "v3v3";
++				regulator-min-microvolt = <3300000>;
++				regulator-max-microvolt = <3300000>;
++				regulator-always-on;
++				regulator-over-current-protection;
++				regulator-initial-mode = <0>;
++			};
++
++			v1v8_audio: ldo1 {
++				regulator-name = "v1v8_audio";
++				regulator-min-microvolt = <1800000>;
++				regulator-max-microvolt = <1800000>;
++				regulator-always-on;
++				interrupts = <IT_CURLIM_LDO1 0>;
++			};
++
++			vdd_eth_2v5: ldo2 {
++				regulator-name = "dd_eth_2v5";
++				regulator-min-microvolt = <2500000>;
++				regulator-max-microvolt = <2500000>;
++				regulator-always-on;
++				interrupts = <IT_CURLIM_LDO2 0>;
++			};
++
++			vtt_ddr: ldo3 {
++				regulator-name = "vtt_ddr";
++				regulator-min-microvolt = <500000>;
++				regulator-max-microvolt = <750000>;
++				regulator-always-on;
++				regulator-over-current-protection;
++			};
++
++			vdd_usb: ldo4 {
++				regulator-name = "vdd_usb";
++				regulator-min-microvolt = <3300000>;
++				regulator-max-microvolt = <3300000>;
++				interrupts = <IT_CURLIM_LDO4 0>;
++			};
++
++			vdda: ldo5 {
++				regulator-name = "vdda";
++				regulator-min-microvolt = <2900000>;
++				regulator-max-microvolt = <2900000>;
++				interrupts = <IT_CURLIM_LDO5 0>;
++				regulator-boot-on;
++			};
++
++			vdd_eth_1v0: ldo6 {
++				regulator-name = "vdd_eth_1v0";
++				regulator-min-microvolt = <1000000>;
++				regulator-max-microvolt = <1000000>;
++				regulator-always-on;
++				interrupts = <IT_CURLIM_LDO6 0>;
++			};
++
++			vref_ddr: vref-ddr {
++				regulator-name = "vref_ddr";
++				regulator-always-on;
++				regulator-over-current-protection;
++			};
++
++			bst_out: boost {
++				regulator-name = "bst_out";
++				interrupts = <IT_OCP_BOOST 0>;
++			};
++
++			vbus_otg: pwr-sw1 {
++				regulator-name = "vbus_otg";
++				interrupts = <IT_OCP_OTG 0>;
++				regulator-active-discharge;
++			};
++
++			vbus_sw: pwr-sw2 {
++				regulator-name = "vbus_sw";
++				interrupts = <IT_OCP_SWOUT 0>;
++				regulator-active-discharge;
++			};
++		};
++
++		onkey {
++			compatible = "st,stpmic1-onkey";
++			interrupts = <IT_PONKEY_F 0>, <IT_PONKEY_R 0>;
++			interrupt-names = "onkey-falling", "onkey-rising";
++			power-off-time-sec = <10>;
++			status = "okay";
++		};
++
++		watchdog {
++			compatible = "st,stpmic1-wdt";
++			status = "disabled";
++		};
++	};
++
++	i2c4_eeprom: eeprom@50 {
++		compatible = "microchip,24c32", "atmel,24c32";
++		reg = <0x50>;
++		status = "disabled";
++	};
++
++	i2c4_rtc: rtc@52 {
++		compatible = "microcrystal,rv3028";
++		reg = <0x52>;
++		enable-level-switching-mode;
++		status = "disabled";
++	};
++};
++
++&ethernet0 {
++	status = "okay";
++	pinctrl-0 = <&ethernet0_rgmii_pins_a>;
++	pinctrl-1 = <&ethernet0_rgmii_pins_sleep_a>;
++	pinctrl-names = "default", "sleep";
++	phy-mode = "rgmii-id";
++	max-speed = <1000>;
++	phy-handle = <&phy0>;
++	nvmem-cells = <&ethernet_mac_address>;
++	nvmem-cell-names = "mac-address";
++
++	mdio0 {
++		#address-cells = <1>;
++		#size-cells = <0>;
++		compatible = "snps,dwmac-mdio";
++
++		phy0: ethernet-phy@1 {
++			compatible = "ethernet-phy-ieee802.3-c22";
++			reg = <1>;
++			interrupt-parent = <&gpiog>;
++			interrupts = <12 IRQ_TYPE_EDGE_FALLING>;
++			ti,rx-internal-delay = <DP83867_RGMIIDCTL_2_00_NS>;
++			ti,tx-internal-delay = <DP83867_RGMIIDCTL_2_00_NS>;
++			ti,fifo-depth = <DP83867_PHYCR_FIFO_DEPTH_4_B_NIB>;
++			ti,min-output-impedance;
++			enet-phy-lane-no-swap;
++			ti,clk-output-sel = <DP83867_CLK_O_SEL_CHN_A_RCLK>;
++		};
++	};
++};
++
++&m4_rproc {
++	memory-region = <&retram>, <&mcuram>, <&mcuram2>, <&vdev0vring0>,
++			<&vdev0vring1>, <&vdev0buffer>, <&mcu_rsc_table>;
++	mboxes = <&ipcc 0>, <&ipcc 1>, <&ipcc 2>;
++	mbox-names = "vq0", "vq1", "shutdown";
++	interrupt-parent = <&exti>;
++	interrupts = <68 1>;
++	wakeup-source;
++	status = "okay";
++};
++
++&ipcc {
++	status = "okay";
++};
++
++&arm_wdt {
++	timeout-sec = <32>;
++	status = "okay";
++};
++
++&pwr_regulators {
++	vdd-supply = <&vdd>;
++	vdd_3v3_usbfs-supply = <&vdd_usb>;
++};
++
++&rtc {
++	status = "okay";
++};
++
++&qspi {
++	pinctrl-names = "default", "sleep";
++	pinctrl-0 = <&qspi_clk_pins_a &qspi_bk1_pins_a>;
++	pinctrl-1 = <&qspi_clk_sleep_pins_a &qspi_bk1_sleep_pins_a>;
++	reg = <0x58003000 0x1000>, <0x70000000 0x4000000>;
++	#address-cells = <1>;
++	#size-cells = <0>;
++	status = "disabled";
++
++	flash0: flash@0 {
++		compatible = "winbond,w25q128", "jedec,spi-nor", "spi-flash";
++		reg = <0>;
++		spi-rx-bus-width = <4>;
++		spi-max-frequency = <50000000>;
++		m25p,fast-read;
++		#address-cells = <1>;
++		#size-cells = <1>;
++	};
++};
++
++&fmc {
++	pinctrl-names = "default", "sleep";
++	pinctrl-0 = <&fmc_pins_a>;
++	pinctrl-1 = <&fmc_sleep_pins_a>;
++	status = "disabled";
++
++	nand-controller@4,0 {
++		status = "okay";
++
++		nand: nand@0 {
++			reg = <0>;
++			nand-on-flash-bbt;
++			nand-ecc-strength = <4>;
++			nand-ecc-step-size = <512>;
++			#address-cells = <1>;
++			#size-cells = <1>;
++		};
++	};
++};
++
++&sdmmc2 {
++	pinctrl-names = "default", "opendrain", "sleep";
++	pinctrl-0 = <&sdmmc2_b4_pins_a &sdmmc2_d47_pins_a>;
++	pinctrl-1 = <&sdmmc2_b4_od_pins_a &sdmmc2_d47_pins_a>;
++	pinctrl-2 = <&sdmmc2_b4_sleep_pins_a &sdmmc2_d47_sleep_pins_a>;
++	non-removable;
++	no-sd;
++	no-sdio;
++	st,neg-edge;
++	bus-width = <8>;
++	vmmc-supply = <&v3v3>;
++	vqmmc-supply = <&v3v3>;
++	mmc-ddr-3_3v;
++	status = "disabled";
++};
++
++&sdmmc1 {
++	pinctrl-names = "default", "opendrain", "sleep";
++	pinctrl-0 = <&sdmmc1_b4_pins_a>;
++	pinctrl-1 = <&sdmmc1_b4_od_pins_a>;
++	pinctrl-2 = <&sdmmc1_b4_sleep_pins_a>;
++	cd-gpios = <&gpiof 3 GPIO_ACTIVE_LOW>;
++	st,neg-edge;
++	bus-width = <4>;
++	max-frequency = <10000000>;
++	vmmc-supply = <&v3v3>;
++	status = "okay";
++};
++
++&uart4 {
++	pinctrl-names = "default", "sleep", "idle";
++	pinctrl-0 = <&uart4_pins_a>;
++	pinctrl-1 = <&uart4_sleep_pins_a>;
++	pinctrl-2 = <&uart4_idle_pins_a>;
++	pinctrl-3 = <&uart4_pins_a>;
++	/delete-property/dmas;
++	/delete-property/dma-names;
++	status = "okay";
++};
++
++&usbh_ehci {
++	phys = <&usbphyc_port0>;
++	phy-names = "usb";
++	status = "okay";
++};
++
++&usbh_ohci {
++	phys = <&usbphyc_port0>;
++	phy-names = "usb";
++	status = "okay";
++};
++
++&usbotg_hs {
++	phys = <&usbphyc_port1 0>;
++	phy-names = "usb2-phy";
++	vbus-supply = <&vbus_otg>;
++	status = "okay";
++};
++
++&usbphyc {
++	vdd3v3-supply = <&vdd_usb>;
++	status = "okay";
++};
++
++&usbphyc_port0 {
++	phy-supply = <&vdd_usb>;
++	vbus-supply = <&vbus_sw>;
++	st,phy-tuning = <&usb_phy_tuning>;
++};
++
++&usbphyc_port1 {
++	phy-supply = <&vdd_usb>;
++	st,phy-tuning = <&usb_phy_tuning>;
++};
+diff --git a/arch/arm/dts/stm32mp257f-phyflex-fpsc-g-som-4Gb-u-boot.dtsi b/arch/arm/dts/stm32mp257f-phyflex-fpsc-g-som-4Gb-u-boot.dtsi
+new file mode 100644
+index 00000000000..90c88e3711e
+--- /dev/null
++++ b/arch/arm/dts/stm32mp257f-phyflex-fpsc-g-som-4Gb-u-boot.dtsi
+@@ -0,0 +1,8 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) PHYTEC GmbH 2025 - All Rights Reserved
++ * Author: Christophe PARANT <c.parant@phytec.fr>,
++ *         Nicolas Raimundo <n.raimundo@phytec.fr>.
++ */
++
++#include "stm32mp257f-phyflex-fpsc-g-som-u-boot.dtsi"
+diff --git a/arch/arm/dts/stm32mp257f-phyflex-fpsc-g-som-4Gb.dts b/arch/arm/dts/stm32mp257f-phyflex-fpsc-g-som-4Gb.dts
+new file mode 100644
+index 00000000000..1630274b8e8
+--- /dev/null
++++ b/arch/arm/dts/stm32mp257f-phyflex-fpsc-g-som-4Gb.dts
+@@ -0,0 +1,23 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2025 PHYTEC Messtechnik GmbH
++ * Authors: Christophe Parant <c.parant@phytec.fr>
++ *          Nicolas Raimundo <n.raimundo@phytec.fr>
++ */
++
++/dts-v1/;
++
++#include "stm32mp257.dtsi"
++#include "stm32mp25xf.dtsi"
++#include "stm32mp25xx-phyflex-fpsc-g-som.dtsi"
++
++/ {
++	model = "PHYTEC phyFLEX-STM32MP257F FPSC-Gamma 4Gib RAM";
++	compatible = "phytec,stm32mp257f-phyflex-fpsc-g-som-4Gb",
++	             "st,stm32mp257";
++
++	memory@80000000 {
++		device_type = "memory";
++		reg = <0x0 0x80000000 0x1 0x0>;
++	};
++};
+diff --git a/arch/arm/dts/stm32mp257f-phyflex-fpsc-g-som-u-boot.dtsi b/arch/arm/dts/stm32mp257f-phyflex-fpsc-g-som-u-boot.dtsi
+new file mode 100644
+index 00000000000..e5c7b75fbfa
+--- /dev/null
++++ b/arch/arm/dts/stm32mp257f-phyflex-fpsc-g-som-u-boot.dtsi
+@@ -0,0 +1,47 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) PHYTEC GmbH 2025 - All Rights Reserved
++ * Author: Christophe PARANT <c.parant@phytec.fr>,
++ *         Nicolas Raimundo <n.raimundo@phytec.fr>.
++ */
++
++#include "stm32mp25-u-boot.dtsi"
++
++/ {
++	config {
++		u-boot,boot-led = "led-blue";
++		u-boot,mmc-env-partition = "u-boot-env";
++		st,stm32prog-gpios = <&gpioc 11 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
++	};
++
++	fwu-mdata {
++		compatible = "u-boot,fwu-mdata-gpt";
++		fwu-mdata-store = <&sdmmc1>;
++	};
++};
++
++&dwc3 {
++	phys = <&usb2_phy2>;
++	phy-names = "usb2-phy";
++	dr_mode = "peripheral";
++	maximum-speed = "high-speed";
++	/delete-node/ port;
++};
++
++&sdmmc3 {
++	status = "disabled";
++};
++
++&usart2 {
++	bootph-all;
++};
++
++&usart2_pins_a {
++	bootph-all;
++	pins1 {
++		bootph-all;
++	};
++	pins2 {
++		bootph-all;
++	};
++};
+diff --git a/arch/arm/dts/stm32mp257f-phyflex-fpsc-g-som.dts b/arch/arm/dts/stm32mp257f-phyflex-fpsc-g-som.dts
+new file mode 100644
+index 00000000000..0cdd9a64f8a
+--- /dev/null
++++ b/arch/arm/dts/stm32mp257f-phyflex-fpsc-g-som.dts
+@@ -0,0 +1,23 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2025 PHYTEC Messtechnik GmbH
++ * Authors: Christophe Parant <c.parant@phytec.fr>
++ *          Nicolas Raimundo <n.raimundo@phytec.fr>
++ */
++
++/dts-v1/;
++
++#include "stm32mp257.dtsi"
++#include "stm32mp25xf.dtsi"
++#include "stm32mp25xx-phyflex-fpsc-g-som.dtsi"
++
++/ {
++	model = "PHYTEC phyFLEX-STM32MP257F FPSC-Gamma";
++	compatible = "phytec,stm32mp257f-phyflex-fpsc-g-som",
++	             "st,stm32mp257";
++
++	memory@80000000 {
++		device_type = "memory";
++		reg = <0x0 0x80000000 0x0 0x80000000>;
++	};
++};
+diff --git a/arch/arm/dts/stm32mp25xx-phyflex-fpsc-g-som-pinctrl.dtsi b/arch/arm/dts/stm32mp25xx-phyflex-fpsc-g-som-pinctrl.dtsi
+new file mode 100644
+index 00000000000..792b7e46001
+--- /dev/null
++++ b/arch/arm/dts/stm32mp25xx-phyflex-fpsc-g-som-pinctrl.dtsi
+@@ -0,0 +1,737 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2025 PHYTEC Messtechnik GmbH
++ * Authors: Christophe Parant <c.parant@phytec.fr>
++ *          Nicolas Raimundo <n.raimundo@phytec.fr>
++ */
++#include <dt-bindings/pinctrl/stm32-pinfunc.h>
++
++&pinctrl {
++	eth1_mdio_pins_a: eth1-mdio-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('F', 0, AF10)>; /* ETH_MDC */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <2>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('F', 2, AF10)>; /* ETH_MDIO */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <0>;
++		};
++	};
++
++	eth1_mdio_sleep_pins_a: eth1-mdio-sleep-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('F', 0, ANALOG)>, /* ETH_MDC */
++				 <STM32_PINMUX('F', 2, ANALOG)>; /* ETH_MDIO */
++		};
++	};
++
++	eth1_rgmii_pins_c: eth1-rgmii-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('A', 15, AF10)>, /* ETH_RGMII_TXD0 */
++				 <STM32_PINMUX('C', 1, AF10)>, /* ETH_RGMII_TXD1 */
++				 <STM32_PINMUX('H', 10, AF10)>, /* ETH_RGMII_TXD2 */
++				 <STM32_PINMUX('H', 11, AF10)>, /* ETH_RGMII_TXD3 */
++				 <STM32_PINMUX('A', 13, AF10)>; /* ETH_RGMII_TX_CTL */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <3>;
++			st,io-retime = <1>;
++			st,io-clk-edge = <1>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('C', 0, AF12)>; /* ETH_RGMII_GTX_CLK */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <3>;
++		};
++		pins3 {
++			pinmux = <STM32_PINMUX('F', 1, AF10)>, /* ETH_RGMII_RXD0 */
++				 <STM32_PINMUX('C', 2, AF10)>, /* ETH_RGMII_RXD1 */
++				 <STM32_PINMUX('H', 12, AF10)>, /* ETH_RGMII_RXD2 */
++				 <STM32_PINMUX('H', 13, AF10)>, /* ETH_RGMII_RXD3 */
++				 <STM32_PINMUX('A', 11, AF10)>; /* ETH_RGMII_RX_CTL */
++			bias-disable;
++			st,io-retime = <1>;
++			st,io-clk-edge = <1>;
++		};
++		pins4 {
++			pinmux = <STM32_PINMUX('A', 14, AF10)>; /* ETH_RGMII_RX_CLK */
++			bias-disable;
++		};
++	};
++
++	eth1_rgmii_sleep_pins_c: eth1-rgmii-sleep-0 {
++		pins {
++			pinmux = <STM32_PINMUX('A', 15, ANALOG)>, /* ETH_RGMII_TXD0 */
++				 <STM32_PINMUX('C', 1, ANALOG)>, /* ETH_RGMII_TXD1 */
++				 <STM32_PINMUX('H', 10, ANALOG)>, /* ETH_RGMII_TXD2 */
++				 <STM32_PINMUX('H', 11, ANALOG)>, /* ETH_RGMII_TXD3 */
++				 <STM32_PINMUX('A', 13, ANALOG)>, /* ETH_RGMII_TX_CTL */
++				 <STM32_PINMUX('C', 0, ANALOG)>, /* ETH_RGMII_GTX_CLK */
++				 <STM32_PINMUX('F', 1, ANALOG)>, /* ETH_RGMII_RXD0 */
++				 <STM32_PINMUX('C', 2, ANALOG)>, /* ETH_RGMII_RXD1 */
++				 <STM32_PINMUX('H', 12, ANALOG)>, /* ETH_RGMII_RXD2 */
++				 <STM32_PINMUX('H', 13, ANALOG)>, /* ETH_RGMII_RXD3 */
++				 <STM32_PINMUX('A', 11, ANALOG)>, /* ETH_RGMII_RX_CTL */
++				 <STM32_PINMUX('A', 14, ANALOG)>; /* ETH_RGMII_RX_CLK */
++		};
++	};
++
++	eth2_rgmii_pins_b: eth2-rgmii-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('C', 7, AF10)>, /* ETH_RGMII_TXD0 */
++				 <STM32_PINMUX('C', 8, AF10)>, /* ETH_RGMII_TXD1 */
++				 <STM32_PINMUX('C', 9, AF10)>, /* ETH_RGMII_TXD2 */
++				 <STM32_PINMUX('C', 10, AF10)>, /* ETH_RGMII_TXD3 */
++				 <STM32_PINMUX('C', 4, AF10)>; /* ETH_RGMII_TX_CTL */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <3>;
++			st,io-retime = <1>;
++			st,io-clk-edge = <1>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('F', 7, AF10)>, /* ETH_RGMII_GTX_CLK */
++				 <STM32_PINMUX('C', 6, AF10)>; /* ETH_MDC */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <3>;
++		};
++		pins3 {
++			pinmux = <STM32_PINMUX('C', 5, AF10)>; /* ETH_MDIO */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <0>;
++		};
++		pins4 {
++			pinmux = <STM32_PINMUX('G', 0, AF10)>, /* ETH_RGMII_RXD0 */
++				 <STM32_PINMUX('C', 12, AF10)>, /* ETH_RGMII_RXD1 */
++				 <STM32_PINMUX('F', 9, AF10)>, /* ETH_RGMII_RXD2 */
++				 <STM32_PINMUX('C', 11, AF10)>, /* ETH_RGMII_RXD3 */
++				 <STM32_PINMUX('C', 3, AF10)>; /* ETH_RGMII_RX_CTL */
++			bias-disable;
++			st,io-retime = <1>;
++			st,io-clk-edge = <1>;
++		};
++		pins5 {
++			pinmux = <STM32_PINMUX('F', 6, AF10)>; /* ETH_RGMII_RX_CLK */
++			bias-disable;
++		};
++	};
++
++	eth2_rgmii_sleep_pins_b: eth2-rgmii-sleep-0 {
++		pins {
++			pinmux = <STM32_PINMUX('C', 7, ANALOG)>, /* ETH_RGMII_TXD0 */
++				 <STM32_PINMUX('C', 8, ANALOG)>, /* ETH_RGMII_TXD1 */
++				 <STM32_PINMUX('C', 9, ANALOG)>, /* ETH_RGMII_TXD2 */
++				 <STM32_PINMUX('C', 10, ANALOG)>, /* ETH_RGMII_TXD3 */
++				 <STM32_PINMUX('C', 4, ANALOG)>, /* ETH_RGMII_TX_CTL */
++				 <STM32_PINMUX('F', 7, ANALOG)>, /* ETH_RGMII_GTX_CLK */
++				 <STM32_PINMUX('C', 6, ANALOG)>, /* ETH_MDC */
++				 <STM32_PINMUX('C', 5, ANALOG)>, /* ETH_MDIO */
++				 <STM32_PINMUX('G', 0, ANALOG)>, /* ETH_RGMII_RXD0 */
++				 <STM32_PINMUX('C', 12, ANALOG)>, /* ETH_RGMII_RXD1 */
++				 <STM32_PINMUX('F', 9, ANALOG)>, /* ETH_RGMII_RXD2 */
++				 <STM32_PINMUX('C', 11, ANALOG)>, /* ETH_RGMII_RXD3 */
++				 <STM32_PINMUX('C', 3, ANALOG)>, /* ETH_RGMII_RX_CTL */
++				 <STM32_PINMUX('F', 6, ANALOG)>; /* ETH_RGMII_RX_CLK */
++		};
++	};
++
++	eth3_rgmii_pins_a: eth3-rgmii-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('A', 6, AF14)>, /* ETH_RGMII_TXD0 */
++				 <STM32_PINMUX('A', 7, AF14)>, /* ETH_RGMII_TXD1 */
++				 <STM32_PINMUX('H', 6, AF14)>, /* ETH_RGMII_TXD2 */
++				 <STM32_PINMUX('H', 3, AF14)>, /* ETH_RGMII_TXD3 */
++				 <STM32_PINMUX('A', 3, AF14)>; /* ETH_RGMII_TX_CTL */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <3>;
++			st,io-retime = <1>;
++			st,io-clk-edge = <1>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('H', 2, AF14)>; /* ETH_RGMII_GTX_CLK */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <3>;
++			st,io-delay = <2>;
++		};
++		pins3 {
++			pinmux = <STM32_PINMUX('A', 9, AF14)>, /* ETH_RGMII_RXD0 */
++				 <STM32_PINMUX('A', 10, AF14)>, /* ETH_RGMII_RXD1 */
++				 <STM32_PINMUX('H', 7, AF14)>, /* ETH_RGMII_RXD2 */
++				 <STM32_PINMUX('H', 8, AF14)>, /* ETH_RGMII_RXD3 */
++				 <STM32_PINMUX('A', 2, AF14)>; /* ETH_RGMII_RX_CTL */
++			bias-disable;
++			st,io-retime = <1>;
++			st,io-clk-edge = <1>;
++		};
++		pins4 {
++			pinmux = <STM32_PINMUX('A', 5, AF14)>; /* ETH_RGMII_RX_CLK */
++			bias-disable;
++		};
++	};
++
++	eth3_rgmii_sleep_pins_a: eth3-rgmii-sleep-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('A', 6, ANALOG)>, /* ETH_RGMII_TXD0 */
++				 <STM32_PINMUX('A', 7, ANALOG)>, /* ETH_RGMII_TXD1 */
++				 <STM32_PINMUX('H', 6, ANALOG)>, /* ETH_RGMII_TXD2 */
++				 <STM32_PINMUX('H', 3, ANALOG)>, /* ETH_RGMII_TXD3 */
++				 <STM32_PINMUX('A', 3, ANALOG)>, /* ETH_RGMII_TX_CTL */
++				 <STM32_PINMUX('H', 2, ANALOG)>, /* ETH_RGMII_GTX_CLK */
++				 <STM32_PINMUX('A', 9, ANALOG)>, /* ETH_RGMII_RXD0 */
++				 <STM32_PINMUX('A', 10, ANALOG)>, /* ETH_RGMII_RXD1 */
++				 <STM32_PINMUX('H', 7, ANALOG)>, /* ETH_RGMII_RXD2 */
++				 <STM32_PINMUX('H', 8, ANALOG)>, /* ETH_RGMII_RXD3 */
++				 <STM32_PINMUX('A', 2, ANALOG)>, /* ETH_RGMII_RX_CTL */
++				 <STM32_PINMUX('A', 5, ANALOG)>; /* ETH_RGMII_RX_CLK */
++		};
++	};
++
++	i2c2_pins_a: i2c2-0 {
++		pins {
++			pinmux = <STM32_PINMUX('B', 5, AF9)>, /* I2C2_SCL */
++				 <STM32_PINMUX('B', 4, AF9)>; /* I2C2_SDA */
++			bias-disable;
++			drive-open-drain;
++			slew-rate = <0>;
++		};
++	};
++
++	i2c2_sleep_pins_a: i2c2-sleep-0 {
++		pins {
++			pinmux = <STM32_PINMUX('B', 5, ANALOG)>, /* I2C2_SCL */
++				 <STM32_PINMUX('B', 4, ANALOG)>; /* I2C2_SDA */
++		};
++	};
++
++	i2c7_pins_a: i2c7-0 {
++		pins {
++			pinmux = <STM32_PINMUX('D', 14, AF10)>, /* I2C7_SDA */
++				 <STM32_PINMUX('D', 15, AF10)>; /* I2C7_SCL */
++			bias-disable;
++			drive-open-drain;
++			slew-rate = <0>;
++		};
++	};
++
++	i2c7_sleep_pins_a: i2c7-sleep-0 {
++		pins {
++			pinmux = <STM32_PINMUX('D', 14, ANALOG)>, /* I2C7_SDA */
++				 <STM32_PINMUX('D', 15, ANALOG)>; /* I2C7_SCL */
++		};
++	};
++
++	m_can1_pins_a: m-can1-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('G', 11, AF7)>; /* CAN1_TX */
++			slew-rate = <1>;
++			drive-push-pull;
++			bias-disable;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('G', 12, AF7)>; /* CAN1_RX */
++			bias-disable;
++		};
++	};
++
++	m_can1_sleep_pins_a: m-can1-sleep-0 {
++		pins {
++			pinmux = <STM32_PINMUX('G', 11, ANALOG)>, /* CAN3_TX */
++				 <STM32_PINMUX('G', 12, ANALOG)>; /* CAN3_RX */
++		};
++	};
++
++	m_can3_pins_b: m-can3-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('D', 2, AF9)>; /* CAN3_TX */
++			slew-rate = <1>;
++			drive-push-pull;
++			bias-disable;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('D', 1, AF9)>; /* CAN3_RX */
++			bias-disable;
++		};
++	};
++
++	m_can3_sleep_pins_b: m-can3-sleep-0 {
++		pins {
++			pinmux = <STM32_PINMUX('D', 2, ANALOG)>, /* CAN3_TX */
++				 <STM32_PINMUX('D', 1, ANALOG)>; /* CAN3_RX */
++		};
++	};
++
++	ospi_port1_clk_pins_a: ospi-port1-clk-0 {
++		pins {
++			pinmux = <STM32_PINMUX('D', 0, AF10)>; /* OSPI1_CLK */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <2>;
++		};
++	};
++
++	ospi_port1_clk_sleep_pins_a: ospi-port1-clk-sleep-0 {
++		pins {
++			pinmux = <STM32_PINMUX('D', 0, ANALOG)>; /* OSPI1_CLK */
++		};
++	};
++
++	ospi_port1_cs0_pins_a: ospi-port1-cs0-0 {
++		pins {
++			pinmux = <STM32_PINMUX('D', 3, AF10)>; /* OSPI_NCS0 */
++			bias-pull-up;
++			drive-push-pull;
++			slew-rate = <0>;
++		};
++	};
++
++	ospi_port1_cs0_sleep_pins_a: ospi-port1-cs0-sleep-0 {
++		pins {
++			pinmux = <STM32_PINMUX('D', 3, ANALOG)>; /* OSPI_NCS0 */
++		};
++	};
++
++	ospi_port1_io03_pins_a: ospi-port1-io03-0 {
++		pins {
++			pinmux = <STM32_PINMUX('D', 4, AF10)>, /* OSPI_IO0 */
++				 <STM32_PINMUX('D', 5, AF10)>, /* OSPI_IO1 */
++				 <STM32_PINMUX('D', 6, AF10)>, /* OSPI_IO2 */
++				 <STM32_PINMUX('D', 7, AF10)>; /* OSPI_IO3 */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <0>;
++		};
++	};
++
++	ospi_port1_io03_sleep_pins_a: ospi-port1-io03-sleep-0 {
++		pins {
++			pinmux = <STM32_PINMUX('D', 4, ANALOG)>, /* OSPI_IO0 */
++				 <STM32_PINMUX('D', 5, ANALOG)>, /* OSPI_IO1 */
++				 <STM32_PINMUX('D', 6, ANALOG)>, /* OSPI_IO2 */
++				 <STM32_PINMUX('D', 7, ANALOG)>; /* OSPI_IO3 */
++		};
++	};
++
++	rtc_out2_rmp_pins_a: rtc-out2-rmp-pins-0 {
++		pins {
++			pinmux = <STM32_PINMUX('I', 8, ANALOG)>; /* RTC_OUT2_RMP */
++		};
++	};
++
++	sai1a_pins_a: sai1a-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('D', 9, AF3)>, /* SAI1_SD_A */
++				 <STM32_PINMUX('D', 8, AF3)>, /* SAI1_FS_A */
++				 <STM32_PINMUX('D', 10, AF3)>; /* SAI1_SCK_A */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <1>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('D', 11, AF3)>; /* SAI1_MCLK_A */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <2>;
++		};
++	};
++
++	sai1a_sleep_pins_a: sai1a-sleep-0 {
++		pins {
++			pinmux = <STM32_PINMUX('D', 9, ANALOG)>, /* SAI1_SD_A */
++				 <STM32_PINMUX('D', 8, ANALOG)>, /* SAI1_FS_A */
++				 <STM32_PINMUX('D', 10, ANALOG)>, /* SAI1_SCK_A */
++				 <STM32_PINMUX('D', 11, ANALOG)>; /* SAI1_MCLK_A */
++		};
++	};
++
++	sai1b_pins_a: sai1b-0 {
++		pins {
++			pinmux = <STM32_PINMUX('D', 4, AF4)>; /* SAI1_SD_B */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <0>;
++		};
++	};
++
++	sai1b_sleep_pins_a: sai1b-sleep-0 {
++		pins {
++			pinmux = <STM32_PINMUX('D', 4, ANALOG)>; /* SAI1_SD_B */
++		};
++	};
++
++	sdmmc1_b4_pins_c: sdmmc1-b4-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('E', 4, AF10)>, /* SDMMC1_D0 */
++				 <STM32_PINMUX('E', 5, AF10)>, /* SDMMC1_D1 */
++				 <STM32_PINMUX('E', 0, AF10)>, /* SDMMC1_D2 */
++				 <STM32_PINMUX('E', 1, AF10)>, /* SDMMC1_D3 */
++				 <STM32_PINMUX('E', 2, AF10)>; /* SDMMC1_CMD */
++			slew-rate = <2>;
++			drive-push-pull;
++			bias-pull-up;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('E', 3, AF10)>; /* SDMMC1_CK */
++			slew-rate = <3>;
++			drive-push-pull;
++			bias-pull-up;
++		};
++	};
++
++	sdmmc1_b4_od_pins_c: sdmmc1-b4-od-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('E', 4, AF10)>, /* SDMMC1_D0 */
++				 <STM32_PINMUX('E', 5, AF10)>, /* SDMMC1_D1 */
++				 <STM32_PINMUX('E', 0, AF10)>, /* SDMMC1_D2 */
++				 <STM32_PINMUX('E', 1, AF10)>; /* SDMMC1_D3 */
++			slew-rate = <2>;
++			drive-push-pull;
++			bias-pull-up;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('E', 3, AF10)>; /* SDMMC1_CK */
++			slew-rate = <3>;
++			drive-push-pull;
++			bias-pull-up;
++		};
++		pins3 {
++			pinmux = <STM32_PINMUX('E', 2, AF10)>; /* SDMMC1_CMD */
++			slew-rate = <2>;
++			drive-open-drain;
++			bias-pull-up;
++		};
++	};
++
++	sdmmc1_b4_sleep_pins_a: sdmmc1-b4-sleep-0 {
++		pins {
++			pinmux = <STM32_PINMUX('E', 4, ANALOG)>, /* SDMMC1_D0 */
++				 <STM32_PINMUX('E', 5, ANALOG)>, /* SDMMC1_D1 */
++				 <STM32_PINMUX('E', 0, ANALOG)>, /* SDMMC1_D2 */
++				 <STM32_PINMUX('E', 1, ANALOG)>, /* SDMMC1_D3 */
++				 <STM32_PINMUX('E', 3, ANALOG)>, /* SDMMC1_CK */
++				 <STM32_PINMUX('E', 2, ANALOG)>; /* SDMMC1_CMD */
++		};
++	};
++
++	sdmmc2_b4_pins_a: sdmmc2-b4-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('E', 13, AF12)>, /* SDMMC2_D0 */
++				 <STM32_PINMUX('E', 11, AF12)>, /* SDMMC2_D1 */
++				 <STM32_PINMUX('E', 8, AF12)>, /* SDMMC2_D2 */
++				 <STM32_PINMUX('E', 12, AF12)>, /* SDMMC2_D3 */
++				 <STM32_PINMUX('E', 15, AF12)>; /* SDMMC2_CMD */
++			slew-rate = <1>;
++			drive-push-pull;
++			bias-pull-up;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('E', 14, AF12)>; /* SDMMC2_CK */
++			slew-rate = <2>;
++			drive-push-pull;
++			bias-pull-up;
++		};
++	};
++
++	sdmmc2_b4_od_pins_a: sdmmc2-b4-od-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('E', 13, AF12)>, /* SDMMC2_D0 */
++				 <STM32_PINMUX('E', 11, AF12)>, /* SDMMC2_D1 */
++				 <STM32_PINMUX('E', 8, AF12)>, /* SDMMC2_D2 */
++				 <STM32_PINMUX('E', 12, AF12)>; /* SDMMC2_D3 */
++			slew-rate = <1>;
++			drive-push-pull;
++			bias-pull-up;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('E', 14, AF12)>; /* SDMMC2_CK */
++			slew-rate = <2>;
++			drive-push-pull;
++			bias-pull-up;
++		};
++		pins3 {
++			pinmux = <STM32_PINMUX('E', 15, AF12)>; /* SDMMC2_CMD */
++			slew-rate = <1>;
++			drive-open-drain;
++			bias-pull-up;
++		};
++	};
++
++	sdmmc2_b4_sleep_pins_a: sdmmc2-b4-sleep-0 {
++		pins {
++			pinmux = <STM32_PINMUX('E', 13, ANALOG)>, /* SDMMC2_D0 */
++				 <STM32_PINMUX('E', 11, ANALOG)>, /* SDMMC2_D1 */
++				 <STM32_PINMUX('E', 8, ANALOG)>, /* SDMMC2_D2 */
++				 <STM32_PINMUX('E', 12, ANALOG)>, /* SDMMC2_D3 */
++				 <STM32_PINMUX('E', 14, ANALOG)>, /* SDMMC2_CK */
++				 <STM32_PINMUX('E', 15, ANALOG)>; /* SDMMC2_CMD */
++		};
++	};
++
++	sdmmc2_d47_pins_a: sdmmc2-d47-0 {
++		pins {
++			pinmux = <STM32_PINMUX('E', 10, AF12)>, /* SDMMC2_D4 */
++				 <STM32_PINMUX('E', 9, AF12)>, /* SDMMC2_D5 */
++				 <STM32_PINMUX('E', 6, AF12)>, /* SDMMC2_D6 */
++				 <STM32_PINMUX('E', 7, AF12)>; /* SDMMC2_D7 */
++			slew-rate = <1>;
++			drive-push-pull;
++			bias-pull-up;
++		};
++	};
++
++	sdmmc2_d47_sleep_pins_a: sdmmc2-d47-sleep-0 {
++		pins {
++			pinmux = <STM32_PINMUX('E', 10, ANALOG)>, /* SDMMC2_D4 */
++				 <STM32_PINMUX('E', 9, ANALOG)>, /* SDMMC2_D5 */
++				 <STM32_PINMUX('E', 6, ANALOG)>, /* SDMMC2_D6 */
++				 <STM32_PINMUX('E', 7, ANALOG)>; /* SDMMC2_D7 */
++		};
++	};
++
++	sdmmc3_b4_pins_a: sdmmc3-b4-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('B', 14, AF10)>, /* SDMMC3_D0 */
++				 <STM32_PINMUX('D', 13, AF10)>, /* SDMMC3_D1 */
++				 <STM32_PINMUX('B', 12, AF10)>, /* SDMMC3_D2 */
++				 <STM32_PINMUX('I', 11, AF10)>, /* SDMMC3_D3 */
++				 <STM32_PINMUX('D', 12, AF10)>; /* SDMMC3_CMD */
++			slew-rate = <0>;
++			drive-push-pull;
++			bias-pull-up;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('B', 13, AF10)>; /* SDMMC3_CK */
++			slew-rate = <1>;
++			drive-push-pull;
++			bias-pull-up;
++		};
++	};
++
++	sdmmc3_b4_od_pins_a: sdmmc3-b4-od-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('B', 14, AF10)>, /* SDMMC3_D0 */
++				 <STM32_PINMUX('D', 13, AF10)>, /* SDMMC3_D1 */
++				 <STM32_PINMUX('B', 12, AF10)>, /* SDMMC3_D2 */
++				 <STM32_PINMUX('I', 11, AF10)>; /* SDMMC3_D3 */
++			slew-rate = <0>;
++			drive-push-pull;
++			bias-pull-up;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('B', 13, AF10)>; /* SDMMC3_CK */
++			slew-rate = <1>;
++			drive-push-pull;
++			bias-pull-up;
++		};
++		pins3 {
++			pinmux = <STM32_PINMUX('D', 12, AF10)>; /* SDMMC3_CMD */
++			slew-rate = <0>;
++			drive-open-drain;
++			bias-pull-up;
++		};
++	};
++
++	sdmmc3_b4_sleep_pins_a: sdmmc3-b4-sleep-0 {
++		pins {
++			pinmux = <STM32_PINMUX('B', 14, ANALOG)>, /* SDMMC1_D0 */
++				 <STM32_PINMUX('D', 13, ANALOG)>, /* SDMMC1_D1 */
++				 <STM32_PINMUX('B', 12, ANALOG)>, /* SDMMC1_D2 */
++				 <STM32_PINMUX('I', 11, ANALOG)>, /* SDMMC1_D3 */
++				 <STM32_PINMUX('B', 13, ANALOG)>, /* SDMMC1_CK */
++				 <STM32_PINMUX('D', 12, ANALOG)>; /* SDMMC1_CMD */
++		};
++	};
++
++	spi3_pins_a: spi3-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('B', 7, AF1)>, /* SPI3_SCK */
++				 <STM32_PINMUX('B', 8, AF1)>; /* SPI3_MOSI */
++			drive-push-pull;
++			bias-disable;
++			slew-rate = <1>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('B', 10, AF1)>; /* SPI3_MISO */
++			bias-disable;
++		};
++	};
++
++	spi3_sleep_pins_a: spi3-sleep-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('B', 7, ANALOG)>, /* SPI3_SCK */
++				 <STM32_PINMUX('B', 8, ANALOG)>, /* SPI3_MOSI */
++				 <STM32_PINMUX('B', 10, ANALOG)>; /* SPI3_MISO */
++		};
++	};
++
++	usart2_pins_a: usart2-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('A', 4, AF6)>; /* USART2_TX */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <0>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('A', 8, AF8)>; /* USART2_RX */
++			bias-disable;
++		};
++	};
++
++	usart2_idle_pins_a: usart2-idle-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('A', 4, ANALOG)>; /* USART2_TX */
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('A', 8, AF8)>; /* USART2_RX */
++			bias-disable;
++		};
++	};
++
++	usart2_sleep_pins_a: usart2-sleep-0 {
++		pins {
++			pinmux = <STM32_PINMUX('A', 4, ANALOG)>, /* USART2_TX */
++				 <STM32_PINMUX('A', 8, ANALOG)>; /* USART2_RX */
++		};
++	};
++
++	usart6_pins_a: usart6-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('F', 13, AF3)>, /* USART6_TX */
++				 <STM32_PINMUX('G', 5, AF3)>;  /* USART6_RTS */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <0>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('F', 14, AF3)>, /* USART6_RX */
++				 <STM32_PINMUX('F', 15, AF3)>; /* USART6_CTS_NSS */
++			bias-pull-up;
++		};
++	};
++
++	usart6_idle_pins_a: usart6-idle-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('F', 13, ANALOG)>, /* USART6_TX */
++				 <STM32_PINMUX('F', 15, ANALOG)>; /* USART6_CTS_NSS */
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('G', 5, AF3)>; /* USART6_RTS */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <0>;
++		};
++		pins3 {
++			pinmux = <STM32_PINMUX('F', 14, AF3)>; /* USART6_RX */
++			bias-pull-up;
++		};
++	};
++
++	usart6_sleep_pins_a: usart6-sleep-0 {
++		pins {
++			pinmux = <STM32_PINMUX('F', 13, ANALOG)>, /* USART6_TX */
++				 <STM32_PINMUX('G', 5, ANALOG)>,  /* USART6_RTS */
++				 <STM32_PINMUX('F', 15, ANALOG)>, /* USART6_CTS_NSS */
++				 <STM32_PINMUX('F', 14, ANALOG)>; /* USART6_RX */
++		};
++	};
++
++	tim8_pwm_pins_a: tim8_pwm_pins-0 {
++		pins {
++			pinmux = <STM32_PINMUX('I', 2, AF8)>, /* TIM8_CH1 */
++					 <STM32_PINMUX('I', 3, AF8)>, /* TIM8_CH2 */
++					 <STM32_PINMUX('I', 4, AF8)>; /* TIM8_CH3 */
++			bias-disable;
++			drive-push-pull;
++			slew-rate = <0>;
++		};
++	};
++
++	tim8_pwm_sleep_pins_a: tim8_pwm_sleep_pins-0 {
++		pins {
++			pinmux = <STM32_PINMUX('I', 2, ANALOG)>, /* TIM8_CH1 */
++					 <STM32_PINMUX('I', 3, ANALOG)>, /* TIM8_CH2 */
++					 <STM32_PINMUX('I', 4, ANALOG)>; /* TIM8_CH3 */
++		};
++	};
++};
++
++&pinctrl_z {
++	i2c8_pins_a: i2c8-0 {
++		pins {
++			pinmux = <STM32_PINMUX('Z', 4, AF8)>, /* I2C8_SCL */
++				 <STM32_PINMUX('Z', 3, AF8)>; /* I2C8_SDA */
++			bias-disable;
++			drive-open-drain;
++			slew-rate = <0>;
++		};
++	};
++
++	i2c8_sleep_pins_a: i2c8-sleep-0 {
++		pins {
++			pinmux = <STM32_PINMUX('Z', 4, ANALOG)>, /* I2C8_SCL */
++				 <STM32_PINMUX('Z', 3, ANALOG)>; /* I2C8_SDA */
++		};
++	};
++
++	i3c4_pins_a: i3c4-0 {
++		pins {
++			pinmux = <STM32_PINMUX('Z', 4, AF11)>, /* I3C4_SCL */
++				 <STM32_PINMUX('Z', 3, AF11)>; /* I3C4_SDA */
++			drive-push-pull;
++			bias-disable;
++			slew-rate = <3>;
++		};
++	};
++
++	i3c4_init_pins_a: i3c4-init-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('Z', 4, AF11)>; /* I3C4_SCL */
++			drive-push-pull;
++			bias-disable;
++			slew-rate = <1>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('Z', 3, AF11)>; /* I3C4_SDA */
++			drive-push-pull;
++			bias-pull-up;
++			slew-rate = <1>;
++		};
++	};
++
++	i3c4_sleep_pins_a: i3c4-sleep-0 {
++		pins {
++			pinmux = <STM32_PINMUX('Z', 4, ANALOG)>, /* I3C4_SCL */
++				 <STM32_PINMUX('Z', 3, ANALOG)>; /* I3C4_SDA */
++		};
++	};
++
++	spi8_pins_a: spi8-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('Z', 2, AF3)>, /* SPI8_SCK */
++				 <STM32_PINMUX('Z', 0, AF3)>; /* SPI8_MOSI */
++			drive-push-pull;
++			bias-disable;
++			slew-rate = <1>;
++		};
++		pins2 {
++			pinmux = <STM32_PINMUX('Z', 1, AF3)>; /* SPI8_MISO */
++			bias-disable;
++		};
++	};
++
++	spi8_sleep_pins_a: spi8-sleep-0 {
++		pins1 {
++			pinmux = <STM32_PINMUX('Z', 2, ANALOG)>, /* SPI8_SCK */
++				 <STM32_PINMUX('Z', 0, ANALOG)>, /* SPI8_MOSI */
++				 <STM32_PINMUX('Z', 1, ANALOG)>; /* SPI8_MISO */
++		};
++	};
++};
+diff --git a/arch/arm/dts/stm32mp25xx-phyflex-fpsc-g-som.dtsi b/arch/arm/dts/stm32mp25xx-phyflex-fpsc-g-som.dtsi
+new file mode 100644
+index 00000000000..630b2928cca
+--- /dev/null
++++ b/arch/arm/dts/stm32mp25xx-phyflex-fpsc-g-som.dtsi
+@@ -0,0 +1,303 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2025 PHYTEC Messtechnik GmbH
++ * Authors: Christophe Parant <c.parant@phytec.fr>
++ *          Nicolas Raimundo <n.raimundo@phytec.fr>
++ */
++
++#include <dt-bindings/gpio/gpio.h>
++#include "stm32mp257f-dk-ca35tdcid-resmem.dtsi"
++#include "stm32mp25xx-phyflex-fpsc-g-som-pinctrl.dtsi"
++#include "stm32mp25xxak-pinctrl.dtsi"
++
++/ {
++	aliases {
++		serial0 = &usart2;
++	};
++
++	chosen {
++		stdout-path = "serial0:115200n8";
++		#address-cells = <2>;
++		#size-cells = <2>;
++		ranges;
++
++		framebuffer {
++			compatible = "simple-framebuffer";
++			clocks = <&rcc CK_BUS_LTDC>, <&rcc CK_KER_LTDC>,
++				 <&rcc CK_BUS_LVDS>, <&rcc CK_KER_LVDSPHY>;
++			status = "disabled";
++		};
++	};
++
++	backlight_lvds: backlight0 {
++		compatible = "pwm-backlight";
++		power-supply = <&reg_vdd_12v0>;
++		brightness-levels = <0 8 16 32 64 128 255>;
++		default-brightness-level = <8>;
++		enable-gpios = <&gpiob 2 GPIO_ACTIVE_LOW>;
++		num-interpolated-steps = <2>;
++		pwms = <&pwm_8 0 66667 0>;
++		status = "okay";
++	};
++
++	panel_lvds: panel-lvds0 {
++		compatible = "simple-panel";
++		status = "okay";
++		backlight = <&backlight_lvds>;
++		power-supply = <&reg_vdd_3v3>;
++
++		display-timings {
++			timing@0 {
++				clock-frequency = <72400000>;
++				hactive = <1280>;
++				vactive = <800>;
++				hback-porch = <86>;
++				hsync-len = <2>;
++				hfront-porch = <72>;
++				vback-porch = <21>;
++				vsync-len = <2>;
++				vfront-porch = <15>;
++				hsync-active = <0>;
++				vsync-active = <0>;
++				de-active = <1>;
++				pixelclk-active = <0>;
++			};
++		};
++
++		port {
++			panel0_in: endpoint {
++				remote-endpoint = <&lvds_out>;
++			};
++		};
++	};
++
++	reg_vdd_3v3: regulator-vdd-3v3 {
++		compatible = "regulator-fixed";
++		regulator-always-on;
++		regulator-boot-on;
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		regulator-name = "VDD_3V3";
++	};
++
++	reg_vdd_12v0: regulator-12v0 {
++		compatible = "regulator-fixed";
++		regulator-always-on;
++		regulator-boot-on;
++		regulator-max-microvolt = <12000000>;
++		regulator-min-microvolt = <12000000>;
++		regulator-name = "VDD_12V0";
++	};
++};
++
++&arm_wdt {
++	timeout-sec = <32>;
++	status = "okay";
++};
++
++&sdmmc2 {
++	pinctrl-names = "default", "opendrain", "sleep";
++	pinctrl-0 = <&sdmmc2_b4_pins_a &sdmmc2_d47_pins_a>;
++	pinctrl-1 = <&sdmmc2_b4_od_pins_a &sdmmc2_d47_pins_a>;
++	pinctrl-2 = <&sdmmc2_b4_sleep_pins_a &sdmmc2_d47_sleep_pins_a>;
++	non-removable;
++	no-sd;
++	no-sdio;
++	st,neg-edge;
++	bus-width = <8>;
++	vmmc-supply = <&scmi_vdd_emmc>;
++	vqmmc-supply = <&scmi_vddio2>;
++	mmc-ddr-1_8v;
++	mmc-hs200-1_8v;
++	status = "okay";
++};
++
++&eth1 {
++	status = "okay";
++	pinctrl-0 = <&eth1_rgmii_pins_c &eth1_mdio_pins_a>;
++	pinctrl-1 = <&eth1_rgmii_sleep_pins_c &eth1_mdio_sleep_pins_a>;
++	pinctrl-names = "default", "sleep";
++	phy-mode = "rgmii-id";
++	max-speed = <1000>;
++	phy-handle = <&phy1_eth1>;
++	st,eth-clk-sel;
++	snps,ext-systime;
++
++	mdio1 {
++		#address-cells = <1>;
++		#size-cells = <0>;
++		compatible = "snps,dwmac-mdio";
++		phy1_eth1: ethernet-phy@4 {
++			compatible = "ethernet-phy-ieee802.3-c22";
++			interrupt-parent = <&gpioa>;
++			interrupts = <12 IRQ_TYPE_EDGE_FALLING>;
++			reset-assert-us = <10000>;
++			reset-deassert-us = <80000>;
++			realtek,eee-disable;
++			reg = <4>;
++		};
++	};
++};
++
++&i2c7 {
++	pinctrl-names = "default", "sleep";
++	pinctrl-0 = <&i2c7_pins_a>;
++	pinctrl-1 = <&i2c7_sleep_pins_a>;
++	clock-frequency = <400000>;
++	status = "okay";
++
++	i2c7_eeprom: eeprom@50 {
++		compatible = "microchip,24c32", "atmel,24c32";
++		reg = <0x50>;
++		status = "disabled";
++	};
++
++	i2c7_rtc: rtc@52 {
++		compatible = "microcrystal,rv3028";
++		reg = <0x52>;
++		status = "disabled";
++	};
++
++	i2c7_tmp102: tmp102@48 {
++		compatible = "ti,tmp102";
++		reg = <0x48>;
++		status = "disabled";
++	};
++};
++
++&i2c8 {
++        pinctrl-names = "default", "sleep";
++        pinctrl-0 = <&i2c8_pins_a>;
++        pinctrl-1 = <&i2c8_sleep_pins_a>;
++        clock-frequency = <400000>;
++        status = "okay";
++};
++
++&ltdc {
++	default-on;
++	status = "okay";
++
++	port {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		ltdc_ep0_out: endpoint@0 {
++			reg = <0>;
++			remote-endpoint = <&lvds_in>;
++		};
++	};
++};
++
++&lvds {
++	default-on;
++	vdd-supply =  <&scmi_vddcore>;
++	vdda18-supply = <&scmi_v1v8>;
++	status = "okay";
++
++	ports {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		port@0 {
++			reg = <0>;
++			lvds_in: endpoint {
++				remote-endpoint = <&ltdc_ep0_out>;
++			};
++		};
++
++		port@1 {
++			reg = <1>;
++			lvds_out: endpoint {
++				remote-endpoint = <&panel0_in>;
++			};
++		};
++	};
++};
++
++&scmi_regu {
++	scmi_vddio1: regulator@0 {
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <3300000>;
++	};
++	scmi_vddcore: regulator@b {
++		reg = <VOLTD_SCMI_STPMIC2_BUCK2>;
++		regulator-name = "vddcore";
++	};
++	scmi_v1v8: regulator@e {
++		reg = <VOLTD_SCMI_STPMIC2_BUCK5>;
++		regulator-name = "v1v8";
++	};
++	scmi_v3v3: regulator@10 {
++		reg = <VOLTD_SCMI_STPMIC2_BUCK7>;
++		regulator-name = "v3v3";
++	};
++	scmi_vdd_emmc: regulator@12 {
++		reg = <VOLTD_SCMI_STPMIC2_LDO2>;
++		regulator-name = "vdd_emmc";
++	};
++	scmi_vdd3v3_usb: regulator@14 {
++		reg = <VOLTD_SCMI_STPMIC2_LDO4>;
++		regulator-name = "vdd3v3_usb";
++	};
++	scmi_vdd_sdcard: regulator@17 {
++		reg = <VOLTD_SCMI_STPMIC2_LDO7>;
++		regulator-name = "vdd_sdcard";
++	};
++};
++
++&sdmmc1 {
++	pinctrl-names = "default", "opendrain", "sleep";
++	pinctrl-0 = <&sdmmc1_b4_pins_c>;
++	pinctrl-1 = <&sdmmc1_b4_od_pins_c>;
++	pinctrl-2 = <&sdmmc1_b4_sleep_pins_a>;
++//	cd-gpios = <&gpiod 9 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
++	disable-wp;
++	st,neg-edge;
++	bus-width = <4>;
++	vmmc-supply = <&scmi_vdd_sdcard>;
++	vqmmc-supply = <&scmi_vddio1>;
++	sd-uhs-sdr12;
++	sd-uhs-sdr25;
++	sd-uhs-sdr50;
++	sd-uhs-ddr50;
++	sd-uhs-sdr104;
++	status = "okay";
++};
++
++&usart2 {
++	pinctrl-names = "default", "idle", "sleep";
++	pinctrl-0 = <&usart2_pins_a>;
++	pinctrl-1 = <&usart2_idle_pins_a>;
++	pinctrl-2 = <&usart2_sleep_pins_a>;
++	/delete-property/dmas;
++	/delete-property/dma-names;
++	status = "okay";
++};
++
++&usb2_phy2 {
++	vdd33-supply = <&scmi_vdd3v3_usb>;
++	status = "okay";
++};
++
++&usb3dr {
++	status = "okay";
++
++	dwc3: usb@48300000 {
++		maximum-speed = "high-speed";
++		role-switch-default-mode = "peripheral";
++		usb-role-switch;
++	};
++};
++
++&timers8 {
++	status = "okay";
++	/delete-property/dmas;
++	/delete-property/dma-names;
++
++	pwm_8: pwm {
++		pinctrl-0 = <&tim8_pwm_pins_a>;
++		pinctrl-1 = <&tim8_pwm_sleep_pins_a>;
++		pinctrl-names = "default", "sleep";
++		status = "okay";
++	};
++};
+diff --git a/arch/arm/mach-stm32mp/Kconfig.13x b/arch/arm/mach-stm32mp/Kconfig.13x
+index 2f6bb1ad497..7a383c154ea 100644
+--- a/arch/arm/mach-stm32mp/Kconfig.13x
++++ b/arch/arm/mach-stm32mp/Kconfig.13x
+@@ -15,6 +15,19 @@ config TARGET_ST_STM32MP13X
+ 		managed by board/st/stm32mp1.
+ 		The difference between board are managed with devicetree
+ 
++config TARGET_PHYTEC_PHYCORE_STM32MP13X
++        bool "PHYTEC phyCORE-STM32MP13X SOM"
++        imply BOOTSTAGE
++        imply CMD_BOOTSTAGE
++        imply CMD_CLS if CMD_BMP
++        imply DISABLE_CONSOLE
++        imply PRE_CONSOLE_BUFFER
++        imply SILENT_CONSOLE
++        help
++                target the PHYTEC phyCORE-STM32MP13x SOM
++                managed by board/phytec/phycore_stm32mp1
++                The difference between board are managed with devicetree
++
+ endchoice
+ 
+ config TEXT_BASE
+@@ -51,5 +64,6 @@ config DEBUG_UART_CLOCK
+ endif
+ 
+ source "board/st/stm32mp1/Kconfig"
++source "board/phytec/phycore_stm32mp1/Kconfig"
+ 
+ endif
+diff --git a/arch/arm/mach-stm32mp/Kconfig.15x b/arch/arm/mach-stm32mp/Kconfig.15x
+index 0dadf3bd252..e7b82938226 100644
+--- a/arch/arm/mach-stm32mp/Kconfig.15x
++++ b/arch/arm/mach-stm32mp/Kconfig.15x
+@@ -69,6 +69,19 @@ config TARGET_ICORE_STM32MP1
+ 	  * i.Core STM32MP1 needs to mount on top of this Carrier board
+ 	    for creating complete i.Core STM32MP1 C.TOUCH 2.0 board.
+ 
++config TARGET_PHYTEC_PHYCORE_STM32MP15X
++        bool "PHYTEC phyCORE-STM32MP15X SOM"
++        imply BOOTSTAGE
++        imply CMD_BOOTSTAGE
++        imply CMD_CLS if CMD_BMP
++        imply DISABLE_CONSOLE
++        imply PRE_CONSOLE_BUFFER
++        imply SILENT_CONSOLE
++        help
++                target the PHYTEC phyCORE-STM32MP1 SOM equipped with
++		STM32MP15x SoC.
++                managed by board/phytec/phycore_stm32mp1
++
+ endchoice
+ 
+ config STM32MP15_PWR
+@@ -125,5 +138,6 @@ endif
+ source "board/st/stm32mp1/Kconfig"
+ source "board/dhelectronics/dh_stm32mp1/Kconfig"
+ source "board/engicam/stm32mp1/Kconfig"
++source "board/phytec/phycore_stm32mp1/Kconfig"
+ 
+ endif
+diff --git a/arch/arm/mach-stm32mp/Kconfig.25x b/arch/arm/mach-stm32mp/Kconfig.25x
+index fd7e2cfc338..b5c0220a77c 100644
+--- a/arch/arm/mach-stm32mp/Kconfig.25x
++++ b/arch/arm/mach-stm32mp/Kconfig.25x
+@@ -13,6 +13,15 @@ config TARGET_ST_STM32MP25X
+ 		managed by board/st/stm32mp2
+ 		The difference between board are managed with devicetree
+ 
++config TARGET_PHYTEC_PHYFLEX_STM32MP2
++	bool "PHYTEC PHYFLEX_STM32MP2X_FPSC"
++	imply BOOTSTAGE
++	imply CMD_BOOTSTAGE
++	help
++		target the PHYTEC phyflex-STM32MP2 SOM equipped with
++		STM32MP22 SOC managed by board/phytec/phyflex_stm32mp2
++		The difference between board are managed with devicetree
++
+ endchoice
+ 
+ config TEXT_BASE
+@@ -38,5 +47,6 @@ config DEBUG_UART_CLOCK
+ endif
+ 
+ source "board/st/stm32mp2/Kconfig"
++source "board/phytec/phyflex_stm32mp2/Kconfig"
+ 
+ endif
+diff --git a/arch/arm/mach-stm32mp/cmd_stm32prog/stm32prog.c b/arch/arm/mach-stm32mp/cmd_stm32prog/stm32prog.c
+index 40f1b131936..1692534d675 100644
+--- a/arch/arm/mach-stm32mp/cmd_stm32prog/stm32prog.c
++++ b/arch/arm/mach-stm32mp/cmd_stm32prog/stm32prog.c
+@@ -1147,7 +1147,7 @@ static int create_gpt_partitions(struct stm32prog_data *data)
+ 			/* partition UUID */
+ 			uuid_bin = NULL;
+ 			if (!rootfs_found && (!strcmp(part->name, "rootfs") ||
+-					      !strcmp(part->name, "rootfs-a"))) {
++					      !strcmp(part->name, "rootafs"))) {
+ 				mmc_id = part->dev_id;
+ 				rootfs_found = true;
+ 				if (mmc_id < ARRAY_SIZE(uuid_mmc))
+diff --git a/board/phytec/phycore_stm32mp1/Kconfig b/board/phytec/phycore_stm32mp1/Kconfig
+new file mode 100644
+index 00000000000..7a0a83de5f2
+--- /dev/null
++++ b/board/phytec/phycore_stm32mp1/Kconfig
+@@ -0,0 +1,27 @@
++if TARGET_PHYTEC_PHYCORE_STM32MP15X
++
++config SYS_BOARD
++	default "phycore_stm32mp1"
++
++config SYS_VENDOR
++	default "phytec"
++
++config SYS_CONFIG_NAME
++	default "phycore_stm32mp15"
++
++source "board/st/common/Kconfig"
++endif
++
++if TARGET_PHYTEC_PHYCORE_STM32MP13X
++
++config SYS_BOARD
++        default "phycore_stm32mp1"
++
++config SYS_VENDOR
++        default "phytec"
++
++config SYS_CONFIG_NAME
++        default "phycore_stm32mp13"
++
++source "board/st/common/Kconfig"
++endif
+diff --git a/board/phytec/phycore_stm32mp1/MAINTAINERS b/board/phytec/phycore_stm32mp1/MAINTAINERS
+new file mode 100644
+index 00000000000..ef40001f324
+--- /dev/null
++++ b/board/phytec/phycore_stm32mp1/MAINTAINERS
+@@ -0,0 +1,12 @@
++PHYCORE-STM32MP1 BOARD
++M:	Christophe Parant <c.parant@phytec.fr>
++W:	https://www.phytec.eu/en/produkte/system-on-modules/phycore-stm32mp15x/
++W:	https://www.phytec.eu/en/produkte/system-on-modules/phycore-stm32mp13x/
++S:	Maintained
++F:	arch/arm/dts/stm32mp1*-phycore-som*
++F:	board/phytec/phycore_stm32mp1/
++F:	configs/phycore-stm32mp15_defconfig
++F:	configs/phycore-stm32mp13_defconfig
++F:	include/configs/phycore_stm32mp15.h
++F:	include/configs/phycore_stm32mp13.h
++F:	include/configs/phycore_rauc_env.h
+diff --git a/board/phytec/phycore_stm32mp1/Makefile b/board/phytec/phycore_stm32mp1/Makefile
+new file mode 100644
+index 00000000000..ad9c419f474
+--- /dev/null
++++ b/board/phytec/phycore_stm32mp1/Makefile
+@@ -0,0 +1,18 @@
++# SPDX-License-Identifier: GPL-2.0-or-later
++#
++# Copyright (C) 2022 PHYTEC Messtechnik GmbH
++# Author: Christophe Parant <c.parant@phytec.fr>
++
++ifdef CONFIG_SPL_BUILD
++obj-y += ../../st/stm32mp1/spl.o
++else
++obj-y += phycore-stm32mp1.o
++endif
++
++obj-$(CONFIG_PMIC_STPMIC1) += ../../st/common/stpmic1.o
++obj-$(CONFIG_CMD_STBOARD) += ../../st/common/cmd_stboard.o
++
++ifeq ($(CONFIG_ARCH_STM32MP),y)
++obj-$(CONFIG_SET_DFU_ALT_INFO) += ../../st/common/stm32mp_dfu.o
++obj-$(CONFIG_$(SPL_)DFU_VIRT) += ../../st/common/stm32mp_dfu_virt.o
++endif
+diff --git a/board/phytec/phycore_stm32mp1/phycore-stm32mp1.c b/board/phytec/phycore_stm32mp1/phycore-stm32mp1.c
+new file mode 100644
+index 00000000000..9eee446737a
+--- /dev/null
++++ b/board/phytec/phycore_stm32mp1/phycore-stm32mp1.c
+@@ -0,0 +1,801 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Copyright (C) 2022 PHYTEC Messtechnik GmbH
++ * Author: Christophe Parant <c.parant@phytec.fr>
++ */
++
++#define LOG_CATEGORY LOGC_BOARD
++
++#include <common.h>
++#include <bootm.h>
++#include <clk.h>
++#include <config.h>
++#include <dm.h>
++#include <efi_loader.h>
++#include <env.h>
++#include <env_internal.h>
++#include <fdt_simplefb.h>
++#include <fdt_support.h>
++#include <g_dnl.h>
++#include <generic-phy.h>
++#include <hang.h>
++#include <i2c.h>
++#include <regmap.h>
++#include <init.h>
++#include <led.h>
++#include <log.h>
++#include <malloc.h>
++#include <misc.h>
++#include <net.h>
++#include <netdev.h>
++#include <phy.h>
++#include <remoteproc.h>
++#include <reset.h>
++#include <syscon.h>
++#include <usb.h>
++#include <watchdog.h>
++#include <asm/global_data.h>
++#include <asm/io.h>
++#include <asm/gpio.h>
++#include <asm/arch/stm32.h>
++#include <asm/arch/sys_proto.h>
++#include <dm/device.h>
++#include <dm/device-internal.h>
++#include <dm/ofnode.h>
++#include <jffs2/load_kernel.h>
++#include <linux/bitops.h>
++#include <linux/delay.h>
++#include <linux/err.h>
++#include <linux/iopoll.h>
++#include <power/regulator.h>
++#include <usb/dwc2_udc.h>
++
++/* SYSCFG registers */
++#define SYSCFG_BOOTR		0x00
++#define SYSCFG_PMCSETR		0x04
++#define SYSCFG_IOCTRLSETR	0x18
++#define SYSCFG_ICNR		0x1C
++#define SYSCFG_CMPCR		0x20
++#define SYSCFG_CMPENSETR	0x24
++#define SYSCFG_PMCCLRR		0x08
++#define SYSCFG_MP13_PMCCLRR	0x44
++
++#define SYSCFG_BOOTR_BOOT_MASK		GENMASK(2, 0)
++#define SYSCFG_BOOTR_BOOTPD_SHIFT	4
++
++#define SYSCFG_IOCTRLSETR_HSLVEN_TRACE		BIT(0)
++#define SYSCFG_IOCTRLSETR_HSLVEN_QUADSPI	BIT(1)
++#define SYSCFG_IOCTRLSETR_HSLVEN_ETH		BIT(2)
++#define SYSCFG_IOCTRLSETR_HSLVEN_SDMMC		BIT(3)
++#define SYSCFG_IOCTRLSETR_HSLVEN_SPI		BIT(4)
++
++#define SYSCFG_CMPCR_SW_CTRL		BIT(1)
++#define SYSCFG_CMPCR_READY		BIT(8)
++
++#define SYSCFG_CMPENSETR_MPU_EN		BIT(0)
++
++#if IS_ENABLED(CONFIG_EFI_HAVE_CAPSULE_SUPPORT)
++struct efi_fw_image fw_images[1];
++
++struct efi_capsule_update_info update_info = {
++	.num_images = ARRAY_SIZE(fw_images),
++	.images = fw_images,
++};
++
++#endif /* EFI_HAVE_CAPSULE_SUPPORT */
++
++int board_early_init_f(void)
++{
++	/* nothing to do, only used in SPL */
++	return 0;
++}
++
++int checkboard(void)
++{
++	int ret;
++	char *mode;
++	struct udevice *dev;
++	const char *fdt_compat;
++	int fdt_compat_len;
++
++	if (IS_ENABLED(CONFIG_TFABOOT)) {
++		if (IS_ENABLED(CONFIG_STM32MP15x_STM32IMAGE))
++			mode = "trusted - stm32image";
++		else
++			mode = "trusted";
++	} else {
++		mode = "basic";
++	}
++
++	fdt_compat = ofnode_get_property(ofnode_root(), "compatible",
++				 &fdt_compat_len);
++
++	log_info("Board: stm32mp1 in %s mode (%s)\n", mode,
++		 fdt_compat && fdt_compat_len ? fdt_compat : "");
++
++	return 0;
++}
++
++static void board_key_check(void)
++{
++	ofnode node;
++	struct gpio_desc gpio;
++	enum forced_boot_mode boot_mode = BOOT_NORMAL;
++
++	if (!IS_ENABLED(CONFIG_FASTBOOT) && !IS_ENABLED(CONFIG_CMD_STM32PROG))
++		return;
++
++	node = ofnode_path("/config");
++	if (!ofnode_valid(node)) {
++		log_debug("no /config node?\n");
++		return;
++	}
++	if (IS_ENABLED(CONFIG_FASTBOOT)) {
++		if (gpio_request_by_name_nodev(node, "st,fastboot-gpios", 0,
++					       &gpio, GPIOD_IS_IN)) {
++			log_debug("could not find a /config/st,fastboot-gpios\n");
++		} else {
++			udelay(20);
++			if (dm_gpio_get_value(&gpio)) {
++				log_notice("Fastboot key pressed, ");
++				boot_mode = BOOT_FASTBOOT;
++			}
++
++			dm_gpio_free(NULL, &gpio);
++		}
++	}
++	if (IS_ENABLED(CONFIG_CMD_STM32PROG)) {
++		if (gpio_request_by_name_nodev(node, "st,stm32prog-gpios", 0,
++					       &gpio, GPIOD_IS_IN)) {
++			log_debug("could not find a /config/st,stm32prog-gpios\n");
++		} else {
++			udelay(20);
++			if (dm_gpio_get_value(&gpio)) {
++				log_notice("STM32Programmer key pressed, ");
++				boot_mode = BOOT_STM32PROG;
++			}
++			dm_gpio_free(NULL, &gpio);
++		}
++	}
++	if (boot_mode != BOOT_NORMAL) {
++		log_notice("entering download mode...\n");
++		clrsetbits_le32(TAMP_BOOT_CONTEXT,
++				TAMP_BOOT_FORCED_MASK,
++				boot_mode);
++	}
++}
++
++int g_dnl_board_usb_cable_connected(void)
++{
++	struct udevice *dwc2_udc_otg;
++	int ret;
++
++	if (!IS_ENABLED(CONFIG_USB_GADGET_DWC2_OTG))
++		return -ENODEV;
++
++	/*
++	 * In case of USB boot device is detected, consider USB cable is
++	 * connected
++	 */
++	if ((get_bootmode() & TAMP_BOOT_DEVICE_MASK) == BOOT_SERIAL_USB)
++		return true;
++
++	ret = uclass_get_device_by_driver(UCLASS_USB_GADGET_GENERIC,
++					  DM_DRIVER_GET(dwc2_udc_otg),
++					  &dwc2_udc_otg);
++	if (ret) {
++		log_debug("dwc2_udc_otg init failed\n");
++		return ret;
++	}
++
++	return dwc2_udc_B_session_valid(dwc2_udc_otg);
++}
++
++#ifdef CONFIG_USB_GADGET_DOWNLOAD
++#define STM32MP1_G_DNL_DFU_PRODUCT_NUM 0xdf11
++#define STM32MP1_G_DNL_FASTBOOT_PRODUCT_NUM 0x0afb
++
++int g_dnl_bind_fixup(struct usb_device_descriptor *dev, const char *name)
++{
++	if (IS_ENABLED(CONFIG_DFU_OVER_USB) &&
++	    !strcmp(name, "usb_dnl_dfu"))
++		put_unaligned(STM32MP1_G_DNL_DFU_PRODUCT_NUM, &dev->idProduct);
++	else if (IS_ENABLED(CONFIG_FASTBOOT) &&
++		 !strcmp(name, "usb_dnl_fastboot"))
++		put_unaligned(STM32MP1_G_DNL_FASTBOOT_PRODUCT_NUM,
++			      &dev->idProduct);
++	else
++		put_unaligned(CONFIG_USB_GADGET_PRODUCT_NUM, &dev->idProduct);
++
++	return 0;
++}
++#endif /* CONFIG_USB_GADGET_DOWNLOAD */
++
++static int get_led(struct udevice **dev, char *led_string)
++{
++	const char *led_name;
++	int ret;
++
++	led_name = ofnode_conf_read_str(led_string);
++	if (!led_name) {
++		log_debug("could not find %s config string\n", led_string);
++		return -ENOENT;
++	}
++	ret = led_get_by_label(led_name, dev);
++	if (ret) {
++		log_debug("get=%d\n", ret);
++		return ret;
++	}
++
++	return 0;
++}
++
++static int setup_led(enum led_state_t cmd)
++{
++	struct udevice *dev;
++	int ret;
++
++	if (!CONFIG_IS_ENABLED(LED))
++		return 0;
++
++	ret = get_led(&dev, "u-boot,boot-led");
++	if (ret)
++		return ret;
++
++	ret = led_set_state(dev, cmd);
++	return ret;
++}
++
++static void __maybe_unused led_error_blink(u32 nb_blink)
++{
++	int ret;
++	struct udevice *led;
++	u32 i;
++
++	if (!nb_blink)
++		return;
++
++	if (CONFIG_IS_ENABLED(LED)) {
++		ret = get_led(&led, "u-boot,error-led");
++		if (!ret) {
++			/* make u-boot,error-led blinking */
++			/* if U32_MAX and 125ms interval, for 17.02 years */
++			for (i = 0; i < 2 * nb_blink; i++) {
++				led_set_state(led, LEDST_TOGGLE);
++				mdelay(125);
++				schedule();
++			}
++			led_set_state(led, LEDST_ON);
++		}
++	}
++
++	/* infinite: the boot process must be stopped */
++	if (nb_blink == U32_MAX)
++		hang();
++}
++
++static void sysconf_init(void)
++{
++	u8 *syscfg;
++	struct udevice *pwr_dev;
++	struct udevice *pwr_reg;
++	struct udevice *dev;
++	u32 otp = 0;
++	int ret;
++	u32 bootr, val;
++
++	syscfg = (u8 *)syscon_get_first_range(STM32MP_SYSCON_SYSCFG);
++
++	/* interconnect update : select master using the port 1 */
++	/* LTDC = AXI_M9 */
++	/* GPU  = AXI_M8 */
++	/* today information is hardcoded in U-Boot */
++	writel(BIT(9), syscfg + SYSCFG_ICNR);
++
++	/* disable Pull-Down for boot pin connected to VDD */
++	bootr = readl(syscfg + SYSCFG_BOOTR);
++	bootr &= ~(SYSCFG_BOOTR_BOOT_MASK << SYSCFG_BOOTR_BOOTPD_SHIFT);
++	bootr |= (bootr & SYSCFG_BOOTR_BOOT_MASK) << SYSCFG_BOOTR_BOOTPD_SHIFT;
++	writel(bootr, syscfg + SYSCFG_BOOTR);
++
++	/* High Speed Low Voltage Pad mode Enable for SPI, SDMMC, ETH, QSPI
++	 * and TRACE. Needed above ~50MHz and conditioned by AFMUX selection.
++	 * The customer will have to disable this for low frequencies
++	 * or if AFMUX is selected but the function not used, typically for
++	 * TRACE. Otherwise, impact on power consumption.
++	 *
++	 * WARNING:
++	 *   enabling High Speed mode while VDD>2.7V
++	 *   with the OTP product_below_2v5 (OTP 18, BIT 13)
++	 *   erroneously set to 1 can damage the IC!
++	 *   => U-Boot set the register only if VDD < 2.7V (in DT)
++	 *      but this value need to be consistent with board design
++	 */
++	ret = uclass_get_device_by_driver(UCLASS_PMIC,
++					  DM_DRIVER_GET(stm32mp_pwr_pmic),
++					  &pwr_dev);
++	if (!ret) {
++		ret = uclass_get_device_by_driver(UCLASS_MISC,
++						  DM_DRIVER_GET(stm32mp_bsec),
++						  &dev);
++		if (ret) {
++			log_err("Can't find stm32mp_bsec driver\n");
++			return;
++		}
++
++		ret = misc_read(dev, STM32_BSEC_SHADOW(18), &otp, 4);
++		if (ret > 0)
++			otp = otp & BIT(13);
++
++		/* get VDD = vdd-supply */
++		ret = device_get_supply_regulator(pwr_dev, "vdd-supply",
++						  &pwr_reg);
++
++		/* check if VDD is Low Voltage */
++		if (!ret) {
++			if (regulator_get_value(pwr_reg) < 2700000) {
++				writel(SYSCFG_IOCTRLSETR_HSLVEN_TRACE |
++				       SYSCFG_IOCTRLSETR_HSLVEN_QUADSPI |
++				       SYSCFG_IOCTRLSETR_HSLVEN_ETH |
++				       SYSCFG_IOCTRLSETR_HSLVEN_SDMMC |
++				       SYSCFG_IOCTRLSETR_HSLVEN_SPI,
++				       syscfg + SYSCFG_IOCTRLSETR);
++
++				if (!otp)
++					log_err("product_below_2v5=0: HSLVEN protected by HW\n");
++			} else {
++				if (otp)
++					log_err("product_below_2v5=1: HSLVEN update is destructive, no update as VDD>2.7V\n");
++			}
++		} else {
++			log_debug("VDD unknown");
++		}
++	}
++
++	/* activate automatic I/O compensation
++	 * warning: need to ensure CSI enabled and ready in clock driver
++	 */
++	writel(SYSCFG_CMPENSETR_MPU_EN, syscfg + SYSCFG_CMPENSETR);
++
++	/* poll until ready (1s timeout) */
++	ret = readl_poll_timeout(syscfg + SYSCFG_CMPCR, val,
++				 val & SYSCFG_CMPCR_READY,
++				 1000000);
++	if (ret) {
++		log_err("SYSCFG: I/O compensation failed, timeout.\n");
++		led_error_blink(10);
++	}
++
++	clrbits_le32(syscfg + SYSCFG_CMPCR, SYSCFG_CMPCR_SW_CTRL);
++}
++/* board dependent setup after realloc */
++int board_init(void)
++{
++	board_key_check();
++
++	regulators_enable_boot_on(_DEBUG);
++
++	/*
++	 * sysconf initialisation done only when U-Boot is running in secure
++	 * done in TF-A for TFABOOT.
++	 */
++	if (IS_ENABLED(CONFIG_ARMV7_NONSEC))
++		sysconf_init();
++
++	setup_led(LEDST_ON);
++
++#if IS_ENABLED(CONFIG_EFI_HAVE_CAPSULE_SUPPORT)
++	efi_guid_t image_type_guid = STM32MP_FIP_IMAGE_GUID;
++
++	guidcpy(&fw_images[0].image_type_id, &image_type_guid);
++	fw_images[0].fw_name = u"STM32MP-FIP";
++	fw_images[0].image_index = 1;
++#endif
++	return 0;
++}
++
++int board_late_init(void)
++{
++	const void *fdt_compat;
++	int fdt_compat_len;
++	int ret;
++	struct udevice *dev;
++	char buf[10];
++	u32 boot_idx;
++
++	if (IS_ENABLED(CONFIG_ENV_VARS_UBOOT_RUNTIME_CONFIG)) {
++		fdt_compat = ofnode_get_property(ofnode_root(), "compatible",
++					 &fdt_compat_len);
++		if (fdt_compat && fdt_compat_len) {
++			if (strncmp(fdt_compat, "phytec,", 7) != 0) {
++				env_set("board_name", fdt_compat);
++			} else {
++				env_set("board_name", fdt_compat + 7);
++			}
++		}
++	}
++
++	/* Get the value of the bank(partition) from which the platform has booted */
++	fwu_plat_get_bootidx(&boot_idx);
++
++	/* set a specific env variable to store the info */
++	if (boot_idx)
++		env_set("bootslot", "system1");
++	else
++		env_set("bootslot", "system0");
++
++	return 0;
++}
++
++void board_quiesce_devices(void)
++{
++	setup_led(LEDST_OFF);
++}
++
++/* CLOCK feed to PHY*/
++#define ETH_CK_F_25M	25000000
++#define ETH_CK_F_50M	50000000
++#define ETH_CK_F_125M	125000000
++
++struct stm32_syscfg_pmcsetr {
++	u32 syscfg_clr_off;
++	u32 eth1_clk_sel;
++	u32 eth1_ref_clk_sel;
++	u32 eth1_sel_mii;
++	u32 eth1_sel_rgmii;
++	u32 eth1_sel_rmii;
++	u32 eth2_clk_sel;
++	u32 eth2_ref_clk_sel;
++	u32 eth2_sel_rgmii;
++	u32 eth2_sel_rmii;
++};
++
++const struct stm32_syscfg_pmcsetr stm32mp15_syscfg_pmcsetr = {
++	.syscfg_clr_off		= 0x44,
++	.eth1_clk_sel		= BIT(16),
++	.eth1_ref_clk_sel	= BIT(17),
++	.eth1_sel_mii		= BIT(20),
++	.eth1_sel_rgmii		= BIT(21),
++	.eth1_sel_rmii		= BIT(23),
++	.eth2_clk_sel		= 0,
++	.eth2_ref_clk_sel	= 0,
++	.eth2_sel_rgmii		= 0,
++	.eth2_sel_rmii		= 0
++};
++
++const struct stm32_syscfg_pmcsetr stm32mp13_syscfg_pmcsetr = {
++	.syscfg_clr_off		= 0x08,
++	.eth1_clk_sel		= BIT(16),
++	.eth1_ref_clk_sel	= BIT(17),
++	.eth1_sel_mii		= 0,
++	.eth1_sel_rgmii		= BIT(21),
++	.eth1_sel_rmii		= BIT(23),
++	.eth2_clk_sel		= BIT(24),
++	.eth2_ref_clk_sel	= BIT(25),
++	.eth2_sel_rgmii		= BIT(29),
++	.eth2_sel_rmii		= BIT(31)
++};
++
++#define SYSCFG_PMCSETR_ETH_MASK		GENMASK(23, 16)
++#define SYSCFG_PMCR_ETH_SEL_GMII	0
++
++/* eth init function : weak called in eqos driver */
++int board_interface_eth_init(struct udevice *dev,
++			     phy_interface_t interface_type, ulong rate)
++{
++	struct regmap *regmap;
++	uint regmap_mask;
++	int ret;
++	u32 value;
++	bool ext_phyclk, eth_clk_sel_reg, eth_ref_clk_sel_reg;
++	const struct stm32_syscfg_pmcsetr *pmcsetr;
++
++	/* Ethernet PHY have no crystal */
++	ext_phyclk = dev_read_bool(dev, "st,ext-phyclk");
++
++	/* Gigabit Ethernet 125MHz clock selection. */
++	eth_clk_sel_reg = dev_read_bool(dev, "st,eth-clk-sel");
++
++	/* Ethernet 50Mhz RMII clock selection */
++	eth_ref_clk_sel_reg = dev_read_bool(dev, "st,eth-ref-clk-sel");
++
++	if (device_is_compatible(dev, "st,stm32mp13-dwmac"))
++		pmcsetr = &stm32mp13_syscfg_pmcsetr;
++	else
++		pmcsetr = &stm32mp15_syscfg_pmcsetr;
++
++	regmap = syscon_regmap_lookup_by_phandle(dev, "st,syscon");
++	if (!IS_ERR(regmap)) {
++		u32 fmp[3];
++
++		ret = dev_read_u32_array(dev, "st,syscon", fmp, 3);
++		if (ret)
++			/*  If no mask in DT, it is MP15 (backward compatibility) */
++			regmap_mask = SYSCFG_PMCSETR_ETH_MASK;
++		else
++			regmap_mask = fmp[2];
++	} else {
++		return -ENODEV;
++	}
++
++	switch (interface_type) {
++	case PHY_INTERFACE_MODE_MII:
++		value = pmcsetr->eth1_sel_mii;
++		log_debug("PHY_INTERFACE_MODE_MII\n");
++		break;
++	case PHY_INTERFACE_MODE_GMII:
++		value = SYSCFG_PMCR_ETH_SEL_GMII;
++		log_debug("PHY_INTERFACE_MODE_GMII\n");
++		break;
++	case PHY_INTERFACE_MODE_RMII:
++		value = pmcsetr->eth1_sel_rmii | pmcsetr->eth2_sel_rmii;
++		if (rate == ETH_CK_F_50M && (eth_clk_sel_reg || ext_phyclk))
++			value |= pmcsetr->eth1_ref_clk_sel | pmcsetr->eth2_ref_clk_sel;
++		log_debug("PHY_INTERFACE_MODE_RMII\n");
++		break;
++	case PHY_INTERFACE_MODE_RGMII:
++	case PHY_INTERFACE_MODE_RGMII_ID:
++	case PHY_INTERFACE_MODE_RGMII_RXID:
++	case PHY_INTERFACE_MODE_RGMII_TXID:
++		value = pmcsetr->eth1_sel_rgmii | pmcsetr->eth2_sel_rgmii;
++		if (rate == ETH_CK_F_125M && (eth_clk_sel_reg || ext_phyclk))
++			value |= pmcsetr->eth1_clk_sel | pmcsetr->eth2_clk_sel;
++		log_debug("PHY_INTERFACE_MODE_RGMII\n");
++		break;
++	default:
++		log_debug("Do not manage %d interface\n",
++			  interface_type);
++		/* Do not manage others interfaces */
++		return -EINVAL;
++	}
++
++	/* Need to update PMCCLRR (clear register) */
++	regmap_write(regmap, pmcsetr->syscfg_clr_off, regmap_mask);
++
++	ret = regmap_update_bits(regmap, SYSCFG_PMCSETR, regmap_mask, value);
++
++	return ret;
++}
++
++enum env_location env_get_location(enum env_operation op, int prio)
++{
++	u32 bootmode = get_bootmode();
++
++	if (prio)
++		return ENVL_UNKNOWN;
++
++	switch (bootmode & TAMP_BOOT_DEVICE_MASK) {
++	case BOOT_FLASH_SD:
++	case BOOT_FLASH_EMMC:
++		if (CONFIG_IS_ENABLED(ENV_IS_IN_MMC))
++			return ENVL_MMC;
++		else if (CONFIG_IS_ENABLED(ENV_IS_IN_EXT4))
++			return ENVL_EXT4;
++		else
++			return ENVL_NOWHERE;
++
++	case BOOT_FLASH_NAND:
++		if (IS_ENABLED(CONFIG_ENV_IS_IN_UBI))
++			return ENVL_UBI;
++		else
++			return ENVL_NOWHERE;
++
++	case BOOT_FLASH_NOR:
++		if (CONFIG_IS_ENABLED(ENV_IS_IN_SPI_FLASH))
++			return ENVL_SPI_FLASH;
++		else
++			return ENVL_NOWHERE;
++
++	default:
++		return ENVL_NOWHERE;
++	}
++}
++
++const char *env_ext4_get_intf(void)
++{
++	u32 bootmode = get_bootmode();
++
++	switch (bootmode & TAMP_BOOT_DEVICE_MASK) {
++	case BOOT_FLASH_SD:
++	case BOOT_FLASH_EMMC:
++		return "mmc";
++	default:
++		return "";
++	}
++}
++
++int mmc_get_boot(void)
++{
++	struct udevice *dev;
++	u32 boot_mode = get_bootmode();
++	unsigned int instance = (boot_mode & TAMP_BOOT_INSTANCE_MASK) - 1;
++	char cmd[20];
++	const u32 sdmmc_addr[] = {
++		STM32_SDMMC1_BASE,
++		STM32_SDMMC2_BASE,
++		STM32_SDMMC3_BASE
++	};
++
++	if (instance >= ARRAY_SIZE(sdmmc_addr))
++		return 0;
++
++	/* search associated sdmmc node in devicetree */
++	snprintf(cmd, sizeof(cmd), "mmc@%x", sdmmc_addr[instance]);
++	if (uclass_get_device_by_name(UCLASS_MMC, cmd, &dev)) {
++		log_err("mmc%d = %s not found in device tree!\n", instance, cmd);
++		return 0;
++	}
++
++	return dev_seq(dev);
++};
++
++const char *env_ext4_get_dev_part(void)
++{
++	static char *const env_dev_part =
++#ifdef CONFIG_ENV_EXT4_DEVICE_AND_PART
++		CONFIG_ENV_EXT4_DEVICE_AND_PART;
++#else
++		"";
++#endif
++	static char *const dev_part[] = {"0:auto", "1:auto", "2:auto"};
++
++	if (strlen(env_dev_part) > 0)
++		return env_dev_part;
++
++	return dev_part[mmc_get_boot()];
++}
++
++int mmc_get_env_dev(void)
++{
++	const int mmc_env_dev = CONFIG_IS_ENABLED(ENV_IS_IN_MMC, (CONFIG_SYS_MMC_ENV_DEV), (-1));
++
++	if (mmc_env_dev >= 0)
++		return mmc_env_dev;
++
++	/* use boot instance to select the correct mmc device identifier */
++	return mmc_get_boot();
++}
++
++#if defined(CONFIG_OF_BOARD_SETUP)
++int ft_board_setup(void *blob, struct bd_info *bd)
++{
++	fdt_copy_fixed_partitions(blob);
++
++	if (IS_ENABLED(CONFIG_FDT_SIMPLEFB))
++		fdt_simplefb_enable_and_mem_rsv(blob);
++}
++#endif
++
++#if defined(CONFIG_OF_BOARD_FIXUP)
++
++int fdt_update_fwu_properties(void *blob, int nodeoff,
++			      const char *compat_str,
++			      const char *storage_path)
++{
++	int ret;
++	int storage_off;
++
++	ret = fdt_increase_size(blob, 100);
++	if (ret) {
++		printf("fdt_increase_size: err=%s\n", fdt_strerror(ret));
++		return ret;
++	}
++
++	ret = fdt_setprop_string(blob, nodeoff, "compatible", compat_str);
++	if (ret) {
++		log_err("Can't set compatible property\n");
++		return ret;
++	}
++
++	storage_off = fdt_path_offset(blob, storage_path);
++	if (storage_off < 0) {
++		log_err("Can't find %s path\n", storage_path);
++		return nodeoff;
++	}
++
++	ret = fdt_setprop_string(blob, nodeoff, "fwu-mdata-store", storage_path);
++
++	if (ret < 0)
++		log_err("Can't set fwu-mdata-store property\n");
++
++	return ret;
++}
++
++int fdt_update_fwu_mdata(void *blob)
++{
++	int nodeoff, ret = 0;
++	u32 bootmode;
++
++	nodeoff = fdt_path_offset(blob, "/fwu-mdata");
++	if (nodeoff < 0) {
++		log_info("no /fwu-mdata node ?\n");
++
++		return 0;
++	}
++
++	bootmode = get_bootmode() & TAMP_BOOT_DEVICE_MASK;
++
++	switch (bootmode) {
++	case BOOT_FLASH_SD:
++			/* sdmmc1 */
++			if (CONFIG_IS_ENABLED(STM32MP13X))
++				ret = fdt_update_fwu_properties(blob, nodeoff, "u-boot,fwu-mdata-gpt",
++												"/soc/bus@5c007000/mmc@58005000");
++			else
++				ret = fdt_update_fwu_properties(blob, nodeoff, "u-boot,fwu-mdata-gpt",
++												"/soc/mmc@58005000");
++		break;
++	case BOOT_FLASH_EMMC:
++		/* sdmmc2 : nothing to do, already the default device tree configuration */
++		break;
++
++	case BOOT_FLASH_NAND:
++		/* nand@0 */
++		ret = fdt_update_fwu_properties(blob, nodeoff, "u-boot,fwu-mdata-mtd",
++						"/soc/bus@5c007000/memory-controller@58002000/nand-controller@4,0/nand@0");
++		break;
++
++	case BOOT_FLASH_NOR:
++		/* flash0 */
++		ret = fdt_update_fwu_properties(blob, nodeoff, "u-boot,fwu-mdata-mtd",
++						"/soc/bus@5c007000/spi@58003000/flash@0");
++		break;
++	default:
++		/* TF-A firmware update not supported for other boot device */
++		ret = fdt_del_node(blob, nodeoff);
++	}
++
++	return ret;
++}
++
++int board_fix_fdt(void *blob)
++{
++	int ret = 0;
++
++	if (CONFIG_IS_ENABLED(FWU_MDATA))
++		ret = fdt_update_fwu_mdata(blob);
++
++	return ret;
++}
++#endif /* CONFIG_OF_BOARD_FIXUP */
++
++static void board_copro_image_process(ulong fw_image, size_t fw_size)
++{
++	int ret, id = 0; /* Copro id fixed to 0 as only one coproc on mp1 */
++
++	if (!rproc_is_initialized())
++		if (rproc_init()) {
++			log_err("Remote Processor %d initialization failed\n",
++				id);
++			return;
++		}
++
++	ret = rproc_load(id, fw_image, fw_size);
++	log_err("Load Remote Processor %d with data@addr=0x%08lx %u bytes:%s\n",
++		id, fw_image, fw_size, ret ? " Failed!" : " Success!");
++
++	if (!ret)
++		rproc_start(id);
++}
++
++U_BOOT_FIT_LOADABLE_HANDLER(IH_TYPE_COPRO, board_copro_image_process);
++#if defined(CONFIG_FWU_MULTI_BANK_UPDATE)
++
++#include <fwu.h>
++
++/**
++ * fwu_plat_get_bootidx() - Get the value of the boot index
++ * @boot_idx: Boot index value
++ *
++ * Get the value of the bank(partition) from which the platform
++ * has booted. This value is passed to U-Boot from the earlier
++ * stage bootloader which loads and boots all the relevant
++ * firmware images
++ *
++ */
++void fwu_plat_get_bootidx(uint *boot_idx)
++{
++	*boot_idx = (readl(TAMP_FWU_BOOT_INFO_REG) >>
++		    TAMP_FWU_BOOT_IDX_OFFSET) & TAMP_FWU_BOOT_IDX_MASK;
++}
++#endif /* CONFIG_FWU_MULTI_BANK_UPDATE */
+diff --git a/board/phytec/phyflex_stm32mp2/Kconfig b/board/phytec/phyflex_stm32mp2/Kconfig
+new file mode 100644
+index 00000000000..ef5460bdd69
+--- /dev/null
++++ b/board/phytec/phyflex_stm32mp2/Kconfig
+@@ -0,0 +1,13 @@
++if TARGET_PHYTEC_PHYFLEX_STM32MP2
++
++config SYS_BOARD
++	default "phyflex_stm32mp2"
++
++config SYS_VENDOR
++	default "phytec"
++
++config SYS_CONFIG_NAME
++	default "phyflex_stm32mp2"
++
++source "board/st/common/Kconfig"
++endif
+diff --git a/board/phytec/phyflex_stm32mp2/MAINTAINERS b/board/phytec/phyflex_stm32mp2/MAINTAINERS
+new file mode 100644
+index 00000000000..6680076196b
+--- /dev/null
++++ b/board/phytec/phyflex_stm32mp2/MAINTAINERS
+@@ -0,0 +1,9 @@
++PHYCORE-STM32MP2 BOARD
++M:	Christophe Parant <c.parant@phytec.fr>
++M:	Nicolas Raimundo <n.raimundo@phytec.fr>
++W:	https://www.phytec.eu/en/startseite/
++S:	Maintained
++F:	arch/arm/dts/stm32mp2*-phycore-som*
++F:	arch/arm/dts/stm32mp2*-phyboard*
++F:	board/phytec/phycore_stm32mp2/
++F:	include/configs/phyflex_stm32mp2.h
+diff --git a/board/phytec/phyflex_stm32mp2/Makefile b/board/phytec/phyflex_stm32mp2/Makefile
+new file mode 100644
+index 00000000000..c3accfa75c8
+--- /dev/null
++++ b/board/phytec/phyflex_stm32mp2/Makefile
+@@ -0,0 +1,15 @@
++# SPDX-License-Identifier: GPL-2.0-or-later
++#
++# Copyright (C) 2025 PHYTEC Messtechnik GmbH
++# Author: Nicolas Raimundo <n.raimundo@phytec.fr>
++#
++
++obj-y += phyflex-stm32mp2.o
++
++obj-$(CONFIG_PMIC_STPMIC1) += ../../st/common/stpmic1.o
++obj-$(CONFIG_CMD_STBOARD) += ../../st/common/cmd_stboard.o
++
++ifeq ($(CONFIG_ARCH_STM32MP),y)
++obj-$(CONFIG_SET_DFU_ALT_INFO) += ../../st/common/stm32mp_dfu.o
++obj-$(CONFIG_$(SPL_)DFU_VIRT) += ../../st/common/stm32mp_dfu_virt.o
++endif
+diff --git a/board/phytec/phyflex_stm32mp2/phyflex-stm32mp2.c b/board/phytec/phyflex_stm32mp2/phyflex-stm32mp2.c
+new file mode 100644
+index 00000000000..1a9c86995a7
+--- /dev/null
++++ b/board/phytec/phyflex_stm32mp2/phyflex-stm32mp2.c
+@@ -0,0 +1,669 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Copyright (C) 2025 PHYTEC Messtechnik GmbH
++ * Author: Nicolas Raimundo <n.raimundo@phytec.fr>
++ */
++
++#define LOG_CATEGORY LOGC_BOARD
++
++#include <common.h>
++#include <button.h>
++#include <config.h>
++#include <dm.h>
++#include <efi_loader.h>
++#include <env.h>
++#include <env_internal.h>
++#include <fdt_simplefb.h>
++#include <fdt_support.h>
++#include <g_dnl.h>
++#include <i2c.h>
++#include <led.h>
++#include <log.h>
++#include <misc.h>
++#include <mmc.h>
++#include <init.h>
++#include <net.h>
++#include <netdev.h>
++#include <phy.h>
++#include <regmap.h>
++#include <syscon.h>
++#include <asm/io.h>
++#include <asm/global_data.h>
++#include <asm/gpio.h>
++#include <asm/arch/sys_proto.h>
++#include <dm/device.h>
++#include <dm/device-internal.h>
++#include <dm/ofnode.h>
++#include <dm/uclass.h>
++#include <dt-bindings/gpio/gpio.h>
++#include <linux/delay.h>
++#include <linux/err.h>
++#include <linux/iopoll.h>
++
++#define SYSCFG_ETHCR_ETH_SEL_MII	0
++#define SYSCFG_ETHCR_ETH_SEL_RGMII	BIT(4)
++#define SYSCFG_ETHCR_ETH_SEL_RMII	BIT(6)
++#define SYSCFG_ETHCR_ETH_CLK_SEL	BIT(1)
++#define SYSCFG_ETHCR_ETH_REF_CLK_SEL	BIT(0)
++/* CLOCK feed to PHY*/
++#define ETH_CK_F_25M	25000000
++#define ETH_CK_F_50M	50000000
++#define ETH_CK_F_125M	125000000
++
++#define ILITEK_REG_ID		0x40
++#define ILITEK_ID_LEN		7
++#define ADV7511_REG_CHIP_REVISION	0x00
++#define ADV7511_CHIP_REVISION_LEN	256
++
++#if CONFIG_IS_ENABLED(EFI_HAVE_CAPSULE_SUPPORT)
++struct efi_fw_image fw_images[1];
++
++struct efi_capsule_update_info update_info = {
++	.num_images = ARRAY_SIZE(fw_images),
++	.images = fw_images,
++};
++
++u8 num_image_type_guids = ARRAY_SIZE(fw_images);
++#endif /* EFI_HAVE_CAPSULE_SUPPORT */
++
++/*
++ * Get a global data pointer
++ */
++DECLARE_GLOBAL_DATA_PTR;
++
++int checkboard(void)
++{
++	const char *fdt_compat;
++	int fdt_compat_len;
++
++	fdt_compat = ofnode_get_property(ofnode_root(), "compatible", &fdt_compat_len);
++
++	log_info("Board: stm32mp2 (%s)\n", fdt_compat && fdt_compat_len ? fdt_compat : "");
++
++	return 0;
++}
++
++#ifdef CONFIG_USB_GADGET_DOWNLOAD
++#define STM32MP1_G_DNL_DFU_PRODUCT_NUM 0xdf11
++#define STM32MP1_G_DNL_FASTBOOT_PRODUCT_NUM 0x0afb
++
++int g_dnl_bind_fixup(struct usb_device_descriptor *dev, const char *name)
++{
++	if (IS_ENABLED(CONFIG_DFU_OVER_USB) &&
++	    !strcmp(name, "usb_dnl_dfu"))
++		put_unaligned(STM32MP1_G_DNL_DFU_PRODUCT_NUM, &dev->idProduct);
++	else if (IS_ENABLED(CONFIG_FASTBOOT) &&
++		 !strcmp(name, "usb_dnl_fastboot"))
++		put_unaligned(STM32MP1_G_DNL_FASTBOOT_PRODUCT_NUM,
++			      &dev->idProduct);
++	else
++		put_unaligned(CONFIG_USB_GADGET_PRODUCT_NUM, &dev->idProduct);
++
++	return 0;
++}
++#endif /* CONFIG_USB_GADGET_DOWNLOAD */
++
++/* touchscreen driver: only used for pincontrol configuration */
++static const struct udevice_id touchscreen_ids[] = {
++	{ .compatible = "ilitek,ili251x", },
++	{ }
++};
++
++U_BOOT_DRIVER(touchscreen) = {
++	.name		= "touchscreen",
++	.id		= UCLASS_I2C_GENERIC,
++	.of_match	= touchscreen_ids,
++};
++
++static int i2c_read(ofnode node, u16 reg, u8 *buf, int len, uint wlen)
++{
++	ofnode bus_node;
++	struct udevice *dev;
++	struct udevice *bus;
++	struct i2c_msg msgs[2];
++	u32 chip_addr;
++	__be16 wbuf;
++	int ret;
++
++	/* parent should be an I2C bus */
++	bus_node = ofnode_get_parent(node);
++	ret = uclass_get_device_by_ofnode(UCLASS_I2C, bus_node, &bus);
++	if (ret) {
++		log_debug("can't find I2C bus for node %s\n", ofnode_get_name(bus_node));
++		return ret;
++	}
++
++	ret = ofnode_read_u32(node, "reg", &chip_addr);
++	if (ret) {
++		log_debug("can't read I2C address in %s\n", ofnode_get_name(node));
++		return ret;
++	}
++
++	ret = dm_i2c_probe(bus, chip_addr, 0, &dev);
++	if (ret)
++		return false;
++
++	if (wlen == 2)
++		wbuf = cpu_to_be16(reg);
++	else
++		wbuf = reg;
++
++	msgs[0].flags = 0;
++	msgs[0].addr  = chip_addr;
++	msgs[0].len   = wlen;
++	msgs[0].buf   = (u8 *)&wbuf;
++
++	msgs[1].flags = I2C_M_RD;
++	msgs[1].addr  = chip_addr;
++	msgs[1].len   = len;
++	msgs[1].buf   = buf;
++
++	ret = dm_i2c_xfer(dev, msgs, 2);
++
++	return ret;
++}
++
++static bool reset_gpio(ofnode node)
++{
++	struct gpio_desc reset_gpio;
++
++	gpio_request_by_name_nodev(node, "reset-gpios", 0, &reset_gpio, GPIOD_IS_OUT);
++
++	if (!dm_gpio_is_valid(&reset_gpio))
++		return false;
++
++	dm_gpio_set_value(&reset_gpio, true);
++	mdelay(1);
++	dm_gpio_set_value(&reset_gpio, false);
++	mdelay(10);
++
++	dm_gpio_free(NULL, &reset_gpio);
++
++	return true;
++}
++
++/* HELPER: search detected driver */
++struct detect_info_t {
++	bool (*detect)(void);
++	char *compatible;
++};
++
++static const char *detect_device(const struct detect_info_t *info, u8 size)
++{
++	u8 i;
++
++	for (i = 0; i < size; i++) {
++		if (info[i].detect())
++			return info[i].compatible;
++	}
++
++	return NULL;
++}
++
++bool detect_stm32mp25x_etml0700zxxdha(void)
++{
++	ofnode node;
++	char id[ILITEK_ID_LEN];
++	int ret;
++
++	node = ofnode_by_compatible(ofnode_null(), "ilitek,ili251x");
++	if (!ofnode_valid(node))
++		return false;
++
++	if (!reset_gpio(node))
++		return false;
++
++	mdelay(200);
++
++	ret = i2c_read(node, ILITEK_REG_ID, id, sizeof(id), 1);
++	if (ret)
++		return false;
++
++	/* FW panel ID is starting at the 4th byte */
++	if (!strncmp(&id[4], "WSV", sizeof(id) - 4))
++		return true;
++
++	return false;
++}
++
++bool detect_stm32mp25x_adv753x(void)
++{
++	ofnode node;
++	char id[ADV7511_CHIP_REVISION_LEN];
++
++	node = ofnode_by_compatible(ofnode_null(),  "adi,adv7533");
++	if (!ofnode_valid(node)) {
++		node = ofnode_by_compatible(ofnode_null(),  "adi,adv7535");
++		if (!ofnode_valid(node))
++			return false;
++	}
++
++	if (!reset_gpio(node))
++		return false;
++
++	mdelay(10);
++
++	i2c_read(node, ADV7511_REG_CHIP_REVISION, id, sizeof(id), 1);
++
++	if (id[0] == 0x14)
++		return true;
++
++	return false;
++}
++
++static const struct detect_info_t stm32mp25x_panels[] = {
++	{
++		.detect = detect_stm32mp25x_etml0700zxxdha,
++		.compatible = "edt,etml0700z9ndha",
++	},
++};
++
++static const struct detect_info_t stm32mp25x_bridges[] = {
++	{
++		.detect = detect_stm32mp25x_adv753x,
++		.compatible = "adi,adv7533",
++	},
++	{
++		.detect = detect_stm32mp25x_adv753x,
++		.compatible = "adi,adv7535",
++	},
++};
++
++static int get_led(struct udevice **dev, char *led_string)
++{
++	const char *led_name;
++	int ret;
++
++	led_name = ofnode_conf_read_str(led_string);
++	if (!led_name) {
++		log_debug("could not find %s config string\n", led_string);
++		return -ENOENT;
++	}
++	ret = led_get_by_label(led_name, dev);
++	if (ret) {
++		log_debug("get=%d\n", ret);
++		return ret;
++	}
++
++	return 0;
++}
++
++static int setup_led(enum led_state_t cmd)
++{
++	struct udevice *dev;
++	int ret;
++
++	if (!CONFIG_IS_ENABLED(LED))
++		return 0;
++
++	ret = get_led(&dev, "u-boot,boot-led");
++	if (ret)
++		return ret;
++
++	ret = led_set_state(dev, cmd);
++	return ret;
++}
++
++static void check_user_button(void)
++{
++	struct udevice *button1 = NULL, *button2 = NULL;
++	enum forced_boot_mode boot_mode = BOOT_NORMAL;
++
++	if (!IS_ENABLED(CONFIG_BUTTON))
++		return;
++
++	if (!IS_ENABLED(CONFIG_FASTBOOT) && !IS_ENABLED(CONFIG_CMD_STM32PROG))
++		return;
++
++	if (IS_ENABLED(CONFIG_CMD_STM32PROG))
++		button_get_by_label("User-1", &button1);
++
++	if (IS_ENABLED(CONFIG_FASTBOOT))
++		button_get_by_label("User-2", &button2);
++
++	if (!button1 && !button2)
++		return;
++
++	if (button1 && button_get_state(button1) == BUTTON_ON) {
++		log_notice("STM32Programmer key pressed, ");
++		boot_mode = BOOT_STM32PROG;
++	}
++
++	if (button2 && button_get_state(button2) == BUTTON_ON) {
++		log_notice("Fastboot key pressed, ");
++		boot_mode = BOOT_FASTBOOT;
++	}
++
++	if (boot_mode != BOOT_NORMAL) {
++		log_notice("entering download mode...\n");
++		clrsetbits_le32(TAMP_BOOT_CONTEXT, TAMP_BOOT_FORCED_MASK,
++				boot_mode);
++	}
++}
++
++/* board dependent setup after realloc */
++int board_init(void)
++{
++
++	setup_led(LEDST_ON);
++
++	check_user_button();
++
++#if CONFIG_IS_ENABLED(EFI_HAVE_CAPSULE_SUPPORT)
++	efi_guid_t image_type_guid = STM32MP_FIP_IMAGE_GUID;
++
++	guidcpy(&fw_images[0].image_type_id, &image_type_guid);
++	fw_images[0].fw_name = u"STM32MP-FIP";
++	fw_images[0].image_index = 1;
++#endif
++
++	return 0;
++}
++
++/* eth init function : weak called in eqos driver */
++int board_interface_eth_init(struct udevice *dev,
++			     phy_interface_t interface_type, ulong rate)
++{
++	struct regmap *regmap;
++	uint regmap_mask, regmap_offset;
++	int ret;
++	u32 value;
++	bool ext_phyclk;
++
++	/* Ethernet PHY have no cristal or need to be clock by RCC */
++	ext_phyclk = dev_read_bool(dev, "st,ext-phyclk");
++
++	regmap = syscon_regmap_lookup_by_phandle(dev, "st,syscon");
++
++	if (!IS_ERR(regmap)) {
++		u32 fmp[3];
++
++		ret = dev_read_u32_array(dev, "st,syscon", fmp, 3);
++		if (ret) {
++			pr_err("%s: Need to specify Offset and Mask of syscon register\n", __func__);
++			return ret;
++		}
++		else {
++			regmap_mask = fmp[2];
++			regmap_offset = fmp[1];
++		}
++	} else {
++		return -ENODEV;
++	}
++	switch (interface_type) {
++	case PHY_INTERFACE_MODE_MII:
++		value = SYSCFG_ETHCR_ETH_SEL_MII;
++		debug("%s: PHY_INTERFACE_MODE_MII\n", __func__);
++		break;
++	case PHY_INTERFACE_MODE_RMII:
++		if (rate == ETH_CK_F_50M && ext_phyclk)
++			value = SYSCFG_ETHCR_ETH_SEL_RMII |
++				SYSCFG_ETHCR_ETH_REF_CLK_SEL;
++		else
++			value = SYSCFG_ETHCR_ETH_SEL_RMII;
++		debug("%s: PHY_INTERFACE_MODE_RMII\n", __func__);
++		break;
++	case PHY_INTERFACE_MODE_RGMII:
++	case PHY_INTERFACE_MODE_RGMII_ID:
++	case PHY_INTERFACE_MODE_RGMII_RXID:
++	case PHY_INTERFACE_MODE_RGMII_TXID:
++		if (rate == ETH_CK_F_125M && ext_phyclk)
++			value = SYSCFG_ETHCR_ETH_SEL_RGMII |
++				SYSCFG_ETHCR_ETH_CLK_SEL;
++		else
++			value = SYSCFG_ETHCR_ETH_SEL_RGMII;
++		debug("%s: PHY_INTERFACE_MODE_RGMII\n", __func__);
++		break;
++	default:
++		debug("%s: Do not manage %d interface\n",
++		      __func__, interface_type);
++		/* Do not manage others interfaces */
++		return -EINVAL;
++	}
++
++	ret = regmap_update_bits(regmap, regmap_offset, regmap_mask, value);
++
++	return ret;
++}
++
++enum env_location env_get_location(enum env_operation op, int prio)
++{
++	u32 bootmode = get_bootmode();
++
++	if (prio)
++		return ENVL_UNKNOWN;
++
++	switch (bootmode & TAMP_BOOT_DEVICE_MASK) {
++	case BOOT_FLASH_SD:
++	case BOOT_FLASH_EMMC:
++		if (CONFIG_IS_ENABLED(ENV_IS_IN_MMC))
++			return ENVL_MMC;
++		else
++			return ENVL_NOWHERE;
++
++	case BOOT_FLASH_NAND:
++	case BOOT_FLASH_SPINAND:
++		if (CONFIG_IS_ENABLED(ENV_IS_IN_UBI))
++			return ENVL_UBI;
++		else
++			return ENVL_NOWHERE;
++
++	case BOOT_FLASH_NOR:
++		if (CONFIG_IS_ENABLED(ENV_IS_IN_SPI_FLASH))
++			return ENVL_SPI_FLASH;
++		else
++			return ENVL_NOWHERE;
++
++	case BOOT_FLASH_HYPERFLASH:
++		if (CONFIG_IS_ENABLED(ENV_IS_IN_FLASH))
++			return ENVL_FLASH;
++		else
++			return ENVL_NOWHERE;
++
++	default:
++		return ENVL_NOWHERE;
++	}
++}
++
++int mmc_get_boot(void)
++{
++	struct udevice *dev;
++	u32 boot_mode = get_bootmode();
++	unsigned int instance = (boot_mode & TAMP_BOOT_INSTANCE_MASK) - 1;
++	char cmd[20];
++	const u32 sdmmc_addr[] = {
++		STM32_SDMMC1_BASE,
++		STM32_SDMMC2_BASE,
++		STM32_SDMMC3_BASE
++	};
++
++	if (instance > ARRAY_SIZE(sdmmc_addr))
++		return 0;
++
++	/* search associated sdmmc node in devicetree */
++	snprintf(cmd, sizeof(cmd), "mmc@%x", sdmmc_addr[instance]);
++	if (uclass_get_device_by_name(UCLASS_MMC, cmd, &dev)) {
++		log_err("mmc%d = %s not found in device tree!\n", instance, cmd);
++		return 0;
++	}
++
++	return dev_seq(dev);
++};
++
++int mmc_get_env_dev(void)
++{
++	const int mmc_env_dev = CONFIG_IS_ENABLED(ENV_IS_IN_MMC, (CONFIG_SYS_MMC_ENV_DEV), (-1));
++
++	if (mmc_env_dev >= 0)
++		return mmc_env_dev;
++
++	/* use boot instance to select the correct mmc device identifier */
++	return mmc_get_boot();
++}
++
++int board_late_init(void)
++{
++	const void *fdt_compat;
++	int fdt_compat_len;
++	char dtb_name[256];
++	int buf_len;
++
++	if (IS_ENABLED(CONFIG_ENV_VARS_UBOOT_RUNTIME_CONFIG)) {
++		fdt_compat = fdt_getprop(gd->fdt_blob, 0, "compatible",
++					 &fdt_compat_len);
++		if (fdt_compat && fdt_compat_len) {
++			if (strncmp(fdt_compat, "phytec,", 7) != 0) {
++				env_set("board_name", fdt_compat);
++			} else {
++				env_set("board_name", fdt_compat + 7);
++			}
++		}
++	}
++
++	return 0;
++}
++
++int ft_board_setup(void *blob, struct bd_info *bd)
++{
++	int ret;
++
++	fdt_copy_fixed_partitions(blob);
++
++	if (CONFIG_IS_ENABLED(FDT_SIMPLEFB))
++		fdt_simplefb_enable_and_mem_rsv(blob);
++
++	return 0;
++}
++
++void board_quiesce_devices(void)
++{
++	setup_led(LEDST_OFF);
++}
++
++#if defined(CONFIG_USB_DWC3) && defined(CONFIG_CMD_STM32PROG_USB)
++#include <dfu.h>
++/*
++ * TEMP: force USB BUS reset forced to false, because it is not supported
++ *       in DWC3 USB driver
++ * avoid USB bus reset support in DFU stack is required to reenumeration in
++ * stm32prog command after flashlayout load or after "dfu-util -e -R"
++ */
++bool dfu_usb_get_reset(void)
++{
++	return false;
++}
++#endif
++
++#if defined(CONFIG_STM32_HYPERBUS)
++/* weak function called from common/board_r.c */
++int is_flash_available(void)
++{
++	struct udevice *dev;
++	int ret;
++
++	ret = uclass_get_device_by_driver(UCLASS_MTD,
++					  DM_DRIVER_GET(stm32_hyperbus),
++					  &dev);
++	if (ret)
++		return 0;
++
++	return 1;
++}
++#endif
++
++/* weak function called from env/sf.c */
++void *env_sf_get_env_addr(void)
++{
++	return NULL;
++}
++
++#if defined(CONFIG_OF_BOARD_FIXUP)
++
++#if defined(CONFIG_STM32MP21X)
++#define SPINAND_NOR_PATH "/soc@0/spi@40430000/flash@0"
++#else
++#define SPINAND_NOR_PATH "/soc@0/ommanager@40500000/spi@40430000/flash@0"
++#endif
++
++int fdt_update_fwu_properties(void *blob, int nodeoff,
++			      const char *compat_str,
++			      const char *storage_path)
++{
++	int ret;
++	int storage_off;
++
++	ret = fdt_increase_size(blob, 100);
++	if (ret) {
++		printf("fdt_increase_size: err=%s\n", fdt_strerror(ret));
++		return ret;
++	}
++
++	ret = fdt_setprop_string(blob, nodeoff, "compatible", compat_str);
++	if (ret) {
++		log_err("Can't set compatible property\n");
++		return ret;
++	}
++
++	storage_off = fdt_path_offset(blob, storage_path);
++	if (storage_off < 0) {
++		log_err("Can't find %s path\n", storage_path);
++		return nodeoff;
++	}
++
++	ret = fdt_setprop_string(blob, nodeoff, "fwu-mdata-store", storage_path);
++
++	if (ret < 0)
++		log_err("Can't set fwu-mdata-store property\n");
++
++	return ret;
++}
++
++int fdt_update_fwu_mdata(void *blob)
++{
++	int nodeoff, ret = 0;
++	u32 bootmode;
++
++	nodeoff = fdt_path_offset(blob, "/fwu-mdata");
++	if (nodeoff < 0) {
++		log_info("no /fwu-mdata node ?\n");
++
++		return 0;
++	}
++
++	bootmode = get_bootmode() & TAMP_BOOT_DEVICE_MASK;
++
++	switch (bootmode) {
++	case BOOT_FLASH_SD:
++		/* sdmmc1 : nothing to do, already the default device tree configuration */
++		break;
++	case BOOT_FLASH_EMMC:
++		/* sdmmc2 */
++		ret = fdt_update_fwu_properties(blob, nodeoff, "u-boot,fwu-mdata-gpt",
++						"/soc@0/bus@42080000/mmc@48230000");
++		break;
++
++	case BOOT_FLASH_SPINAND:
++	case BOOT_FLASH_NOR:
++		/* flash0 */
++		ret = fdt_update_fwu_properties(blob, nodeoff, "u-boot,fwu-mdata-mtd",
++						SPINAND_NOR_PATH);
++		break;
++	default:
++		/* TF-A firmware update not supported for other boot device */
++		ret = fdt_del_node(blob, nodeoff);
++	}
++
++	return ret;
++}
++
++int board_fix_fdt(void *blob)
++{
++	int ret = 0;
++
++	if (CONFIG_IS_ENABLED(FWU_MDATA))
++		ret = fdt_update_fwu_mdata(blob);
++
++	return ret;
++}
++#endif /* CONFIG_OF_BOARD_FIXUP */
++
+diff --git a/boot/bootretry.c b/boot/bootretry.c
+index 8d850df9d48..c8298022835 100644
+--- a/boot/bootretry.c
++++ b/boot/bootretry.c
+@@ -41,6 +41,10 @@ void bootretry_reset_cmd_timeout(void)
+ 
+ int bootretry_tstc_timeout(void)
+ {
++
++	if (retry_time < 0)
++		return 0;
++
+ 	while (!tstc()) {	/* while no incoming data */
+ 		if (retry_time >= 0 && get_ticks() > endtime)
+ 			return -ETIMEDOUT;
+diff --git a/configs/phycore-stm32mp13_defconfig b/configs/phycore-stm32mp13_defconfig
+new file mode 100644
+index 00000000000..569c80e1742
+--- /dev/null
++++ b/configs/phycore-stm32mp13_defconfig
+@@ -0,0 +1,174 @@
++CONFIG_ARM=y
++CONFIG_SYS_HAS_NONCACHED_MEMORY=y
++CONFIG_ARCH_STM32MP=y
++CONFIG_TFABOOT=y
++CONFIG_SYS_MALLOC_F_LEN=0x180000
++CONFIG_CUSTOM_SYS_INIT_SP_ADDR=0xc0400000
++CONFIG_ENV_OFFSET=0x480000
++CONFIG_ENV_SECT_SIZE=0x40000
++CONFIG_DEFAULT_DEVICE_TREE="stm32mp135f-phycore-som-1gib"
++CONFIG_DEFAULT_FDT_FILE="oftree"
++CONFIG_STM32MP13X=y
++CONFIG_DDR_CACHEABLE_SIZE=0x8000000
++CONFIG_CMD_STM32KEY=y
++CONFIG_TARGET_PHYTEC_PHYCORE_STM32MP13X=y
++CONFIG_ENV_OFFSET_REDUND=0x4C0000
++CONFIG_CMD_STM32PROG=y
++# CONFIG_ARMV7_NONSEC is not set
++CONFIG_SYS_LOAD_ADDR=0xc2000000
++CONFIG_FWU_NUM_IMAGES_PER_BANK=1
++CONFIG_OF_BOARD_FIXUP=y
++CONFIG_SYS_MEMTEST_START=0xc0000000
++CONFIG_SYS_MEMTEST_END=0xc4000000
++CONFIG_FIT=y
++CONFIG_FIT_SIGNATURE=y
++CONFIG_LEGACY_IMAGE_FORMAT=y
++CONFIG_DISTRO_DEFAULTS=y
++CONFIG_BOOTDELAY=1
++CONFIG_BOOTCOMMAND="run bootcmd_stm32mp"
++CONFIG_FDT_SIMPLEFB=y
++CONFIG_SYS_PROMPT="STM32MP> "
++CONFIG_CMD_FWU_METADATA=y
++CONFIG_SYS_BOOTM_LEN=0x2000000
++CONFIG_CMD_BOOTEFI_SELFTEST=y
++CONFIG_CMD_ADTIMG=y
++CONFIG_CMD_ERASEENV=y
++CONFIG_CMD_NVEDIT_EFI=y
++CONFIG_CMD_MEMINFO=y
++CONFIG_CMD_MEMTEST=y
++CONFIG_CMD_UNZIP=y
++CONFIG_CMD_ADC=y
++CONFIG_CMD_CLK=y
++CONFIG_CMD_DFU=y
++CONFIG_CMD_FUSE=y
++CONFIG_CMD_GPIO=y
++CONFIG_CMD_I2C=y
++CONFIG_CMD_LSBLK=y
++CONFIG_CMD_MMC=y
++CONFIG_CMD_SPI=y
++CONFIG_CMD_USB=y
++CONFIG_CMD_USB_MASS_STORAGE=y
++CONFIG_SYS_DISABLE_AUTOLOAD=y
++CONFIG_CMD_BMP=y
++CONFIG_CMD_CACHE=y
++CONFIG_CMD_EFIDEBUG=y
++CONFIG_CMD_TIME=y
++CONFIG_CMD_RNG=y
++CONFIG_CMD_TIMER=y
++CONFIG_CMD_REGULATOR=y
++CONFIG_CMD_EXT4_WRITE=y
++CONFIG_CMD_LOG=y
++CONFIG_CMD_UBI=y
++CONFIG_OF_LIVE=y
++CONFIG_ENV_IS_NOWHERE=y
++CONFIG_ENV_IS_IN_MMC=y
++CONFIG_ENV_IS_IN_SPI_FLASH=y
++CONFIG_ENV_IS_IN_UBI=y
++CONFIG_SYS_REDUNDAND_ENVIRONMENT=y
++CONFIG_ENV_UBI_PART="UBI"
++CONFIG_ENV_UBI_VOLUME="uboot_config"
++CONFIG_ENV_UBI_VOLUME_REDUND="uboot_config_r"
++CONFIG_SYS_RELOC_GD_ENV_ADDR=y
++CONFIG_SYS_MMC_ENV_DEV=-1
++CONFIG_ENV_MMC_USE_DT=y
++CONFIG_TFTP_TSIZE=y
++CONFIG_USE_SERVERIP=y
++CONFIG_SERVERIP="192.168.1.1"
++CONFIG_STM32_ADC=y
++CONFIG_SYS_64BIT_LBA=y
++CONFIG_CLK_SCMI=y
++CONFIG_DFU_TFTP=y
++CONFIG_USB_FUNCTION_FASTBOOT=y
++CONFIG_FASTBOOT_BUF_ADDR=0xC0000000
++CONFIG_FASTBOOT_BUF_SIZE=0x02000000
++CONFIG_FASTBOOT_FLASH=y
++CONFIG_FASTBOOT_FLASH_MMC_DEV=0
++CONFIG_FASTBOOT_CMD_OEM_FORMAT=y
++CONFIG_FASTBOOT_CMD_OEM_PARTCONF=y
++CONFIG_GPIO_HOG=y
++CONFIG_DM_I2C=y
++CONFIG_SYS_I2C_STM32F7=y
++CONFIG_LED=y
++CONFIG_LED_GPIO=y
++CONFIG_STM32_FMC2_EBI=y
++CONFIG_SUPPORT_EMMC_BOOT=y
++CONFIG_STM32_SDMMC2=y
++CONFIG_MTD=y
++CONFIG_DM_MTD=y
++CONFIG_MTD_RAW_NAND=y
++CONFIG_NAND_STM32_FMC2=y
++CONFIG_SYS_NAND_ONFI_DETECTION=y
++CONFIG_MTD_SPI_NAND=y
++CONFIG_DM_SPI_FLASH=y
++CONFIG_SPI_FLASH_MACRONIX=y
++CONFIG_SPI_FLASH_SPANSION=y
++CONFIG_SPI_FLASH_STMICRO=y
++CONFIG_SPI_FLASH_WINBOND=y
++# CONFIG_SPI_FLASH_USE_4K_SECTORS is not set
++CONFIG_SPI_FLASH_MTD=y
++CONFIG_PHY_REALTEK=y
++CONFIG_DWC_ETH_QOS=y
++CONFIG_PHY=y
++CONFIG_PHY_STM32_USBPHYC=y
++CONFIG_PHY_TI=y
++CONFIG_PINCONF=y
++CONFIG_PINCTRL_MCP23017=y
++CONFIG_DM_REGULATOR=y
++CONFIG_DM_REGULATOR_FIXED=y
++CONFIG_DM_REGULATOR_GPIO=y
++CONFIG_DM_REGULATOR_SCMI=y
++CONFIG_RESET_SCMI=y
++CONFIG_DM_RNG=y
++CONFIG_RNG_STM32=y
++CONFIG_DM_RTC=y
++CONFIG_RTC_STM32=y
++CONFIG_SERIAL_RX_BUFFER=y
++CONFIG_SPI=y
++CONFIG_DM_SPI=y
++CONFIG_STM32_QSPI=y
++CONFIG_STM32_SPI=y
++CONFIG_SYSRESET_PSCI=y
++CONFIG_TEE=y
++CONFIG_OPTEE=y
++# CONFIG_OPTEE_TA_AVB is not set
++CONFIG_USB=y
++CONFIG_DM_USB_GADGET=y
++CONFIG_USB_EHCI_HCD=y
++CONFIG_USB_EHCI_GENERIC=y
++CONFIG_USB_OHCI_HCD=y
++CONFIG_USB_OHCI_GENERIC=y
++CONFIG_TYPEC=y
++CONFIG_TYPEC_UCSI=y
++CONFIG_UCSI_STM32G0=y
++CONFIG_USB_ONBOARD_HUB=y
++CONFIG_USB_HUB_DEBOUNCE_TIMEOUT=2000
++CONFIG_USB_GADGET=y
++CONFIG_USB_GADGET_MANUFACTURER="STMicroelectronics"
++CONFIG_USB_GADGET_VENDOR_NUM=0x0483
++CONFIG_USB_GADGET_PRODUCT_NUM=0x5720
++CONFIG_USB_GADGET_DWC2_OTG=y
++CONFIG_VIDEO=y
++# CONFIG_VIDEO_LOGO is not set
++CONFIG_BACKLIGHT_GPIO=y
++CONFIG_VIDEO_STM32=y
++CONFIG_VIDEO_STM32_MAX_XRES=480
++CONFIG_VIDEO_STM32_MAX_YRES=272
++CONFIG_VIDEO_BMP_RLE8=y
++CONFIG_BMP_16BPP=y
++CONFIG_BMP_24BPP=y
++CONFIG_BMP_32BPP=y
++CONFIG_WDT=y
++CONFIG_WDT_STM32MP=y
++CONFIG_WDT_ARM_SMC=y
++CONFIG_ERRNO_STR=y
++CONFIG_EFI_SET_TIME=y
++CONFIG_EFI_CAPSULE_ON_DISK=y
++CONFIG_EFI_CAPSULE_FIRMWARE_FIT=y
++CONFIG_EFI_SECURE_BOOT=y
++# CONFIG_LMB_USE_MAX_REGIONS is not set
++CONFIG_LMB_MEMORY_REGIONS=2
++CONFIG_LMB_RESERVED_REGIONS=16
++CONFIG_FWU_MULTI_BANK_UPDATE=y
++CONFIG_FWU_MDATA_V2=y
++# CONFIG_TOOLS_MKEFICAPSULE is not set
++# CONFIG_TOOLS_MKFWUMDATA is not set
+diff --git a/configs/phycore-stm32mp15_defconfig b/configs/phycore-stm32mp15_defconfig
+new file mode 100644
+index 00000000000..e2c360432ec
+--- /dev/null
++++ b/configs/phycore-stm32mp15_defconfig
+@@ -0,0 +1,193 @@
++CONFIG_ARM=y
++CONFIG_ARCH_STM32MP=y
++CONFIG_TFABOOT=y
++CONFIG_SYS_MALLOC_F_LEN=0x80000
++CONFIG_CUSTOM_SYS_INIT_SP_ADDR=0xc0100000
++CONFIG_ENV_OFFSET=0x480000
++CONFIG_ENV_SECT_SIZE=0x40000
++CONFIG_DEFAULT_DEVICE_TREE="stm32mp157c-phycore-som-1gib"
++CONFIG_DEFAULT_FDT_FILE="oftree"
++CONFIG_DDR_CACHEABLE_SIZE=0x8000000
++CONFIG_CMD_STM32KEY=y
++CONFIG_TARGET_PHYTEC_PHYCORE_STM32MP15X=y
++CONFIG_ENV_OFFSET_REDUND=0x4C0000
++CONFIG_CMD_STM32PROG=y
++# CONFIG_ARMV7_NONSEC is not set
++CONFIG_SYS_LOAD_ADDR=0xc2000000
++CONFIG_FWU_NUM_IMAGES_PER_BANK=1
++CONFIG_OF_BOARD_FIXUP=y
++CONFIG_SYS_MEMTEST_START=0xc0000000
++CONFIG_SYS_MEMTEST_END=0xc4000000
++CONFIG_FIT=y
++CONFIG_FIT_SIGNATURE=y
++CONFIG_LEGACY_IMAGE_FORMAT=y
++CONFIG_DISTRO_DEFAULTS=y
++CONFIG_BOOTDELAY=1
++CONFIG_BOOTCOMMAND="run bootcmd_stm32mp"
++CONFIG_FDT_SIMPLEFB=y
++CONFIG_SYS_PROMPT="STM32MP> "
++CONFIG_SYS_PBSIZE=1050
++CONFIG_CMD_FWU_METADATA=y
++CONFIG_SYS_BOOTM_LEN=0x2000000
++CONFIG_CMD_BOOTEFI_SELFTEST=y
++CONFIG_CMD_ADTIMG=y
++CONFIG_CMD_ERASEENV=y
++CONFIG_CMD_NVEDIT_EFI=y
++CONFIG_CMD_MEMINFO=y
++CONFIG_CMD_MEMTEST=y
++CONFIG_CMD_UNZIP=y
++CONFIG_CMD_ADC=y
++CONFIG_CMD_CLK=y
++CONFIG_CMD_DFU=y
++CONFIG_CMD_FUSE=y
++CONFIG_CMD_GPIO=y
++CONFIG_CMD_I2C=y
++CONFIG_CMD_MMC=y
++CONFIG_CMD_REMOTEPROC=y
++CONFIG_CMD_SPI=y
++CONFIG_CMD_USB=y
++CONFIG_CMD_USB_MASS_STORAGE=y
++CONFIG_SYS_DISABLE_AUTOLOAD=y
++CONFIG_CMD_BMP=y
++CONFIG_CMD_CACHE=y
++CONFIG_CMD_EFIDEBUG=y
++CONFIG_CMD_TIME=y
++CONFIG_CMD_RNG=y
++CONFIG_CMD_TIMER=y
++CONFIG_CMD_PMIC=y
++CONFIG_CMD_REGULATOR=y
++CONFIG_CMD_EXT4_WRITE=y
++CONFIG_CMD_LOG=y
++CONFIG_CMD_UBI=y
++CONFIG_OF_LIVE=y
++CONFIG_ENV_IS_NOWHERE=y
++CONFIG_ENV_IS_IN_MMC=y
++CONFIG_ENV_IS_IN_SPI_FLASH=y
++CONFIG_ENV_IS_IN_UBI=y
++CONFIG_SYS_REDUNDAND_ENVIRONMENT=y
++CONFIG_ENV_UBI_PART="UBI"
++CONFIG_ENV_UBI_VOLUME="uboot_config"
++CONFIG_ENV_UBI_VOLUME_REDUND="uboot_config_r"
++CONFIG_SYS_RELOC_GD_ENV_ADDR=y
++CONFIG_SYS_MMC_ENV_DEV=-1
++CONFIG_ENV_MMC_USE_DT=y
++CONFIG_TFTP_TSIZE=y
++CONFIG_USE_SERVERIP=y
++CONFIG_SERVERIP="192.168.1.1"
++CONFIG_STM32_ADC=y
++CONFIG_SYS_64BIT_LBA=y
++CONFIG_CLK_SCMI=y
++CONFIG_DFU_TFTP=y
++CONFIG_USB_FUNCTION_FASTBOOT=y
++CONFIG_FASTBOOT_BUF_ADDR=0xC0000000
++CONFIG_FASTBOOT_BUF_SIZE=0x02000000
++CONFIG_FASTBOOT_FLASH=y
++CONFIG_FASTBOOT_FLASH_MMC_DEV=1
++CONFIG_FASTBOOT_MMC_BOOT_SUPPORT=y
++CONFIG_FASTBOOT_MMC_BOOT1_NAME="mmc1boot0"
++CONFIG_FASTBOOT_MMC_BOOT2_NAME="mmc1boot1"
++CONFIG_FASTBOOT_MMC_USER_SUPPORT=y
++CONFIG_FASTBOOT_MMC_USER_NAME="mmc1"
++CONFIG_FASTBOOT_CMD_OEM_FORMAT=y
++CONFIG_FASTBOOT_CMD_OEM_PARTCONF=y
++CONFIG_FASTBOOT_CMD_OEM_BOOTBUS=y
++CONFIG_GPIO_HOG=y
++CONFIG_DM_HWSPINLOCK=y
++CONFIG_HWSPINLOCK_STM32=y
++CONFIG_DM_I2C=y
++CONFIG_SYS_I2C_STM32F7=y
++CONFIG_LED=y
++CONFIG_LED_GPIO=y
++CONFIG_STM32_FMC2_EBI=y
++CONFIG_SUPPORT_EMMC_BOOT=y
++CONFIG_STM32_SDMMC2=y
++CONFIG_MTD=y
++CONFIG_DM_MTD=y
++CONFIG_MTD_RAW_NAND=y
++CONFIG_NAND_STM32_FMC2=y
++CONFIG_MTD_SPI_NAND=y
++CONFIG_DM_SPI_FLASH=y
++CONFIG_SPI_FLASH_MACRONIX=y
++CONFIG_SPI_FLASH_SPANSION=y
++CONFIG_SPI_FLASH_STMICRO=y
++CONFIG_SPI_FLASH_WINBOND=y
++CONFIG_SPI_FLASH_USE_4K_SECTORS=y
++CONFIG_SPI_FLASH_MTD=y
++CONFIG_PHY_REALTEK=y
++CONFIG_DWC_ETH_QOS=y
++CONFIG_NET_RANDOM_ETHADDR=y
++CONFIG_PHY=y
++CONFIG_PHY_STM32_USBPHYC=y
++CONFIG_PHY_TI_DP83867=y
++CONFIG_PINCONF=y
++CONFIG_PINCTRL_STMFX=y
++CONFIG_DM_PMIC=y
++CONFIG_PMIC_STPMIC1=y
++CONFIG_DM_REGULATOR=y
++CONFIG_DM_REGULATOR_FIXED=y
++CONFIG_DM_REGULATOR_GPIO=y
++CONFIG_DM_REGULATOR_STM32_VREFBUF=y
++CONFIG_DM_REGULATOR_STPMIC1=y
++CONFIG_DM_REGULATOR_SCMI=y
++CONFIG_REMOTEPROC_OPTEE=y
++CONFIG_REMOTEPROC_STM32_COPRO=y
++CONFIG_RESET_SCMI=y
++CONFIG_DM_RNG=y
++CONFIG_RNG_STM32=y
++CONFIG_DM_RTC=y
++CONFIG_RTC_STM32=y
++CONFIG_SERIAL_RX_BUFFER=y
++CONFIG_SPI=y
++CONFIG_DM_SPI=y
++CONFIG_STM32_QSPI=y
++CONFIG_STM32_SPI=y
++CONFIG_SYSRESET_PSCI=y
++CONFIG_TEE=y
++CONFIG_OPTEE=y
++# CONFIG_OPTEE_TA_AVB is not set
++CONFIG_USB=y
++CONFIG_DM_USB_GADGET=y
++CONFIG_USB_EHCI_HCD=y
++CONFIG_USB_EHCI_GENERIC=y
++CONFIG_USB_OHCI_HCD=y
++CONFIG_USB_OHCI_GENERIC=y
++CONFIG_TYPEC=y
++CONFIG_TYPEC_STUSB160X=y
++CONFIG_USB_ONBOARD_HUB=y
++CONFIG_USB_HUB_DEBOUNCE_TIMEOUT=2000
++CONFIG_USB_GADGET=y
++CONFIG_USB_GADGET_MANUFACTURER="STMicroelectronics"
++CONFIG_USB_GADGET_VENDOR_NUM=0x0483
++CONFIG_USB_GADGET_PRODUCT_NUM=0x5720
++CONFIG_USB_GADGET_DWC2_OTG=y
++CONFIG_VIDEO=y
++CONFIG_BACKLIGHT_GPIO=y
++CONFIG_VIDEO_LCD_ORISETECH_OTM8009A=y
++CONFIG_VIDEO_LCD_RAYDIUM_RM68200=y
++CONFIG_VIDEO_LCD_ROCKTECH_HX8394=y
++CONFIG_VIDEO_STM32=y
++CONFIG_VIDEO_STM32_DSI=y
++CONFIG_VIDEO_STM32_MAX_XRES=1280
++CONFIG_VIDEO_STM32_MAX_YRES=800
++CONFIG_SPLASH_SCREEN=y
++CONFIG_SPLASH_SCREEN_ALIGN=y
++CONFIG_VIDEO_BMP_RLE8=y
++CONFIG_BMP_16BPP=y
++CONFIG_BMP_24BPP=y
++CONFIG_BMP_32BPP=y
++CONFIG_WDT=y
++CONFIG_WDT_STM32MP=y
++CONFIG_WDT_ARM_SMC=y
++# CONFIG_BINMAN_FDT is not set
++CONFIG_ERRNO_STR=y
++CONFIG_EFI_SET_TIME=y
++CONFIG_EFI_CAPSULE_ON_DISK=y
++CONFIG_EFI_CAPSULE_FIRMWARE_FIT=y
++CONFIG_EFI_SECURE_BOOT=y
++# CONFIG_LMB_USE_MAX_REGIONS is not set
++CONFIG_LMB_MEMORY_REGIONS=2
++CONFIG_LMB_RESERVED_REGIONS=16
++CONFIG_FWU_MULTI_BANK_UPDATE=y
++CONFIG_FWU_MDATA_V2=y
++# CONFIG_TOOLS_MKEFICAPSULE is not set
++# CONFIG_TOOLS_MKFWUMDATA is not set
+diff --git a/configs/phyflex_stm32mp2_defconfig b/configs/phyflex_stm32mp2_defconfig
+new file mode 100644
+index 00000000000..09091e458b0
+--- /dev/null
++++ b/configs/phyflex_stm32mp2_defconfig
+@@ -0,0 +1,194 @@
++CONFIG_ARM=y
++CONFIG_USE_ARCH_MEMCPY=y
++CONFIG_ARCH_STM32MP=y
++CONFIG_SYS_MALLOC_F_LEN=0x500000
++CONFIG_CUSTOM_SYS_INIT_SP_ADDR=0x90000000
++CONFIG_ENV_OFFSET=0x480000
++CONFIG_ENV_SECT_SIZE=0x40000
++CONFIG_DEFAULT_DEVICE_TREE="stm32mp257f-phyflex-fpsc-g-som"
++CONFIG_DEFAULT_FDT_FILE="oftree"
++CONFIG_STM32MP25X=y
++CONFIG_CMD_STM32KEY=y
++CONFIG_ENV_OFFSET_REDUND=0x4C0000
++CONFIG_TARGET_PHYTEC_PHYFLEX_STM32MP2=y
++CONFIG_CMD_STM32PROG=y
++CONFIG_SYS_LOAD_ADDR=0x84000000
++CONFIG_ENV_ADDR=0x60900000
++CONFIG_FWU_NUM_IMAGES_PER_BANK=1
++CONFIG_OF_BOARD_FIXUP=y
++CONFIG_SYS_MEMTEST_START=0x84000000
++CONFIG_SYS_MEMTEST_END=0x88000000
++CONFIG_API=y
++CONFIG_SYS_MMC_MAX_DEVICE=3
++CONFIG_FIT=y
++CONFIG_FIT_SIGNATURE=y
++CONFIG_LEGACY_IMAGE_FORMAT=y
++CONFIG_DISTRO_DEFAULTS=y
++CONFIG_BOOTDELAY=1
++CONFIG_BOOTCOMMAND="run bootcmd_stm32mp"
++CONFIG_FDT_SIMPLEFB=y
++CONFIG_SYS_PROMPT="STM32MP> "
++CONFIG_CMD_BDINFO_EXTRA=y
++CONFIG_CMD_FWU_METADATA=y
++CONFIG_CMD_BOOTZ=y
++CONFIG_SYS_BOOTM_LEN=0x2000000
++CONFIG_CMD_BOOTEFI_SELFTEST=y
++CONFIG_CMD_ADTIMG=y
++# CONFIG_CMD_ELF is not set
++CONFIG_CMD_ERASEENV=y
++CONFIG_CMD_NVEDIT_EFI=y
++CONFIG_CMD_MEMINFO=y
++CONFIG_CMD_MEMTEST=y
++CONFIG_CMD_CLK=y
++CONFIG_CMD_DFU=y
++CONFIG_CMD_FUSE=y
++CONFIG_CMD_GPIO=y
++CONFIG_CMD_I2C=y
++CONFIG_CMD_LSBLK=y
++CONFIG_CMD_MMC=y
++CONFIG_CMD_REMOTEPROC=y
++CONFIG_CMD_SPI=y
++CONFIG_CMD_USB=y
++CONFIG_CMD_USB_MASS_STORAGE=y
++CONFIG_SYS_DISABLE_AUTOLOAD=y
++CONFIG_CMD_BMP=y
++CONFIG_CMD_CACHE=y
++CONFIG_CMD_EFIDEBUG=y
++CONFIG_CMD_TIME=y
++CONFIG_CMD_RNG=y
++CONFIG_CMD_TIMER=y
++CONFIG_CMD_REGULATOR=y
++CONFIG_CMD_EXT4_WRITE=y
++CONFIG_CMD_MTDPARTS=y
++CONFIG_CMD_LOG=y
++CONFIG_CMD_UBI=y
++CONFIG_OF_LIVE=y
++CONFIG_ENV_IS_NOWHERE=y
++CONFIG_ENV_IS_IN_FLASH=y
++CONFIG_ENV_IS_IN_MMC=y
++CONFIG_ENV_IS_IN_SPI_FLASH=y
++CONFIG_ENV_IS_IN_UBI=y
++CONFIG_SYS_REDUNDAND_ENVIRONMENT=y
++CONFIG_ENV_ADDR_REDUND=0x60940000
++CONFIG_ENV_UBI_PART="UBI"
++CONFIG_ENV_UBI_VOLUME="uboot_config"
++CONFIG_ENV_UBI_VOLUME_REDUND="uboot_config_r"
++CONFIG_SYS_MMC_ENV_DEV=-1
++CONFIG_USE_SERVERIP=y
++CONFIG_SERVERIP="192.168.1.1"
++CONFIG_SYS_64BIT_LBA=y
++CONFIG_BUTTON=y
++CONFIG_BUTTON_GPIO=y
++CONFIG_DFU_TFTP=y
++CONFIG_USB_FUNCTION_FASTBOOT=y
++CONFIG_FASTBOOT_BUF_ADDR=0x84000000
++CONFIG_FASTBOOT_BUF_SIZE=0x2000000
++CONFIG_FASTBOOT_FLASH=y
++CONFIG_FASTBOOT_FLASH_MMC_DEV=1
++CONFIG_FASTBOOT_MMC_BOOT_SUPPORT=y
++CONFIG_FASTBOOT_MMC_BOOT1_NAME="mmc1boot0"
++CONFIG_FASTBOOT_MMC_BOOT2_NAME="mmc1boot1"
++CONFIG_FASTBOOT_MMC_USER_SUPPORT=y
++CONFIG_FASTBOOT_MMC_USER_NAME="mmc1"
++CONFIG_FASTBOOT_CMD_OEM_FORMAT=y
++CONFIG_FASTBOOT_CMD_OEM_PARTCONF=y
++CONFIG_FASTBOOT_CMD_OEM_BOOTBUS=y
++CONFIG_GPIO_HOG=y
++CONFIG_DM_I2C=y
++CONFIG_SYS_I2C_STM32F7=y
++CONFIG_LED=y
++CONFIG_LED_GPIO=y
++CONFIG_DM_MAILBOX=y
++CONFIG_STM32_IPCC=y
++CONFIG_STM32_FMC2_EBI=y
++CONFIG_STM32_OMI=y
++CONFIG_STM32_OMM=y
++CONFIG_SUPPORT_EMMC_BOOT=y
++CONFIG_STM32_SDMMC2=y
++CONFIG_MTD=y
++CONFIG_DM_MTD=y
++CONFIG_MTD_NOR_FLASH=y
++CONFIG_SYS_FLASH_CFI_WIDTH_16BIT=y
++CONFIG_CFI_FLASH=y
++CONFIG_CFI_FLASH_USE_WEAK_ACCESSORS=y
++CONFIG_SYS_FLASH_USE_BUFFER_WRITE=y
++CONFIG_FLASH_CFI_MTD=y
++CONFIG_FLASH_CFI_SFDP=y
++CONFIG_SYS_FLASH_CFI=y
++CONFIG_STM32_HYPERBUS=y
++CONFIG_MTD_RAW_NAND=y
++CONFIG_SYS_NAND_USE_FLASH_BBT=y
++CONFIG_NAND_STM32_FMC2=y
++CONFIG_SYS_NAND_ONFI_DETECTION=y
++CONFIG_MTD_SPI_NAND=y
++CONFIG_DM_SPI_FLASH=y
++CONFIG_SPI_FLASH_SFDP_SUPPORT=y
++CONFIG_SPI_FLASH_SOFT_RESET=y
++CONFIG_SPI_FLASH_MACRONIX=y
++CONFIG_SPI_FLASH_SPANSION=y
++CONFIG_SPI_FLASH_STMICRO=y
++CONFIG_SPI_FLASH_WINBOND=y
++# CONFIG_SPI_FLASH_USE_4K_SECTORS is not set
++CONFIG_SPI_FLASH_MTD=y
++CONFIG_PHY_REALTEK=y
++CONFIG_DWC_ETH_QOS=y
++CONFIG_PHY=y
++CONFIG_PHY_STM32_USB2PHY=y
++CONFIG_PINCONF=y
++CONFIG_DM_REGULATOR_FIXED=y
++CONFIG_DM_REGULATOR_GPIO=y
++CONFIG_RAM=y
++# CONFIG_STM32MP1_DDR is not set
++CONFIG_REMOTEPROC_OPTEE=y
++CONFIG_REMOTEPROC_STM32_COPRO=y
++CONFIG_DM_RNG=y
++CONFIG_RNG_STM32=y
++CONFIG_DM_RTC=y
++CONFIG_RTC_STM32=y
++CONFIG_SERIAL_RX_BUFFER=y
++CONFIG_SPI=y
++CONFIG_DM_SPI=y
++CONFIG_STM32_OSPI=y
++CONFIG_STM32_SPI=y
++# CONFIG_OPTEE_TA_AVB is not set
++CONFIG_USB=y
++CONFIG_DM_USB_GADGET=y
++CONFIG_USB_XHCI_HCD=y
++CONFIG_USB_XHCI_DWC3=y
++CONFIG_USB_STM32_USBH=y
++CONFIG_USB_DWC3=y
++CONFIG_USB_DWC3_GENERIC=y
++CONFIG_USB_GADGET=y
++CONFIG_USB_GADGET_MANUFACTURER="STMicroelectronics"
++CONFIG_USB_GADGET_VENDOR_NUM=0x0483
++CONFIG_USB_GADGET_PRODUCT_NUM=0x5720
++CONFIG_VIDEO=y
++# CONFIG_VIDEO_LOGO is not set
++CONFIG_BACKLIGHT_GPIO=y
++CONFIG_VIDEO_LCD_ORISETECH_OTM8009A=y
++CONFIG_VIDEO_LCD_RAYDIUM_RM68200=y
++CONFIG_VIDEO_LCD_ROCKTECH_HX8394=y
++CONFIG_VIDEO_STM32=y
++CONFIG_VIDEO_STM32_DSI=y
++CONFIG_VIDEO_STM32_LVDS=y
++CONFIG_VIDEO_STM32_MAX_XRES=1920
++CONFIG_VIDEO_STM32_MAX_YRES=1200
++CONFIG_VIDEO_BMP_RLE8=y
++CONFIG_BMP_16BPP=y
++CONFIG_BMP_24BPP=y
++CONFIG_BMP_32BPP=y
++CONFIG_WDT=y
++CONFIG_WDT_STM32MP=y
++CONFIG_WDT_ARM_SMC=y
++CONFIG_ERRNO_STR=y
++CONFIG_EFI_SET_TIME=y
++CONFIG_EFI_CAPSULE_ON_DISK=y
++CONFIG_EFI_CAPSULE_FIRMWARE_FIT=y
++CONFIG_EFI_SECURE_BOOT=y
++# CONFIG_LMB_USE_MAX_REGIONS is not set
++CONFIG_LMB_MEMORY_REGIONS=2
++CONFIG_LMB_RESERVED_REGIONS=32
++CONFIG_FWU_MULTI_BANK_UPDATE=y
++CONFIG_FWU_MDATA_V2=y
++# CONFIG_TOOLS_MKEFICAPSULE is not set
++# CONFIG_TOOLS_MKFWUMDATA is not set
+diff --git a/include/config_distro_bootcmd.h b/include/config_distro_bootcmd.h
+index 2a136b96a6d..4707f24dbb0 100644
+--- a/include/config_distro_bootcmd.h
++++ b/include/config_distro_bootcmd.h
+@@ -541,6 +541,7 @@
+ 		"part list ${devtype} ${devnum} -bootable devplist; "     \
+ 		"env exists devplist || setenv devplist 1; "              \
+ 		"for distro_bootpart in ${devplist}; do "                 \
++		"env exists altboot && if test ${altboot} = 1;then setexpr distro_bootpart ${distro_bootpart} + 1; fi;" \
+ 			"if fstype ${devtype} "                           \
+ 					"${devnum}:${distro_bootpart} "   \
+ 					"bootfstype; then "               \
+diff --git a/include/configs/phycore_rauc_env.h b/include/configs/phycore_rauc_env.h
+new file mode 100644
+index 00000000000..2ca7f7971cd
+--- /dev/null
++++ b/include/configs/phycore_rauc_env.h
+@@ -0,0 +1,65 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++/*
++ * Copyright (C) 2023 PHYTEC Messtechnik GmbH
++ * Author: Christophe Parant <c.parant@phytec.de>
++ */
++
++#ifndef __PHYCORE_RAUC_ENV_H
++#define __PHYCORE_RAUC_ENV_H
++
++/*
++ * Note:
++ *
++ * These are environment variables and scripts that help booting an A/B system
++ * using RAUC (see https://rauc.io) on PHYTEC's phyCORE STM32MP1 SoMs.
++ *
++ * Implementation:
++ *
++ *  1. Include this file in your board/SoM configuration.
++ *  2. Set the following variables in the U-Boot environment:
++ *        "doraucboot" for the default value whether to boot the A/B system.
++ *  3. Include the macro PHYCORE_RAUC_ENV_BOOTLOGIC environment to add the boot
++ *     logic for A/B systems.
++ *  4. Make sure CONFIG_BOOTCOMMAND properly boots the A/B system by executing
++ *     "run raucboot" depending on the value of "doraucboot".
++ *
++ * Usage:
++ *
++ *  1. Set "doraucboot" to "1" to activate booting the A/B system and save this
++ *     setting with "saveenv".
++ *  2. Run "boot".
++ */
++
++#define PHYCORE_RAUC_ENV_BOOTLOGIC \
++	"raucboot=" \
++		"env exists altboot || setenv altboot 0;" \
++		"if test ${bootslot} = system0;" \
++		"then " \
++			"if test ! env exists uuidrootfsA;" \
++			"then " \
++				"part number mmc 1 rootafs bootfs_part_name;" \
++				"part uuid mmc 1:$bootfs_part_name uuidrootfsA;" \
++			"fi;" \
++			"env set uuidrootfs $uuidrootfsA;" \
++			"env set altboot 0;" \
++			"echo 'Boot system A';" \
++		"else " \
++			"if test ! env exists uuidrootfsB;" \
++			"then " \
++				"part number mmc 1 rootbfs bootfs_part_name;" \
++				"part uuid mmc 1:$bootfs_part_name uuidrootfsB;" \
++			"fi;" \
++			"env set uuidrootfs $uuidrootfsB;" \
++			"env set altboot 1;" \
++			"echo 'Boot system B';" \
++		"fi;\0"
++
++/* The minimal subset of environment variables that RAUC needs to read/write
++ * from environment storage. This can be used by locked-down builds, i. e. when
++ * u-boot is to be used in a secureboot context.
++ *
++ * The following ruleset will only apply if CONFIG_ENV_WRITEABLE_LIST is set
++ * */
++#define RAUC_REQUIRED_WRITABLE_ENV_FLAGS "doraucboot:dw"
++
++#endif /* __PHYCORE_RAUC_ENV_H */
+diff --git a/include/configs/phycore_stm32mp13.h b/include/configs/phycore_stm32mp13.h
+new file mode 100644
+index 00000000000..e9f187215e7
+--- /dev/null
++++ b/include/configs/phycore_stm32mp13.h
+@@ -0,0 +1,66 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Copyright (C) 2023 PHYTEC Messtechnik GmbH
++ * Author: Christophe Parant <c.parant@phytec.fr>
++ */
++
++#ifndef __CONFIG_PHYCORE_STM32MP13_H__
++#define __CONFIG_PHYCORE_STM32MP13_H__
++
++#define STM32MP_BOARD_EXTRA_ENV \
++	"usb_pgood_delay=1000\0" \
++	"console=ttySTM0\0" \
++	"fdtfile=" CONFIG_DEFAULT_FDT_FILE "\0"
++
++#include <configs/stm32mp13_common.h>
++#include "phycore_rauc_env.h"
++
++/* uart with on-board st-link */
++#define CONFIG_SYS_BAUDRATE_TABLE      { 9600, 19200, 38400, 57600, 115200, \
++					 230400, 460800, 921600, \
++					 1000000, 2000000, 4000000}
++
++#ifdef CFG_EXTRA_ENV_SETTINGS
++/*
++ * default bootcmd for phyCORE-STM32MP13:
++ * for serial/usb: execute the stm32prog command
++ * for mmc boot (eMMC, SD card), distro boot on the same mmc device
++ * for nand or spi-nand boot, distro boot with ubifs on UBI partition
++ * for nor boot, distro boot on SD card = mmc0 ONLY !
++ */
++#define ST_STM32MP13_BOOTCMD "bootcmd_stm32mp=" \
++	"env exists doraucboot || setenv doraucboot 0;" \
++	"if test ${doraucboot} = 1; then " \
++		"run raucboot;" \
++	"fi;" \
++	"echo \"Boot over ${boot_device}${boot_instance}!\";" \
++	"if test ${boot_device} = serial || test ${boot_device} = usb;" \
++	"then stm32prog ${boot_device} ${boot_instance}; " \
++	"else " \
++		"run env_check;" \
++		"if test ${boot_device} = mmc;" \
++		"then env set boot_targets \"mmc${boot_instance}\"; fi;" \
++		"if test ${boot_device} = nand ||" \
++		  " test ${boot_device} = spi-nand ;" \
++		"then env set boot_targets ubifs0; fi;" \
++		"if test ${boot_device} = nor;" \
++		"then env set boot_targets mmc0; fi;" \
++		"run distro_bootcmd;" \
++	"fi;\0"
++
++#ifdef CONFIG_ENV_WRITEABLE_LIST
++/* Set environment flag validation to a list of env vars that must be writable */
++#define CONFIG_ENV_FLAGS_LIST_STATIC RAUC_REQUIRED_WRITABLE_ENV_FLAGS
++#endif
++
++#undef CFG_EXTRA_ENV_SETTINGS
++#define CFG_EXTRA_ENV_SETTINGS \
++	STM32MP_MEM_LAYOUT \
++	PHYCORE_RAUC_ENV_BOOTLOGIC \
++	ST_STM32MP13_BOOTCMD \
++	BOOTENV \
++	STM32MP_EXTRA \
++	STM32MP_BOARD_EXTRA_ENV
++
++#endif
++#endif
+diff --git a/include/configs/phycore_stm32mp15.h b/include/configs/phycore_stm32mp15.h
+new file mode 100644
+index 00000000000..94aef2d800b
+--- /dev/null
++++ b/include/configs/phycore_stm32mp15.h
+@@ -0,0 +1,65 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Copyright (C) 2022 PHYTEC Messtechnik GmbH
++ * Author: Christophe Parant <c.parant@phytec.fr>
++ */
++
++#ifndef __CONFIG_PHYCORE_STM32MP15_H__
++#define __CONFIG_PHYCORE_STM32MP15_H__
++
++#define STM32MP_BOARD_EXTRA_ENV \
++	"usb_pgood_delay=1000\0" \
++	"console=ttySTM0\0" \
++	"fdtfile=" CONFIG_DEFAULT_FDT_FILE "\0"
++
++#include <configs/stm32mp15_common.h>
++#include "phycore_rauc_env.h"
++
++/* uart with on-board st-link */
++#define CONFIG_SYS_BAUDRATE_TABLE      { 9600, 19200, 38400, 57600, 115200, \
++					 230400, 460800, 921600, \
++					 1000000, 2000000 }
++
++#ifdef CFG_EXTRA_ENV_SETTINGS
++/*
++ * default bootcmd for phyCORE-STM32MP1:
++ * for serial/usb: execute the stm32prog command
++ * for mmc boot (eMMC, SD card), distro boot on the same mmc device
++ * for nand boot, distro boot with ubifs on UBI partition
++ * for nor boot, distro boot on eMMC = mmc1
++ */
++#define ST_STM32MP1_BOOTCMD "bootcmd_stm32mp=" \
++	"env exists doraucboot || setenv doraucboot 0;" \
++	"if test ${doraucboot} = 1; then " \
++		"run raucboot;" \
++	"fi;" \
++	"echo \"Boot over ${boot_device}${boot_instance}!\";" \
++	"if test ${boot_device} = serial || test ${boot_device} = usb;" \
++	"then stm32prog ${boot_device} ${boot_instance}; " \
++	"else " \
++		"run env_check;" \
++		"if test ${boot_device} = mmc;" \
++		"then env set boot_targets \"mmc${boot_instance}\"; fi;" \
++		"if test ${boot_device} = nand;" \
++		"then env set boot_targets ubifs0; fi;" \
++		"if test ${boot_device} = nor;" \
++		"then env set boot_targets mmc1; fi;" \
++		"run distro_bootcmd;" \
++	"fi;\0"
++
++#ifdef CONFIG_ENV_WRITEABLE_LIST
++/* Set environment flag validation to a list of env vars that must be writable */
++#define CONFIG_ENV_FLAGS_LIST_STATIC RAUC_REQUIRED_WRITABLE_ENV_FLAGS
++#endif
++
++#undef CFG_EXTRA_ENV_SETTINGS
++#define CFG_EXTRA_ENV_SETTINGS \
++	STM32MP_MEM_LAYOUT \
++        PHYCORE_RAUC_ENV_BOOTLOGIC \
++	ST_STM32MP1_BOOTCMD \
++	BOOTENV \
++	STM32MP_EXTRA \
++	STM32MP_BOARD_EXTRA_ENV
++
++#endif
++#endif
+diff --git a/include/configs/phyflex_stm32mp2.h b/include/configs/phyflex_stm32mp2.h
+new file mode 100644
+index 00000000000..f0229c5237d
+--- /dev/null
++++ b/include/configs/phyflex_stm32mp2.h
+@@ -0,0 +1,52 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Copyright (C) 2025 PHYTEC Messtechnik GmbH
++ * Author: Nicolas Raimundo <n.raimundo@phytec.fr>
++ */
++
++#ifndef __CONFIG_PHYFLEX_STM32MP25_H__
++#define __CONFIG_PHYFLEX_STM32MP25_H__
++
++#define STM32MP_BOARD_EXTRA_ENV \
++	"usb_pgood_delay=2000\0" \
++	"console=ttySTM0\0" \
++	"fdtfile=" CONFIG_DEFAULT_FDT_FILE "\0"
++
++#include <configs/stm32mp25_common.h>
++
++#ifdef CFG_EXTRA_ENV_SETTINGS
++/*
++ * default bootcmd for phyFLEX-STM32MP25x:
++ * for serial/usb: execute the stm32prog command
++ * for mmc boot (eMMC, SD card), distro boot on the same mmc device
++ * for nand or spi-nand boot, distro boot with ubifs on UBI partition or
++ * sdcard
++ * for nor boot, distro boot on SD card = mmc0 ONLY !
++ */
++#define ST_STM32MP25_BOOTCMD "bootcmd_stm32mp=" \
++	"echo \"Boot over ${boot_device}${boot_instance}!\";" \
++	"if test ${boot_device} = serial || test ${boot_device} = usb;" \
++	"then stm32prog ${boot_device} ${boot_instance}; " \
++	"else " \
++		"run env_check;" \
++		"if test ${boot_device} = mmc;" \
++		"then env set boot_targets \"mmc${boot_instance}\"; fi;" \
++		"if test ${boot_device} = nand ||" \
++		  " test ${boot_device} = spi-nand ;" \
++		"then env set boot_targets ubifs0 mmc0; fi;" \
++		"if test ${boot_device} = nor;" \
++		"then env set boot_targets mmc0; fi;" \
++		"run distro_bootcmd;" \
++	"fi;\0"
++
++#undef CFG_EXTRA_ENV_SETTINGS
++#define CFG_EXTRA_ENV_SETTINGS \
++	STM32MP_MEM_LAYOUT \
++	ST_STM32MP25_BOOTCMD \
++	BOOTENV \
++	STM32MP_EXTRA \
++	STM32MP_BOARD_EXTRA_ENV
++
++#endif
++
++#endif
