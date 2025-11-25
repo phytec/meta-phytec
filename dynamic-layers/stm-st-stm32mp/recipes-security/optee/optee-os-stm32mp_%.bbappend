@@ -1,7 +1,7 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/optee-os:"
 
 SRC_URI += " \
-    file://0001-4.0.0-phy1.patch \
+    file://0001-4.0.0-phy2.patch \
     "
 
 # ---------------------------------
@@ -10,7 +10,7 @@ SRC_URI += " \
 BBCLASSEXTEND = "devupstream:target"
 
 SRC_URI:class-devupstream = "git://github.com/phytec/optee_os-phytec-stm32mp.git;protocol=https;branch=${OPTEE_VERSION}-phy"
-SRCREV:class-devupstream = "f4a179d9c9c9afdbcbc91353910314ac91f9059a"
+SRCREV:class-devupstream = "b25d8c59e508f0ad51d67d810bddd9ace1ed8b2f"
 
 # -----------------------------------------------------------------------------------
 # Configure default preference to manage dynamic selection between tarball and github
