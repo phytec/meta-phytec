@@ -3,7 +3,7 @@ include recipes-bsp/u-boot/u-boot-rauc.inc
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 SRC_URI += " \
-    file://0001-v2023.10-stm32mp-phy1.patch \
+    file://0001-v2023.10-stm32mp-phy2.patch \
     ${@bb.utils.contains('MACHINE_FEATURES', 'fw-update', 'file://0002-v2023.10-stm32mp-phy1-env-offset-for-fwu.patch', '', d)} \
 "
 
@@ -13,7 +13,7 @@ SRC_URI += " \
 BBCLASSEXTEND = "devupstream:target"
 
 SRC_URI:class-devupstream = "git://git.phytec.de/u-boot-stm32mp;protocol=git;branch=${U_BOOT_VERSION}-phy"
-SRCREV:class-devupstream = "a6fe340621f87fca40e455c5632a914a35a041f7"
+SRCREV:class-devupstream = "3b6cb222d3c07dfab25a4aadd14c827a51c0e2fa"
 
 # ---------------------------------
 # Configure default preference to manage dynamic selection between tarball and github
