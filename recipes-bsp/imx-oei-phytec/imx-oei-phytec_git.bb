@@ -13,9 +13,9 @@ PROVIDES = "virtual/imx-oei"
 SRC_URI = "${IMX_OEI_SRC};branch=${BRANCH}"
 IMX_OEI_SRC ?= "git://github.com/phytec/imx-oei-phytec.git;protocol=https"
 BRANCH = "master-phy"
-BRANCH:use-nxp-bsp = "6.6.52-2.2.0-phy"
+BRANCH:use-nxp-bsp = "6.12.34-2.1.0-phy"
 SRCREV = "${AUTOREV}"
-SRCREV:use-nxp-bsp = "06fc4de31427a5336c3c1a77a8475f8f47ccc900"
+SRCREV:use-nxp-bsp = "22e056d73e7d7787e6f48f42c5eb24321a66cfb9"
 
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
@@ -29,6 +29,7 @@ LDFLAGS[unexport] = "1"
 
 EXTRA_OEMAKE = "\
     board=${OEI_BOARD} \
+    R=${IMX_SOC_REV} \
     CROSS_COMPILE=arm-none-eabi-"
 
 do_configure() {
@@ -58,4 +59,4 @@ do_deploy() {
 FILES:${PN} = "/firmware"
 SYSROOT_DIRS += "/firmware"
 
-COMPATIBLE_MACHINE = "(mx95-generic-bsp|imx95-libra-fpsc-1)"
+COMPATIBLE_MACHINE = "^(mx95-generic-bsp)"
