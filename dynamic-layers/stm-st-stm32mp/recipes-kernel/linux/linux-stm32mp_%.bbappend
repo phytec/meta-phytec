@@ -1,7 +1,7 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/${BPN}:"
 
 SRC_URI += " \
-    file://${LINUX_VERSION}/${LINUX_VERSION}${LINUX_SUBVERSION}/0001-v6.6-stm32mp-phy1.patch \
+    file://${LINUX_VERSION}/${LINUX_VERSION}${LINUX_SUBVERSION}/0001-v6.6-stm32mp-phy2.patch \
 "
 
 # -------------------------------------------------------------
@@ -51,7 +51,7 @@ SRC_URI += "file://${LINUX_VERSION}/fragment-23-tpm.config;subdir=fragments"
 BBCLASSEXTEND = "devupstream:target"
 
 SRC_URI:class-devupstream = "git://git.phytec.de/linux-stm32mp;protocol=git;branch=v${LINUX_VERSION}-phy"
-SRCREV:class-devupstream = "272f5e32ceea98dd46e9cb885526498163de8c41"
+SRCREV:class-devupstream = "a84636111e34525163a44e17fa06a8759adc354e"
 
 # -----------------------------------------------------------------------------------
 # Configure default preference to manage dynamic selection between tarball and github
