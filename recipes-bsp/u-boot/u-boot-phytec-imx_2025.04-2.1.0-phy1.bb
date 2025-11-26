@@ -13,12 +13,11 @@ DEPENDS += "flex-native bison-native bc-native dtc-native gnutls-native python3-
 
 LICENSE = "GPL-2.0-or-later"
 LIC_FILES_CHKSUM = "file://Licenses/gpl-2.0.txt;md5=b234ee4d69f5fce4486a80fdaf4a4263"
-BRANCH = "v2025.04-2.0.0-phy"
 GIT_URL = "git://github.com/phytec/${BPN};protocol=https"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
 PR = "r0"
-SRCREV = "fabd2dc28cd559a162b44c34dff268fe0a307ec0"
+SRCREV = "09dbe80bf753ef4eb09ac0cc8a8c191db29d580c"
 
 S = "${WORKDIR}/git"
 
