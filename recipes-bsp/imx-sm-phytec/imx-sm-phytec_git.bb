@@ -2,15 +2,15 @@ inherit deploy
 
 DESCRIPTION = "i.MX System Manager Firmware"
 LICENSE = "BSD-3-Clause"
-LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=b66f32a90f9577a5a3255c21d79bc619"
+LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=f2a70813bc08547f509361c08b718861"
 
 SRC_URI = "${IMX_SM_SRC};branch=${BRANCH}"
 IMX_SM_SRC = "git://github.com/phytec/imx-sm-phytec.git;protocol=https"
 
 BRANCH = "master-phy"
-BRANCH:use-nxp-bsp = "6.6.52-2.2.0-phy"
+BRANCH:use-nxp-bsp = "6.12.34-2.1.0-phy"
 SRCREV = "${AUTOREV}"
-SRCREV:use-nxp-bsp = "5e39ce5d178219871cb48de9bf84cd22459279e0"
+SRCREV:use-nxp-bsp = "838caadb3d8470bdf5736253efb0dfbd84ff4fb9"
 
 S = "${WORKDIR}/git"
 
@@ -54,4 +54,4 @@ do_deploy() {
         ${DEPLOYDIR}/${SYSTEM_MANAGER_FIRMWARE_BASENAME}.bin
 }
 
-COMPATIBLE_MACHINE = "(mx95-generic-bsp|imx95-libra-fpsc-1)"
+COMPATIBLE_MACHINE = "^(mx95-generic-bsp)"
