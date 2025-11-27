@@ -1,1 +1,1 @@
-overlays=imx93-phyboard-nash-peb-av-10.dtbo
+fit_overlay_conf=conf-imx93-phyboard-nash-peb-av-10.dtbo
