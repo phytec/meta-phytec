@@ -1,1 +1,1 @@
-overlays=imx93-phyboard-segin-peb-av-02.dtbo imx93-phyboard-segin-peb-eval-01.dtbo
+fit_overlay_conf=conf-imx93-phyboard-segin-peb-av-02.dtbo#conf-imx93-phyboard-segin-peb-eval-01.dtbo
