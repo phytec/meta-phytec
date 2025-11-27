@@ -22,8 +22,7 @@ BOOTLOADER_SEEK_EMMC:mx91-generic-bsp ?= "0"
 # Device information used by RAUC and some of its dependencies
 EMMC_DEV:mx91-generic-bsp ?= "0"
 
-EXTERNAL_KERNEL_DEVICETREE ??= ""
-IMAGE_BOOT_FILES += "oftree ${EXTERNAL_KERNEL_DEVICETREE} bootenv.txt"
+IMAGE_BOOT_FILES = "fitImage bootenv.txt boot.scr.uimg"
 IMAGE_BOOT_FILES:secureboot:mx91-nxp-bsp = "fitImage bootenv.txt"
 
 UBOOT_ARCH = "arm64"
