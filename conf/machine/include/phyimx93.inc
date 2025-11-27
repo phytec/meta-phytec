@@ -24,8 +24,7 @@ BOOTLOADER_SEEK_EMMC:mx93-generic-bsp ?= "0"
 # Device information used by RAUC and some of its dependencies
 EMMC_DEV:mx93-generic-bsp ?= "0"
 
-EXTERNAL_KERNEL_DEVICETREE ??= ""
-IMAGE_BOOT_FILES += "oftree ${EXTERNAL_KERNEL_DEVICETREE} bootenv.txt"
+IMAGE_BOOT_FILES = "fitImage bootenv.txt boot.scr.uimg"
 IMAGE_BOOT_FILES:secureboot:mx93-nxp-bsp = "fitImage bootenv.txt"
 IMAGE_BOOT_FILES:remove:use-mainline-bsp = "bootenv.txt"
 
