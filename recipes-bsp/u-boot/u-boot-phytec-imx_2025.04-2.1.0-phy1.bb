@@ -49,9 +49,22 @@ do_deploy:append:mx8m-generic-bsp() {
     install -m 0644 ${S}/CRT.*     ${DEPLOYDIR}
 }
 
+do_deploy:append:mx93-generic-bsp() {
+    # Deploy CRT.* from u-boot for stmm
+    install -m 0644 ${S}/CRT.*     ${DEPLOYDIR}
+}
+
+do_deploy:append:mx91-generic-bsp() {
+    # Deploy CRT.* from u-boot for stmm
+    install -m 0644 ${S}/CRT.*     ${DEPLOYDIR}
+}
+
 COMPATIBLE_MACHINE = "^("
 COMPATIBLE_MACHINE .= "phyboard-pollux-imx8mp-3"
 COMPATIBLE_MACHINE .= "|imx8mp-libra-fpsc-1"
+COMPATIBLE_MACHINE .= "|phyboard-nash-imx93-1"
+COMPATIBLE_MACHINE .= "|phyboard-segin-imx91-1"
+COMPATIBLE_MACHINE .= "|phyboard-segin-imx93-2"
 COMPATIBLE_MACHINE .= ")$"
 
 UBOOT_NAME:mx8-nxp-bsp = "u-boot-${MACHINE}.bin-${UBOOT_CONFIG}"
