@@ -23,7 +23,7 @@ BOOTLOADER_SEEK_EMMC:mx91-generic-bsp ?= "0"
 EMMC_DEV:mx91-generic-bsp ?= "0"
 
 IMAGE_BOOT_FILES = "fitImage bootenv.txt boot.scr.uimg"
-IMAGE_BOOT_FILES:secureboot:mx91-nxp-bsp = "fitImage bootenv.txt"
+IMAGE_BOOT_FILES:secureboot:mx91-nxp-bsp = "fitImage boot.scr.uimg"
 
 UBOOT_ARCH = "arm64"
 UBOOT_LOADADDRESS = "0x88000000"
