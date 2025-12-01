@@ -25,7 +25,7 @@ BOOTLOADER_SEEK_EMMC:mx93-generic-bsp ?= "0"
 EMMC_DEV:mx93-generic-bsp ?= "0"
 
 IMAGE_BOOT_FILES = "fitImage bootenv.txt boot.scr.uimg"
-IMAGE_BOOT_FILES:secureboot:mx93-nxp-bsp = "fitImage bootenv.txt"
+IMAGE_BOOT_FILES:secureboot:mx93-nxp-bsp = "fitImage boot.scr.uimg"
 
 UBOOT_ARCH = "arm64"
 UBOOT_BINARY:use-mainline-bsp = "flash.bin"
