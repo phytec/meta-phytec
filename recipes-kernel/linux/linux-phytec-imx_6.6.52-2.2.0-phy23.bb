@@ -11,7 +11,7 @@ SRCREV_meta ?= "5cefbe3e2770576771fe59b611d3b5fcf5860a1f"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/linux-phytec-6.6:"
 GIT_URL = "git://github.com/phytec/linux-phytec-imx.git;name=machine;protocol=https"
-GIT_URL:phynext = "git://git@git.phytec.de/linux-imx-phytec-dev.git;protocol=ssh"
+GIT_URL:phynext = "git://git@git.phytec.de/linux-phytec-imx-dev.git;protocol=ssh"
 SRC_URI = " \
         ${GIT_URL};branch=${BRANCH} \
         ${@bb.utils.contains("DEBUG_BUILD", "1", "file://debugging.scc", "", d)} \
