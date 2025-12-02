@@ -65,6 +65,7 @@ COMPATIBLE_MACHINE .= "|imx8mp-libra-fpsc-1"
 COMPATIBLE_MACHINE .= "|phyboard-nash-imx93-1"
 COMPATIBLE_MACHINE .= "|phyboard-segin-imx91-1"
 COMPATIBLE_MACHINE .= "|phyboard-segin-imx93-2"
+COMPATIBLE_MACHINE .= "|imx95-phyflex-libra-2"
 COMPATIBLE_MACHINE .= ")$"
 
 UBOOT_NAME:mx8-nxp-bsp = "u-boot-${MACHINE}.bin-${UBOOT_CONFIG}"
