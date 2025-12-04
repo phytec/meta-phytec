@@ -25,9 +25,11 @@ PARTUP_PACKAGE_DEPENDS:append:mx91-generic-bsp = " \
     ${@oe.utils.ifelse(d.getVar('UBOOT_PROVIDES_BOOT_CONTAINER') == '0', '${IMAGE_BOOTLOADER}', '')} \
     phytec-bootenv \
 "
-PARTUP_PACKAGE_DEPENDS:append:mx93-nxp-bsp = " \
+PARTUP_PACKAGE_DEPENDS:append:mx93-generic-bsp = " \
     ${@oe.utils.ifelse(d.getVar('UBOOT_PROVIDES_BOOT_CONTAINER') == '0', '${IMAGE_BOOTLOADER}', '')} \
     phytec-bootenv \
+"
+PARTUP_PACKAGE_DEPENDS:append:mx93-nxp-bsp = " \
     imx-m33-demos \
 "
 
