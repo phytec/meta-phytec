@@ -5,7 +5,7 @@ inherit hab
 SRC_URI:append:secureboot=" \
                           file://csf_spl_template.txt \
                           file://csf_fit_template.txt"
-DEPENDS:append:secureboot = " nxp-cst-native phytec-dev-ca-native"
+DEPENDS:append:secureboot = " phytec-dev-ca-native"
 
 CSF_TEMPLATE_PATH_SPL="${UNPACKDIR}/csf_spl_template.txt"
 CSF_TEMPLATE_PATH_FIT="${UNPACKDIR}/csf_fit_template.txt"
