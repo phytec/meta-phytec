@@ -31,6 +31,9 @@ UBOOT_ENTRYPOINT = "0x88000000"
 UBOOT_DTB_LOADADDRESS = "0x8A380000"
 UBOOT_DTBO_LOADADDRESS = "0x8A440000"
 
+KERNEL_CLASSES += "kernel-fit-extra-artifacts"
+IMAGE_INSTALL:append = "linux-yocto-fitimage"
+
 INITRAMFS_MAXSIZE = "262144"
 
 # partup
