@@ -1,4 +1,4 @@
-do_patch[depends] += "${@bb.utils.contains('DISTRO_FEATURES', 'secureboot', 'nxp-cst-native:do_populate_sysroot', '', d)}"
+do_patch[depends] += "${@bb.utils.contains('DISTRO_FEATURES', 'secureboot', 'imx-cst-native:do_populate_sysroot', '', d)}"
 
 AHAB_SRK_TABLE_BIN ??= ""
 AHAB_SRK_PUB_CERT ??= ""

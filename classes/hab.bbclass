@@ -1,6 +1,6 @@
 # A set of helper functions to work with HABv4 signatures, required by multiple recipes
 
-do_patch[depends] += "nxp-cst-native:do_populate_sysroot"
+do_patch[depends] += "imx-cst-native:do_populate_sysroot"
 
 def readfull(path):
     content = None
