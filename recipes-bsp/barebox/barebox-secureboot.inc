@@ -4,7 +4,7 @@ SRC_URI:append:secureboot = " \
         file://dynamic-config.cfg \
 "
 
-DEPENDS:append:secureboot = " bison-native nxp-cst-native libp11-native"
+DEPENDS:append:secureboot = " bison-native imx-cst-native libp11-native"
 
 BAREBOX_BIN_SIGNED ?= "images/${BAREBOX_BASE_BIN}-s.img"
 BAREBOX_BIN_SIGNEDUSB ?= "images/${BAREBOX_BASE_BIN}-us.img"
