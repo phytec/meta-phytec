@@ -20,46 +20,6 @@ def write_signature_node(d):
     manifest.write('/dts-v1/;\n\n/ {\n};\n')
     manifest.close()
 
-def write_signature_creation(d):
-    import shutil
-    import os
-    path_manifest = d.getVar("WORKDIR")
-
-    try:
-        manifest = open('%s/signature_creation.its' % path_manifest, 'w')
-    except OSError:
-        raise bb.build.FuncFailed('Unable to open signature_creation.its')
-
-    key_name_hint = d.getVar("UBOOT_SIGN_KEYNAME")
-    manifest.write('/dts-v1/;\n\n/ {\n')
-    manifest.write('\tdescription = "Signature blob";\n')
-    manifest.write('\t'        + 'images {\n')
-    manifest.write('\t\t'      +   'fdt-1 {\n')
-    manifest.write('\t\t\t'    +     'description = "Flattened Device Tree blob";\n')
-    manifest.write('\t\t\t'    +     'data = /incbin/("./signature_node.dtb");\n')
-    manifest.write('\t\t\t'    +     'type = "flat_dt";\n')
-    manifest.write('\t\t\t'    +     'arch = "arm";\n')
-    manifest.write('\t\t\t'    +      'compression = "none";\n')
-    manifest.write('\t\t\t'    +      'hash-1 {\n')
-    manifest.write('\t\t\t\t'  +        'algo = "%s";\n' % d.getVar("FIT_HASH_ALG"))
-    manifest.write('\t\t\t'    +      '};\n')
-    manifest.write('\t\t'      +   '};\n')
-    manifest.write('\t'        + '};\n')
-    manifest.write('\t'        + 'configurations {\n')
-    manifest.write('\t\t'      +   'default = "conf-1";\n')
-    manifest.write('\t\t'      +   'conf-1 {\n')
-    manifest.write('\t\t\t'    +      'description = "Boot Linux kernel with FDT blob";\n')
-    manifest.write('\t\t\t'    +      'fdt = "fdt-1";\n')
-    manifest.write('\t\t\t'    +      'signature-1 {\n')
-    manifest.write('\t\t\t\t'  +        'algo = "%s,%s";\n' % (d.getVar("FIT_HASH_ALG"), d.getVar("FIT_SIGN_ALG")))
-    manifest.write('\t\t\t\t'  +        'key-name-hint = "%s";\n' % key_name_hint)
-    manifest.write('\t\t\t\t'  +        'sign-images = "fdt";\n')
-    manifest.write('\t\t\t'    +      '};\n')
-    manifest.write('\t\t'      +   '};\n')
-    manifest.write('\t'        + '};\n')
-    manifest.write('};\n')
-    manifest.close()
-
 def exec_command(cmd):
     import shlex
     import subprocess
@@ -92,7 +52,6 @@ python do_create_dynamic_dtree:append:secureboot() {
 
     if d.getVar("UBOOT_SIGN_ENABLE") == "1" and d.getVar('FITIMAGE_SIGN_ENGINE') != 'nxphab':
         write_signature_node(d)
-        write_signature_creation(d)
 
         signature_node_path_dts = os.path.join(workdir, "signature_node.dts")
         signature_node_path_dtb = os.path.join(workdir, "signature_node.dtb")
@@ -107,9 +66,12 @@ python do_create_dynamic_dtree:append:secureboot() {
             setup_pkcs11_env(d)
 
         exec_command(f"mkimage {d.getVar('UBOOT_MKIMAGE_SIGN_ARGS')} \
-            -f {workdir + '/signature_creation.its'} \
+            -f auto-conf \
             -k {path} \
+            -g {d.getVar('UBOOT_SIGN_KEYNAME')} \
+            -o {d.getVar('FIT_HASH_ALG')},{d.getVar('FIT_SIGN_ALG')} \
             -K {signature_node_path_dtb} \
+            -d /dev/null \
             -r {workdir + '/dummy.img'}")
 
         exec_command("dtc -I dtb {0} -o {1}".format(signature_node_path_dtb,  signature_node_path_tmp))
