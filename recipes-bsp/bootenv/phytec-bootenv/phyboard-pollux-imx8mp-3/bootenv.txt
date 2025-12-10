@@ -1,1 +1,0 @@
-overlays=conf-imx8mp-phyboard-pollux-peb-av-10.dtbo

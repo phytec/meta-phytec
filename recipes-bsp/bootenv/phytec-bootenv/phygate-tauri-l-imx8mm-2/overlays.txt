@@ -1,0 +1,1 @@
+fit_overlay_conf=conf-imx8mm-phygate-tauri-l-rs232-rs485.dtbo
