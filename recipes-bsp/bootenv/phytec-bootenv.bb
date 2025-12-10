@@ -16,8 +16,7 @@ BOOTENV_OVERLAYS_APPEND ?= ""
 BOOTENV_FILE ?= "bootenv.txt"
 BOOTENV_FILE:k3 = "overlays.txt"
 BOOTENV_FILE:mx8-generic-bsp = "overlays.txt"
-BOOTENV_FILE:mx91-generic-bsp = "overlays.txt"
-BOOTENV_FILE:mx93-generic-bsp = "overlays.txt"
+BOOTENV_FILE:mx9-generic-bsp = "overlays.txt"
 
 inherit deploy
 do_deploy() {
