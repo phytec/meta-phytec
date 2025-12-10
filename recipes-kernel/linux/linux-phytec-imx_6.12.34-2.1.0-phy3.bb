@@ -9,6 +9,7 @@ SRCREV_meta ?= "554d7e85e9e53865be9f17ccc0e90d6d642999df"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/linux-phytec-6.12:"
 GIT_URL = "git://github.com/phytec/linux-phytec-imx.git;name=machine;protocol=https"
+GIT_URL:phynext = "git://git@git.phytec.de/linux-phytec-imx-dev.git;protocol=ssh"
 SRC_URI = " \
         ${GIT_URL};branch=${BRANCH} \
 "
