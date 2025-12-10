@@ -1,4 +1,3 @@
-inherit phygittag
 inherit deploy
 
 SUMMARY = "i.MX Optional Execution Image"
