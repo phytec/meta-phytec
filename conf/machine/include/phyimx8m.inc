@@ -8,8 +8,8 @@ MACHINE_FEATURES:remove = "nxp8987"
 DEBUG_PREFIX_MAP:remove = "-fcanon-prefix-map"
 
 IMAGE_BOOT_FILES = "fitImage boot.scr.uimg"
-IMAGE_BOOT_FILES:mx8m-nxp-bsp = "fitImage bootenv.txt boot.scr.uimg"
-IMAGE_BOOT_FILES:mx8m-nxp-bsp:secureboot = "fitImage bootenv.txt"
+IMAGE_BOOT_FILES:mx8m-nxp-bsp = "fitImage overlays.txt boot.scr.uimg"
+IMAGE_BOOT_FILES:mx8m-nxp-bsp:secureboot = "fitImage overlays.txt"
 
 # fdt_addr_r
 UBOOT_DTB_LOADADDRESS ?= "0x40480000"
