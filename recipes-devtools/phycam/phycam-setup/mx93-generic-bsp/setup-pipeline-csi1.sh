@@ -43,6 +43,12 @@ case $(echo ${CAM_ENT} | cut -d" " -f1) in
 		SENSOR_RES="1280x800"
 		OFFSET_SENSOR="(0,4)"
 		;;
+	ar0234 )
+		CAM_BW_FMT="Y8_1X8"
+		CAM_COL_FMT="SGRBG8_1X8"
+		SENSOR_RES="1920x1200"
+		OFFSET_SENSOR="(8,8)"
+		;;
 	* ) echo "Unknown camera" ; exit 1
 esac
 
