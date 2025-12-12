@@ -7,13 +7,17 @@ HOMEPAGE = "https://github.com/phytec/phytec-eeprom-flashtool"
 SECTION = "devel"
 
 LICENSE = "MIT"
-LIC_FILES_CHKSUM = "file://COPYING.MIT;md5=017e4848cc19ac0eb4e3f461b957234b"
+LIC_FILES_CHKSUM = "file://LICENSES/MIT.txt;md5=3912d958d00bac4a6b550f75d7c806bb"
 
 SRC_URI = "git://github.com/phytec/${BPN}.git;protocol=https;branch=main"
-SRCREV = "fb71869fc03c6ffec7c013dc52b9863dbcf02117"
+SRCREV = "365788dcce9c060bcd4d3390ffa9021cfaa7d609"
 
 S = "${WORKDIR}/git"
 
-inherit setuptools3
+inherit python_setuptools_build_meta
+
+DEPENDS += "python3-pip-native python3-build-native python3-wheel-native"
+
+FILES:${PN} += "${libdir}/python*/site-packages/*"
 
 RDEPENDS:${PN} = "python3-pyyaml python3-crc8"
