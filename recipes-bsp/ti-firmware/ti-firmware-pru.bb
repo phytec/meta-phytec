@@ -23,6 +23,13 @@ PRU_FW = " \
     am64x-sr2-rtu1-pruhsr-fw.elf \
     am64x-sr2-txpru0-pruhsr-fw.elf \
     am64x-sr2-txpru1-pruhsr-fw.elf \
+\
+    am64x-sr2-pru0-pruprp-fw.elf \
+    am64x-sr2-pru1-pruprp-fw.elf \
+    am64x-sr2-rtu0-pruprp-fw.elf \
+    am64x-sr2-rtu1-pruprp-fw.elf \
+    am64x-sr2-txpru0-pruprp-fw.elf \
+    am64x-sr2-txpru1-pruprp-fw.elf \
 "
 
 do_install() {
