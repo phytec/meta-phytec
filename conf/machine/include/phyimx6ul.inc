@@ -64,7 +64,7 @@ NAND_DEV:mx6ul-generic-bsp ?= "0"
 
 # partup
 IMAGE_CLASSES += "image-types-partup"
-include partup-layout-config.inc
+require partup-layout-config.inc
 
 # default images to build
 IMAGE_FSTYPES ?= " \

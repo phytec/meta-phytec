@@ -29,7 +29,7 @@ EMMC_DEV:mx7-generic-bsp ?= "2"
 
 # partup
 IMAGE_CLASSES += "image-types-partup"
-include partup-layout-config.inc
+require partup-layout-config.inc
 
 # Default images to build
 IMAGE_FSTYPES = " \

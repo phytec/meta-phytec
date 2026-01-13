@@ -56,7 +56,7 @@ IMAGE_BOOT_FILES:append:use-nxp-bsp = "${IMX_M33_DEMO_INSTALL}"
 
 # partup
 IMAGE_CLASSES += "image-types-partup"
-include partup-layout-config.inc
+require partup-layout-config.inc
 
 IMAGE_FSTYPES = "tar.gz wic.bmap wic.xz partup"
 IMAGE_FSTYPES:update = "partup"

@@ -38,7 +38,7 @@ INITRAMFS_MAXSIZE = "262144"
 
 # partup
 IMAGE_CLASSES += "image-types-partup"
-include partup-layout-config.inc
+require partup-layout-config.inc
 
 IMAGE_FSTYPES = "tar.gz wic.bmap wic.xz partup"
 IMAGE_FSTYPES:update = "partup"
