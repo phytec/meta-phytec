@@ -21,11 +21,7 @@ PARTUP_PACKAGE_DEPENDS:append:mx8m-nxp-bsp = " \
     ${@oe.utils.ifelse(d.getVar('UBOOT_PROVIDES_BOOT_CONTAINER') == '0', '${IMAGE_BOOTLOADER}', '')} \
     phytec-bootenv \
 "
-PARTUP_PACKAGE_DEPENDS:append:mx91-generic-bsp = " \
-    ${@oe.utils.ifelse(d.getVar('UBOOT_PROVIDES_BOOT_CONTAINER') == '0', '${IMAGE_BOOTLOADER}', '')} \
-    phytec-bootenv \
-"
-PARTUP_PACKAGE_DEPENDS:append:mx93-generic-bsp = " \
+PARTUP_PACKAGE_DEPENDS:append:mx9-generic-bsp = " \
     ${@oe.utils.ifelse(d.getVar('UBOOT_PROVIDES_BOOT_CONTAINER') == '0', '${IMAGE_BOOTLOADER}', '')} \
     phytec-bootenv \
 "
@@ -59,19 +55,17 @@ BOOTLOADER_FILE:mx6-generic-bsp ?= "${BAREBOX_BINARY}"
 BOOTLOADER_FILE:mx6ul-generic-bsp ?= "${BAREBOX_BINARY}"
 BOOTLOADER_FILE:mx7-generic-bsp ?= "u-boot-with-spl.imx"
 BOOTLOADER_FILE:mx8m-generic-bsp ?= "imx-boot"
-BOOTLOADER_FILE:mx91-generic-bsp ?= "imx-boot"
-BOOTLOADER_FILE:mx93-generic-bsp ?= "imx-boot"
+BOOTLOADER_FILE:mx9-generic-bsp ?= "imx-boot"
 UBOOT_ENV_OFFSET ??= "3840kiB"
 UBOOT_ENV_OFFSET:k3 ?= "6656kiB"
-UBOOT_ENV_OFFSET:mx91-generic-bsp ?= "7168kiB"
-UBOOT_ENV_OFFSET:mx93-generic-bsp ?= "7168kiB"
+UBOOT_ENV_OFFSET:mx9-generic-bsp ?= "7168kiB"
 UBOOT_ENV_OFFSET_REDUND ??= "3968kiB"
 UBOOT_ENV_OFFSET_REDUND:k3 ?= "6912kiB"
 UBOOT_ENV_OFFSET_REDUND:mx91-generic-bsp ?= "7296kiB"
 UBOOT_ENV_OFFSET_REDUND:mx93-generic-bsp ?= "7296kiB"
+UBOOT_ENV_OFFSET_REDUND:mx95-generic-bsp ?= "7184kiB"
 BOOT_PART_OFFSET ??= "4MiB"
-BOOT_PART_OFFSET:mx91-generic-bsp ?= "8MiB"
-BOOT_PART_OFFSET:mx93-generic-bsp ?= "8MiB"
+BOOT_PART_OFFSET:mx9-generic-bsp ?= "8MiB"
 
 do_layout_config[vardeps] += " \
     BOOTLOADER_SKIP \
