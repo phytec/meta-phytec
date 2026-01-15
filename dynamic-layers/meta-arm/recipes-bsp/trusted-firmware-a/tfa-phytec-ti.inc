@@ -8,14 +8,9 @@ TFA_TI:am62lxx = "recipes-bsp/trusted-firmware-a/trusted-firmware-a-ti.inc"
 
 require ${TFA_TI}
 
-SRC_URI:append:am62lxx-libra-fpsc-1 = " \
-    file://0001-fdts-Override-DDRSS-register-for-PCL-082.patch \
-"
-
-SRC_URI:append:am62lxx-libra-fpsc-2 = " \
-    file://0001-fdts-Override-DDRSS-register-for-PCL-082.patch \
-    file://0002-fdts-k3-am62l-ddr-Set-RAM-to-1GB.patch \
-"
+SRCREV_tfa:am62lxx = "f0161477134214112d2ea3eebb198830bab74088"
+SRC_URI_TRUSTED_FIRMWARE_A:am62lxx = "git://git@github.com/phytec/tf-a-phytec.git;protocol=https"
+SRCBRANCH:am62lxx = "v2.12.0-ti-phy"
 
 TFA_INSTALL_TARGET:am62lxx = "bl31 bl1"
 TFA_SPD:am62lxx = ""
