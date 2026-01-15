@@ -1,17 +1,16 @@
 #!/bin/sh
 
 display_help() {
-	echo "Usage: ./setup-pipeline-csi2.sh [-f <format>] [-s <frame size>] [-o <offset>] [-c <sensor size>] [-p <phycam-l port] [-i ISI|ISP] [-v]"
+	echo "Usage: ./setup-pipeline-csi2.sh [-f <format>] [-s <frame size>] [-o <offset>] [-c <sensor size>] [-p <phycam-l port] [-v]"
 }
 
-OPTIONS="hf:s:o:c:p:i:v"
+OPTIONS="hf:s:o:c:p:v"
 RES=
 FMT=
 OFFSET=
 FRES=
 VERBOSE=
 PORT=0
-IFACE="ISI"
 
 while getopts $OPTIONS option
 do
@@ -21,7 +20,6 @@ do
 		o ) OFFSET=$OPTARG;;
 		c ) FRES=$OPTARG;;
 		p ) PORT=$OPTARG;;
-		i ) IFACE=$OPTARG;;
 		v ) VERBOSE="-v";;
 		h  ) display_help; exit;;
 		\? ) echo "Unknown option: -$OPTARG" >&2; exit 1;;
@@ -29,12 +27,6 @@ do
 		*  ) echo "Unimplemented option: -$OPTARG" >&2; exit 1;;
 	esac
 done
-
-# Check for valid processor
-if [ "$IFACE" != "ISI" ] && [ "$IFACE" != "ISP" ] ; then
-	echo "Interface needs to be ISI or ISP (-i ISI or -i ISP)"
-	exit 1
-fi
 
 # Select the correct camera subdevice. Can be phyCAM-M or phyCAM-L (Port 0 or 1).
 if [ -L /dev/cam-csi2 ] ; then
@@ -91,32 +83,6 @@ case $(echo "${CAM_ENT}" | cut -d" " -f1) in
 		;;
 	* ) echo "Unknown camera" ; exit 1
 esac
-
-if [ "$IFACE" = "ISP" ] ; then
-	SENSOR_FILE="/opt/imx8-isp/bin/Sensor0_Entry.cfg"
-	if [ ! -L $SENSOR_FILE ] ; then
-		echo "Sensor0_Entry.cfg Link not set" ; exit 1
-	fi
-	MODE=$(grep "mode= " ${SENSOR_FILE} | cut -d " " -f2)
-	XML_FILE=$(grep -A1 "mode\.${MODE}" ${SENSOR_FILE} | grep -o "VM-.*\.xml")
-	SENSOR_RES=$(echo "${XML_FILE}" | sed 's/.*_\([0-9]\+x[0-9]\+\).*/\1/g')
-
-	case $(echo "${CAM_ENT}" | cut -d" " -f1) in
-		ar0144 )
-			CAM_BW_FMT="Y12_1X12"
-			CAM_COL_FMT="SGRBG12_1X12"
-			;;
-		ar0234 )
-			CAM_BW_FMT="Y10_1X10"
-			CAM_COL_FMT="SGRBG10_1X10"
-			;;
-		ar0521 )
-			CAM_BW_FMT="Y12_1X12"
-			CAM_COL_FMT="SGRBG12_1X12"
-			;;
-		* ) echo "Unknown camera" ; exit 1
-	esac
-fi
 
 # Evaluate if a monochrome or color sensor is connected by checking the
 # default MBUS code.
@@ -182,12 +148,10 @@ echo ""
 echo " Setting up MEDIA Formats with"
 echo " ${FMT}/${RES} for ${CAM_ENT}"
 echo " ----------------------------------------------------------------"
-if [ "$IFACE" = "ISI" ] ; then
-	echo "  Sensor CSI2:"
-	echo "   $MC -V \"'${CAM_ENT}':0/0[fmt:${FMT}/${RES} ${OFFSET}/${FRES} field:none]\""
-	$MC -V "'${CAM_ENT}':0/0[fmt:${FMT}/${RES} ${OFFSET}/${FRES} field:none]" ${VERBOSE}
-	echo ""
-fi
+echo "  Sensor CSI2:"
+echo "   $MC -V \"'${CAM_ENT}':0/0[fmt:${FMT}/${RES} ${OFFSET}/${FRES} field:none]\""
+$MC -V "'${CAM_ENT}':0/0[fmt:${FMT}/${RES} ${OFFSET}/${FRES} field:none]" ${VERBOSE}
+echo ""
 
 if [ -n "$SER_P0_ENT" ] && [ -n "$DESER_ENT" ] && [ "$PORT" = "0" ] ; then
 	echo "  phyCAM-L Port 0 Serializer on CSI2"
