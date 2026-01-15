@@ -15,9 +15,6 @@ SRC_URI = " \
 	${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'file://oci.scc', '', d)} \
 	${@bb.utils.contains('DISTRO_FEATURES', 'preempt-rt', 'file://preempt-rt.scc', '', d)} \
 "
-SRC_URI:append:am62lx-libra = " \
-  file://0001-HACK-WORKAROUND-can-m_can-Add-delay-to-runtime-pm-re.patch \
-"
 
 KERNEL_FEATURES = " \
     systemd.scc \
