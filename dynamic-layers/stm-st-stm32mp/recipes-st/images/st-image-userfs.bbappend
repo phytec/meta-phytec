@@ -6,3 +6,7 @@ PACKAGE_INSTALL:append:stm32mp15common = "\
 PACKAGE_INSTALL:append:stm32mp13common = "\
     phytec-camera-examples-stm32mp13x-userfs \
 "
+
+PACKAGE_INSTALL:append:stm32mp2common = "\
+    phytec-camera-examples-stm32mp2-userfs \
+"
