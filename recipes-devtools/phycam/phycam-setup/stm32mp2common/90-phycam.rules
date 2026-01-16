@@ -1,0 +1,67 @@
+# phyCAM VM-016 (ar0144) DCMIPP
+ACTION=="add", \
+        SUBSYSTEM=="video4linux", \
+        ATTR{name}=="ar0144*", \
+        SYMLINK+="cam-dcmipp"
+
+# DCMIPP parallel entity
+ACTION=="add", \
+        SUBSYSTEM=="video4linux", \
+        ATTR{name}=="dcmipp_input", \
+        DRIVERS=="dcmipp", \
+        SYMLINK+="parallel-dcmipp"
+
+# CSI entity
+ACTION=="add", \
+        SUBSYSTEM=="video4linux", \
+        ATTR{name}=="48020000.csi", \
+        SYMLINK+="csi"
+
+# DCMIPP main isp entity
+ACTION=="add", \
+        SUBSYSTEM=="video4linux", \
+        ATTR{name}=="dcmipp_main_isp", \
+        DRIVERS=="dcmipp", \
+        SYMLINK+="dcmipp-main-isp"
+
+# DCMIPP dump postproc entity
+ACTION=="add", \
+        SUBSYSTEM=="video4linux", \
+        ATTR{name}=="dcmipp_dump_postproc", \
+        DRIVERS=="dcmipp", \
+        SYMLINK+="dcmipp-dump-postproc"
+
+# DCMIPP aux postproc entity
+ACTION=="add", \
+        SUBSYSTEM=="video4linux", \
+        ATTR{name}=="dcmipp_aux_postproc", \
+        DRIVERS=="dcmipp", \
+        SYMLINK+="dcmipp-aux-postproc"
+
+# DCMIPP main postproc entity
+ACTION=="add", \
+        SUBSYSTEM=="video4linux", \
+        ATTR{name}=="dcmipp_main_postproc", \
+        DRIVERS=="dcmipp", \
+        SYMLINK+="dcmipp-main-postproc"
+
+# DCMIPP Video Device (isp)
+ACTION=="add", \
+        SUBSYSTEM=="video4linux", \
+        ATTR{name}=="dcmipp_main_capture", \
+        DRIVERS=="dcmipp", \
+        SYMLINK+="video-dcmipp-isp"
+
+# DCMIPP Video Device (dump)
+ACTION=="add", \
+        SUBSYSTEM=="video4linux", \
+        ATTR{name}=="dcmipp_dump_capture", \
+        DRIVERS=="dcmipp", \
+        SYMLINK+="video-dcmipp-dump"
+
+# DCMIPP Video Device (aux)
+ACTION=="add", \
+        SUBSYSTEM=="video4linux", \
+        ATTR{name}=="dcmipp_aux_capture", \
+        DRIVERS=="dcmipp", \
+        SYMLINK+="video-dcmipp-aux"
