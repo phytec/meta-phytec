@@ -29,6 +29,10 @@ SRC_URI:append:stm32mp13common = " \
     file://setup-pipeline-dcmipp.sh \
 "
 
+SRC_URI:append:stm32mp2common = " \
+    file://setup-pipeline-dcmipp.sh \
+"
+
 SRC_URI:append:j721s2 = " \
     file://setup-pipeline-csi.sh \
 "
