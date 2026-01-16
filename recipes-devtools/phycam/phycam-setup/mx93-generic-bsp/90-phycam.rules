@@ -1,14 +1,14 @@
 # phyCAM VM-016 (ar0144) CSI1
 ACTION=="add", \
 	SUBSYSTEM=="video4linux", \
-	ATTR{name}=="ar0144 1-0010", \
+	ATTR{name}=="ar0144 *-0010", \
 	KERNELS=="44350000.i2c", \
 	SYMLINK+="cam-csi1", \
 
 # phyCAM VM-020 (ar0234) CSI1
 ACTION=="add", \
 	SUBSYSTEM=="video4linux", \
-	ATTR{name}=="ar0234 1-0010", \
+	ATTR{name}=="ar0234 *-0010", \
 	KERNELS=="44350000.i2c", \
 	SYMLINK+="cam-csi1", \
 
