@@ -1,6 +1,5 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/features:"
 
-inherit sed-safely
 inherit u-boot-dts-pubkeynode
 
 SRC_URI:append:secureboot = " \
@@ -39,18 +38,6 @@ kconfig_set() {
     done
 }
 
-set_dofitboot_1 () {
-    bbnote "Setting \"dofitboot\" to \"1\""
-    sed_safely "s/\(setenv dofitboot \)[01]/\11/" configs/phycore-imx8m*
-    sed_safely "s/\(setenv dofitboot \)[01]/\11/" configs/imx8mm-phygate-tauri_defconfig
-    sed_safely "s/\(dofitboot=\)[01]/\11/" include/env/phytec/fit.env
-    sed_safely "s/\(dofitboot=\)[01]/\11/" include/env/phytec/fitboot.env
-}
-
-set_image_to_fitimage () {
-    sed_safely "s/image=Image/image=fitImage/g" board/phytec/phycore_*/*.env
-}
-
 set_fitimage_key() {
     kconfig_set DEVICE_TREE_INCLUDES '"signature_node.dtsi"'
     cp "${FITIMAGE_PUBKEY_SIGNATURE_PATH}" "${S}/arch/arm/dts/"
@@ -61,15 +48,7 @@ set_tikey_symlinks() {
     ln -sf ${BOOTLOADER_TI_K3_DEGENERATE_KEY} ${S}/arch/arm/mach-k3/keys/ti-degenerate-key.pem
 }
 
-set_dolegacyboot_1 () {
-    sed_safely "s/\(dolegacyboot=\)[01]/\11/" board/phytec/phycore_imx8mp/phycore_imx8mp.env
-    sed_safely "s/\(dolegacyboot=\)[01]/\11/" board/phytec/phycore_imx8mm/phycore_imx8mm.env
-}
-
 python do_patch:append:secureboot () {
-    bb.build.exec_func("set_dofitboot_1", d)
-    bb.build.exec_func("set_image_to_fitimage", d)
-
     if d.getVar("UBOOT_SIGN_ENABLE") == "1" and d.getVar('FITIMAGE_SIGN_ENGINE') != 'nxphab':
         bb.build.exec_func("set_fitimage_key", d)
 }
@@ -80,10 +59,6 @@ python do_unpack:append:secureenforced () {
 
 DEPENDS:append:secureenforced = " phytec-dev-ca-native"
 do_patch[depends] += "${@bb.utils.contains("MACHINEOVERRIDES", "secureenforced", "phytec-dev-ca-native:do_install", "", d)}"
-
-python do_patch:append:mx8m-nxp-bsp:secureboot () {
-    bb.build.exec_func("set_dolegacyboot_1", d)
-}
 
 do_uboot_assemble_fitimage:prepend:secureboot () {
     if echo "${UBOOT_SIGN_KEYDIR}" | grep -q "pkcs11:"; then
