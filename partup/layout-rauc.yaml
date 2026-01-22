@@ -43,10 +43,10 @@ partitions:
 
   - label: config
     type: primary
-    filesystem: ext4
+    filesystem: null
     size: 64MiB
     input:
-      - filename: config-partition.tar.gz
+      - filename: config-partition.ext4
 
   - label: root0
     type: logical
