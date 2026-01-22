@@ -12,7 +12,7 @@ PARTUP_PACKAGE_DEPENDS ?= " \
     virtual/bootloader \
 "
 
-PARTUP_PACKAGE_FILES:append:update = " config-partition.tar.gz"
+PARTUP_PACKAGE_FILES:append:update = " config-partition.ext4"
 PARTUP_PACKAGE_DEPENDS:append:update = " config-partition"
 PARTUP_PACKAGE_FILES:append:rauc-appfs = " rauc-appfs-example.tar.gz"
 PARTUP_PACKAGE_DEPENDS:append:rauc-appfs = " rauc-appfs-example"
