@@ -46,3 +46,11 @@ IMAGE_FSTYPES:update = "partup"
 MACHINE_FEATURES += "optee wifi bluetooth"
 
 QEMUVERSION = "8.2%"
+
+# Use standard wifi tools, not the ones from meta-summit-radio
+PREFERRED_PROVIDER_wpa-supplicant ??= "wpa-supplicant"
+PREFERRED_RPROVIDER_wpa-supplicant ??= "wpa-supplicant"
+PREFERRED_RPROVIDER_wpa-supplicant-cli ??= "wpa-supplicant"
+PREFERRED_RPROVIDER_wpa-supplicant-passphrase ??= "wpa-supplicant"
+PREFERRED_RPROVIDER_wireless-regdb-static ??= "wireless-regdb"
+PREFERRED_RPROVIDER_hostapd ??= "hostapd"
