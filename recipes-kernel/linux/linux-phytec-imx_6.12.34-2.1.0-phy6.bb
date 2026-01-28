@@ -17,6 +17,7 @@ SRC_URI = " \
 SRC_URI:append = " git://git.yoctoproject.org/yocto-kernel-cache;type=kmeta;name=meta;branch=yocto-6.12;destsuffix=${KMETA};protocol=https \
         ${@bb.utils.contains("DEBUG_BUILD", "1", "file://debugging.scc", "", d)} \
         file://mtd-partitioned-master.scc \
+        ${@bb.utils.contains('MACHINE_FEATURES', 'lwb5p', 'file://lwb5p_backports.scc', '', d)} \
 "
 
 PR = "${INC_PR}.0"
@@ -35,6 +36,7 @@ KERNEL_FEATURES:append = " ${@bb.utils.contains("MACHINE_FEATURES", "wifi", " fe
 KERNEL_FEATURES:append = " ${@bb.utils.contains("MACHINE_FEATURES", "bluetooth", " features/bluetooth/bluetooth.scc", "", d)}"
 KERNEL_FEATURES:append = " ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", " features/tpm/tpm-2.0.scc", "", d)}"
 KERNEL_FEATURES:append = " ${@bb.utils.contains("MACHINE_FEATURES", "pci", " features/pci/pci.scc", "", d)}"
+KERNEL_FEATURES:append = " ${@bb.utils.contains("MACHINE_FEATURES", "lwb5p", " lwb5p_backports.scc", "", d)}"
 
 KBUILD_DEFCONFIG ?= "imx8_phytec_defconfig"
 KBUILD_DEFCONFIG:mx9-nxp-bsp = "imx9_phytec_defconfig"
