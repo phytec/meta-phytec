@@ -16,6 +16,10 @@ SRC_URI = " \
 	${@bb.utils.contains('DISTRO_FEATURES', 'preempt-rt', 'file://preempt-rt.scc', '', d)} \
 "
 
+SRC_URI:append:am62lx-libra = " \
+    file://tmp102-built-in.cfg \
+"
+
 KERNEL_FEATURES = " \
     systemd.scc \
     ${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'lxc.scc oci.scc', '', d)} \
