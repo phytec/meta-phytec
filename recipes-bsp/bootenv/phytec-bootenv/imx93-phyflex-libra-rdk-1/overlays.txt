@@ -1,0 +1,1 @@
+fit_overlay_conf=conf-imx93-phyflex-libra-rdk-lvds-ph128800t006-zhc01.dtbo
