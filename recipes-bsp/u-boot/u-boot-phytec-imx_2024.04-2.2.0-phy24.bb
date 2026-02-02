@@ -22,7 +22,7 @@ SRC_URI:append = " file://0001-scripts-dtc-pylibfdt-libfdt.i_shipped-Use-SWIG_Ap
 "
 
 PR = "r0"
-SRCREV = "a429a8f5162ad1e90aef9ebb6ed79e90cc2cbf11"
+SRCREV = "6c468700a3f75f9b95a5fd3d8b7cbbc0f7fd3551"
 
 S = "${WORKDIR}/git"
 
