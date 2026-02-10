@@ -21,6 +21,13 @@ ENV_SIZE:j721s2 = "0x40000"
 ENV_SIZE:mx7-generic-bsp = "0x2000"
 ENV_SIZE:mx95-generic-bsp = "0x4000"
 
+do_fetch[vardeps] += " \
+    EMMC_DEV \
+    ENV_OFFSET \
+    ENV_OFFSET_REDUND \
+    ENV_SIZE \
+"
+
 do_configure:append () {
 	sed -i \
 		-e 's/@MMCDEV@/${EMMC_DEV}/g' \
