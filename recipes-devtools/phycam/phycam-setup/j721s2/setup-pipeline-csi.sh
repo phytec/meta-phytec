@@ -197,14 +197,14 @@ if [ -n "${DESER_ENT}" ] ; then
 		exit 1
 	fi
 
-	echo "   media-ctl -R \"'${DESER_ENT}'[${VC_DESER}]\""
-	media-ctl -R "'${DESER_ENT}'[${VC_DESER}]"
+	echo "   ${MC_CSI} -R \"'${DESER_ENT}'[${VC_DESER}]\""
+	${MC_CSI} -R "'${DESER_ENT}'[${VC_DESER}]"
 
-	echo "   media-ctl -R \"'${MIPI_ENT}'[${VC_MIPI}]\""
-	media-ctl -R "'${MIPI_ENT}'[${VC_MIPI}]"
+	echo "   ${MC_CSI} -R \"'${MIPI_ENT}'[${VC_MIPI}]\""
+	${MC_CSI} -R "'${MIPI_ENT}'[${VC_MIPI}]"
 
-	echo "   media-ctl -R \"'${CSI_ENT}'[${VC_CSI}]\""
-	media-ctl -R "'${CSI_ENT}'[${VC_CSI}]"
+	echo "   ${MC_CSI} -R \"'${CSI_ENT}'[${VC_CSI}]\""
+	${MC_CSI} -R "'${CSI_ENT}'[${VC_CSI}]"
 	echo ""
 
 	if [ -n "${SER_P0_ENT}" ]; then
