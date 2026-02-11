@@ -150,9 +150,12 @@ UBOOT_CONFIG:stm32mp15common ?= "default_stm32mp15"
 UBOOT_CONFIG:stm32mp13common ?= "default_stm32mp13"
 
 # Define u-boot defconfig and binary to use for each UBOOT_CONFIG
-UBOOT_CONFIG[default_stm32mp25] = "phyflex_stm32mp2_defconfig,,u-boot.dtb"
-UBOOT_CONFIG[default_stm32mp15] = "phycore-stm32mp15_defconfig,,u-boot.dtb"
-UBOOT_CONFIG[default_stm32mp13] = "phycore-stm32mp13_defconfig,,u-boot.dtb"
+UBOOT_CONFIG[default_stm32mp25] = "phyflex_stm32mp2_defconfig"
+UBOOT_CONFIG[default_stm32mp15] = "phycore-stm32mp15_defconfig"
+UBOOT_CONFIG[default_stm32mp13] = "phycore-stm32mp13_defconfig"
+UBOOT_CONFIG_BINARY[default_stm32mp25] = "u-boot.dtb"
+UBOOT_CONFIG_BINARY[default_stm32mp15] = "u-boot.dtb"
+UBOOT_CONFIG_BINARY[default_stm32mp13] = "u-boot.dtb"
 
 # List of U-Boot device tree to use
 UBOOT_DEVICETREE = "${BOOTLOADER_DT}"
