@@ -7,7 +7,6 @@ require barebox.inc
 inherit barebox-environment-2
 
 include barebox-secureboot.inc
-include barebox-protectionshield.inc
 include barebox-boot-scripts.inc
 
 GIT_URL = "git://git.phytec.de/barebox"
