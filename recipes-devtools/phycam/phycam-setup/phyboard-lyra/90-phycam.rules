@@ -1,0 +1,32 @@
+# phyCAM VM-016 (ar0144) CSI0
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="ar0144 *-0010", \
+	KERNELS=="20010000.i2c", \
+	SYMLINK+="cam-csi0"
+
+# CSI0 (Port0) Video Device
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="30102000.ticsi2rx context 0", \
+	DRIVERS=="j721e-csi2rx", \
+	SYMLINK+="video-csi0", \
+	SYMLINK+="video-csi0-port0"
+
+# CSI0 Media Device
+ACTION=="add", \
+	SUBSYSTEM=="media", \
+	KERNELS=="30102000.ticsi2rx", \
+	DRIVERS=="j721e-csi2rx", \
+	SYMLINK+="media-csi0"
+
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="30102000.ticsi2rx", \
+	SYMLINK+="phycam-csi2rx-csi0"
+
+# CSI0 MIPI Bridge
+ACTION=="add", \
+	SUBSYSTEM=="video4linux", \
+	ATTR{name}=="cdns_csi2rx.30101000.csi-bridge", \
+	SYMLINK+="phycam-mipi-csi0"
