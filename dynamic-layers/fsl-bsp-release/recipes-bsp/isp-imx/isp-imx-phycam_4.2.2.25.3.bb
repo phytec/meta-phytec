@@ -1,6 +1,6 @@
 require recipes-bsp/isp-imx/isp-imx_${PV}.bb
 
-SUMARY = "PHYTEC extension for i.MX Verisilicon Software ISP"
+SUMMARY = "PHYTEC extension for i.MX Verisilicon Software ISP"
 PROVIDES = "${PN}"
 FILESEXTRAPATHS:prepend := "${THISDIR}/${BPN}:"
 
