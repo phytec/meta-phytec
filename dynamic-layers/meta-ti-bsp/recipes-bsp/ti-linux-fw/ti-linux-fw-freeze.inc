@@ -1,5 +1,5 @@
 # Freeze the ti-linux-fw blob version to match with the current
 # Linux/U-boot version.
 
-# 11.02.02
-TI_LINUX_FW_SRCREV = "3c8ad7386e818cb42cce6ed4ce2aa1e76d7c688f"
+# 11.02.11
+TI_LINUX_FW_SRCREV = "8ec0c42b8ccf2c9e8bebfd7c4e03d93fed555442"
