@@ -16,7 +16,7 @@ SRC_URI = " \
 	${@bb.utils.contains('DISTRO_FEATURES', 'preempt-rt', 'file://preempt-rt.scc', '', d)} \
 "
 
-SRC_URI:append:am62lx-libra = " \
+SRC_URI:append:am62lx-phyflex-libra-rdk = " \
     file://tmp102-built-in.cfg \
 "
 
@@ -59,6 +59,6 @@ COMPATIBLE_MACHINE .=  "phyboard-lyra"
 COMPATIBLE_MACHINE .= "|phyboard-electra"
 COMPATIBLE_MACHINE .= "|phyboard-lynx"
 COMPATIBLE_MACHINE .= "|phyboard-rigel"
-COMPATIBLE_MACHINE .= "|am62lx-libra"
+COMPATIBLE_MACHINE .= "|am62lx-phyflex-libra-rdk"
 COMPATIBLE_MACHINE .= "|phyboard-izar"
 COMPATIBLE_MACHINE .= ")$"
