@@ -31,7 +31,7 @@ KCONFIG_MODE = "alldefconfig"
 KERNEL_DEVICETREE_32BIT_COMPATIBILITY_UPDATE = "1"
 
 COMPATIBLE_MACHINE  = "^("
-COMPATIBLE_MACHINE .= "|phyboard-regor-am335x-1"
+COMPATIBLE_MACHINE .= "phyboard-regor-am335x-1"
 COMPATIBLE_MACHINE .= "|phyboard-wega-am335x-1"
 COMPATIBLE_MACHINE .= "|phyboard-wega-am335x-2"
 COMPATIBLE_MACHINE .= "|phyboard-wega-am335x-3"
