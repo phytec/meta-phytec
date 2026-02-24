@@ -8,41 +8,41 @@ FORMATTER_CSI2_ROUTINGS=""
 DESER_CSI1_ROUTINGS=""
 DESER_CSI2_ROUTINGS=""
 
-add_routing() {
-	DEVICE="$1"
-	XBAR_ROUTE="$2"
-	MIPI_ROUTE="$3"
-	FORMATTER_ROUTE="$4"
-	DESER_ROUTE="$5"
 
-	if [ -L "$DEVICE" ]; then
-		case "$DEVICE" in
-			*csi1* )
-				XBAR_ROUTINGS="${XBAR_ROUTINGS}, ${XBAR_ROUTE}"
-				MIPI_CSI1_ROUTINGS="${MIPI_CSI1_ROUTINGS}, ${MIPI_ROUTE}"
-				FORMATTER_CSI1_ROUTINGS="${FORMATTER_CSI1_ROUTINGS}, ${FORMATTER_ROUTE}"
-				if [ -n "$DESER_ROUTE" ]; then
-					DESER_CSI1_ROUTINGS="${DESER_CSI1_ROUTINGS}, ${DESER_ROUTE}"
-				fi
-				;;
-			*csi2* )
-				XBAR_ROUTINGS="${XBAR_ROUTINGS}, ${XBAR_ROUTE}"
-				MIPI_CSI2_ROUTINGS="${MIPI_CSI2_ROUTINGS}, ${MIPI_ROUTE}"
-				FORMATTER_CSI2_ROUTINGS="${FORMATTER_CSI2_ROUTINGS}, ${FORMATTER_ROUTE}"
-				if [ -n "$DESER_ROUTE" ]; then
-					DESER_CSI2_ROUTINGS="${DESER_CSI2_ROUTINGS}, ${DESER_ROUTE}"
-				fi
-				;;
-		esac
-	fi
-}
+if [ -L /dev/cam-csi1 ] || [ -L /dev/cam-csi1-port0 ]; then
+	XBAR_ROUTINGS="${XBAR_ROUTINGS}, 2/0->5/0[1]"
+	MIPI_CSI1_ROUTINGS="${MIPI_CSI1_ROUTINGS}, 0/0->1/0[1]"
+	FORMATTER_CSI1_ROUTINGS="${FORMATTER_CSI1_ROUTINGS}, 0/0->1/0[1]"
+fi
 
-add_routing "/dev/cam-csi1" "2/0->5/0[1]" "0/0->1/0[1]" "0/0->1/0[1]" ""
-add_routing "/dev/cam-csi1-port0" "2/0->5/0[1]" "0/0->1/0[1]" "0/0->1/0[1]" "0/0->2/0[1]"
-add_routing "/dev/cam-csi1-port1" "2/1->7/0[1]" "0/1->1/1[1]" "0/1->1/1[1]" "1/0->2/1[1]"
-add_routing "/dev/cam-csi2" "3/0->9/0[1]" "0/0->1/0[1]" "0/0->1/0[1]" ""
-add_routing "/dev/cam-csi2-port0" "3/0->9/0[1]" "0/0->1/0[1]" "0/0->1/0[1]" "0/0->2/0[1]"
-add_routing "/dev/cam-csi2-port1" "3/1->11/0[1]" "0/1->1/1[1]" "0/1->1/1[1]" "1/0->2/1[1]"
+if [ -L /dev/cam-csi1-port0 ]; then
+	DESER_CSI1_ROUTINGS="${DESER_CSI1_ROUTINGS}, 0/0->2/0[1]"
+fi
+
+if [ -L /dev/cam-csi1-port1 ]; then
+	XBAR_ROUTINGS="${XBAR_ROUTINGS}, 2/1->7/0[1]"
+	MIPI_CSI1_ROUTINGS="${MIPI_CSI1_ROUTINGS}, 0/1->1/1[1]"
+	FORMATTER_CSI1_ROUTINGS="${FORMATTER_CSI1_ROUTINGS}, 0/1->1/1[1]"
+	DESER_CSI1_ROUTINGS="${DESER_CSI1_ROUTINGS}, 1/0->2/1[1]"
+fi
+
+if [ -L /dev/cam-csi2 ] || [ -L /dev/cam-csi2-port0 ]; then
+	XBAR_ROUTINGS="${XBAR_ROUTINGS}, 3/0->9/0[1]"
+	MIPI_CSI2_ROUTINGS="${MIPI_CSI2_ROUTINGS}, 0/0->1/0[1]"
+	FORMATTER_CSI2_ROUTINGS="${FORMATTER_CSI2_ROUTINGS}, 0/0->1/0[1]"
+fi
+
+if [ -L /dev/cam-csi2-port0 ]; then
+	DESER_CSI2_ROUTINGS="${DESER_CSI2_ROUTINGS}, 0/0->2/0[1]"
+fi
+
+if [ -L /dev/cam-csi2-port1 ]; then
+	XBAR_ROUTINGS="${XBAR_ROUTINGS}, 3/1->11/0[1]"
+	MIPI_CSI2_ROUTINGS="${MIPI_CSI2_ROUTINGS}, 0/1->1/1[1]"
+	FORMATTER_CSI2_ROUTINGS="${FORMATTER_CSI2_ROUTINGS}, 0/1->1/1[1]"
+	DESER_CSI2_ROUTINGS="${DESER_CSI2_ROUTINGS}, 1/0->2/1[1]"
+fi
+
 
 XBAR_ROUTINGS=${XBAR_ROUTINGS##, }
 MIPI_CSI1_ROUTINGS=${MIPI_CSI1_ROUTINGS##, }
