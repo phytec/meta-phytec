@@ -37,6 +37,8 @@ KERNEL_FEATURES:append = " ${@bb.utils.contains("MACHINE_FEATURES", "bluetooth",
 KERNEL_FEATURES:append = " ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", " features/tpm/tpm-2.0.scc", "", d)}"
 KERNEL_FEATURES:append = " ${@bb.utils.contains("MACHINE_FEATURES", "pci", " features/pci/pci.scc", "", d)}"
 KERNEL_FEATURES:append = " ${@bb.utils.contains("MACHINE_FEATURES", "lwb5p", " lwb5p_backports.scc", "", d)}"
+KERNEL_FEATURES:remove = "${@bb.utils.contains("MACHINE_FEATURES", "lwb5p", "features/bluetooth/bluetooth.scc", "", d)}"
+KERNEL_FEATURES:remove = "${@bb.utils.contains("MACHINE_FEATURES", "lwb5p", "features/wifi/wifi-sdio.scc", "", d)}"
 
 KBUILD_DEFCONFIG ?= "imx8_phytec_defconfig"
 KBUILD_DEFCONFIG:mx9-nxp-bsp = "imx9_phytec_defconfig"
