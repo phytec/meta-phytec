@@ -3,9 +3,9 @@ inherit phygittag kernel-deploy-oftree
 include recipes-kernel/linux/linux-common.inc
 require linux-phytec-fitimage.inc
 
-SRCREV = "9fe94855aec0a88fe40503c57edd0d80d37df679"
+SRCREV = "1447ae7756888d0564abbd493ce5e38d05bc79f7"
 SRCREV_machine = "${SRCREV}"
-SRCREV_meta ?= "554d7e85e9e53865be9f17ccc0e90d6d642999df"
+SRCREV_meta ?= "9a7e5434a02c01df4901784d29694d940743d56c"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/linux-phytec-6.12:"
 GIT_URL = "git://github.com/phytec/linux-phytec-imx.git;name=machine;protocol=https"
@@ -45,10 +45,5 @@ KBUILD_DEFCONFIG:mx9-nxp-bsp = "imx9_phytec_defconfig"
 KCONFIG_MODE = "alldefconfig"
 
 COMPATIBLE_MACHINE  = "^("
-COMPATIBLE_MACHINE .= "imx8mp-libra-fpsc-1"
-COMPATIBLE_MACHINE .= "|phyboard-nash-imx93-1"
-COMPATIBLE_MACHINE .= "|phyboard-segin-imx91-1"
-COMPATIBLE_MACHINE .= "|phyboard-segin-imx93-2"
-COMPATIBLE_MACHINE .= "|imx93-phyflex-libra-rdk-1"
-COMPATIBLE_MACHINE .= "|imx95-phyflex-libra-rdk-2"
+COMPATIBLE_MACHINE .= "phyboard-pollux-imx8mp-3"
 COMPATIBLE_MACHINE .= ")$"
