@@ -10,10 +10,6 @@ S = "${UNPACKDIR}"
 
 PR = "r0"
 
-SRC_URI = " \
-    file://90-phycam.rules \
-"
-
 SRC_URI:append:mx6ul-generic-bsp = " \
     file://setup-pipeline-csi1.sh \
 "
@@ -50,10 +46,6 @@ SRC_URI:append:mx95-generic-bsp = " \
 "
 
 do_install() {
-    install -d ${D}${nonarch_base_libdir}/udev/rules.d/
-    install -m 0644 ${UNPACKDIR}/90-phycam.rules \
-                    ${D}${nonarch_base_libdir}/udev/rules.d/
-
     if [ -e ${UNPACKDIR}/setup-pipeline-csi.sh ]; then
         install -d ${D}${bindir}
         install -m 0755 ${UNPACKDIR}/setup-pipeline-csi.sh \
@@ -92,7 +84,6 @@ do_install() {
 }
 
 FILES:${PN} += " \
-    ${nonarch_base_libdir} \
     ${bindir} \
 "
 
