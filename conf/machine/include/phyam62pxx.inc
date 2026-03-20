@@ -15,6 +15,7 @@ MACHINE_FEATURES += "screen touchscreen pcie"
 
 #phyBOARD-Lynx downstream kernel overlays
 KERNEL_OVERLAYS_PHYTEC = " \
+    ti/k3-am62p5-phyboard-lynx-oldi-ac209a.dtbo \
     ti/k3-am62p5-phyboard-lynx-oldi-lcd185.dtbo \
     ti/k3-am62p5-phyboard-lynx-dsi-lcd282.dtbo \
     ti/k3-am62p5-phyboard-lynx-m2-cc3351.dtbo \
