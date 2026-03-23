@@ -50,8 +50,8 @@ WIFI_LIST = "ezurio-sterling-firmware"
 BLUETOOTH_LIST = "ezurio-sterling-firmware"
 
 # Firmwares from Murata for KSP-0221 expansions used on STM32MP2 Libra board:
-WIFI_LIST:stm32mp25x-libra = "linux-firmware-addons-bcm43xx"
-BLUETOOTH_LIST:stm32mp25x-libra = "linux-firmware-addons-bcm43xx"
+WIFI_LIST:stm32mp2-phyflex-libra-rdk = "linux-firmware-addons-bcm43xx"
+BLUETOOTH_LIST:stm32mp2-phyflex-libra-rdk = "linux-firmware-addons-bcm43xx"
 
 # =========================================================================
 # Flashlayout configuration
