@@ -14,7 +14,7 @@ SRC_URI += "file://README_stm32mp25xx_libra.md"
 
 README:phycore-stm32mp15 = "README_stm32mp15xx_sargas.md"
 README:phycore-stm32mp13 = "README_stm32mp13xx_segin.md"
-README:stm32mp25x-libra = "README_stm32mp25xx_libra.md"
+README:stm32mp2-phyflex-libra-rdk = "README_stm32mp25xx_libra.md"
 
 DT_FILES_PATH = "${STAGING_KERNEL_DIR}/arch/${ARCH}/boot/dts/st/overlays/"
 
