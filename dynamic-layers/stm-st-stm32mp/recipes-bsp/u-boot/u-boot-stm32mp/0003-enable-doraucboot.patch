@@ -1,0 +1,13 @@
+diff --git a/include/configs/phytec_rauc_env.h b/include/configs/phytec_rauc_env.h
+index bf970eb3728..943572932f6 100644
+--- a/include/configs/phytec_rauc_env.h
++++ b/include/configs/phytec_rauc_env.h
+@@ -32,7 +32,7 @@
+ 
+ #define PHYCORE_RAUC_ENV_BOOTLOGIC \
+ 	"raucboot=" \
+-	        "env exists doraucboot || setenv doraucboot 0;" \
++	        "env exists doraucboot || setenv doraucboot 1;" \
+ 		"env exists altboot || setenv altboot 0;" \
+ 		"if test ${bootslot} = system0;" \
+ 		"then " \
