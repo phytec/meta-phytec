@@ -25,6 +25,7 @@ KERNEL_CONFIG_FRAGMENTS:append:stm32mp2common = " ${WORKDIR}/fragments/${LINUX_V
 KERNEL_CONFIG_FRAGMENTS:append:stm32mp2common = " ${WORKDIR}/fragments/${LINUX_VERSION}/fragment-21-gpio-expander.config"
 KERNEL_CONFIG_FRAGMENTS:append:stm32mp2common = " ${WORKDIR}/fragments/${LINUX_VERSION}/fragment-22-spi-adc.config"
 KERNEL_CONFIG_FRAGMENTS:append:stm32mp2common = " ${@bb.utils.contains('MACHINE_FEATURES','tpm2','${WORKDIR}/fragments/${LINUX_VERSION}/fragment-23-tpm.config','', d)}"
+KERNEL_CONFIG_FRAGMENTS:append:stm32mp2common = " ${WORKDIR}/fragments/${LINUX_VERSION}/fragment-24-sensor-tmp.config"
 
 SRC_URI += "file://${LINUX_VERSION}/fragment-06-rtc.config;subdir=fragments"
 SRC_URI += "file://${LINUX_VERSION}/fragment-07-eeprom.config;subdir=fragments"
@@ -44,6 +45,7 @@ SRC_URI += "file://${LINUX_VERSION}/fragment-20-display-bridge.config;subdir=fra
 SRC_URI += "file://${LINUX_VERSION}/fragment-21-gpio-expander.config;subdir=fragments"
 SRC_URI += "file://${LINUX_VERSION}/fragment-22-spi-adc.config;subdir=fragments"
 SRC_URI += "file://${LINUX_VERSION}/fragment-23-tpm.config;subdir=fragments"
+SRC_URI += "file://${LINUX_VERSION}/fragment-24-sensor-tmp.config;subdir=fragments"
 
 # ---------------------------------
 # Configure devupstream class usage
@@ -86,6 +88,7 @@ SRC_URI:class-devupstream += "file://${LINUX_VERSION}/fragment-20-display-bridge
 SRC_URI:class-devupstream += "file://${LINUX_VERSION}/fragment-21-gpio-expander.config;subdir=fragments"
 SRC_URI:class-devupstream += "file://${LINUX_VERSION}/fragment-22-spi-adc.config;subdir=fragments"
 SRC_URI:class-devupstream += "file://${LINUX_VERSION}/fragment-23-tpm.config;subdir=fragments"
+SRC_URI:class-devupstream += "file://${LINUX_VERSION}/fragment-24-sensor-tmp.config;subdir=fragments"
 
 # ------------------------------------------------------------------------
 # Build dtb with symbols to allow bootloader to apply device tree overlays
