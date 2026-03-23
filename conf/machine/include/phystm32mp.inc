@@ -223,6 +223,6 @@ IMAGE_CLASSES += "wic-bootenv-helper"
 EXTERNAL_KERNEL_DEVICETREE ??= ""
 IMAGE_BOOT_FILES += "oftree uImage ${EXTERNAL_KERNEL_DEVICETREE} extlinux/extlinux.conf bootenv.txt dt-overlays/*.dtbo;overlays/"
 WKS_BOOTIMAGESIZE ?= "20"
-WKS_IMAGE_FSTYPES += "wic wic.bz2 wic.bmap"
+WKS_IMAGE_FSTYPES += "wic wic.xz wic.bmap"
 
 WKS_FILES ?= "stm32mp1-sdimage.wks.in"
