@@ -133,6 +133,8 @@ PHY_EXPANSIONS_LIBRA += "stm32mp257f-phyflex-libra-rdk-vm016-csi1.dtbo"
 # Wireless expansions
 PHY_EXPANSIONS_LIBRA += "${@bb.utils.contains('MACHINE_FEATURES', 'wifi', 'stm32mp257f-phyflex-libra-rdk-ksp-0221-wlan-sdio.dtbo', '', d)}"
 PHY_EXPANSIONS_LIBRA += "${@bb.utils.contains('MACHINE_FEATURES', 'bluetooth', 'stm32mp257f-phyflex-libra-rdk-ksp-0221-bluetooth-uart.dtbo', '', d)}"
+# M33 copro examples
+PHY_EXPANSIONS_LIBRA += "${@bb.utils.contains('MACHINE_FEATURES', 'm33copro', 'stm32mp257f-phyflex-libra-rdk-m33-examples.dtbo', '', d)}"
 
 # =========================================================================
 # u-boot
