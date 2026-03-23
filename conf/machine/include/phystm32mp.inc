@@ -117,7 +117,7 @@ PHY_EXPANSIONS_SEGIN += "stm32mp13xx-phyboard-segin-peb-eval-01-jtag.dtbo"
 PHY_EXPANSIONS_SEGIN += "stm32mp135x-phyboard-segin-phycam-vm016.dtbo"
 
 # List of device tree overlays to install for phyBOARD-Libra
-DT_OVERLAYS_INSTALL:stm32mp25x-libra = "${@bb.utils.contains('MACHINE_FEATURES', 'phy-expansions', '${PHY_EXPANSIONS_LIBRA}', '', d)}"
+DT_OVERLAYS_INSTALL:stm32mp2-phyflex-libra-rdk = "${@bb.utils.contains('MACHINE_FEATURES', 'phy-expansions', '${PHY_EXPANSIONS_LIBRA}', '', d)}"
 # Displays / Sound
 PHY_EXPANSIONS_LIBRA += "stm32mp257f-phyflex-libra-rdk-lvds-etml1010g3dra.dtbo"
 PHY_EXPANSIONS_LIBRA += "stm32mp257f-phyflex-libra-rdk-lvds-ph128800t006-zhc01.dtbo"

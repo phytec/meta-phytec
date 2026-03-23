@@ -1,4 +1,4 @@
-do_install:append:stm32mp25x-libra() {
+do_install:append:stm32mp2-phyflex-libra-rdk() {
     install -d ${D}${nonarch_base_libdir}/firmware/brcm/
 
     # 4373
