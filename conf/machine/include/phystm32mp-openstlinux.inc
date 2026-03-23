@@ -226,3 +226,4 @@ WKS_FILE_DEPENDS:openstlinuxcommon ?= " \
 BOOTSCHEME = "${@bb.utils.contains('BOOTSCHEME_LABELS', 'optee', 'optee', 'trusted', d)}"
 
 WKS_FILES:openstlinuxcommon ?= "stm32mp-sdimage-openstlinux.wks.in"
+WKS_FILES:openstlinuxcommon:update ?= "stm32mp-emmcimage-rauc.wks.in"
