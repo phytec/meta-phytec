@@ -61,8 +61,7 @@ do_deploy:append:mx91-generic-bsp() {
 }
 
 COMPATIBLE_MACHINE = "^("
-COMPATIBLE_MACHINE .= "imx8mp-phyflex-libra-rdk-2"
-COMPATIBLE_MACHINE .= "|phyboard-nash-imx93-1"
+COMPATIBLE_MACHINE .= "phyboard-nash-imx93-1"
 COMPATIBLE_MACHINE .= "|phyboard-segin-imx91-1"
 COMPATIBLE_MACHINE .= "|phyboard-segin-imx93-2"
 COMPATIBLE_MACHINE .= "|imx93-phyflex-libra-rdk-1"
