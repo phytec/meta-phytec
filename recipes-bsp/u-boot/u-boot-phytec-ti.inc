@@ -7,6 +7,7 @@ DEPENDS:append = " \
     python3-jsonschema-native \
     python3-yamllint-native \
 "
+DEPENDS:append:k3 = " u-boot-mkenvimage-native"
 
 # TI's DM firmware is currently hosted in
 # git://git.ti.com/processor-firmware/ti-linux-firmware.git
@@ -43,6 +44,17 @@ EXTRA_OEMAKE += "${PACKAGECONFIG_CONFARGS} BINMAN_INDIRS=${BINMAN_INDIRS}"
 SRC_URI:append:k3r5 = " \
     ${@bb.utils.contains('MACHINE_FEATURES', 'ecc', 'file://k3-inline-ecc.cfg', '', d)} \
 "
+
+do_deploy:append:k3 () {
+    if [ -n "${UBOOT_INITIAL_ENV}" ]; then
+        for f in ${DEPLOYDIR}/${UBOOT_INITIAL_ENV}-${MACHINE}-*; do
+            if [ -f "$f" ] && [ ! -L "$f" ]; then
+                mkenvimage -r -s ${UBOOT_ENV_SIZE} -o "$f".bin "$f"
+                ln -sf $(basename "$f".bin) ${DEPLOYDIR}/${UBOOT_INITIAL_ENV}.bin
+            fi
+        done
+    fi
+}
 
 do_deploy:append:k3r5 () {
     rm -f ${DEPLOYDIR}/u-boot-initial-env*
