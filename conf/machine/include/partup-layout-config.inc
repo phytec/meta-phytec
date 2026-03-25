@@ -37,6 +37,8 @@ PARTUP_PACKAGE_DEPENDS:append:j721s2 = " \
     phytec-bootenv \
 "
 
+PARTUP_PACKAGE_FILES:append:k3 = " u-boot-phytec-ti-initial-env.bin"
+
 PARTUP_LAYOUT_CONFIG ?= "layout-default.yaml"
 PARTUP_LAYOUT_CONFIG:k3 ?= "layout-default-k3.yaml"
 PARTUP_LAYOUT_CONFIG:update ?= "layout-rauc.yaml"
