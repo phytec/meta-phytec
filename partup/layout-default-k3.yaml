@@ -24,13 +24,17 @@ mmc:
           filename: u-boot.img
           sha256sum: ${@partup_sha256sum('u-boot.img', d)}
 
-# BEGIN_CLEAN
-clean:
-  - offset: ${UBOOT_ENV_OFFSET}
-    size: 128kiB
-  - offset: ${UBOOT_ENV_OFFSET_REDUND}
-    size: 128kiB
-# END_CLEAN
+raw:
+  - input-offset: 0kiB
+    output-offset: ${UBOOT_ENV_OFFSET}
+    input:
+      filename: u-boot-phytec-ti-initial-env.bin
+      sha256sum: ${@partup_sha256sum('u-boot-phytec-ti-initial-env.bin', d)}
+  - input-offset: 0kiB
+    output-offset: ${UBOOT_ENV_OFFSET_REDUND}
+    input:
+      filename: u-boot-phytec-ti-initial-env.bin
+      sha256sum: ${@partup_sha256sum('u-boot-phytec-ti-initial-env.bin', d)}
 
 # BEGIN_PARTITIONS
 partitions:
