@@ -103,4 +103,6 @@ DT_OVERLAYS_INSTALL = " \
     imx6ul-vm011-bw.dtbo \
     imx6ul-vm011-col.dtbo \
     imx6ul-vm016.dtbo \
+    imx6ul-segin-peb-av-18.dtbo \
+    imx6ull-segin-peb-av-18.dtbo \
 "
