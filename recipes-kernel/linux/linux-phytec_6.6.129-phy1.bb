@@ -19,13 +19,11 @@ SRC_URI:append = " \
   ${@bb.utils.contains('MACHINE_FEATURES', 'caam', 'file://caam.cfg', '',   d)} \
   file://mtd-partitioned-master.cfg \
   file://0001-tty-vt-conmakehash-Don-t-mention-the-full-path-of-th.patch \
-  file://0001-lib-build_OID_registry-don-t-mention-the-full-path-o.patch \
-  file://0001-video-logo-Drop-full-path-of-the-input-filename-in-g.patch \
 "
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "c99c63789ff6e40d9e6f1187a64c46085feb1afe"
+SRCREV = "958f2f5ee42ede3b07cbb157f0d020bbcacf20fc"
 
 
 INTREE_DEFCONFIG = "imx_v6_v7_defconfig imx6_phytec_distro.config imx6_phytec_machine.config imx6_phytec_platform.config"
