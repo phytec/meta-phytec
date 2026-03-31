@@ -28,13 +28,13 @@ raw:
   - input-offset: 0kiB
     output-offset: ${UBOOT_ENV_OFFSET}
     input:
-      filename: u-boot-phytec-ti-initial-env.bin
-      sha256sum: ${@partup_sha256sum('u-boot-phytec-ti-initial-env.bin', d)}
+      filename: ${@d.getVar('PREFERRED_PROVIDER_virtual/bootloader')}-initial-env.bin
+      sha256sum: ${@partup_sha256sum(d.getVar('PREFERRED_PROVIDER_virtual/bootloader') + '-initial-env.bin', d)}
   - input-offset: 0kiB
     output-offset: ${UBOOT_ENV_OFFSET_REDUND}
     input:
-      filename: u-boot-phytec-ti-initial-env.bin
-      sha256sum: ${@partup_sha256sum('u-boot-phytec-ti-initial-env.bin', d)}
+      filename: ${@d.getVar('PREFERRED_PROVIDER_virtual/bootloader')}-initial-env.bin
+      sha256sum: ${@partup_sha256sum(d.getVar('PREFERRED_PROVIDER_virtual/bootloader') + '-initial-env.bin', d)}
 
 partitions:
   - label: boot0
