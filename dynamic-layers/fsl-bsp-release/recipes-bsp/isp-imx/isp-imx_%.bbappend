@@ -1,12 +1,5 @@
-require recipes-bsp/isp-imx/isp-imx_${PV}.bb
-
-SUMARY = "PHYTEC extension for i.MX Verisilicon Software ISP"
-PROVIDES = "${PN}"
 FILESEXTRAPATHS:prepend := "${THISDIR}/${BPN}:"
 
-ISP_IMX_SOURCE = "isp-imx-${PV}-${IMX_SRCREV_ABBREV}"
-
-SRC_URI = "${FSL_MIRROR}/${ISP_IMX_SOURCE}.bin;fsl-eula=true"
 SRC_URI += "\
     file://0001-units-isi-drv-Add-phyCAM-driver.patch \
     file://0002-units-isi-drv-phycam-Allow-to-configure-a-min-fps-fr.patch \
@@ -16,8 +9,6 @@ SRC_URI += "\
     file://isp-mode-select-csi1.sh \
     file://isp-mode-select-csi2.sh \
 "
-
-S="${WORKDIR}/${ISP_IMX_SOURCE}"
 
 SYSTEMD_SERVICE:${PN} = "imx8-phycam-isp.service"
 
