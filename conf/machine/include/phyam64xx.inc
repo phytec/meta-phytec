@@ -2,6 +2,9 @@ require conf/machine/include/phyk3.inc
 require conf/machine/include/mc_k3r5.inc
 SOC_FAMILY:append = ":am64xx"
 
+# TODO: Drop once am64xx test flow switches to network boot or partup-based SD card flashing
+IMAGE_FSTYPES:update = "partup wic.xz wic.bmap"
+
 TFA_BOARD = "lite"
 OPTEEMACHINE = "k3-am64x"
 
