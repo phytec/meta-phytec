@@ -26,3 +26,7 @@ KERNEL_OVERLAYS_PHYTEC = " \
 KERNEL_OVERLAYS:phyboard-lynx = " \
     ${@oe.utils.conditional("PREFERRED_PROVIDER_virtual/kernel", "linux-phytec-ti", "${KERNEL_OVERLAYS_PHYTEC}", "", d)} \
 "
+
+# phyFLEX_Libra overlays
+KERNEL_OVERLAYS:am62px-phyflex-libra-rdk = " \
+"
