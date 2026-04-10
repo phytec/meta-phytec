@@ -18,6 +18,7 @@ SRCREV = "8e655b27808d4d00664a263fdad0f0c754b62fee"
 
 COMPATIBLE_MACHINE = "^("
 COMPATIBLE_MACHINE .=  "am62lx-phyflex-libra-rdk"
+COMPATIBLE_MACHINE .= "|am62px-phyflex-libra-rdk"
 COMPATIBLE_MACHINE .= "|phyboard-izar"
 COMPATIBLE_MACHINE .= "|phyboard-lynx"
 COMPATIBLE_MACHINE .= "|phyboard-rigel"
