@@ -11,7 +11,7 @@ IMAGE_BOOT_FILES = "fitImage boot.scr.uimg"
 IMAGE_BOOT_FILES:mx8m-nxp-bsp = "fitImage overlays.txt boot.scr.uimg"
 IMAGE_BOOT_FILES:mx8m-nxp-bsp:secureboot = "fitImage boot.scr.uimg"
 KERNEL_CLASSES += "kernel-fit-extra-artifacts"
-IMAGE_INSTALL:append = "linux-yocto-fitimage"
+IMAGE_INSTALL:append = " linux-yocto-fitimage"
 
 # fdt_addr_r
 UBOOT_DTB_LOADADDRESS ?= "0x40480000"
