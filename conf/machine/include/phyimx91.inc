@@ -28,10 +28,12 @@ IMAGE_BOOT_FILES = "fitImage overlays.txt boot.scr.uimg"
 IMAGE_BOOT_FILES:secureboot:mx91-nxp-bsp = "fitImage boot.scr.uimg"
 
 UBOOT_ARCH = "arm64"
+UBOOT_BINARY:use-mainline-bsp = "flash.bin"
 UBOOT_LOADADDRESS = "0x88000000"
 UBOOT_ENTRYPOINT = "0x88000000"
 UBOOT_DTB_LOADADDRESS = "0x8A380000"
 UBOOT_DTBO_LOADADDRESS = "0x8A440000"
+UBOOT_PROVIDES_BOOT_CONTAINER:use-mainline-bsp = "1"
 
 KERNEL_CLASSES += "kernel-fit-extra-artifacts"
 IMAGE_INSTALL:append = "linux-yocto-fitimage"
