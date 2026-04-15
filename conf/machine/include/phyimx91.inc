@@ -46,6 +46,7 @@ IMAGE_FSTYPES = "tar.gz wic.bmap wic.xz partup"
 IMAGE_FSTYPES:update = "partup"
 
 MACHINE_FEATURES += "optee wifi bluetooth"
+MACHINE_FEATURES:remove:use-mainline-bsp = " optee"
 
 QEMUVERSION = "8.2%"
 
