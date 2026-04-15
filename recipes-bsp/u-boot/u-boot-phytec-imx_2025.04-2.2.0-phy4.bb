@@ -62,7 +62,6 @@ do_deploy:append:mx91-generic-bsp() {
 
 COMPATIBLE_MACHINE = "^("
 COMPATIBLE_MACHINE .= "phyboard-pollux-imx8mp-3"
-COMPATIBLE_MACHINE .= "|imx8mp-phyflex-libra-rdk-2"
 COMPATIBLE_MACHINE .= ")$"
 
 UBOOT_NAME:mx8-nxp-bsp = "u-boot-${MACHINE}.bin-${UBOOT_CONFIG}"
