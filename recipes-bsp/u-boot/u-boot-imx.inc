@@ -5,6 +5,8 @@
 # binman build.
 
 IMX_BOOT_CONTAINER_FIRMWARE_SOC ?= ""
+IMX_BOOT_CONTAINER_FIRMWARE_SOC:mx91-generic-bsp ?= "mx91a0-ahab-container.img"
+IMX_BOOT_CONTAINER_FIRMWARE_SOC:mx93-generic-bsp ?= "mx93a1-ahab-container.img"
 IMX_BOOT_CONTAINER_FIRMWARE_SOC:mx95-generic-bsp ?= "oei-m33-ddr.bin oei-m33-tcm.bin m33_image.bin \
                                                      mx95a0-ahab-container.img"
 IMX_BOOT_CONTAINER_FIRMWARE ?= " \
