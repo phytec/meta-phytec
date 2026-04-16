@@ -29,6 +29,15 @@ display_modes() {
 			echo " 2: 2592x1944 Full"
 			echo ""
 			;;
+		ar0830)
+			echo "Available Modes for VM-024:"
+			echo "---------------------------"
+			echo " 0: 1280x720 HD"
+			echo " 1: 1920x1080 FullHD"
+			echo " 2: 2560x1440 QHD"
+			echo " 3: 3840x2160 Full"
+			echo ""
+			;;
 		* ) echo "Unknown camera" ; exit 6
 	esac
 	exit 0
@@ -54,6 +63,13 @@ display_lenses() {
 			echo "Available Lens Configurations for VM-017:"
 			echo "-----------------------------------------"
 			echo " AO062 (default)"
+			echo " AO070.A1"
+			echo ""
+			;;
+		ar0830)
+			echo "Available Lens Configurations for VM-017:"
+			echo "-----------------------------------------"
+			echo " AO082 (default)"
 			echo " AO070.A1"
 			echo ""
 			;;
@@ -124,6 +140,7 @@ if [ -z $LENS ] ; then
 		ar0144) LENS="AO082" ;;
 		ar0234) LENS="AO082" ;;
 		ar0521) LENS="AO062" ;;
+		ar0830) LENS="AO082" ;;
 		* ) echo "Unknown camera" ; exit 6
 	esac
 else
@@ -143,6 +160,11 @@ else
 				echo -e "Uknown Lens: ${LENS}\n" ; display_lenses ${SENSOR_NAME}
 			fi
 			;;
+		ar0830 )
+			if [ ! "${LENS}" = "AO082" ] && [ ! "${LENS}" = "AO070.A1" ] ; then
+				echo -e "Uknown Lens: ${LENS}\n" ; display_lenses ${SENSOR_NAME}
+			fi
+			;;
 		* ) echo "Unknown camera" ; exit 6
 	esac
 fi
@@ -152,6 +174,7 @@ if [ -z $MODE ] ; then
 		ar0144) MODE=0 ;;
 		ar0234) MODE=1 ;;
 		ar0521) MODE=1 ;;
+		ar0830) MODE=1 ;;
 		* ) echo "Unknown camera" ; exit 6
 	esac
 else
@@ -168,6 +191,14 @@ else
 			;;
 		ar0521 )
 			if [ ! "${MODE}" = "0" ] && [ ! "${MODE}" = "1" ] && [ ! "${MODE}" = "2" ] ; then
+				echo -e "Uknown Mode: ${MODE}\n" ; display_modes ${SENSOR_NAME}
+			fi
+			;;
+		ar0830 )
+			if [ ! "${MODE}" = "0" ] && \
+			   [ ! "${MODE}" = "1" ] && \
+			   [ ! "${MODE}" = "2" ] && \
+			   [ ! "${MODE}" = "3" ] ; then
 				echo -e "Uknown Mode: ${MODE}\n" ; display_modes ${SENSOR_NAME}
 			fi
 			;;
