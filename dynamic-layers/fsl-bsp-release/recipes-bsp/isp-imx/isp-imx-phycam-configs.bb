@@ -7,6 +7,8 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/${BPN}:"
 
 PR = "r0"
 
+S = "${UNPACKDIR}"
+
 SRC_URI += "\
     file://xml/ \
     file://dwe/ \
