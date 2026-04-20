@@ -3,7 +3,7 @@ inherit phygittag kernel-deploy-oftree
 include recipes-kernel/linux/linux-common.inc
 require linux-phytec-fitimage.inc
 
-SRCREV = "447b799e91c359445d9b6cc195349fb4e5be2eae"
+SRCREV = "451c9a2af3536e9a47bda6c8ab5d0a1cc6be26bd"
 SRCREV_machine = "${SRCREV}"
 SRCREV_meta ?= "9a7e5434a02c01df4901784d29694d940743d56c"
 
