@@ -18,7 +18,7 @@ GIT_URL:phynext = "git://git@git.phytec.de/u-boot-phytec-imx-dev.git;protocol=ss
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
 PR = "r0"
-SRCREV = "e161041759caa60561fb38ab0c410f1eef4fa4eb"
+SRCREV = "291fe300a323ff2bec23f091cf603dda94ce2f34"
 
 S = "${WORKDIR}/git"
 
