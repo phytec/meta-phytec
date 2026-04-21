@@ -87,6 +87,8 @@ FILES:${PN} += " \
     ${bindir} \
 "
 
+ALLOW_EMPTY:${PN} = "1"
+
 RDEPENDS:${PN} += " \
     v4l-utils \
     media-ctl \
