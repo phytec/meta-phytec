@@ -36,7 +36,7 @@ UBOOT_DTBO_LOADADDRESS = "0x8A440000"
 UBOOT_PROVIDES_BOOT_CONTAINER:use-mainline-bsp = "1"
 
 KERNEL_CLASSES += "kernel-fit-extra-artifacts"
-IMAGE_INSTALL:append = "linux-yocto-fitimage"
+IMAGE_INSTALL:append = " linux-yocto-fitimage"
 
 INITRAMFS_MAXSIZE = "262144"
 
