@@ -85,16 +85,10 @@ def make_dtb_boot_files(d):
 
 K3_BOOTLOADER_FILES = "${SPL_BINARYNAME} u-boot.${UBOOT_SUFFIX} tiboot3.bin ti-boot-container.img"
 
-IMAGE_BOOT_FILES = " \
-    ${K3_BOOTLOADER_FILES} \
-    ${KERNEL_IMAGETYPE} \
-    ${@make_dtb_boot_files(d)} oftree \
-    overlays.txt \
-"
-IMAGE_BOOT_FILES:secureboot = " \
-    ${K3_BOOTLOADER_FILES} \
-    fitImage \
-"
+IMAGE_BOOT_FILES = "${@bb.utils.contains('DISTRO_FEATURES', 'secureboot', \
+    '${K3_BOOTLOADER_FILES} fitImage', \
+    '${K3_BOOTLOADER_FILES} ${KERNEL_IMAGETYPE} ${@make_dtb_boot_files(d)} oftree overlays.txt', \
+    d)}"
 IMAGE_EFI_BOOT_FILES ?= "${IMAGE_BOOT_FILES}"
 
 EFI_PROVIDER ?= "grub-efi"

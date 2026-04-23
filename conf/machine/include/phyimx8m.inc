@@ -8,8 +8,9 @@ MACHINE_FEATURES:remove = "nxp8987"
 DEBUG_PREFIX_MAP:remove = "-fcanon-prefix-map"
 
 IMAGE_BOOT_FILES = "fitImage boot.scr.uimg"
-IMAGE_BOOT_FILES:mx8m-nxp-bsp = "fitImage overlays.txt boot.scr.uimg"
-IMAGE_BOOT_FILES:mx8m-nxp-bsp:secureboot = "fitImage boot.scr.uimg"
+IMAGE_BOOT_FILES:mx8m-nxp-bsp = "${@bb.utils.contains('DISTRO_FEATURES', 'secureboot', \
+    'fitImage boot.scr.uimg', \
+    'fitImage overlays.txt boot.scr.uimg', d)}"
 KERNEL_CLASSES += "kernel-fit-extra-artifacts"
 IMAGE_INSTALL:append = " linux-yocto-fitimage"
 

@@ -37,13 +37,13 @@ MACHINE_FEATURES = "apm usbgadget usbhost vfat caam gpu screen"
 #WIC
 IMAGE_CLASSES += "wic-helper"
 EXTERNAL_KERNEL_DEVICETREE ??= ""
-IMAGE_BOOT_FILES = "zImage oftree ${EXTERNAL_KERNEL_DEVICETREE}"
-IMAGE_BOOT_FILES:secureboot = "fitImage"
-BAREBOX_BINARY = "barebox.bin"
-BAREBOX_BINARY:secureboot = "barebox-s.bin"
+IMAGE_BOOT_FILES = "${@bb.utils.contains('DISTRO_FEATURES', 'secureboot', \
+    'fitImage', \
+    'zImage oftree ${EXTERNAL_KERNEL_DEVICETREE}', d)}"
+BAREBOX_BINARY = "${@bb.utils.contains('DISTRO_FEATURES', 'secureboot', \
+    'barebox-s.bin', 'barebox.bin', d)}"
 WKS_FILES:mx6-generic-bsp ?= "imx6-sdimage.wks"
-WKS_BOOTIMAGESIZE ?= "20"
-WKS_BOOTIMAGESIZE:secureboot ?= "90"
+WKS_BOOTIMAGESIZE ?= "${@bb.utils.contains('DISTRO_FEATURES', 'secureboot', '90', '20', d)}"
 
 # MMC user area bootloader image offset
 BOOTLOADER_SEEK:mx6-generic-bsp ?= "1"
