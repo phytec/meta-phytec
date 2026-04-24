@@ -1,0 +1,47 @@
+# short-description: Create SD card image with a boot partition
+# long-description: Creates a partitioned SD card image for STM32MP1 OpenSTLinux BSP
+#
+#  - -------- ----- ------------ -------- ---------- -------- --------
+# | | TFA(2) | FIP | U-BOOT ENV | bootfs | vendorfs | rootfs | userfs |
+#  - -------- ----- ------------ -------- ---------- -------- --------
+# ^ ^
+# | |
+# 0 17kB
+#
+# Partition sizes are defined throught the machine settings (or can be changed manually on this file).
+#
+# Warning: the first stage of boot (here fsbl1, fsbl2, fip) MUST be on GPT partition to be detected.
+#
+
+# FSBL partitions (TF-M BL2)
+part ${STM32MP_FSBLM1_NAME} --source rawcopy --fstype=ext4 --fsoptions "noauto" --part-name=${STM32MP_FSBLM1_NAME} --sourceparams="file=${DEPLOY_DIR_IMAGE}/arm-trusted-firmware-m/bl2-${BOOTLOADER_DT}-sdcard.stm32" --ondisk mmcblk --part-type 0x8301 --fixed-size ${STM32MP_FSBLM1_SIZE}K --align 17
+part ${STM32MP_FSBLM2_NAME} --source rawcopy --fstype=ext4 --fsoptions "noauto" --part-name=${STM32MP_FSBLM2_NAME} --sourceparams="file=${DEPLOY_DIR_IMAGE}/arm-trusted-firmware-m/bl2-${BOOTLOADER_DT}-sdcard.stm32" --ondisk mmcblk --part-type 0x8301 --fixed-size ${STM32MP_FSBLM2_SIZE}K
+
+# M33DDR partitions
+part ${STM32MP_M33DDRA_NAME} --source rawcopy --fstype=ext4 --fsoptions "noauto" --part-name=${STM32MP_M33DDRA_NAME} --sourceparams="file=${DEPLOY_DIR_IMAGE}/arm-trusted-firmware-m/ddr_phy_signed-${BOOTLOADER_DT}-sdcard.bin" --ondisk mmcblk --part-type 0x8301 --fixed-size ${STM32MP_M33DDRA_SIZE}K --align 17
+part ${STM32MP_M33DDRB_NAME} --source empty --fstype=ext4 --fsoptions "noauto" --part-name=${STM32MP_M33DDRB_NAME} --ondisk mmcblk --part-type 0x8301 --fixed-size ${STM32MP_M33DDRB_SIZE}K
+
+# M33FW partitions
+part ${STM32MP_M33FWA_NAME} --source rawcopy --fstype=ext4 --fsoptions "noauto" --part-name=${STM32MP_M33FWA_NAME} --sourceparams="file=${DEPLOY_DIR_IMAGE}/arm-trusted-firmware-m-cube/tfm-starterapp-${BOOTLOADER_DT}-sdcard-sdcard_s_ns_signed.bin" --ondisk mmcblk --part-type 0x8301 --fixed-size ${STM32MP_M33FWA_SIZE}K --align 17
+part ${STM32MP_M33FWB_NAME} --source empty --fstype=ext4 --fsoptions "noauto" --part-name=${STM32MP_M33FWB_NAME} --ondisk mmcblk --part-type 0x8301 --fixed-size ${STM32MP_M33FWB_SIZE}K
+
+# FSBL partitions (TF-A BL2)
+part ${STM32MP_FSBL1_NAME} --source rawcopy --fstype=ext4 --fsoptions "noauto" --part-name=${STM32MP_FSBL1_NAME} --sourceparams="file=${DEPLOY_DIR_IMAGE}/arm-trusted-firmware/tf-a-${BOOTLOADER_DT}-${BOOTSCHEME}-sdcard.stm32" --ondisk mmcblk --part-type 0x8301 --fixed-size ${STM32MP_FSBL1_SIZE}K --align 17
+part ${STM32MP_FSBL2_NAME} --source rawcopy --fstype=ext4 --fsoptions "noauto" --part-name=${STM32MP_FSBL2_NAME} --sourceparams="file=${DEPLOY_DIR_IMAGE}/arm-trusted-firmware/tf-a-${BOOTLOADER_DT}-${BOOTSCHEME}-sdcard.stm32" --ondisk mmcblk --part-type 0x8301 --fixed-size ${STM32MP_FSBL2_SIZE}K
+
+# Fip partition
+part fip   --source rawcopy --fstype=ext4 --fsoptions "noauto" --part-name=fip --sourceparams="file=${DEPLOY_DIR_IMAGE}/fip/fip-${BOOTLOADER_DT}-${BOOTSCHEME}-sdcard.bin" --ondisk mmcblk --part-type 0x8301 --fixed-size ${STM32MP_SSBL1_SIZE}K
+
+# U-BOOT env
+part u-boot-env --source empty --part-name=u-boot-env --ondisk mmcblk --part-type 0x8301 --fixed-size ${STM32MP_UENV_SIZE}K
+
+# Bootfs
+part bootfs --source rawcopy --sourceparams="file=${STM32MP_BOOTFS_IMAGE}-${DISTRO}-${MACHINE}${IMAGE_NAME_SUFFIX:pn-st-image-bootfs}.ext4" --ondisk mmcblk --fstype=ext4 --part-name bootfs --active --fixed-size ${STM32MP_BOOTFS_SIZE}K
+# Vendorfs
+part vendorfs --source rawcopy --sourceparams="file=${STM32MP_VENDORFS_IMAGE}-${DISTRO}-${MACHINE}${IMAGE_NAME_SUFFIX:pn-st-image-vendorfs}.ext4" --ondisk mmcblk --fstype=ext4 --part-name vendorfs --fixed-size ${STM32MP_VENDORFS_SIZE}K
+# Rootfs
+part / --source rootfs --ondisk mmcblk --fstype=ext4 --part-name rootfs --fixed-size ${IMAGE_ROOTFS_MAXSIZE}K --uuid ${DEVICE_PARTUUID_ROOTFS:SDCARD}
+# Userfs
+part userfs --source rawcopy --sourceparams="file=${STM32MP_USERFS_IMAGE}-${DISTRO}-${MACHINE}${IMAGE_NAME_SUFFIX:pn-st-image-userfs}.ext4" --ondisk mmcblk --fstype=ext4 --part-name userfs --fixed-size ${STM32MP_USERFS_SIZE}K
+
+bootloader --ptable gpt
