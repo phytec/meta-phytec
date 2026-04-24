@@ -1,7 +1,7 @@
 Introduction
 ------------
 
-Device tree overlays are used to enable/disable phyFLEX-STM32MP25x Libra expansion boards and accessories.
+Device tree overlays are used to enable/disable phyFLEX-STM32MP2 Libra expansion boards and accessories.
 
 How to apply Devicetree Overlays
 --------------------------------

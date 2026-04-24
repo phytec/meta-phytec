@@ -8,13 +8,13 @@ COMPATIBLE_MACHINE = "(stm32mpcommon)"
 
 inherit devicetree
 
-SRC_URI += "file://README_stm32mp15xx_sargas.md"
-SRC_URI += "file://README_stm32mp13xx_segin.md"
-SRC_URI += "file://README_stm32mp25xx_libra.md"
+SRC_URI += "file://README_stm32mp15x_sargas.md"
+SRC_URI += "file://README_stm32mp13x_segin.md"
+SRC_URI += "file://README_stm32mp2_libra.md"
 
-README:phycore-stm32mp15 = "README_stm32mp15xx_sargas.md"
-README:phycore-stm32mp13 = "README_stm32mp13xx_segin.md"
-README:stm32mp2-phyflex-libra-rdk = "README_stm32mp25xx_libra.md"
+README:phycore-stm32mp15 = "README_stm32mp15x_sargas.md"
+README:phycore-stm32mp13 = "README_stm32mp13x_segin.md"
+README:stm32mp2-phyflex-libra-rdk = "README_stm32mp2_libra.md"
 
 DT_FILES_PATH = "${STAGING_KERNEL_DIR}/arch/${ARCH}/boot/dts/st/overlays/"
 
