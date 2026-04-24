@@ -27,10 +27,18 @@ BOOTDEVICE_LABELS ??= "emmc nor-emmc nand-2-128-256 nor-sdcard sdcard"
 # Machine settings
 # =========================================================================
 # Define list of devicetree per supported storage
-STM32MP_DT_FILES_EMMC   += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'emmc', '${BOOTLOADER_DT}', '', d)}"
+BOOTLOADER_DT ?= ""
+STM32MP_DT_FILES_EMMC += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'emmc', '${BOOTLOADER_DT}', '', d)}"
 STM32MP_DT_FILES_SDCARD += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'sdcard', '${BOOTLOADER_DT}', '', d)}"
 STM32MP_DT_FILES_NOR += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nor-emmc', '${BOOTLOADER_DT}', '', d)}"
 STM32MP_DT_FILES_NAND += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nand-2-128-256', '${BOOTLOADER_DT}', '', d)}"
+
+# Define list of external devicetree per supported storage
+BOOTLOADER_EXTERNAL_DT ?= ""
+EXTERNAL_DEVICETREE_EMMC += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'emmc', '${BOOTLOADER_EXTERNAL_DT}', '', d)}"
+EXTERNAL_DEVICETREE_SDCARD += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'sdcard', '${BOOTLOADER_EXTERNAL_DT}', '', d)}"
+EXTERNAL_DEVICETREE_NOR += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nor-emmc', '${BOOTLOADER_EXTERNAL_DT}', '', d)}"
+EXTERNAL_DEVICETREE_EMMC_NAND += "${@bb.utils.contains('BOOTDEVICE_LABELS', 'nand-2-128-256', '${BOOTLOADER_EXTERNAL_DT}', '', d)}"
 
 # Add list of default OpenSTLinux machine features to remove
 MACHINE_FEATURES_REMOVE_LIST ?= ""
