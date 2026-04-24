@@ -119,22 +119,22 @@ PHY_EXPANSIONS_SEGIN += "stm32mp135x-phyboard-segin-phycam-vm016.dtbo"
 # List of device tree overlays to install for phyBOARD-Libra
 DT_OVERLAYS_INSTALL:stm32mp2-phyflex-libra-rdk = "${@bb.utils.contains('MACHINE_FEATURES', 'phy-expansions', '${PHY_EXPANSIONS_LIBRA}', '', d)}"
 # Displays / Sound
-PHY_EXPANSIONS_LIBRA += "stm32mp257f-phyflex-libra-rdk-lvds-etml1010g3dra.dtbo"
-PHY_EXPANSIONS_LIBRA += "stm32mp257f-phyflex-libra-rdk-lvds-ph128800t006-zhc01.dtbo"
-PHY_EXPANSIONS_LIBRA += "stm32mp257f-phyflex-libra-rdk-peb-av-12-etml1010g3dra.dtbo"
-PHY_EXPANSIONS_LIBRA += "stm32mp257f-phyflex-libra-rdk-peb-av-12-ph128800t006-zhc01.dtbo"
-PHY_EXPANSIONS_LIBRA += "stm32mp257f-phyflex-libra-rdk-peb-av-10-etml1010g3dra.dtbo"
-PHY_EXPANSIONS_LIBRA += "stm32mp257f-phyflex-libra-rdk-peb-av-10-ph128800t006-zhc01.dtbo"
+PHY_EXPANSIONS_LIBRA += "stm32mp2-phyflex-libra-rdk-lvds-etml1010g3dra.dtbo"
+PHY_EXPANSIONS_LIBRA += "stm32mp2-phyflex-libra-rdk-lvds-ph128800t006-zhc01.dtbo"
+PHY_EXPANSIONS_LIBRA += "stm32mp2-phyflex-libra-rdk-peb-av-12-etml1010g3dra.dtbo"
+PHY_EXPANSIONS_LIBRA += "stm32mp2-phyflex-libra-rdk-peb-av-12-ph128800t006-zhc01.dtbo"
+PHY_EXPANSIONS_LIBRA += "stm32mp2-phyflex-libra-rdk-peb-av-10-etml1010g3dra.dtbo"
+PHY_EXPANSIONS_LIBRA += "stm32mp2-phyflex-libra-rdk-peb-av-10-ph128800t006-zhc01.dtbo"
 # PCIe / USB3 SuperSpeed SOM configuration
-PHY_EXPANSIONS_LIBRA += "stm32mp257f-phyflex-libra-rdk-pcie.dtbo"
-PHY_EXPANSIONS_LIBRA += "stm32mp257f-phyflex-libra-rdk-usb3ss.dtbo"
+PHY_EXPANSIONS_LIBRA:append:stm32mp25common = " stm32mp25-phyflex-libra-rdk-pcie.dtbo"
+PHY_EXPANSIONS_LIBRA:append:stm32mp25common = " stm32mp25-phyflex-libra-rdk-usb3ss.dtbo"
 # phyCAM-M
-PHY_EXPANSIONS_LIBRA += "stm32mp257f-phyflex-libra-rdk-vm016-csi1.dtbo"
+PHY_EXPANSIONS_LIBRA += "stm32mp2-phyflex-libra-rdk-vm016-csi1.dtbo"
 # Wireless expansions
-PHY_EXPANSIONS_LIBRA += "${@bb.utils.contains('MACHINE_FEATURES', 'wifi', 'stm32mp257f-phyflex-libra-rdk-ksp-0221-wlan-sdio.dtbo', '', d)}"
-PHY_EXPANSIONS_LIBRA += "${@bb.utils.contains('MACHINE_FEATURES', 'bluetooth', 'stm32mp257f-phyflex-libra-rdk-ksp-0221-bluetooth-uart.dtbo', '', d)}"
+PHY_EXPANSIONS_LIBRA += "${@bb.utils.contains('MACHINE_FEATURES', 'wifi', 'stm32mp2-phyflex-libra-rdk-ksp-0221-wlan-sdio.dtbo', '', d)}"
+PHY_EXPANSIONS_LIBRA += "${@bb.utils.contains('MACHINE_FEATURES', 'bluetooth', 'stm32mp2-phyflex-libra-rdk-ksp-0221-bluetooth-uart.dtbo', '', d)}"
 # M33 copro examples
-PHY_EXPANSIONS_LIBRA += "${@bb.utils.contains('MACHINE_FEATURES', 'm33copro', 'stm32mp257f-phyflex-libra-rdk-m33-examples.dtbo', '', d)}"
+PHY_EXPANSIONS_LIBRA += "${@bb.utils.contains('MACHINE_FEATURES', 'm33copro', 'stm32mp2-phyflex-libra-rdk-m33-examples.dtbo', '', d)}"
 
 # =========================================================================
 # u-boot
@@ -142,6 +142,8 @@ PHY_EXPANSIONS_LIBRA += "${@bb.utils.contains('MACHINE_FEATURES', 'm33copro', 's
 EXTRA_IMAGEDEPENDS += "virtual/bootloader"
 
 # Define default U-Boot config
+# STM32MP23
+UBOOT_CONFIG:stm32mp23common ?= "default_stm32mp23"
 # STM32MP25
 UBOOT_CONFIG:stm32mp25common ?= "default_stm32mp25"
 # STM32MP15
@@ -150,7 +152,8 @@ UBOOT_CONFIG:stm32mp15common ?= "default_stm32mp15"
 UBOOT_CONFIG:stm32mp13common ?= "default_stm32mp13"
 
 # Define u-boot defconfig and binary to use for each UBOOT_CONFIG
-UBOOT_CONFIG[default_stm32mp25] = "phyflex_stm32mp2_defconfig,,u-boot.dtb"
+UBOOT_CONFIG[default_stm32mp23] = "phyflex_stm32mp23_defconfig,,u-boot.dtb"
+UBOOT_CONFIG[default_stm32mp25] = "phyflex_stm32mp25_defconfig,,u-boot.dtb"
 UBOOT_CONFIG[default_stm32mp15] = "phycore-stm32mp15_defconfig,,u-boot.dtb"
 UBOOT_CONFIG[default_stm32mp13] = "phycore-stm32mp13_defconfig,,u-boot.dtb"
 
