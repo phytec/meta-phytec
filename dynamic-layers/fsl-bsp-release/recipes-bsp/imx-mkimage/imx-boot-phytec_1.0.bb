@@ -102,6 +102,7 @@ REV_OPTION:mx8qxpc0-nxp-bsp = "REV=C0"
 
 TEE_LOAD_ADDRESS ?= ""
 TEE_LOAD_ADDRESS:mx8mm-nxp-bsp = "TEE_LOAD_ADDR=0x56000000"
+TEE_LOAD_ADDRESS:mx8mp-nxp-bsp = "TEE_LOAD_ADDR=0x7e000000"
 
 compile_mx8m() {
     bbnote 8MQ/8MM boot binary build

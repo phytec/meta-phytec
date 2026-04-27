@@ -35,6 +35,7 @@ EXTRA_OEMAKE:append:mx8mn-nxp-bsp = " \
 
 EXTRA_OEMAKE:append:mx8mp-nxp-bsp = " \
     CFG_UART_BASE=UART1_BASE \
+    CFG_TZDRAM_START=0x7e000000 \
 "
 
 EXTRA_OEMAKE:append:mx8mp-nxp-bsp:phyflex-fpsc-g = " \
