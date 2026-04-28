@@ -10,3 +10,7 @@ PREFERRED_PROVIDER_virtual/gpudriver ?= "${@oe.utils.conditional("PREFERRED_PROV
 
 MACHINE_ESSENTIAL_EXTRA_RRECOMMENDS += "${@oe.utils.conditional("PREFERRED_PROVIDER_virtual/kernel", "linux-mainline", "linux-firmware-powervr", "", d)}"
 MACHINE_ESSENTIAL_EXTRA_RRECOMMENDS += "${@oe.utils.conditional("PREFERRED_PROVIDER_virtual/kernel", "linux-phytec", "linux-firmware-powervr", "", d)}"
+
+# With linux-phytec, enable the upstream Imagination / Mesa / Zink stack.
+PACKAGECONFIG:append:pn-mesa = " ${@oe.utils.conditional("PREFERRED_PROVIDER_virtual/kernel", "linux-phytec", "gallium-llvm zink", "", d)}"
+DEPENDS:append:pn-mesa = " ${@oe.utils.conditional("PREFERRED_PROVIDER_virtual/kernel", "linux-phytec", "virtual/libopencl1", "", d)}"
