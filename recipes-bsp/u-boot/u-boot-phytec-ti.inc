@@ -73,3 +73,10 @@ do_deploy:append:am62lxx () {
                 fi
         done
 }
+
+do_configure:prepend:secureenforced () {
+    ln -sf ${BOOTLOADER_TI_K3_MPK_KEY} ${S}/arch/arm/mach-k3/keys/custMpk.pem
+    ln -sf ${BOOTLOADER_TI_K3_DEGENERATE_KEY} ${S}/arch/arm/mach-k3/keys/ti-degenerate-key.pem
+}
+
+DEPENDS:append:secureenforced = " phytec-dev-ca-native"
