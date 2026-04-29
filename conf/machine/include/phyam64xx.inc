@@ -30,7 +30,6 @@ KERNEL_OVERLAYS:phyboard-electra = " \
 PREFERRED_PROVIDER_virtual/kernel ?= "linux-phytec"
 PREFERRED_PROVIDER_virtual/bootloader ?= "u-boot-phytec"
 PREFERRED_PROVIDER_u-boot ?= "u-boot-phytec"
-PREFERRED_PROVIDER_ti-sci-fw ?= "ti-firmware-sysfw"
 
 UBOOT_CAPSULE = "uboot-capsule.bin"
 SPL_CAPSULE = "tispl-capsule.bin"
