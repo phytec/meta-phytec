@@ -1,11 +1,11 @@
 LICENSE = "TI-TFL"
 LIC_FILES_CHKSUM = "file://LICENSE.ti;md5=b5aebf0668bdf95621259288c4a46d76"
 
-PV = "11.02.11"
+PV = "12.00.00.07"
 PR = "r0"
 
 SRC_URI = "git://git.ti.com/git/processor-firmware/ti-linux-firmware.git;protocol=https;branch=ti-linux-firmware"
-SRCREV = "8ec0c42b8ccf2c9e8bebfd7c4e03d93fed555442"
+SRCREV = "9e9d50ff563f83db86d36b72cd7fb4f487d6b414"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 CLEANBROKEN = "1"
