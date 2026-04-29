@@ -4,6 +4,7 @@ require ti-firmware.inc
 
 PACKAGES = "ti-dm-fw"
 PROVIDES = "ti-dm-fw"
+INSANE_SKIP:ti-dm-fw += "arch"
 
 DM_FIRMWARE = ""
 DM_FIRMWARE:am62xx = "ipc_echo_testb_mcu1_0_release_strip.xer5f"

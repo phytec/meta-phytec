@@ -4,6 +4,7 @@ require ti-firmware.inc
 
 PACKAGES = "ti-sci-fw"
 PROVIDES = "ti-sci-fw"
+INSANE_SKIP:ti-sci-fw += "arch"
 
 FILES:ti-sci-fw += "${nonarch_base_libdir}/firmware/ti-sysfw/*"
 
