@@ -25,5 +25,6 @@ MACHINE_ESSENTIAL_EXTRA_RDEPENDS += "kernel-devicetree"
 PREFERRED_PROVIDER_virtual/kernel ??= "linux-dummy"
 PREFERRED_PROVIDER_virtual/bootloader ??= "u-boot-phytec-ti"
 PREFERRED_PROVIDER_u-boot ??= "u-boot-phytec-ti"
-PREFERRED_PROVIDER_ti-sci-fw ??= "ti-sci-fw"
-PREFERRED_PROVIDER_ti-dm-fw ??= "ti-dm-fw"
+# Fall back to in-layer ti-firmware-* recipes when meta-ti-bsp isn't layered in.
+PREFERRED_PROVIDER_ti-sci-fw ??= "${@bb.utils.contains('BBFILE_COLLECTIONS', 'meta-ti-bsp', 'ti-sci-fw', 'ti-firmware-sysfw', d)}"
+PREFERRED_PROVIDER_ti-dm-fw ??= "${@bb.utils.contains('BBFILE_COLLECTIONS', 'meta-ti-bsp', 'ti-dm-fw', 'ti-firmware-dm', d)}"
