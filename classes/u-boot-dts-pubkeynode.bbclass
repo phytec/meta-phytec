@@ -86,14 +86,12 @@ python do_create_dynamic_dtree:append:secureboot() {
 
         exec_command("dtc -I dtb {0} -o {1}".format(signature_node_path_dtb,  signature_node_path_tmp))
 
-        os.sync()
         with open(signature_node_path_tmp, 'r') as fin:
             data = fin.readlines()
         with open(d.getVar("FITIMAGE_PUBKEY_SIGNATURE_PATH"), 'w') as fout:
             for line in data :
                 if "dts-v1" not in line:
                     fout.write(line)
-        os.sync()
 }
 
 do_create_dynamic_dtree[depends] += "\
