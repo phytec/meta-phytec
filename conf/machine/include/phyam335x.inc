@@ -65,7 +65,7 @@ QT_QPA_DEFAULT_PLATFORM ?= "${@bb.utils.contains('MACHINE_FEATURES', 'gpu', 'egl
 IMAGE_CLASSES += "wic-helper"
 IMAGE_CLASSES += "wic-am335x-helper"
 EXTERNAL_KERNEL_DEVICETREE ??= ""
-IMAGE_BOOT_FILES = "barebox.bin MLO zImage oftree ${EXTERNAL_KERNEL_DEVICETREE}"
+IMAGE_BOOT_FILES = "barebox.bin MLO ${KERNEL_IMAGETYPE} oftree ${EXTERNAL_KERNEL_DEVICETREE}"
 do_image_wic[depends] += "\
     virtual/prebootloader:do_deploy \
 "
