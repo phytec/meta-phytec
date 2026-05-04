@@ -1,20 +1,12 @@
-FILESEXTRAPATHS:prepend := "${THISDIR}/tf-a-stm32mp:"
+SRC_URI = "git://git.phytec.de/tf-a-stm32mp;protocol=git;branch=${TF_A_VERSION}-phy"
+SRCREV = "1f325a2c6dcc9f661a4c7cc7c923f483ecffaaff"
 
-SRC_URI += " \
-    file://0001-v2.10-stm32mp-phy2.patch \
-    "
+TF_A_RELEASE = "r2-phy3"
 
-# ---------------------------------
-# Configure devupstream class usage
-# ---------------------------------
-BBCLASSEXTEND = "devupstream:target"
+# ----------------------------------------------------------------------
+# Configure devupstream class usage to get the HEAD of PHYTEC git branch
+# ----------------------------------------------------------------------
+DEFAULT_PREFERENCE = "${@bb.utils.contains('STM32MP_SOURCE_SELECTION', 'phytec-dev', '-1', '1', d)}"
 
 SRC_URI:class-devupstream = "git://git.phytec.de/tf-a-stm32mp;protocol=git;branch=${TF_A_VERSION}-phy"
-SRCREV:class-devupstream = "da8bb1d9b4ddbac19010aad30a869f6fa378316c"
-
-# ---------------------------------
-# Configure default preference to manage dynamic selection between tarball and github
-# ---------------------------------
-STM32MP_SOURCE_SELECTION ?= "tarball"
-
-DEFAULT_PREFERENCE = "${@bb.utils.contains('STM32MP_SOURCE_SELECTION', 'git.phytec', '-1', '1', d)}"
+SRCREV:class-devupstream = "${AUTOREV}"
