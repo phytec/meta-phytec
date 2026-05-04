@@ -1,8 +1,11 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/${BPN}:"
 
-SRC_URI += " \
-    file://${LINUX_VERSION}/${LINUX_VERSION}${LINUX_SUBVERSION}/0001-v6.6-stm32mp-phy2.patch \
-"
+SRC_URI = "git://git.phytec.de/linux-stm32mp;protocol=git;branch=v${LINUX_VERSION}-phy"
+SRCREV = "0a87aa2efd3e1c449b6c1595f8ca58bac21d8be7"
+
+LINUX_RELEASE = "r2-phy3"
+
+S = "${WORKDIR}/git"
 
 # -------------------------------------------------------------
 # Defconfig
@@ -27,6 +30,13 @@ KERNEL_CONFIG_FRAGMENTS:append:stm32mp2common = " ${WORKDIR}/fragments/${LINUX_V
 KERNEL_CONFIG_FRAGMENTS:append:stm32mp2common = " ${@bb.utils.contains('MACHINE_FEATURES','tpm2','${WORKDIR}/fragments/${LINUX_VERSION}/fragment-23-tpm.config','', d)}"
 KERNEL_CONFIG_FRAGMENTS:append:stm32mp2common = " ${WORKDIR}/fragments/${LINUX_VERSION}/fragment-24-sensor-tmp.config"
 
+# Configs fragments from meta-st-stm32mp
+SRC_URI += "file://${LINUX_VERSION}/fragment-03-systemd.config;subdir=fragments"
+SRC_URI += "file://${LINUX_VERSION}/fragment-04-modules.config;subdir=fragments"
+SRC_URI += "file://${LINUX_VERSION}/optional-fragment-05-signature.config;subdir=fragments"
+SRC_URI += "file://${LINUX_VERSION}/optional-fragment-06-nosmp.config;subdir=fragments/features"
+SRC_URI += "file://${LINUX_VERSION}/optional-fragment-07-efi.config;subdir=fragments/features"
+# Configs fragments from meta-phytec
 SRC_URI += "file://${LINUX_VERSION}/fragment-06-rtc.config;subdir=fragments"
 SRC_URI += "file://${LINUX_VERSION}/fragment-07-eeprom.config;subdir=fragments"
 SRC_URI += "file://${LINUX_VERSION}/fragment-08-spi-nor.config;subdir=fragments"
@@ -47,29 +57,22 @@ SRC_URI += "file://${LINUX_VERSION}/fragment-22-spi-adc.config;subdir=fragments"
 SRC_URI += "file://${LINUX_VERSION}/fragment-23-tpm.config;subdir=fragments"
 SRC_URI += "file://${LINUX_VERSION}/fragment-24-sensor-tmp.config;subdir=fragments"
 
-# ---------------------------------
-# Configure devupstream class usage
-# ---------------------------------
-BBCLASSEXTEND = "devupstream:target"
+# ----------------------------------------------------------------------
+# Configure devupstream class usage to get the HEAD of PHYTEC git branch
+# ----------------------------------------------------------------------
+DEFAULT_PREFERENCE = "${@bb.utils.contains('STM32MP_SOURCE_SELECTION', 'phytec-dev', '-1', '1', d)}"
 
 SRC_URI:class-devupstream = "git://git.phytec.de/linux-stm32mp;protocol=git;branch=v${LINUX_VERSION}-phy"
-SRCREV:class-devupstream = "a84636111e34525163a44e17fa06a8759adc354e"
-
-# -----------------------------------------------------------------------------------
-# Configure default preference to manage dynamic selection between tarball and github
-# -----------------------------------------------------------------------------------
-STM32MP_SOURCE_SELECTION ?= "tarball"
-
-DEFAULT_PREFERENCE = "${@bb.utils.contains('STM32MP_SOURCE_SELECTION', 'git.phytec', '-1', '1', d)}"
-
+SRCREV:class-devupstream = "${AUTOREV}"
 
 # Don't forget to add/del for devupstream
+# Configs fragments from meta-st-stm32mp
 SRC_URI:class-devupstream += "file://${LINUX_VERSION}/fragment-03-systemd.config;subdir=fragments"
 SRC_URI:class-devupstream += "file://${LINUX_VERSION}/fragment-04-modules.config;subdir=fragments"
 SRC_URI:class-devupstream += "file://${LINUX_VERSION}/optional-fragment-05-signature.config;subdir=fragments"
 SRC_URI:class-devupstream += "file://${LINUX_VERSION}/optional-fragment-06-nosmp.config;subdir=fragments/features"
 SRC_URI:class-devupstream += "file://${LINUX_VERSION}/optional-fragment-07-efi.config;subdir=fragments/features"
-
+# Configs fragments from meta-phytec
 SRC_URI:class-devupstream += "file://${LINUX_VERSION}/fragment-06-rtc.config;subdir=fragments"
 SRC_URI:class-devupstream += "file://${LINUX_VERSION}/fragment-07-eeprom.config;subdir=fragments"
 SRC_URI:class-devupstream += "file://${LINUX_VERSION}/fragment-08-spi-nor.config;subdir=fragments"
@@ -101,7 +104,7 @@ KERNEL_EXTRA_ARGS += "${@bb.utils.contains('MACHINE_FEATURES', 'phy-expansions',
 DTS_FILE = "oftree"
 
 do_deploy:append() {
-    first_dts=$(echo "${KERNEL_DEVICETREE}" | cut -d'/' -f2)
+    first_dts=$(echo "${KERNEL_DEVICETREE}" | awk ' { print $1 } ' | cut -d'/' -f2)
     ln -sf ${first_dts} ${DEPLOYDIR}/${DTS_FILE}
 }
 
