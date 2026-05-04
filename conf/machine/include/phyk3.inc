@@ -36,7 +36,7 @@ do_image_partup[depends] += "phytec-bootenv:do_deploy"
 SERIAL_CONSOLES = "115200;ttyS2"
 
 # Install modules in initramfs and roofs
-MACHINE_EXTRA_RRECOMMENDS += "kernel-modules"
+MACHINE_EXTRA_RRECOMMENDS += "kernel-modules iproute2-devlink"
 INITRAMFS_FSTYPES = "cpio.xz"
 
 PREFERRED_PROVIDER_virtual/kernel ??= "linux-phytec-ti"
