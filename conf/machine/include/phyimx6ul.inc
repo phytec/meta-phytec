@@ -47,7 +47,7 @@ IMAGE_CLASSES += "wic-helper"
 EXTERNAL_KERNEL_DEVICETREE ??= ""
 IMAGE_BOOT_FILES = "${@bb.utils.contains('DISTRO_FEATURES', 'secureboot', \
     'fitImage', \
-    'zImage oftree ${EXTERNAL_KERNEL_DEVICETREE}', d)}"
+    '${KERNEL_IMAGETYPE} oftree ${EXTERNAL_KERNEL_DEVICETREE}', d)}"
 BAREBOX_BINARY = "${@bb.utils.contains('DISTRO_FEATURES', 'secureboot', \
     'barebox-s.bin', 'barebox.bin', d)}"
 WKS_FILES:mx6ul-generic-bsp ?= "imx6-sdimage.wks"
