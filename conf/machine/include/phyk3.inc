@@ -25,6 +25,9 @@ SPL_BINARYNAME = "tispl.bin"
 UBOOT_SUFFIX = "img"
 UBOOT_BINARY = "u-boot.${UBOOT_SUFFIX}"
 
+# Build the kernel FIT image (with INITRAMFS_IMAGE bundled) as a deploy-only
+# artifact. Skip for the initramfs image itself to avoid a circular dep.
+EXTRA_IMAGEDEPENDS += "${@'' if d.getVar('PN') == d.getVar('INITRAMFS_IMAGE') else 'linux-yocto-fitimage'}"
 EXTRA_IMAGEDEPENDS += "virtual/bootloader"
 
 TFA_PLATFORM = "k3"
