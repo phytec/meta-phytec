@@ -33,7 +33,7 @@ ATF_BIN_ADDR:mx8mp-nxp-bsp="0x970000"
 
 TEE_BIN_ADDR:mx8mm-nxp-bsp="0x56000000"
 TEE_BIN_ADDR:mx8mn-nxp-bsp="0x56000000"
-TEE_BIN_ADDR:mx8mp-nxp-bsp="0x56000000"
+TEE_BIN_ADDR:mx8mp-nxp-bsp="0x7e000000"
 
 # Extract the addresses we need from imx-mkimage output
 def get_hab_blocks_from_log(input_image_path, ubootimx_make_output):
