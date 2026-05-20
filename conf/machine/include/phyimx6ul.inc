@@ -73,11 +73,9 @@ include partup-layout-config.inc
 
 # default images to build
 IMAGE_FSTYPES ?= " \
-    tar.gz wic wic.bmap partup \
-    ${@bb.utils.contains('MACHINE_FEATURES', 'emmc', '', 'ubifs', d)} \
-"
-IMAGE_FSTYPES:update = " \
-    ${@bb.utils.contains('MACHINE_FEATURES', 'emmc', 'partup', 'ubifs', d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'rauc', '', 'tar.gz wic wic.bmap', d)} \
+    ${@bb.utils.contains('MACHINE_FEATURES', 'nand', 'ubifs', '', d)} \
+    partup \
 "
 
 # Avoid pulling package 'gstreamer1.0-plugins-bad-meta' into the image

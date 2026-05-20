@@ -40,8 +40,10 @@ INITRAMFS_MAXSIZE = "262144"
 IMAGE_CLASSES += "image-types-partup"
 include partup-layout-config.inc
 
-IMAGE_FSTYPES = "tar.gz wic.bmap wic.xz partup"
-IMAGE_FSTYPES:update = "partup"
+IMAGE_FSTYPES = " \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'rauc', '', 'tar.gz wic.xz wic.bmap', d)} \
+    partup \
+"
 
 MACHINE_FEATURES += "optee wifi bluetooth"
 

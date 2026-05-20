@@ -33,9 +33,7 @@ include partup-layout-config.inc
 
 # Default images to build
 IMAGE_FSTYPES = " \
-    tar.xz \
-    wic \
-    ${@bb.utils.contains("MACHINE_FEATURES", "nand", "ubifs", "", d)} \
-    ${@bb.utils.contains("MACHINE_FEATURES", "emmc", "partup", "", d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'rauc', '', 'tar.xz wic', d)} \
+    ${@bb.utils.contains('MACHINE_FEATURES', 'nand', 'ubifs', '', d)} \
+    partup \
 "
-IMAGE_FSTYPES:update = "partup"
