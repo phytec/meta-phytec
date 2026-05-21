@@ -1294,7 +1294,7 @@
       <lsc enable="true"/>
       <ae enable="true" bypass="false">
          <afps>false</afps>
-         <flicker.period>1</flicker.period>
+         <flicker.period>0</flicker.period>
          <set.point>90</set.point>
          <damping.over>0.01</damping.over>
          <damping.under>0.1</damping.under>
