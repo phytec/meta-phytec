@@ -30,5 +30,7 @@ WKS_BOOTIMAGESIZE ?= "20"
 EMMC_DEV:rk3288 ?= "1"
 
 # default images to build
-IMAGE_FSTYPES ?= "tar.gz wic"
-IMAGE_FSTYPES:append:update = " ext4"
+IMAGE_FSTYPES ?= " \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'rauc', '', 'tar.gz wic', d)} \
+    partup \
+"

@@ -3,7 +3,12 @@ require conf/machine/include/mc_k3r5.inc
 SOC_FAMILY:append = ":am64xx"
 
 # TODO: Drop once am64xx test flow switches to network boot or partup-based SD card flashing
-IMAGE_FSTYPES:update = "partup wic.xz wic.bmap"
+IMAGE_FSTYPES = " \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'rauc', '', 'tar.xz', d)} \
+    partup \
+    wic.bmap \
+    wic.xz \
+"
 
 TFA_BOARD = "lite"
 OPTEEMACHINE = "k3-am64x"

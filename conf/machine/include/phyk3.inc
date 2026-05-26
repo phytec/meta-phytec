@@ -102,8 +102,10 @@ EFI_PROVIDER ?= "grub-efi"
 IMAGE_CLASSES += "image-types-partup wic-bootenv-helper"
 require partup-layout-config.inc
 
-IMAGE_FSTYPES = "tar.xz wic.xz wic.bmap partup"
-IMAGE_FSTYPES:update = "partup"
+IMAGE_FSTYPES = " \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'rauc', '', 'tar.xz wic.xz wic.bmap', d)} \
+    partup \
+"
 
 # OSPI Flash Layout for initramfs
 # 0x700000: FDT (max 1 MiB)

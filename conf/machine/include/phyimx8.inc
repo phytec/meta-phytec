@@ -54,8 +54,10 @@ IMAGE_CLASSES += "image-types-partup"
 require partup-layout-config.inc
 
 # Default images to build
-IMAGE_FSTYPES = "tar.gz wic.xz wic.bmap partup"
-IMAGE_FSTYPES:update = "partup"
+IMAGE_FSTYPES = " \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'rauc', '', 'tar.gz wic.xz wic.bmap', d)} \
+    partup \
+"
 
 MACHINE_FEATURES += "caam optee"
 MACHINE_FEATURES:remove:mx8x-nxp-bsp = " optee"
