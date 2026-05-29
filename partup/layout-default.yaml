@@ -32,9 +32,9 @@ partitions:
 
   - label: root
     type: primary
-    filesystem: ${PARTUP_ROOT_FS}
+    filesystem: null
     expand: true
     block-size: 4kiB
     input:
-      - filename: ${IMAGE_LINK_NAME}.${PARTUP_ROOTFS_IMAGE_EXT}
+      - filename: ${IMAGE_LINK_NAME}.ext4
 # END_PARTITIONS
