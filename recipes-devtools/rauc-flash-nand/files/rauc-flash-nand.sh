@@ -89,7 +89,8 @@ USABLE_MEBIBYTES=$(expr $AVAIL_BYTES \* 9 / 10 / 1024 / 1024)
 SIZE_KERNEL=16
 SIZE_DTB=1
 SIZE_CONFIG=16
-SIZE_ROOTFS=$(expr $USABLE_MEBIBYTES / 2 - $SIZE_KERNEL - $SIZE_DTB - $SIZE_CONFIG)
+SIZE_ROOTFS=$(expr $USABLE_MEBIBYTES / 3 - $SIZE_KERNEL - $SIZE_DTB - $SIZE_CONFIG)
+SIZE_ARTIFACTS=$SIZE_ROOTFS
 
 echo "Creating UBI volumes"
 ubimkvol -t static -N kernel0 -s ${SIZE_KERNEL}MiB $UBI_DEV
@@ -99,6 +100,7 @@ ubimkvol -t static -N oftree1 -s ${SIZE_DTB}MiB $UBI_DEV
 ubimkvol -t dynamic -N config -s ${SIZE_CONFIG}MiB $UBI_DEV
 ubimkvol -t dynamic -N root0 -s ${SIZE_ROOTFS}MiB $UBI_DEV
 ubimkvol -t dynamic -N root1 -s ${SIZE_ROOTFS}MiB $UBI_DEV
+ubimkvol -t dynamic -N artifacts -s ${SIZE_ARTIFACTS}MiB $UBI_DEV
 
 if [ $WRITE_FILES -eq 1 ]; then
 	echo "Writing files to UBI volumes"
