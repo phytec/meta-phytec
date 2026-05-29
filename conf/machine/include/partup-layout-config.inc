@@ -10,8 +10,6 @@ PARTUP_PACKAGE_DEPENDS ?= " \
 
 PARTUP_PACKAGE_FILES:append:update = " config-partition.ext4"
 PARTUP_PACKAGE_DEPENDS:append:update = " config-partition"
-PARTUP_PACKAGE_FILES:append:rauc-appfs = " rauc-appfs-example.tar.gz"
-PARTUP_PACKAGE_DEPENDS:append:rauc-appfs = " rauc-appfs-example"
 
 PARTUP_PACKAGE_DEPENDS:append:mx7-generic-bsp = " \
     phytec-bootenv \
@@ -40,9 +38,8 @@ PARTUP_LAYOUT_CONFIG:k3 ?= "layout-default-k3.yaml"
 PARTUP_LAYOUT_CONFIG:update ?= "layout-rauc.yaml"
 PARTUP_LAYOUT_CONFIG:update:k3 ?= "layout-rauc-k3.yaml"
 
-PARTUP_SECTIONS += "clean appfs partitions"
+PARTUP_SECTIONS += "clean partitions"
 PARTUP_SECTION_clean = "${@bb.utils.contains('PREFERRED_PROVIDER_virtual/bootloader', 'barebox', False, True, d)}"
-PARTUP_SECTION_appfs = "${@bb.utils.contains('DISTRO_FEATURES', 'rauc-appfs', True, False, d)}"
 PARTUP_SECTION_partitions = "1"
 
 PARTUP_BOOT_FILES ??= "${IMAGE_BOOT_FILES}"
