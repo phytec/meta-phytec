@@ -58,7 +58,7 @@ Please be aware that you need to agree to the specific vendor licenses if you us
 
 ## Maintainers
 * Stefan Müller-Klieser <s.mueller-klieser@phytec.de>
-* Norbert Wesp <n.wesp@phytec.de>
+* Martin Schwan <m.schwan@phytec.de>
 
 ## Dependencies
 This layer depends on Openembedded-Core and Bitbake:
