@@ -1,7 +1,6 @@
 inherit kernel kernel-yocto
 inherit phygittag kernel-deploy-oftree
 include recipes-kernel/linux/linux-common.inc
-require linux-phytec-fitimage.inc
 
 SRCREV = "9fe94855aec0a88fe40503c57edd0d80d37df679"
 SRCREV_machine = "${SRCREV}"
