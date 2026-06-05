@@ -54,6 +54,13 @@ EXTRA_DTC_ARGS += "DTC_FLAGS=-@"
 KERNEL_EXTRA_ARGS += "LOADADDR=${UBOOT_ENTRYPOINT} \
                       ${EXTRA_DTC_ARGS}"
 
+# Provide oftree in rootfs /boot directory on am57xx
+do_install:append:am57xx() {
+    dtb=`normalize_dtb "${@get_oftree(d)}"`
+    ln -sf $dtb ${D}/${KERNEL_IMAGEDEST}/oftree
+}
+FILES:${KERNEL_PACKAGE_NAME}-devicetree:append:am57xx = " /${KERNEL_IMAGEDEST}/oftree"
+
 COMPATIBLE_MACHINE  = "^("
 COMPATIBLE_MACHINE .=  "phyboard-lyra"
 COMPATIBLE_MACHINE .= "|phyboard-electra"
