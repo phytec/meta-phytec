@@ -17,6 +17,10 @@ MACHINE_EXTRA_RRECOMMENDS += "kernel-modules"
 # Install device-trees in rootfs
 MACHINE_ESSENTIAL_EXTRA_RDEPENDS += "kernel-devicetree"
 
+# Don't put device-trees and overlays under vendor directory e.g. dtb/ti/omap
+KERNEL_DTBDEST = "${KERNEL_IMAGEDEST}"
+KERNEL_DTBVENDORED = "0"
+
 # Bootloader and kernel from meta-phytec
 PREFERRED_PROVIDER_virtual/bootloader:${MACHINE} = "u-boot-phytec-ti"
 PREFERRED_PROVIDER_u-boot = "u-boot-phytec-ti"
