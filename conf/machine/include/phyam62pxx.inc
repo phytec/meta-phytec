@@ -11,7 +11,7 @@ TFA_K3_SYSTEM_SUSPEND = "1"
 
 MACHINE_ESSENTIAL_EXTRA_RRECOMMENDS += "cnm-wave-fw"
 
-MACHINE_FEATURES += "screen touchscreen pcie"
+MACHINE_FEATURES += "screen touchscreen"
 
 #phyBOARD-Lynx downstream kernel overlays
 KERNEL_OVERLAYS_PHYTEC = " \
