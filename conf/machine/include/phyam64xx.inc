@@ -15,8 +15,6 @@ OPTEEMACHINE = "k3-am64x"
 
 MACHINE_ESSENTIAL_EXTRA_RRECOMMENDS += "prueth-fw pruhsr-fw prusw-fw pruprp-fw"
 
-MACHINE_FEATURES += "pcie"
-
 BBMULTICONFIG = "k3r5"
 
 # phyBOARD-Electra downstream kernel overlays
