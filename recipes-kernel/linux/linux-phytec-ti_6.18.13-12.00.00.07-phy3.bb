@@ -1,5 +1,5 @@
 inherit kernel kernel-yocto
-inherit phygittag buildinfo kernel-deploy-oftree
+inherit phygittag buildinfo kernel-deploy-oftree ti-sdk-version-check
 require linux-common.inc
 
 LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
@@ -34,7 +34,7 @@ PR = "${INC_PR}.0"
 # NOTE: Keep version in filename in sync with commit id!
 # NOTE: The <ti-sdk-version> field (e.g. 12.00.00.07) must be a tag on the
 #       meta-ti commit pinned in the manifest, which provides the matching
-#       firmware (sysfw/dm/pru).
+#       firmware (sysfw/dm/pru). ti-sdk-version-check.bbclass warns otherwise.
 SRCREV = "1632cb65b128c364eae62c23120801bbeab5811e"
 
 # Special configuration for remoteproc/rpmsg IPC modules
