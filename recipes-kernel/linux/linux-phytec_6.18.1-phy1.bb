@@ -10,7 +10,6 @@ GIT_URL:phynext = "git://git@git.phytec.de/linux-phytec-dev.git;protocol=ssh"
 SRC_URI = " \
 	${GIT_URL};branch=${BRANCH} \
 	file://systemd.scc \
-	file://mtd-partitioned-master.scc \
 	${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'file://lxc.scc', '', d)} \
 	${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'file://oci.scc', '', d)} \
 	${@bb.utils.contains('DISTRO_FEATURES', 'preempt-rt', 'file://preempt-rt.scc', '', d)} \
@@ -18,7 +17,6 @@ SRC_URI = " \
 
 KERNEL_FEATURES = " \
     systemd.scc \
-    mtd-partitioned-master.scc \
     ${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'lxc.scc oci.scc', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'preempt-rt', 'preempt-rt.scc', '', d)} \
 "
