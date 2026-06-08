@@ -13,7 +13,7 @@ IMAGE_FSTYPES = " \
 TFA_BOARD = "lite"
 OPTEEMACHINE = "k3-am64x"
 
-MACHINE_ESSENTIAL_EXTRA_RRECOMMENDS += "ti-firmware-pru"
+MACHINE_ESSENTIAL_EXTRA_RRECOMMENDS += "prueth-fw pruhsr-fw prusw-fw pruprp-fw"
 
 MACHINE_FEATURES += "pcie"
 
