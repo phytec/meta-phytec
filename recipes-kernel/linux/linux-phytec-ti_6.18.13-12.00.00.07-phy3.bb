@@ -32,8 +32,9 @@ PR = "${INC_PR}.0"
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
 # NOTE: Keep version in filename in sync with commit id!
-# NOTE: Keep version of TI_LINUX_FW_SRCREV in sync, configured in
-#       dynamic-layers/meta-ti-bsp/recipes-bsp/ti-linux-fw/ti-linux-fw-freeze.inc
+# NOTE: The <ti-sdk-version> field (e.g. 12.00.00.07) must be a tag on the
+#       meta-ti commit pinned in the manifest, which provides the matching
+#       firmware (sysfw/dm/pru).
 SRCREV = "1632cb65b128c364eae62c23120801bbeab5811e"
 
 # Special configuration for remoteproc/rpmsg IPC modules
