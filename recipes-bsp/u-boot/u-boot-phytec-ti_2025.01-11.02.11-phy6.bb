@@ -1,4 +1,4 @@
-inherit phygittag
+inherit phygittag ti-sdk-version-check
 require recipes-bsp/u-boot/u-boot-common.inc
 require recipes-bsp/u-boot/u-boot.inc
 require u-boot-phytec-ti.inc
