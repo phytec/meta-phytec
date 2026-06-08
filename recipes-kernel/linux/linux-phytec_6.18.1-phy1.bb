@@ -30,8 +30,6 @@ PR = "${INC_PR}.0"
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
 # NOTE: Keep version in filename in sync with commit id!
-# NOTE: Keep version of TI_LINUX_FW_SRCREV in sync, configured in
-#       dynamic-layers/meta-ti-bsp/recipes-bsp/ti-linux-fw/ti-linux-fw-freeze.inc
 SRCREV = "22c128bcc32617be64407fa221add5fe45975fa0"
 
 # Special configuration for remoteproc/rpmsg IPC modules
