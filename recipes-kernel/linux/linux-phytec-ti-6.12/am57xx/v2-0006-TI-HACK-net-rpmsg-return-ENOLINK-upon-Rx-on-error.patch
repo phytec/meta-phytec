@@ -1,0 +1,63 @@
+From 05c0e43511b48cae0d1e3eaeef7e9aa3c04f6e4e Mon Sep 17 00:00:00 2001
+From: Suman Anna <s-anna@ti.com>
+Date: Sat, 5 Feb 2022 14:28:37 -0800
+Subject: [tiL6.12 PATCH v2 6/9] TI: HACK: net/rpmsg: return ENOLINK upon Rx on
+ errored sockets
+
+The rpmsg_proto driver is used to provide a socket interface to
+userspace under the AF_RPMSG address family, and is used by the TI
+IPC MessageQ stack. The rpmsg proto driver creates a rpmsg endpoint
+per remote processor (a Rx socket) for each MessageQ object through
+the socket's bind() call. These rpmsg endpoints are associated with
+a published parent rpmsg device from that remote processor. These
+endpoints are cleaned up normally either when the userspace program
+/ application closes them or through the automatic cleanup of the
+file descriptors when a process is terminated/closed. These endpoints
+can also be cleaned up by the rpmsg_proto driver as part of the error
+recovery of a remote processor, during the removal of their parent
+rpmsg device, with the corresponding Rx sockets simply marked with
+the error status RPMSG_ERROR.
+
+This error status is not currently being returned to the userspace
+in the socket's recvfrom() interface. Fix this by specifically
+checking for this error status, and returning an error value of
+ENOLINK back to userspace. The ENOLINK error code is used to allow
+the userspace to differentiate this terminal error from other errors
+on the Rx sockets and take appropriate action. This error code on
+Rx sockets serves the same as the error code ESHUTDOWN used for Tx
+sockets, and is chosen specifically to have a meaningful strerror
+message appropriate to Rx sockets.
+
+Upstream-Status: Inappropriate [am57xx specific]
+
+Signed-off-by: Suman Anna <s-anna@ti.com>
+Signed-off-by: Drew Fustini <dfustini@baylibre.com>
+(cherry picked from commit 8307dc3d9b8e41c60d6dd8ab114ccecab5956e66)
+Signed-off-by: Sinthu Raja <sinthu.raja@ti.com>
+Signed-off-by: Beleswar Padhi <b-padhi@ti.com>
+---
+ net/rpmsg/rpmsg_proto.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/net/rpmsg/rpmsg_proto.c b/net/rpmsg/rpmsg_proto.c
+index 33c2b6b4ad95..e1f2387f59c4 100644
+--- a/net/rpmsg/rpmsg_proto.c
++++ b/net/rpmsg/rpmsg_proto.c
+@@ -230,6 +230,14 @@ static int rpmsg_sock_recvmsg(struct socket *sock, struct msghdr *msg,
+ 		return -EOPNOTSUPP;
+ 	}
+ 
++	/* return failure on errored-out Rx sockets */
++	lock_sock(sk);
++	if (sk->sk_state == RPMSG_ERROR) {
++		release_sock(sk);
++		return -ENOLINK;
++	}
++	release_sock(sk);
++
+ 	msg->msg_namelen = 0;
+ 
+ 	skb = skb_recv_datagram(sk, flags, &ret);
+-- 
+2.34.1
+

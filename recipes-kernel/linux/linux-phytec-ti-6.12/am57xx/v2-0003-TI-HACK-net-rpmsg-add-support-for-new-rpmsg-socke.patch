@@ -1,0 +1,904 @@
+From 2b75c2c546c85f7f2d7e0291700bab4528f95197 Mon Sep 17 00:00:00 2001
+From: Suman Anna <s-anna@ti.com>
+Date: Tue, 13 Apr 2021 16:20:19 -0500
+Subject: [tiL6.12 PATCH v2 3/9] TI: HACK: net/rpmsg: add support for new rpmsg
+ sockets
+
+Add the support for a new socket address and protocol family -
+remote-processor messaging sockets. This rpmsg protocol driver
+provides the necessary support to expose a rpmsg communication
+channel through the socket API to userspace under the AF_RPMSG
+address family. The usage relies on leveraging the socket API's
+connect() for Tx sockets and bind() for Rx sockets to exchange
+messages to/from a remote processor. All message communication
+is performed using the userspace created sockets, and even though
+the probed rpmsg proto devices do create an embedded rpmsg endpoint
+for receiving messages, they are not really designed to process
+any such unexpected Rx messages.
+
+This driver forms the kernel transport portion of the TI IPC
+MessageQ stack. The MessageQ stack usage of the AF_RPMSG socket
+interface is not really designed to handle multiple rpmsg-proto
+devices published from the same remote processor, so a restriction
+is imposed to allow only a single rpmsg device even though there
+are no such restrictions imposed by the rpmsg bus infrastructure.
+This can be scaled to make it more generic if needed but probably
+will require some userspace interface adjustments.
+
+This patch is based on some quite an old rpmsg socket support patch
+from Ohad and some work by Rob Tivy. This has been updated rather
+heavily to work with all the rpmsg framework changes in 4.9+ kernels.
+
+Upstream-Status: Inappropriate [am57xx specific]
+
+Signed-off-by: Ohad Ben Cohen <ohad@wizery.com>
+[s-anna@ti.com: adapted, improved and modified for latest kernel]
+Signed-off-by: Suman Anna <s-anna@ti.com>
+(cherry picked from commit f4b978a978c38149f712ddd137f12ed5fb914161)
+Signed-off-by: Sinthu Raja <sinthu.raja@ti.com>
+Signed-off-by: Beleswar Padhi <b-padhi@ti.com>
+---
+ include/linux/socket.h              |   6 +-
+ include/uapi/linux/rpmsg_socket.h   |  31 ++
+ net/Kconfig                         |   1 +
+ net/Makefile                        |   1 +
+ net/core/sock.c                     |   2 +-
+ net/rpmsg/Kconfig                   |  19 +
+ net/rpmsg/Makefile                  |   2 +
+ net/rpmsg/rpmsg_proto.c             | 656 ++++++++++++++++++++++++++++
+ net/socket.c                        |   1 +
+ security/selinux/hooks.c            |   4 +-
+ security/selinux/include/classmap.h |   3 +-
+ 11 files changed, 721 insertions(+), 5 deletions(-)
+ create mode 100644 include/uapi/linux/rpmsg_socket.h
+ create mode 100644 net/rpmsg/Kconfig
+ create mode 100644 net/rpmsg/Makefile
+ create mode 100644 net/rpmsg/rpmsg_proto.c
+
+diff --git a/include/linux/socket.h b/include/linux/socket.h
+index c3322eb3d686..0ec23049d60f 100644
+--- a/include/linux/socket.h
++++ b/include/linux/socket.h
+@@ -240,8 +240,8 @@ struct ucred {
+ #define AF_MCTP		45	/* Management component
+ 				 * transport protocol
+ 				 */
+-
+-#define AF_MAX		46	/* For now.. */
++#define AF_RPMSG	46	/* Remote-processor messaging   */
++#define AF_MAX		47	/* For now.. */
+ 
+ /* Protocol families, same as address families. */
+ #define PF_UNSPEC	AF_UNSPEC
+@@ -292,6 +292,7 @@ struct ucred {
+ #define PF_SMC		AF_SMC
+ #define PF_XDP		AF_XDP
+ #define PF_MCTP		AF_MCTP
++#define PF_RPMSG	AF_RPMSG
+ #define PF_MAX		AF_MAX
+ 
+ /* Maximum queue length specifiable by listen.  */
+@@ -386,6 +387,7 @@ struct ucred {
+ #define SOL_MCTP	285
+ #define SOL_SMC		286
+ #define SOL_VSOCK	287
++#define SOL_RPMSG	288
+ 
+ /* IPX options */
+ #define IPX_TYPE	1
+diff --git a/include/uapi/linux/rpmsg_socket.h b/include/uapi/linux/rpmsg_socket.h
+new file mode 100644
+index 000000000000..f3afaf5d7cde
+--- /dev/null
++++ b/include/uapi/linux/rpmsg_socket.h
+@@ -0,0 +1,31 @@
++/* SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause) */
++/*
++ * Remote processor messaging sockets
++ *
++ * Copyright (C) 2011-2021 Texas Instruments Incorporated - https://www.ti.com/
++ *
++ * Ohad Ben-Cohen <ohad@wizery.com>
++ * Suman Anna <s-anna@ti.com>
++ */
++
++#ifndef _UAPI_RPMSG_SOCKET_H
++#define _UAPI_RPMSG_SOCKET_H
++
++#include <linux/types.h>
++#include <linux/socket.h>
++
++/* user space needs this */
++#ifndef AF_RPMSG
++#define AF_RPMSG	46
++#define PF_RPMSG	AF_RPMSG
++#endif
++
++struct sockaddr_rpmsg {
++	__kernel_sa_family_t family;
++	__u32 vproc_id;
++	__u32 addr;
++};
++
++#define RPMSG_LOCALHOST ((__u32)~0UL)
++
++#endif /* _UAPI_RPMSG_SOCKET_H */
+diff --git a/net/Kconfig b/net/Kconfig
+index a629f92dc86b..4f29896c8e77 100644
+--- a/net/Kconfig
++++ b/net/Kconfig
+@@ -432,6 +432,7 @@ endif # WIRELESS
+ source "net/rfkill/Kconfig"
+ source "net/9p/Kconfig"
+ source "net/caif/Kconfig"
++source "net/rpmsg/Kconfig"
+ source "net/ceph/Kconfig"
+ source "net/nfc/Kconfig"
+ source "net/psample/Kconfig"
+diff --git a/net/Makefile b/net/Makefile
+index 65bb8c72a35e..3b0dcfac7e53 100644
+--- a/net/Makefile
++++ b/net/Makefile
+@@ -79,3 +79,4 @@ obj-$(CONFIG_XDP_SOCKETS)	+= xdp/
+ obj-$(CONFIG_MPTCP)		+= mptcp/
+ obj-$(CONFIG_MCTP)		+= mctp/
+ obj-$(CONFIG_NET_HANDSHAKE)	+= handshake/
++obj-$(CONFIG_RPMSG_PROTO)	+= rpmsg/
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 5b9c1cdd7dd8..4953dd4685f6 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -236,7 +236,7 @@ static struct lock_class_key af_family_kern_slock_keys[AF_MAX];
+   x "AF_IEEE802154",	x "AF_CAIF"	,	x "AF_ALG"      , \
+   x "AF_NFC"   ,	x "AF_VSOCK"    ,	x "AF_KCM"      , \
+   x "AF_QIPCRTR",	x "AF_SMC"	,	x "AF_XDP"	, \
+-  x "AF_MCTP"  , \
++  x "AF_MCTP",		x "AF_RPMSG", \
+   x "AF_MAX"
+ 
+ static const char *const af_family_key_strings[AF_MAX+1] = {
+diff --git a/net/rpmsg/Kconfig b/net/rpmsg/Kconfig
+new file mode 100644
+index 000000000000..0873a9cbd0a9
+--- /dev/null
++++ b/net/rpmsg/Kconfig
+@@ -0,0 +1,19 @@
++# SPDX-License-Identifier: GPL-2.0-only
++#
++# RPMsg Sockets
++#
++
++config RPMSG_PROTO
++	tristate "RPMsg Sockets over virtio-rpmsg transport"
++	default n
++	depends on RPMSG_VIRTIO
++	depends on REMOTEPROC
++	help
++	  An rpmsg driver that provides support for remote processor messaging
++	  sockets over the virtio rpmsg transport. This exposes a socket
++	  interface to user space to allow applications to communicate with
++	  various remote processors over this transport. This is currently
++	  designed to work with the TI IPC stack on various available TI SoCs,
++	  but can be generalized easily enough.
++
++	  If unsure, say N.
+diff --git a/net/rpmsg/Makefile b/net/rpmsg/Makefile
+new file mode 100644
+index 000000000000..1f78b17c94da
+--- /dev/null
++++ b/net/rpmsg/Makefile
+@@ -0,0 +1,2 @@
++# SPDX-License-Identifier: GPL-2.0-only
++obj-$(CONFIG_RPMSG_PROTO)	+= rpmsg_proto.o
+diff --git a/net/rpmsg/rpmsg_proto.c b/net/rpmsg/rpmsg_proto.c
+new file mode 100644
+index 000000000000..5c8d2df315c8
+--- /dev/null
++++ b/net/rpmsg/rpmsg_proto.c
+@@ -0,0 +1,656 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/* AF_RPMSG: Remote processor messaging sockets
++ *
++ * Copyright (C) 2011-2021 Texas Instruments Incorporated - https://www.ti.com/
++ *
++ * Ohad Ben-Cohen <ohad@wizery.com>
++ * Robert Tivy <rtivy@ti.com>
++ * G Anthony <a0783926@ti.com>
++ * Suman Anna <s-anna@ti.com>
++ */
++
++#define pr_fmt(fmt)    "%s: " fmt, __func__
++
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/device.h>
++#include <linux/types.h>
++#include <linux/list.h>
++#include <linux/errno.h>
++#include <linux/skbuff.h>
++#include <linux/err.h>
++#include <linux/mutex.h>
++#include <linux/rpmsg.h>
++#include <linux/radix-tree.h>
++#include <linux/remoteproc.h>
++#include <net/sock.h>
++#include <uapi/linux/rpmsg_socket.h>
++
++#define RPMSG_CB(skb)	(*(struct sockaddr_rpmsg *)&((skb)->cb))
++
++/* Maximum buffer size supported by virtio rpmsg transport.
++ * Must match value as in drivers/rpmsg/virtio_rpmsg_bus.c
++ */
++#define RPMSG_BUF_SIZE               (512)
++
++struct rpmsg_socket {
++	struct sock sk;
++	struct rpmsg_device *rpdev;
++	struct rpmsg_endpoint *endpt;
++	int rproc_id;
++};
++
++/* Connection and socket states */
++enum {
++	RPMSG_CONNECTED = 1,
++	RPMSG_OPEN,
++	RPMSG_LISTENING,
++	RPMSG_CLOSED,
++};
++
++/* A single-level radix-tree-based scheme is used to maintain the rpmsg
++ * channels we're exposing to userland. The radix tree maps a rproc index
++ * id to its published rpmsg-proto channel. Only a single rpmsg device is
++ * supported at the moment from each remote processor. This can be easily
++ * scaled to multiple devices using unique destination addresses but this
++ *_will_ require additional semantic changes on bind() and connect().
++ */
++static RADIX_TREE(rpmsg_channels, GFP_KERNEL);
++
++/* Synchronization of access to the tree is achieved using a mutex,
++ * because we're using non-atomic radix tree allocations.
++ */
++static DEFINE_MUTEX(rpmsg_channels_lock);
++
++static int rpmsg_sock_cb(struct rpmsg_device *rpdev, void *data, int len,
++			 void *priv, u32 src);
++
++static struct proto rpmsg_proto = {
++	.name		= "RPMSG",
++	.owner		= THIS_MODULE,
++	.obj_size	= sizeof(struct rpmsg_socket),
++};
++
++/* Retrieve the rproc instance so that it can be used for retrieving
++ * the processor id associated with the rpmsg channel.
++ */
++static inline struct rproc *rpdev_to_rproc(struct rpmsg_device *rpdev)
++{
++	return rproc_get_by_child(&rpdev->dev);
++}
++
++/* Retrieve the rproc id. The rproc id _relies_ on aliases being defined
++ * in the DT blob for each of the remoteproc devices, and is essentially
++ * the alias id. These are assumed to match to be fixed for a particular
++ * SoC, and this provides a means to have a fixed interface to identify
++ * a remote processor.
++ */
++static int rpmsg_sock_get_proc_id(struct rpmsg_device *rpdev)
++{
++	struct rproc *rproc = rpdev_to_rproc(rpdev);
++	int id;
++
++	if (!rproc) {
++		WARN_ON(1);
++		return -EINVAL;
++	}
++
++	id = rproc_get_id(rproc);
++	WARN_ON(id < 0);
++
++	return id;
++}
++
++static int rpmsg_sock_connect(struct socket *sock, struct sockaddr *addr,
++			      int alen, int flags)
++{
++	struct sock *sk = sock->sk;
++	struct rpmsg_socket *rpsk;
++	struct sockaddr_rpmsg *sa;
++	int err = 0;
++	struct rpmsg_device *rpdev;
++
++	if (sk->sk_state != RPMSG_OPEN)
++		return -EBADFD;
++
++	if (sk->sk_type != SOCK_SEQPACKET)
++		return -EINVAL;
++
++	if (!addr || addr->sa_family != AF_RPMSG)
++		return -EINVAL;
++
++	if (alen < sizeof(*sa))
++		return -EINVAL;
++
++	sa = (struct sockaddr_rpmsg *)addr;
++
++	lock_sock(sk);
++
++	rpsk = container_of(sk, struct rpmsg_socket, sk);
++
++	mutex_lock(&rpmsg_channels_lock);
++
++	/* find the set of channels exposed by this remote processor */
++	rpdev = radix_tree_lookup(&rpmsg_channels, sa->vproc_id);
++	if (!rpdev) {
++		err = -EINVAL;
++		goto out;
++	}
++
++	rpsk->rproc_id = sa->vproc_id;
++	rpsk->rpdev = rpdev;
++
++	/* XXX take care of disconnection state too */
++	sk->sk_state = RPMSG_CONNECTED;
++
++out:
++	mutex_unlock(&rpmsg_channels_lock);
++	release_sock(sk);
++	return err;
++}
++
++static int rpmsg_sock_sendmsg(struct socket *sock, struct msghdr *msg,
++			      size_t len)
++{
++	struct sock *sk = sock->sk;
++	struct rpmsg_socket *rpsk;
++	ssize_t max_payload;
++	char payload[RPMSG_BUF_SIZE];/* todo: sane payload length methodology */
++	int err;
++
++	/* XXX check for sock_error as well ? */
++	/* XXX handle noblock ? */
++	if (msg->msg_flags & MSG_OOB)
++		return -EOPNOTSUPP;
++
++	/* no payload ? */
++	if (!iter_iov(&msg->msg_iter)->iov_base)
++		return -EINVAL;
++
++	lock_sock(sk);
++
++	/* we don't support loopback at this point */
++	if (sk->sk_state != RPMSG_CONNECTED) {
++		err = -ENOTCONN;
++		goto out;
++	}
++
++	rpsk = container_of(sk, struct rpmsg_socket, sk);
++
++	max_payload = rpmsg_get_mtu(rpsk->rpdev->ept);
++	if (max_payload < 0) {
++		err = -EINVAL;
++		goto out;
++	}
++
++	/* make sure the length is valid for copying into kernel buffer */
++	if (len > max_payload) {
++		err = -EMSGSIZE;
++		goto out;
++	}
++
++	/* XXX for now, ignore the peer address. later use it
++	 * with rpmsg_sendto, but only if user is root
++	 */
++	err = memcpy_from_msg(payload, msg, len);
++	if (err)
++		goto out;
++
++	err = rpmsg_send(rpsk->rpdev->ept, payload, len);
++	if (err)
++		pr_err("rpmsg_send failed: %d\n", err);
++	else
++		err = len;
++
++out:
++	release_sock(sk);
++	return err;
++}
++
++static int rpmsg_sock_recvmsg(struct socket *sock, struct msghdr *msg,
++			      size_t len, int flags)
++{
++	struct sock *sk = sock->sk;
++	struct sockaddr_rpmsg *sa;
++	struct sk_buff *skb;
++	int ret;
++
++	if (flags & MSG_OOB) {
++		pr_err("MSG_OOB: %d\n", EOPNOTSUPP);
++		return -EOPNOTSUPP;
++	}
++
++	msg->msg_namelen = 0;
++
++	skb = skb_recv_datagram(sk, flags, &ret);
++	if (!skb) {
++		/* check for shutdown ? */
++		pr_err("skb_recv_datagram: %d\n", ret);
++		return ret;
++	}
++
++	if (msg->msg_name) {
++		msg->msg_namelen = sizeof(*sa);
++		sa = (struct sockaddr_rpmsg *)msg->msg_name;
++		sa->vproc_id = RPMSG_CB(skb).vproc_id;
++		sa->addr = RPMSG_CB(skb).addr;
++		sa->family = AF_RPMSG;
++	}
++
++	if (len > skb->len) {
++		len = skb->len;
++	} else if (len < skb->len) {
++		pr_warn("user buffer is too small\n");
++		/* XXX truncate or error ? */
++		msg->msg_flags |= MSG_TRUNC;
++	}
++
++	ret = skb_copy_datagram_msg(skb, 0, msg, len);
++	if (ret) {
++		pr_err("error copying skb data: %d\n", ret);
++		goto out_free;
++	}
++
++	ret = len;
++
++out_free:
++	skb_free_datagram(sk, skb);
++	return ret;
++}
++
++static __poll_t rpmsg_sock_poll(struct file *file, struct socket *sock,
++				poll_table *wait)
++{
++	struct sock *sk = sock->sk;
++	__poll_t mask = 0;
++
++	poll_wait(file, sk_sleep(sk), wait);
++
++	/* exceptional events? */
++	if (sk->sk_err || !skb_queue_empty(&sk->sk_error_queue))
++		mask |= EPOLLERR;
++	if (sk->sk_shutdown & RCV_SHUTDOWN)
++		mask |= EPOLLRDHUP;
++	if (sk->sk_shutdown == SHUTDOWN_MASK)
++		mask |= EPOLLHUP;
++
++	/* readable? */
++	if (!skb_queue_empty(&sk->sk_receive_queue) ||
++	    (sk->sk_shutdown & RCV_SHUTDOWN))
++		mask |= EPOLLIN | EPOLLRDNORM;
++
++	if (sk->sk_state == RPMSG_CLOSED)
++		mask |= EPOLLHUP;
++
++	/* XXX is writable ?
++	 * this depends on the destination processor.
++	 * if loopback: we're writable unless no memory
++	 * if to remote: we need enabled rpmsg buffer or user supplied bufs
++	 * for now, let's always be writable.
++	 */
++	mask |= EPOLLOUT | EPOLLWRNORM | EPOLLWRBAND;
++
++	return mask;
++}
++
++/* return bound socket address information, either local or remote */
++static int rpmsg_sock_getname(struct socket *sock, struct sockaddr *addr,
++			      int peer)
++{
++	struct sock *sk = sock->sk;
++	struct rpmsg_socket *rpsk;
++	struct rpmsg_device *rpdev;
++	struct sockaddr_rpmsg *sa;
++	int ret;
++
++	rpsk = container_of(sk, struct rpmsg_socket, sk);
++
++	lock_sock(sk);
++	rpdev = rpsk->rpdev;
++	if (!rpdev) {
++		ret = peer ? -ENOTCONN : -EINVAL;
++		goto out;
++	}
++
++	addr->sa_family = AF_RPMSG;
++	sa = (struct sockaddr_rpmsg *)addr;
++	ret = sizeof(*sa);
++
++	if (peer) {
++		sa->vproc_id = rpsk->rproc_id;
++		sa->addr = rpdev->dst;
++	} else {
++		sa->vproc_id = RPMSG_LOCALHOST;
++		sa->addr = rpsk->endpt ? rpsk->endpt->addr : rpsk->rpdev->src;
++	}
++
++out:
++	release_sock(sk);
++	return ret;
++}
++
++static int rpmsg_sock_release(struct socket *sock)
++{
++	struct sock *sk = sock->sk;
++	struct rpmsg_socket *rpsk = container_of(sk, struct rpmsg_socket, sk);
++
++	if (!sk)
++		return 0;
++
++	/* function can be called with NULL endpoints, so it is effective for
++	 * Rx sockets and a no-op for Tx sockets
++	 */
++	rpmsg_destroy_ept(rpsk->endpt);
++
++	sock_put(sock->sk);
++
++	return 0;
++}
++
++/* Notes:
++ * - calling connect after bind isn't currently supported (is it even needed?).
++ * - userspace arguments to bind aren't intuitive: one needs to provide
++ *   the vproc id of the remote processor that the channel needs to be shared
++ *   with, and the -local- source address the channel is to be bound with
++ */
++static int
++rpmsg_sock_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len)
++{
++	struct sock *sk = sock->sk;
++	struct rpmsg_socket *rpsk = container_of(sk, struct rpmsg_socket, sk);
++	struct rpmsg_device *rpdev;
++	struct rpmsg_endpoint *endpt;
++	struct rpmsg_channel_info chinfo = {};
++	struct sockaddr_rpmsg *sa = (struct sockaddr_rpmsg *)uaddr;
++
++	if (sock->state == SS_CONNECTED)
++		return -EINVAL;
++
++	if (addr_len != sizeof(*sa))
++		return -EINVAL;
++
++	if (sa->family != AF_RPMSG)
++		return -EINVAL;
++
++	if (rpsk->endpt)
++		return -EBUSY;
++
++	if (sk->sk_state != RPMSG_OPEN)
++		return -EINVAL;
++
++	rpdev = radix_tree_lookup(&rpmsg_channels, sa->vproc_id);
++	if (!rpdev)
++		return -EINVAL;
++
++	/* bind this socket with a receiving endpoint */
++	chinfo.src = sa->addr;
++	chinfo.dst = RPMSG_ADDR_ANY;
++	endpt = rpmsg_create_ept(rpdev, rpmsg_sock_cb, sk, chinfo);
++	if (!endpt)
++		return -EINVAL;
++
++	rpsk->rpdev = rpdev;
++	rpsk->endpt = endpt;
++	rpsk->rproc_id = sa->vproc_id;
++
++	sk->sk_state = RPMSG_LISTENING;
++
++	return 0;
++}
++
++static const struct proto_ops rpmsg_sock_ops = {
++	.family		= PF_RPMSG,
++	.owner		= THIS_MODULE,
++
++	.release	= rpmsg_sock_release,
++	.connect	= rpmsg_sock_connect,
++	.getname	= rpmsg_sock_getname,
++	.sendmsg	= rpmsg_sock_sendmsg,
++	.recvmsg	= rpmsg_sock_recvmsg,
++	.poll		= rpmsg_sock_poll,
++	.bind		= rpmsg_sock_bind,
++
++	.listen		= sock_no_listen,
++	.accept		= sock_no_accept,
++	.ioctl		= sock_no_ioctl,
++	.mmap		= sock_no_mmap,
++	.socketpair	= sock_no_socketpair,
++	.shutdown	= sock_no_shutdown,
++};
++
++static void rpmsg_sock_destruct(struct sock *sk)
++{
++}
++
++static int rpmsg_sock_create(struct net *net, struct socket *sock, int proto,
++			     int kern)
++{
++	struct sock *sk;
++	struct rpmsg_socket *rpsk;
++
++	if (sock->type != SOCK_SEQPACKET)
++		return -ESOCKTNOSUPPORT;
++	if (proto != 0)
++		return -EPROTONOSUPPORT;
++
++	sk = sk_alloc(net, PF_RPMSG, GFP_KERNEL, &rpmsg_proto, kern);
++	if (!sk)
++		return -ENOMEM;
++
++	sock->state = SS_UNCONNECTED;
++	sock->ops = &rpmsg_sock_ops;
++	sock_init_data(sock, sk);
++
++	sk->sk_destruct = rpmsg_sock_destruct;
++	sk->sk_protocol = proto;
++
++	sk->sk_state = RPMSG_OPEN;
++
++	rpsk = container_of(sk, struct rpmsg_socket, sk);
++	/* use RPMSG_LOCALHOST to serve as an invalid value */
++	rpsk->rproc_id = RPMSG_LOCALHOST;
++
++	return 0;
++}
++
++static const struct net_proto_family rpmsg_proto_family = {
++	.family = PF_RPMSG,
++	.create	= rpmsg_sock_create,
++	.owner = THIS_MODULE,
++};
++
++static int __rpmsg_sock_cb(struct device *dev, int from_vproc_id, void *data,
++			   int len, struct sock *sk, u32 src)
++{
++	struct rpmsg_socket *rpsk = container_of(sk, struct rpmsg_socket, sk);
++	struct sk_buff *skb;
++	int ret;
++
++#if defined(CONFIG_DYNAMIC_DEBUG)
++	dynamic_hex_dump("rpmsg_proto Rx: ", DUMP_PREFIX_NONE, 16, 1, data,
++			 len, true);
++#endif
++
++	lock_sock(sk);
++
++	switch (sk->sk_state) {
++	case RPMSG_CONNECTED:
++		if (rpsk->rpdev->dst != src)
++			dev_warn(dev, "unexpected source address: %d\n", src);
++		break;
++	case RPMSG_LISTENING:
++		/* When an inbound message is received while we're listening,
++		 * we implicitly become connected
++		 */
++		sk->sk_state = RPMSG_CONNECTED;
++		rpsk->rpdev->dst = src;
++		break;
++	default:
++		dev_warn(dev, "unexpected inbound message (from %d)\n", src);
++		break;
++	}
++
++	skb = sock_alloc_send_skb(sk, len, 1, &ret);
++	if (!skb) {
++		dev_err(dev, "sock_alloc_send_skb failed: %d\n", ret);
++		ret = -ENOMEM;
++		goto out;
++	}
++
++	RPMSG_CB(skb).vproc_id = from_vproc_id;
++	RPMSG_CB(skb).addr = src;
++	RPMSG_CB(skb).family = AF_RPMSG;
++
++	memcpy(skb_put(skb, len), data, len);
++
++	ret = sock_queue_rcv_skb(sk, skb);
++	if (ret) {
++		dev_err(dev, "sock_queue_rcv_skb failed: %d\n", ret);
++		kfree_skb(skb);
++	}
++
++out:
++	release_sock(sk);
++	return ret;
++}
++
++static int rpmsg_sock_cb(struct rpmsg_device *rpdev, void *data, int len,
++			 void *priv, u32 src)
++{
++	int id = rpmsg_sock_get_proc_id(rpdev);
++
++	return __rpmsg_sock_cb(&rpdev->dev, id, data, len, priv, src);
++}
++
++static int rpmsg_proto_cb(struct rpmsg_device *rpdev, void *data, int len,
++			  void *priv, u32 src)
++{
++	dev_err(&rpdev->dev, "rpmsg_proto device not designed to receive any messages\n");
++	return 0;
++}
++
++static int rpmsg_proto_probe(struct rpmsg_device *rpdev)
++{
++	struct device *dev = &rpdev->dev;
++	int ret, dst = rpdev->dst, id;
++	struct rpmsg_device *vrp_dev;
++
++	if (WARN_ON(dst == RPMSG_ADDR_ANY))
++		return -EINVAL;
++
++	id = rpmsg_sock_get_proc_id(rpdev);
++	if (id < 0)
++		return -EINVAL;
++
++	mutex_lock(&rpmsg_channels_lock);
++
++	/* are we exposing a rpmsg proto device for this remote processor yet?
++	 * If not, associate id/device for later lookup in rpmsg_sock_bind().
++	 * Multiple devices per remote processor are not supported.
++	 */
++	vrp_dev = radix_tree_lookup(&rpmsg_channels, id);
++	if (!vrp_dev) {
++		ret = radix_tree_insert(&rpmsg_channels, id, rpdev);
++		if (ret) {
++			dev_err(dev, "radix_tree_insert failed: %d\n", ret);
++			goto out;
++		}
++	} else {
++		ret = -ENODEV;
++		dev_err(dev, "multiple rpmsg-proto devices from the same rproc is not supported.\n");
++		goto out;
++	}
++
++out:
++	mutex_unlock(&rpmsg_channels_lock);
++
++	return ret;
++}
++
++static void rpmsg_proto_remove(struct rpmsg_device *rpdev)
++{
++	struct device *dev = &rpdev->dev;
++	int id, dst = rpdev->dst;
++	struct rpmsg_device *vrp_dev;
++
++	if (dst == RPMSG_ADDR_ANY)
++		return;
++
++	id = rpmsg_sock_get_proc_id(rpdev);
++
++	mutex_lock(&rpmsg_channels_lock);
++
++	vrp_dev = radix_tree_lookup(&rpmsg_channels, id);
++	if (!vrp_dev) {
++		dev_err(dev, "can't find rpmsg device for rproc %d\n", id);
++		goto out;
++	}
++	if (vrp_dev != rpdev)
++		dev_err(dev, "can't match the stored rpdev for rproc %d\n", id);
++
++	if (!radix_tree_delete(&rpmsg_channels, id))
++		dev_err(dev, "failed to delete rpdev for rproc %d\n", id);
++
++out:
++	mutex_unlock(&rpmsg_channels_lock);
++}
++
++static struct rpmsg_device_id rpmsg_proto_id_table[] = {
++	{ .name	= "rpmsg-proto" },
++	{ },
++};
++MODULE_DEVICE_TABLE(rpmsg, rpmsg_proto_id_table);
++
++static struct rpmsg_driver rpmsg_proto_driver = {
++	.drv.name	= KBUILD_MODNAME,
++	.id_table	= rpmsg_proto_id_table,
++	.probe		= rpmsg_proto_probe,
++	.callback	= rpmsg_proto_cb,
++	.remove		= rpmsg_proto_remove,
++};
++
++static int __init rpmsg_proto_init(void)
++{
++	int ret;
++
++	ret = proto_register(&rpmsg_proto, 0);
++	if (ret) {
++		pr_err("proto_register failed: %d\n", ret);
++		return ret;
++	}
++
++	ret = sock_register(&rpmsg_proto_family);
++	if (ret) {
++		pr_err("sock_register failed: %d\n", ret);
++		goto proto_unreg;
++	}
++
++	ret = register_rpmsg_driver(&rpmsg_proto_driver);
++	if (ret) {
++		pr_err("register_rpmsg_driver failed: %d\n", ret);
++		goto sock_unreg;
++	}
++
++	return 0;
++
++sock_unreg:
++	sock_unregister(PF_RPMSG);
++proto_unreg:
++	proto_unregister(&rpmsg_proto);
++	return ret;
++}
++
++static void __exit rpmsg_proto_exit(void)
++{
++	unregister_rpmsg_driver(&rpmsg_proto_driver);
++	sock_unregister(PF_RPMSG);
++	proto_unregister(&rpmsg_proto);
++}
++
++module_init(rpmsg_proto_init);
++module_exit(rpmsg_proto_exit);
++
++MODULE_DESCRIPTION("Remote processor messaging protocol");
++MODULE_LICENSE("GPL v2");
++MODULE_ALIAS("rpmsg:rpmsg-proto");
++MODULE_ALIAS_NETPROTO(AF_RPMSG);
+diff --git a/net/socket.c b/net/socket.c
+index 82fa1793160f..7db621724e65 100644
+--- a/net/socket.c
++++ b/net/socket.c
+@@ -217,6 +217,7 @@ static const char * const pf_family_names[] = {
+ 	[PF_SMC]	= "PF_SMC",
+ 	[PF_XDP]	= "PF_XDP",
+ 	[PF_MCTP]	= "PF_MCTP",
++	[AF_RPMSG]	= "AF_RPMSG",
+ };
+ 
+ /*
+diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+index fc926d3cac6e..1a9568bb7c66 100644
+--- a/security/selinux/hooks.c
++++ b/security/selinux/hooks.c
+@@ -1302,7 +1302,9 @@ static inline u16 socket_type_to_security_class(int family, int type, int protoc
+ 			return SECCLASS_XDP_SOCKET;
+ 		case PF_MCTP:
+ 			return SECCLASS_MCTP_SOCKET;
+-#if PF_MAX > 46
++		case PF_RPMSG:
++			return SECCLASS_RPMSG_SOCKET;
++#if PF_MAX > 47
+ #error New address family defined, please update this function.
+ #endif
+ 		}
+diff --git a/security/selinux/include/classmap.h b/security/selinux/include/classmap.h
+index 7229c9bf6c27..6eae65850c61 100644
+--- a/security/selinux/include/classmap.h
++++ b/security/selinux/include/classmap.h
+@@ -166,6 +166,7 @@ const struct security_class_mapping secclass_map[] = {
+ 	{ "kcm_socket", { COMMON_SOCK_PERMS, NULL } },
+ 	{ "qipcrtr_socket", { COMMON_SOCK_PERMS, NULL } },
+ 	{ "smc_socket", { COMMON_SOCK_PERMS, NULL } },
++	{ "rpmsg_socket", { COMMON_SOCK_PERMS, NULL } },
+ 	{ "infiniband_pkey", { "access", NULL } },
+ 	{ "infiniband_endport", { "manage_subnet", NULL } },
+ 	{ "bpf",
+@@ -181,6 +182,6 @@ const struct security_class_mapping secclass_map[] = {
+ 	{ NULL }
+ };
+ 
+-#if PF_MAX > 46
++#if PF_MAX > 47
+ #error New address family defined, please update secclass_map.
+ #endif
+-- 
+2.34.1
+

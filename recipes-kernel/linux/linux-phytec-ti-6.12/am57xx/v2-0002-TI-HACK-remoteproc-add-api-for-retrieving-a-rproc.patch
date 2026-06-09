@@ -1,0 +1,93 @@
+From a79d1e9fd2ff953788a2eec5d4350841f51d8c47 Mon Sep 17 00:00:00 2001
+From: Suman Anna <s-anna@ti.com>
+Date: Mon, 15 Jan 2018 12:01:54 -0600
+Subject: [tiL6.12 PATCH v2 2/9] TI: HACK: remoteproc: add api for retrieving a
+ rproc unique id
+
+A new api, rproc_get_id(), is added to allow remoteproc/rpmsg clients
+to be able to retrieve a fixed unique id associated with a rproc
+device. Each of the rprocs is given an ida index as well, but this
+is dynamic depending on the order rproc_alloc is called (probe order),
+and also depends on what remote processor devices are instantiated.
+This unique id needs to be supported for both DT and non-DT devices.
+The platform device id or the remoteproc alias id are therefore
+chosen for non-DT and DT devices respectively, with the assumption
+that the remoteproc devices are created with known platform device
+ids or alias ids in DT.
+
+Upstream-Status: Inappropriate [am57xx specific]
+
+Signed-off-by: Suman Anna <s-anna@ti.com>
+(cherry picked from commit 4eb45c11141832dc29e81744de6d89148c2a734e)
+Signed-off-by: Sinthu Raja <sinthu.raja@ti.com>
+Signed-off-by: Beleswar Padhi <b-padhi@ti.com>
+---
+ drivers/remoteproc/remoteproc_core.c | 32 ++++++++++++++++++++++++++++
+ include/linux/remoteproc.h           |  1 +
+ 2 files changed, 33 insertions(+)
+
+diff --git a/drivers/remoteproc/remoteproc_core.c b/drivers/remoteproc/remoteproc_core.c
+index f2611f0af6c2..7f5f9f9bcda8 100644
+--- a/drivers/remoteproc/remoteproc_core.c
++++ b/drivers/remoteproc/remoteproc_core.c
+@@ -38,6 +38,8 @@
+ #include <linux/of_reserved_mem.h>
+ #include <linux/virtio_ids.h>
+ #include <linux/virtio_ring.h>
++#include <linux/of.h>
++#include <linux/platform_device.h>
+ #include <asm/byteorder.h>
+ #include <linux/platform_device.h>
+ 
+@@ -2024,6 +2026,36 @@ static void rproc_crash_handler_work(struct work_struct *work)
+ 	pm_relax(rproc->dev.parent);
+ }
+ 
++/**
++ * rproc_get_id() - return the id for the rproc device
++ * @rproc: handle of a remote processor
++ *
++ * Each rproc device is associated with a platform device, which is created
++ * either from device tree (majority newer platforms) or using legacy style
++ * platform device creation (fewer legacy platforms). This function retrieves
++ * an unique id for each remote processor and is useful for clients needing
++ * to distinguish each of the remoteprocs. This unique id is derived using
++ * the platform device id for non-DT devices, or an alternate alias id for
++ * DT devices (since they do not have a valid platform device id). It is
++ * assumed that the platform devices were created with known ids or were
++ * given proper alias ids using the stem "rproc".
++ *
++ * Return: alias id for DT devices or platform device id for non-DT devices
++ * associated with the rproc
++ */
++int rproc_get_id(struct rproc *rproc)
++{
++	struct device *dev = rproc->dev.parent;
++	struct device_node *np = dev->of_node;
++	struct platform_device *pdev = to_platform_device(dev);
++
++	if (np)
++		return of_alias_get_id(np, "rproc");
++	else
++		return pdev->id;
++}
++EXPORT_SYMBOL(rproc_get_id);
++
+ /**
+  * rproc_boot() - boot a remote processor
+  * @rproc: handle of a remote processor
+diff --git a/include/linux/remoteproc.h b/include/linux/remoteproc.h
+index 79873d266639..e02298a73c57 100644
+--- a/include/linux/remoteproc.h
++++ b/include/linux/remoteproc.h
+@@ -710,6 +710,7 @@ int rproc_coredump_add_custom_segment(struct rproc *rproc,
+ 						     size_t size),
+ 				      void *priv);
+ int rproc_coredump_set_elf_info(struct rproc *rproc, u8 class, u16 machine);
++int rproc_get_id(struct rproc *rproc);
+ 
+ void rproc_add_subdev(struct rproc *rproc, struct rproc_subdev *subdev);
+ 
+-- 
+2.34.1
+

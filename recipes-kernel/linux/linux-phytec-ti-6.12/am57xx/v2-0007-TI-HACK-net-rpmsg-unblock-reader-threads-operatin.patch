@@ -1,0 +1,65 @@
+From fa9e4ec9a0a501921824d55a688d245e4f2c4708 Mon Sep 17 00:00:00 2001
+From: Suman Anna <s-anna@ti.com>
+Date: Sat, 5 Feb 2022 14:28:38 -0800
+Subject: [tiL6.12 PATCH v2 7/9] TI: HACK: net/rpmsg: unblock reader threads
+ operating on errored sockets
+
+The rpmsg_proto driver is used to provide a socket interface
+to userspace under the AF_RPMSG address family, and is used
+by the TI IPC MessageQ stack. The typical usage for receiving
+messages include a thread blocked on a select() call with
+appropriate socket fds, followed by a recvfrom() on the fd
+returned/marked ready by select().
+
+The rpmsg_sock_poll() function implements the logic needed
+by the select() call, and marks a socket ready only when there
+is data to be read currently. Any reader thread waiting on the
+select() call to return is currently not unblocked when a remote
+processor goes through an error recovery, and can remain blocked
+forever as its remote processor peer thread may never send it
+another message. Enhance the rpmsg_proto driver so that a waiting
+thread can be unblocked by waking it up during the process of
+marking the open sockets with the error status RPMSG_ERROR. This
+is achieved by using the socket's .sk_error_report() ops, and is
+preferred over the .sk_state_change() ops to wakeup only a single
+exclusive thread.
+
+Upstream-Status: Inappropriate [am57xx specific]
+
+Signed-off-by: Suman Anna <s-anna@ti.com>
+Signed-off-by: Drew Fustini <dfustini@baylibre.com>
+(cherry picked from commit 06075b7792c169c48cbe3ef517b9de01672cf67b)
+Signed-off-by: Sinthu Raja <sinthu.raja@ti.com>
+Signed-off-by: Beleswar Padhi <b-padhi@ti.com>
+---
+ net/rpmsg/rpmsg_proto.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/net/rpmsg/rpmsg_proto.c b/net/rpmsg/rpmsg_proto.c
+index e1f2387f59c4..99dd9df24f2e 100644
+--- a/net/rpmsg/rpmsg_proto.c
++++ b/net/rpmsg/rpmsg_proto.c
+@@ -287,6 +287,8 @@ static __poll_t rpmsg_sock_poll(struct file *file, struct socket *sock,
+ 	/* exceptional events? */
+ 	if (sk->sk_err || !skb_queue_empty(&sk->sk_error_queue))
+ 		mask |= EPOLLERR;
++	if (sk->sk_state == RPMSG_ERROR)
++		mask |= EPOLLERR;
+ 	if (sk->sk_shutdown & RCV_SHUTDOWN)
+ 		mask |= EPOLLRDHUP;
+ 	if (sk->sk_shutdown == SHUTDOWN_MASK)
+@@ -669,8 +671,10 @@ static void rpmsg_proto_remove(struct rpmsg_device *rpdev)
+ 			rpsk->endpt = NULL;
+ 		}
+ 		release_sock(&rpsk->sk);
+-		if (endpt)
++		if (endpt) {
+ 			rpmsg_destroy_ept(endpt);
++			rpsk->sk.sk_error_report(&rpsk->sk);
++		}
+ 	}
+ 	kfree(sk_list);
+ 	rpdev->ept->priv = NULL;
+-- 
+2.34.1
+

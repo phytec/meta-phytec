@@ -1,0 +1,35 @@
+From df6c33fc6dddc6d1e5fe8ebe22d548a6c870b65b Mon Sep 17 00:00:00 2001
+From: Sinthu Raja <sinthu.raja@ti.com>
+Date: Wed, 13 Mar 2024 12:27:55 +0000
+Subject: [PATCH] ARM: dts: Fix suspend issue for vip
+
+Looks like this is because the STANDBYMODE bit for SMART_IDLE should
+not be used. The TRM "Table 9-74. VIP_SYSCONFIG" says that the value
+for SMART_IDLE is "0x2: IP module shall not generate wakeup events".
+
+Let's fix the issue by dropping SMART_IDLE for vip.
+
+Upstream-Status: Inappropriate [am57xx specific]
+
+Signed-off-by: Sinthu Raja <sinthu.raja@ti.com>
+---
+ arch/arm/boot/dts/ti/omap/dra74x.dtsi | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/arch/arm/boot/dts/ti/omap/dra74x.dtsi b/arch/arm/boot/dts/ti/omap/dra74x.dtsi
+index a0cd10f5d34d..12ca355dc9a2 100644
+--- a/arch/arm/boot/dts/ti/omap/dra74x.dtsi
++++ b/arch/arm/boot/dts/ti/omap/dra74x.dtsi
+@@ -235,8 +235,7 @@ target-module@190000 {			/* 0x48990000, ap 23 2e.0 */
+ 		reg = <0x190010 0x4>;
+ 		reg-names = "sysc";
+ 		ti,sysc-midle = <SYSC_IDLE_FORCE>,
+-				<SYSC_IDLE_NO>,
+-				<SYSC_IDLE_SMART>;
++				<SYSC_IDLE_NO>;
+ 		ti,sysc-sidle = <SYSC_IDLE_FORCE>,
+ 				<SYSC_IDLE_NO>,
+ 				<SYSC_IDLE_SMART>;
+-- 
+2.34.1
+

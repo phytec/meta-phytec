@@ -1,0 +1,62 @@
+From fdf2747fe83de579f4a7bf20516093b68d0c0df5 Mon Sep 17 00:00:00 2001
+From: Suman Anna <s-anna@ti.com>
+Date: Mon, 14 Feb 2022 11:24:43 -0800
+Subject: [tiL6.12 PATCH v2 8/9] TI: HACK: remoteproc: Fix multiple
+ back-to-back error recoveries
+
+The remoteproc core uses a dedicated work item per remote processor
+to perform an error recovery of that processor. This work item is
+always scheduled upon notification of an error at the moment. The
+error recovery process itself is performed when the workqueue gets
+scheduled and executes the work function, but an error recovery
+needs to be performed only once if there are multiple notifications
+while an existing error recovery is in progress. Fix this by adding
+a check to make sure the remote processor error recovery work item
+is not already running or scheduled.
+
+This fixes an issue with error recovery upon MMU Faults on OMAP
+IPU remote processors. An MMU fault on OMAP IPU sends two error
+notifications - one a direct interrupt from the MMU, and the second
+a mailbox-based crash notification after the remote processor has
+collected some backtrace. The mailbox based interrupt mechanism,
+added in commit 232ba6ca007c ("remoteproc/omap: Report device
+exceptions and trigger recovery"), is used for Attribute MMU (AMMU)
+faults and other internal exceptions on the IPU. The backtrace
+collection on the IPU remote processor is triggered by the same
+interrupt which cannot be differentiated between an MMU fault and
+an AMMU fault. The remoteproc core changes in 4.9 kernel around the
+boot sequences has now caused the second notification to trigger a
+secondary error recovery, which was avoided in previous kernels due
+to the event detection in the work-function itself. The newer code
+sequences changes the timing w.r.t previous kernels where the
+recovery process was performed a bit later due to the asynchronous
+firmware loading.
+
+Upstream-Status: Inappropriate [am57xx specific]
+
+Signed-off-by: Suman Anna <s-anna@ti.com>
+(cherry picked from commit 706c31b9e3dd1a1ef061caccd32101b04b775407)
+Signed-off-by: Sinthu Raja <sinthu.raja@ti.com>
+Signed-off-by: Beleswar Padhi <b-padhi@ti.com>
+---
+ drivers/remoteproc/remoteproc_core.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/remoteproc/remoteproc_core.c b/drivers/remoteproc/remoteproc_core.c
+index 7f5f9f9bcda8..0290f00a8798 100644
+--- a/drivers/remoteproc/remoteproc_core.c
++++ b/drivers/remoteproc/remoteproc_core.c
+@@ -2887,7 +2887,9 @@ void rproc_report_crash(struct rproc *rproc, enum rproc_crash_type type)
+ 	dev_err(&rproc->dev, "crash detected in %s: type %s\n",
+ 		rproc->name, rproc_crash_to_string(type));
+ 
+-	queue_work(rproc_recovery_wq, &rproc->crash_handler);
++	/* create a new task to handle the error if not scheduled already */
++	if (!work_busy(&rproc->crash_handler))
++		queue_work(rproc_recovery_wq, &rproc->crash_handler);
+ }
+ EXPORT_SYMBOL(rproc_report_crash);
+ 
+-- 
+2.34.1
+

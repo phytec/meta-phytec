@@ -1,0 +1,29 @@
+From a1cd9e7a6c62a9930a32ae4e6e65ff500f10dd02 Mon Sep 17 00:00:00 2001
+From: Primoz Fiser <primoz.fiser@norik.com>
+Date: Thu, 4 Jun 2026 10:09:48 +0200
+Subject: [PATCH] arm: configs: phytec_ti_defconfig: Enable CONFIG_RPMSG_PROTO
+
+Enable RPMsg proto driver needed for IPC applications based on sockets.
+
+Upstream-Status: Inappropriate [am57xx specific]
+
+Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+---
+ arch/arm/configs/phytec_ti_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm/configs/phytec_ti_defconfig b/arch/arm/configs/phytec_ti_defconfig
+index b1c634ad9277..e748b3dcb71a 100644
+--- a/arch/arm/configs/phytec_ti_defconfig
++++ b/arch/arm/configs/phytec_ti_defconfig
+@@ -94,6 +94,7 @@ CONFIG_MAC80211=m
+ CONFIG_RFKILL=y
+ CONFIG_RFKILL_INPUT=y
+ CONFIG_RFKILL_GPIO=y
++CONFIG_RPMSG_PROTO=m
+ CONFIG_NFC=m
+ CONFIG_NFC_DIGITAL=m
+ CONFIG_NFC_NCI=m
+-- 
+2.34.1
+
