@@ -52,3 +52,19 @@ Remove all images in the directory ${DEPLOY_DIR}/images. Use like
     $ ../sources/meta-phytec/scripts/wipe-deploy-images
 
 Useful to free harddisk space after a lot of builds.
+
+
+Script update-recipe.py
+-----------------------
+
+Update a linux, u-boot or barebox recipe to the newest tag on its
+integration branch. The script queries the upstream repository for new
+-phyN tags, renames the recipe accordingly, updates SRCREV and creates
+a commit including the upstream changelog. Use like
+
+    $ ./scripts/update-recipe.py recipes-kernel/linux/linux-phytec-ti_6.12.57-11.02.11-phy7.bb
+
+Pass '-n'/'--dry-run' to only report what would change.
+
+The script only handles bumps to a newer -phyN tag on the same
+integration branch.
