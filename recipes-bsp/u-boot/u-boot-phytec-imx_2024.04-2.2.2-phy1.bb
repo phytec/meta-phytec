@@ -13,13 +13,13 @@ DEPENDS += "flex-native bison-native bc-native dtc-native gnutls-native python3-
 
 LICENSE = "GPL-2.0-or-later"
 LIC_FILES_CHKSUM = "file://Licenses/gpl-2.0.txt;md5=b234ee4d69f5fce4486a80fdaf4a4263"
-BRANCH = "v2024.04-2.2.0-phy"
+BRANCH = "v2024.04-2.2.2-phy"
 GIT_URL = "git://github.com/phytec/${BPN};protocol=https"
 GIT_URL:phynext = "git://git@git.phytec.de/u-boot-phytec-imx-dev.git;protocol=ssh"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
 PR = "r0"
-SRCREV = "a2aeeb82e1d9955391d4fe182b6dc79719f28fd9"
+SRCREV = "555a9f7d3c9e3b7c8ec00b2347dd4df608c3e6df"
 
 S = "${WORKDIR}/git"
 
@@ -57,12 +57,5 @@ do_deploy:append:mx93-generic-bsp() {
 }
 
 COMPATIBLE_MACHINE = "^("
-COMPATIBLE_MACHINE .= "phyboard-polis-imx8mm-5"
-COMPATIBLE_MACHINE .= "|phygate-tauri-l-imx8mm-2"
-COMPATIBLE_MACHINE .= "|phycore-imx8x-1"
-COMPATIBLE_MACHINE .= "|phyboard-segin-imx91-1"
-COMPATIBLE_MACHINE .= "|phyboard-segin-imx93-2"
-COMPATIBLE_MACHINE .= "|phyboard-nash-imx93-1"
-COMPATIBLE_MACHINE .= "|imx8mp-libra-fpsc-1"
-COMPATIBLE_MACHINE .= "|imx95-libra-fpsc-1"
+COMPATIBLE_MACHINE .= "phyboard-pollux-imx8mp-3"
 COMPATIBLE_MACHINE .= ")$"
