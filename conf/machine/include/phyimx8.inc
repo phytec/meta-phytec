@@ -58,7 +58,7 @@ IMAGE_FSTYPES = " \
     partup \
 "
 
-MACHINE_FEATURES:use-nxp-bsp += "caam optee"
+MACHINE_FEATURES:append:use-nxp-bsp = " caam optee"
 MACHINE_FEATURES:remove:mx8x-nxp-bsp = " optee"
 
 QEMUVERSION = "8.2%"
