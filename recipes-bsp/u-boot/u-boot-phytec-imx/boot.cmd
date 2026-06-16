@@ -7,17 +7,17 @@ setenv mmcautodetect "yes"
 setenv mmc_load_bootenv "load mmc ${mmcdev}:${mmcpart} ${bootenv_addr_r} ${bootenv}"
 setenv net_load_bootenv "'${get_cmd}' ${bootenv_addr_r} ${bootenv}"
 setenv fitboot "\
-if env exists no_extensions && itest ${no_extensions} == 0; then \
-    if env exists overlays; then \
-        bootm ${loadaddr}#${fit_fdtconf}${fit_extensions}#'${overlays}'; \
-    else \
-        bootm ${loadaddr}#${fit_fdtconf}${fit_extensions}; \
-    fi; \
-else \
+if env exists no_extensions && itest ${no_extensions} != 0; then \
     if env exists overlays; then \
         bootm ${loadaddr}#${fit_fdtconf}#'${overlays}'; \
     else \
         bootm ${loadaddr}#${fit_fdtconf}; \
+    fi; \
+else \
+    if env exists overlays; then \
+        bootm ${loadaddr}#${fit_fdtconf}${fit_extensions}#'${overlays}'; \
+    else \
+        bootm ${loadaddr}#${fit_fdtconf}${fit_extensions}; \
     fi; \
 fi;"
 
