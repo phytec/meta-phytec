@@ -2,38 +2,38 @@
 
 inherit hab
 
-SRC_URI:append:secureboot=" \
+SRC_URI:append:secureboot = " \
                           file://csf_spl_template.txt \
                           file://csf_fit_template.txt"
 DEPENDS:append:secureboot = " phytec-dev-ca-native"
 
-CSF_TEMPLATE_PATH_SPL="${UNPACKDIR}/csf_spl_template.txt"
-CSF_TEMPLATE_PATH_FIT="${UNPACKDIR}/csf_fit_template.txt"
+CSF_TEMPLATE_PATH_SPL = "${UNPACKDIR}/csf_spl_template.txt"
+CSF_TEMPLATE_PATH_FIT = "${UNPACKDIR}/csf_fit_template.txt"
 
-BL31_BIN_PATH="${BOOT_STAGING}/bl31.bin"
-BL32_BIN_PATH="${BOOT_STAGING}/tee.bin"
+BL31_BIN_PATH = "${BOOT_STAGING}/bl31.bin"
+BL32_BIN_PATH = "${BOOT_STAGING}/tee.bin"
 
 
 # Hardcoded adddresses taken from imx-boot
-UBOOT_NODTB_BIN_ADDR="INVALID"
-ATF_BIN_ADDR="INVALID"
-TEE_BIN_ADDR="INVALID"
+UBOOT_NODTB_BIN_ADDR = "INVALID"
+ATF_BIN_ADDR = "INVALID"
+TEE_BIN_ADDR = "INVALID"
 
-UBOOT_NODTB_BIN_ADDR:mx8m-nxp-bsp="0x40200000"
-ATF_BIN_ADDR:mx8m-nxp-bsp="0x910000"
+UBOOT_NODTB_BIN_ADDR:mx8m-nxp-bsp = "0x40200000"
+ATF_BIN_ADDR:mx8m-nxp-bsp = "0x910000"
 
-UBOOT_NODTB_BIN_ADDR:mx8mm-nxp-bsp="0x40200000"
-ATF_BIN_ADDR:mx8mm-nxp-bsp="0x920000"
+UBOOT_NODTB_BIN_ADDR:mx8mm-nxp-bsp = "0x40200000"
+ATF_BIN_ADDR:mx8mm-nxp-bsp = "0x920000"
 
-UBOOT_NODTB_BIN_ADDR:mx8mn-nxp-bsp="0x40200000"
-ATF_BIN_ADDR:mx8mn-nxp-bsp="0x960000"
+UBOOT_NODTB_BIN_ADDR:mx8mn-nxp-bsp = "0x40200000"
+ATF_BIN_ADDR:mx8mn-nxp-bsp = "0x960000"
 
-UBOOT_NODTB_BIN_ADDR:mx8mp-nxp-bsp="0x40200000"
-ATF_BIN_ADDR:mx8mp-nxp-bsp="0x970000"
+UBOOT_NODTB_BIN_ADDR:mx8mp-nxp-bsp = "0x40200000"
+ATF_BIN_ADDR:mx8mp-nxp-bsp = "0x970000"
 
-TEE_BIN_ADDR:mx8mm-nxp-bsp="0x56000000"
-TEE_BIN_ADDR:mx8mn-nxp-bsp="0x56000000"
-TEE_BIN_ADDR:mx8mp-nxp-bsp="0x56000000"
+TEE_BIN_ADDR:mx8mm-nxp-bsp = "0x56000000"
+TEE_BIN_ADDR:mx8mn-nxp-bsp = "0x56000000"
+TEE_BIN_ADDR:mx8mp-nxp-bsp = "0x56000000"
 
 # Extract the addresses we need from imx-mkimage output
 def get_hab_blocks_from_log(input_image_path, ubootimx_make_output):
