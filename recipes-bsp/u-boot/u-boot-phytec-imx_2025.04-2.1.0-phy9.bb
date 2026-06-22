@@ -18,8 +18,6 @@ SRC_URI = "${GIT_URL};branch=${BRANCH}"
 PR = "r0"
 SRCREV = "ca5de8aefae44f83337b1675cd3cb3599a582d43"
 
-S = "${WORKDIR}/git"
-
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 BOOT_TOOLS = "imx-boot-tools"
