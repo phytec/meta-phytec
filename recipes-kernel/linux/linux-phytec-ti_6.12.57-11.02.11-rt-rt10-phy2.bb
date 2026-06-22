@@ -28,7 +28,7 @@ PR = "${INC_PR}.0"
 # NOTE: Keep version in filename in sync with commit id!
 # NOTE: Keep version of TI_LINUX_FW_SRCREV in sync, configured in
 #       dynamic-layers/meta-ti-bsp/recipes-bsp/ti-linux-fw/ti-linux-fw-freeze.inc
-SRCREV = "c58b878644c503a8c71667072afed5ae4dcfe2ec"
+SRCREV = "6d1fd7c754bffc63abd40e53b6536a4f27ab0225"
 S = "${WORKDIR}/git"
 
 KERNEL_VERSION_SANITY_SKIP = "1"
