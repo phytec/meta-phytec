@@ -5,8 +5,6 @@ SRCREV = "0a87aa2efd3e1c449b6c1595f8ca58bac21d8be7"
 
 LINUX_RELEASE = "r2-phy3"
 
-S = "${WORKDIR}/git"
-
 # -------------------------------------------------------------
 # Defconfig
 #

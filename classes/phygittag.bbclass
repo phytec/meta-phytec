@@ -36,8 +36,6 @@
 #        file://commonenv \
 #        file://environment \
 #    "
-#    S = "${WORKDIR}/git"
-#
 #    # NOTE: Keep version in filename in sync with commit id!
 #    SRCREV = "57b87aedbf0b6ae0eb0b858dd0c83411097c777a"
 #
