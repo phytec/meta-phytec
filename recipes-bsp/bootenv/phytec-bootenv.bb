@@ -48,8 +48,8 @@ addtask deploy before do_build after do_unpack
 
 COMPATIBLE_MACHINE = "^("
 COMPATIBLE_MACHINE .= "mx7-nxp-bsp"
-COMPATIBLE_MACHINE .= "|mx8m-nxp-bsp"
-COMPATIBLE_MACHINE .= "|mx8x-nxp-bsp"
+COMPATIBLE_MACHINE .= "|mx8m-generic-bsp"
+COMPATIBLE_MACHINE .= "|mx8x-generic-bsp"
 COMPATIBLE_MACHINE .= "|mx91-generic-bsp"
 COMPATIBLE_MACHINE .= "|mx93-generic-bsp"
 COMPATIBLE_MACHINE .= "|mx95-nxp-bsp"

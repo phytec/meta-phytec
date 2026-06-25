@@ -15,7 +15,7 @@ PARTUP_PACKAGE_DEPENDS:append:mx7-generic-bsp = " \
     phytec-bootenv \
 "
 
-PARTUP_PACKAGE_DEPENDS:append:mx8m-nxp-bsp = " \
+PARTUP_PACKAGE_DEPENDS:append:mx8m-generic-bsp = " \
     ${@oe.utils.ifelse(d.getVar('UBOOT_PROVIDES_BOOT_CONTAINER') == '0', '${IMAGE_BOOTLOADER}', '')} \
     phytec-bootenv \
 "

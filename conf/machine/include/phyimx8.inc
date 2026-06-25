@@ -20,8 +20,7 @@ MACHINE_FIRMWARE:remove:mx8-nxp-bsp = "linux-firmware-ath10k"
 KERNEL_MODULE_AUTOLOAD += " cryptodev"
 
 # Wic
-IMAGE_CLASSES += "wic-helper"
-IMAGE_CLASSES:append:mx8-nxp-bsp = " wic-imx8-helper"
+IMAGE_CLASSES += "wic-helper wic-imx8-helper"
 EXTERNAL_KERNEL_DEVICETREE ??= ""
 IMAGE_BOOT_FILES += "oftree ${EXTERNAL_KERNEL_DEVICETREE}"
 WKS_FILES:mx8m-generic-bsp ?= "imx8m-sdimage.wks"
