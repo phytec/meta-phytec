@@ -95,15 +95,13 @@ fi
 get_init_env_dir() {
 	if [ -e "${ROOTDIR}/sources/oe-core" ]; then
                 echo sources/oe-core
-	elif [ -e "${ROOTDIR}/sources/poky" ]; then
-		echo sources/poky
 	else
-		echo >&2 "poky/oe-core build environment script not found."
+		echo >&2 "oe-core build environment script not found."
 		exit 1
 	fi
 }
 
-# source poky/oe-core build environment script.
+# source oe-core build environment script.
 cd ${ROOTDIR}/$(get_init_env_dir)
 . ${ROOTDIR}/$(get_init_env_dir)/oe-init-build-env > /dev/null
 
