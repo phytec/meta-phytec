@@ -31,17 +31,18 @@ if [ "$ROOTDIR" = "" ]; then
 	exit 1;
 fi
 
-# copy release notes to rootdir, if they are present in phy2octo
 REPO_MANIFEST="${ROOTDIR}/.repo/manifest.xml"
 if [ -L ${REPO_MANIFEST} ]; then
         # file is a symbolic link
-	RELEASE_UID=$(sed -n 's:.*release_uid="\([^"]*\).*:\1:p' ${REPO_MANIFEST})
+	ACTIVE_MANIFEST="${REPO_MANIFEST}"
 else
         # file is a regular file
         INC_MANIFEST=`grep -o '".*\.xml"' ${REPO_MANIFEST} | sed 's/"//g'`
-        RELEASE_UID=$(sed -n 's:.*release_uid="\([^"]*\).*:\1:p' \
-		${ROOTDIR}/.repo/manifests/${INC_MANIFEST})
+        ACTIVE_MANIFEST="${ROOTDIR}/.repo/manifests/${INC_MANIFEST}"
 fi
+
+# copy release notes to rootdir, if they are present in phy2octo
+RELEASE_UID=$(sed -n 's:.*release_uid="\([^"]*\).*:\1:p' ${ACTIVE_MANIFEST})
 RELEASE_NOTES="${ROOTDIR}/.repo/manifests/releasenotes/${RELEASE_UID}"
 if [ -e ${RELEASE_NOTES} ]; then
 	install -pm 0644 ${RELEASE_NOTES} ${ROOTDIR}/ReleaseNotes
@@ -111,7 +112,7 @@ ${PHYTEC_DIR}/scripts/copy_site_conf.py
 ${PHYTEC_DIR}/scripts/init_machine.py
 
 container_usage() {
-	CONTAINER=$(sed -n 's:.*build_container="\([^"]*\).*:\1:p' ${ROOTDIR}/.repo/manifest.xml)
+	CONTAINER=$(sed -n 's:.*build_container="\([^"]*\).*:\1:p' ${ACTIVE_MANIFEST})
 	if [ ! -z "${CONTAINER}" ]; then
 		echo "A build container can also be used as your build environment.\n"
 		echo "Set up your shell environment with:\n"
