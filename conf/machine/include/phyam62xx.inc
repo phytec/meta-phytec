@@ -6,8 +6,6 @@ SOC_FAMILY:append = ":am62xx"
 TFA_BOARD = "lite"
 OPTEEMACHINE = "k3-am62x"
 
-TFA_K3_SYSTEM_SUSPEND = "1"
-
 MACHINE_FEATURES += "screen touchscreen"
 
 # phyBOARD-Lyra downstream kernel overlays
