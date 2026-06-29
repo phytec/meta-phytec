@@ -118,7 +118,7 @@ container_usage() {
 		echo "    $ podman run --rm=true -v /home:/home --userns=keep-id --workdir=\${PWD} -it ${CONTAINER} bash \n"
 		echo "Or start a build with:\n"
 		echo "    $ podman run --rm=true -v /home:/home --userns=keep-id --workdir=\${PWD} -it ${CONTAINER} \\"
-		echo "      bash -c '. sources/poky/oe-init-build-env && bitbake phytec-headless-image'"
+		echo "      bash -c '. sources/oe-core/oe-init-build-env && bitbake phytec-headless-image'"
 		echo ""
 		echo ""
 	fi
