@@ -7,8 +7,6 @@ OPTEEMACHINE = "k3-am62x"
 
 MACHINE_ESSENTIAL_EXTRA_RRECOMMENDS += "cnm-wave-fw"
 
-TFA_K3_SYSTEM_SUSPEND = "1"
-
 MACHINE_FEATURES += "screen touchscreen"
 
 # phyBOARD-Lyra downstream kernel overlays
