@@ -47,7 +47,7 @@ Script wipe-deploy-images
 
 Remove all images in the directory ${DEPLOY_DIR}/images. Use like
 
-    $ . sources/poky/oe-init-build-env
+    $ . sources/oe-core/oe-init-build-env
     $ ../sources/meta-phytec/scripts/wipe-deploy-images
 
 Useful to free harddisk space after a lot of builds.
