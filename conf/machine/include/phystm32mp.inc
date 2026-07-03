@@ -23,7 +23,7 @@ SERIAL_CONSOLES = "115200;ttySTM0"
 RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base = ""
 
 # Ship all kernel modules by default
-MACHINE_EXTRA_RRECOMMENDS = " kernel-modules"
+MACHINE_EXTRA_RRECOMMENDS ?= " kernel-modules"
 
 # Install edid firmware files for hdmi
 MACHINE_EXTRA_RRECOMMENDS:append = " ${@bb.utils.contains("MACHINE_FEATURES", "hdmi", "linux-firmware-edid", "", d)}"
