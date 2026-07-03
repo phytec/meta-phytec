@@ -31,6 +31,10 @@ EXTRA_OEMAKE:append:mx8mp-nxp-bsp:phyflex-fpsc-g = " \
     CFG_UART_BASE=UART4_BASE \
 "
 
+EXTRA_OEMAKE:append:mx95-generic-bsp:phyflex-fpsc-g = " \
+    CFG_UART_BASE=0x42690000 \
+"
+
 EXTRA_OEMAKE:append:mx6ul-generic-bsp = " \
     CFG_WITH_SOFTWARE_PRNG=n \
     ${@bb.utils.contains('OPTEE_CORE_LOG_LEVEL', '0', 'CFG_TEE_CORE_TA_TRACE=n', '', d)} \
