@@ -42,4 +42,4 @@ do_deploy() {
 }
 
 PACKAGES =+ "${PN}-imagebootfs"
-FILES:${PN}-imagebootfs = "${DT_OVERLAYS_INSTALL_DIR}/ ${DT_OVERLAYS_INSTALL_DIR}/*.dtbo ${DT_OVERLAYS_INSTALL_DIR}/overlays.txt"
+FILES:${PN} = "${DT_OVERLAYS_INSTALL_DIR}/ ${DT_OVERLAYS_INSTALL_DIR}/*.dtbo ${DT_OVERLAYS_INSTALL_DIR}/overlays.txt"
