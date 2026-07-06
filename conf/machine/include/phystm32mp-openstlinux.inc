@@ -226,9 +226,6 @@ WKS_FILE_DEPENDS:openstlinuxcommon ?= " \
     virtual/bootloader \
     virtual/trusted-firmware-a \
     ${@bb.utils.contains('BOOTSCHEME_LABELS', 'optee', 'virtual-optee-os', '', d)} \
-    ${STM32MP_BOOTFS_IMAGE} \
-    ${@bb.utils.contains('ST_VENDORFS', '1', '${STM32MP_VENDORFS_IMAGE}', '', d)} \
-    ${@bb.utils.contains('ST_USERFS', '1', '${STM32MP_USERFS_IMAGE}', '', d)} \
 "
 
 # If optee is part of the selected boot chains, consider optee by default.
