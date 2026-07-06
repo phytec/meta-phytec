@@ -16,7 +16,7 @@ GIT_URL:phynext = "git://git@git.phytec.de/u-boot-phytec-imx-dev.git;protocol=ss
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
 PR = "r0"
-SRCREV = "34a5be8bb55272553da5fdcaaf7eb1523833c670"
+SRCREV = "f9072b505fa25f7f2ec7d488e5e091d520b6f677"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
@@ -33,8 +33,8 @@ do_deploy:append:mx8m-generic-bsp() {
                 if [ $j -eq $i ]
                 then
                     install -d ${DEPLOYDIR}/imx-boot-tools
-                    install -m 0777 ${B}/${config}-${type}/dts/upstream/src/arm64/freescale/${UBOOT_DTB_NAME} ${DEPLOYDIR}/imx-boot-tools
-                    install -m 0777 ${B}/${config}-${type}/u-boot-nodtb.bin  ${DEPLOYDIR}/${BOOT_TOOLS}/u-boot-nodtb.bin-${MACHINE}-${type}
+                    install -m 0777 ${B}/${config}/dts/upstream/src/arm64/freescale/${UBOOT_DTB_NAME} ${DEPLOYDIR}/imx-boot-tools
+                    install -m 0777 ${B}/${config}/u-boot-nodtb.bin  ${DEPLOYDIR}/${BOOT_TOOLS}/u-boot-nodtb.bin-${MACHINE}-${type}
                 fi
             done
             unset  j
@@ -57,11 +57,7 @@ do_deploy:append:mx91-generic-bsp() {
 }
 
 COMPATIBLE_MACHINE = "^("
-COMPATIBLE_MACHINE .= "imx8mp-phyflex-libra-rdk-2"
-COMPATIBLE_MACHINE .= "|phyboard-nash-imx93-1"
-COMPATIBLE_MACHINE .= "|phyboard-segin-imx91-1"
-COMPATIBLE_MACHINE .= "|phyboard-segin-imx93-2"
-COMPATIBLE_MACHINE .= "|imx93-phyflex-libra-rdk-1"
+COMPATIBLE_MACHINE .= "imx95-phyflex-libra-rdk-2"
 COMPATIBLE_MACHINE .= ")$"
 
 UBOOT_NAME:mx8-nxp-bsp = "u-boot-${MACHINE}.bin-${UBOOT_CONFIG}"
