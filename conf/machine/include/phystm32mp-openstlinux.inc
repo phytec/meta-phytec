@@ -128,34 +128,45 @@ PARTITIONS_IMAGES_UPDATABLE:update = "bootfs vendorfs rootfs"
 # to add A/B partionning in flashlayout when using RAUC distro feature
 def partImage2partConfig(d, config, fstype=None):
     """
-    Convert PARTITIONS_IMAGES['config'] setting format to format expected to feed
+    Convert PARTTIONS_IMAGES['config'] setting format to format expected to feed
     PARTITIONS_CONFIG[xxx].
     Manage <image_name> update respect to 'fstype' provided and apply the rootfs
     namming or standard partition image one.
     If the partition image is updatable, i.e 'config' is part of PARTITIONS_IMAGES_UPDATABLE
     add a secondary partition (B) to duplicate the primary partition (A),
     but without binary (empty partition).
-        FROM: <image_name>,<partition_label>,<mountpoint>,<size>,<type>
-        TO  : <binary_name>,<partition_label>,<size>,<type>
+        FROM: <image_name>,<partition_label>,<mountpoint>,<size>,<type>[,<copy>,<limit fs>]
+        TO  : <binary_name>,<partition_label>,<size>,<type>,<copy>
     """
-
     items = d.getVarFlag('PARTITIONS_IMAGES', config).split(',') or ""
-    if len(items) != 5:
-        bb.fatal('[partImage2partConfig] Wrong settings for PARTITIONS_IMAGES[%s] : %s' % (config, items))
+    if len(items) > 7:
+        bb.fatal('[partImage2partConfig] Wrong settings for PARTTIONS_IMAGES[%s] : %s' % (config, items))
     overrides = d.getVar('OVERRIDES')
-    if items[2] == '' and 'openstlinuxcommon' not in overrides.split(':'):
-        bin_suffix = '-${MACHINE}'
+    bin_suffix = '-${MACHINE}'
+    machine =  d.getVar('MACHINE')
+    addons_partition = ""
+    if (d.getVar('ENABLE_PARTITIONS_IMAGE') or "0") != "0":
+        addons_partition = "splitted-"
+    if machine in items[0].replace('-','.').split('.'):
+        # items[0] = full name of image with or without fstype
+        bin_name=items[0]
+        image_fstype=items[0].rsplit(".", 1)
+        if len(items[0].rsplit(".", 1)) >= 2:
+            if items[1] in items[0].rsplit(".", 1)[1]:
+                # no fstype specified on image
+                if fstype:
+                    bin_name = items[0] + '.' + fstype
     else:
-        bin_suffix = '-${DISTRO}-${MACHINE}'
-    if fstype:
-        if items[1][-2:] != 'fs':
-            bin_name = items[0] + bin_suffix + '.' + items[1] + 'fs.' + fstype
+        if fstype:
+            bin_name = items[0] + bin_suffix + '.' + addons_partition + items[1] + '.' + fstype
         else:
-            bin_name = items[0] + bin_suffix + '.' + items[1] + '.' + fstype
+            bin_name = items[0] + bin_suffix + '.' + addons_partition + items[1]
+    if len(items) == 6:
+        copy = items[5]
     else:
-        bin_name = items[0] + bin_suffix + '.' + items[1]
-    # Set string for PARTITIONS_CONFIG item: <binary_name>,<partlabel>,<size>,<type>
-    part_format = bin_name + ',' + items[1] + ',' + items[3] + ',' + items[4]
+        copy = '1'
+    # Set string for PARTITIONS_CONFIG item: <binary_name>,<partlabel>,<size>,<type>,<copy>
+    part_format = bin_name + ',' + items[1] + ',' + items[3] + ',' + items[4] + ',' + copy
 
     if config in d.getVar('PARTITIONS_IMAGES_UPDATABLE'):
         part_b_label = items[1].replace('afs', 'bfs')
