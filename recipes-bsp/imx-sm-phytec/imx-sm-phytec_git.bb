@@ -8,9 +8,9 @@ SRC_URI = "${IMX_SM_SRC};branch=${BRANCH}"
 IMX_SM_SRC = "git://github.com/phytec/imx-sm-phytec.git;protocol=https"
 
 BRANCH = "master-phy"
-BRANCH:use-nxp-bsp = "6.12.34-2.1.0-phy"
+BRANCH:use-nxp-bsp = "6.18.20-2.0.0-phy"
 SRCREV = "${AUTOREV}"
-SRCREV:use-nxp-bsp = "f881623260532fbb0d93b640d5e9cec6ae2e25b5"
+SRCREV:use-nxp-bsp = "8e96b2cf65bebc42a0b5b124f1bf20d00d2a2e80"
 
 
 # Set generic compiler for system manager core
