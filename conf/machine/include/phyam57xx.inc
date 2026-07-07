@@ -39,8 +39,11 @@ KERNEL_IMAGETYPES:remove = "uImage"
 # Do not build extlinux
 UBOOT_EXTLINUX = "0"
 
+# Set UBOOT_BINARY so image-context users (e.g. ptf.bbclass) see it
+UBOOT_BINARY ?= "u-boot.${UBOOT_SUFFIX}"
+
 # MLO and u-boot.img
-IMAGE_BOOT_FILES = "${SPL_BINARY} u-boot.${UBOOT_SUFFIX}"
+IMAGE_BOOT_FILES = "${SPL_BINARY} ${UBOOT_BINARY}"
 
 # WIC
 WKS_FILES:am57xx ?= "am57xx-sdimage.wks"
