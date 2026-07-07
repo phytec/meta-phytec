@@ -1,11 +1,13 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/${BPN}:"
 
 SRC_URI = "git://git.phytec.de/linux-stm32mp;protocol=git;branch=v${LINUX_VERSION}-phy"
-SRCREV = "0a87aa2efd3e1c449b6c1595f8ca58bac21d8be7"
+SRCREV = "b351004af915258f586ff24f64b877dc84e0c6cf"
 
-LINUX_RELEASE = "r2-phy3"
+LINUX_RELEASE = "r3.1-phy1"
 
 S = "${WORKDIR}/git"
+
+RDEPENDS:${KERNEL_PACKAGE_NAME}-base += "phytec-dt-overlays-stm32mp"
 
 # -------------------------------------------------------------
 # Defconfig
@@ -114,4 +116,4 @@ do_install:append() {
     install -m 0644 ${KERNEL_OUTPUT_DIR}/dts/${DTS_FILE} ${D}/${KERNEL_IMAGEDEST}
 }
 
-FILES:${KERNEL_PACKAGE_NAME}-imagebootfs += "boot/${DTS_FILE}"
+FILES:${KERNEL_PACKAGE_NAME}-devicetree += "/${KERNEL_DTBDEST}/${DTS_FILE}"
