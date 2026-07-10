@@ -75,11 +75,29 @@ python do_apply_extra_env() {
     if not os.path.exists(extra_env) or os.path.getsize(extra_env) == 0:
         return
 
-    # Find the board's env directory and the name of its original .env file.
-    config = os.path.join(d.getVar('B'), '.config')
-    if not os.path.exists(config):
-        bb.fatal("uboot-extra-env: %s not found - did do_configure run?" % config)
+    # Plain UBOOT_MACHINE builds configure ${B} directly. UBOOT_CONFIG
+    # builds create one build directory per config below ${B}.
+    builddir = d.getVar('B')
+    configs = []
+    if os.path.exists(os.path.join(builddir, '.config')):
+        configs.append(os.path.join(builddir, '.config'))
+    else:
+        for subdir in sorted(os.listdir(builddir)):
+            config = os.path.join(builddir, subdir, '.config')
+            if os.path.exists(config):
+                configs.append(config)
 
+    if not configs:
+        bb.fatal("uboot-extra-env: no .config below %s - did do_configure run?" % builddir)
+
+    for config in configs:
+        uboot_apply_extra_env_config(d, config, extra_env)
+}
+
+def uboot_apply_extra_env_config(d, config, extra_env):
+    import os
+
+    # Find the board's env directory and the name of its original .env file.
     board = uboot_config_get(config, 'CONFIG_SYS_BOARD')
     vendor = uboot_config_get(config, 'CONFIG_SYS_VENDOR')
     base = uboot_config_get(config, 'CONFIG_ENV_SOURCE_FILE')
@@ -110,5 +128,5 @@ python do_apply_extra_env() {
     # Point u-boot at the wrapper. kbuild regenerates include/autoconf.mk
     # from .config during do_compile, so no explicit olddefconfig is needed.
     uboot_config_set(config, 'CONFIG_ENV_SOURCE_FILE', name)
-}
+
 addtask apply_extra_env after do_configure before do_compile
