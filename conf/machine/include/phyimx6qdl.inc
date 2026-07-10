@@ -45,6 +45,8 @@ DT_OVERLAYS_INSTALL = " \
     imx6-vm012-col-0.dtbo \
     imx6-vm016-0.dtbo \
     imx6-vm050-0.dtbo \
+    imx6dl-phytec-mira-peb-av-18.dtbo \
+    imx6q-phytec-mira-peb-av-18.dtbo \
 "
 
 DT_OVERLAYS_INSTALL:append:phyboard-mira-imx6 = " \
