@@ -31,6 +31,11 @@ repos:
   meta-phytec:
     url: https://github.com/phytec/meta-phytec
 
+  meta-ti:
+    url: https://git.yoctoproject.org/meta-ti
+    layers:
+      meta-ti-bsp:
+
   meta-arm:
     url: https://git.yoctoproject.org/meta-arm
     layers:
