@@ -35,7 +35,7 @@ PR = "${INC_PR}.0"
 # NOTE: The <ti-sdk-version> field (e.g. 12.00.00.07) must be a tag on the
 #       meta-ti commit pinned in the manifest, which provides the matching
 #       firmware (sysfw/dm/pru). ti-sdk-version-check.bbclass warns otherwise.
-SRCREV = "6ef8d41e44d96a75e66f5b4018ab1a057dc6f0c2"
+SRCREV = "48c72aa17ab50bf7be6ca2dda476e6bed20a734a"
 
 # Special configuration for remoteproc/rpmsg IPC modules
 module_conf_rpmsg_client_sample = "blacklist rpmsg_client_sample"
