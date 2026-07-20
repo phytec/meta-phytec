@@ -48,7 +48,6 @@
 # for an unsigned fitimage
 
 LICENSE = "MIT"
-inherit_defer ${@ "hab" if "imx-generic-bsp" in d.getVar("OVERRIDES").split(":") else "" }
 inherit deploy
 inherit signing-helpers
 
@@ -85,7 +84,6 @@ FIT_CONF_PREFIX ??= ""
 FIT_CONF_PREFIX:k3 ?= "conf-"
 FIT_CONF_PREFIX:mx8m-nxp-bsp ?= "conf-"
 
-FITIMAGE_SIGN_ENGINE ??= "software"
 FITIMAGE_UBOOT_ENTRYPOINT ??= "UBOOT_ENTRYPOINT"
 FITIMAGE_UBOOT_ENTRYPOINT:mx8m-nxp-bsp ??= "0x40480000"
 
@@ -540,7 +538,7 @@ do_unpack:append() {
 do_fitimagebundle () {
     is_pkcs11=0
     echo "${UBOOT_SIGN_KEYDIR}" | grep -q "^pkcs11:" && is_pkcs11=1
-    if [ "${UBOOT_SIGN_ENABLE}" = "1" -a "${FITIMAGE_SIGN_ENGINE}" != "nxphab" ] ; then
+    if [ "${UBOOT_SIGN_ENABLE}" = "1" ] ; then
         path_key=""
         engine=""
         if [ $is_pkcs11 -eq 0 ] ; then
@@ -567,18 +565,6 @@ do_fitimagebundle () {
 }
 do_fitimagebundle[dirs] = "${B}"
 addtask fitimagebundle after do_configure before do_build
-
-python do_signhab() {
-    if d.getVar('UBOOT_SIGN_ENABLE') == '1' and d.getVar('FITIMAGE_SIGN_ENGINE') == 'nxphab':
-        loadaddr = int(d.getVar('FITIMAGE_UBOOT_ENTRYPOINT'), 16)
-        build_dir = d.getVar("B")
-        image_path = os.path.join(build_dir, 'fitImage')
-        image_size = os.stat(image_path).st_size
-        aligned_size = (image_size + 0x1000 - 1) & ~(0x1000 - 1)
-
-        sign_inplace(d, image_path, aligned_size, loadaddr, [])
-}
-addtask signhab after do_fitimagebundle before do_deploy
 
 do_deploy[vardepsexclude] += "IMAGE_VERSION_SUFFIX"
 do_deploy() {
