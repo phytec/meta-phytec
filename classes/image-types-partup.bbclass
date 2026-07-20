@@ -3,7 +3,7 @@ PARTUP_PACKAGE_FILES ??= ""
 PARTUP_PACKAGE_DEPENDS ??= ""
 
 PARTUP_LAYOUT_CONFIG ??= "${IMAGE_LINK_NAME}.yaml"
-PARTUP_SEARCH_PATH ?= "${THISDIR}:${@':'.join('%s/partup' % p for p in '${BBPATH}'.split(':'))}"
+PARTUP_SEARCH_PATH ?= "${THISDIR}:${@':'.join('%s/files/partup' % p for p in '${BBPATH}'.split(':'))}"
 PARTUP_LAYOUT_CONFIG_FULL_PATH = "${@bb.utils.which(d.getVar('PARTUP_SEARCH_PATH'), d.getVar('PARTUP_LAYOUT_CONFIG'))}"
 
 USING_PARTUP = "${@bb.utils.contains('IMAGE_FSTYPES', 'partup', True, False, d)}"
