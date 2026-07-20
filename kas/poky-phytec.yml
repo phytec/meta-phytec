@@ -10,7 +10,7 @@ target: core-image-base
 
 defaults:
   repos:
-    branch: master
+    branch: wrynose
 
 repos:
   openembedded-core:
@@ -20,6 +20,7 @@ repos:
 
   bitbake:
     url: git://git.openembedded.org/bitbake.git
+    branch: "2.18"
     layers:
       bitbake: disabled
 
