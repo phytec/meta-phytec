@@ -50,7 +50,7 @@ python do_create_dynamic_dtree:append:secureboot() {
     if not os.path.exists(workdir):
         os.makedirs(workdir)
 
-    if d.getVar("UBOOT_SIGN_ENABLE") == "1" and d.getVar('FITIMAGE_SIGN_ENGINE') != 'nxphab':
+    if d.getVar("UBOOT_SIGN_ENABLE") == "1":
         write_signature_node(d)
 
         signature_node_path_dts = os.path.join(workdir, "signature_node.dts")
