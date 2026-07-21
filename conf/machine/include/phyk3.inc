@@ -32,7 +32,7 @@ EXTRA_IMAGEDEPENDS += "virtual/bootloader"
 
 TFA_PLATFORM = "k3"
 
-do_image_wic[depends] += "ti-boot-container:do_deploy"
+do_image_wic[depends] += "ti-boot-container:do_deploy linux-yocto-fitimage:do_deploy"
 do_image_partup[depends] += "ti-boot-container:do_deploy"
 do_image_partup[depends] += "phytec-bootenv:do_deploy"
 
