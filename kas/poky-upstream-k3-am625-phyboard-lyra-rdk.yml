@@ -14,17 +14,17 @@ defaults:
 
 repos:
   openembedded-core:
-    url: git://git.openembedded.org/openembedded-core.git
+    url: https://git.openembedded.org/openembedded-core
     layers:
       meta:
 
   bitbake:
-    url: git://git.openembedded.org/bitbake.git
+    url: https://git.openembedded.org/bitbake
     layers:
       bitbake: disabled
 
   meta-yocto:
-    url: git://git.yoctoproject.org/git/meta-yocto.git
+    url: https://git.yoctoproject.org/meta-yocto
     layers:
       meta-poky:
 
