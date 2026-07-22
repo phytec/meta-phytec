@@ -51,7 +51,7 @@ python do_dtsfixup () {
         shutil.copyfile(dts, cptarget)
 }
 
-addtask dtsfixup after do_symlink_kernsrc before do_compile
+addtask dtsfixup after do_kernel_checkout before do_compile
 
 KERNEL_ARTIFACT_LINK_NAME = ""
 KERNEL_IMAGE_NAME = "${KERNEL_IMAGETYPE}-${PN}-${PKGV}-${PKGR}-${MACHINE}${IMAGE_VERSION_SUFFIX}"
