@@ -13,12 +13,14 @@ SRC_URI = " \
 	${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'file://lxc.scc', '', d)} \
 	${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'file://oci.scc', '', d)} \
 	${@bb.utils.contains('DISTRO_FEATURES', 'preempt-rt', 'file://preempt-rt.scc', '', d)} \
+	${@bb.utils.contains('MACHINE_FEATURES', 'tpm2', 'file://tpm2.scc', '', d)} \
 "
 
 KERNEL_FEATURES = " \
     systemd.scc \
     ${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'lxc.scc oci.scc', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'preempt-rt', 'preempt-rt.scc', '', d)} \
+    ${@bb.utils.contains('MACHINE_FEATURES', 'tpm2', 'tpm2.scc', '', d)} \
 "
 
 KBUILD_DEFCONFIG ?= "phytec_ti_defconfig"
