@@ -1,0 +1,40 @@
+From 9fcae86a997a4baced243632d7460fa831a18e18 Mon Sep 17 00:00:00 2001
+From: Jan Remmet <j.remmet@phytec.de>
+Date: Thu, 23 Jul 2026 16:02:41 +0200
+Subject: [PATCH] [PATCH] plat: imx95: Assign GPIO1 pins to non-secure world by
+ default
+
+We also use GPIO1 from Linux on phyFLEX-i.MX95.
+
+Upstream-Status: Inappropriate [phyFLEX-i.MX95 specific]
+
+Signed-off-by: Jan Remmet <j.remmet@phytec.de>
+---
+ plat/imx/imx9/imx95/imx95_bl31_setup.c     | 2 +-
+ plat/imx/imx9/imx95/include/platform_def.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/plat/imx/imx9/imx95/imx95_bl31_setup.c b/plat/imx/imx9/imx95/imx95_bl31_setup.c
+index 0dae2eb1de50..db4512a76ceb 100644
+--- a/plat/imx/imx9/imx95/imx95_bl31_setup.c
++++ b/plat/imx/imx9/imx95/imx95_bl31_setup.c
+@@ -15,5 +15,5 @@ const mmap_region_t imx_mmap[] = {
+ };
+ 
+ const uintptr_t gpio_base[GPIO_NUM] = {
+-	GPIO2_BASE, GPIO3_BASE, GPIO4_BASE, GPIO5_BASE
++	GPIO1_BASE, GPIO2_BASE, GPIO3_BASE, GPIO4_BASE, GPIO5_BASE
+ };
+diff --git a/plat/imx/imx9/imx95/include/platform_def.h b/plat/imx/imx9/imx95/include/platform_def.h
+index 3313f2bd7d76..94f0a5c5fb6d 100644
+--- a/plat/imx/imx9/imx95/include/platform_def.h
++++ b/plat/imx/imx9/imx95/include/platform_def.h
+@@ -84,7 +84,7 @@
+ /* Used for GIC_WAKER sync between AP and SM. */
+ #define SM_AP_SEMA_ADDR			0x442213F8
+ 
+-#define GPIO_NUM			U(4)
++#define GPIO_NUM			U(5)
+ #define PER_NUM				U(15)
+ #define WDOG_NUM			U(2)
+ 
