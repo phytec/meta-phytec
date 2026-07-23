@@ -19,7 +19,7 @@ SRC_URI = "${GIT_URL};branch=${BRANCH}"
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 PR = "r0"
-SRCREV = "40acc8b91f57893ba81af374126cd0f01d9efb63"
+SRCREV = "8fae1d8ea0d17d192d116e300bda7cad263a4103"
 
 COMPATIBLE_MACHINE = "^("
 COMPATIBLE_MACHINE .=  "phyboard-electra"
