@@ -45,7 +45,7 @@ INITRAMFS_FSTYPES = "cpio.xz"
 PREFERRED_PROVIDER_virtual/kernel ??= "linux-phytec-ti"
 PREFERRED_PROVIDER_virtual/bootloader ??= "u-boot-phytec-ti"
 PREFERRED_PROVIDER_u-boot ??= "u-boot-phytec-ti"
-MACHINE_FEATURES = "apm usbgadget usbhost vfat ext2 alsa rtc optee efi"
+MACHINE_FEATURES = "apm usbgadget usbhost vfat ext2 alsa rtc optee"
 
 # dont install kernelimage to rootfs
 RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base = ""
@@ -55,7 +55,7 @@ KERNEL_IMAGETYPES ?= "Image"
 
 KERNEL_MODULE_AUTOLOAD += "cryptodev"
 
-WKS_FILE = "${@bb.utils.contains("MACHINE_FEATURES", "efi", "k3-sdimage-efi.wks.in", "k3-sdimage.wks", d)}"
+WKS_FILE = "k3-sdimage.wks"
 EMMC_DEV = "0"
 # eMMC boot partition bootloader image offset
 BOOTLOADER_SEEK_EMMC = "0"
@@ -89,9 +89,6 @@ IMAGE_BOOT_FILES = "${@bb.utils.contains('DISTRO_FEATURES', 'secureboot', \
     '${K3_BOOTLOADER_FILES} fitImage', \
     '${K3_BOOTLOADER_FILES} ${KERNEL_IMAGETYPE} ${@make_dtb_boot_files(d)} oftree overlays.txt', \
     d)}"
-IMAGE_EFI_BOOT_FILES ?= "${IMAGE_BOOT_FILES}"
-
-EFI_PROVIDER ?= "grub-efi"
 
 IMAGE_CLASSES += "image-types-partup wic-bootenv-helper"
 require partup-layout-config.inc
