@@ -65,6 +65,16 @@ python do_create_dynamic_dtree:append:secureboot() {
             path = path[7:]
             setup_pkcs11_env(d)
 
+        if d.getVar('FIT_SIGN_INDIVIDUAL') == "1":
+            exec_command(f"mkimage {d.getVar('UBOOT_MKIMAGE_SIGN_ARGS')} \
+                -f auto \
+                -k {path} \
+                -g {d.getVar('UBOOT_SIGN_IMG_KEYNAME')} \
+                -o {d.getVar('FIT_HASH_ALG')},{d.getVar('FIT_SIGN_ALG')} \
+                -K {signature_node_path_dtb} \
+                -d /dev/null \
+                -r {workdir + '/dummy.img'}")
+
         exec_command(f"mkimage {d.getVar('UBOOT_MKIMAGE_SIGN_ARGS')} \
             -f auto-conf \
             -k {path} \
