@@ -8,19 +8,20 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/linux-phytec-6.18:"
 GIT_URL = "git://github.com/phytec/linux-phytec.git;protocol=https"
 GIT_URL:phynext = "git://git@git.phytec.de/linux-phytec-dev.git;protocol=ssh"
 SRC_URI = " \
-	${GIT_URL};branch=${BRANCH} \
+	${GIT_URL};name=machine;branch=${BRANCH} \
+	git://git.yoctoproject.org/yocto-kernel-cache;type=kmeta;name=meta;branch=yocto-6.18;destsuffix=${KMETA};protocol=https \
 	file://systemd.scc \
-	${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'file://lxc.scc', '', d)} \
 	${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'file://oci.scc', '', d)} \
 	${@bb.utils.contains('DISTRO_FEATURES', 'preempt-rt', 'file://preempt-rt.scc', '', d)} \
-	${@bb.utils.contains('MACHINE_FEATURES', 'tpm2', 'file://tpm2.scc', '', d)} \
 "
+
+KMETA = "kernel-meta"
 
 KERNEL_FEATURES = " \
     systemd.scc \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'lxc.scc oci.scc', '', d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'cfg/lxc.scc oci.scc', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'preempt-rt', 'preempt-rt.scc', '', d)} \
-    ${@bb.utils.contains('MACHINE_FEATURES', 'tpm2', 'tpm2.scc', '', d)} \
+    ${@bb.utils.contains('MACHINE_FEATURES', 'tpm2', 'features/tpm/tpm-2.0.scc', '', d)} \
 "
 
 KBUILD_DEFCONFIG ?= "phytec_ti_defconfig"
@@ -31,6 +32,8 @@ PR = "${INC_PR}.0"
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
 # NOTE: Keep version in filename in sync with commit id!
 SRCREV = "08691fea2adc0011f36514f445b6925e012d1832"
+SRCREV_machine = "${SRCREV}"
+SRCREV_meta ?= "4dafe0e420087b6381728e68eeeff6d9af0a32e7"
 
 # Special configuration for remoteproc/rpmsg IPC modules
 module_conf_rpmsg_client_sample = "blacklist rpmsg_client_sample"
