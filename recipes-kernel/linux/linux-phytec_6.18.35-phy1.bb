@@ -11,6 +11,7 @@ SRC_URI = " \
 	${GIT_URL};name=machine;branch=${BRANCH} \
 	git://git.yoctoproject.org/yocto-kernel-cache;type=kmeta;name=meta;branch=yocto-6.18;destsuffix=${KMETA};protocol=https \
 	file://systemd.scc \
+	${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'file://podman-extra.scc', '', d)} \
 	${@bb.utils.contains('DISTRO_FEATURES', 'preempt-rt', 'file://preempt-rt.scc', '', d)} \
 "
 
@@ -18,7 +19,7 @@ KMETA = "kernel-meta"
 
 KERNEL_FEATURES = " \
     systemd.scc \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'cfg/docker.scc', '', d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'cfg/docker.scc podman-extra.scc', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'preempt-rt', 'preempt-rt.scc', '', d)} \
     ${@bb.utils.contains('MACHINE_FEATURES', 'tpm2', 'features/tpm/tpm-2.0.scc', '', d)} \
 "
