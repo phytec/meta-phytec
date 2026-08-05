@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include <getopt.h> //for C11 compliance
 #include <stdlib.h>
+#include <limits.h>
 #include <fcntl.h>
 #include <errno.h>
 #include <termios.h>
@@ -180,11 +181,11 @@ void print_help()
 
 int main(int argc, char *argv[])
 {
-	char dev[64];
+	char dev[PATH_MAX];
 	int master = 0;
 	int setrs485half = 0;
 	int setrs485full = 0;
-	int hasdev  = 0;
+	int hasdev = 0;
 	int singleshoot = 0;
 
 	struct serial_rs485 rs485ctrl = {0};
@@ -196,7 +197,10 @@ int main(int argc, char *argv[])
 	while ((c = getopt (argc, argv, "vsfmd:l:")) != -1)
 		switch (c) {
 			case 'd':
-				snprintf(dev, sizeof(dev), "%s",optarg);
+				if (snprintf(dev, sizeof(dev), "%s", optarg) >= (int)sizeof(dev)) {
+					printf("Device path too long: %s\n", optarg);
+					return -1;
+				}
 				hasdev = 1;
 				break;
 			case 's':
