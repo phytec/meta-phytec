@@ -284,7 +284,11 @@ int main(int argc, char *argv[])
 	}
 
 	/* Set the port speed */
-	tcgetattr(fd, &ti);
+	if (tcgetattr(fd, &ti)) {
+		perror("tcgetattr");
+		ret = -1;
+		goto restore_settings;
+	}
 	ti.c_iflag = 0;
 	ti.c_oflag = 0;
 	ti.c_cflag = CS8 | CREAD | CLOCAL;
@@ -292,9 +296,21 @@ int main(int argc, char *argv[])
 	ti.c_cc[VTIME] = 1;
 	ti.c_cc[VMIN] = MAX_RECEIVE;
 
-	cfsetospeed(&ti, speed);
-	cfsetispeed(&ti, speed);
-	tcsetattr(fd, TCSANOW, &ti);
+	if (cfsetospeed(&ti, speed)) {
+		perror("cfsetospeed");
+		ret = -1;
+		goto restore_settings;
+	}
+	if (cfsetispeed(&ti, speed)) {
+		perror("cfsetispeed");
+		ret = -1;
+		goto restore_settings;
+	}
+	if (tcsetattr(fd, TCSANOW, &ti)) {
+		perror("tcsetattr");
+		ret = -1;
+		goto restore_settings;
+	}
 
 	if (master)
 		ret = send(fd, singleshoot);
@@ -302,6 +318,7 @@ int main(int argc, char *argv[])
 		ret = receive(fd);
 
 
+restore_settings:
 	/* restore orginial rs485 settings if available */
 	if (!cant_save && !already_enabled)
 		set_rs485_ioctl(fd, &rs485ctrl_orig);
