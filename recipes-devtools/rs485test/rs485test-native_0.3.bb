@@ -4,7 +4,7 @@ LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=c748d81368c9a87fff9317b09edacfee"
 SECTION = "devel"
 
-require rs485test_0.2.bb
+require rs485test_0.3.bb
 
 inherit deploy native
 

@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include <getopt.h> //for C11 compliance
 #include <stdlib.h>
+#include <limits.h>
 #include <fcntl.h>
 #include <errno.h>
 #include <termios.h>
@@ -180,11 +181,12 @@ void print_help()
 
 int main(int argc, char *argv[])
 {
-	char dev[64];
+	char dev[PATH_MAX];
+	char *endp;
 	int master = 0;
 	int setrs485half = 0;
 	int setrs485full = 0;
-	int hasdev  = 0;
+	int hasdev = 0;
 	int singleshoot = 0;
 
 	struct serial_rs485 rs485ctrl = {0};
@@ -196,7 +198,10 @@ int main(int argc, char *argv[])
 	while ((c = getopt (argc, argv, "vsfmd:l:")) != -1)
 		switch (c) {
 			case 'd':
-				snprintf(dev, sizeof(dev), "%s",optarg);
+				if (snprintf(dev, sizeof(dev), "%s", optarg) >= (int)sizeof(dev)) {
+					printf("Device path too long: %s\n", optarg);
+					return -1;
+				}
 				hasdev = 1;
 				break;
 			case 's':
@@ -212,9 +217,21 @@ int main(int argc, char *argv[])
 				master = 1;
 				break;
 			case 'l':
-				singleshoot = atoi(optarg);
+			{
+				long parsed;
+
+				errno = 0;
+				parsed = strtol(optarg, &endp, 10);
+				if (errno || endp == optarg || *endp != '\0' ||
+				    parsed < 1 || parsed > MAX_SEND) {
+					printf("Invalid length '%s'. Use a value between 1 and %d.\n",
+					       optarg, MAX_SEND);
+					return -1;
+				}
+				singleshoot = (int)parsed;
 				master = 1;
 				break;
+			}
 			default:
 				print_help();
 		}
@@ -267,7 +284,11 @@ int main(int argc, char *argv[])
 	}
 
 	/* Set the port speed */
-	tcgetattr(fd, &ti);
+	if (tcgetattr(fd, &ti)) {
+		perror("tcgetattr");
+		ret = -1;
+		goto restore_settings;
+	}
 	ti.c_iflag = 0;
 	ti.c_oflag = 0;
 	ti.c_cflag = CS8 | CREAD | CLOCAL;
@@ -275,9 +296,21 @@ int main(int argc, char *argv[])
 	ti.c_cc[VTIME] = 1;
 	ti.c_cc[VMIN] = MAX_RECEIVE;
 
-	cfsetospeed(&ti, speed);
-	cfsetispeed(&ti, speed);
-	tcsetattr(fd, TCSANOW, &ti);
+	if (cfsetospeed(&ti, speed)) {
+		perror("cfsetospeed");
+		ret = -1;
+		goto restore_settings;
+	}
+	if (cfsetispeed(&ti, speed)) {
+		perror("cfsetispeed");
+		ret = -1;
+		goto restore_settings;
+	}
+	if (tcsetattr(fd, TCSANOW, &ti)) {
+		perror("tcsetattr");
+		ret = -1;
+		goto restore_settings;
+	}
 
 	if (master)
 		ret = send(fd, singleshoot);
@@ -285,6 +318,7 @@ int main(int argc, char *argv[])
 		ret = receive(fd);
 
 
+restore_settings:
 	/* restore orginial rs485 settings if available */
 	if (!cant_save && !already_enabled)
 		set_rs485_ioctl(fd, &rs485ctrl_orig);
