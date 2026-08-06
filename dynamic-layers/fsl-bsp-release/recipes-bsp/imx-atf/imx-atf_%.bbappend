@@ -9,5 +9,5 @@ SRC_URI:append:mx95-nxp-bsp = "\
     file://0001-plat-imx95-Make-UART-BASE-ADDR-configurable.patch\
 "
 SRC_URI:append:imx95-phyflex-fpsc-g  = "\
-    file://0001-PATCH-plat-imx95-Assign-GPIO1-pins-to-non-secure-wor.patch\
+    file://0001-plat-imx95-Assign-GPIO1-pins-to-non-secure-world-by-.patch\
 "
