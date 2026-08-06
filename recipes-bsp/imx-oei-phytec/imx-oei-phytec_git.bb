@@ -12,9 +12,9 @@ PROVIDES = "virtual/imx-oei"
 SRC_URI = "${IMX_OEI_SRC};branch=${BRANCH}"
 IMX_OEI_SRC ?= "git://github.com/phytec/imx-oei-phytec.git;protocol=https"
 BRANCH = "master-phy"
-BRANCH:use-nxp-bsp = "6.12.34-2.1.0-phy"
+BRANCH:use-nxp-bsp = "6.18.20-2.0.0-phy"
 SRCREV = "${AUTOREV}"
-SRCREV:use-nxp-bsp = "22e056d73e7d7787e6f48f42c5eb24321a66cfb9"
+SRCREV:use-nxp-bsp = "7f9540673f7a67e999811b8559735f9ad63c9c42"
 
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
