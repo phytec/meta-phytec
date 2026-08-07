@@ -8,7 +8,7 @@ DEPENDS += "bc-native dtc-native gnutls-native u-boot-mkimage-native \
     ${@bb.utils.contains('MACHINE_FEATURES', 'optee', 'optee-os', '', d)} \
 "
 
-GIT_URL = "git://source.denx.de/u-boot/u-boot.git;protocol=https"
+GIT_URL = "git://git.u-boot-project.org/u-boot/u-boot.git;protocol=https"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 LIC_FILES_CHKSUM = "file://Licenses/README;md5=2ca5f2c35c8cc335f0a19756634782f1"
 
