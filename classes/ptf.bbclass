@@ -58,6 +58,7 @@ def build_ptf_data(d):
     data['ENV_PTF_YOCTO_RELEASE'] = d.getVar('DISTRO_CODENAME')
     data['ENV_PTF_IMAGE'] = d.getVar('IMAGE_BASENAME')
     data['ENV_PTF_DISTRO'] = d.getVar('DISTRO')
+    data['ENV_PTF_YOCTO_MACHINE'] = d.getVar('MACHINE')
     data['ENV_PTF_BOOTLOADER_VERSION'] = get_bootloader_version(d)
 
     return data
