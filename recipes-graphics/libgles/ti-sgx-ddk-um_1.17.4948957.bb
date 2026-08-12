@@ -1,6 +1,6 @@
 DESCRIPTION = "Userspace libraries for PowerVR SGX chipset on TI SoCs"
 HOMEPAGE = "https://git.ti.com/graphics/omap5-sgx-ddk-um-linux"
-LICENSE = "TI-TSPA"
+LICENSE = "LicenseRef-TI-TSPA"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=7232b98c1c58f99e3baa03de5207e76f"
 
 inherit features_check systemd

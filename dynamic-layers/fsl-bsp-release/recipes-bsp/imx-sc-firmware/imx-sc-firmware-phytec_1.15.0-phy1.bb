@@ -10,7 +10,7 @@
 # 3. make qx B=phycore DL=5 V=1 R=B0 U=2 D=1 M=1  (R=B0 for both B0 and C0 revisions)
 
 DESCRIPTION = "i.MX System Controller Firmware for PHYTEC boards"
-LICENSE = "Proprietary"
+LICENSE = "LicenseRef-Proprietary"
 LIC_FILES_CHKSUM = "file://COPYING;md5=5a0bf11f745e68024f37b4724a5364fe"
 SECTION = "BSP"
 

@@ -19,7 +19,7 @@ RCONFLICTS:${PN} = "linux-firmware-bcm43430 linux-firmware-bcm4339"
 RREPLACES:${PN} = "linux-firmware-bcm43430 linux-firmware-bcm4339"
 RPROVIDES:${PN} = "linux-firmware-bcm43430 linux-firmware-bcm4339"
 
-LICENSE = "Cypress & Ezurio"
+LICENSE = "LicenseRef-Cypress AND LicenseRef-Ezurio"
 NO_GENERIC_LICENSE[Cypress] = "LICENSE.cypress"
 NO_GENERIC_LICENSE[Ezurio] = "LICENSE.ezurio"
 LIC_FILES_CHKSUM = " \
