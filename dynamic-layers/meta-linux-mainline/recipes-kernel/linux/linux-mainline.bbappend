@@ -1,5 +1,6 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
+require recipes-kernel/linux/linux-common.inc
 inherit kernel-deploy-oftree
 
 KBUILD_DEFCONFIG = "defconfig"
