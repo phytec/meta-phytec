@@ -14,7 +14,7 @@ SRC_URI = "${GIT_URL};branch=${BRANCH}"
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 PR = "r0"
-SRCREV = "a6744b4edc2c0614ebad14a4b7cb54d43e306909"
+SRCREV = "df362f2d3f3089b833c9ff79ca46195709117ba3"
 
 COMPATIBLE_MACHINE = "^("
 COMPATIBLE_MACHINE .=  "am62lx-phyflex-libra-rdk"
