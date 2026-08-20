@@ -22,6 +22,7 @@ KERNEL_OVERLAYS_PHYTEC = " \
     ti/k3-am6754-phyboard-rigel-vm016-mipi-csi1.dtbo \
     ti/k3-am6754-phyboard-rigel-vm016-mipi-csi2.dtbo \
     ti/k3-am6754-phyboard-rigel-vm016-mipi-csi3.dtbo \
+    ti/k3-am6754-phyboard-rigel-x37-spi0.dtbo \
 "
 
 #phyBOARD_Rigel overlays
