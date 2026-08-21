@@ -230,7 +230,7 @@ ACTION=="add", \
 
 # CSI0 MIPI Bridge
 ACTION=="add", \
-	SUBSYSTEM==
+	SUBSYSTEM=="video4linux", \
 	ATTR{name}=="cdns_csi2rx.4504000.csi-bridge", \
 	DRIVERS=="j721e-csi2rx", \
 	SYMLINK+="phycam-mipi-csi0"
