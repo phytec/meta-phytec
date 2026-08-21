@@ -2,7 +2,7 @@ require conf/machine/include/phyk3.inc
 
 SOC_FAMILY:append = ":am62lxx"
 
-TFA_PLATFORM = "am6x"
+TFA_PLATFORM = "k3low"
 TFA_BOARD = "phyflex-am62l"
 OPTEEMACHINE = "k3-am62lx"
 
