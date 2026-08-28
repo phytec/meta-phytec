@@ -189,6 +189,26 @@ UBOOT_CONFIG[programmer_stm32mp13] = "phycore-stm32mp13_defconfig,,u-boot.dtb"
 # =========================================================================
 # u-boot extlinux configuration
 # =========================================================================
+# Use standard 'u-boot-stm32mp-extlinux' package instead of 'stm32mp-extlinux' (uboot-extlinux-config standard class is used)
+# Keep using 'stm32mp-efi' in cased of efi boot
+ST_EXTLINUX_PACKAGE = "${@bb.utils.contains('MACHINE_FEATURES', 'efi', 'stm32mp-efi', 'u-boot-stm32mp-extlinux', d)}"
+
+# For emmc and sdcard targets, keep only 'target-emmc' when both boot devices are enabled to combine them into one extlinux "mmc" LABEL
+MULTIPLE_MMC_TARGET = "${@'1' if all(x in (d.getVar('BOOTDEVICE_LABELS') or '') for x in ['emmc', 'sdcard']) else '0'}"
+UBOOT_EXTLINUX_TARGETS:remove = "${@bb.utils.contains('MULTIPLE_MMC_TARGET', '1', 'target-sdcard', '', d)}"
+
+# Create multiple extlinux LABEL for each boot target
+UBOOT_EXTLINUX_LABELS = "${UBOOT_EXTLINUX_TARGETS}"
+
+UBOOT_EXTLINUX_DEFAULT_LABEL:openstlinuxcommon = "mmc"
+UBOOT_EXTLINUX_MENU_DESCRIPTION:target-sdcard = "mmc"
+UBOOT_EXTLINUX_MENU_DESCRIPTION:target-emmc = "mmc"
+UBOOT_EXTLINUX_MENU_DESCRIPTION:target-nand = "nand"
+
+# Use U-boot env variable to set root PARTUUID in Kernel boot args
+UBOOT_EXTLINUX_ROOT:target-emmc = "root=PARTUUID=${uuidrootfs}"
+UBOOT_EXTLINUX_ROOT:target-sdcard = "root=PARTUUID=${uuidrootfs}"
+
 # Enable other device tree examples when specified
 LABEL_A7_EXAMPLES += "${@ 'rootfs-a7-examples' if '${LINUX_A7_EXAMPLES_DT}' else ''}"
 LABEL_M4_EXAMPLES += "${@ 'rootfs-m4-examples' if '${CUBE_M4_EXAMPLES_DT}' else ''}"

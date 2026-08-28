@@ -168,7 +168,7 @@ UBOOT_DTBO_LOADADDRESS = "0x900c0000"
 # u-boot extlinux configuration
 # =========================================================================
 # Generate extlinux config file
-UBOOT_EXTLINUX ?= "1"
+UBOOT_EXTLINUX ?= "${@bb.utils.contains('MACHINE_FEATURES', 'efi', '0', '1', d)}"
 UBOOT_EXTLINUX_ROOT ?= "root=PARTLABEL=root"
 UBOOT_EXTLINUX_KERNEL_IMAGE ?= "/${KERNEL_IMAGETYPE}"
 
@@ -179,6 +179,9 @@ UBOOT_EXTLINUX_KERNEL_IMAGE:append = "${@bb.utils.contains('KERNEL_IMAGETYPE', '
 UBOOT_EXTLINUX_FDTDIR = "${@bb.utils.contains('MACHINE_FEATURES', 'phy-expansions', '', '/', d)}"
 # Define default boot config
 UBOOT_EXTLINUX_DEFAULT_LABEL ?= "ampliPHY"
+# Define extlinux timeout to 20ms
+UBOOT_EXTLINUX_TIMEOUT ?= "20"
+
 # Define default INITRD
 INITRD_IMAGE ??= ""
 UBOOT_EXTLINUX_INITRD ?= "${@bb.utils.contains('COMBINED_FEATURES', 'initrd', '/${INITRD_IMAGE}', '', d)}"
@@ -186,7 +189,6 @@ UBOOT_EXTLINUX_INITRD ?= "${@bb.utils.contains('COMBINED_FEATURES', 'initrd', '/
 UBOOT_EXTLINUX_KERNEL_ARGS ?= "rootwait rw"
 # Add additional kernel arguments
 UBOOT_EXTLINUX_KERNEL_ARGS += "${EXTRA_KERNEL_ARGS}"
-UBOOT_EXTLINUX_ROOT:target-emmc:update ?= "root=PARTUUID=${uuidrootfs}"
 
 # =========================================================================
 # trusted-firmware-a
