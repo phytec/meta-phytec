@@ -7,8 +7,6 @@ LINUX_RELEASE = "r3.1-phy1"
 
 S = "${WORKDIR}/git"
 
-RDEPENDS:${KERNEL_PACKAGE_NAME}-base += "phytec-dt-overlays-stm32mp"
-
 # -------------------------------------------------------------
 # Defconfig
 #
@@ -104,16 +102,21 @@ KERNEL_EXTRA_ARGS += "${@bb.utils.contains('MACHINE_FEATURES', 'phy-expansions',
 # Create a symbolic link of the main device tree to get a generic file name
 # -------------------------------------------------------------------------
 DTS_FILE = "oftree"
+BOOTENV_FILE = "overlays.txt"
 
 do_deploy:append() {
     first_dts=$(echo "${KERNEL_DEVICETREE}" | awk ' { print $1 } ' | cut -d'/' -f2)
     ln -sf ${first_dts} ${DEPLOYDIR}/${DTS_FILE}
 }
 
+do_install[depends] += "phytec-bootenv:do_deploy"
+
 do_install:append() {
     first_dts=$(echo "${KERNEL_DEVICETREE}" | awk ' { print $1 } ')
     ln -sf ${first_dts} ${KERNEL_OUTPUT_DIR}/dts/${DTS_FILE}
-    install -m 0644 ${KERNEL_OUTPUT_DIR}/dts/${DTS_FILE} ${D}/${KERNEL_IMAGEDEST}
+    install -m 0644 ${KERNEL_OUTPUT_DIR}/dts/${DTS_FILE} ${D}/${KERNEL_DTBDEST}
+
+    install -m 0644 ${DEPLOY_DIR_IMAGE}/${BOOTENV_FILE} ${D}/${KERNEL_DTBDEST}
 }
 
-FILES:${KERNEL_PACKAGE_NAME}-devicetree += "/${KERNEL_DTBDEST}/${DTS_FILE}"
+FILES:${KERNEL_PACKAGE_NAME}-devicetree += "/${KERNEL_DTBDEST}/${DTS_FILE} /${KERNEL_DTBDEST}/${BOOTENV_FILE}"
