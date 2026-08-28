@@ -1,0 +1,1 @@
+overlays=conf-phyboard-stm32mp1-peb-av02-lcd.dtbo

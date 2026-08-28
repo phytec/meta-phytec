@@ -15,6 +15,7 @@ BOOTENV_OVERLAYS_APPEND ?= ""
 
 BOOTENV_FILE ?= "bootenv.txt"
 BOOTENV_FILE:k3 = "overlays.txt"
+BOOTENV_FILE:stm32mpcommon = "overlays.txt"
 
 inherit deploy
 do_deploy() {
