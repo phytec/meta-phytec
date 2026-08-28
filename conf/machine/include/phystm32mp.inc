@@ -9,8 +9,7 @@ MACHINE_SOCARCH = "${TUNE_PKGARCH}"
 # Machine settings
 # =========================================================================
 # Default machine feature
-MACHINE_FEATURES = "usbhost usbgadget alsa screen ext2"
-MACHINE_FEATURES += "optee"
+MACHINE_FEATURES = "usbhost usbgadget alsa screen ext2 optee fit"
 
 # Enable firmware secure update feature when using RAUC distro feature
 MACHINE_FEATURES:append:update = " fw-update"
@@ -56,7 +55,7 @@ KERNEL_EFI_ALT_NAME = "${@bb.utils.contains('MACHINE_FEATURES', 'efi', 'uImage',
 KERNEL_EFI_NAME:aarch64 = "${@bb.utils.contains('MACHINE_FEATURES', 'efi', 'Image', 'Image.gz', d)}"
 KERNEL_EFI_ALT_NAME:aarch64 = "${@bb.utils.contains('MACHINE_FEATURES', 'efi', 'Image.gz', 'Image', d)}"
 
-KERNEL_IMAGETYPE     = "${@bb.utils.contains('MACHINE_FEATURES', 'fit', 'fitImage', '${KERNEL_EFI_NAME}', d)}"
+KERNEL_IMAGETYPE = "${@bb.utils.contains('MACHINE_FEATURES', 'fit', 'fitImage', '${KERNEL_EFI_NAME}', d)}"
 KERNEL_ALT_IMAGETYPE = " vmlinux "
 KERNEL_ALT_IMAGETYPE =+ " ${@bb.utils.contains('MACHINE_FEATURES', 'fit', '${KERNEL_DEFAULT_NAME}', '${KERNEL_EFI_ALT_NAME}', d)} "
 
@@ -80,61 +79,63 @@ EXTRA_KERNEL_ARGS += "${HDMI_EDID_KERNEL_ARGS}"
 # bootargs to set the RAUC slot
 EXTRA_KERNEL_ARGS:append:update = " rauc.slot=${bootslot}"
 
+# =========================================================================
+# Device Tree overlays
+# =========================================================================
+DT_OVERLAYS ?= ""
+
 # List of device tree overlays to install for phyBOARD-Sargas
-DT_OVERLAYS_INSTALL:phycore-stm32mp15 = "${@bb.utils.contains('MACHINE_FEATURES', 'phy-expansions', '${PHY_EXPANSIONS_SARGAS}', '', d)}"
+DT_OVERLAYS:phycore-stm32mp15 = "${@bb.utils.contains('MACHINE_FEATURES', 'phy-expansions', '${PHY_EXPANSIONS_SARGAS}', '', d)}"
 # Displays
-PHY_EXPANSIONS_SARGAS += "phyboard-stm32mp1-peb-av02-lcd.dtbo"
-PHY_EXPANSIONS_SARGAS += "${@bb.utils.contains('MACHINE_FEATURES', 'hdmi', 'phyboard-stm32mp1-peb-av01-hdmi.dtbo', '', d)}"
-PHY_EXPANSIONS_SARGAS += "${@bb.utils.contains('MACHINE_FEATURES', 'mipi-dsi', 'phyboard-stm32mp1-dsi-lcd-mb1407.dtbo', '', d)}"
-PHY_EXPANSIONS_SARGAS += "${@bb.utils.contains('MACHINE_FEATURES', 'mipi-dsi', 'phyboard-stm32mp1-dsi-rpi-official-display.dtbo', '', d)}"
+PHY_EXPANSIONS_SARGAS += "st/overlays/phyboard-stm32mp1-peb-av02-lcd.dtbo"
+PHY_EXPANSIONS_SARGAS += "${@bb.utils.contains('MACHINE_FEATURES', 'hdmi', 'st/overlays/phyboard-stm32mp1-peb-av01-hdmi.dtbo', '', d)}"
+PHY_EXPANSIONS_SARGAS += "${@bb.utils.contains('MACHINE_FEATURES', 'mipi-dsi', 'st/overlays/phyboard-stm32mp1-dsi-lcd-mb1407.dtbo', '', d)}"
+PHY_EXPANSIONS_SARGAS += "${@bb.utils.contains('MACHINE_FEATURES', 'mipi-dsi', 'st/overlays/phyboard-stm32mp1-dsi-rpi-official-display.dtbo', '', d)}"
 # Configurations examples for the specific connectors
-PHY_EXPANSIONS_SARGAS += "phyboard-stm32mp1-pi-hat-extension.dtbo"
-PHY_EXPANSIONS_SARGAS += "phyboard-stm32mp1-uno-r3-extension.dtbo"
-PHY_EXPANSIONS_SARGAS += "phyboard-stm32mp1-motor-control.dtbo"
-PHY_EXPANSIONS_SARGAS += "phyboard-stm32mp1-motor-control-m4.dtbo"
+PHY_EXPANSIONS_SARGAS += "st/overlays/phyboard-stm32mp1-pi-hat-extension.dtbo"
+PHY_EXPANSIONS_SARGAS += "st/overlays/phyboard-stm32mp1-uno-r3-extension.dtbo"
+PHY_EXPANSIONS_SARGAS += "st/overlays/phyboard-stm32mp1-motor-control.dtbo"
+PHY_EXPANSIONS_SARGAS += "st/overlays/phyboard-stm32mp1-motor-control-m4.dtbo"
 # Wireless expansions
-PHY_EXPANSIONS_SARGAS += "${@bb.utils.contains('MACHINE_FEATURES', 'wifi', 'phyboard-stm32mp1-peb-wlbt-05-wlan.dtbo', '', d)}"
-PHY_EXPANSIONS_SARGAS += "${@bb.utils.contains('MACHINE_FEATURES', 'bluetooth', 'phyboard-stm32mp1-peb-wlbt-05-bluetooth-usart3.dtbo', '', d)}"
-PHY_EXPANSIONS_SARGAS += "${@bb.utils.contains('MACHINE_FEATURES', 'bluetooth', 'phyboard-stm32mp1-peb-wlbt-05-bluetooth-usart1.dtbo', '', d)}"
-PHY_EXPANSIONS_SARGAS += "${@bb.utils.contains_any('MACHINE_FEATURES', 'wifi bluetooth', 'phyboard-stm32mp1-pi-hat-redbear.dtbo', '', d)}"
+PHY_EXPANSIONS_SARGAS += "${@bb.utils.contains('MACHINE_FEATURES', 'wifi', 'st/overlays/phyboard-stm32mp1-peb-wlbt-05-wlan.dtbo', '', d)}"
+PHY_EXPANSIONS_SARGAS += "${@bb.utils.contains('MACHINE_FEATURES', 'bluetooth', 'st/overlays/phyboard-stm32mp1-peb-wlbt-05-bluetooth-usart3.dtbo', '', d)}"
+PHY_EXPANSIONS_SARGAS += "${@bb.utils.contains('MACHINE_FEATURES', 'bluetooth', 'st/overlays/phyboard-stm32mp1-peb-wlbt-05-bluetooth-usart1.dtbo', '', d)}"
+PHY_EXPANSIONS_SARGAS += "${@bb.utils.contains_any('MACHINE_FEATURES', 'wifi bluetooth', 'st/overlays/phyboard-stm32mp1-pi-hat-redbear.dtbo', '', d)}"
 # phyCAM-P
-PHY_EXPANSIONS_SARGAS += "phyboard-stm32mp1-pcm939l-phycam-vm016-8bits.dtbo"
-PHY_EXPANSIONS_SARGAS += "phyboard-stm32mp1-pcm939-phycam-vm016-8bits.dtbo"
-PHY_EXPANSIONS_SARGAS += "phyboard-stm32mp1-pcm939-phycam-vm016-10bits.dtbo"
+PHY_EXPANSIONS_SARGAS += "st/overlays/phyboard-stm32mp1-pcm939l-phycam-vm016-8bits.dtbo"
+PHY_EXPANSIONS_SARGAS += "st/overlays/phyboard-stm32mp1-pcm939-phycam-vm016-8bits.dtbo"
+PHY_EXPANSIONS_SARGAS += "st/overlays/phyboard-stm32mp1-pcm939-phycam-vm016-10bits.dtbo"
 # DT overlay to enable RS485 at boot time
-PHY_EXPANSIONS_SARGAS += "phyboard-stm32mp1-rs485.dtbo"
+PHY_EXPANSIONS_SARGAS += "st/overlays/phyboard-stm32mp1-rs485.dtbo"
 
 # List of device tree overlays to install for phyBOARD-Segin
-DT_OVERLAYS_INSTALL:phycore-stm32mp13 = "${@bb.utils.contains('MACHINE_FEATURES', 'phy-expansions', '${PHY_EXPANSIONS_SEGIN}', '', d)}"
+DT_OVERLAYS:phycore-stm32mp13 = "${@bb.utils.contains('MACHINE_FEATURES', 'phy-expansions', '${PHY_EXPANSIONS_SEGIN}', '', d)}"
 # Displays
-PHY_EXPANSIONS_SEGIN += "stm32mp135x-phyboard-segin-peb-av-02-lcd.dtbo"
-PHY_EXPANSIONS_SEGIN += "stm32mp135x-phyboard-segin-peb-av-02-lcd-resistive.dtbo"
-PHY_EXPANSIONS_SEGIN += "${@bb.utils.contains('MACHINE_FEATURES', 'hdmi', 'stm32mp135x-phyboard-segin-peb-av-01-hdmi.dtbo', '', d)}"
+PHY_EXPANSIONS_SEGIN += "st/overlays/stm32mp135x-phyboard-segin-peb-av-02-lcd.dtbo"
+PHY_EXPANSIONS_SEGIN += "st/overlays/stm32mp135x-phyboard-segin-peb-av-02-lcd-resistive.dtbo"
+PHY_EXPANSIONS_SEGIN += "${@bb.utils.contains('MACHINE_FEATURES', 'hdmi', 'st/overlays/stm32mp135x-phyboard-segin-peb-av-01-hdmi.dtbo', '', d)}"
 # Evaluation board
-PHY_EXPANSIONS_SEGIN += "stm32mp13xx-phyboard-segin-peb-eval-01-leds-buttons.dtbo"
-PHY_EXPANSIONS_SEGIN += "stm32mp13xx-phyboard-segin-peb-eval-01-jtag.dtbo"
+PHY_EXPANSIONS_SEGIN += "st/overlays/stm32mp13xx-phyboard-segin-peb-eval-01-leds-buttons.dtbo"
+PHY_EXPANSIONS_SEGIN += "st/overlays/stm32mp13xx-phyboard-segin-peb-eval-01-jtag.dtbo"
 # phyCAM-P
-PHY_EXPANSIONS_SEGIN += "stm32mp135x-phyboard-segin-phycam-vm016.dtbo"
+PHY_EXPANSIONS_SEGIN += "st/overlays/stm32mp135x-phyboard-segin-phycam-vm016.dtbo"
 
 # List of device tree overlays to install for phyBOARD-Libra
-DT_OVERLAYS_INSTALL:stm32mp2-phyflex-libra-rdk = "${@bb.utils.contains('MACHINE_FEATURES', 'phy-expansions', '${PHY_EXPANSIONS_LIBRA}', '', d)}"
+DT_OVERLAYS:stm32mp2-phyflex-libra-rdk = "${@bb.utils.contains('MACHINE_FEATURES', 'phy-expansions', '${PHY_EXPANSIONS_LIBRA}', '', d)}"
 # Displays / Sound
-PHY_EXPANSIONS_LIBRA += "stm32mp2-phyflex-libra-rdk-lvds-etml1010g3dra.dtbo"
-PHY_EXPANSIONS_LIBRA += "stm32mp2-phyflex-libra-rdk-lvds-ph128800t006-zhc01.dtbo"
-PHY_EXPANSIONS_LIBRA += "stm32mp2-phyflex-libra-rdk-peb-av-12-etml1010g3dra.dtbo"
-PHY_EXPANSIONS_LIBRA += "stm32mp2-phyflex-libra-rdk-peb-av-12-ph128800t006-zhc01.dtbo"
-PHY_EXPANSIONS_LIBRA += "stm32mp2-phyflex-libra-rdk-peb-av-10-etml1010g3dra.dtbo"
-PHY_EXPANSIONS_LIBRA += "stm32mp2-phyflex-libra-rdk-peb-av-10-ph128800t006-zhc01.dtbo"
-# PCIe / USB3 SuperSpeed SOM configuration
-PHY_EXPANSIONS_LIBRA:append:stm32mp25common = " stm32mp25-phyflex-libra-rdk-pcie.dtbo"
-PHY_EXPANSIONS_LIBRA:append:stm32mp25common = " stm32mp25-phyflex-libra-rdk-usb3ss.dtbo"
+PHY_EXPANSIONS_LIBRA += "st/overlays/stm32mp2-phyflex-libra-rdk-lvds-etml1010g3dra.dtbo"
+PHY_EXPANSIONS_LIBRA += "st/overlays/stm32mp2-phyflex-libra-rdk-lvds-ph128800t006-zhc01.dtbo"
+PHY_EXPANSIONS_LIBRA += "st/overlays/stm32mp2-phyflex-libra-rdk-peb-av-12-etml1010g3dra.dtbo"
+PHY_EXPANSIONS_LIBRA += "st/overlays/stm32mp2-phyflex-libra-rdk-peb-av-12-ph128800t006-zhc01.dtbo"
+PHY_EXPANSIONS_LIBRA += "st/overlays/stm32mp2-phyflex-libra-rdk-peb-av-10-etml1010g3dra.dtbo"
+PHY_EXPANSIONS_LIBRA += "st/overlays/stm32mp2-phyflex-libra-rdk-peb-av-10-ph128800t006-zhc01.dtbo"
 # phyCAM-M
-PHY_EXPANSIONS_LIBRA += "stm32mp2-phyflex-libra-rdk-vm016-csi1.dtbo"
+PHY_EXPANSIONS_LIBRA += "st/overlays/stm32mp2-phyflex-libra-rdk-vm016-csi1.dtbo"
 # Wireless expansions
-PHY_EXPANSIONS_LIBRA += "${@bb.utils.contains('MACHINE_FEATURES', 'wifi', 'stm32mp2-phyflex-libra-rdk-ksp-0221-wlan-sdio.dtbo', '', d)}"
-PHY_EXPANSIONS_LIBRA += "${@bb.utils.contains('MACHINE_FEATURES', 'bluetooth', 'stm32mp2-phyflex-libra-rdk-ksp-0221-bluetooth-uart.dtbo', '', d)}"
+PHY_EXPANSIONS_LIBRA += "${@bb.utils.contains('MACHINE_FEATURES', 'wifi', 'st/overlays/stm32mp2-phyflex-libra-rdk-ksp-0221-wlan-sdio.dtbo', '', d)}"
+PHY_EXPANSIONS_LIBRA += "${@bb.utils.contains('MACHINE_FEATURES', 'bluetooth', 'st/overlays/stm32mp2-phyflex-libra-rdk-ksp-0221-bluetooth-uart.dtbo', '', d)}"
 # M33 copro examples
-PHY_EXPANSIONS_LIBRA += "${@bb.utils.contains('MACHINE_FEATURES', 'm33copro', 'stm32mp2-phyflex-libra-rdk-m33-examples.dtbo', '', d)}"
+PHY_EXPANSIONS_LIBRA += "${@bb.utils.contains('MACHINE_FEATURES', 'm33copro', 'st/overlays/stm32mp2-phyflex-libra-rdk-m33-examples.dtbo', '', d)}"
 
 # =========================================================================
 # u-boot
@@ -160,6 +161,9 @@ UBOOT_CONFIG[default_stm32mp13] = "phycore-stm32mp13_defconfig,,u-boot.dtb"
 # List of U-Boot device tree to use
 UBOOT_DEVICETREE = "${BOOTLOADER_DT}"
 
+UBOOT_DTB_LOADADDRESS = "0x90000000"
+UBOOT_DTBO_LOADADDRESS = "0x900c0000"
+
 # =========================================================================
 # u-boot extlinux configuration
 # =========================================================================
@@ -167,6 +171,9 @@ UBOOT_DEVICETREE = "${BOOTLOADER_DT}"
 UBOOT_EXTLINUX ?= "1"
 UBOOT_EXTLINUX_ROOT ?= "root=PARTLABEL=root"
 UBOOT_EXTLINUX_KERNEL_IMAGE ?= "/${KERNEL_IMAGETYPE}"
+
+KERNEL_DT = "${@os.path.basename(d.getVar('KERNEL_DEVICETREE').split()[0])}"
+UBOOT_EXTLINUX_KERNEL_IMAGE:append = "${@bb.utils.contains('KERNEL_IMAGETYPE', 'fitImage', '#conf-${KERNEL_DT}', '', d)}"
 
 # Define default FDTDIR for all configs
 UBOOT_EXTLINUX_FDTDIR = "${@bb.utils.contains('MACHINE_FEATURES', 'phy-expansions', '', '/', d)}"
