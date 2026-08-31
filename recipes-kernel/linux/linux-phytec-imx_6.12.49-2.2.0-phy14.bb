@@ -2,7 +2,7 @@ inherit kernel kernel-yocto
 inherit phygittag kernel-deploy-oftree
 include recipes-kernel/linux/linux-common.inc
 
-SRCREV = "34de720505848c3eec2bb235b1ee724b5c04ac22"
+SRCREV = "27237e2d413bf6636f702d0c1b55152dfd725d26"
 SRCREV_machine = "${SRCREV}"
 SRCREV_meta ?= "9a7e5434a02c01df4901784d29694d940743d56c"
 
