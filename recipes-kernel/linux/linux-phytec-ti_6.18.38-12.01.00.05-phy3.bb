@@ -38,7 +38,7 @@ PR = "${INC_PR}.0"
 # NOTE: The <ti-sdk-version> field (e.g. 12.00.00.07) must be a tag on the
 #       meta-ti commit pinned in the manifest, which provides the matching
 #       firmware (sysfw/dm/pru). ti-sdk-version-check.bbclass warns otherwise.
-SRCREV = "93c39b97d4730e324d4703f838441d85a7be575f"
+SRCREV = "8b961bff64f35d8465ea45bde98cf950b6d8b788"
 SRCREV_machine = "${SRCREV}"
 SRCREV_meta ?= "4dafe0e420087b6381728e68eeeff6d9af0a32e7"
 
