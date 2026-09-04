@@ -4,7 +4,7 @@ PARTUP_PACKAGE_FILES = " \
     ${IMAGE_LINK_NAME}.ext4 \
 "
 PARTUP_PACKAGE_DEPENDS ?= " \
-    virtual/kernel \
+    ${KERNEL_DEPLOY_DEPEND} \
     virtual/bootloader \
 "
 
