@@ -131,7 +131,10 @@ python() {
         # Add deploy task dependencies for do_copy_source_files
         package_deps = []
         for dep in d.getVar('PARTUP_PACKAGE_DEPENDS').split():
-            package_deps.append(dep + ':do_deploy')
+            if ':' in dep:
+                package_deps.append(dep)
+            else:
+                package_deps.append(dep + ':do_deploy')
         d.appendVarFlag('do_copy_source_files', 'depends', ' '.join(package_deps))
 
         bb.build.addtask('do_copy_source_files', 'do_layout_config', ' '.join(task_deps), d)
