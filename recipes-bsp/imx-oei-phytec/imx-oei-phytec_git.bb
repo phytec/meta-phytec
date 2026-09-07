@@ -30,6 +30,7 @@ EXTRA_OEMAKE = "\
     board=${OEI_BOARD} \
     R=${IMX_SOC_REV} \
     CROSS_COMPILE=arm-none-eabi-"
+EXTRA_OEMAKE:append:mx95-generic-bsp = " PHYTEC_SOM_DETECTION=1 CONSOLE=1"
 
 do_configure() {
     for oei_config in ${OEI_CONFIGS}; do
