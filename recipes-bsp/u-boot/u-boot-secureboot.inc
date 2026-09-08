@@ -65,3 +65,11 @@ do_uboot_assemble_fitimage:prepend:secureboot () {
         setup_pkcs11_env
     fi
 }
+
+inherit uboot-extra-env
+
+python do_env:append:secureboot() {
+    fit_overlay_conf = d.getVar("FIT_OVERLAY_CONF")
+    if fit_overlay_conf:
+        env_add(d, "fit_overlay_conf", fit_overlay_conf)
+}
