@@ -24,6 +24,13 @@ do_deploy() {
     install -d ${DEPLOYDIR}
     install -m 0644 ${S}/${BOOTENV_FILE} ${DEPLOYDIR}
 
+    # if no overlays are set
+    if ! grep -q -E '^(overlays=.*|fit_overlay_conf)' "${DEPLOYDIR}/${BOOTENV_FILE}"; then
+        if [ -n "${FIT_OVERLAY_CONF}" ]; then
+            echo "fit_conf_overlay=${FIT_OVERLAY_CONF}" > "${DEPLOYDIR}/${BOOTENV_FILE}"
+        fi
+    fi
+
     if echo ${KERNEL_IMAGETYPES} | grep -wq "fitImage"; then
         # Replace whitespaces by a single #.
         OVERLAYS_APPEND=$(echo "${BOOTENV_OVERLAYS_APPEND}" | sed -e "s/\s\+/#/g")
