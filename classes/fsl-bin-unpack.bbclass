@@ -17,7 +17,7 @@ python fsl_bin_do_unpack() {
 
     localdata = bb.data.createCopy(d)
 
-    rootdir = localdata.getVar('WORKDIR')
+    rootdir = localdata.getVar('UNPACKDIR')
     fetcher = bb.fetch2.Fetch(src_uri, localdata)
 
     for url in fetcher.ud.values():
@@ -30,7 +30,7 @@ python fsl_bin_do_unpack() {
                     bb.debug(1, "Exiting as '%s' cannot be found" % url.basename)
                     return
 
-                # Change to the working directory
+                # Change to the unpack directory
                 bb.note("Handling file '%s' as a Freescale's EULA binary." % url.basename)
                 save_cwd = os.getcwd()
                 os.chdir(rootdir)
