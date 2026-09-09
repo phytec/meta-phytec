@@ -82,7 +82,7 @@ fi
 
 # Update barebox
 echo "Flashing $1"
-if ! kobs-ng init --search_exponent=1 -s $1 ; then
+if ! kobs-ng init --search_exponent=1 --chip_0_device_path=$mtd_dev -s $1 ; then
 	echo "kobs-ng failed"
 	exit 1
 fi
