@@ -42,10 +42,18 @@ if ! hexdump -C $1 -s 0x20 -n 8 | grep -q "barebox"; then
 	exit 1
 fi
 
-mdtype=`mtdinfo /dev/mtd0 | grep Type | awk '{print $2}'`
-mdname=`mtdinfo /dev/mtd0 | grep Name | awk '{print $2}'`
-if [ "$mdname" != "barebox" -o "$mdtype" != "nand" ]; then
-	echo "/dev/mtd0 is not a barenbox partion on nand"
+mtd_devs=/dev/$(cat /proc/mtd | grep \"barebox\" | cut -d ':' -f 1)
+mtd_dev=""
+for dev in $mtd_devs; do
+	mdtype=`mtdinfo $dev | grep Type | awk '{print $2}'`
+	mdname=`mtdinfo $dev | grep Name | awk '{print $2}'`
+	if [ "$mdname" = "barebox" -a "$mdtype" = "nand" ]; then
+		mtd_dev=$dev
+		break
+	fi
+done
+if [ -z $mtd_dev ]; then
+	echo "Did not find a barebox partition on nand"
 	exit 1
 fi
 
@@ -59,7 +67,7 @@ if [ $? -ne 0 ]; then
 	fi
 fi
 
-installedv=`get_releasename /dev/mtd0ro`
+installedv=`get_releasename ${mtd_dev}ro`
 # test if installed barebox have build in meta data
 if [ $? -eq 0 ]; then
 	if [ "$installedv" == "$imagev" ]; then
