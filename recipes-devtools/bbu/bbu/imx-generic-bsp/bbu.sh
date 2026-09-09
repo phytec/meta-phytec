@@ -60,7 +60,7 @@ fi
 imagev=`get_releasename $1`
 if [ $? -ne 0 ]; then
 	echo "barebox image has no meta data skip flashing"
-	if [ -z "$force" ]; then 
+	if [ -z "$force" ]; then
 		exit 1
 	else
 		echo "but forcing"
