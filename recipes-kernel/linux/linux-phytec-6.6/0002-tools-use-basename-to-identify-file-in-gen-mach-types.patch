@@ -1,0 +1,46 @@
+From: Bruce Ashfield <bruce.ashfield@gmail.com>
+Date: Tue, 26 Aug 2025 16:25:17 +0200
+Subject: [PATCH] tools: use basename to identify file in gen-mach-types
+
+From: Bruce Ashfield <bruce.ashfield@gmail.com>
+
+FILENAME is replaced by the full path to the executing script. If
+the script is executed via a fully specified path, that is captured
+in the output. Although it doesn't impact the output, it does trigger
+reproducibility warnings/errors.
+
+So we introduce a basename() function in the script and use it to
+make sure the output file contains only the name of the awk script.
+The motivation for this change is Yocto emitting a build warning
+  WARNING: linux-tq-6.12.41+git-r0 do_package_qa: QA Issue: File /usr/src/debug/linux-tq/6.12.41+git/arch/arm/include/generated/asm/mach-types.h in package linux-tq-src contains reference to TMPDIR [buildpaths]
+
+Upstream-Status: Submitted [https://lore.kernel.org/all/20250826142518.2583999-1-alexander.stein@ew.tq-group.com/]
+
+Signed-off-by: Bruce Ashfield <bruce.ashfield@gmail.com>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+---
+ arch/arm/tools/gen-mach-types | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm/tools/gen-mach-types b/arch/arm/tools/gen-mach-types
+index cbe1c33bb8710..ab69d408f9e12 100644
+--- a/arch/arm/tools/gen-mach-types
++++ b/arch/arm/tools/gen-mach-types
+@@ -21,10 +21,14 @@ NF == 3 {
+ 	  num[nr] = ""; nr++
+ 	}
+ 
++	function basename(file) {
++	   sub(".*/", "", file)
++	   return file
++	}
+ 
+ END	{
+ 	  printf("/*\n");
+-	  printf(" * This was automagically generated from %s!\n", FILENAME);
++	  printf(" * This was automagically generated from %s!\n", basename(FILENAME));
+ 	  printf(" * Do NOT edit\n");
+ 	  printf(" */\n\n");
+ 	  printf("#ifndef __ASM_ARM_MACH_TYPE_H\n");
+-- 
+2.43.0

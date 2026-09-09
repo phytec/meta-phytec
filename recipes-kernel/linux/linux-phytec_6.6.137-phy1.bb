@@ -14,6 +14,7 @@ SRC_URI:append = " \
   git://git.yoctoproject.org/yocto-kernel-cache;type=kmeta;name=meta;branch=yocto-6.6;destsuffix=${KMETA};protocol=https \
   file://mtd-partitioned-master.scc \
   file://0001-tty-vt-conmakehash-Don-t-mention-the-full-path-of-th.patch \
+  file://0002-tools-use-basename-to-identify-file-in-gen-mach-types.patch \
 "
 
 KERNEL_EXTRA_FEATURES = "cfg/systemd.scc mtd-partitioned-master.scc"
