@@ -26,7 +26,7 @@ do_install() {
         install -m 0644 ${B}/${DTB_FILE} ${D}/overlays/${DTB_FILE}
     done
 
-    install -m 0644 ${WORKDIR}/README.md ${D}/overlays/README.md
+    install -m 0644 ${UNPACKDIR}/README.md ${D}/overlays/README.md
 }
 
 do_deploy() {
