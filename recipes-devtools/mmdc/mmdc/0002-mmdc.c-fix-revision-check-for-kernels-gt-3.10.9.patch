@@ -1,0 +1,76 @@
+From f1788b4bfcbf52033b7fae0e37a4581ce7a11971 Mon Sep 17 00:00:00 2001
+From: Stefan Riedmueller <s.riedmueller@phytec.de>
+Date: Mon, 24 Aug 2026 16:14:46 +0200
+Subject: [PATCH 2/2] mmdc.c: fix revision check for kernels > 3.10.9
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Upstream-Status: Pending
+
+/proc/cpuinfo "Revision" carries the SOC revision on newer kernels, so
+check `system_rev < MIN_NEW_KERNEL_SOC_REV` (0x1000) instead of zero to
+decide whether to fall back to /sys/devices/soc0/soc_id. Also name the
+threshold, replace `index()` with `strchr()`, and tighten the soc_id
+read bounds check.
+
+Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
+Signed-off-by: Stefan Müller-Klieser <s.mueller-klieser@phytec.de>
+---
+ mmdc.c | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
+
+diff --git a/mmdc.c b/mmdc.c
+index 158622c..b455664 100644
+--- a/mmdc.c
++++ b/mmdc.c
+@@ -26,6 +26,15 @@ const int AXI_BUS_WIDTH_IN_BYTE = 8;
+ #define MMDC_P0_IPS_BASE_ADDR 0x021B0000
+ #define MMDC_P1_IPS_BASE_ADDR 0x021B4000
+ 
++/*
++ * On i.MX6, kernels >= 3.10.9 expose the SOC revision in the "Revision"
++ * field of /proc/cpuinfo. Kernels < 3.10.9 instead report a value
++ * >= 0x1000 there (the SOC version), so any revision below this threshold
++ * is treated as "old kernel" and the soc0/soc_id sysfs node is consulted
++ * as a fallback.
++ */
++#define MIN_NEW_KERNEL_SOC_REV 0x1000
++
+ /************************* Global Variables ***********************************/
+ pMMDC_t mmdc_p0 = (pMMDC_t)(MMDC_P0_IPS_BASE_ADDR);
+ pMMDC_t mmdc_p1 = (pMMDC_t)(MMDC_P1_IPS_BASE_ADDR);
+@@ -177,7 +186,7 @@ static int get_system_rev(void)
+ 
+ 	tmp = strstr(buf, "Revision");
+ 	if (tmp != NULL) {
+-		rev = index(tmp, ':');
++		rev = strchr(tmp, ':');
+ 		if (rev != NULL) {
+ 			rev++;
+ 			system_rev = strtoul(rev, NULL, 16);
+@@ -185,8 +194,8 @@ static int get_system_rev(void)
+ 		}
+ 	}
+ 
+-	//cpuinfo is changed in 3.10.9 kernel, new way is used.
+-	if((ret == 0) && (system_rev ==0))
++	/* cpuinfo is changed in 3.10.9 kernel, new way is used. */
++	if ((ret == 0) && (system_rev < MIN_NEW_KERNEL_SOC_REV))
+ 	{
+ 		ret = -1;
+ 		fp = fopen("/sys/devices/soc0/soc_id", "r");
+@@ -197,8 +206,8 @@ static int get_system_rev(void)
+ 
+ 		nread = fread(buf, 1, sizeof(buf), fp);
+ 		fclose(fp);
+-		if ((nread == 0) || (nread == sizeof(buf))) {
+-			printf("/sys/devices/soc0/soc_id:%d\n",nread);
++		if ((nread == 0) || (nread >= (int)sizeof(buf))) {
++			printf("/sys/devices/soc0/soc_id: %d\n", nread);
+ 			return ret;
+ 		}
+ 		buf[nread] = '\0';
+-- 
+2.55.0
+

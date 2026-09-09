@@ -1,0 +1,60 @@
+From 5746eaa70443895887ca99a3727ae17ac2325f38 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Stefan=20M=C3=BCller-Klieser?= <s.mueller-klieser@phytec.de>
+Date: Mon, 24 Aug 2026 16:14:46 +0200
+Subject: [PATCH 1/2] Makefile: fix clean target and restore optional
+ make.rules
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Upstream-Status: Pending
+
+Use `-include ../make.rules` so a missing file no longer breaks the
+build with GNU Make >= 4.x, while still honouring it when present.
+Default `OBJDIR ?= .` to avoid emitting "/mmdc2", and have `clean`
+remove the binary too.
+
+Signed-off-by: Stefan Müller-Klieser <s.mueller-klieser@phytec.de>
+---
+ Makefile | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 3043ab5..6cf5e74 100644
+--- a/Makefile
++++ b/Makefile
+@@ -6,6 +6,10 @@ LD :=$(CROSS_COMPILE)gcc
+ LINK ?=$(CROSS_COMPILE)gcc
+ STRIP ?=$(CROSS_COMPILE)strip
+ 
++# Default output directory; out-of-tree builds may override this via
++# ../make.rules (see below) or the environment.
++OBJDIR ?= .
++
+ OBJ = mmdc.o
+ 
+ ifeq (,$(findstring $(PLATFORM), $(EXCLUDE_LIST)))
+@@ -24,12 +28,15 @@ $(TARGET):$(OBJ)
+ 	$(LINK) -o $(TARGET) $(OBJ) $(LDFLAGS) -Os
+ 	$(STRIP) $(TARGET)
+ 
+-.PHONY: clean
++.PHONY: all clean
+ clean :
+-	rm -f $(OBJ)
++	$(RM) $(OBJ) $(TARGET)
+ 
+ #
+-# include the Rules
++# Include optional out-of-tree build rules if present. The leading dash
++# silently ignores a missing file, which keeps "make clean" working with
++# modern GNU Make (>= 4.x) where "include" of a non-existent file is an
++# error. When the file exists it can still supply defaults such as
++# CROSS_COMPILE, OBJDIR, etc.
+ #
+-include ../make.rules
+-
++-include ../make.rules
+-- 
+2.55.0
+
