@@ -2,7 +2,7 @@ inherit kernel kernel-yocto
 inherit phygittag buildinfo kernel-deploy-oftree
 include linux-common.inc
 
-SRCREV = "4095b246191355f4e0b9aeef1c612125fb0d0ebe"
+SRCREV = "1dc2d77564897939c616ee93bf6267a9cdb901ce"
 SRCREV_machine = "${SRCREV}"
 SRCREV_meta ?= "83fff3acfc84814b4da0cdb2a63d608d376c3cdd"
 
