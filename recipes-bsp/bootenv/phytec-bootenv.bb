@@ -27,7 +27,7 @@ do_deploy() {
     # if no overlays are set
     if ! grep -q -E '^(overlays=.*|fit_overlay_conf)' "${DEPLOYDIR}/${BOOTENV_FILE}"; then
         if [ -n "${FIT_OVERLAY_CONF}" ]; then
-            echo "fit_conf_overlay=${FIT_OVERLAY_CONF}" > "${DEPLOYDIR}/${BOOTENV_FILE}"
+            echo "fit_overlay_conf=${FIT_OVERLAY_CONF}" > "${DEPLOYDIR}/${BOOTENV_FILE}"
         fi
     fi
 
