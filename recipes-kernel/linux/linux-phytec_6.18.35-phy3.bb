@@ -31,7 +31,7 @@ PR = "${INC_PR}.0"
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "f16ccb232630f2635e48bec3cfb0798aadb39ab9"
+SRCREV = "f09574f5e1623cf39bbed6512e268fa45e33e705"
 SRCREV_machine = "${SRCREV}"
 SRCREV_meta ?= "4dafe0e420087b6381728e68eeeff6d9af0a32e7"
 
