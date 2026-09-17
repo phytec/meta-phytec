@@ -14,6 +14,7 @@ KERNEL_OVERLAYS_PHYTEC = " \
     ti/k3-am62-phyboard-lyra-m2-cc3351.dtbo \
     ti/k3-am62-phyboard-lyra-vm016-mipi.dtbo \
     ti/k3-am62-phyboard-lyra-x17-spi0.dtbo \
+    ti/k3-am62a-phycore-edgeai.dtbo \
 "
 
 # phyBOARD-Lyra overlays
