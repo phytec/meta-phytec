@@ -1,1 +1,0 @@
-overlays=k3-am68-phyboard-izar-lvds-ph128800t006.dtbo k3-am68-phyboard-izar-pwm-fan.dtbo
