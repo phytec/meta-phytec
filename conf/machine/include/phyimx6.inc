@@ -13,6 +13,11 @@ PREFERRED_PROVIDER_virtual/bootloader ?= "barebox"
 PREFERRED_PROVIDER_virtual/kernel ?= "linux-phytec"
 KERNEL_IMAGETYPE ?= "zImage"
 
+CYCLONEDX_EXTRA_RUNTIME_RECIPES = " \
+    ${PREFERRED_PROVIDER_virtual/bootloader} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "optee", "optee-os","", d)} \
+"
+
 # dont install kernelimage to rootfs
 RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base = ""
 

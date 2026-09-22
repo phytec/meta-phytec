@@ -50,6 +50,18 @@ PREFERRED_VERSION_optee-test ??= "4.1.0"
 
 MACHINE_FEATURES = "apm usbgadget usbhost vfat ext2 alsa rtc optee efi"
 
+CYCLONEDX_EXTRA_RUNTIME_RECIPES = " \
+    ${PREFERRED_PROVIDER_virtual/bootloader} \
+    ${PREFERRED_PROVIDER_ti-sci-fw} \
+    optee-os \
+    trusted-firmware-a \
+"
+CYCLONEDX_EXTRA_RUNTIME_RECIPES:append:am62xx = " ${PREFERRED_PROVIDER_ti-dm-fw}"
+CYCLONEDX_EXTRA_RUNTIME_RECIPES:append:am62axx = " ${PREFERRED_PROVIDER_ti-dm-fw}"
+CYCLONEDX_EXTRA_RUNTIME_RECIPES:append:am62pxx = " ${PREFERRED_PROVIDER_ti-dm-fw}"
+CYCLONEDX_EXTRA_RUNTIME_RECIPES:append:j722s = " ${PREFERRED_PROVIDER_ti-dm-fw}"
+CYCLONEDX_EXTRA_RUNTIME_RECIPES:append:j721s2 = " ${PREFERRED_PROVIDER_ti-dm-fw}"
+
 # dont install kernelimage to rootfs
 RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base = ""
 

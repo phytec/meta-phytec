@@ -26,6 +26,11 @@ PREFERRED_VERSION_optee-os ??= "4.1.0"
 PREFERRED_VERSION_optee-client ??= "4.1.0"
 PREFERRED_VERSION_optee-test ??= "4.1.0"
 
+CYCLONEDX_EXTRA_RUNTIME_RECIPES = " \
+    ${PREFERRED_PROVIDER_virtual/bootloader} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "optee", "optee-os","", d)} \
+"
+
 # Ship kernel modules
 MACHINE_EXTRA_RRECOMMENDS = "kernel-modules"
 MACHINE_EXTRA_RDEPENDS = "firmware-imx-sdma-imx6q"
