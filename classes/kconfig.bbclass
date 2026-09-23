@@ -47,7 +47,7 @@ kconfig_do_configure() {
     # $ make kernelrelease => 2.6.37+
     touch ${B}/.scmversion ${S}/.scmversion
 
-    defconfig="${WORKDIR}/defconfig"
+    defconfig="${UNPACKDIR}/defconfig"
     config="${B}/.config"
 
     rm -rf $config
