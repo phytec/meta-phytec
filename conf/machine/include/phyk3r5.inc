@@ -12,6 +12,9 @@ require phytec-machine-common.inc
 
 UBOOT_SIGN_ENABLE = "0"
 
+# The R5 SPL has no environment
+UBOOT_INITIAL_ENV ?= ""
+
 # R5 u-boot
 SPL_SUFFIX = "bin"
 SPL_SYMLINK = "tiboot3.${SPL_SUFFIX}"

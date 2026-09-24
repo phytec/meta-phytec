@@ -43,15 +43,6 @@ SRC_URI:append:k3r5 = " \
     ${@bb.utils.contains('MACHINE_FEATURES', 'ecc', 'file://k3-inline-ecc.cfg', '', d)} \
 "
 
-do_deploy:append:k3r5 () {
-    rm -f ${DEPLOYDIR}/u-boot-initial-env*
-    rm -f ${DEPLOYDIR}/${PN}-initial-env*
-    rm -f ${DEPLOYDIR}/u-boot-initial-env-${MACHINE}*
-    rm -f ${DEPLOYDIR}/${PN}-initial-env-${MACHINE}*
-    rm -f ${DEPLOYDIR}/u-boot-initial-env-${MACHINE}-${PV}-${PR}*
-    rm -f ${DEPLOYDIR}/${PN}-initial-env-${MACHINE}-${PV}-${PR}*
-}
-
 do_deploy:append:am62lxx () {
         for f in ${B}/tiboot3*.bin; do
                 if [ -f "$f" ]; then
