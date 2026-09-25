@@ -1,8 +1,6 @@
 require barebox_${PV}.bb
 require barebox-ipl.inc
 
-PR = "${INC_PR}.0"
-
 do_deploy:append () {
     # deploy spi boot images
     spiimg=$(echo ${BAREBOX_IPL_BIN} | sed 's/.img/.spi.img/')

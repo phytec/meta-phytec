@@ -17,8 +17,6 @@ UPSTREAM_CHECK_COMMITS = "1"
 SRCREV = "bc950b3398ba034fe5cc39f625796a6111cdb87f"
 PV = "0.6.1+git${SRCPV}"
 
-PR = "r0"
-
 inherit autotools ptest pkgconfig lib_package tune_features_check
 
 REQUIRED_TUNE_FEATURES = "neon"

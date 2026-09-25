@@ -18,7 +18,6 @@ SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
-PR = "r0"
 SRCREV = "8fae1d8ea0d17d192d116e300bda7cad263a4103"
 
 CVE_STATUS[CVE-2026-33243] = "backported-patch: fixed by commit 5dedd3da in the \

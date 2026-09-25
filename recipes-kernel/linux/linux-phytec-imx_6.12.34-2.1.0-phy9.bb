@@ -19,8 +19,6 @@ SRC_URI:append = " git://git.yoctoproject.org/yocto-kernel-cache;type=kmeta;name
         ${@bb.utils.contains('MACHINE_FEATURES', 'lwb5p', 'file://lwb5p_backports.scc', '', d)} \
 "
 
-PR = "${INC_PR}.0"
-
 KMETA = "kernel-meta"
 ARCH:aarch64 = "arm64"
 

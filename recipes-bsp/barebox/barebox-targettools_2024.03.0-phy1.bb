@@ -5,8 +5,6 @@ SUMMERY = "barebox userspace tools"
 PROVIDES = "${PN}"
 FILESEXTRAPATHS:prepend := "${THISDIR}/barebox/:"
 
-PR = "${INC_PR}.0"
-
 export userccflags = "${TARGET_CC_ARCH} ${TOOLCHAIN_OPTIONS} ${CFLAGS} ${LDFLAGS}"
 
 do_configure:append() {

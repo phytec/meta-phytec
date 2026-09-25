@@ -7,8 +7,6 @@ GIT_URL = "git://github.com/phytec/linux-phytec.git;protocol=https"
 GIT_URL:phynext = "git://git@git.phytec.de/linux-phytec-dev.git;protocol=ssh"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
-PR = "${INC_PR}.0"
-
 FILESEXTRAPATHS:prepend := "${THISDIR}/linux-phytec-6.6:"
 SRC_URI:append = " \
     ${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'file://lxc.cfg', '', d)} \

@@ -13,8 +13,6 @@ SRC_URI = "git://git.phytec.de/gst-bayer2rgb-neon;branch=${BRANCH}"
 # NOTE: Keep sha1sum in sync with recipe version and git tag
 SRCREV = "69c3d779ceefe500ac5eae8e1e217a17f6d9bf38"
 
-PR = "r0"
-
 inherit pkgconfig autotools
 
 DEPENDS += "bayer2rgb-neon gstreamer1.0-plugins-base gstreamer1.0"

@@ -5,7 +5,6 @@ LIC_FILES_CHKSUM = "file://COPYING.MIT;md5=16469200a43ccc97395e139bb705a9e2"
 
 SECTION = "multimedia"
 
-PR = "r0"
 SRC_URI = "https://download.phytec.de/Software/Linux/Applications/${BPN}-${PV}.tar.gz"
 SRC_URI[md5sum] = "088c38f52d10e760d08849c181d3709d"
 SRC_URI[sha256sum] = "1c9a3dd30303c47ff4bab33b4c587b696fef2abb1c43bbe1dd7da02b1f321c4f"

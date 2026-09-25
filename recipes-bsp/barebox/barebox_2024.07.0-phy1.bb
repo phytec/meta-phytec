@@ -8,8 +8,6 @@ GIT_URL = "git://git.phytec.de/barebox"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
 
-PR = "${INC_PR}.0"
-
 # NOTE: Keep version in filename in sync with commit id and barebox-ipl!
 SRCREV = "c0855b884a1078c448120cb2fcf01147971a625b"
 

@@ -21,8 +21,6 @@ SRC_URI:append = " git://git.yoctoproject.org/yocto-kernel-cache;type=kmeta;name
                    file://mtd-partitioned-master.scc \
 "
 
-PR = "${INC_PR}.0"
-
 
 KMETA = "kernel-meta"
 ARCH:aarch64 = "arm64"
