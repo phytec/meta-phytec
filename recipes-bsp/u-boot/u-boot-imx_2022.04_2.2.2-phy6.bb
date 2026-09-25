@@ -17,7 +17,6 @@ BRANCH = "v2022.04_2.2.2-phy"
 GIT_URL = "git://git.phytec.de/${BPN}"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
-PR = "r0"
 SRCREV = "a17e854b24d5a3275a04864bf5a7c2b45ae14295"
 
 

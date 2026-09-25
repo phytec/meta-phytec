@@ -8,8 +8,6 @@ LIC_FILES_CHKSUM ?= "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 CVE_VERSION = "${@d.getVar("PV").split('-')[0]}"
 KERNEL_LOCALVERSION ?= "-g${@oe.utils.conditional('SRCREV', 'AUTOINC', 'AUTOINC', d.getVar('SRCREV', False).__str__()[:8], d)}"
 
-INC_PR = "r0"
-
 DEPENDS += "lzop-native lz4-native"
 PATCHTOOL = "git"
 

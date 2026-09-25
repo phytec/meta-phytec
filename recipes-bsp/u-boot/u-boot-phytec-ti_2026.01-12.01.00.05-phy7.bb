@@ -12,7 +12,6 @@ SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
-PR = "r0"
 SRCREV = "240df9f46aa01e160b45c95eab63aa4a59786424"
 
 COMPATIBLE_MACHINE = "^("

@@ -5,8 +5,6 @@ HOMEPAGE = "http://www.pengutronix.de/"
 LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM = "file://COPYING;md5=ea5bed2f60d357618ca161ad539f7c0a"
 
-PR = "r1"
-
 DEPENDS += "linux-libc-headers"
 
 SRC_URI = "http://www.pengutronix.de/software/ptxdist/temporary-src/${BPN}-${PV}.tar.gz \

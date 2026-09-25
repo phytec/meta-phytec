@@ -23,8 +23,6 @@ SRCREV = "83799a53ea51213958009d2a76d1d150b7bb3fa0"
 SRCREV_machine = "${SRCREV}"
 SRCREV_meta ?= "5b185a8716c8c62dc1c7751e6d12f8b67f58274f"
 
-PR = "${INC_PR}.0"
-
 KMETA = "kernel-meta"
 ARCH:aarch64 = "arm64"
 

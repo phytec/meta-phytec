@@ -6,7 +6,6 @@ LIC_FILES_CHKSUM = "file://License.txt;md5=7bdc54a749ab7a7dea999d25d99a41b8"
 PROVIDES += "amx3-cm3"
 
 PV = "1.9.2"
-PR = "r0"
 
 SRCREV = "fb484c5e54f2e31cf0a338d2927a06a2870bcc2c"
 BRANCH ?= "ti-v4.1.y"

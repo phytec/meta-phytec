@@ -8,8 +8,6 @@ PACKAGE_ARCH:k3 = "${MACHINE_ARCH}"
 
 S = "${UNPACKDIR}"
 
-PR = "r0"
-
 SRC_URI:append:mx6ul-generic-bsp = " \
     file://setup-pipeline-csi1.sh \
 "

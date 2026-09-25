@@ -10,8 +10,6 @@ REQUIRED_MACHINE_FEATURES = "gpu"
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 COMPATIBLE_MACHINE = "ti33x"
 
-PR = "r38"
-
 BRANCH = "${PV}/mesa/glibc-2.35"
 
 SRC_URI = "\
