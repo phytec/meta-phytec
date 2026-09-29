@@ -54,17 +54,7 @@ DT_OVERLAYS_INSTALL:append:phyboard-mira-imx6 = " \
     imx6-phy-ksz9131.dtbo \
 "
 
-DT_OVERLAYS_INSTALL:append:phyboard-nunki-imx6 = " \
-    imx6-phy-adin1300.dtbo \
-    imx6-phy-ksz9131.dtbo \
-"
-
 KERNEL_DEVICETREE:append:phyboard-mira-imx6 = " \
-    nxp/imx/imx6-phy-adin1300.dtbo \
-    nxp/imx/imx6-phy-ksz9131.dtbo \
-"
-
-KERNEL_DEVICETREE:append:phyboard-nunki-imx6 = " \
     nxp/imx/imx6-phy-adin1300.dtbo \
     nxp/imx/imx6-phy-ksz9131.dtbo \
 "
