@@ -38,8 +38,8 @@ BB_GIT_SHALLOW = "1"
 # Select configuration UI for linux and barebox recipe. The openembedded
 # default is 'menuconfig', 'nconfig' has more features.
 # busybox only supports menuconfig
-#KCONFIG_CONFIG_COMMAND = "menuconfig"
-KCONFIG_CONFIG_COMMAND = "nconfig"
+#KCONFIG_CONFIG_COMMAND = "menuconfig ${EXTRA_OEMAKE}"
+KCONFIG_CONFIG_COMMAND = "nconfig ${EXTRA_OEMAKE}"
 KCONFIG_CONFIG_COMMAND:pn-busybox = "menuconfig"
 
 # SDK will be build for that cpu
