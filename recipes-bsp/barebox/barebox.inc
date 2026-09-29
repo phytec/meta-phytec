@@ -23,6 +23,7 @@ SRC_URI:append = " \
 inherit kernel-arch deploy
 inherit kconfig kconfig-set
 
+export ARCH = "${@oe.kernel.map_kernel_arch(d)}"
 # Barebox doesn't seperate arm 32bit and 64bit. So we have to set
 # ARCH to arm for 64bit.
 ARCH:aarch64 = "arm"
