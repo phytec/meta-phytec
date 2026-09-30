@@ -25,6 +25,11 @@ KERNEL_IMAGETYPE ?= "zImage"
 MACHINE_EXTRA_RRECOMMENDS = "kernel-modules"
 MACHINE_EXTRA_RDEPENDS = "firmware-imx-sdma-imx6q"
 
+CYCLONEDX_EXTRA_RUNTIME_RECIPES = " \
++    ${PREFERRED_PROVIDER_virtual/bootloader} \
++    ${@bb.utils.contains("MACHINE_FEATURES", "optee", "optee-os","", d)} \
++"
+
 # dont install kernelimage to rootfs
 RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base = ""
 

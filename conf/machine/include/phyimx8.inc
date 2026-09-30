@@ -11,6 +11,13 @@ PREFERRED_PROVIDER_opencl-headers:imxgpu = "imx-gpu-viv"
 PREFERRED_PROVIDER_linux-imx-mfgtool:mx8-nxp-bsp = "linux-imx-mfgtool"
 PREFERRED_PROVIDER_virtual/libgles3:mx8-nxp-bsp = "imx-gpu-viv"
 
+CYCLONEDX_EXTRA_RUNTIME_RECIPES = " \
+    ${PREFERRED_PROVIDER_virtual/bootloader} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "optee", "optee-os","", d)} \
+    ${IMX_EXTRA_FIRMWARE} \
+    imx-atf \
+"
+
 # dont install kernelimage to rootfs
 RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base = ""
 
