@@ -182,6 +182,7 @@ void print_help()
 int main(int argc, char *argv[])
 {
 	char dev[PATH_MAX];
+	char *endp;
 	int master = 0;
 	int setrs485half = 0;
 	int setrs485full = 0;
@@ -216,9 +217,21 @@ int main(int argc, char *argv[])
 				master = 1;
 				break;
 			case 'l':
-				singleshoot = atoi(optarg);
+			{
+				long parsed;
+
+				errno = 0;
+				parsed = strtol(optarg, &endp, 10);
+				if (errno || endp == optarg || *endp != '\0' ||
+				    parsed < 1 || parsed > MAX_SEND) {
+					printf("Invalid length '%s'. Use a value between 1 and %d.\n",
+					       optarg, MAX_SEND);
+					return -1;
+				}
+				singleshoot = (int)parsed;
 				master = 1;
 				break;
+			}
 			default:
 				print_help();
 		}
