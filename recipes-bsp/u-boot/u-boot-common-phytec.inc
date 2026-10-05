@@ -8,7 +8,10 @@ DEPENDS += " \
 
 PROVIDES += "u-boot"
 
-SRC_URI:append = " file://0001-pylibfdt-Replace-removed-SWIG-Python-2-compatibility.patch"
+SRC_URI:append = " \
+    file://0001-pylibfdt-Replace-removed-SWIG-Python-2-compatibility.patch \
+    file://0001-Add-support-for-OpenSSL-Provider-API.patch \
+"
 
 do_deploy:append() {
     if [ -n "${UBOOT_CONFIG}" ]; then
