@@ -44,6 +44,8 @@ SERIAL_CONSOLES ?= "115200;ttyS2"
 MACHINE_EXTRA_RRECOMMENDS += "kernel-modules iproute2-devlink"
 INITRAMFS_FSTYPES = "cpio.xz"
 
+MACHINE_ESSENTIAL_EXTRA_RRECOMMENDS += "ti-pka-fw"
+
 PREFERRED_PROVIDER_virtual/kernel ??= "linux-phytec-ti"
 PREFERRED_PROVIDER_virtual/bootloader ??= "u-boot-phytec-ti"
 PREFERRED_PROVIDER_u-boot ??= "u-boot-phytec-ti"
