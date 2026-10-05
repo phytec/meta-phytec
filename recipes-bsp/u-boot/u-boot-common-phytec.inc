@@ -8,6 +8,8 @@ DEPENDS += " \
 
 PROVIDES += "u-boot"
 
+SRC_URI:append = " file://0001-pylibfdt-Replace-removed-SWIG-Python-2-compatibility.patch"
+
 do_deploy:append() {
     if [ -n "${UBOOT_CONFIG}" ]; then
         for config in ${UBOOT_MACHINE}; do
