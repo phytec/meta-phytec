@@ -16,6 +16,10 @@ GIT_URL = "git://git.u-boot-project.org/u-boot/u-boot.git;protocol=https"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 LIC_FILES_CHKSUM = "file://Licenses/README;md5=2ca5f2c35c8cc335f0a19756634782f1"
 
+SRC_URI:append = " \
+    file://0001-Add-support-for-OpenSSL-Provider-API.patch \
+"
+
 PR = "r0"
 
 SRCREV = "${AUTOREV}"
