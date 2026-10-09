@@ -7,6 +7,8 @@ GIT_URL = "git://github.com/phytec/linux-phytec.git;protocol=https"
 GIT_URL:phynext = "git://git@git.phytec.de/linux-phytec-dev.git;protocol=ssh"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
+BRANCH = "v6.6.y-phy"
+
 PR = "${INC_PR}.0"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/linux-phytec-6.6:"
