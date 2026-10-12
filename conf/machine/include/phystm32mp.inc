@@ -179,8 +179,9 @@ UBOOT_EXTLINUX_KERNEL_IMAGE ?= "/${KERNEL_IMAGETYPE}"
 KERNEL_DT = "${@os.path.basename(d.getVar('KERNEL_DEVICETREE').split()[0])}"
 UBOOT_EXTLINUX_KERNEL_IMAGE:append = "${@bb.utils.contains('KERNEL_IMAGETYPE', 'fitImage', '#conf-${KERNEL_DT}', '', d)}"
 
-# Define default FDTDIR for all configs
-UBOOT_EXTLINUX_FDTDIR = "${@bb.utils.contains('MACHINE_FEATURES', 'phy-expansions', '', '/', d)}"
+# Remove FDTDIR  by default
+UBOOT_EXTLINUX_FDTDIR = ""
+
 # Define default boot config
 UBOOT_EXTLINUX_DEFAULT_LABEL ?= "ampliPHY"
 # Define extlinux timeout to 20ms
