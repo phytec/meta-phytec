@@ -62,13 +62,17 @@ KERNEL_ALT_IMAGETYPE =+ " ${@bb.utils.contains('MACHINE_FEATURES', 'fit', '${KER
 KERNEL_CLASSES = "kernel-uimage"
 
 # For fit usage
-UBOOT_ENTRYPOINT = "0xC0800000"
+UBOOT_ENTRYPOINT:stm32mp1common = "0xC4000000"
+UBOOT_ENTRYPOINT:stm32mp2common = "0x89800000"
 
 # Set LOADADDR
-# Set this address to 0xC2000040, which is 0xC2000000 + 0x40.
+# For MP1, set this address to 0xC2000040, which is 0xC2000000 + 0x40.
 # 0xC2000000 is the memory address where U-Boot will copy from flash the file uImage and 0x40 is uImage header size (64Bytes).
 # With this value, U-Boot will be able to execute in place the zImage contained in uImage.
 ST_KERNEL_LOADADDR ?= "0xC2000040"
+ST_KERNEL_LOADADDR:stm32mp1common ?= "0xC2000040"
+# For MP2, set it to the compressed kernel address
+ST_KERNEL_LOADADDR:stm32mp2common ?= "0x89800000"
 
 # Extra kernel bootargs
 EXTRA_KERNEL_ARGS ?= ""
@@ -165,8 +169,12 @@ UBOOT_CONFIG_BINARY[default_stm32mp13] = "u-boot.dtb"
 # List of U-Boot device tree to use
 UBOOT_DEVICETREE = "${BOOTLOADER_DT}"
 
-UBOOT_DTB_LOADADDRESS = "0x90000000"
-UBOOT_DTBO_LOADADDRESS = "0x900c0000"
+# For FIT Image
+UBOOT_DTB_LOADADDRESS:stm32mp1common= "0xC6000000"
+UBOOT_DTBO_LOADADDRESS:stm32mp1common= "0xC6300000"
+
+UBOOT_DTB_LOADADDRESS:stm32mp2common = "0x95800000"
+UBOOT_DTBO_LOADADDRESS:stm32mp2common = "0x95B00000"
 
 # =========================================================================
 # u-boot extlinux configuration
