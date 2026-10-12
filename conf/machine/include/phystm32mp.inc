@@ -168,8 +168,9 @@ UBOOT_EXTLINUX ?= "1"
 UBOOT_EXTLINUX_ROOT ?= "root=PARTLABEL=root"
 UBOOT_EXTLINUX_KERNEL_IMAGE ?= "/${KERNEL_IMAGETYPE}"
 
-# Define default FDTDIR for all configs
-UBOOT_EXTLINUX_FDTDIR = "${@bb.utils.contains('MACHINE_FEATURES', 'phy-expansions', '', '/', d)}"
+# Remove FDTDIR  by default
+UBOOT_EXTLINUX_FDTDIR = ""
+
 # Define default boot config
 UBOOT_EXTLINUX_DEFAULT_LABEL ?= "ampliPHY"
 # Define default INITRD
