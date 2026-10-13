@@ -12,7 +12,6 @@ MACHINE_FEATURES += "screen touchscreen"
 KERNEL_OVERLAYS_PHYTEC = " \
     ti/k3-am62-phyboard-lyra-lpm.dtbo \
     ti/k3-am62-phyboard-lyra-m2-cc3351.dtbo \
-    ti/k3-am62-phyboard-lyra-oldi-lcd185.dtbo \
     ti/k3-am62-phyboard-lyra-oldi-ac200.dtbo \
     ti/k3-am62-phyboard-lyra-oldi-ac209a.dtbo \
     ti/k3-am62-phyboard-lyra-vm016-mipi.dtbo \
@@ -23,6 +22,7 @@ KERNEL_OVERLAYS_PHYTEC = " \
 # phyBOARD-Lyra overlays
 KERNEL_OVERLAYS:phyboard-lyra = " \
     ti/k3-am62x-phyboard-lyra-gpio-fan.dtbo \
+    ti/k3-am62-phyboard-lyra-oldi-lcd185.dtbo \
     ${@oe.utils.conditional("PREFERRED_PROVIDER_virtual/kernel", "linux-phytec-ti", "${KERNEL_OVERLAYS_PHYTEC}", "", d)} \
 "
 
