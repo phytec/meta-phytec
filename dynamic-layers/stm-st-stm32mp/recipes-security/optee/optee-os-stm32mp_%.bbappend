@@ -1,7 +1,7 @@
 SRC_URI = "git://github.com/phytec/optee_os-phytec-stm32mp.git;protocol=https;branch=${OPTEE_VERSION}-phy"
-SRCREV = "ced0b1fd38e05fad00e8d65af9cd435346a6ba51"
+SRCREV = "4296aea6ea690b57dd47f8252a9bd4a236f78b8b"
 
-OPTEE_RELEASE = "r3.1-phy1"
+OPTEE_RELEASE = "r3.1-phy2"
 
 # ----------------------------------------------------------------------
 # Configure devupstream class usage to get the HEAD of PHYTEC git branch
