@@ -1,7 +1,7 @@
 SRC_URI = "git://git.phytec.de/tf-a-stm32mp;protocol=git;branch=${TF_A_VERSION}-phy"
-SRCREV = "af01615e86c7c96f4d4d2f73fb86b7f8c2100ea8"
+SRCREV = "4a497afcc2244a9d69f4e32b0aea2f3efdd352dc"
 
-TF_A_RELEASE = "r3.1-phy1"
+TF_A_RELEASE = "r3.1-phy2"
 
 # ----------------------------------------------------------------------
 # Configure devupstream class usage to get the HEAD of PHYTEC git branch
