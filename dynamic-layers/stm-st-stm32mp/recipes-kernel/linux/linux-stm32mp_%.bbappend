@@ -1,9 +1,9 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/${BPN}:"
 
 SRC_URI = "git://git.phytec.de/linux-stm32mp;protocol=git;branch=v${LINUX_VERSION}-phy"
-SRCREV = "b351004af915258f586ff24f64b877dc84e0c6cf"
+SRCREV = "9a57fe7020f6372fda602652cfc1436d8024ee05"
 
-LINUX_RELEASE = "r3.1-phy1"
+LINUX_RELEASE = "r3.1-phy3"
 
 S = "${WORKDIR}/git"
 
