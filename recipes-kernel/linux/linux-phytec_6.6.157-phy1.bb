@@ -36,8 +36,6 @@ SRCREV_meta ?= "7d4cafa710da4e27a86cb015e50d91cf458af06f"
 
 KMETA = "kernel-meta"
 
-S = "${WORKDIR}/git"
-
 KBUILD_DEFCONFIG = "imx6_phytec_defconfig"
 KCONFIG_MODE = "alldefconfig"
 
