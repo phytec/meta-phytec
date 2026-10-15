@@ -1,0 +1,12 @@
+diff --git a/config/config_base.cmake b/config/config_base.cmake
+index bc11b53..3aeae4e 100644
+--- a/config/config_base.cmake
++++ b/config/config_base.cmake
+@@ -58,7 +58,3 @@ elseif(${STM32_SOC_NAME} MATCHES "^STM32MP23" OR ${STM32_SOC_NAME} MATCHES "^STM
+ else()
+     message(FATAL_ERROR "Unknown or unsupported STM32MP2 chip define")
+ endif()
+-
+-if(${STM32_SOC_NAME} MATCHES "^STM32MP21" OR ${STM32_SOC_NAME} MATCHES "^STM32MP23")
+-    set(STM32MP2_DDR_OPTION     STM32MP_DDR_16_BIT_INTERFACE)
+-endif()
