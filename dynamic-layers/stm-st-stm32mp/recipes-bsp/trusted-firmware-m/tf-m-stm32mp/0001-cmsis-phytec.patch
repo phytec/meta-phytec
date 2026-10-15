@@ -1,0 +1,28 @@
+diff --git a/Include/stm32mp235cxx_cm33.h b/Include/stm32mp235cxx_cm33.h
+index 7ec060b..cf276f0 100644
+--- a/Include/stm32mp235cxx_cm33.h
++++ b/Include/stm32mp235cxx_cm33.h
+@@ -5019,6 +5019,9 @@ typedef struct
+ #define IWDG5_BASE_NS                       (SMART_RUN_APB_PERIPH_BASE_NS + 0x90000UL)
+ #define WWDG2_BASE_NS                       (SMART_RUN_APB_PERIPH_BASE_NS + 0xA0000UL)
+ 
++/*!< Bits definition for TAMP_CONFIG_PHYTEC register */
++#define TAMP_CONFIG_PHYTEC             (0x1D0UL)
++
+ /*!< SMART_RUN_AHB peripherals Non secure aliases */
+ #define GPIOZ_BASE_NS                       (SMART_RUN_AHB_PERIPH_BASE_NS + 0x00000UL)
+ #define LPDMA_BASE_NS                       (SMART_RUN_AHB_PERIPH_BASE_NS + 0x10000UL)
+diff --git a/Include/stm32mp257fxx_cm33.h b/Include/stm32mp257fxx_cm33.h
+index 183b228..a9f22d2 100644
+--- a/Include/stm32mp257fxx_cm33.h
++++ b/Include/stm32mp257fxx_cm33.h
+@@ -5064,6 +5064,9 @@ typedef struct
+ #define IWDG5_BASE_NS                       (SMART_RUN_APB_PERIPH_BASE_NS + 0x90000UL)
+ #define WWDG2_BASE_NS                       (SMART_RUN_APB_PERIPH_BASE_NS + 0xA0000UL)
+ 
++/*!< Bits definition for TAMP_CONFIG_PHYTEC register */
++#define TAMP_CONFIG_PHYTEC             (0x1D0UL)
++
+ /*!< SMART_RUN_AHB peripherals Non secure aliases */
+ #define GPIOZ_BASE_NS                       (SMART_RUN_AHB_PERIPH_BASE_NS + 0x00000UL)
+ #define LPDMA_BASE_NS                       (SMART_RUN_AHB_PERIPH_BASE_NS + 0x10000UL)
