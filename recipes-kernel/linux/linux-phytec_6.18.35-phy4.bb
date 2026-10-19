@@ -29,7 +29,7 @@ KCONFIG_MODE = "alldefconfig"
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "f09574f5e1623cf39bbed6512e268fa45e33e705"
+SRCREV = "bbff9112aa915fded2c0d02bcef9dc09f17f928e"
 SRCREV_machine = "${SRCREV}"
 SRCREV_meta ?= "4dafe0e420087b6381728e68eeeff6d9af0a32e7"
 
