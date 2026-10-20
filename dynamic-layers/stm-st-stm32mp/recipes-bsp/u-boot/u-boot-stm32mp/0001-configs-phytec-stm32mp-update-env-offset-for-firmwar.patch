@@ -1,4 +1,4 @@
-From 02a68c009433840913b46791555190c25c9d97e8 Mon Sep 17 00:00:00 2001
+From 73d3cb4e3e641f133099c713c8a6a70d45fb598c Mon Sep 17 00:00:00 2001
 From: Christophe Parant <c.parant@phytec.fr>
 Date: Mon, 27 Apr 2026 14:46:28 +0200
 Subject: [PATCH] configs: phytec stm32mp: update env offset for firmware
@@ -17,7 +17,7 @@ Signed-off-by: Christophe Parant <c.parant@phytec.fr>
  4 files changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/configs/phycore-stm32mp13_defconfig b/configs/phycore-stm32mp13_defconfig
-index 569c80e1742..34583d1f3e8 100644
+index 569c80e174..34583d1f3e 100644
 --- a/configs/phycore-stm32mp13_defconfig
 +++ b/configs/phycore-stm32mp13_defconfig
 @@ -4,7 +4,7 @@ CONFIG_ARCH_STM32MP=y
@@ -39,7 +39,7 @@ index 569c80e1742..34583d1f3e8 100644
  # CONFIG_ARMV7_NONSEC is not set
  CONFIG_SYS_LOAD_ADDR=0xc2000000
 diff --git a/configs/phycore-stm32mp15_defconfig b/configs/phycore-stm32mp15_defconfig
-index e2c360432ec..bec818ba619 100644
+index e2c360432e..bec818ba61 100644
 --- a/configs/phycore-stm32mp15_defconfig
 +++ b/configs/phycore-stm32mp15_defconfig
 @@ -3,14 +3,14 @@ CONFIG_ARCH_STM32MP=y
@@ -60,7 +60,7 @@ index e2c360432ec..bec818ba619 100644
  # CONFIG_ARMV7_NONSEC is not set
  CONFIG_SYS_LOAD_ADDR=0xc2000000
 diff --git a/configs/phyflex_stm32mp23_defconfig b/configs/phyflex_stm32mp23_defconfig
-index 9b183d0161a..68ced5eac99 100644
+index 385e33d2bd..95995a3374 100644
 --- a/configs/phyflex_stm32mp23_defconfig
 +++ b/configs/phyflex_stm32mp23_defconfig
 @@ -3,13 +3,13 @@ CONFIG_USE_ARCH_MEMCPY=y
@@ -78,9 +78,9 @@ index 9b183d0161a..68ced5eac99 100644
 +CONFIG_ENV_OFFSET_REDUND=0x940000
  CONFIG_TARGET_PHYTEC_PHYFLEX_STM32MP23X=y
  CONFIG_CMD_STM32PROG=y
- CONFIG_SYS_LOAD_ADDR=0x84000000
+ CONFIG_SYS_LOAD_ADDR=0x89800000
 diff --git a/configs/phyflex_stm32mp25_defconfig b/configs/phyflex_stm32mp25_defconfig
-index 366815548f0..13e5fd8b2df 100644
+index b251751edd..7c0ee63653 100644
 --- a/configs/phyflex_stm32mp25_defconfig
 +++ b/configs/phyflex_stm32mp25_defconfig
 @@ -3,13 +3,13 @@ CONFIG_USE_ARCH_MEMCPY=y
@@ -98,7 +98,4 @@ index 366815548f0..13e5fd8b2df 100644
 +CONFIG_ENV_OFFSET_REDUND=0x940000
  CONFIG_TARGET_PHYTEC_PHYFLEX_STM32MP25X=y
  CONFIG_CMD_STM32PROG=y
- CONFIG_SYS_LOAD_ADDR=0x84000000
--- 
-2.34.1
-
+ CONFIG_SYS_LOAD_ADDR=0x89800000
