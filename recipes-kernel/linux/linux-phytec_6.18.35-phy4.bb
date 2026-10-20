@@ -39,6 +39,10 @@ module_conf_ti_k3_r5_remoteproc = "softdep ti_k3_r5_remoteproc pre: virtio_rpmsg
 module_conf_ti_k3_dsp_remoteproc = "softdep ti_k3_dsp_remoteproc pre: virtio_rpmsg_bus"
 KERNEL_MODULE_PROBECONF += "rpmsg_client_sample ti_k3_r5_remoteproc ti_k3_dsp_remoteproc"
 
+# Blacklist the upstream/PowerVR driver if the TI driver provides the GPU
+module_conf_powervr = "${@oe.utils.conditional('PREFERRED_PROVIDER_virtual/gpudriver', 'ti-img-rogue-driver', 'blacklist powervr', '', d)}"
+KERNEL_MODULE_PROBECONF += "${@oe.utils.conditional('PREFERRED_PROVIDER_virtual/gpudriver', 'ti-img-rogue-driver', 'powervr', '', d)}"
+
 KERNEL_VERSION_SANITY_SKIP = "1"
 
 EXTRA_DTC_ARGS += "DTC_FLAGS=-@"
