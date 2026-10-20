@@ -1,9 +1,9 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 SRC_URI = "git://git.phytec.de/u-boot-stm32mp;protocol=git;branch=${U_BOOT_VERSION}-phy"
-SRCREV = "2bf24ff2cb102d58ed7101d23b9454760051dae8"
+SRCREV = "114d8d244c92df9d2536eecfcbe7384cf159fa30"
 
-U_BOOT_RELEASE = "r3.1-phy1"
+U_BOOT_RELEASE = "r3.1-phy3"
 
 SRC_URI += " \
     ${@bb.utils.contains('MACHINE_FEATURES', 'fw-update', 'file://0001-configs-phytec-stm32mp-update-env-offset-for-firmwar.patch', '', d)} \
