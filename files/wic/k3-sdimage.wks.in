@@ -2,5 +2,8 @@
 # long-description: Creates a partitioned SD card image for TI platforms.
 # Boot files are located in the first vfat partition with extra reserved space.
 
+part --source rawcopy --sourceparams="file=${PREFERRED_PROVIDER_virtual/bootloader}-initial-env.bin" --ondisk mmcblk0 --no-table --offset 6656
+part --source rawcopy --sourceparams="file=${PREFERRED_PROVIDER_virtual/bootloader}-initial-env.bin" --ondisk mmcblk0 --no-table --offset 6912
+
 part /boot --source bootimg_partition --ondisk mmcblk0 --fstype=vfat --label boot --active --align 1024 --offset 8192 --fixed-size 128 --use-uuid
 part / --source rootfs --ondisk mmcblk0 --fstype=ext4 --label root --align 1024 --use-uuid
