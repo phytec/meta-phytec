@@ -71,7 +71,7 @@ KERNEL_IMAGETYPES ?= "Image"
 
 KERNEL_MODULE_AUTOLOAD += "cryptodev"
 
-WKS_FILE = "k3-sdimage.wks"
+WKS_FILE = "k3-sdimage.wks.in"
 EMMC_DEV = "0"
 # eMMC boot partition bootloader image offset
 BOOTLOADER_SEEK_EMMC = "0"
