@@ -14,7 +14,7 @@ CYCLONEDX_EXTRA_RUNTIME_RECIPES = " \
     ${PREFERRED_PROVIDER_virtual/bootloader} \
     ${@bb.utils.contains("MACHINE_FEATURES", "optee", "optee-os","", d)} \
     ${IMX_EXTRA_FIRMWARE} \
-    imx-atf \
+    ${IMX_DEFAULT_ATF_PROVIDER} \
 "
 
 # dont install kernelimage to rootfs
