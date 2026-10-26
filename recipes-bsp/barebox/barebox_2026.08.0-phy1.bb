@@ -91,13 +91,11 @@ of_property -s -f -e $global.bootm.oftree /soc/bus@2100000/serial@21ec000 pinctr
 """#!/bin/sh
 of_fixup_status /panel-lcd
 of_fixup_status /ldb/lvds-channel@0
-of_fixup_status /soc/bus@2100000/i2c@21a4000/polytouch@38
 """)
     env_add(d, "expansions/imx6qdl-phytec-lcd-res",
 """#!/bin/sh
 of_fixup_status /panel-lcd
 of_fixup_status /ldb/lvds-channel@0
-of_fixup_status /soc/bus@2100000/i2c@21a4000/touchctrl@41
 """)
     env_add(d, "expansions/imx6qdl-phytec-lcd-018-peb-av-02",
 """of_fixup_status /panel-lcd
