@@ -146,9 +146,9 @@ let "ADIN=ADIN1300_ID==(PHY_ID&ADIN_MASK)"
 if [ $KSZ9031 -eq 1 ]; then
     exit 0
 elif [ $KSZ9131 -eq 1 ]; then
-    of_overlay ${path}/imx6-phy-ksz9131.dtbo
+    of_overlay ${path}/imx6-phytec-phycore-phy-ksz9131.dtbo
 elif [ $ADIN -eq 1 ]; then
-    of_overlay ${path}/imx6-phy-adin1300.dtbo
+    of_overlay ${path}/imx6-phytec-phycore-phy-adin1300.dtbo
 else
     echo "No PHY found!"
     exit 1
@@ -175,9 +175,9 @@ let "ADIN=ADIN1300_ID==(PHY_ID&ADIN_MASK)"
 if [ $KSZ9031 -eq 1 ]; then
     exit 0
 elif [ $KSZ9131 -eq 1 ]; then
-    global.bootm.image=${image}@phyboard-imx6-phy-ksz9131.dtb
+    global.bootm.image=${image}@phyboard-imx6-phytec-phycore-phy-ksz9131.dtb
 elif [ $ADIN -eq 1 ]; then
-    global.bootm.image=${image}@phyboard-imx6-phy-adin1300.dtb
+    global.bootm.image=${image}@phyboard-imx6-phytec-phycore-phy-adin1300.dtb
 else
     echo "No PHY found!"
     exit 1
