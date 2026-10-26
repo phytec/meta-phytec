@@ -46,8 +46,10 @@ Before reaching out, please try the following:
 - Check the [Yocto Project Bugzilla](http://bugzilla.yoctoproject.org/) to see if the issue has already been reported
 - Review recent entries in the [Yocto mailing list archives](https://lists.yoctoproject.org/pipermail/yocto/) for similar problems or questions
 
-## Contributing
-We welcome external contributions and are open to considering new use cases from our customers. To contribute, you can either open a pull request on GitHub or send an email using git send-email directly to our mailing list: <upstream@phytec.de>
+## Submitting patches
+Patches should be sent with `git send-email` to <upstream@phytec.de>. Please prefix the subject with the layer name, e.g. `[meta-phytec][PATCH]`, and add a `Signed-off-by:` line.
+
+Alternatively, open a pull request on [GitHub](https://github.com/phytec/meta-phytec).
 
 ## License
 This layer is distributed under the MIT license, unless noted otherwise. This includes all recipes, configuration files, and metadata created by PHYTEC. Source code included in the tree is distributed under the license stated in the corresponding recipe or as mentioned in the code.
