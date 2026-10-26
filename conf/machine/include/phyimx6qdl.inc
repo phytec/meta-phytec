@@ -31,7 +31,7 @@ PREFERRED_PROVIDER_virtual/libgl ?= "mesa"
 # Firmware files
 MACHINE_EXTRA_RRECOMMENDS:append:mx6q-generic-bsp = " firmware-imx-vpu-mx6q"
 MACHINE_EXTRA_RRECOMMENDS:append:mx6dl-generic-bsp = " firmware-imx-vpu-mx6dl"
-PREFERRED_VERSION_firmware-imx = "5.4"
+PREFERRED_VERSION_firmware-imx = "8.32"
 
 # Install devicetree overlays
 DT_OVERLAYS_INSTALL = " \
