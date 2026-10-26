@@ -35,26 +35,22 @@ PREFERRED_VERSION_firmware-imx = "5.4"
 
 # Install devicetree overlays
 DT_OVERLAYS_INSTALL = " \
-    imx6-cam-0-lvds.dtbo \
-    imx6-vm009-0.dtbo \
-    imx6-vm010-bw-0.dtbo \
-    imx6-vm010-col-0.dtbo \
-    imx6-vm011-bw-0.dtbo \
-    imx6-vm011-col-0.dtbo \
-    imx6-vm012-bw-0.dtbo \
-    imx6-vm012-col-0.dtbo \
-    imx6-vm016-0.dtbo \
-    imx6-vm050-0.dtbo \
+    imx6-phytec-phycore-phy-adin1300.dtbo \
+    imx6-phytec-phycore-phy-ksz9131.dtbo \
+    imx6-phytec-mira-leds-gpio.dtbo \
+    imx6-phytec-mira-leds-pca9533.dtbo \
+    imx6-phytec-mira-cam-lvds.dtbo \
+    imx6-phytec-mira-vm009.dtbo \
+    imx6-phytec-mira-vm010-bw.dtbo \
+    imx6-phytec-mira-vm010-col.dtbo \
+    imx6-phytec-mira-vm011-bw.dtbo \
+    imx6-phytec-mira-vm011-col.dtbo \
+    imx6-phytec-mira-vm016.dtbo \
     imx6dl-phytec-mira-peb-av-18.dtbo \
     imx6q-phytec-mira-peb-av-18.dtbo \
 "
 
-DT_OVERLAYS_INSTALL:append:phyboard-mira-imx6 = " \
-    imx6-phy-adin1300.dtbo \
-    imx6-phy-ksz9131.dtbo \
-"
-
-KERNEL_DEVICETREE:append:phyboard-mira-imx6 = " \
-    nxp/imx/imx6-phy-adin1300.dtbo \
-    nxp/imx/imx6-phy-ksz9131.dtbo \
+KERNEL_DEVICETREE:append = " \
+    nxp/imx/imx6-phytec-phycore-phy-adin1300.dtbo \
+    nxp/imx/imx6-phytec-phycore-phy-ksz9131.dtbo \
 "
