@@ -1,0 +1,1 @@
+overlays=conf-stm32mp2-phyflex-libra-rdk-lvds-ph128800t006-zhc01.dtbo
