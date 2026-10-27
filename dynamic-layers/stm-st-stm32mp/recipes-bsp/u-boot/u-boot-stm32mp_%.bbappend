@@ -22,3 +22,19 @@ SRC_URI:class-devupstream += " \
     ${@bb.utils.contains('MACHINE_FEATURES', 'fw-update', 'file://0001-configs-phytec-stm32mp-update-env-offset-for-firmwar.patch', '', d)} \
     ${@bb.utils.contains('MACHINE_FEATURES', 'fw-update', 'file://0002-enable-doraucboot.patch', '', d)} \
 "
+
+python do_create_extlinux_config:append() {
+    splash = d.getVar('UBOOT_EXTLINUX_SPLASH')
+    cfile = d.getVar('UBOOT_EXTLINUX_CONFIG')
+
+    if not splash or not cfile or not os.path.exists(cfile):
+        return
+
+    with open(cfile, 'r+') as f:
+        lines = f.read().splitlines()
+        lines.insert(1, f"MENU BACKGROUND /{splash}.bmp")
+
+        f.seek(0)
+        f.write('\n'.join(lines) + '\n')
+        f.truncate()
+}
