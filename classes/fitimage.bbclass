@@ -49,7 +49,6 @@
 
 LICENSE = "MIT"
 inherit deploy
-inherit signing-helpers
 
 do_fetch[cleandirs] = "${S}"
 do_patch[noexec] = "1"
@@ -536,23 +535,12 @@ do_unpack:append() {
 }
 
 do_fitimagebundle () {
-    is_pkcs11=0
-    echo "${UBOOT_SIGN_KEYDIR}" | grep -q "^pkcs11:" && is_pkcs11=1
     if [ "${UBOOT_SIGN_ENABLE}" = "1" ] ; then
-        path_key=""
-        engine=""
-        if [ $is_pkcs11 -eq 0 ] ; then
-            path_key="${UBOOT_SIGN_KEYDIR}"
-        else
-            # mkimage expects the URI without the pkcs11: prefix
-            path_key=$(echo "${UBOOT_SIGN_KEYDIR}" | cut -c 8-)
-            engine="-N pkcs11"
-            setup_pkcs11_env
-        fi
+        path_key="${UBOOT_SIGN_KEYDIR}"
 
         printf '/dts-v1/;\n\n/ {\n};\n' > pubkey.dts
         dtc -O dtb pubkey.dts > pubkey.dtb
-        mkimage ${engine} \
+        mkimage \
                 -f "${S}/manifest.its" \
                 -k "${path_key}" \
                 -K "${B}/pubkey.dtb" \
