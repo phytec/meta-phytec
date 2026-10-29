@@ -3,8 +3,6 @@
 
 LICENSE = "MIT"
 
-inherit signing-helpers
-
 FITIMAGE_SIGN_ENGINE ??= "software"
 FITIMAGE_PUBKEY_SIGNATURE_PATH ??= "${WORKDIR}/signature_node.dtsi"
 
@@ -61,10 +59,6 @@ python do_create_dynamic_dtree:append:secureboot() {
 
         path = d.getVar("UBOOT_SIGN_KEYDIR")
 
-        if path.startswith("pkcs11:"):
-            path = path[7:]
-            setup_pkcs11_env(d)
-
         if d.getVar('FIT_SIGN_INDIVIDUAL') == "1":
             exec_command(f"mkimage {d.getVar('UBOOT_MKIMAGE_SIGN_ARGS')} \
                 -f auto \
@@ -97,6 +91,5 @@ python do_create_dynamic_dtree:append:secureboot() {
 do_create_dynamic_dtree[depends] += "\
     dtc-native:do_populate_sysroot \
     u-boot-mkimage-native:do_populate_sysroot \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'secureboot', 'libp11-native:do_populate_sysroot', '', d)} \
 "
 addtask do_create_dynamic_dtree before do_patch
