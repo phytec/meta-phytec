@@ -8,7 +8,7 @@
 
 # The eula bla mechanisum is in the recipe now.
 
-FSL_MIRROR = "http://www.freescale.com/lgfiles/NMG/MAD/YOCTO"
+FSL_MIRROR = "https://www.nxp.com/lgfiles/NMG/MAD/YOCTO"
 
 python fsl_bin_do_unpack() {
     src_uri = (d.getVar('SRC_URI') or "").split()

@@ -13,7 +13,7 @@ DISTRO ?= "ampliphy"
 
 # License Handling
 #  - Uncomment for Freescale i.MX6 VPU firmware blobs
-#LICENSE_FLAGS_ACCEPTED += "license-freescale_v12-march-2016_firmware-imx"
+#LICENSE_FLAGS_ACCEPTED += "license-freescale_v63-may-2025_firmware-imx"
 
 # build artifacts are deployed here,
 # separate by ${DISTRO} postfix for building multiple distros in the same TOPDIR
