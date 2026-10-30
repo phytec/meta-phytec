@@ -36,7 +36,7 @@ KCONFIG_MODE = "alldefconfig"
 # NOTE: The <ti-sdk-version> field (e.g. 12.00.00.07) must be a tag on the
 #       meta-ti commit pinned in the manifest, which provides the matching
 #       firmware (sysfw/dm/pru). ti-sdk-version-check.bbclass warns otherwise.
-SRCREV = "e9978f07420c91fc3ce7bc3d545a2d464c6f9f32"
+SRCREV = "56f0cd1834c41d05989fa74c7a41042eb8a6817d"
 SRCREV_machine = "${SRCREV}"
 SRCREV_meta ?= "4dafe0e420087b6381728e68eeeff6d9af0a32e7"
 
