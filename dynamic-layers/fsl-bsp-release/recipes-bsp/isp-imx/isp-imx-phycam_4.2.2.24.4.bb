@@ -41,6 +41,13 @@ do_install() {
     install -m 0775 ${WORKDIR}/run_isp.sh ${D}/opt/imx8-isp/bin
     install -m 0644 ${WORKDIR}/90-phycam-isp.rules ${D}${nonarch_base_libdir}/udev/rules.d/
 
+    # The prebuilt ISP components were linked against jsoncpp 1.9.5
+    # (SONAME 25). jsoncpp 1.9.7 ships SONAME 27, so update the dynamic
+    # dependency.
+    patchelf --replace-needed libjsoncpp.so.25 libjsoncpp.so.27 \
+        ${D}${libdir}/libmedia_server.so \
+        ${D}/opt/imx8-isp/bin/isp_media_server
+
     if ${@bb.utils.contains('DISTRO_FEATURES','systemd','true','false',d)}; then
         install -d ${D}${systemd_system_unitdir}
         install -m 0644 ${WORKDIR}/imx8-phycam-isp.service \
