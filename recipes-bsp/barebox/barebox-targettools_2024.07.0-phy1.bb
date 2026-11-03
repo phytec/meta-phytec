@@ -1,7 +1,7 @@
 require barebox_${PV}.bb
 inherit kconfig-set
 
-SUMMERY = "barebox userspace tools"
+SUMMARY = "barebox userspace tools"
 PROVIDES = "${PN}"
 FILESEXTRAPATHS:prepend := "${THISDIR}/barebox/:"
 
