@@ -2,7 +2,6 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/features:"
 
 DEPENDS:append = " \
     ti-sci-fw \
-    python3-pyelftools-native \
     python3-pyyaml-native \
     python3-jsonschema-native \
     python3-yamllint-native \
