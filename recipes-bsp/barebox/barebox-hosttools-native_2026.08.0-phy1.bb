@@ -1,6 +1,6 @@
 require barebox_${PV}.bb
 
-SUMMERY = "barebox host tools"
+SUMMARY = "barebox host tools"
 PROVIDES = "${PN}"
 FILESEXTRAPATHS:prepend := "${THISDIR}/barebox/:"
 
