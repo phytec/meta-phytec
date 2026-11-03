@@ -24,7 +24,8 @@ KERNEL_FEATURES = " \
     ${@bb.utils.contains('MACHINE_FEATURES', 'tpm2', 'features/tpm/tpm-2.0.scc', '', d)} \
 "
 
-KBUILD_DEFCONFIG ?= "phytec_ti_defconfig"
+KBUILD_DEFCONFIG ?= "defconfig"
+KBUILD_DEFCONFIG:ti-soc ?= "phytec_ti_defconfig"
 KCONFIG_MODE = "alldefconfig"
 
 # NOTE: PV must be in the format "x.y.z-.*". It cannot begin with a 'v'.
