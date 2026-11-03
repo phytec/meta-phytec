@@ -4,6 +4,7 @@ DEPENDS += " \
     bc-native \
     dtc-native \
     gnutls-native \
+    python3-pyelftools-native \
 "
 
 PROVIDES += "u-boot"
