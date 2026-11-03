@@ -46,7 +46,7 @@ INITRAMFS_FSTYPES = "cpio.xz"
 PREFERRED_PROVIDER_virtual/kernel ??= "linux-phytec-ti"
 PREFERRED_PROVIDER_virtual/bootloader ??= "u-boot-phytec-ti"
 PREFERRED_PROVIDER_u-boot ??= "u-boot-phytec-ti"
-MACHINE_FEATURES = "apm usbgadget usbhost vfat ext2 alsa rtc optee"
+MACHINE_FEATURES = "apm usbgadget usbhost vfat ext2 alsa optee"
 
 CYCLONEDX_EXTRA_RUNTIME_RECIPES = " \
     ${PREFERRED_PROVIDER_virtual/bootloader} \
