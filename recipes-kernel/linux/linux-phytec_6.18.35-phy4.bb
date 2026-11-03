@@ -53,4 +53,6 @@ KERNEL_EXTRA_ARGS += "LOADADDR=${UBOOT_ENTRYPOINT} \
 COMPATIBLE_MACHINE  = "^("
 COMPATIBLE_MACHINE .=  "phyboard-lyra"
 COMPATIBLE_MACHINE .= "|phyboard-electra"
+COMPATIBLE_MACHINE .= "|phyboard-polis-imx8mm-5"
+COMPATIBLE_MACHINE .= "|phygate-tauri-l-imx8mm-2"
 COMPATIBLE_MACHINE .= ")$"
