@@ -23,7 +23,7 @@ KERNEL_OVERLAYS_PHYTEC = " \
 KERNEL_OVERLAYS:phyboard-lyra = " \
     ti/k3-am62x-phyboard-lyra-gpio-fan.dtbo \
     ti/k3-am62-phyboard-lyra-oldi-lcd185.dtbo \
-    ${@oe.utils.conditional("PREFERRED_PROVIDER_virtual/kernel", "linux-phytec-ti", "${KERNEL_OVERLAYS_PHYTEC}", "", d)} \
+    ${@oe.utils.conditional("PREFERRED_PROVIDER_virtual/kernel", "linux-phytec", "${KERNEL_OVERLAYS_PHYTEC}", "", d)} \
 "
 
 PREFERRED_PROVIDER_virtual/kernel ?= "linux-phytec"
