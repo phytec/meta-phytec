@@ -30,8 +30,8 @@ PARTUP_PACKAGE_DEPENDS:append:mx93-generic-bsp = " \
     phytec-bootenv \
     imx-m33-demos \
 "
-
-PARTUP_PACKAGE_DEPENDS:append:j721s2 = " \
+PARTUP_PACKAGE_DEPENDS:append:k3 = " \
+    ${IMAGE_BOOTLOADER} \
     phytec-bootenv \
 "
 
