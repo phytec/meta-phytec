@@ -17,7 +17,7 @@ SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
-SRCREV = "8fae1d8ea0d17d192d116e300bda7cad263a4103"
+SRCREV = "a4afe2a0f1b8a82627cbf10ba26955201091e6ea"
 
 CVE_STATUS[CVE-2026-33243] = "backported-patch: fixed by commit 5dedd3da in the \
 phytec fork, a backport of upstream commit 2092322b31cc"
