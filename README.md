@@ -63,7 +63,8 @@ Please be aware that you need to agree to the specific vendor licenses if you us
 * Norbert Wesp <n.wesp@phytec.de>
 
 ## Dependencies
-This layer depends on Openembedded-Core and Bitbake:
+This layer depends on Openembedded-Core, Bitbake and partup:
 
 * [bitbake](http://git.openembedded.org/bitbake)
 * [openembedded-core](http://git.openembedded.org/openembedded-core)
+* [meta-partup](https://github.com/phytec/meta-partup)
