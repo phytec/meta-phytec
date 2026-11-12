@@ -21,6 +21,7 @@ SRC_URI:append = " git://git.yoctoproject.org/yocto-kernel-cache;type=kmeta;name
 
 KMETA = "kernel-meta"
 ARCH:aarch64 = "arm64"
+LINUX_VERSION = "6.12.49"
 
 KERNEL_EXTRA_FEATURES = "cfg/systemd.scc mtd-partitioned-master.scc"
 KERNEL_FEATURES = "${KERNEL_EXTRA_FEATURES}"
