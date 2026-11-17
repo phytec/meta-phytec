@@ -158,7 +158,9 @@ fi
             env_add(d, "physelect-secureboot",
 """#!/bin/sh
 
-image="$global.bootm.image"
+# The Ethernet PHY overlays are signed overlay configurations in the FIT
+# image. Apply none by default, as the overlay pattern defaults to "*".
+global.of.overlay.pattern=""
 
 let PHY_ID=${mdio0-phy03.phy_id}
 
@@ -175,13 +177,16 @@ let "ADIN=ADIN1300_ID==(PHY_ID&ADIN_MASK)"
 if [ $KSZ9031 -eq 1 ]; then
     exit 0
 elif [ $KSZ9131 -eq 1 ]; then
-    global.bootm.image=${image}@phyboard-imx6-phytec-phycore-phy-ksz9131.dtb
+    overlay="conf-imx6-phytec-phycore-phy-ksz9131.dtbo"
 elif [ $ADIN -eq 1 ]; then
-    global.bootm.image=${image}@phyboard-imx6-phytec-phycore-phy-adin1300.dtb
+    overlay="conf-imx6-phytec-phycore-phy-adin1300.dtbo"
 else
     echo "No PHY found!"
     exit 1
 fi
+
+global.of.overlay.path="$global.bootm.image"
+global.of.overlay.pattern="$overlay"
 """)
 }
 
