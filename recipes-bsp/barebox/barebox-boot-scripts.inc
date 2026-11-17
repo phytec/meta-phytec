@@ -12,7 +12,7 @@ def env_add_boot_scripts(d, kernelname, mmcid, emmcid):
 
     global.bootm.image="/mnt/mmc{mmcid}.{partid}/{kernel}"
     global.bootm.oftree="/mnt/mmc{mmcid}.{partid}/oftree"
-    global.linux.bootargs.dyn.root="root=/dev/mmcblk{mmcid}p{rootid} rootflags='data=journal'"
+    global.linux.bootargs.dyn.root="root={rootdev}/mmcblk{mmcid}p{rootid} rootflags='data=journal'"
 
     [ -e /env/config-expansions ] && /env/config-expansions
 
@@ -89,14 +89,21 @@ def env_add_boot_scripts(d, kernelname, mmcid, emmcid):
     """)
 
     if bb.utils.contains("MACHINE_FEATURES", "emmc", True, False, d):
+        # With secure storage, the initramfs opens the encrypted root
+        # partitions as /dev/mapper/mmcblk<n>p<m>
+        emmcrootdev = bb.utils.contains("DISTRO_FEATURES", "securestorage",
+                                        "/dev/mapper", "/dev", d)
         env_add(d, "boot/emmc", mmcboot.format(kernel=kernelname,
                                                mmcid=emmcid, partid=0,
+                                               rootdev=emmcrootdev,
                                                rootid=2, bbrootid=1))
         env_add(d, "boot/system0", mmcboot.format(kernel=kernelname,
                                                   mmcid=emmcid, partid=0,
+                                                  rootdev=emmcrootdev,
                                                   rootid=5, bbrootid=4))
         env_add(d, "boot/system1", mmcboot.format(kernel=kernelname,
                                                   mmcid=emmcid, partid=1,
+                                                  rootdev=emmcrootdev,
                                                   rootid=6, bbrootid=5))
         spiroot = "root=/dev/mmcblk{}p2 rootflags='data=journal'".format(emmcid)
     else:
@@ -106,7 +113,8 @@ def env_add_boot_scripts(d, kernelname, mmcid, emmcid):
         spiroot = "root=ubi0:root ubi.mtd=root rootfstype=ubifs"
 
     env_add(d, "boot/mmc", mmcboot.format(kernel=kernelname, mmcid=mmcid,
-                                          partid=0, rootid=2, bbrootid=1))
+                                          partid=0, rootdev="/dev",
+                                          rootid=2, bbrootid=1))
     env_add(d, "boot/net", netboot)
     env_add(d, "boot/spi", spiboot.format(root=spiroot))
 
