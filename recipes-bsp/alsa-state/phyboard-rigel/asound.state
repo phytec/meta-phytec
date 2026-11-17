@@ -16,7 +16,7 @@ state.phyBOARDRigel {
 	control.2 {
 		iface MIXER
 		name 'ADC Capture Switch'
-		value false
+		value true
 		comment {
 			access 'read write'
 			type BOOLEAN
