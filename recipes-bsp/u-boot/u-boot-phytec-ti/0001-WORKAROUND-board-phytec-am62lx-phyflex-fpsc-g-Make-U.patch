@@ -1,0 +1,78 @@
+From 9efafb713d2a2fd8b8b23153aca00fd7873ad870 Mon Sep 17 00:00:00 2001
+From: Dominik Haller <d.haller@phytec.de>
+Date: Thu, 30 Oct 2025 15:25:07 -0700
+Subject: [PATCH v2026.01-12.02.00.04-phy] WORKAROUND: board: phytec:
+ am62lx-phyflex-fpsc-g: Make USB Hub functional
+
+The upstream ports of the USB Hub on Libra PCM-937-L 1618.0, 1618.1
+have swapped pin polarity.
+To workaround this we can set polarity in the USB Hub registers which
+are available over i2c.
+
+As on boards the i2c address may vary for yet unknown reasons we
+need to test all possible i2c addresses to write to the registers.
+
+Taken from commit c441036 in
+https://github.com/phytec/u-boot-phytec-imx/tree/v2024.04-2.2.0-phy
+
+Upstream-Status: Inappropriate [downstream alpha hardware]
+
+Signed-off-by: Dominik Haller <d.haller@phytec.de>
+Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
+---
+ .../am62lx-phyflex-fpsc-g.c                   | 37 +++++++++++++++++++
+ 1 file changed, 37 insertions(+)
+
+diff --git a/board/phytec/am62lx-phyflex-fpsc-g/am62lx-phyflex-fpsc-g.c b/board/phytec/am62lx-phyflex-fpsc-g/am62lx-phyflex-fpsc-g.c
+index befabebbbe93..f7f82d75584b 100644
+--- a/board/phytec/am62lx-phyflex-fpsc-g/am62lx-phyflex-fpsc-g.c
++++ b/board/phytec/am62lx-phyflex-fpsc-g/am62lx-phyflex-fpsc-g.c
+@@ -15,8 +15,45 @@
+ 
+ #include "../common/am6_som_detection.h"
+ 
++#define TUSB_PORT_POL_CRTL_REG  0xB
++#define TUSB_CUSTOM_POL         BIT(7)
++#define TUSB_P0_POL             BIT(0)
++
++/*
++ * WORKAROUND for PCM-937-L 1618.0, 1618.1.
++ * USB HUB TUSB8042A has swapped upstream pin polarity.
++ * Set i2c registers to inform the hub that the lines
++ * are swapped.
++ *
++ * We also notice that the HUB i2c address might not be
++ * as expected for unknown reasons. Test all 4 possible i2c
++ * addresses to write to the device.
++ *
++ */
++
++void tusb8042a_swap_lines(void)
++{
++	const u8 pol_swap_val = (TUSB_CUSTOM_POL | TUSB_P0_POL);
++	const int addr[4] = {0x44, 0x45, 0x46, 0x47};
++	struct udevice *dev;
++	int i, ret;
++
++	for (i = 0; i < 4; i++) {
++		ret = i2c_get_chip_for_busnum(3, addr[i], 1, &dev);
++		if (!ret) {
++			dm_i2c_write(dev, TUSB_PORT_POL_CRTL_REG, &pol_swap_val, 1);
++			break;
++		};
++	}
++
++	if (ret)
++		printf("TUSB8042A: Failed to fixup USB HUB.\n");
++}
++
+ int board_init(void)
+ {
++	tusb8042a_swap_lines();
++
+ 	return 0;
+ }
+ 
+-- 
+2.43.0
+
