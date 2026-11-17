@@ -15,7 +15,7 @@ GIT_URL = "git://github.com/phytec/${BPN};protocol=https"
 GIT_URL:phynext = "git://git@git.phytec.de/u-boot-phytec-imx-dev.git;protocol=ssh"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
-SRCREV = "c50ae1da8564fb682cf49525c8edced8585c1244"
+SRCREV = "2da600eb2bea2b14bd1d63756a661fe6ede31e27"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
