@@ -5,6 +5,8 @@ LICENSE = "MIT"
 
 FITIMAGE_SIGN_ENGINE ??= "software"
 FITIMAGE_PUBKEY_SIGNATURE_PATH ??= "${WORKDIR}/signature_node.dtsi"
+# Usually set by uboot-config.bbclass, which barebox does not inherit
+UBOOT_MKIMAGE_SIGN_ARGS ??= ""
 
 def write_signature_node(d):
     import shutil
