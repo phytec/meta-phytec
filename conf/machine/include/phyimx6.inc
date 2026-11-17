@@ -13,6 +13,8 @@ PREFERRED_PROVIDER_virtual/bootloader ?= "barebox"
 PREFERRED_PROVIDER_virtual/kernel ?= "linux-phytec"
 KERNEL_IMAGETYPE ?= "zImage"
 
+INITRAMFS_MAXSIZE = "262144"
+
 CYCLONEDX_EXTRA_RUNTIME_RECIPES = " \
     ${PREFERRED_PROVIDER_virtual/bootloader} \
     ${@bb.utils.contains("MACHINE_FEATURES", "optee", "optee-os","", d)} \
