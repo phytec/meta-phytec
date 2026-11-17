@@ -15,6 +15,22 @@ KERNEL_IMAGETYPE ?= "zImage"
 
 INITRAMFS_MAXSIZE = "262144"
 
+# Kernel FIT image (linux-yocto-fitimage)
+KERNEL_CLASSES += "kernel-fit-extra-artifacts"
+
+# RAM starts at 0x10000000. Load the kernel 64 MiB above, so it does not
+# need to relocate itself before decompression (see barebox bootm).
+UBOOT_LOADADDRESS ?= "0x14000000"
+UBOOT_ENTRYPOINT ?= "${UBOOT_LOADADDRESS}"
+
+# kernel-fit-image inherits uboot-config, which skips the recipe without
+# UBOOT_MACHINE. It is not used for the FIT image, so set a placeholder.
+UBOOT_MACHINE:pn-linux-yocto-fitimage ?= "barebox"
+
+# Secure boot images ship the signed FIT image instead of the kernel image
+KERNEL_DEPLOY_DEPEND = "${@bb.utils.contains('DISTRO_FEATURES', 'secureboot', \
+    'linux-yocto-fitimage:do_deploy', 'virtual/kernel:do_deploy', d)}"
+
 CYCLONEDX_EXTRA_RUNTIME_RECIPES = " \
     ${PREFERRED_PROVIDER_virtual/bootloader} \
     ${@bb.utils.contains("MACHINE_FEATURES", "optee", "optee-os","", d)} \
