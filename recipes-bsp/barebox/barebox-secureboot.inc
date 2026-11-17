@@ -70,7 +70,14 @@ do_patch:append:secureboot() {
             file.write("CONFIG_BOOTM_FITIMAGE=y\n")
             file.write("CONFIG_BOOTM_FITIMAGE_SIGNATURE=y\n")
             file.write("CONFIG_BOOTM_FORCE_SIGNED_IMAGES=y\n")
-            file.write('CONFIG_BOOTM_FITIMAGE_PUBKEY="%s"\n' % d.getVar("FITIMAGE_PUBKEY_SIGNATURE_PATH") )
+            # Compile the FIT public key into the "fit" keyring
+            keydir = d.getVar("UBOOT_SIGN_KEYDIR")
+            keyname = d.getVar("UBOOT_SIGN_KEYNAME")
+            if keydir.startswith("pkcs11:"):
+                pubkey = keydir if "object=" in keydir else "%s;object=%s" % (keydir, keyname)
+            else:
+                pubkey = os.path.join(keydir, keyname + ".crt")
+            file.write('CONFIG_CRYPTO_PUBLIC_KEYS="keyring=fit,fit-hint=%s:%s"\n' % (keyname, pubkey))
             file.write("CONFIG_CRYPTO_RSA=y\n")
             file.write("CONFIG_SHA1=y\n")
             file.write("CONFIG_SHA256=y\n")
