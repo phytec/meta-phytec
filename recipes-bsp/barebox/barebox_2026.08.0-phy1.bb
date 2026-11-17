@@ -85,7 +85,7 @@ of_fixup_status /soc/bus@2100000/i2c@21a0000/touchctrl@44
     env_add(d, "expansions/imx6qdl-mira-peb-eval-01",
 """of_fixup_status /gpio-keys
 of_fixup_status /user-leds
-of_property -s -f -e $global.bootm.oftree /soc/bus@2100000/serial@21ec000 pinctrl-0 </soc/bus@2000000/pinctrl@20e0000/uart3grp>
+of_property -s -f /soc/bus@2100000/serial@21ec000 pinctrl-0 </soc/bus@2000000/pinctrl@20e0000/uart3grp>
 """)
     env_add(d, "expansions/imx6qdl-phytec-lcd",
 """#!/bin/sh
@@ -114,7 +114,7 @@ of_fixup_status /regulator-wl-en
 of_fixup_status -d /gpio-keys
 of_fixup_status /soc/bus@2100000/serial@21ec000/bluetooth
 of_fixup_status -d /user-leds
-of_property -s -f -e $global.bootm.oftree /soc/bus@2100000/serial@21ec000 pinctrl-0 </soc/bus@2000000/pinctrl@20e0000/uart3-btgrp>
+of_property -s -f /soc/bus@2100000/serial@21ec000 pinctrl-0 </soc/bus@2000000/pinctrl@20e0000/uart3-btgrp>
 """)
     env_add(d, "nv/dev.eth0.mode", "static")
     env_add(d, "nv/dev.eth0.ipaddr", "192.168.3.11")
