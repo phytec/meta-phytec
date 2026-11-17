@@ -34,11 +34,11 @@ do_patch:append:secureboot() {
     # Only create dynamic-config for barebox package, other packages (targettools and hosttools)
     # which include barebox recipe don't need this.
     if d.getVar('PN') == "barebox":
-        workdir = d.getVar("WORKDIR")
-        if not os.path.exists(workdir):
-            os.makedirs(workdir)
+        unpackdir = d.getVar("UNPACKDIR")
+        if not os.path.exists(unpackdir):
+            os.makedirs(unpackdir)
 
-        pathCFG = os.path.join(workdir, "dynamic-config.cfg")
+        pathCFG = os.path.join(unpackdir, "dynamic-config.cfg")
         file = open(pathCFG,"w")
 
         file.write("# CONFIG_CMD_OF_OVERLAY is not set\n")
