@@ -12,6 +12,10 @@ SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
+SRC_URI:append:am62lxx-phyflex-libra-rdk-2 = " \
+    file://0001-WORKAROUND-board-phytec-am62lx-phyflex-fpsc-g-Make-U.patch \
+"
+
 SRCREV = "c90c30e31bee95019687de5e3050d4e18b4e6689"
 
 COMPATIBLE_MACHINE = "^("
