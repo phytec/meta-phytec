@@ -13,7 +13,7 @@ GIT_URL = "git://git.phytec.de/barebox"
 SRC_URI = "${GIT_URL};branch=${BRANCH}"
 
 # NOTE: Keep version in filename in sync with commit id!
-SRCREV = "bf924f95a5492584c8edd7e8130de2188dd6813e"
+SRCREV = "adf8efe33852536ebfecd2ae1e0c4e751bb0767b"
 
 python do_env:append() {
     env_add(d, "nv/allow_color", "false\n")
