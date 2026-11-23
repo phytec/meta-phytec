@@ -6,7 +6,7 @@ HOMEPAGE = "http://www.barebox.org"
 SECTION = "bootloaders"
 LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM ?= "file://COPYING;md5=f5125d13e000b9ca1f0d3364286c4192"
-DEPENDS += "lzop-native lz4-native coreutils-native bison-native"
+DEPENDS += "lzop-native lz4-native coreutils-native bison-native openssl-native pkgconfig-native"
 PROVIDES = "virtual/bootloader"
 
 CVE_PRODUCT = "pengutronix:barebox"
@@ -29,7 +29,7 @@ ARCH:aarch64 = "arm"
 
 # verbose build 0/1
 VERBOSE_BUILD ?= "0"
-EXTRA_OEMAKE = 'CROSS_COMPILE="${TARGET_PREFIX}" CC="${TARGET_PREFIX}gcc" V="${VERBOSE_BUILD}"'
+EXTRA_OEMAKE = 'CROSS_COMPILE="${TARGET_PREFIX}" CC="${TARGET_PREFIX}gcc" V="${VERBOSE_BUILD}" PKG_CONFIG="pkg-config-native"'
 B = "${WORKDIR}/build"
 
 # name of the image created by barebox Makefile
